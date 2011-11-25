@@ -303,23 +303,24 @@ class ClubAction extends PublicAction {
         $uid = $_REQUEST['owner'];
         $gid = $_REQUEST['gid'];
         $id = $_REQUEST['id'];
-        $sid = $_REQUEST['sid'];
-		if($sid==''){ $this->error("没有权限！");}
+        //dump($id);die;
+		$sid = $_REQUEST['sid'];
+		if($sid==''&&$id==''){ $this->error("没有权限！");}
 		if (!(D('User')->isSchoolAdmin(CURRENT_USER)))
             $this->error("没有权限！");
         $club['owner'] = $_REQUEST['owner'];
-		if($sid!=D('Club')->getSidByGid($gid)){
+		if($sid!=D('Club')->getSidByGid($gid)&&$id==''){
 			$this->error('对不起，您无权操作校外社团');
 		}
 		$per_owner = M('Club')->field('owner')->where(array('gid'=>$gid))->find()['owner'];
-		//dump($per_owner);die;
 		if($uid - $per_owner==0){$this->error("已是该协会会长");}
-		
-		M('Club')->where(array('gid'=>$_REQUEST['gid']))->save($club);
-        
+		//die;
+	    M('Club')->where(array('gid'=>$_REQUEST['gid']))->save($club);
+       
 		$priv = 'admin';
         $priv_pre = M('User_group')->result_first("SELECT priv FROM ustc_user_group where uid = $uid and gid = $gid");
-        if($priv_pre)
+        
+		if($priv_pre)
         {
             if(($priv_pre!='inactive')&&($priv=='inactive'))
             {
@@ -336,13 +337,14 @@ class ClubAction extends PublicAction {
             M('Club')->where(['gid'=>$gid])->setInc('member_count'); // 会员数加1 
         }
 
-
         $record['gid'] = $_REQUEST['gid'];
         $record['uid'] = $_REQUEST['owner'];
         $record['sid'] = M('Club')->result_first("SELECT sid FROM ustc_club where gid = $gid");
         $record['priv'] = 'admin';
         $record['title'] = '会长';
-        $row = M('user_group');
+        //dump($record);
+		//die;
+		$row = M('user_group');
         $row->create($record);
         $email=D('User')->result_first("select email from ustc_user where uid = ".$record['uid']);
         $club=D('Club')->getInfo($record['gid']);
@@ -353,24 +355,28 @@ class ClubAction extends PublicAction {
             SendMail($email,"您申请成为".$club['name']."会长已被管理员审核通过",
                     $realname."您好:\n\n您申请成为".$club['name']."会长已被管理员审核通过\n\n点击下面链接进入".$club['name']."社团主页，完善社团信息\n".
                     "http://".$_SERVER['HTTP_HOST']."/Club/?gid=$gid\n\n".
-                    "校园活动平台 http://".$_SERVER['HTTP_HOST']."感谢您的支持"
+                    "感谢您的支持,校园活动平台 http://".$_SERVER['HTTP_HOST']
                     );
-		    
-			$data['priv'] = 'member';
-            $data['title'] = '前会长';
-			D('User')->where(['uid'=>$per_owner,'gid'=>$gid])->save($data);
-			
+			if($id){
 			$handle=array(
 				'htime'=>time(),
 				'handle_uid'   => CURRENT_USER,
 				'ishandled'=>1
 				);
 			M('Club_apply')->where(['id'=>$id])->save($handle);
-        }
+			}
+		}
+		if(!$id)
+		{
+			$data['priv'] = 'member';
+			$data['title'] = '前会长';
+			D('User_group')->where(['uid'=>$per_owner,'gid'=>$gid])->save($data);
+			$this->success("更换会长成功！");
+			return;
+		}
+		$this->success("设置会长成功！");
+		//redirect("Club/manage?gid=76",params=array(),delay=0,msg='') 
 
-
-
-        $this->success("设置会长成功！");
     }
 	
     public function refuseOwnerSubmit(){
