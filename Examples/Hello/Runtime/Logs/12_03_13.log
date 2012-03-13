@@ -1,0 +1,36 @@
+[ 2012-03-13T20:33:37+08:00 ] /Examples/Hello/ | INFO: Tag[ app_begin ] --START--
+[ 2012-03-13T20:33:37+08:00 ] /Examples/Hello/ | INFO: Run ReadHtmlCache Behavior [ RunTime:0.002444s ]
+[ 2012-03-13T20:33:37+08:00 ] /Examples/Hello/ | INFO: Tag[ app_begin ] --END-- [ RunTime:0.002619s ]
+[ 2012-03-13T20:33:37+08:00 ] /Examples/Hello/ | INFO: Tag[ view_template ] --START--
+[ 2012-03-13T20:33:37+08:00 ] /Examples/Hello/ | INFO: Run LocationTemplate Behavior [ RunTime:0.003848s ]
+[ 2012-03-13T20:33:37+08:00 ] /Examples/Hello/ | INFO: Tag[ view_template ] --END-- [ RunTime:0.003985s ]
+[ 2012-03-13T20:33:37+08:00 ] /Examples/Hello/ | INFO: Tag[ view_parse ] --START--
+[ 2012-03-13T20:33:37+08:00 ] /Examples/Hello/ | INFO: Run ParseTemplate Behavior [ RunTime:0.040577s ]
+[ 2012-03-13T20:33:37+08:00 ] /Examples/Hello/ | INFO: Tag[ view_parse ] --END-- [ RunTime:0.040708s ]
+[ 2012-03-13T20:33:37+08:00 ] /Examples/Hello/ | INFO: Tag[ view_filter ] --START--
+[ 2012-03-13T20:33:37+08:00 ] /Examples/Hello/ | INFO: Run ContentReplace Behavior [ RunTime:0.002494s ]
+[ 2012-03-13T20:33:37+08:00 ] /Examples/Hello/ | INFO: Run TokenBuild Behavior [ RunTime:0.004274s ]
+[ 2012-03-13T20:33:37+08:00 ] /Examples/Hello/ | INFO: Run WriteHtmlCache Behavior [ RunTime:0.002067s ]
+[ 2012-03-13T20:33:37+08:00 ] /Examples/Hello/ | INFO: Run ShowRuntime Behavior [ RunTime:0.002528s ]
+[ 2012-03-13T20:33:37+08:00 ] /Examples/Hello/ | INFO: Tag[ view_filter ] --END-- [ RunTime:0.011722s ]
+[ 2012-03-13T20:33:37+08:00 ] /Examples/Hello/ | INFO: Tag[ view_end ] --START--
+[ 2012-03-13T20:33:37+08:00 ] /Examples/Hello/ | INFO: Run ShowPageTrace Behavior [ RunTime:0.002840s ]
+[ 2012-03-13T20:33:37+08:00 ] /Examples/Hello/ | INFO: Tag[ view_end ] --END-- [ RunTime:0.002966s ]
+[ 2012-03-13T20:34:06+08:00 ] /Examples/Hello/ | INFO: Tag[ app_begin ] --START--
+[ 2012-03-13T20:34:06+08:00 ] /Examples/Hello/ | INFO: Run ReadHtmlCache Behavior [ RunTime:0.002288s ]
+[ 2012-03-13T20:34:06+08:00 ] /Examples/Hello/ | INFO: Tag[ app_begin ] --END-- [ RunTime:0.002470s ]
+[ 2012-03-13T20:34:06+08:00 ] /Examples/Hello/ | INFO: Tag[ view_template ] --START--
+[ 2012-03-13T20:34:06+08:00 ] /Examples/Hello/ | INFO: Run LocationTemplate Behavior [ RunTime:0.003228s ]
+[ 2012-03-13T20:34:06+08:00 ] /Examples/Hello/ | INFO: Tag[ view_template ] --END-- [ RunTime:0.003413s ]
+[ 2012-03-13T20:34:06+08:00 ] /Examples/Hello/ | INFO: Tag[ view_parse ] --START--
+[ 2012-03-13T20:34:06+08:00 ] /Examples/Hello/ | INFO: Run ParseTemplate Behavior [ RunTime:0.027688s ]
+[ 2012-03-13T20:34:06+08:00 ] /Examples/Hello/ | INFO: Tag[ view_parse ] --END-- [ RunTime:0.028148s ]
+[ 2012-03-13T20:34:06+08:00 ] /Examples/Hello/ | INFO: Tag[ view_filter ] --START--
+[ 2012-03-13T20:34:06+08:00 ] /Examples/Hello/ | INFO: Run ContentReplace Behavior [ RunTime:0.001551s ]
+[ 2012-03-13T20:34:06+08:00 ] /Examples/Hello/ | INFO: Run TokenBuild Behavior [ RunTime:0.002296s ]
+[ 2012-03-13T20:34:06+08:00 ] /Examples/Hello/ | INFO: Run WriteHtmlCache Behavior [ RunTime:0.001495s ]
+[ 2012-03-13T20:34:06+08:00 ] /Examples/Hello/ | INFO: Run ShowRuntime Behavior [ RunTime:0.002012s ]
+[ 2012-03-13T20:34:06+08:00 ] /Examples/Hello/ | INFO: Tag[ view_filter ] --END-- [ RunTime:0.007670s ]
+[ 2012-03-13T20:34:06+08:00 ] /Examples/Hello/ | INFO: Tag[ view_end ] --START--
+[ 2012-03-13T20:34:06+08:00 ] /Examples/Hello/ | INFO: Run ShowPageTrace Behavior [ RunTime:0.001727s ]
+[ 2012-03-13T20:34:06+08:00 ] /Examples/Hello/ | INFO: Tag[ view_end ] --END-- [ RunTime:0.001841s ]

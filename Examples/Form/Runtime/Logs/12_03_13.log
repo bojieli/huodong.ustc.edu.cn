@@ -1,0 +1,4 @@
+[ 2012-03-13T20:39:05+08:00 ] /Examples/Form/ | ERR: (ThinkException) Access denied for user 'thinkphp-test'@'localhost' (using password: YES)
+[ 2012-03-13T20:39:08+08:00 ] /Examples/Form/index.php | ERR: (ThinkException) Access denied for user 'thinkphp-test'@'localhost' (using password: YES)
+[ 2012-03-13T20:39:09+08:00 ] /Examples/Form/index.php | ERR: (ThinkException) Access denied for user 'thinkphp-test'@'localhost' (using password: YES)
+[ 2012-03-13T20:39:17+08:00 ] /Examples/Form/ | ERR: (ThinkException) Access denied for user 'thinkphp-test'@'localhost' (using password: YES)
