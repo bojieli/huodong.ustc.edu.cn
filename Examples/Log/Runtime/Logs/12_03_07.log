@@ -1,2 +1,0 @@
-[ 2012-03-07T22:34:44+08:00 ] /Examples/Log/ | SQL: 调试的SQL语句：SELECT `id`,`title`,`content` FROM `think_form` ORDER BY id desc 
-[ 2012-03-07T22:34:44+08:00 ] /Examples/Log/ | ERR: 模拟写入的错误信息

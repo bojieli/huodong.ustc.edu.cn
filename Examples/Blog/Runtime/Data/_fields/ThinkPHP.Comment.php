@@ -1,2 +1,0 @@
-<?php
-return array ( 0 => 'id', 1 => 'recordId', 2 => 'author', 3 => 'email', 4 => 'url', 5 => 'ip', 6 => 'content', 7 => 'cTime', 8 => 'agent', 9 => 'status', 10 => 'module', '_autoinc' => true, '_pk' => 'id', ); ?>

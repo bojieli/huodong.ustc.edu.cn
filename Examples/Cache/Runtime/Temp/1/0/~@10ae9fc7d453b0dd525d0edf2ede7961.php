@@ -1,3 +1,0 @@
-<?php
-//000000000010a:2:{i:0;a:8:{s:2:"id";s:1:"5";s:5:"title";s:5:"hello";s:7:"content";s:9:"hellotest";s:7:"user_id";s:1:"0";s:11:"create_time";s:10:"1331127110";s:11:"update_time";s:1:"0";s:6:"status";s:1:"1";s:5:"email";s:20:"boj@mail.ustc.edu.cn";}i:1;a:8:{s:2:"id";s:1:"6";s:5:"title";s:11:"hello World";s:7:"content";s:39:"This is a test. This is a modification.";s:7:"user_id";s:1:"0";s:11:"create_time";s:10:"1331127176";s:11:"update_time";s:1:"0";s:6:"status";s:1:"1";s:5:"email";s:15:"mail@google.com";}}
-?>
