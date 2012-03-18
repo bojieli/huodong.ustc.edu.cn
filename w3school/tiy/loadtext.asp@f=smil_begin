@@ -1,0 +1,10 @@
+<html>
+<head>
+  <style>.t {behavior: url(loadtext.asp@f=smil_begin)}</style>
+</head>
+<body>
+
+<img class="t" src="../i/eg_sun.gif" begin="3s" />
+
+</body>
+</html>

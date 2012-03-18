@@ -1,0 +1,16 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<style type="text/css">
+  #topHeader{color:blue;}
+  #important{color:green;}
+</style>
+</head>
+<body>
+
+<h1 id="topHeader">标题 1</h1>
+<p>一个段落。</p>
+<p id="important">请注意这是一个很重要的段落。:)</p>
+
+</body>
+</html>

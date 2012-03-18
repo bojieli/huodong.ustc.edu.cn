@@ -1,0 +1,19 @@
+<html>
+<head>
+<script type="text/javascript">
+function displaymessage()
+{
+alert("Hello World!");
+}
+</script>
+</head>
+
+<body>
+<form>
+<input type="button" value="点击我" onclick="displaymessage()" />
+</form>
+
+<p>通过点击上面的按钮，可以调用一个函数。这个函数会显示一段提示文本。</p>
+
+</body>
+</html>
