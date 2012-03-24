@@ -1,16 +1,13 @@
 <?php
-// global configuration file
-
-// Developers should configure testing database as follows, to prevent accidential modification of server DB confs.
-
+// 示例的全局数据库配置文件
 return array(
-    'URL_MODEL'=>2,
+    'URL_MODEL'=>2, // 如果你的环境不支持PATHINFO 请设置为3
     'DB_TYPE'=>'mysql',
     'DB_HOST'=>'localhost',
-    'DB_NAME'=>'ThinkPHP',
-    'DB_USER'=>'thinkphp-test',
-    'DB_PWD'=>'8ekzp9ka',
+    'DB_NAME'=>'campus',
+    'DB_USER'=>'campus-web',
+    'DB_PWD'=>'cc78c1fe',
     'DB_PORT'=>'3306',
-    'DB_PREFIX'=>'think_',
+    'DB_PREFIX'=>'ustc_',
 );
 ?>
