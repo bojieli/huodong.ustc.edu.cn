@@ -138,8 +138,10 @@ require_once( "$IP/extensions/ConfirmEdit/ConfirmEdit.php" );
 require_once( "$IP/extensions/Renameuser/Renameuser.php" );
 require_once( "$IP/extensions/Gadgets/Gadgets.php" );
 require_once( "$IP/extensions/ParserFunctions/ParserFunctions.php" );
+require_once( "$IP/extensions/VisualEditor/VisualEditor.php" );
 
 
 # End of automatically generated settings.
 # Add more configuration options below.
 
+#wgFileExtensions = array('png','gif','jpg','jpeg','doc','xls','mpp','pdf','ppt','tiff','bmp','docx','xlsx','pptx','ps','odt','ods','odp','odg','rar','zip','tar','gz','xz','bz');
