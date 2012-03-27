@@ -132,14 +132,17 @@ $wgGroupPermissions['*']['edit'] = false;
 # but check specific extension documentation for more details
 # The following extensions were automatically enabled:
 require_once( "$IP/extensions/Nuke/Nuke.php" );
-require_once( "$IP/extensions/VisualEditor/VisualEditor.php" );
-#require_once( "$IP/extensions/WikiEditor/WikiEditor.php" );
+#require_once( "$IP/extensions/VisualEditor/VisualEditor.php" );
+require_once( "$IP/extensions/WikiEditor/WikiEditor.php" );
+$wgDefaultUserOptions['usebetatoolbar'] = 1;
+$wgDefaultUserOptions['usebetatoolbar-cgd'] = 1;
+$wgDefaultUserOptions['wikieditor-preview'] = 1;
+
 require_once( "$IP/extensions/Vector/Vector.php" );
 require_once( "$IP/extensions/ConfirmEdit/ConfirmEdit.php" );
 require_once( "$IP/extensions/Renameuser/Renameuser.php" );
 require_once( "$IP/extensions/Gadgets/Gadgets.php" );
 require_once( "$IP/extensions/ParserFunctions/ParserFunctions.php" );
-
 
 # End of automatically generated settings.
 # Add more configuration options below.
