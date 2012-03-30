@@ -1,0 +1,62 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+
+<title>在线拼音输入法</title>
+
+<style type="text/css">
+
+.a{width:300px}
+
+.b{width:300px;height:60px}
+
+</style>
+
+</head>
+<body>
+欢迎观看html5版的功夫熊猫<br /><b>试验版</b><br />
+<p>百度在线输入法：输入框A、B可用，输入框C不可用，并且默认为全角状态</p>
+
+<form name="demo">
+
+
+输入框A：<input type="text" name="inputA" id="inputA" class="a"><br />
+
+输入框B：<input type="text" name="inputB" id="inputB" class="a"><br />
+
+输入框C：<textarea id="inputC" class="b"></textarea><br />
+
+
+</form>
+
+<br />
+<script type="text/javascript">
+
+var bdime_option = {
+
+    bc : false,
+
+    targets : ["inputA", "inputB"]
+
+}
+
+</script>
+
+<script type="text/javascript" src="http://www.baidu.com/olime/bdime_open.js"></script>
+
+<video src="gfxm.mp4" width="640" controls="controls">
+Your browser does not support the video tag.
+</video><br />
+<canvas id="myCanvas" width="640" height="100">your browser does not support the canvas tag </canvas>
+
+<script type="text/javascript">
+
+var canvas=document.getElementById('myCanvas');
+var ctx=canvas.getContext('2d');
+ctx.fillStyle='#CD00CD';
+ctx.fillRect(0,0,900,50);
+
+</script>
+</html>
