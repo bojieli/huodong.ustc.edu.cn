@@ -1,0 +1,568 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh-cn" lang="zh-cn">
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
+<meta http-equiv="Content-Language" content="zh-cn" />
+<meta name="description" content="拍拍网(paipai.com),腾讯旗下快乐、时尚和共享的电子商务网站，让沟通促成交易!" />
+<meta name="keywords" content="拍拍,paipai,网上购物,C2C,在线交易,交易市场,网上交易,交易市场,网上买,网上卖，购物网站,网上贸易,安全购物,电子商务,放心买,供应,买卖信息,网店,一口价,拍卖,网上开店,网络购物,打折,免费开店,网购,频道,店铺" />
+<title>购物车 -- 拍拍网：腾讯旗下网站 - 超值购物 值得信赖</title>
+<script type="text/javascript">var speedTimePoint=[[(new Date()),1470,23,3]];</script>
+<link rel="icon" href="http://pics.paipai.com/favicon.ico" type="image/x-icon" />
+<link rel="shortcut icon" href="http://pics.paipai.com/favicon.ico" type="image/x-icon" />
+<link rel="stylesheet" href="http://static.paipaiimg.com/css/heads.css?t=ver_2_20110426" type="text/css" media="screen" /><!--[if !IE]>|xGv00|7f16a2e6543b2ffa38a2ac1b37347a01<![endif]-->
+<link rel="stylesheet" href="http://static.paipaiimg.com/module/flow_step_v2.css" type="text/css" media="screen" />
+<link rel="stylesheet" href="http://static.paipaiimg.com/module/btn.css" type="text/css" media="screen" />
+<link rel="stylesheet" href="http://static.paipaiimg.com/module/msg_tips.css" type="text/css" media="screen" />
+<link rel="stylesheet" href="http://static.paipaiimg.com/module/module_box.css" type="text/css" media="screen" />
+<link rel="stylesheet" href="http://static.paipaiimg.com/pay_v2/shopping_list.css?t=20111219" type="text/css" media="screen" /><!--[if !IE]>|xGv00|465518450c1eb5b88ecd4bdece4eaa9d<![endif]-->
+<!-- 将JS逻辑丢到head里面，以防止页面推荐位出现问题的时候影响主流程(2010-11-04tjw出事后影响购物车逻辑总结的处理方案) -->
+<script type="text/javascript" src="http://static.paipaiimg.com/js/jquery.js?t=1.4.1" check="jquery.js" charset="gb2312"></script>
+<script type="text/javascript" src="http://static.paipaiimg.com/js/regiondata.js?t=20091111" check="regiondata.js" charset="gb2312"></script>
+<script type="text/javascript" id="legos:1017" ver="1017:20120313:20120313150117" name="PP.shopcart" src="http://static.paipaiimg.com/js/version/2012/03/pp.shopcart.20120313.js?t=20120313150117" charset="gbk"></script><!--[if !IE]>|xGv00|4349b1d32a0d0fa9a95ad4b0cead306c<![endif]-->
+</head>
+<body class="shopping_list">
+<!--S 页头--> 
+<!-- s inc_first_head_sim -->
+<script type="text/javascript">
+(function(){with(window){onerror=function(msg,url,l){var ua=navigator.userAgent.toLowerCase(),bom=ua.match(/msie ([\d.]+)/)?"IE"+ua.match(/msie ([\d.]+)/)[1]:ua.match(/firefox\/([\d.]+)/)?"Firefox"+ua.match(/firefox\/([\d.]+)/)[1]:ua.match(/chrome\/([\d.]+)/)?"Chrome"+ua.match(/chrome\/([\d.]+)/)[1]:ua.match(/opera.([\d.]+)/)?"Opera"+ua.match(/opera.([\d.]+)/)[1]:ua.match(/version\/([\d.]+).*safari/)?"Safari"+ua.match(/version\/([\d.]+)/)[1]:0;setTimeout(function(){try{sr=document.createElement("script");document.getElementsByTagName("head")[0].appendChild(sr);sr.src="http://party.paipai.com/cgi-bin/badjs?Browser="+bom+"&Url="+encodeURIComponent(location.href)+"&Content="+(msg.replace(/\n/g," ")+"|"+encodeURIComponent(url)+"|"+l)+"&t="+Math.random();}catch(e){}},1000);return false;}}})();
+</script>
+<div class="pp_toolbar" id="pp_toolbar">
+	<div class="m">
+		<div class="pp_buy_sell">
+			<a class="buy" href="http://search.paipai.com/?PTAG=20060.1.1">我要买</a>
+			<a href="http://my.paipai.com/cgi-bin/sell?PTAG=20060.1.2">我要卖</a>
+			<a href="http://my.paipai.com/cgi-bin/userauth_show?PTAG=20060.1.3">免费开店</a>
+		</div>
+		<ul class="pp_site_link">
+			<li class="login" id="headLogin">您好，欢迎来拍拍！<a href="http://member.paipai.com/cgi-bin/login_entry?PTAG=20060.1.4">登录</a>　<a href="http://chs.reg.qq.com/?PTAG=20060.1.5">免费注册</a></li>
+            <li id="sellerPlan" style="display:none"><a href="http://seller.paipai.com/?PTAG=20060.1.19">卖家经营中心</a></li>
+            <li id="shopCarHead"><a href="http://auction.paipai.com/cgi-bin/shopcart/detail?PTAG=20060.1.18">购物车</a></li>
+            <li class="my_admin" id = "myPPLi">
+              <p><a href="http://my.paipai.com/cgi-bin/mypaipai/index?PTAG=20060.1.6">我的拍拍</a><span id="myPPSpan" class="pp_arrd"></span></p>
+              <div class="now h" id = "myPPList">
+                <ul>
+                  <li><a href="http://my.paipai.com/cgi-bin/my_collect_list?isBuyLink=02&PTAG=20060.1.7">收藏夹</a></li>
+                  <li><a href="http://my.paipai.com/cgi-bin/right_defence_entry?PTAG=20060.1.20">维权中心</a></li>
+                  <li><a href="http://my.paipai.com/cgi-bin/trade_deal_list/boughtentry?isBuyLink=01&PTAG=20060.1.8">购买的商品</a></li>
+                  <li><a href="http://my.paipai.com/cgi-bin/trade_deal_list/soldentry?isSellLink=03&PTAG=20060.1.9">已卖的商品</a></li>
+                </ul>
+              </div>
+            </li> 
+            <li><a target="_blank" href="http://service.paipai.com/cgi-bin/go?pageId=20060&domainId=1&linkId=10&url=http://pay.paipai.com/cgi-bin/tenpay/Jump2tenpay">财付通</a></li>
+
+            <li><a href="http://bbs.paipai.com/?PTAG=20060.1.11">社区</a></li>
+            <li class="help" id = "helpLi">
+              <p><a href="http://help.paipai.com/index.shtml?PTAG=20060.1.12">帮助</a><span id="helpSpan" class="pp_arrd"></span></p>
+              <div class="now h" id = "helpList">
+                <ul>
+                  <li><a href="http://help.paipai.com/index.shtml?PTAG=20060.1.13">帮助中心</a></li>
+                  <li><a href="http://www.paipai.com/college/?PTAG=20060.1.14">拍拍大讲堂</a></li>
+                  <li><a href="http://help.paipai.com/mutually/index.shtml?PTAG=20060.1.15">拍友互助</a></li>
+                  <li><a href="http://www.paipai.com/trust/?PTAG=20060.1.16">交易安全</a></li>
+                </ul>
+              </div>
+            </li>
+            <li><a href="http://service.qq.com/category/paipai.html?PTAG=20060.1.17">腾讯客服</a></li>
+		</ul>
+	</div>
+</div>
+<div class="notice_board m h" id="noticeBoard"></div>
+<script type="text/javascript" charset="gb2312">
+(function(){function initToolbar(){showWelcome();bindDownMenus();showSellerPlan();};function showWelcome(){var comdyNum=arguments[0],comdyDom=$id("comdyNum");window.chkLoginCallBack=function(o){var opt=o,tempArr=[],comdyDom=$id("comdyNum"),visitkey=$getCookie("visitkey"),tempNode=$id("headLogin"),nikeName=opt["nickName"];if(opt["isLogin"]&&(opt["propertyMask"]&0x20000000)){$loadCss("http://static.paipaiimg.com/member/activate.css");$loadScript("http://static.paipaiimg.com/js/pp.mypp.newcomer.20110307.js");}
+if(opt["shopCartComdyKinds"]&&parseInt(opt["shopCartComdyKinds"])>0){if(comdyDom){comdyDom.innerHTML="("+opt["shopCartComdyKinds"]+")"}}
+tempArr.push("欢迎您，")
+if($strTrim(nikeName).length>0){tempArr.push($strTrim(nikeName));tempArr.push("");if(opt["isLogin"]){tempArr.push(' <a href="http://member.paipai.com/cgi-bin/c2cUser_LoginOut'+(window.location.href.indexOf('bbs')!=-1?'?u=http://bbs2.paipai.com':'')+'" class="blue" target="_top">[退出]</a>');}else{tempArr.push(' <a href="http://member.paipai.com/cgi-bin/login_entry?PTAG=20034.1.1" target="_top">登录</a>　<a href="http://freereg.qq.com/?PTAG=20034.1.2" target="_top">免费注册</a>');}
+if(tempNode){tempNode.innerHTML=tempArr.join("");}}
+if(window.location.href.indexOf('inc_head_qshow.shtml')>0){$setCookie("returnurl","http://lady.paipai.com/","","/","paipai.com");};};if(comdyNum){if(comdyDom){comdyDom.innerHTML="("+comdyNum+")"}}else{$loadScript("http://member.paipai.com/cgi-bin/onlinechecker/GetOnlineInfo?callback=chkLoginCallBack&t="+(new Date).getTime());}};function showSellerPlan(){var mp=$getCookie("mp");if(!mp){return;}
+var arrMp=mp.split(":");if(arrMp[0]==2){var o=$id("sellerPlan");o&&(o.style.display="block");}};function bindDownMenus(){var oShop=$id("myPPLi"),oHelp=$id("helpLi");if(null!==oShop){$addHover({outLiID:"myPPLi",downListID:"myPPList"});}
+if(null!==oHelp){$addHover({outLiID:"helpLi",downListID:"helpList"});}};function showMore(elt,cls){document.getElementById(elt).onmouseover=function(){this.className+=" "+cls;}
+document.getElementById(elt).onmouseout=function(){var reg=new RegExp('(\\s|^)'+cls+'(\\s|$)');this.className=this.className.replace(reg,' ');}};window["_PP_head_showWelcome"]=showWelcome;initToolbar();
+function $id(id){return typeof(id)=="string"?document.getElementById(id):id;};function $loadScript(url,id,obj){setTimeout(function(){var s=document.createElement("script"),time=new Date().getTime(),o=obj||{},charset=o.charset||"gb2312";id=id?(id+time):time,url=o.isToken!==false?$addToken(url,"ls"):url;s.charset=charset;s.id=id;document.getElementsByTagName("head")[0].appendChild(s);s.src=url;return s;},0);};function $loadCss(path){if(!window["_loadCss"+path]){var l=document.createElement('link');l.setAttribute('type','text/css');l.setAttribute('rel','stylesheet');l.setAttribute('href',path);l.setAttribute("id","loadCss"+Math.random());document.getElementsByTagName("head")[0].appendChild(l);window["_loadCss"+path]=true;}
+return true;}
+function $strTrim(str,code){var argus=code||"\\s";var temp=new RegExp("(^"+argus+"*)|("+argus+"*$)","g");return str.replace(temp,"");}
+function $setCookie(name,value,expiresd,path,domain,secure){var expdate=new Date(),expires=arguments[2]||null,path=arguments[3]||"/",domain=arguments[4]||null,secure=arguments[5]||false;expires?expdate.setMinutes(expdate.getMinutes()+parseInt(expires)):"";var cookietemp=escape(name)+'='+escape(value)+(expires?'; expires='+expdate.toGMTString():'')+(path?'; path='+path:'')+(domain?'; domain='+domain:'')+(secure?'; secure':'');document.cookie=cookietemp;};function $getCookie(name){var reg=new RegExp("(^| )"+name+"=([^;]*)(;|$)"),val=document.cookie.match(reg);return val?unescape(val[2]):null;};function $addHover(obj){var option={outLiID:"",downListID:"",hoverSpanID:""}
+for(var i in obj){option[i]=obj[i];}
+var oHover=$id(option.outLiID),oList=$id(option.downListID),oBind=option.hoverSpanID===""?oHover:$id(option.hoverSpanID);$mouseover(oBind,function(){oList.className="now";});$mouseout(oHover,function(){oList.className="now h";});};function $mouseover(obj,func){obj.onmouseover=function(e){var e=window.event||e,target=e.fromElement||e.relatedTarget,parent=target;while(parent&&parent!==this){parent=parent.parentNode;}
+if(parent!==this){func(this);}}}
+function $mouseout(obj,func){obj.onmouseout=function(e){var e=window.event||e,target=e.toElement||e.relatedTarget,parent=target;while(parent&&parent!==this){parent=parent.parentNode;}
+if(parent!==this){func(this);}}}
+function $time33(str){for(var i=0,len=str.length,hash=5381;i<len;++i){hash+=(hash<<5)+str.charAt(i).charCodeAt();};return hash&0x7fffffff;};function $addToken(url,type){var token=$getToken();if(url==""&&url.indexOf("http")!=0){return url;}
+return token==""?url:url+(url.indexOf("?")!=-1?"&":"?")+"g_tk="+token+"&g_ty="+type;}
+function $getToken(){var skey=$getCookie("skey"),token=skey==null?"":$time33(skey);return token;}})();
+</script>
+<!--
+	<%@ page contentType="text/html;charset=GBK"%>
+-->
+<div class="pp_head_sline" id="pp_head_sline"><div id="sim_head_module">
+<div class="pp_cat_head head m" id="search_bar">        
+	<div class="pp_cat_logo"><a href="http://www.paipai.com/" title="拍拍网：腾讯旗下网站 - 拍拍购物更放心" target="_top"><img src="http://static.paipaiimg.com/module/logo/pp_cat_head.png" alt="拍拍网：腾讯旗下网站 - 拍拍购物更放心" /></a></div>
+	<div class="pp_cat_search">
+		<div class="pp_cat_sformc pp_cat_sform_s">
+			<span class="pp_cat_spl"></span>
+			<form id="searchForm" class="pp_cat_sform" name="searchForm" autocomplete="off" method="get" target="_self" onsubmit="return false" action="http://search.paipai.com/cgi-bin/comm_search">
+				<span class="pp_cat_stextc"><input type="text" class="pp_cat_stext" autocomplete="off" id="KeyWord" name="KeyWord" value="" /></span>
+				<input type="hidden" id="searchType" name="searchType" value="0" />
+				<input type="hidden" id="sClassid" name="sClassid" value="0" />
+				<button type="submit" class="pp_cat_sbtn" id="headSubmitBtn" frm="searchForm">搜索</button>
+			</form>
+			<span class="pp_cat_spr"></span>
+			<div class="pp_cat_suggestions" id="pp_cat_suggestions">
+				<div class="auto-result" id="searchDrawList"></div>
+				<iframe frameBorder="0" class="mask-auto" id="maskSearchDrawList"></iframe>
+			</div>
+		</div>
+		<ul class="pp_cat_smore">
+			<li><a target="_blank" href="http://help.paipai.com/index.shtml?PTAG=20034.1.11">如何开始？</a></li>
+			<li><a target="_blank" href="http://search.paipai.com/search_goods.shtml?PTAG=20028.4.15">高级搜索</a></li>
+		</ul>
+	</div>
+</div>
+</div>
+<script type="text/javascript">
+(function(){var b = navigator.userAgent.toLowerCase(),objFrm = document.getElementById("searchForm");;var bindSmartBox = function(){var tempFrm = document.getElementById("searchForm");if (!tempFrm.getAttribute("isload")){tempFrm.setAttribute("isload","1");$loadScript("http://static.paipaiimg.com/js/pp.head.smartBoxWidget.20110323.js?t=20110321");}};if (objFrm){if (b.indexOf("opera")==-1&&b.indexOf("msie")!=-1){objFrm.attachEvent("onclick",bindSmartBox);}else{objFrm.addEventListener("click",bindSmartBox,false);}}
+function $loadScript(url,id,obj){setTimeout(function(){var s = document.createElement("script"),time=new Date().getTime(),o=obj||{},charset=o.charset|| "gb2312";id= id?(id+time):time,url=o.isToken!==false?$addToken(url,"ls"):url;s.charset=charset;s.id = id;document.getElementsByTagName("head")[0].appendChild(s);s.src = url;return s;},0);};function $time33(str){for(var i = 0, len = str.length,hash = 5381; i < len; ++i){hash += (hash << 5) + str.charAt(i).charCodeAt();};return hash & 0x7fffffff;};function $addToken(url,type){var token=$getToken();if(url=="" && url.indexOf("http")!=0){return url;}return token==""?url:url+(url.indexOf("?")!=-1?"&":"?")+"g_tk="+token+"&g_ty="+type;};function $getToken(){var skey=$getCookie("skey"),token=skey==null?"":$time33(skey);return token;};function $getCookie(name){var reg=new RegExp("(^| )"+name+"=([^;]*)(;|$)"),val=document.cookie.match(reg);return val?unescape(val[2]):null;};})()
+</script></div>
+<!-- e inc_first_head_sim ppms --><!--[if !IE]>|xGv00|5f639ff1c84a5b6adbf265c4d4d27a79<![endif]--> 
+<div class="a-950 h"><a  target="_blank" href="http://www.paipai.com/promote/2010/index_6.shtml?PTAG=20060.18.2"><img src1="http://pics0.paipaiimg.com/update/20100917/index_950_40_0917.gif" /></a></div> 
+<!--E 页头-->
+<div class="content">
+<div class="pay_nav">当前位置：<a href="http://www.paipai.com/">拍拍首页</a> &gt; <a href="http://my.paipai.com/cgi-bin/mypaipai/index">我的拍拍</a> &gt; 我的购物车 </div>
+<div class="idea_link"><a id="idealink" href="http://support.qq.com/beta2/simple/write.html?fid=412" target="_blank">我要提意见&gt;&gt;</a></div>
+<!--S 流程图-->
+<div class="flow_step_no1 "> 
+    <!-- s -->
+    <div class="flow_step">
+      <ol class="cols5">
+        <li class="step_1">1.加入购物车</li>
+        <li class="step_2">2.填写/确认订单</li>
+        <li class="step_3">3.付款给财付通</li>
+        <li class="step_4">4.确认收货</li>
+        <li class="step_5">5.评价卖家</li>
+      </ol>
+    </div>
+<!-- e --><!--[if !IE]>|xGv00|acc299f665a9d7d0c402074ae4accdd6<![endif]--> 
+</div>
+<!--E 流程图--> 
+<!--S 拍拍购物更放心提示-->
+<div class="fangxin_tips">
+    <div class="slogan"></div>
+    <div class="services_title">诚保服务：</div>
+    <ul class="fangxin_services">
+        <li id="ChengBao_bao" title="拍拍购物更放心，买家收到货的7天内且确认收货前可免邮费退货。" tag="bao"> <span class="bao"></span>
+            <div class="txt">7天免邮包退</div>
+        </li>
+        <li id="ChengBao_fast" title="拍拍购物更放心，卖家承诺当日4点至16点之间付款订单12小时内发货，其余时间付款订单24小时内发货。" tag=""> <span class="kuai"></span>
+            <div class="txt">快速发货</div>
+        </li>
+        <li id="ChengBao_xin" title="拍拍购物更放心，卖家承诺在买家收货后14天内如果商品质量有问题，将会由拍拍网先行赔付给买家。" tag="xin"> <span class="xin"></span>
+            <div class="txt">先行赔付</div>
+        </li>
+        <li id="ChengBao_zheng" title="拍拍购物更放心，卖家承诺在买家收货后14天内如果发现该商品不是正品，将会假一赔三给买家。" tag="zheng"> <span class="zheng"></span>
+            <div class="txt">正品 假一赔三</div>
+        </li>
+        <li id="ChengBao_qi" title="拍拍购物更放心，卖家承诺在买家收货后7天内可无理由退换货。" tag="qi"> <span class="qi"></span>
+            <div class="txt">7天包退</div>
+        </li>
+        <li id="ChengBao_chong" title="拍拍购物更放心，卖家须在承诺时间内代充到买家指定账户，否则买家有权对卖家发起投诉，并申请赔付。" tag="chong"> <span class="chong"></span>
+            <div class="txt">诚保代充</div>
+        </li>
+    </ul>
+</div>
+<!--E 拍拍购物更放心提示--> 
+<!-- S 数据加载中 -->
+<div id="loading" style=" text-align:center;">
+    <div class="loading" style="margin-top:40px; margin-bottom:40px;"><img src="http://static.paipaiimg.com/assets/common/icon_loading_large.gif" /><strong >请稍候...</strong></div>
+</div>
+<!-- E 数据加载中 --> 
+<!-- S 商品列表 -->
+<div style="display:none;" id="commodityList">
+    <div class="pay_info_validate">
+        <!-- S 购物车状态 -->
+        <p class="cart_status">购物车状态<span>(<span id="cart_commd_count">1</span>/50)</span>
+        	<a  class="cart_help"href="http://help.paipai.com/content/help_21001.shtml" target="_blank">如何使用购物车</a>
+        </p>
+        <!-- E 购物车状态 -->
+        <!-- S 表头 购物车 -->
+        <table class="commodity_list">
+            <thead>
+                <tr>
+                    <th class="commodity_check"><label>
+                            <input type="checkbox" sstate="1" tag="select_all" checked="checked"/>
+                            全选</label></th>
+                    <th class="commodity_info" scope="col">商品</th>
+                    <th class="commodity_price_unit" scope="col">单价(元)</th>
+                    <th class="commodity_quantity" scope="col">数量(件)</th>
+                    <th class="commodity_price" scope="col">小计(元)</th>
+                    <th class="commodity_hhongbao" scope="col">可用红包</th>
+                    <!--<th class="commodity_integral" scope="col">获积分</th>-->
+                    <th class="commodity_op" scope="col">操作</th>
+                </tr>
+            </thead>
+            <tbody style="display:none;">
+                <tr>
+                    <td></td>
+                </tr>
+            </tbody>
+        </table>
+        <!-- E 表头 购物车 --> 
+    </div>
+    <!-- S 正常的商品 -->
+    <div class="pay_info_validate" id="commodityArea" style="display:none;"> 
+        <!-- E 表头 购物车 --> 
+        <!-- S 订单内容 -->
+        <div class="commodity_list_div" id="orderArea" > </div>
+        <!-- E 订单内容 --> 
+    </div>
+    <!-- E 正常的商品 --> 
+    <!-- S 可浮动操作 -->
+    <div class="pay_bar" id="float_pay_bar" style="z-index:100;">
+        <div class="b_shadow">
+            <ul class="">
+                <li class="op"><label class="check_all"><input type="checkbox" sstate="1" tag="select_all" checked="checked" />
+                    全选</label><a href="#" id="batch_delete" tag="batch_delete" cstatus="1">批量选中删除</a><a href="#" id="move_2_favo" tag="move_2_favo" cstatus="1">移至收藏夹</a> <span class="total">共选中 <span id="select_count">21</span> 种商品</span></li>
+                    <li class="btn">
+                    <button class="btn_hit_bx" id="buy_it_now">立即购买</button>
+                    <form id="goBuy" name="goBuy" action="http://auction.paipai.com/cgi-bin/shopcart/viewconfirmdeal" method="post" style="display:none;">
+                        <input type="hidden" id="commlist" name="commlist" value="" />
+                        <input type="hidden" id="paytype" name="paytype" value="" />
+                        <input type="hidden" id="style" name="style" value="0" />
+                    </form>
+                </li>
+                <!-- 没有货到付款商品的时候，以下这个li隐藏即可 -->
+                <li class="cod_check" id="cod_area" style="display:none;">
+                    <span class="cod_info"><label><input type="checkbox" id="use_cod" />使用货到付款</label>
+                    <div class="hover_tips" id="un_payment_tip" style="display:none;"> 
+                        <span style="left:25px;" class="hover_tips_ztb"></span>
+                        <div class="hover_tips_cont">
+                            <p>有<span class="num" tag="count">9</span>种商品因不支持货到付款从结果中移除。</p>
+                            <p class="tips_known"><a href="#" id="i_know_cod">我知道了</a></p>
+                        </div>
+                    </div>
+                    </span>                    
+                    <img class="icon_cod" src="http://static.paipaiimg.com/assets/common/pay_h.png" alt="货到付款" align="absmiddle" />
+                </li>
+                <li class="price">商品总价（不含运费）：<span id="price_count">0.01</span>元</li>
+                    
+            </ul>
+    
+        </div>
+    </div>
+	<!-- E 可浮动操作 -->
+    <!-- S 无法购买的商品 -->
+    <div class="pay_info_validate" id="errorArea" style="display:none; margin-bottom:30px;">
+        <div class="error_commodity_list" >
+            <div class="hint">
+                <p><strong>以下商品已无法购买</strong> <span class="hover_more" id="cantBuyReason">查看原因</span> <span class="msg1-icon-help"></span></p>
+            </div>
+            <!-- S 订单内容 -->
+            <div class="commodity_list_div" id="errorList"></div>
+            <!-- E 订单内容 --> 
+        </div>
+        <div class="commodity_stat_info">
+            <p>共选中 <strong id="shopcarSelectCountBad">0</strong> 件商品</p>
+            <label><input type="checkbox" tag="select_all" sstate="0" />全选</label> 
+            <button tag="batch_delete" cstatus="0" >删除已选商品</button>
+            <button tag="move_2_favo" cstatus="0" >添加到收藏夹</button>
+        </div>
+    </div>
+    <!-- E 无法购买的商品 --> 
+    
+</div>
+<!-- E 商品列表 --> 
+<!-- S 购物车为空并且用户登录 -->
+<div class="shopping_list_empty" id="emptyShopcarInfoLogin" style="display:none;">
+    <h3>您的购物车还是空的。</h3>
+    <p> 您还没有添加任何商品。马上去<a href="http://www.paipai.com/">挑选商品</a>，或者去<a href="http://my.paipai.com/cgi-bin/favorite_new/Entry?type=item&PTAG=20024.1.24">我的收藏夹</a>看看。 </p>
+</div>
+<!-- E 购物车为空并且用户登录 --> 
+
+<!-- S 购物车为空并且用户未登录 -->
+<div class="shopping_list_empty" id="emptyShopcarInfoUnLogin" style="display:none;">
+    <h3>您的购物车还是空的。</h3>
+    <p> 你可能还未登录，可能导致购物车的商品没有显示。马上去<a href="http://member.paipai.com/cgi-bin/login_entry">登录</a>。 </p>
+</div>
+<!-- E 购物车为空并且用户未登录 --> 
+
+<!--WEBPAGEBEGIN@2366--><style type="text/css">
+.mod_stage { margin:0 auto 20px auto; width:950px; height:80px; }
+.a_link{ display:block; width:950px; height:80px; }
+</style>
+<div id="modStage" class="mod_stage" style="display:none;">
+	<a class="a_link" href="http://www.paipai.com/caizuanjie.shtml?PTAG=20146.1.1" target="_blank">
+		<img src="http://pics1.paipaiimg.com/update/20120314/index_161035281.jpg" width="950" height="80" alt="拍拍彩钻节 - 春夏新品，全民换装" title="拍拍彩钻节 - 春夏新品，全民换装">
+	</a>
+</div>
+<script type="text/javascript">
+function $id(id){return typeof(id)=="string"?document.getElementById(id):id};function $getServerTime(url){var xhr=$xhrMaker(),url=url||"http://"+window.location.hostname+"/favicon.ico";try{xhr.open("HEAD",url,false);xhr.send()}catch(e){return new Date()}return new Date(xhr.getResponseHeader("Date"))};function $xhrMaker(){var xhr;try{xhr=new XMLHttpRequest()}catch(e){try{xhr=new ActiveXObject("Msxml2.XMLHTTP")}catch(e){try{xhr=new ActiveXObject("Microsoft.XMLHTTP")}catch(e){xhr=null}}};return xhr};
+var s = $getServerTime("/null.shtml"), b = new Date("2012/03/21"), e = new Date("2012/03/24"); s>b && s<e && ($id("modStage").style.display = "");
+window.location.href.match(/dis=1/)!=null && ($id("modStage").style.display = "");
+function orderUpdateHandler(json) {
+	//json.price 除去邮费外的总价；json.shippingFee 邮费；json.serviceFee 服务费
+};
+</script><!--[if !IE]>|xGv00|6b3e9ce5f0efc7aaf8668acf76b66829<![endif]-->
+<style>
+.mode_recommendation .mode_favourable_s{width:96%;height: 184px;}
+.mode_recommendation .mode_favourable_s div.list ul li{margin-right: 10px;}
+.tab_switch {height: 28px;position: relative;width: 100%;}
+.tab_switch ul {margin:0;position: absolute;top: 1px; left:0;}
+.tab_switch ul li {background: none repeat scroll 0 0 #CCCCCC; float: left; line-height: 28px;list-style: none outside none;margin-right: 5px;text-align: center;padding-left:11px;width:auto; }
+.tab_switch a{display:block;padding-right:9px;height:28px;}
+.tab_switch ul .tab_out{font-weight:400;background: url(http://static.paipaiimg.com/assets/my/bg_his_tab.png) no-repeat;}
+.tab_switch .tab_out a{background: url(http://static.paipaiimg.com/assets/my/bg_his_tab.png) right -29px repeat-x; display:inline-block;*zoom:1;}
+.tab_switch ul .tab_on{font-weight: bold;background: url(http://static.paipaiimg.com/assets/my/bg_his_tab.png) 0 -58px no-repeat;}
+.tab_switch .tab_on a{background: url(http://static.paipaiimg.com/assets/my/bg_his_tab.png) right -87px repeat-x;display:inline-block;*zoom:1;}
+.tab_switch ul li a:link, .tab_switch ul li a:visited, .tab_switch ul li a:hover, .tab_switch ul li a:active {color: #333333;text-decoration: none;}
+#moreFavos{position: absolute; padding:0; width: auto; right: 10px; top: 5px;}
+.img_wp{width:128px;height:128px;}
+.img_wp img{width:120px;height:120px;}
+
+.express_fav{border:1px solid #ECDB93;background-color:#FFFCED;position:relative;height:220px;font-size:12px;width:944px;}
+.express_fav h3{background:url(http://static.paipaiimg.com/pay_v2/pay_express_fav_bg.png) 0 -48px repeat-x;height:28px;line-height:28px;text-align:left;text-indent:20px;border-bottom:1px solid #ECDB93;}
+.express_fav ul{zoom:1;padding:15px 0 15px 15px;}
+.express_fav ul:after{
+	clear:both;
+	content:"";
+	display:block;
+	height:0;
+	line-height:0;
+	visibility:hidden;
+}
+.express_fav li{float:left;padding:0 30px;width:120px;_display:inline; _padding:0 28px;}
+.express_fav em{color:#FF4E00;font-weight:700;}
+.express_fav .num{color:#FF4E00;font-weight:700;}
+.express_fav .photo{width:128px;height:128px;overflow:hidden;}
+.express_fav .name{width:120px;height:32px;margin-bottom:10px;padding:5px 0;line-height:20px;font-family:simsun;overflow:hidden;text-align:left;}
+.express_fav .pre{position:absolute;width:14px;height:47px;top:82px;left:0;background:url(http://static.paipaiimg.com/pay_v2/pay_express_fav_bg.png) no-repeat;cursor:pointer;}
+.express_fav .next{position:absolute;width:14px;height:47px;top:82px;right:0;background:url(http://static.paipaiimg.com/pay_v2/pay_express_fav_bg.png) -14px 0 no-repeat;cursor:pointer;}
+.express_fav .pre_dis{position:absolute;width:14px;height:47px;top:82px;left:0;background:url(http://static.paipaiimg.com/pay_v2/pay_express_fav_bg.png) 0 -77px no-repeat;cursor:default;}
+.express_fav .next_dis{position:absolute;width:14px;height:47px;top:82px;right:0;background:url(http://static.paipaiimg.com/pay_v2/pay_express_fav_bg.png) -14px -77px no-repeat;cursor:default;}
+.express_fav a:hover{color:#FF4E00;}
+</style>
+    
+<div class="history_com_wrapper" id="relativeCommArea" style="display:none;">
+	<div class="tab_switch">
+	  <ul>
+		<li class="tab_on" id="relaTab" style="display:none;"><a href="javascript:;">我看过的商品</a></li>
+		<li class="tab_out" id="favoTab" style="display:none;"><a href="javascript:;">我收藏的商品</a></li>
+		<li class="tab_out" id="commTab" style="display:none;"><a href="javascript:;">其他人还关注</a></li>
+	  </ul>
+	</div>
+	<div class="express_fav">
+	  <ul id="relativeContent" style="display:none;"></ul>
+	  <ul id="favoriteContent" style="display:none;position:relative;padding-top:25px;"></ul>
+	  <div id="commodityContent" style="display:none;"></div>
+	</div>
+</div><!--[if !IE]>|xGv00|894e0aee9c9ffe430c794cbbfaf15f0c<![endif]-->
+
+<div class="mode_recommendation" style="display:none" id="recommend1">
+    <div class="mode_favourable">
+        <h3>优惠街</h3>
+        <div class="list">
+            <ul>
+                <li id="7383"> <a id="countTjwView20012.13.2" href="http://www.paipai.com/fresher/shichi/?PTAG=20012.13.2" target="_blank">
+<img src="http://img5.paipaiimg.com/cecf3509/boss-4f506815-00000000185d69610001330669589000.1.gif" alt="万件精品免费领&gt;&gt;" />
+<span>万件精品免费领&gt;&gt;</span></a>
+</li>
+<script type="text/javascript">
+var countTjwView=countTjwView||[];   countTjwView.push(["20012.13.2","http://img5.paipaiimg.com/cecf3509/boss-4f506815-00000000185d69610001330669589000.1.gif","http://www.paipai.com/fresher/shichi/"]);
+</script>
+
+ 
+                <li id="7697"> <a id="countTjwView20012.13.3" href="http://life.paipai.com/sale/jian.shtml?PTAG=20012.13.3" target="_blank">
+<img src="http://img1.paipaiimg.com/d9dd682d/boss-4f76c119-00000000185d69610001333182745000.1.jpg" alt="" />
+<span>每周精选10家店铺 满99立减20元&gt;&gt;</span></a>
+</li>
+<script type="text/javascript">
+var countTjwView=countTjwView||[];   countTjwView.push(["20012.13.3","http://img1.paipaiimg.com/d9dd682d/boss-4f76c119-00000000185d69610001333182745000.1.jpg","http://life.paipai.com/sale/jian.shtml"]);
+</script>
+
+ 
+                <li id="5319"> <a id="countTjwView20012.13.4" href="http://food.paipai.com/sale/9.9.shtml?PTAG=20012.13.4" target="_blank">
+<img src="http://img6.paipaiimg.com/2e47dbc8/boss-4e5f339e-00000000185d69610001314861982000.1.gif" alt="" />
+<span>9&#46;9元诱人美食 hold不住的美味&gt;&gt;</span></a>
+</li>
+<script type="text/javascript">
+var countTjwView=countTjwView||[];   countTjwView.push(["20012.13.4","http://img6.paipaiimg.com/2e47dbc8/boss-4e5f339e-00000000185d69610001314861982000.1.gif","http://food.paipai.com/sale/9.9.shtml"]);
+</script>
+
+ 
+                <li id="5108"> <a id="countTjwView20012.13.5" href="http://3c.paipai.com/sale/savePortal.shtml?PTAG=20012.13.5" target="_blank">
+<img src="http://img4.paipaiimg.com/31893329/boss-4e424bf4-00000000185d69610001312967668000.1.gif" alt="" />
+<span>每天都有大惊喜&gt;&gt;</span></a>
+</li>
+<script type="text/javascript">
+var countTjwView=countTjwView||[];   countTjwView.push(["20012.13.5","http://img4.paipaiimg.com/31893329/boss-4e424bf4-00000000185d69610001312967668000.1.gif","http://3c.paipai.com/sale/savePortal.shtml"]);
+</script>
+
+ 
+                <li id="4758"> <a id="countTjwView20012.13.6" href="http://shop.qq.com/week/index.html?PTAG=20012.13.6" target="_blank">
+<img src="http://img2.paipaiimg.com/84904406/boss-4e12db22-00000000185d69610001309858594000.1.gif" alt="新店入驻3重礼&gt;&gt;" />
+<span>新店入驻3重礼&gt;&gt;</span></a>
+</li>
+<script type="text/javascript">
+var countTjwView=countTjwView||[];   countTjwView.push(["20012.13.6","http://img2.paipaiimg.com/84904406/boss-4e12db22-00000000185d69610001309858594000.1.gif","http://shop.qq.com/week/index.html"]);
+</script>
+
+ 
+                <li id="7355"> <a id="countTjwView20012.13.7" href="http://3c.paipai.com/promote/2011/index_3.shtml?PTAG=20012.13.7" target="_blank">
+<img src="http://img2.paipaiimg.com/28a64385/boss-4f4e0682-00000000185d69610001330513538000.1.gif" alt="" />
+<span>数码会员特权&gt;&gt;</span></a>
+</li>
+<script type="text/javascript">
+var countTjwView=countTjwView||[];   countTjwView.push(["20012.13.7","http://img2.paipaiimg.com/28a64385/boss-4f4e0682-00000000185d69610001330513538000.1.gif","http://3c.paipai.com/promote/2011/index_3.shtml"]);
+</script>
+
+ 
+                <li id="3613"> <a id="countTjwView20012.13.8" href="http://3c.paipai.com/promote/2011/index_7.shtml?PTAG=20012.13.8" target="_blank">
+<img src="http://img0.paipaiimg.com/fa617822/boss-4da43c70-00000000185d69610001302609008000.1.gif" alt="1元抢" />
+<span>新店血本促销1元抢&gt;&gt;</span></a>
+</li>
+<script type="text/javascript">
+var countTjwView=countTjwView||[];   countTjwView.push(["20012.13.8","http://img0.paipaiimg.com/fa617822/boss-4da43c70-00000000185d69610001302609008000.1.gif","http://3c.paipai.com/promote/2011/index_7.shtml"]);
+</script>
+
+ 
+                <li id="7669"> <a id="countTjwView20012.13.9" href="http://chong.paipai.com/promote/2012/index_40.shtml?PTAG=20012.13.9" target="_blank">
+<img src="http://img5.paipaiimg.com/026a8fd6/boss-4f7666cd-00000000185d69610001333159629000.1.jpg" alt="充话费送化肥，充40送66元礼包！&gt;&gt;" />
+<span>充话费送化肥，充40送66元礼包！&gt;&gt;</span></a>
+</li>
+<script type="text/javascript">
+var countTjwView=countTjwView||[];   countTjwView.push(["20012.13.9","http://img5.paipaiimg.com/026a8fd6/boss-4f7666cd-00000000185d69610001333159629000.1.jpg","http://chong.paipai.com/promote/2012/index_40.shtml"]);
+</script>
+
+
+            </ul>
+        </div>
+        <div class="more"><a href="http://www.paipai.com/promote?PTAG=20012.7.20" target="_blank">查看更多优惠 &gt;</a></div>
+    </div>
+</div>
+<div class="mode_recommendation" style="display:" id="recommend2">
+    <div class="mode_favourable_s">
+        <h3>优惠街</h3>
+        <div class="list">
+            <ul>
+                <li id="7383"> <a id="countTjwView20012.13.2" href="http://www.paipai.com/fresher/shichi/?PTAG=20012.13.2" target="_blank">
+<img src="http://img5.paipaiimg.com/cecf3509/boss-4f506815-00000000185d69610001330669589000.1.gif" alt="万件精品免费领&gt;&gt;" />
+<span>万件精品免费领&gt;&gt;</span></a>
+</li>
+<script type="text/javascript">
+var countTjwView=countTjwView||[];   countTjwView.push(["20012.13.2","http://img5.paipaiimg.com/cecf3509/boss-4f506815-00000000185d69610001330669589000.1.gif","http://www.paipai.com/fresher/shichi/"]);
+</script>
+
+ 
+                <li id="7697"> <a id="countTjwView20012.13.3" href="http://life.paipai.com/sale/jian.shtml?PTAG=20012.13.3" target="_blank">
+<img src="http://img1.paipaiimg.com/d9dd682d/boss-4f76c119-00000000185d69610001333182745000.1.jpg" alt="" />
+<span>每周精选10家店铺 满99立减20元&gt;&gt;</span></a>
+</li>
+<script type="text/javascript">
+var countTjwView=countTjwView||[];   countTjwView.push(["20012.13.3","http://img1.paipaiimg.com/d9dd682d/boss-4f76c119-00000000185d69610001333182745000.1.jpg","http://life.paipai.com/sale/jian.shtml"]);
+</script>
+
+ 
+                <li id="5319"> <a id="countTjwView20012.13.4" href="http://food.paipai.com/sale/9.9.shtml?PTAG=20012.13.4" target="_blank">
+<img src="http://img6.paipaiimg.com/2e47dbc8/boss-4e5f339e-00000000185d69610001314861982000.1.gif" alt="" />
+<span>9&#46;9元诱人美食 hold不住的美味&gt;&gt;</span></a>
+</li>
+<script type="text/javascript">
+var countTjwView=countTjwView||[];   countTjwView.push(["20012.13.4","http://img6.paipaiimg.com/2e47dbc8/boss-4e5f339e-00000000185d69610001314861982000.1.gif","http://food.paipai.com/sale/9.9.shtml"]);
+</script>
+
+ 
+                <li id="5108"> <a id="countTjwView20012.13.5" href="http://3c.paipai.com/sale/savePortal.shtml?PTAG=20012.13.5" target="_blank">
+<img src="http://img4.paipaiimg.com/31893329/boss-4e424bf4-00000000185d69610001312967668000.1.gif" alt="" />
+<span>每天都有大惊喜&gt;&gt;</span></a>
+</li>
+<script type="text/javascript">
+var countTjwView=countTjwView||[];   countTjwView.push(["20012.13.5","http://img4.paipaiimg.com/31893329/boss-4e424bf4-00000000185d69610001312967668000.1.gif","http://3c.paipai.com/sale/savePortal.shtml"]);
+</script>
+
+ 
+                <!--<li id="4758"> <a id="countTjwView20012.13.6" href="http://shop.qq.com/week/index.html?PTAG=20012.13.6" target="_blank">
+<img src="http://img2.paipaiimg.com/84904406/boss-4e12db22-00000000185d69610001309858594000.1.gif" alt="新店入驻3重礼&gt;&gt;" />
+<span>新店入驻3重礼&gt;&gt;</span></a>
+</li>
+<script type="text/javascript">
+var countTjwView=countTjwView||[];   countTjwView.push(["20012.13.6","http://img2.paipaiimg.com/84904406/boss-4e12db22-00000000185d69610001309858594000.1.gif","http://shop.qq.com/week/index.html"]);
+</script>
+
+ 
+                <li id="7355"> <a id="countTjwView20012.13.7" href="http://3c.paipai.com/promote/2011/index_3.shtml?PTAG=20012.13.7" target="_blank">
+<img src="http://img2.paipaiimg.com/28a64385/boss-4f4e0682-00000000185d69610001330513538000.1.gif" alt="" />
+<span>数码会员特权&gt;&gt;</span></a>
+</li>
+<script type="text/javascript">
+var countTjwView=countTjwView||[];   countTjwView.push(["20012.13.7","http://img2.paipaiimg.com/28a64385/boss-4f4e0682-00000000185d69610001330513538000.1.gif","http://3c.paipai.com/promote/2011/index_3.shtml"]);
+</script>
+
+-->
+            </ul>
+        </div>
+        <div class="more"><a href="http://www.paipai.com/promote?PTAG=20012.7.20" target="_blank">查看更多优惠 &gt;</a></div>
+    </div>
+    
+</div>
+<script> 
+	speedTimePoint.push(new Date());  
+	PP.shopcart.initShopcar();
+</script> 
+</script> 
+<div class="m">
+<div class="footer-services">
+<ul>
+<li class="footer-snewbie">
+<dl> <dt><span class="ico"></span><strong class="tit">新手上路</strong></dt> <dd><a href="http://www.paipai.com/fresher/promote/mall.shtml?ppmall=paipai_fresher_12&amp;PTAG=20084.27.1" target="_blank">新人购物指南</a></dd> <dd><a href="http://fuwu.paipai.com/?PTAG=20084.27.1" target="_blank">商户服务平台</a></dd> </dl></li>
+<li class="footer-ssafe">
+<dl> <dt><span class="ico"></span><strong class="tit">购物保障</strong></dt> <dd><a href="http://www.paipai.com/trust/plan/?tab=2&amp;PTAG=20084.27.2" target="_blank">先行赔付</a></dd> <dd><a href="http://www.paipai.com/trust/plan/?tab=6&amp;PTAG=20084.27.2" target="_blank">正品假一赔三</a></dd> <dd><a href="http://www.paipai.com/trust/plan/?tab=4&amp;PTAG=20084.27.2" target="_blank">7天包退</a></dd> <dd><a href="http://www.paipai.com/trust/plan/?tab=5&amp;PTAG=20084.27.2" target="_blank">诚保代充</a></dd></dl></li>
+<li class="footer-spay">
+<dl> <dt><span class="ico"></span><strong class="tit">支付方式</strong></dt> <dd><a href="http://help.paipai.com/pay/index.html#5-1-1-1?PTAG=20084.27.3" target="_blank">一点通支付</a></dd> <dd><a href="http://help.paipai.com/pay/index.html#4-1-1-1?PTAG=20084.27.3" target="_blank">信用卡支付</a></dd> <dd><a href="http://help.paipai.com/pay/index.html#3-1-1-1?PTAG=20084.27.3" target="_blank">借记卡支付</a></dd> <dd><a href="http://help.paipai.com/pay/index.html#9-1-1-1?PTAG=20084.27.3" target="_blank">请人代付</a></dd></dl></li>
+<li class="footer-scare">
+<dl class="last"> <dt><span class="ico"></span><strong class="tit">售后服务</strong></dt> <dd>业务咨询：0755-83762288</dd> <dd><a href="http://315.paipai.com/?PTAG=20084.27.4" target="_blank">消费者维权中心</a></dd></dl></li>
+</ul>
+</div>
+</div>
+
+  <div id="foot" class="m">
+    <div class="foot_nav">
+      <ul class="foot_agreement">
+        <li><a href="http://help.paipai.com/introduce.shtml" target="_blank">拍拍简介</a></li>
+        <li><a target="_blank" href="http://help.paipai.com/news.shtml">拍拍动态</a></li>
+        <li><a target="_blank" href="http://help.paipai.com/commerce.shtml">商务合作</a></li>
+        <li><a target="_blank" href="http://service.qq.com/category/paipai.html">客服中心</a></li>
+        <li><a target="_blank" href="http://help.paipai.com/hr/">拍拍招聘</a></li>
+        <li><a target="_blank" href="http://www.paipai.com/sitemap.shtml">网站地图</a></li>
+        <li><a target="_blank" href="http://help.paipai.com/user_agreement.shtml">用户协议</a></li>
+        <li><a target="_blank" href="http://www.tencent.com/law/mo_law.shtml?/law/copyright.htm">版权说明</a></li>
+      </ul>
+      <div class="group_site">
+        <h4>腾讯旗下网站：</h4>
+        <ul>
+          <li><a target="_blank" href="http://www.tencent.com">腾讯官网</a></li>
+          <li><a target="_blank" href="http://www.qq.com">腾讯门户</a></li>
+          <li><a target="_blank" href="http://www.paipai.com">拍拍购物</a></li>
+          <li><a target="_blank" href="http://www.tenpay.com">财付通支付</a></li>
+          <li><a target="_blank" href="http://www.soso.com">SOSO搜索</a></li>
+          <li><a target="_blank" href="http://t.qq.com">腾讯微博</a></li>
+          <li><a target="_blank" href="http://fanli.qq.com/">QQ返利</a></li>
+          <li><a target="_blank" href="http://www.qq.com/map/">更多业务</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="copyright">
+      <div class="saftsite"> <a target="_blank" href="http://service.paipai.com/cgi-bin/go?pageId=10&domainId=1&linkId=84&url=http://www.paipai.com/include/netSupervision.html"><span class="ploice1"></span></a> <a target="_blank" href="http://service.paipai.com/cgi-bin/go?pageId=10&domainId=1&linkId=84&url=http://www.paipai.com/include/netSupervision.html"><span class="ploice2"></span></a> </div>
+      <div>
+        <p>Copyright&copy; 1998-<script type="text/javascript">(function(){document.write(new Date().getFullYear())})()</script> Tencent.All Rights Reserved 腾讯公司 版权所有 </p>
+        <p><a target="_blank" href="http://service.paipai.com/cgi-bin/go?pageId=10&domainId=1&linkId=79&url=http://www.paipai.com/include/gdca.html">广东省通管局</a> <a target="_blank" href="http://www.qq.com/icp.shtml">增值电信业务经营许可证B2-20040031 </a></p>
+      </div>
+    </div>
+  </div>
+<script type="text/javascript" id="legos:1023" ver="1023:20100630:20120319211603" name="PP.foot" src="http://static.paipaiimg.com/js/version/2010/06/pp.foot.20100630.js?t=20120319211603" charset="gbk"></script><!--[if !IE]>|xGv00|47fd9a272c5bfb5137ab7377c2d99937<![endif]-->
+<script type="text/javascript" charset="gb2312">
+(function(){setTimeout(function(){try{var jss=document.getElementsByTagName("script");for(var i=0,len=jss.length;i<len;i++){if(jss[i].src&&jss[i].getAttribute("check")&&!window[jss[i].getAttribute("check")]&&jss[i].src.indexOf("static.paipaiimg")){var a=document.createElement("iframe");a.src="http://static.paipaiimg.com/fileload.shtml?files="+jss[i].src;a.height="1";a.width="1";document.body.appendChild(a);}}}catch(e){}},2000);var forms=document.getElementsByTagName("form");for(var i=0,len=forms.length;i<len;i++){forms[i].action=$addToken(forms[i].action,"fr");};function $getCookie(name){var reg=new RegExp("(^| )"+name+"=([^;]*)(;|$)"),val=document.cookie.match(reg);return val?unescape(val[2]):null;};function $time33(str){for(var i=0,len=str.length,hash=5381;i<len;++i){hash+=(hash<<5)+str.charAt(i).charCodeAt();};return hash&0x7fffffff;};function $addToken(url,type){var token=$getToken();if(url==""&&url.indexOf("http")!=0){return url;}
+return token==""?url:url+(url.indexOf("?")!=-1?"&":"?")+"g_tk="+token+"&g_ty="+type;}
+function $getToken(){var skey=$getCookie("skey"),token=skey==null?"":$time33(skey);return token;}})();
+</script><!--[if !IE]>|xGv00|beeff02c5bb22b826c39ef11fc2bae17<![endif]-->
+<!--foot from ppms--><!--[if !IE]>|xGv00|4ed9f91f4d679ad4734f82b660e28d15<![endif]--> 
+<!--E 页脚-->
+</body>
+</html><!--[if !IE]>|xGv00|aa3320324d34f4a1cff7d772ea0e6e81<![endif]-->

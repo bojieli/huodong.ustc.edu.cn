@@ -1,0 +1,567 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" >
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
+        <title>购物车--当当网</title>
+        <link href="css/shoppingcart.css?120319" rel="stylesheet" type="text/css" />
+        <script src="script/jquery.js" type="text/javascript"></script>
+        <script src="script/slider.js" type="text/javascript"></script>
+        <script src="script/cart_zip.js?120319" type="text/javascript"></script>
+        <script src="script/loginwindow.js?120319" type="text/javascript"></script>
+        <script type="text/javascript" src="http://a.dangdang.com/smart.js"></script>
+    </head>
+    <body onload="window.focus()">
+		<link href="http://static.dangdang.com/css/header2010/unite_header_1129.css?49" rel="stylesheet" type="text/css"><script src="http://static.dangdang.com/js/header2010/pagetop_1123.js?49" type="text/javascript"></script><div class="ddnewhead_wrap">    <div class="ddnewhead_content ddnewhead_content2">        <div class="ddnewhead_operate" id="__ddnav_menu">          <ul class="ddnewhead_operate_nav">                        <li class="ddnewhead_cart"><a href="javascript:AddToShoppingCart(0);">购物车<span id="cart_items_count" class="cart_num"></span></a></li>            <li class="ddnewhead_separate"></li>            <li><a href="http://order.dangdang.com/myallorders.aspx" target="_blank">我的订单</a></li>            <li class="ddnewhead_separate"></li>            <li class="ddnewhead_mydd"><a href="http://my.dangdang.com/myhome/homepage.aspx" target="_blank" class="menu_btn" id="a_myddchannel" onmouseover="showgaoji('a_myddchannel','__ddnav_mydd')" onmouseout="hideotherchannel('a_myddchannel','__ddnav_mydd');">我的当当</a>                <div  class="ddnewhead_mydd_panel" onmouseover="showgaoji('a_myddchannel','__ddnav_mydd')" onmouseout="hideotherchannel('a_myddchannel','__ddnav_mydd');" id="__ddnav_mydd" >                    <ul class="ddnewhead_mydd_list" >                        <li><a href="http://order.dangdang.com/myallorders.aspx" target="_blank">我的订单</a></li>                        <li><a href="http://account.dangdang.com/payhistory/mycoupons.aspx" target="_blank">购物礼券</a></li>                        <li><a href="http://my.dangdang.com/memberpoints/index.aspx" target="_blank">我的积分</a></li>                        <li><a href="http://customer.dangdang.com/wishlist/cust_wish_list.aspx" target="_blank">我的收藏</a></li>                        <li><a href="http://comm.dangdang.com/review/reviewbuy.php" target="_blank">我的评论</a></li>                        <li><a href="http://e.dangdang.com/ebook/listUserEbooks.do" target="_blank">数字商品</a></li>                    </ul>                </div>            </li>             <li class="ddnewhead_separate"></li>            <li class="ddnewhead_gcard"><a href="http://misc.dangdang.com/giftcard/GiftCardIndex.aspx" class="menu_btn"  id="a_lipchannel" onmouseover="showgaoji('a_lipchannel','__ddnav_card');" onmouseout="hideotherchannel('a_lipchannel','__ddnav_card');" target="_blank">礼品卡</a>                <div  class="ddnewhead_gcard_panel" onmouseover="showgaoji('a_lipchannel','__ddnav_card')" onmouseout="hideotherchannel('a_lipchannel','__ddnav_card');" id="__ddnav_card">                <ul class="ddnewhead_gcard_list">                    <li><a href="http://misc.dangdang.com/giftcard/GiftCardIndex.aspx" target="_blank">购买</a></li>                    <li><a href="http://account.dangdang.com/payhistory/mymoney.aspx" target="_blank">激活</a></li>                                  </ul>                </div>            </li>            <li class="ddnewhead_separate"></li>            <li><a href="http://misc.dangdang.com/giftcardCompany/company.aspx" target="_blank">企业销售</a></li>            <li class="ddnewhead_separate"></li>            <li class="help"><a href="http://support.dangdang.com/helpcenter/" target="_blank">帮助</a></li>          </ul>          <p id="nickname"><span>欢迎光临当当网，请</span><a href="https://login.dangdang.com/Signin.aspx" name="ddnav_login" target="_blank" class="login_link">登录</a><a href="https://login.dangdang.com/Register.aspx" name="ddnav_register" target="_self" class="login_link">免费注册</a></p>    </div>              <div class="ddnewhead_logo"><a href="http://www.dangdang.com" title="返回首页" name="ddnav_logo"><img src="http://img4.ddimg.cn/00012/2010/ddnewhead_logo.gif"alt="当当" title="返回首页"?" /></a></div>      <div class="clear"></div>    </div>     <div class="ddnewcarthead_bottom"></div></div>    <form action="http://search.dangdang.com/search.aspx" id="bootpagetopSearch" name="bootpagetopSearch" method="GET"></form>  <script type="text/javascript">initHeaderOperate();</script>        <div class="shoppingcart_wrapper" id="shoppingcart"  >
+            <div id="ad_cpt_11850"></div>
+            <div class="shoppingcart_nav">
+                <h1>我的购物车</h1>
+            </div>
+
+            <div class="notice_bk objhide" id="div_notice">
+				            </div>
+            <div class="shoppingcart_business_dd"  id="shoppingcart_business_dd" style="display: none" >
+                <p>
+                    <span  id="shoppingcart_dd" >当当网 </span>
+                    <span  id="free_fee_tip_dd" class ="objhide" >
+                    </span>
+                    <!--<span  id="free_fee_tip" ></span>-->
+                </p>
+            </div>
+            <a name="ddtop"></a>
+            <ul  class="shoppingcart_subject title_border_line" id ="ui_shoppingcart_title">
+                <li class="row1">商品名称</li>
+                <li class="row2">积分</li>
+                <li class="row3">当当价</li>
+                <li class="row4"><span title ="在当当价基础上再优惠">&nbsp;&nbsp;&nbsp;优惠&nbsp;&nbsp;&nbsp;</span></li>
+                <li class="row5">数量</li>
+                <li class="row6">操作</li>
+            </ul>
+            <!--JS output area start-->
+            <div name="promo_s" class="shoppingcart_general" id='collection_0'>
+
+            </div>
+							<div id="collection_0_144671" class="shoppingcart_promotions_02_hideline" name="promo_s">
+
+				</div>
+					<div id="collection_0_144672" class="shoppingcart_promotions_01_hideline" name="promo_s">
+
+				</div>
+					<div id="collection_0_144673" class="shoppingcart_promotions_02_hideline" name="promo_s">
+
+				</div>
+					<div id="collection_0_144675" class="shoppingcart_promotions_01_hideline" name="promo_s">
+
+				</div>
+					<div id="collection_0_144676" class="shoppingcart_promotions_02_hideline" name="promo_s">
+
+				</div>
+					<div id="collection_0_144677" class="shoppingcart_promotions_01_hideline" name="promo_s">
+
+				</div>
+					<div id="collection_0_144680" class="shoppingcart_promotions_02_hideline" name="promo_s">
+
+				</div>
+					<div id="collection_0_144682" class="shoppingcart_promotions_01_hideline" name="promo_s">
+
+				</div>
+					<div id="collection_0_144683" class="shoppingcart_promotions_02_hideline" name="promo_s">
+
+				</div>
+					<div id="collection_0_144684" class="shoppingcart_promotions_01_hideline" name="promo_s">
+
+				</div>
+					<div id="collection_0_144856" class="shoppingcart_promotions_02_hideline" name="promo_s">
+
+				</div>
+					<div id="collection_0_144858" class="shoppingcart_promotions_01_hideline" name="promo_s">
+
+				</div>
+					<div id="collection_0_144860" class="shoppingcart_promotions_02_hideline" name="promo_s">
+
+				</div>
+					<div id="collection_0_144865" class="shoppingcart_promotions_01_hideline" name="promo_s">
+
+				</div>
+					<div id="collection_0_144866" class="shoppingcart_promotions_02_hideline" name="promo_s">
+
+				</div>
+					<div id="collection_0_144890" class="shoppingcart_promotions_01_hideline" name="promo_s">
+
+				</div>
+					<div id="collection_0_144892" class="shoppingcart_promotions_02_hideline" name="promo_s">
+
+				</div>
+					<div id="collection_0_144893" class="shoppingcart_promotions_01_hideline" name="promo_s">
+
+				</div>
+					<div id="collection_0_144894" class="shoppingcart_promotions_02_hideline" name="promo_s">
+
+				</div>
+					<div id="collection_0_144896" class="shoppingcart_promotions_01_hideline" name="promo_s">
+
+				</div>
+					<div id="collection_0_144899" class="shoppingcart_promotions_02_hideline" name="promo_s">
+
+				</div>
+					<div id="collection_0_144915" class="shoppingcart_promotions_01_hideline" name="promo_s">
+
+				</div>
+					<div id="collection_0_144916" class="shoppingcart_promotions_02_hideline" name="promo_s">
+
+				</div>
+					<div id="collection_0_144917" class="shoppingcart_promotions_01_hideline" name="promo_s">
+
+				</div>
+					<div id="collection_0_144918" class="shoppingcart_promotions_02_hideline" name="promo_s">
+
+				</div>
+					<div id="collection_0_144919" class="shoppingcart_promotions_01_hideline" name="promo_s">
+
+				</div>
+					<div id="collection_0_144920" class="shoppingcart_promotions_02_hideline" name="promo_s">
+
+				</div>
+					<div id="collection_0_144921" class="shoppingcart_promotions_01_hideline" name="promo_s">
+
+				</div>
+					<div id="collection_0_144922" class="shoppingcart_promotions_02_hideline" name="promo_s">
+
+				</div>
+					<div id="collection_0_144923" class="shoppingcart_promotions_01_hideline" name="promo_s">
+
+				</div>
+					<div id="collection_0_145478" class="shoppingcart_promotions_02_hideline" name="promo_s">
+
+				</div>
+					<div id="collection_0_145481" class="shoppingcart_promotions_01_hideline" name="promo_s">
+
+				</div>
+					<div id="collection_0_145483" class="shoppingcart_promotions_02_hideline" name="promo_s">
+
+				</div>
+					<div id="collection_0_146033" class="shoppingcart_promotions_01_hideline" name="promo_s">
+
+				</div>
+					<div id="collection_0_146046" class="shoppingcart_promotions_02_hideline" name="promo_s">
+
+				</div>
+					<div id="collection_0_146178" class="shoppingcart_promotions_01_hideline" name="promo_s">
+
+				</div>
+					<div id="collection_0_146405" class="shoppingcart_promotions_02_hideline" name="promo_s">
+
+				</div>
+					<div id="collection_0_146455" class="shoppingcart_promotions_01_hideline" name="promo_s">
+
+				</div>
+					<div id="collection_0_146931" class="shoppingcart_promotions_02_hideline" name="promo_s">
+
+				</div>
+					<div id="collection_0_146944" class="shoppingcart_promotions_01_hideline" name="promo_s">
+
+				</div>
+					<div id="collection_0_146945" class="shoppingcart_promotions_02_hideline" name="promo_s">
+
+				</div>
+					<div id="collection_0_146946" class="shoppingcart_promotions_01_hideline" name="promo_s">
+
+				</div>
+					<div id="collection_0_147323" class="shoppingcart_promotions_02_hideline" name="promo_s">
+
+				</div>
+					<div id="collection_0_147333" class="shoppingcart_promotions_01_hideline" name="promo_s">
+
+				</div>
+					<div id="collection_0_147389" class="shoppingcart_promotions_02_hideline" name="promo_s">
+
+				</div>
+					<div id="collection_0_147390" class="shoppingcart_promotions_01_hideline" name="promo_s">
+
+				</div>
+					<div id="collection_0_147391" class="shoppingcart_promotions_02_hideline" name="promo_s">
+
+				</div>
+					<div id="collection_0_147392" class="shoppingcart_promotions_01_hideline" name="promo_s">
+
+				</div>
+					<div id="collection_0_147393" class="shoppingcart_promotions_02_hideline" name="promo_s">
+
+				</div>
+					<div id="collection_0_147394" class="shoppingcart_promotions_01_hideline" name="promo_s">
+
+				</div>
+					<div id="collection_0_147395" class="shoppingcart_promotions_02_hideline" name="promo_s">
+
+				</div>
+					<div id="collection_0_147425" class="shoppingcart_promotions_01_hideline" name="promo_s">
+
+				</div>
+					<div id="collection_0_147526" class="shoppingcart_promotions_02_hideline" name="promo_s">
+
+				</div>
+					<div id="collection_0_147562" class="shoppingcart_promotions_01_hideline" name="promo_s">
+
+				</div>
+					<div id="collection_0_147694" class="shoppingcart_promotions_02_hideline" name="promo_s">
+
+				</div>
+					<div id="collection_0_147756" class="shoppingcart_promotions_01_hideline" name="promo_s">
+
+				</div>
+					<div id="collection_0_147777" class="shoppingcart_promotions_02_hideline" name="promo_s">
+
+				</div>
+					<div id="collection_0_148076" class="shoppingcart_promotions_01_hideline" name="promo_s">
+
+				</div>
+					<div id="collection_0_148107" class="shoppingcart_promotions_02_hideline" name="promo_s">
+
+				</div>
+					<div id="collection_0_148179" class="shoppingcart_promotions_01_hideline" name="promo_s">
+
+				</div>
+					<div id="collection_0_148232" class="shoppingcart_promotions_02_hideline" name="promo_s">
+
+				</div>
+					<div id="collection_0_148376" class="shoppingcart_promotions_01_hideline" name="promo_s">
+
+				</div>
+					<div id="collection_0_148377" class="shoppingcart_promotions_02_hideline" name="promo_s">
+
+				</div>
+					<div id="collection_0_148378" class="shoppingcart_promotions_01_hideline" name="promo_s">
+
+				</div>
+					<div id="collection_0_148379" class="shoppingcart_promotions_02_hideline" name="promo_s">
+
+				</div>
+					<div id="collection_0_148380" class="shoppingcart_promotions_01_hideline" name="promo_s">
+
+				</div>
+					<div id="collection_0_148381" class="shoppingcart_promotions_02_hideline" name="promo_s">
+
+				</div>
+					<div id="collection_0_148399" class="shoppingcart_promotions_01_hideline" name="promo_s">
+
+				</div>
+					<div id="collection_0_148400" class="shoppingcart_promotions_02_hideline" name="promo_s">
+
+				</div>
+					<div id="collection_0_148440" class="shoppingcart_promotions_01_hideline" name="promo_s">
+
+				</div>
+					<div id="collection_0_148609" class="shoppingcart_promotions_02_hideline" name="promo_s">
+
+				</div>
+					<div id="collection_0_148624" class="shoppingcart_promotions_01_hideline" name="promo_s">
+
+				</div>
+					<div id="collection_0_148628" class="shoppingcart_promotions_02_hideline" name="promo_s">
+
+				</div>
+					<div id="collection_0_148647" class="shoppingcart_promotions_01_hideline" name="promo_s">
+
+				</div>
+					<div id="collection_0_148648" class="shoppingcart_promotions_02_hideline" name="promo_s">
+
+				</div>
+					<div id="collection_0_148842" class="shoppingcart_promotions_01_hideline" name="promo_s">
+
+				</div>
+					<div id="collection_0_148910" class="shoppingcart_promotions_02_hideline" name="promo_s">
+
+				</div>
+					<div id="collection_0_148911" class="shoppingcart_promotions_01_hideline" name="promo_s">
+
+				</div>
+					<div id="collection_0_148912" class="shoppingcart_promotions_02_hideline" name="promo_s">
+
+				</div>
+					<div id="collection_0_148913" class="shoppingcart_promotions_01_hideline" name="promo_s">
+
+				</div>
+					<div id="collection_0_148914" class="shoppingcart_promotions_02_hideline" name="promo_s">
+
+				</div>
+					<div id="collection_0_148915" class="shoppingcart_promotions_01_hideline" name="promo_s">
+
+				</div>
+					<div id="collection_0_148916" class="shoppingcart_promotions_02_hideline" name="promo_s">
+
+				</div>
+					<div id="collection_0_148917" class="shoppingcart_promotions_01_hideline" name="promo_s">
+
+				</div>
+					<div id="collection_0_148918" class="shoppingcart_promotions_02_hideline" name="promo_s">
+
+				</div>
+					<div id="collection_0_148919" class="shoppingcart_promotions_01_hideline" name="promo_s">
+
+				</div>
+					<div id="collection_0_148920" class="shoppingcart_promotions_02_hideline" name="promo_s">
+
+				</div>
+					<div id="collection_0_148921" class="shoppingcart_promotions_01_hideline" name="promo_s">
+
+				</div>
+					<div id="collection_0_148922" class="shoppingcart_promotions_02_hideline" name="promo_s">
+
+				</div>
+					<div id="collection_0_148923" class="shoppingcart_promotions_01_hideline" name="promo_s">
+
+				</div>
+					<div id="collection_0_148976" class="shoppingcart_promotions_02_hideline" name="promo_s">
+
+				</div>
+					<div id="collection_0_149010" class="shoppingcart_promotions_01_hideline" name="promo_s">
+
+				</div>
+					<div id="collection_0_149020" class="shoppingcart_promotions_02_hideline" name="promo_s">
+
+				</div>
+					<div id="collection_0_149046" class="shoppingcart_promotions_01_hideline" name="promo_s">
+
+				</div>
+					<div id="collection_0_149055" class="shoppingcart_promotions_02_hideline" name="promo_s">
+
+				</div>
+					<div id="collection_0_149056" class="shoppingcart_promotions_01_hideline" name="promo_s">
+
+				</div>
+					<div id="collection_0_149059" class="shoppingcart_promotions_02_hideline" name="promo_s">
+
+				</div>
+					<div id="collection_0_149060" class="shoppingcart_promotions_01_hideline" name="promo_s">
+
+				</div>
+					<div id="collection_0_149061" class="shoppingcart_promotions_02_hideline" name="promo_s">
+
+				</div>
+					<div id="collection_0_149063" class="shoppingcart_promotions_01_hideline" name="promo_s">
+
+				</div>
+					<div id="collection_0_149064" class="shoppingcart_promotions_02_hideline" name="promo_s">
+
+				</div>
+					<div id="collection_0_149065" class="shoppingcart_promotions_01_hideline" name="promo_s">
+
+				</div>
+					<div id="collection_0_149066" class="shoppingcart_promotions_02_hideline" name="promo_s">
+
+				</div>
+					<div id="collection_0_149068" class="shoppingcart_promotions_01_hideline" name="promo_s">
+
+				</div>
+					<div id="collection_0_149069" class="shoppingcart_promotions_02_hideline" name="promo_s">
+
+				</div>
+					<div id="collection_0_149102" class="shoppingcart_promotions_01_hideline" name="promo_s">
+
+				</div>
+					<div id="collection_0_149103" class="shoppingcart_promotions_02_hideline" name="promo_s">
+
+				</div>
+					<div id="collection_0_149104" class="shoppingcart_promotions_01_hideline" name="promo_s">
+
+				</div>
+					<div id="collection_0_149106" class="shoppingcart_promotions_02_hideline" name="promo_s">
+
+				</div>
+					<div id="collection_0_149107" class="shoppingcart_promotions_01_hideline" name="promo_s">
+
+				</div>
+					<div id="collection_0_149108" class="shoppingcart_promotions_02_hideline" name="promo_s">
+
+				</div>
+					<div id="collection_0_149111" class="shoppingcart_promotions_01_hideline" name="promo_s">
+
+				</div>
+					<div id="collection_0_149243" class="shoppingcart_promotions_02_hideline" name="promo_s">
+
+				</div>
+					<div id="collection_0_149255" class="shoppingcart_promotions_01_hideline" name="promo_s">
+
+				</div>
+					<div id="collection_0_149355" class="shoppingcart_promotions_02_hideline" name="promo_s">
+
+				</div>
+					<div id="collection_0_149356" class="shoppingcart_promotions_01_hideline" name="promo_s">
+
+				</div>
+					<div id="collection_0_149357" class="shoppingcart_promotions_02_hideline" name="promo_s">
+
+				</div>
+					<div id="collection_0_149365" class="shoppingcart_promotions_01_hideline" name="promo_s">
+
+				</div>
+					<div id="collection_0_149367" class="shoppingcart_promotions_02_hideline" name="promo_s">
+
+				</div>
+	            <div id="div_shop_0_0_98" class="shoppingcart_business_other shoppingcart_business_ebook" style="display: none;"> 
+                <p><span>当当网数字商品</span></p>
+            </div>
+            <div class="shoppingcart_general" id="collection_0_0_98">
+            </div>
+            <!--JS output area end-->
+            <div class="shoppingcart_total" id="div_total" style="display: none;">
+                <p class="price">商品金额总计：
+                    <span >￥</span>
+                    <span id='total_account'></span>
+                </p>
+                <p  id='balance'>
+                    <a name='checkout'  id="checkout_btn" href="javascript:void(dispart_order())"   class="clearing" title="结算" ></a>
+                    <a href='http://www.dangdang.com/?ref=shopping-0-E'  target="_blank" name="goon" class="goon">继续购物</a>
+                </p>
+            </div>
+            <div id="div_no_choice"    class="shoppingcart_general" style="display:none;">
+                <div class="shoppingcart_general_none">您还没有挑选商品，
+                    <a id="no_product" target="_self"  name="gotoold" href="http://promo.dangdang.com/?ref=shopping-0-C">去促销看看&gt;&gt;</a>
+                </div>
+                <div class="shoppingcart_total shoppingcart_total2"></div>
+            </div>
+				<div class="shoppingcart_favorites" id="divCustWishList"  name="favoritezone">
+					<h2>
+						<a class="down" name="turnoff" title ="down" href="javascript:void(wishlogin('pucker_up_wish','wishupdown'))" id="pucker_up_wish">折叠</a>
+						<span>收藏的商品
+							<span class="login" id="wishlogin">
+								-请<a  id="wishlogin_0" href="javascript:void(wishlogin('wishlogin_0','wishupdown'))"  >登录</a>后查看
+							</span>
+						</span>
+					</h2>
+					<div id="div_CustWishList" >
+						<div id="ul_CustWishList" name="favoritezone" class="objhide">
+							<ul><li class="shoppingcart_favorites_none">您的收藏夹中暂无商品</li></ul>
+						</div>
+					</div>
+				</div>
+			
+					<div class="shoppingcart_promotions"  name="promozone" id="PromotionList_149010">
+						<h2>
+							<a  href="javascript:void(0)" onclick="drawPromoList(149010)" id="PromoAddCut_149010" class="add"   name="turnon"   title ="down" >折叠</a>
+							<a href="javascript:void(0)" onclick="drawPromoList(149010)" id="PromoUpDown_149010" class="down"  name="turnon"  title ="down" >折叠</a>
+							<a id="promo_link_149010" class="objhide" target="_blank" href='http://promo.dangdang.com/subject.php?pm_id=149010&ref=shopping-0-G'>查看更多>></a>
+							<a href ="javascript:void(0)" onclick="drawPromoList(149010)" name="turnon">
+								<span>
+									<b>[图书促销区]</b>
+		精品童书 长篇连播 满199减40								</span>
+							</a>
+						</h2>
+						<div  id="div_PromoProductList_149010" sid="0" class ="objhide">
+							<div class="shoppingcart_promotions_info">
+								<div id="promotion_149010_slider"  class="shoppingcart_promotions_info_ul">
+									<ul  id="ul_PromoProductList_149010"   name="promozone">
+										<li class="shoppingcart_loading">
+											<img src="images/loading1.gif" width="16" height="16" />
+										</li>
+									</ul>
+								</div>
+								<br class="clear" />
+							</div>
+						</div>
+					</div>
+						<div class="shoppingcart_promotions"  name="promozone" id="PromotionList_148910">
+						<h2>
+							<a  href="javascript:void(0)" onclick="drawPromoList(148910)" id="PromoAddCut_148910" class="add"   name="turnon"   title ="down" >折叠</a>
+							<a href="javascript:void(0)" onclick="drawPromoList(148910)" id="PromoUpDown_148910" class="down"  name="turnon"  title ="down" >折叠</a>
+							<a id="promo_link_148910" class="objhide" target="_blank" href='http://promo.dangdang.com/subject.php?pm_id=148910&ref=shopping-0-G'>查看更多>></a>
+							<a href ="javascript:void(0)" onclick="drawPromoList(148910)" name="turnon">
+								<span>
+									<b>[百货促销区]</b>
+		满159立减18.1								</span>
+							</a>
+						</h2>
+						<div  id="div_PromoProductList_148910" sid="0" class ="objhide">
+							<div class="shoppingcart_promotions_info">
+								<div id="promotion_148910_slider"  class="shoppingcart_promotions_info_ul">
+									<ul  id="ul_PromoProductList_148910"   name="promozone">
+										<li class="shoppingcart_loading">
+											<img src="images/loading1.gif" width="16" height="16" />
+										</li>
+									</ul>
+								</div>
+								<br class="clear" />
+							</div>
+						</div>
+					</div>
+	
+            <div class="shoppingcart_promotions shoppingcart_recommend"  id="divAlsoBuyList"  name="recomzone" style="display:none;">
+                <h2>
+                    <a href="javascript:for_99click();" id="div_AlsoBuyList_up_down" onclick="drawAlsoBuyList();" class="up"  name="turnoff"  title ="up" ></a>
+                    <span>根据您购物车中的商品，当当为您推荐</span>
+                </h2>
+                <div  id="div_AlsoBuyList">
+                    <div  class="shoppingcart_promotions_info">
+                        <div id="alsobuy_slider"   class="shoppingcart_promotions_info_ul">
+                            <ul id="ul_AlsoBuyList"  name="recomzone">
+                                <li class="shoppingcart_loading">
+                                    <img src="images/loading1.gif" width="16" height="16" />
+                                </li>
+                            </ul>
+                        </div>
+                        <br class="clear" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="shoppingcart_footer_experience">对新版购物车满意吗？留下您的意见和建议，
+                <a id="cart_advice" name="feedback" href="javascript:openWin('cart_advice.aspx?ref=shopping-0-H','feedback',550,550)">帮我们改进购物车&gt;&gt;</a>
+            </div>
+
+            <br />
+        </div>
+        <div   class="box_loading" id="window_loading">
+            <img src="images/window_loading.gif" alt="载入状态" />
+            <p>请稍候...</p>
+        </div>
+        <div id="locListDiv" class="objhide" style="position:absolute; z-index: 9999;"></div>
+        <div id="div_survey" style ="position:absolute;" ></div>
+        <div id="hidden_div" style="display: none;"></div>
+        <div class="new_window window_gift10" id="shop_more_gift_tip" style="display: none;">
+            <div class="wind_top">
+				<div class="title_left">赠品明细</div>
+				<div class="w_close"><a href="javascript:void(objCart.shop_More_Gift(false))" title="关闭"></a></div>
+            </div>
+            <div class="window_content" id="shop_more_gift_tip_content"></div>
+		</div>
+		<div id="exchange_select_tip" class="pop_change" style="display:none;">
+				<h2>换购商品<a href="javascript:void(objCart.exchange_select(false))"><span></span></a></h2>
+				<div class="change_cont">
+					<h3>选择换购商品</h3>
+					<ul id="exchange_selector_container">
+					</ul>
+					<div class="change_btn">
+						<span class="c_qx" onclick="objCart.exchange_select(false)">取&nbsp;&nbsp;消</span>
+						<span class="c_buy" onclick="objCart.exchange_submit()">立即购买</span>
+						<span class="c_wrong" id="exchange_tip_msg"></span>
+					</div>
+				</div>
+			</div>
+        <script type="text/javascript">
+            IS_ALSO_BUY_LIST    = 1;
+            IS_WISH_LIST        = 1;
+            IS_SHOW_PROMO_LIST  = 1;
+            var SHOP_BUY_LIMIT_NUMS = {"6666":4};
+            var SHOP_DOMAIN = 'shopping.dangdang.com';
+            var SHOW_ALSO_BUY_BY_CART_COUNT = '10';
+            var ALSOBUY_URL = 'http://reco.dangdang.com/recocart/cart_reco.php?product_ids=';
+            var isUserLogin = false;
+    var newAddCart = new newAddCart();
+    var objCart = new Cart();
+    objCart.show();
+    objCart.addEvent();
+    var alsoBuy = new AlsoBuy();
+	var downLists = [];
+downLists[149010] = new collectPromo(149010);downLists[148910] = new collectPromo(148910);var checkout_error_type = 0;var checkout_error_product_ids = '';        </script>
+<link href="http://static.dangdang.com/css/header2010/footer.css?11" rel="stylesheet" type="text/css" />
+
+<div class="public_footer_box public_footer_box3">
+  <div class="public_footer"  id="__footer">
+    <div class="footer_copyright"><span>Copyright (C) 当当网 2004-2012, All Rights Reserved</span><a href="http://www.hd315.gov.cn/beian/view.asp?bianhao=010202001051000098" target="_blank" class="footer_img"><img src="http://img4.dangdang.com/bottom/validate.gif" /></a><span><a href="http://www.miibeian.gov.cn/" target="_blank">京ICP证041189号</a></span><span><a href="http://static.dangdang.com//music/topic/847_10762.shtml" target="_blank">音像制品经营许可证 京音网8号</a></span></div>
+  </div>
+</div>
+
+<script type="text/javascript" src="http://click.dangdang.com/js_tracker.js"></script>
+<script language="javascript" src="http://central.dangdang.com/js/trace.js"></script>        <!--.245.38-->
+    </body>
+    <script type="text/javascript">DD_ADSMART.fetchCPT(11850,3,3);</script>
+</html>
