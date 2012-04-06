@@ -1,20 +1,49 @@
 <html>
 	<head>
-	<META http-equiv=Content-Type content="text/html; charset=utf8">
+	<META http-equiv="Content-Type" content="text/html; charset=utf-8">
 	<title>校园信息平台</title>
+<style>
+.progbar {
+	width: 100px;
+	float: left;
+	font-size: 14px;
+	text-align: center;
+	padding: 5px;
+	font-weight: bold;
+	color: #FFF;
+}
+.progbar_done {
+	background: #A0522D url("./flow_step_bg.png") no-repeat;
+}
+.progbar_doing {
+	background: #E00 url("./flow_step_bg.png") no-repeat 0 -25px;
+}
+.progbar_todo {
+	background: #000 url("./flow_step_bg.png") no-repeat 0 -50px;
+}
+.clearfix {
+	clear: both;
+}
+</style>
 </head>
 <body>
 	<center>
-
 		<h1><strong> 活动预览</strong></h1>
 	</center>
 	<left>
 	<h2><strong>活动进行中:</strong></h2>
 	<ul type="square">
 	<li>
-	<h3><strong><a href="../web/subactivities.html">科大LUG社团招新啦</a></strong></h3>
+	<h3><strong><a href="./subactivities.html">科大LUG社团招新啦</a></strong></h3>
 	<ul>
 		<li><strong>活动进度:</strong>
+		<p>
+		<div class="progbar progbar_done">项目筹划</div>
+		<div class="progbar progbar_doing">一级审批</div>
+		<div class="progbar progbar_todo">二级审批</div>
+		<div class="progbar progbar_todo">活动进行</div>
+		<div class="clearfix"></div>
+		</p>
 		<div>
       <ol>
         <li>项目筹划:
@@ -52,7 +81,7 @@
 		</ul>
 		</li>
 		<li>
-		<h3><strong><a href="../web/subactivities.html">2012年科大社团文化节</a></strong></h3>
+		<h3><strong><a href="./subactivities.html">2012年科大社团文化节</a></strong></h3>
 		<ul>
 		<li><strong>活动进度:</strong>
 		<div>
