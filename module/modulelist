@@ -1,0 +1,45 @@
+album		read	slide
+article		read	slide
+board		read	lib_board
+channel		read
+class		read
+common		editor	footer	header	html_head
+default		add	admin	delete	find	insert	list	manage	member	modify	nav	post	read	update	upload	lib_field
+dept		read
+file		delete	read	upload
+forum		read
+grade		read
+group		adduser	admin	create	deleteuser	group_nav	insert	manage	profile	read	setadmin	update	userlist
+home		addfriend	addfriend_verify	app	blog	class	deletefriend	doing	forum	friend	group	important	message	nav	read	searchfriend
+live		message	read	slide	slide_message
+message		delete	forward	insert	lib_read	read	update
+nav		read
+plaintext	read
+portal		block	read
+refresh		read
+root		read
+school		read
+slide		read
+system		add	lib_field	lockuser	nav	read	update	userlist
+user		admin	avatar	checkloginname	firstlogin	login	logout	modify	profile	read	register	search	update
+wiki		read
+
+<?php
+// module/$class/$event.php
+
+if (!defined('IN_GEWU')) {
+	exit(header('HTTP/1.1 403 Forbidden'));
+}
+
+require modulefile('common', 'header');
+
+echo '<aside>';
+require modulefile('nav', 'read');
+echo '</aside>';
+
+echo '<article>';
+require modulefile(...);
+echo '</article>';
+
+require modulefile('common', 'footer');
+?>
