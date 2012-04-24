@@ -1,39 +1,61 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-        <title>Blog By ThinkPHP {$Think.version}</title>
-        <link href="../Public/css/style.css" rel="stylesheet" type="text/css" />
-        <script language="javascript" src="../Public/js/common.js" /></script>
-        <load href="__PUBLIC__/Js/Base.js" />
-        <load href="__PUBLIC__/Js/prototype.js" />
-        <load href="__PUBLIC__/Js/mootools.js" />
-        <load href="__PUBLIC__/Js/Ajax/ThinkAjax.js" />
-        <load href="__PUBLIC__/Js/UbbEditor.js" />
-        <load href="__PUBLIC__/Js/Form/CheckForm.js" />
-        <script language="JavaScript">
-            <!--
-            //指定当前组模块URL地址
-            var URL = '__URL__';
-            var APP	 =	 '__APP__';
-            var PUBLIC = '__PUBLIC__';
-            ThinkAjax.updateTip = '<IMG SRC="../Public/images/loading2.gif" WIDTH="16" HEIGHT="16" BORDER="0" ALT="loading..." align="absmiddle"> 数据处理中...';
-            //-->
-        </script>
-    </head>
-    <body>
-        <div id="header">
-            <div id="innerHeader">
-                <div id="blogLogo"></div>
-                <div class="blog-header">
-					<div class="blog-desc">ThinkPHP  [ Blog示例程序]</div>
-                </div>
-                <div id="menu">
-                    <ul>
-                        <li><a href="__APP__">日志首页</a></li>
-                        <li><a href="__APP__/Blog/add">撰写日志</a></li>
-                        <li><a href="http://thinkphp.cn">官方网站</a></li>
-                    </ul>
-                </div>
-            </div>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>学生活动信息平台 - 科大学生网</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="科大学生活动的计划书审批、场地申请、信息发布平台">
+    <meta name="author" content="boj">
+    <!-- Le styles -->
+    <link href="../bootstrap/css/bootstrap.css" rel="stylesheet">
+    <style type="text/css">
+      body {
+        padding-top: 60px;
+        padding-bottom: 40px;
+      }
+      .sidebar-nav {
+        padding: 9px 0;
+      }
+    </style>
+    <link href="../bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
+    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <!-- Le fav and touch icons -->
+    <link rel="shortcut icon" href="../bootstrap/ico/favicon.ico">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="../bootstrap/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../bootstrap/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="../bootstrap/ico/apple-touch-icon-57-precomposed.png">
+  </head>
+  <body>
+    <div class="navbar navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </a>
+          <a class="brand" href="index">科大学生网</a>
+          <div class="nav-collapse">
+            <ul class="nav">
+              <li><a href="index">导航</a></li>
+	      <li class="active"><a href="#">活动</a></li>
+              <li><a href="act">百科</a></li>
+              <li><a href="ask">问答</a></li>
+	      <li><a href="share">分享</a></li>
+	      <li><a href="vote">调研</a></li>
+	      <li><a href="app">App Engine</a></li>
+	      <li><a href="lab">实验室</a></li>
+	      <li><a href="dev">开发者</a></li>
+            </ul>
+	    <form class="navbar-search pull-left" action="search" method="post">
+	      <input type="text" class="search-query" placeholder="搜索全站" />
+	    </form>
+            <p class="navbar-text pull-right">Logged in as <a href="#">username</a></p>
+          </div><!--/.nav-collapse -->
         </div>
+      </div>
+    </div>
+    <div class="container-fluid">
