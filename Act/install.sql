@@ -52,6 +52,8 @@ CREATE TABLE IF NOT EXISTS ustc_user (
 	INDEX key_dept(`dept`)
 );
 
+INSERT INTO ustc_user SET `username` = 'boj', `password` = '', `salt` = '', `status` = 'active', `student_no` = 'PB10000603', `dept` = '000', `dorm` = '221#328', `phone` = '', `email` = 'boj@mail.ustc.edu.cn', `bbs_id` = 'boj', `register_time` = UNIX_TIMESTAMP();
+
 DROP TABLE IF EXISTS ustc_org;
 CREATE TABLE IF NOT EXISTS ustc_org (
 	`gid` INT(10) NOT NULL AUTO_INCREMENT,
@@ -79,12 +81,18 @@ CREATE TABLE IF NOT EXISTS ustc_act (
 	`aid` INT(10) NOT NULL AUTO_INCREMENT,
 	`pid` INT(10) NOT NULL,
 	`name` VARCHAR(255) NOT NULL,
+	`is_public` TINYINT(1) NOT NULL DEFAULT 0,
+	`act_date` INT(10),
 	`start_time` INT(10),
 	`end_time` INT(10),
+	`apply_place` TINYINT(1) NOT NULL DEFAULT 0,
+	`place_diyname` VARCHAR(255),
 	`placeid` INT(10),
-	`rate` INT(10),
+	`leader` VARCHAR(30),
+	`rate` INT(10) NOT NULL DEFAULT 0,
 	`poster` VARCHAR(255),
 	`description` TEXT,
+	`content` TEXT,
 	`summary` TEXT,
 	PRIMARY KEY(`aid`),
 	INDEX key_pid(`pid`),
@@ -94,9 +102,26 @@ CREATE TABLE IF NOT EXISTS ustc_act (
 	INDEX key_rate(`rate`)
 );
 
-INSERT INTO ustc_act SET pid = 1, name = '物理爱好者周末', start_time = '1335242497', end_time = '1336000000', placeid = 1, rate = 5, description = '让我们见证光与电的威力。若是校外活动，则需在活动出发3个工作日前提交《中国科学技术大学学生校外活动组织单位安全承诺书》和《中国科学技术大学学生校外活动个人安全承诺书》；否则，活动不予举办。';
-INSERT INTO ustc_act SET pid = 1, name = '五月风科技文化节开幕式', start_time = '1335242497', end_time = '1336000000', placeid = 2, rate = 0, description = '让我们见证光与电的威力。若是校外活动，则需在活动出发3个工作日前提交《中国科学技术大学学生校外活动组织单位安全承诺书》和《中国科学技术大学学生校外活动个人安全承诺书》；否则，活动不予举办。';
-INSERT INTO ustc_act SET pid = 2, name = 'LUG每周小聚', start_time = '1335242497', end_time = '1336000000', placeid = 3, rate = 5, description = '让我们见证光与电的威力。若是校外活动，则需在活动出发3个工作日前提交《中国科学技术大学学生校外活动组织单位安全承诺书》和《中国科学技术大学学生校外活动个人安全承诺书》；否则，活动不予举办。';
+INSERT INTO ustc_act SET pid = 1, name = '物理爱好者周末', is_public = 1, apply_place = 1, start_time = '1335242497', end_time = '1336000000', placeid = 1, rate = 5, description = '让我们见证光与电的威力。若是校外活动，则需在活动出发3个工作日前提交《中国科学技术大学学生校外活动组织单位安全承诺书》和《中国科学技术大学学生校外活动个人安全承诺书》；否则，活动不予举办。';
+INSERT INTO ustc_act SET pid = 1, name = '五月风科技文化节开幕式', is_public = 1, apply_place = 1, start_time = '1335242497', end_time = '1336000000', placeid = 2, rate = 0, description = '让我们见证光与电的威力。若是校外活动，则需在活动出发3个工作日前提交《中国科学技术大学学生校外活动组织单位安全承诺书》和《中国科学技术大学学生校外活动个人安全承诺书》；否则，活动不予举办。';
+INSERT INTO ustc_act SET pid = 2, name = 'LUG每周小聚', is_public = 1, apply_place = 1, start_time = '1335242497', end_time = '1336000000', placeid = 3, rate = 5, description = '让我们见证光与电的威力。若是校外活动，则需在活动出发3个工作日前提交《中国科学技术大学学生校外活动组织单位安全承诺书》和《中国科学技术大学学生校外活动个人安全承诺书》；否则，活动不予举办。', content = '<h2>Linux用户协会</h2>
+中国科学技术大学Linux用户协会（Linux User Group，简称“LUG”）是由中国科学技术大学在校的GNU/Linux爱好者发起并组成的一个全校性群众团体。成立LUG的目的在于联合科大的GNU/Linux使用者，搭建信息交流共享的平台，宣传自由软件的价值，提高自由软件社区文化氛围, 推广自由软件在科大校园乃至合肥地区的应用。
+<p>
+LUG成立于2003年，至今已经走过了8个年头，是安徽省高校中唯一一个以推广自由软件社区文化、宣传自由软件价值的协会组织。在各届LUG成员和志愿者的共同努力下，LUG开展了许多有意义的活动，如Linux网络技术讲座、“GNU/Linux Install Party”、PMP中的嵌入式Linux技术讲座、Oracle和开源技术报告、“合肥地区开源软件竞赛”、自由软件日技术沙龙和多次GNU/Linux系统使用和编程讲座。
+<p>
+自2003年开始，LUG开始维护国内知名的Debian镜像服务器http://debian.ustc.edu.cn，目前，在中国科大对服务器硬件和带宽的支持下，该镜像已经成为Debian在中国的主力镜像。在中科龙梦的帮助下，LUG使用龙芯盒子建立起了freeshell服务器，为科大校友提供尝试GNU/Linux和龙芯服务的机会。在网络信息中心的帮助下，协会建立了PXE网络启动系统，使得在校内可以很快的试用和安装系统。并维护图书馆的无盘查询系统。
+<p>
+为了表彰其在2010-2011学年的出色表现，LUG于2011年5月被评为中国科学技术大学优秀学生社团协会主页。
+<p>
+<h2>Linux User Group @USTC</h2>
+USTC LUG is abbreviation for Linux User Group (LUG) of University of Science and Technology of China (USTC). USTC LUG is a technology-leading association which consists of the GNU/Linux enthusiasts in USTC. The aim of USTC LUG is to unite the GNU/Linux users in USTC, to build a platform for information sharing, to share the value of free software, and to promote the using of free software in USTC and Hefei City.
+<p>
+Founded in 2003, USTC LUG has been gone through eight years. At present it is the only university association in Anhui province to promote the free software culture and value. Due to the combined efforts of its members and volunteers, USTC LUG has organized a number of meaningful activities, such as: Linux network technology seminar, GNU / Linux Install Party, PMP Embedded Linux technical seminars, Oracle and open source technologies seminars, Open Source Software Competition in Hefei, Software Freedom Day, A series of systems using and programming lectures.
+<p>
+USTC LUG started maintaining the well known Debian archive mirror debian.ustc.edu.cn in 2003, and now, with better hardware and bandwidth sponsored by USTC, it is finally becoming the official mirror of China. In addition, USTC LUG has established a freeshell server running on Loongson CPU, serving the whole campus to provide online experience on GNU/Linux. With the assistance of USTC Network Information Center, USTC LUG has set up a PXE network booting system, enabling the whole campus to perform convenient installs or quickly experience the system.
+<p>
+In recognition of its excellent performance between 2010 and 2011, USTC LUG was awarded the Outstanding Association of USTC in May 2011. Homepage of LUG@USTC';
+
 
 DROP TABLE IF EXISTS ustc_act_tag;
 CREATE TABLE IF NOT EXISTS ustc_act_tag (
@@ -110,6 +135,25 @@ INSERT INTO ustc_act_tag SET aid = 1, tag = '活动';
 INSERT INTO ustc_act_tag SET aid = 1, tag = '比赛';
 INSERT INTO ustc_act_tag SET aid = 2, tag = '比赛';
 INSERT INTO ustc_act_tag SET aid = 3, tag = '讲座';
+
+DROP TABLE IF EXISTS ustc_act_comment;
+CREATE TABLE IF NOT EXISTS ustc_act_comment (
+	`id` INT(10) NOT NULL AUTO_INCREMENT,
+	`aid` INT(10) NOT NULL,
+	`uid` INT(10) NOT NULL,
+	`time` INT(10) NOT NULL,
+	`rate` INT(10) NOT NULL DEFAULT 0,
+	`public` TINYINT(1) NOT NULL DEFAULT 1,
+	`content` TEXT,
+	PRIMARY KEY(`id`),
+	INDEX key_aid(`aid`),
+	INDEX key_uid(`uid`)
+);
+
+INSERT INTO ustc_act_comment SET aid = '2', `uid` = '1', `public` = 1, time = UNIX_TIMESTAMP(), content = 'Hello World!';
+INSERT INTO ustc_act_comment SET aid = '3', `uid` = '1', `public` = 1, time = UNIX_TIMESTAMP(), content = '这是第一条评论。';
+INSERT INTO ustc_act_comment SET aid = '3', `uid` = '1', `public` = 0, time = UNIX_TIMESTAMP(), content = '这是第二条评论（不公开）';
+INSERT INTO ustc_act_comment SET aid = '3', `uid` = '1', `public` = 1, time = UNIX_TIMESTAMP(), content = '这是第三条评论';
 
 DROP TABLE IF EXISTS ustc_place;
 CREATE TABLE IF NOT EXISTS ustc_place (
@@ -164,6 +208,7 @@ CREATE TABLE IF NOT EXISTS ustc_plan (
 	INDEX key_gid(`gid`),
 	INDEX key_time(`time`)
 );
+
 INSERT INTO ustc_plan SET pid = 1, status = 'executing', gid = 1, host_org = '校团委', assistant_org = '', version = 1, time = '1335242497', name = '物理爱好者周末', leader_uid = '1', start_time = '1335200000', end_time = '1335300000';
 INSERT INTO ustc_plan SET pid = 2, status = 'finished', gid = 2, host_org = '校团委', assistant_org = '校学生Linux协会', version = 1, time = '1335242497', name = 'LUG每周小聚', leader_uid = '1', start_time = '1335200000', end_time = '1335300000';
 
@@ -178,6 +223,7 @@ CREATE TABLE IF NOT EXISTS ustc_plan_budget (
 CREATE TABLE IF NOT EXISTS ustc_plan_audit (
 	`uid` INT(10) NOT NULL,
 	`pid` INT(10) NOT NULL,
+	`stage` TINYINT(1) NOT NULL,
 	`action` ENUM('approve', 'reject') NOT NULL,
 	`message` TEXT NOT NULL,
 	`time` INT(10) NOT NULL,
@@ -203,6 +249,7 @@ CREATE TABLE IF NOT EXISTS ustc_plan_public_relation (
 	`pid` INT(10) NOT NULL,
 	`target` VARCHAR(255) NOT NULL,
 	`purpose` VARCHAR(255) NOT NULL,
+	`leader` VARCHAR(30) NOT NULL,
 	`uid` INT(10) NOT NULL,
 	INDEX key_pid(`pid`)
 );

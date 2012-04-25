@@ -1,0 +1,79 @@
+<php>if (empty($page) || empty($plan)) {
+throw_exception('请使用正常方式访问此页面！');
+} </php>
+<eq name="page" value="1">
+<h1>中国科学技术大学团学活动项目实施计划书</h1>
+<table class="table table-bordered">
+<tbody>
+<tr><td>项目名称</td><td colspan="6"><input type="text" name="name" value="{$plan.name}" /></td></tr>
+<tr><td>申报单位</td><td colspan="3">{$plan.org.name}</td><td>申报时间</td><td colspan="2">{:date("Y年m月d日", time())}</td></tr>
+<tr><td>组织部门</td><td>主办</td><td>{$plan.host_org}</td><td>承办</td><td>{$plan.org.name}</td><td>协办</td><td>{$plan.assistant_org}</td></tr>
+<tr><td rowspan="3">项目组负责人</td><td>姓名</td><td>{$plan.leader.name}</td><td>院系</td><td>{$plan.leader.dept}</td><td>学号</td><td>{$plan.leader.student_no}</td></tr>
+<tr><td>住址</td><td>{$plan.leader.dorm}</td><td>手机号码</td><td>{$plan.leader.phone}</td><td>BBS ID</td><td>{$plan.leader.bbs_id}</td></tr>
+<tr><td>E-mail</td><td colspan="3">{$plan.leader.dorm}</td><td>职务</td><td>{$plan.leader.title}</td></tr>
+<tr><td>实施时间</td><td colspan="4">自 <input type="text" name="start_time" value="{$plan.start_time}" /> 到 <input type="text" name="end_time" value="{$plan.end_time}" /></td><td>计划参加人数</td><td>{$plan.predicted_people}</td></tr>
+<tr><td>是否校外活动</td><td><input type="checkbox" name="is_outside" /></td><td colspan="5"><span style="font-size:12px">若是校外活动，则需在活动出发3个工作日前提交《中国科学技术大学学生校外活动组织单位安全承诺书》和《中国科学技术大学学生校外活动个人安全承诺书》；否则，活动不予举办。</span></td></tr>
+</tbody>
+</table>
+<h2>组织方式构想</h2>
+<p><textarea name="orgnization_design" rows="6">{$plan.orgnization_design}</textarea></p>
+<h2>经费预算</h2>
+<table><tr><th>项目</th><th>单价</th><th>数量</th><th>金额</th><th>操作</th></tr>
+<volist name="plan.budget" id="budget" key="k">
+<tr><td><input type="text" name="budget.{$k}.name" value="{$budget.name}" /></td><td><input type="text" name="budget.{$k}.unit_price" value="{$budget.unit_price}" /></td><td><input type="text" name="budget.{$k}.number" value="{$budget.number}" /></td><td><span id="budget.{$k}.total">{:budget['number']*budget['unit_price']}</span></td><td><a href="#">删除</a></td></tr>
+</volist>
+</table>
+<p><a class="btn" href="#">新增一项</a></p>
+<h2>审批意见</h2>
+<table class="table table-bordered">
+<tbody>
+<in name="plan.org.type" value="young_comm,club">
+<tr><td>一级审批意见</td><td colspan="6"><textarea name="audit.stage1" rows="5">{$plan.audit.1}</textarea></td></tr>
+<tr><td>二级审批意见</td><td colspan="6"><textarea name="audit.stage2" rows="5">{$plan.audit.2}</textarea></td></tr>
+</else />
+<tr><td colspan="4">一级审批意见</td><td colspan="3">二级审批意见</td></tr>
+<tr><td colspan="4"><textarea name="audit.stage1" rows="5">{$plan.audit.1}</textarea></td><td colspan="3"><textarea name="audit.stage2" rows="5">{$plan.audit.2}</textarea></td></tr>
+<tr><td colspan="4">三级审批意见</td><td colspan="3">四级审批意见</td></tr>
+<tr><td colspan="4"><textarea name="audit.stage3" rows="5">{$plan.audit.3}</textarea></td><td colspan="3"><textarea name="audit.stage4" rows="5">{$plan.audit.4}</textarea></td></tr>
+</in>
+</tbody>
+</table>
+</eq>
+<eq name="page" value="2">
+<h1>计划篇</h1>
+<h2>时间进度</h2>
+<table class="table table-bordered">
+<tr><th>日期</th><th>活动</th><th>地点</th><th>申请场地？</th><th>负责人</th><th>发布？</th><th>操作</th></tr>
+<volist name="plan.act" id="act" key="k">
+<tr><td><input type="text" name="act.{$k}.act_date" value="{$act.act_date}" /></td>
+<td><input type="text" name="act.{$k}.name" value="{$act.name}" /></td>
+<td><input type="hidden" name="act.{$k}.placeid" value="{$act.{$k}.placeid}" />
+<input type="text" name="act.{$k}.place_diyname" value="{$act.place_diyname}" /></td>
+<td><input type="checkbox" name="act.{$k}.apply_place"
+<eq name="act.apply_place" value="1">checked="true"</eq>
+/>申请场地</td>
+<th><input type="text" name="act.{$k}.leader" value="{$act.leader}" /></td>
+<td><input type="checkbox" name="act.{$k}.is_public"
+<eq name="act.is_public" value="1">checked="true"</eq>
+/>发布到首页 <a href="#">完善详情</a></td>
+<td><a href="#" class="btn">删除</a></td>
+</tr>
+</volist>
+</table>
+<p><a class="btn" href="#">新增一项</a></p>
+<h2>校内外联系</h2>
+<table class="table table-bordered">
+<tr><th>请求对象</th><th>目的</th><th>负责人</th><th>操作</th></tr>
+<volist name="plan.public_relation" id="pr" key="r">
+<tr><td><input type="text" name="public_relation.{$k}.target" value="{$pr.target}" /></td>
+<td><input type="text" name="public_relation.{$k}.purpose" value="{$pr.purpose}" /></td>
+</volist>
+</table>
+<p><a class="btn" href="#">新增一项</a></p>
+</eq>
+<eq name="page" value="3">
+<h1>实施篇</h1>
+</eq>
+<eq name="page" value="4">
+<h1>总结篇</h1>
+</eq>
