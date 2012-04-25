@@ -19,6 +19,12 @@ class PlanAction extends Action {
 	}
 
 	public function create() {
+		$model = D('Plan');
+		// assign new plan number
+		// write log
+		// get plan
+		$this->assign('plan', $plan);
+		$this->display('edit');
 	}
 
 	public function edit() {
@@ -29,6 +35,12 @@ class PlanAction extends Action {
 		if (empty($plan))
 			throw_exception('此计划书不存在！');
 		$this->assign('plan', $plan);
+
+		if (is_numeric($_GET['_URL_'][3]))
+			$page = $_GET['_URL_'][3];
+		else
+			$page = 1;
+		$this->assign('page', $page);
 		$this->display();
 	}
 
@@ -36,6 +48,20 @@ class PlanAction extends Action {
 	}
 
 	public function preview($content) {
+		$model = D('Plan');
+		if (!is_numeric($_GET['_URL_'][2]))
+			throw_exception('您要预览哪份计划书？');
+		$plan = $model->relation(true)->where(array('pid'=>$_GET['_URL_'][2]))->find();
+		if (empty($plan))
+			throw_exception('此计划书不存在！');
+		$this->assign('plan', $plan);
+
+		if (is_numeric($_GET['_URL_'][3]))
+			$page = $_GET['_URL_'][3];
+		else
+			$page = 1;
+		$this->assign('page', $page);
+		$this->display();
 	}
 
 	public function submit($project_id) {

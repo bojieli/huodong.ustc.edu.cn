@@ -1,0 +1,19 @@
+<table class="table table-striped">
+<tr><th>日期</th><th>活动</th><th>地点</th><th>申请场地？</th><th>负责人</th><th>发布？</th><th>操作</th></tr>
+<volist name="plan.act" id="act" key="k">
+<tr><td><input type="text" name="act.{$k}.act_date" value="{$act.act_date}" /></td>
+<td><input type="text" name="act.{$k}.name" value="{$act.name}" /></td>
+<td><input type="hidden" name="act.{$k}.placeid" value="{$act.{$k}.placeid}" />
+<input type="text" name="act.{$k}.place_diyname" value="{$act.place_diyname}" /></td>
+<td><input type="checkbox" name="act.{$k}.apply_place"
+<eq name="act.apply_place" value="1">checked="true"</eq>
+/>申请场地</td>
+<th><input type="text" name="act.{$k}.leader" value="{$act.leader}" /></td>
+<td><input type="checkbox" name="act.{$k}.is_public"
+<eq name="act.is_public" value="1">checked="true"</eq>
+/>发布到首页 <a href="#">完善详情</a></td>
+<td><a href="#" class="btn">删除</a> <a href="#" class="btn">历史版本</a></td>
+</tr>
+</volist>
+</table>
+<p><a class="btn" href="#">新增一项</a></p>

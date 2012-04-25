@@ -200,6 +200,7 @@ CREATE TABLE IF NOT EXISTS ustc_plan (
 	`predicted_people` INT(10),
 	`is_outside` BOOLEAN,
 	`orgnization_design` TEXT,
+	`additional_note` TEXT,
 	`experience_and_shortcoming` TEXT,
 	`summary` TEXT,
 	
@@ -277,7 +278,7 @@ CREATE TABLE IF NOT EXISTS ustc_plan_outside_participant (
 
 CREATE TABLE IF NOT EXISTS ustc_plan_sponsor (
 	`pid` INT(10) NOT NULL,
-	`sponsor` VARCHAR(255) NOT NULL,
+	`name` VARCHAR(255) NOT NULL,
 	`money` VARCHAR(10) NOT NULL,
 	`note` VARCHAR(255) NOT NULL,
 	INDEX key_pid(`pid`)
@@ -285,7 +286,8 @@ CREATE TABLE IF NOT EXISTS ustc_plan_sponsor (
 
 CREATE TABLE IF NOT EXISTS ustc_plan_account_book (
 	`pid` INT(10) NOT NULL,
-	`purpose` VARCHAR(255) NOT NULL,
+	`name` VARCHAR(255) NOT NULL,
+	`money` VARCHAR(10) NOT NULL,
 	`note` VARCHAR(255) NOT NULL,
 	INDEX key_pid(`pid`)
 );
@@ -354,6 +356,7 @@ CREATE TABLE IF NOT EXISTS ustc_act_attachment (
 CREATE TABLE IF NOT EXISTS ustc_plan_attachment (
 	`pid` INT(10) NOT NULL,
 	`attachid` INT(10) NOT NULL,
+	`page` TINYINT(1) NOT NULL,
 	INDEX key_pid(`pid`)
 );
 
