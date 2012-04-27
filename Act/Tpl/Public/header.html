@@ -1,4 +1,7 @@
 <!DOCTYPE html>
+<?php
+$baseurl = strstr($_SERVER['REQUEST_URI'], '/Act', true);
+?>
 <html lang="en">
   <head>
     <meta charset="utf-8">
@@ -7,7 +10,7 @@
     <meta name="description" content="科大学生活动的计划书审批、场地申请、信息发布平台">
     <meta name="author" content="boj">
     <!-- Le styles -->
-    <link href="/bootstrap/css/bootstrap.css" rel="stylesheet">
+    <link href="{$baseurl}/bootstrap/css/bootstrap.css" rel="stylesheet">
     <style type="text/css">
       body {
         padding-top: 60px;
@@ -17,16 +20,16 @@
         padding: 9px 0;
       }
     </style>
-    <link href="../bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
+    <link href="{$baseurl}/bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
     <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
       <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
     <!-- Le fav and touch icons -->
-    <link rel="shortcut icon" href="/bootstrap/ico/favicon.ico">
-    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="/bootstrap/ico/apple-touch-icon-114-precomposed.png">
-    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="/bootstrap/ico/apple-touch-icon-72-precomposed.png">
-    <link rel="apple-touch-icon-precomposed" href="/bootstrap/ico/apple-touch-icon-57-precomposed.png">
+    <link rel="shortcut icon" href="{$baseurl}/bootstrap/ico/favicon.ico">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="{$baseurl}/bootstrap/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="{$baseurl}/bootstrap/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="{$baseurl}/bootstrap/ico/apple-touch-icon-57-precomposed.png">
   </head>
   <body>
     <div class="navbar navbar-fixed-top">
@@ -40,15 +43,15 @@
           <a class="brand" href="index">科大学生网</a>
           <div class="nav-collapse">
             <ul class="nav">
-              <li><a href="index">导航</a></li>
+              <li><a href="index" target="_blank">导航</a></li>
 	      <li class="active"><a href="#">活动</a></li>
-              <li><a href="act">百科</a></li>
-              <li><a href="ask">问答</a></li>
-	      <li><a href="share">分享</a></li>
-	      <li><a href="vote">调研</a></li>
-	      <li><a href="app">App Engine</a></li>
-	      <li><a href="lab">实验室</a></li>
-	      <li><a href="dev">开发者</a></li>
+              <li><a href="act" target="_blank">百科</a></li>
+              <li><a href="ask" target="_blank">问答</a></li>
+	      <li><a href="share" target="_blank">分享</a></li>
+	      <li><a href="vote" target="_blank">调研</a></li>
+	      <li><a href="app" target="_blank">App Engine</a></li>
+	      <li><a href="lab" target="_blank">实验室</a></li>
+	      <li><a href="dev" target="_blank">开发者</a></li>
             </ul>
 	    <form class="navbar-search pull-left" action="search" method="post">
 	      <input type="text" class="search-query" placeholder="搜索全站" />
