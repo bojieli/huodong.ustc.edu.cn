@@ -1,0 +1,80 @@
+<TagLib name="html" />
+<include file="Public:header" />
+  <div class="row-fluid">
+    <div class="span2">
+    </div>
+
+    <div class="span8">
+      <div class="modal">
+        <div class="modal-header">
+	  <button type="button" class="close" data-dismiss="modal">×</button>
+	  <h3>注册 - 详细信息</h3>
+	</div>
+        <div class="modal-body">
+	  <p>恭喜您注册成功！在加入社团之前，还需要您的一些真实信息。<a href="#">隐私声明</a></p>
+	  <p class="divider"></p>
+	  <form class="form-horizontal">
+	    <fieldset>
+	      <div class="control-group">
+	        <label class="control-label" for="school">学校</label>
+	        <div class="controls">
+	          <select id="school">
+		    <option value="USTC">中国科学技术大学</option>
+		  </select>
+	          <p class="help-block">没有找到你的学校？<a href="#">联系我们</a>开通</p>
+	        </div>
+	      </div>
+	      <div class="control-group">
+	        <label class="control-label" for="studentId">学号</label>
+	        <div class="controls">
+	          <input type="text" class="input-large" id="studentId">
+	        </div>
+	      </div>
+	      <div class="control-group">
+	        <label class="control-label" for="gender">性别</label>
+	        <div class="controls">
+		  <label class="radio">
+	            <input type="radio" value="1" name="gender">男
+		  </label>
+		  <label class="radio">		  
+		    <input type="radio" value="0" name="gender">女
+		  </label>
+	        </div>
+	      </div>
+	      <div class="control-group">
+	        <label class="control-label" for="major">专业</label>
+	        <div class="controls">
+	          <select id="major">
+		    <option value="">请选择</option>
+		    <option value="1">数学</option>
+		    <option value="2">物理</option>
+		    <option value="6">信息</option>
+		    <option value="11">计算机</option>
+		  </select>
+	        </div>
+	      </div>
+	      <div class="control-group">
+	        <label class="control-label" for="class">班级</label>
+	        <div class="controls">
+	          <input type="text" class="input-small" id="grade"> 级 <input type="text" class="input-small" id="class"/> 班
+	        </div>
+	      </div>
+	      <div class="control-group">
+	        <label class="control-label" for="hobby">兴趣爱好</label>
+	        <div class="controls">
+	          <textarea class="input-large" id="hobby" rows="3"></textarea>
+	        </div>
+	      </div>
+	    </fieldset>
+	  </form>
+        </div>
+	<div class="modal-footer">
+	  <a href="registerAvatar" class="btn" data-dismiss="modal">跳过</a>
+	  <a href="registerAvatar" class="btn btn-primary">下一步</a>
+	</div>
+      </div>
+    </div>
+
+    <div class="span2">
+    </div>
+  </div>

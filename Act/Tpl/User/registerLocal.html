@@ -1,0 +1,56 @@
+<TagLib name="html" />
+<include file="Public:header" />
+  <div class="row-fluid">
+    <div class="span2">
+    </div>
+
+    <div class="span8">
+      <div class="modal">
+        <div class="modal-header">
+	  <button type="button" class="close" data-dismiss="modal">×</button>
+	  <h3>注册 - 基本信息</h3>
+	</div>
+        <div class="modal-body">
+          <form class="form-horizontal">
+            <fieldset>
+              <div class="control-group">
+                <label class="control-label" for="realname">真实姓名</label>
+                <div class="controls">
+                  <input type="text" class="input-large" id="realname" name="realname" onblur="if(this.value=='') $('#realname').parent().parent().addClass('error'); else $('#realname').parent().parent().removeClass('error');">
+                </div>
+	      </div>
+	      <div class="control-group">
+		<label class="control-label" for="email">Email</label>
+		<div class="controls">
+                  <input type="text" class="input-large" id="email" name="email" onblur="if(this.value=='') $('#email').parent().parent().addClass('error'); else $('#email').parent().parent().removeClass('error');">
+                  <p class="help-block">邮箱地址不仅用于登录，还将用于接收各种通知和社团活动信息。推荐使用139邮箱(<a href="#">帮助</a>)，以便用短信方式接收邮件通知。</p>
+		</div>
+              </div>
+              <div class="control-group">
+                <label class="control-label" for="password">密码</label>
+                <div class="controls">
+                  <input type="password" class="input-large" id="password" name="password" onblur="if(this.value=='') $('#password').parent().parent().addClass('error'); else $('#password').parent().parent().removeClass('error');">
+                  <p class="help-block">不是邮箱密码，而是以后登录社团管理平台的密码哦~</p>
+                </div>
+	      </div>
+              <div class="control-group">
+                <label class="control-label" for="passwordCheck">确认密码</label>
+                <div class="controls">
+                  <input type="password" class="input-large" id="passwordCheck" name="passwordCheck" onblur="if(this.value !== $('#password').val()) { $('#passwordCheck').parent().parent().addClass('error'); $('#passwordMismatch').show();} else { $('#passwordCheck').parent().parent().removeClass('error'); $('#passwordMismatch').hide();}">
+		  <p class="help-block" id="passwordMismatch" style="display:none">两次密码不匹配</p>
+                </div>
+	      </div>
+            </fieldset>
+          </form>
+        </div>
+	<div class="modal-footer">
+	  <a href="register" class="btn" data-dismiss="modal">上一步</a>
+	  <a href="registerEmail" class="btn btn-primary">下一步</a>
+	</div>
+      </div>
+    </div>
+
+    <div class="span2">
+    </div>
+  </div>
+<include file="Public:footer" />

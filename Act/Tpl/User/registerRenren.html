@@ -1,0 +1,49 @@
+<TagLib name="html" />
+<include file="Public:header" />
+  <div class="row-fluid">
+    <div class="span2">
+    </div>
+
+    <div class="span8">
+      <div class="modal">
+        <div class="modal-header">
+	  <button type="button" class="close" data-dismiss="modal">×</button>
+	  <h3>注册 - 绑定人人帐号</h3>
+	</div>
+        <div class="modal-body">
+	  <p>绑定成功！以后可以用人人帐号登录社团信息平台了。系统从人人网获取了您的如下信息，请核对：</p>
+          <form class="form-horizontal">
+            <fieldset>
+              <div class="control-group">
+                <label class="control-label" for="realname">真实姓名</label>
+                <div class="controls">
+                  <input type="text" value="张三" class="input-large" id="realname" name="realname" onblur="if(this.value=='') $('#realname').parent().parent().addClass('error'); else $('#realname').parent().parent().removeClass('error');">
+                </div>
+	      </div>
+	      <div class="control-group">
+		<label class="control-label" for="email">Email</label>
+		<div class="controls">
+                  <input type="text" value="zhangsan@mail.ustc.edu.cn" class="input-large" id="email" name="email" onblur="if(this.value=='') $('#email').parent().parent().addClass('error'); else $('#email').parent().parent().removeClass('error');">
+                  <p class="help-block">邮箱地址将用于接收各种通知和社团活动信息。<br /><strong>推荐使用139邮箱</strong>(<a href="#">帮助</a>)，以便用短信方式接收邮件通知。</p>
+		</div>
+              </div>
+	      <div class="control-group">
+	        <label class="control-label" for="avatar">头像</label>
+		<div class="controls thumbnail">
+		  <img src="http://placehold.it/260x180" alt="">
+		</div>
+	      </div>
+            </fieldset>
+          </form>
+	</div>
+	
+	<div class="modal-footer">
+	  <a href="register" class="btn" data-dismiss="modal">上一步</a>
+	  <a href="registerInfo" class="btn btn-primary">下一步</a>
+	</div>
+      </div>
+    </div>
+
+    <div class="span2">
+    </div>
+  </div>

@@ -1,0 +1,37 @@
+<tagLib name="html" />
+<include file="Public:header" />
+      <div class="row-fluid">
+        <div class="span2">
+          <div class="well sidebar-nav">
+            <ul class="nav nav-list">
+	      <li class="nav-header">时间</li>
+	      <li class="active"><a href="?date=today">今天</a></li>
+	      <li><a href="?date=nextweek">下周</a></li>
+	      <li><a href="?date=nextmonth">下月</a></li>
+	      <li><a href="?date=history">过往</a></li>
+              <li class="nav-header">类型</li>
+              <li><a href="?type=1">比赛</a></li>
+              <li><a href="?type=2">报告</a></li>
+              <li><a href="?type=3">招人</a></li>
+              <li><a href="?type=4">活动</a></li>
+              <li class="nav-header">场地</li>
+              <li><a href="#">东活</a></li>
+              <li><a href="#">西活</a></li>
+              <li><a href="#">一教</a></li>
+	      <li><a href="#">二教</a></li>
+	      <li><a href="#">三教</a></li>
+	      <li><a href="#">五教</a></li>
+            </ul>
+          </div><!--/.well -->
+        </div><!--/span-->
+        <div class="span7">
+	  <include file="TodoList:simple" />
+	  <hr />
+	  <include file="Forum:flow" />
+	</div>
+	<div class="span3">
+	  <h3>资料共享</h3>
+	  <include file="Share:narrow" />
+        </div><!--/span-->
+      </div><!--/row-->
+<include file="Public:footer" />
