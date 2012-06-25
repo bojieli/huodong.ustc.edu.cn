@@ -1,18 +1,4 @@
 -- MySQL commands here to automatically create tables
--- TODO
-
--- History of an object is stored in column `content` in serialize($object) form.
--- OOP should be used instead of associasive arrays.
-
--- IDs should be different. Assigned IDs:
---	uid			user
---	gid			group (organization)
---	pid			project, plan (one-one correspondence)
---	aid			act (activity)
---	fid			forum
---	fpid		forum post
---	applyid		place apply
---	attachid	attachment
 
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -22,89 +8,219 @@ SET time_zone = "+00:00";
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
 /*!40101 SET NAMES utf8 */;
 
+-- BEGIN Club Management Platform
+
+/**
+ * Notes on table structure
+ * 1. All columns which might appear in condition of a query with a result
+ *    set larger than 100 rows, should be indexed.
+ * 2. All columns should be NOT NULL for performance.
+ * 3. Most tables should be subject to Boyce-Codd Normal Form, while
+ *    some redundancy can be used to improve performance (e.g. the number of
+ *    posts in a thread which is to be displayed in the forum page).
+ * 4. All nouns should be in single form.
+ * 5. All words should be in lower case and separated by an underscore.
+ * 6. All primary keys (IDs) should be different. Here are some of them:
+	uid		user
+	gid		group (organization)
+	sid		school
+	pid		project
+	aid		activity (act)
+	attachid	attachment
+ */
+/**
+ * Notes on queries
+ * 1. All column names should be quoted by `, all data should be quoted by '.
+ * 2. All input should be sanitized before forming the query string.
+ * 3. When retrieving data, objects should be used instead of associasive arrays.
+ */
+
 CREATE DATABASE IF NOT EXISTS campus;
 GRANT ALL PRIVILEGES ON campus.* TO 'campus-web'@'localhost' IDENTIFIED BY 'cc78c1fe' WITH GRANT OPTION;
 
 USE campus;
 
+-- BEGIN basic info
+
+-- Here saves the most frequently accessed data of a user
 CREATE TABLE IF NOT EXISTS ustc_user (
 	`uid` INT(10) NOT NULL AUTO_INCREMENT,
-	`username` VARCHAR(50) NOT NULL,
-	`password` CHAR(32) NOT NULL,
-	`salt` CHAR(10) NOT NULL,
-	`status` ENUM('active', 'locked', 'initial'),
-	`student_no` VARCHAR(15) NOT NULL,
-	`dept` INT(5) NOT NULL,
-	`dorm` VARCHAR(255) NOT NULL,
-	`phone` VARCHAR(20) NOT NULL,
+	`realname` VARCHAR(50) NOT NULL,
+	`login_type` TINYINT(1) NOT NULL, -- 0 for local, 1 for Renren.com
 	`email` VARCHAR(100) NOT NULL,
-	`bbs_id` VARCHAR(100) NOT NULL,
-	`register_time` INT(10) NOT NULL,
-	`last_login_time` INT(10) NOT NULL DEFAULT '0',
-	`login_count` INT(10) NOT NULL DEFAULT '0',
+	`password` CHAR(32) NOT NULL, -- password = md5(md5(input) + salt)
+	`salt` CHAR(10) NOT NULL, -- for password
+	`status` ENUM('active', 'locked', 'inactivated'),
+	`sid` INT(10) NOT NULL, -- school id
+	-- avatar is not saved in database because the filename of the image is `uid`
 	PRIMARY KEY (`uid`),
-	INDEX key_username(`username`),
+	INDEX key_realname(`realname`),
+	INDEX key_email(`email`),
+	INDEX key_school(`school`),
+);
+
+-- Our website had better not save information with much privacy
+CREATE TABLE IF NOT EXISTS ustc_user_profile (
+	`uid` INT(10) NOT NULL,
+	`student_no` VARCHAR(15) NOT NULL,
+	`gender` TINYINT(1) NOT NULL, -- 0 for girl, 1 for boy
+	`major` INT(4) NOT NULL, -- code for major
+	`grade` INT(4) NOT NULL, -- year of admission
+	`class` INT(4) NOT NULL, -- code for class in the same grade
+	`register_time` INT(10) NOT NULL, -- unix timestamp
+	`hobby` TEXT NOT NULL,
+	PRIMARY KEY (`uid`),
 	INDEX key_student_no(`student_no`),
-	INDEX key_dept(`dept`)
+	INDEX key_major(`major`),
+	INDEX key_grade(`grade`),
+	INDEX key_register_time(`register_time`),
+	INDEX key_last_login_time(`last_login_time`),
+	INDEX key_login_count(`login_count`)
+);
+
+CREATE TABLE IF NOT EXISTS ustc_login_log (
+	`uid` INT(10) NOT NULL,
+	`time` INT(10) NOT NULL, -- unix timestamp
+	`method` TINYINT(1) NOT NULL DEFAULT '0', -- 0 for local, 1 for Renren
+	`result` ENUM('success', 'failed'),
+	INDEX key_uid(`uid`),
+	INDEX key_time(`time`),
+	INDEX key_method(`method`),
+	INDEX key_result(`result`)
 );
 
 CREATE TABLE IF NOT EXISTS ustc_org (
 	`gid` INT(10) NOT NULL AUTO_INCREMENT,
+	`sid` INT(10) NOT NULL,
+	`owner` INT(10) NOT NULL, -- uid
+	`status` ENUM('active', 'locked', 'inactivated'),
 	`name` VARCHAR(255) NOT NULL,
-	`fid` INT(10) NOT NULL,
-	`type` ENUM('young_comm', 'student_union', 'graduate_union', 'club', 'teacher'),
-	PRIMARY KEY (`gid`)
+	PRIMARY KEY (`gid`),
+	INDEX key_sid(`sid`),
+	INDEX key_status(`status`)
 );
 
+-- Correlation of users and orgs
 CREATE TABLE IF NOT EXISTS ustc_user_org (
 	`uid` INT(10) NOT NULL,
 	`gid` INT(10) NOT NULL,
-	`priv` ENUM('root', 'admin', 'member'),
+	`priv` ENUM('admin', 'manager', 'member'),
 	`title` VARCHAR(255) NOT NULL,
 	INDEX key_uid(`uid`),
 	INDEX key_gid(`gid`)
 );
 
--- `poster` is attachid of the image
+-- If a user is in org, he/she should be in the follow list
+CREATE TABLE IF NOT EXISTS ustc_follow_org (
+	`uid` INT(10) NOT NULL,
+	`gid` INT(10) NOT NULL,
+	`start_time` INT(10) NOT NULL, -- unix timestamp
+	INDEX key_uid(`uid`),
+	INDEX key_gid(`gid`)
+);
+
+CREATE TABLE IF NOT EXISTS ustc_school (
+	`sid` INT(10) NOT NULL AUTO_INCREMENT,
+	`admin` INT(10) NOT NULL,
+	PRIMARY KEY (`sid`),
+	INDEX key_admin(`admin`)
+);
+-- END basic info
+
+-- BEGIN Poster module
 CREATE TABLE IF NOT EXISTS ustc_act (
 	`aid` INT(10) NOT NULL AUTO_INCREMENT,
-	`pid` INT(10) NOT NULL,
+	`gid` INT(10) NOT NULL,
 	`name` VARCHAR(255) NOT NULL,
-	`start_time` INT(10),
-	`end_time` INT(10),
+	`start_time` INT(10), -- unix timestamp
+	`end_time` INT(10), -- unix timestamp
 	`place` VARCHAR(255),
-	`rate` INT(10),
-	`poster` VARCHAR(255),
+	`rate` INT(10) NOT NULL DEFAULT '0',
+	`shared` INT(10) NOT NULL DEFAULT '0',
+	`poster` VARCHAR(255), -- filename of poster image
 	`description` TEXT,
-	`summary` TEXT,
 	PRIMARY KEY(`aid`),
-	INDEX key_pid(`pid`),
+	INDEX key_pid(`gid`),
 	INDEX key_starttime(`start_time`),
 	INDEX key_endtime(`end_time`),
 	INDEX key_place(`place`),
 	INDEX key_rate(`rate`)
 );
 
+/* not used
 CREATE TABLE IF NOT EXISTS ustc_act_tag (
 	`aid` INT(10) NOT NULL,
 	`tag` VARCHAR(255) NOT NULL,
 	INDEX key_aid(`aid`),
 	INDEX key_tag(`tag`)
 );
+*/
 
+/* not used
 CREATE TABLE IF NOT EXISTS ustc_act_history (
 	`aid` INT(10) NOT NULL,
 	`uid` INT(10) NOT NULL,
 	`time` INT(10) NOT NULL,
 	`content` TEXT NOT NULL
 );
+*/
+CREATE TABLE IF NOT EXISTS ustc_act_comment (
+	`cid` INT(10) NOT NULL AUTO_INCREMENT,
+	`aid` INT(10) NOT NULL,
+	`gid` INT(10) NOT NULL, -- redundant
+	`author` INT(10) NOT NULL, -- uid
+	`content` TEXT,
+	PRIMARY KEY (`cid`),
+	INDEX key_aid(`aid`),
+	INDEX key_gid(`gid`),
+	INDEX key_author(`author`)
+);
+-- END Poster module
 
-CREATE TABLE IF NOT EXISTS ustc_project (
-	`pid` INT(10) NOT NULL AUTO_INCREMENT,
-	`fid` INT(10) NOT NULL,
-	PRIMARY KEY(`pid`)
+-- BEGIN TodoList module
+CREATE TABLE IF NOT EXISTS ustc_todolist (
+	`item` INT(10) NOT NULL AUTO_INCREMENT,
+	`gid` INT(10) NOT NULL,
+	`pid` INT(10) NOT NULL, -- project id
+	`author` INT(10) NOT NULL,
+	`status` ENUM('doing', 'complete') NOT NULL,
+	`content` TEXT NOT NULL,
+	PRIMARY KEY (`item`),
+	INDEX key_gid(`gid`),
+	INDEX key_uid(`pid`),
+	INDEX key_author(`author`),
+	INDEX key_status(`status`)
 );
 
+CREATE TABLE IF NOT EXISTS ustc_todolist_history (
+	`item` INT(10) NOT NULL,
+	`uid` INT(10) NOT NULL, -- operator
+	`operation` ENUM('create', 'delete', 'update', 'complete', 'incomplete') NOT NULL,
+	`new_content` TEXT NOT NULL, -- empty for delete operation
+	INDEX key_item(`item`),
+	INDEX key_uid(`uid`),
+	INDEX key_operation(`operation`)
+);
+-- END TodoList module
+
+-- BEGIN Share module
+-- Highly depends on Attachment module
+CREATE TABLE IF NOT EXISTS ustc_share (
+	`attachid` INT(10) NOT NULL,
+	`gid` INT(10) NOT NULL,
+	`pid` INT(10) NOT NULL, -- project id
+	`author` INT(10) NOT NULL,
+	`upload_time` INT(10) NOT NULL, -- unix timestamp
+	`folder` VARCHAR(100) NOT NULL, -- folder name, null for root
+	PRIMARY KEY (`attachid`),
+	INDEX key_gid(`gid`),
+	INDEX key_pid(`pid`),
+	INDEX key_folder(`folder`)
+);
+-- END Share module
+
+/* not used
+-- BEGIN Plansheet module
 CREATE TABLE IF NOT EXISTS ustc_plan (
 	`pid` INT(10) NOT NULL,
 	`status` ENUM('not_submitted', 'pending_approval', 'approved1', 'approved2', 'approved3', 'approved4', 'rejected1', 'rejected2', 'rejected3', 'rejected4', 'executing', 'finished', 'archived'),
@@ -217,7 +333,10 @@ CREATE TABLE IF NOT EXISTS ustc_plan_history (
 	INDEX key_uid(`uid`),
 	INDEX key_time(`time`)
 );
+*/
+-- END Plansheet module
 
+-- BEGIN Forum module
 CREATE TABLE IF NOT EXISTS ustc_forum (
 	`fid` INT(10) NOT NULL AUTO_INCREMENT,
 	`gid` INT(10) NOT NULL,
@@ -228,7 +347,7 @@ CREATE TABLE IF NOT EXISTS ustc_forum (
 CREATE TABLE IF NOT EXISTS ustc_forum_post (
 	`fid` INT(10) NOT NULL,
 	`fpid` INT(10) NOT NULL AUTO_INCREMENT,
-	`parent` INT(10) NOT NULL,
+	`parent` INT(10) NOT NULL, -- Tree-like posts and replies
 	`uid` INT(10) NOT NULL,
 	`time` INT(10) NOT NULL,
 	`content` TEXT,
@@ -238,7 +357,10 @@ CREATE TABLE IF NOT EXISTS ustc_forum_post (
 	INDEX key_uid(`uid`),
 	INDEX key_time(`time`)
 );
+-- END Forum module
 
+-- BEGIN Place Audit module
+/* not used
 CREATE TABLE IF NOT EXISTS ustc_audit_priv (
 	`uid` INT(10) NOT NULL
 );
@@ -251,7 +373,10 @@ CREATE TABLE IF NOT EXISTS ustc_audit_place (
 	`reason` TEXT,
 	PRIMARY KEY(`applyid`)
 );
+*/
+-- END Place Audit module
 
+-- BEGIN Attachment module
 CREATE TABLE IF NOT EXISTS ustc_attachment (
 	`attachid` INT(10) NOT NULL AUTO_INCREMENT,
 	`uid` INT(10) NOT NULL,
@@ -261,6 +386,7 @@ CREATE TABLE IF NOT EXISTS ustc_attachment (
 	PRIMARY KEY (`attachid`)
 );
 
+/* not used
 CREATE TABLE IF NOT EXISTS ustc_act_attachment (
 	`aid` INT(10) NOT NULL,
 	`attachid` INT(10) NOT NULL,
@@ -272,6 +398,29 @@ CREATE TABLE IF NOT EXISTS ustc_plan_attachment (
 	`attachid` INT(10) NOT NULL,
 	INDEX key_pid(`pid`)
 );
+*/
+-- END Attachment module
+
+-- BEGIN Email Notify module
+CREATE TABLE IF NOT EXISTS ustc_email_notify (
+	`source` INT(10) NOT NULL, -- uid
+	`target` INT(10) NOT NULL, -- uid
+	`gid` INT(10) NOT NULL, -- in which org
+	`time` INT(10) NOT NULL, -- unix timestamp
+	`status` ENUM('success', 'failed') NOT NULL,
+	`retry_num` INT(5) INT NULL DEFAULT '0',
+	`last_retry` INT(10) NOT NULL, -- unix timestamp
+	`title` VARCHAR(80) NOT NULL,
+	`content` TEXT,
+	INDEX key_source(`source`),
+	INDEX key_target(`target`),
+	INDEX key_gid(`gid`),
+	INDEX key_time(`time`),
+	IDNEX key_status(`status`)
+);
+-- END Email Notify module
+
+-- END Club Management Platform
 
 -- ThinkPHP
 CREATE DATABASE IF NOT EXISTS ThinkPHP;
