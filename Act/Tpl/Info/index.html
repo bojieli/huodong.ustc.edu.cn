@@ -1,57 +1,30 @@
 <tagLib name="html" />
 <include file="Public:header" />
       <div class="row-fluid">
-        <div class="span1">
+        <div class="span2">
           <div class="well sidebar-nav">
             <ul class="nav nav-list">
-	      <li class="nav-header">时间</li>
-	      <li class="active"><a href="?date=today">今天</a></li>
-	      <li><a href="?date=nextweek">下周</a></li>
-	      <li><a href="?date=nextmonth">下月</a></li>
-	      <li><a href="?date=history">过往</a></li>
+	      <li class="nav-header">学校</li>
+	      <li><a href="#"><i class="icon-th-list"></i> 全部</a></li>
+	      <li class="active"><a href="#"><i class="icon-white icon-home"></i> 中国科学技术大学</a></li>
+	      <li><a href="#"><i class="icon-home"></i> 安徽大学</a></li>
+	      <li><a href="#"><i class="icon-home"></i> 合肥工业大学</a></li>
               <li class="nav-header">类型</li>
-              <li><a href="?type=1">比赛</a></li>
-              <li><a href="?type=2">报告</a></li>
-              <li><a href="?type=3">招人</a></li>
-              <li><a href="?type=4">活动</a></li>
-              <li class="nav-header">场地</li>
-              <li><a href="#">东活</a></li>
-              <li><a href="#">西活</a></li>
-              <li><a href="#">一教</a></li>
-	      <li><a href="#">二教</a></li>
-	      <li><a href="#">三教</a></li>
-	      <li><a href="#">五教</a></li>
+	      <li class="active"><a href="#"><i class="icon-white icon-th-list"></i> 全部</a></li>
+              <li><a href="?type=1"><i class="icon-book"></i> 学术科技类</a></li>
+              <li><a href="?type=2"><i class="icon-flag"></i> 理论实践类</a></li>
+              <li><a href="?type=3"><i class="icon-road"></i> 体育运动类</a></li>
+              <li><a href="?type=4"><i class="icon-music"></i> 文学艺术类</a></li>
             </ul>
           </div><!--/.well -->
         </div><!--/span-->
-        <div class="span8">
-	<volist name="list" id="act">
-	  <div class="row-fluid">
-	    <div class="span4">
-	      <a href="detail/{$act.aid}" class="thumbnail"><img src="" alt="海报" /></a>
-	    </div>
-	    <div class="span8">
-	     <h3>
-	     <volist name="act.tag" id="t">
-	     [<a href="tag/{$t}">{$t}</a>]
-	     </volist>
-	     {$act.name}</h3>
-	     <div class="pull-right" style="margin-left: 5px"><p class="pull-right"><a class="btn">+1 ({$act.rate})</a></p><p><a class="btn">分享</a></p></div>
-	     <p>{$act.description}</p>
-	     <table class="table">
-	      <tbody>
-	       <tr><th>承办</th><td>{$act.org_name}</td></tr>
-	       <neq name="act.assistant_org" value="">
-	       <tr><th>协办</th><td>{$act.assistant_org}</td></tr>
-	       </neq>
-	       <tr><th>时间</th><td>{$act.start_time|date="Y年m月d日 H:i",###} ~ {$act.end_time|date="m月d日 H:i",###}</td></tr>
-	       <tr><th>地点</th><td>{$act.place_name}</td></tr>
-	      </tbody>
-	     </table>
-	    </div>
-	  </div>
-	</volist>
-
+        <div class="span7">
+	  <h3><a href="detail">格物致知社 &raquo;</a></h3>
+	  <include file="Info:card" />
+	  <hr />
+	  <h3><a href="detail">Linux用户协会 &raquo;</a></h3>
+	  <include file="Info:card" />
+	  <hr />
 	  <div class="pagination">
 	    <ul>
 	      <li><a href="#">&laquo;</a></li>

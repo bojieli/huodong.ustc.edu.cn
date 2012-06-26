@@ -9,6 +9,7 @@ class InfoAction extends Action {
 	}
 
 	public function detail() {
+		$this->display();
 	}
 
 	public function modify() {
