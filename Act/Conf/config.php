@@ -6,7 +6,7 @@ $newconfig = array(
 	'DEFAULT_MODULE' => 'Poster',
 	'SESSION_AUTO_START' => true,
 	'APP_AUTOLOAD_PATH' => '@.TagLib,@.ORG',
-	'SHOW_PAGE_TRACE' => true
+	'SHOW_PAGE_TRACE' => false
 );
 return array_merge($config, $newconfig);
 ?>

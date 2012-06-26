@@ -1,0 +1,44 @@
+<div class="tabbable"> <!-- Only required for left/right tabs -->
+  <ul class="nav nav-tabs">
+    <li class="active"><a href="#pending" data-toggle="tab">待办事项</a></li>
+    <li><a href="#done" data-toggle="tab">已完成事项</a></li>
+    <li><a href="#history" data-toggle="tab">操作历史</a></li>
+  </ul>
+  <div class="tab-content">
+    <div class="tab-pane active" id="pending">
+      <table class="table table-condensed" style="margin-top: -5px">
+        <tr><th>项目</th><th>待办事项</th><th>发起人</th><th>操作</th></tr>
+        <tr><td><a href="#"><span class="label label-info">格物讲坛</span></a></td><td>xxx到览胜印海报</td><td>李瑞</td><td><a href="#"><i class="icon-ok "></i> 标记完成</a>&nbsp;&nbsp;&nbsp;<a href="#"><i class="icon-remove"></i> 删除</a></td></tr>
+        <tr><td><a href="#"><span class="label label-info">格物讲坛</span></a></td><td>xxx提前两天到BBS上发通知</td><td>李瑞</td><td><a href="#"><i class="icon-ok "></i> 标记完成</a>&nbsp;&nbsp;&nbsp;<a href="#"><i class="icon-remove"></i> 删除</a></td></tr>
+        <tr><td><a href="#"><span class="label label-info">网站开发讨论班</span></a></td><td>自我提醒，准备HTML讲稿</td><td>李博杰</td><td><a href="#"><i class="icon-ok "></i> 标记完成</a>&nbsp;&nbsp;&nbsp;<a href="#"><i class="icon-remove"></i> 删除</a></td></tr>
+        <tr><td><a href="#"><span class="label label-info">实验室</span></a></td><td>实验室该打扫卫生了</td><td>贺羽</td><td><a href="#"><i class="icon-ok "></i> 标记完成</a>&nbsp;&nbsp;&nbsp;<a href="#"><i class="icon-remove"></i> 删除</a></td></tr>
+        <tr style="display:none" id="todoListNewItem">
+	  <td style="vertical-align:middle"><select class="input-medium"><option>格物讲坛</option><option>电磁学小论文</option><option>格物致知报</option></select></td>
+	  <td style="vertical-align:middle"><input type="text" class="input-xlarge" /></td>
+	  <td style="vertical-align:middle">Username</td>
+	  <td style="vertical-align:middle"><a href="#"><i class="icon-plus"></i> 新增</a>&nbsp;&nbsp;&nbsp;<a href="#" onclick="$('#todoListNewItem').hide();"><i class="icon-remove"></i> 取消</a></td>
+	</tr>
+      </table>
+
+      <button class="btn btn-primary" style="margin-top: -10px" onclick="$('#todoListNewItem').show();"><i class="icon-white icon-plus"></i> 新增事项</button>
+      <button class="btn" style="margin-top: -10px"><i class="icon-list"></i> 新建项目</button>
+    </div>
+    <div class="tab-pane" id="done">
+      <table class="table table-condensed" style="margin-top: -5px">
+        <tr><th>项目</th><th>已完成事项</th><th>发起人</th><th>完成时间</th><th>完成人</th><th>操作</th></tr>
+        <tr><td><a href="#"><span class="label label-info">格物讲坛</span></a></td><td>xxx到览胜印海报</td><td>李瑞</td><td>2012-05-06</td><td>李瑞</td><td><a href="#"><i class="icon-arrow-left "></i> 标记未完成</a></td></tr>
+        <tr><td><a href="#"><span class="label label-info">格物讲坛</span></a></td><td>xxx到览胜印海报</td><td>李瑞</td><td>2012-05-06</td><td>李瑞</td><td><a href="#"><i class="icon-arrow-left "></i> 标记未完成</a></td></tr>
+        <tr><td><a href="#"><span class="label label-info">格物讲坛</span></a></td><td>xxx到览胜印海报</td><td>李瑞</td><td>2012-05-06</td><td>李瑞</td><td><a href="#"><i class="icon-arrow-left "></i> 标记未完成</a></td></tr>
+        <tr><td><a href="#"><span class="label label-info">格物讲坛</span></a></td><td>xxx到览胜印海报</td><td>李瑞</td><td>2012-05-06</td><td>李瑞</td><td><a href="#"><i class="icon-arrow-left "></i> 标记未完成</a></td></tr>
+      </table>
+    </div>
+    <div class="tab-pane" id="history">
+      <table class="table table-condensed" style="margin-top: -5px">
+        <tr><th>项目</th><th>事项名称</th><th>操作人</th><th>操作时间</th><th>操作记录</th></tr>
+        <tr><td><a href="#"><span class="label label-info">格物讲坛</span></a></td><td>xxx到览胜印海报</td><td>李瑞</td><td>2012-05-06</td><td><i class="icon-arrow-left "></i> 标记已完成</td></tr>
+        <tr><td><a href="#"><span class="label label-info">格物讲坛</span></a></td><td>xxx到览胜印海报</td><td>李瑞</td><td>2012-05-06</td><td><i class="icon-remove "></i> 删除</td></tr>
+        <tr><td><a href="#"><span class="label label-info">格物讲坛</span></a></td><td>xxx到览胜印海报</td><td>李瑞</td><td>2012-05-06</td><td><i class="icon-plus "></i> 新增</td></tr>
+      </table>
+    </div>
+  </div>
+</div>
