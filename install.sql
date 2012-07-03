@@ -51,12 +51,14 @@ CREATE TABLE IF NOT EXISTS ustc_user (
 	`password` CHAR(32) NOT NULL, -- password = md5(md5(input) + salt)
 	`salt` CHAR(10) NOT NULL, -- for password
 	`status` ENUM('active', 'locked', 'inactivated'),
+	`isadmin` BOOL NOT NULL,
 	`sid` INT(10) NOT NULL, -- school id
 	-- avatar is not saved in database because the filename of the image is `uid`
 	PRIMARY KEY (`uid`),
 	INDEX key_realname(`realname`),
 	INDEX key_email(`email`),
 	INDEX key_school(`school`),
+	INDEX key_isadmin(`isadmin`)
 );
 
 -- Our website had better not save information with much privacy
@@ -83,7 +85,7 @@ CREATE TABLE IF NOT EXISTS ustc_login_log (
 	`time` INT(10) NOT NULL, -- unix timestamp
 	`method` TINYINT(1) NOT NULL DEFAULT '0', -- 0 for local, 1 for Renren
 	`result` ENUM('success', 'failed'),
-	INDEX key_uid(`uid`),
+	FOREIGN KEY (`uid`) REFERENCES ustc_user(`uid`),
 	INDEX key_time(`time`),
 	INDEX key_method(`method`),
 	INDEX key_result(`result`)
@@ -96,7 +98,8 @@ CREATE TABLE IF NOT EXISTS ustc_org (
 	`status` ENUM('active', 'locked', 'inactivated'),
 	`name` VARCHAR(255) NOT NULL,
 	PRIMARY KEY (`gid`),
-	INDEX key_sid(`sid`),
+	FOREIGN KEY (`sid`) REFERENCES ustc_school(`sid`),
+	FOREIGN KEY (`owner`) REFERENCES ustc_user(`uid`),
 	INDEX key_status(`status`)
 );
 
@@ -115,15 +118,33 @@ CREATE TABLE IF NOT EXISTS ustc_follow_org (
 	`uid` INT(10) NOT NULL,
 	`gid` INT(10) NOT NULL,
 	`start_time` INT(10) NOT NULL, -- unix timestamp
-	INDEX key_uid(`uid`),
-	INDEX key_gid(`gid`)
+	FOREIGN KEY (`uid`) REFERENCES ustc_user(`uid`),
+	FOREIGN KEY (`gid`) REFERENCES ustc_org(`gid`)
 );
 
 CREATE TABLE IF NOT EXISTS ustc_school (
 	`sid` INT(10) NOT NULL AUTO_INCREMENT,
 	`admin` INT(10) NOT NULL,
+	`name` VARCHAR(255) NOT NULL,
 	PRIMARY KEY (`sid`),
-	INDEX key_admin(`admin`)
+	FOREIGN KEY (`admin`) REFERENCES ustc_user(`uid`),
+	INDEX key_name(`name`)
+);
+
+CREATE TABLE IF NOT EXISTS ustc_project (
+	`pid` INT(10) NOT NULL AUTO_INCREMENT,
+	`gid` INT(10) NOT NULL,
+	`name` VARCHAR(255),
+	PRIMARY KEY (`pid`),
+	FOREIGN KEY (`gid`) REFERENCES ustc_org(`gid`),
+	INDEX key_name(`name`)
+);
+
+CREATE TABLE IF NOT EXISTS ustc_user_project (
+	`uid` INT(10) NOT NULL,
+	`pid` INT(10) NOT NULL,
+	FOREIGN KEY (`uid`) REFERENCES ustc_user(`uid`),
+	FOREIGN KEY (`pid`) REFERENCES ustc_org(`pid`)
 );
 -- END basic info
 
@@ -140,7 +161,7 @@ CREATE TABLE IF NOT EXISTS ustc_act (
 	`poster` VARCHAR(255), -- filename of poster image
 	`description` TEXT,
 	PRIMARY KEY(`aid`),
-	INDEX key_pid(`gid`),
+	FOREIGN KEY (`gid`) REFERENCES ustc_org(`gid`),
 	INDEX key_starttime(`start_time`),
 	INDEX key_endtime(`end_time`),
 	INDEX key_place(`place`),
@@ -171,9 +192,9 @@ CREATE TABLE IF NOT EXISTS ustc_act_comment (
 	`author` INT(10) NOT NULL, -- uid
 	`content` TEXT,
 	PRIMARY KEY (`cid`),
-	INDEX key_aid(`aid`),
-	INDEX key_gid(`gid`),
-	INDEX key_author(`author`)
+	FOREIGN KEY (`aid`) REFERENCES ustc_act(`aid`),
+	FOREIGN KEY (`gid`) REFERENCES ustc_org(`gid`),
+	FOREIGN KEY (`author`) REFERENCES ustc_user(`uid`)
 );
 -- END Poster module
 
@@ -186,9 +207,9 @@ CREATE TABLE IF NOT EXISTS ustc_todolist (
 	`status` ENUM('doing', 'complete') NOT NULL,
 	`content` TEXT NOT NULL,
 	PRIMARY KEY (`item`),
-	INDEX key_gid(`gid`),
-	INDEX key_uid(`pid`),
-	INDEX key_author(`author`),
+	FOREIGN KEY (`gid`) REFERENCES ustc_org(`gid`),
+	FOREIGN KEY (`pid`) REFERENCES ustc_project(`pid`),
+	FOREIGN KEY (`author`) REFERENCES ustc_user(`uid`),
 	INDEX key_status(`status`)
 );
 
@@ -198,7 +219,7 @@ CREATE TABLE IF NOT EXISTS ustc_todolist_history (
 	`operation` ENUM('create', 'delete', 'update', 'complete', 'incomplete') NOT NULL,
 	`new_content` TEXT NOT NULL, -- empty for delete operation
 	INDEX key_item(`item`),
-	INDEX key_uid(`uid`),
+	FOREIGN KEY (`uid`) REFERENCES ustc_user(`uid`),
 	INDEX key_operation(`operation`)
 );
 -- END TodoList module
@@ -208,13 +229,14 @@ CREATE TABLE IF NOT EXISTS ustc_todolist_history (
 CREATE TABLE IF NOT EXISTS ustc_share (
 	`attachid` INT(10) NOT NULL,
 	`gid` INT(10) NOT NULL,
-	`pid` INT(10) NOT NULL, -- project id
+	`pid` INT(10) NOT NULL, -- if not in any project, pid = 0
 	`author` INT(10) NOT NULL,
 	`upload_time` INT(10) NOT NULL, -- unix timestamp
 	`folder` VARCHAR(100) NOT NULL, -- folder name, null for root
 	PRIMARY KEY (`attachid`),
-	INDEX key_gid(`gid`),
+	FOREIGN KEY (`gid`) REFERENCES ustc_org(`gid`),
 	INDEX key_pid(`pid`),
+	FOREIGN KEY (`author`) REFERENCES ustc_user(`uid`),
 	INDEX key_folder(`folder`)
 );
 -- END Share module
@@ -337,25 +359,28 @@ CREATE TABLE IF NOT EXISTS ustc_plan_history (
 -- END Plansheet module
 
 -- BEGIN Forum module
+/*
 CREATE TABLE IF NOT EXISTS ustc_forum (
 	`fid` INT(10) NOT NULL AUTO_INCREMENT,
 	`gid` INT(10) NOT NULL,
 	PRIMARY KEY(`fid`),
-	INDEX key_gid(`gid`)
+	FOREIGN KEY (`gid`) REFERENCES ustc_org(`gid`)
 );
+*/
 
 CREATE TABLE IF NOT EXISTS ustc_forum_post (
-	`fid` INT(10) NOT NULL,
 	`fpid` INT(10) NOT NULL AUTO_INCREMENT,
+	`gid` INT(10) NOT NULL,
 	`parent` INT(10) NOT NULL, -- Tree-like posts and replies
 	`uid` INT(10) NOT NULL,
 	`time` INT(10) NOT NULL,
+	`pid` INT(10) NOT NULL DEFAULT '0', -- if not in any project, pid = 0
 	`content` TEXT,
 	PRIMARY KEY(`fpid`),
-	INDEX key_fid(`fid`),
+	FOREIGN KEY (`gid`) REFERENCES ustc_org(`gid`),
 	INDEX key_parent(`parent`),
-	INDEX key_uid(`uid`),
-	INDEX key_time(`time`)
+	FOREIGN KEY (`author`) REFERENCES ustc_user(`uid`),
+	INDEX key_pid(`pid`)
 );
 -- END Forum module
 
@@ -379,11 +404,12 @@ CREATE TABLE IF NOT EXISTS ustc_audit_place (
 -- BEGIN Attachment module
 CREATE TABLE IF NOT EXISTS ustc_attachment (
 	`attachid` INT(10) NOT NULL AUTO_INCREMENT,
-	`uid` INT(10) NOT NULL,
+	`author` INT(10) NOT NULL,
 	`time` INT(10) NOT NULL,
 	`filename` VARCHAR(255) NOT NULL,
 	`filepath` VARCHAR(255) NOT NULL,
-	PRIMARY KEY (`attachid`)
+	PRIMARY KEY (`attachid`),
+	FOREIGN KEY (`author`) REFERENCES ustc_user(`uid`)
 );
 
 /* not used
@@ -403,8 +429,8 @@ CREATE TABLE IF NOT EXISTS ustc_plan_attachment (
 
 -- BEGIN Email Notify module
 CREATE TABLE IF NOT EXISTS ustc_email_notify (
-	`source` INT(10) NOT NULL, -- uid
-	`target` INT(10) NOT NULL, -- uid
+	`source` INT(10) NOT NULL,
+	`target` INT(10) NOT NULL,
 	`gid` INT(10) NOT NULL, -- in which org
 	`time` INT(10) NOT NULL, -- unix timestamp
 	`status` ENUM('success', 'failed') NOT NULL,
@@ -412,11 +438,10 @@ CREATE TABLE IF NOT EXISTS ustc_email_notify (
 	`last_retry` INT(10) NOT NULL, -- unix timestamp
 	`title` VARCHAR(80) NOT NULL,
 	`content` TEXT,
-	INDEX key_source(`source`),
-	INDEX key_target(`target`),
-	INDEX key_gid(`gid`),
+	FOREIGN KEY (`source`) REFERENCES ustc_user(`uid`),
+	FOREIGN KEY (`target`) REFERENCES ustc_user(`uid`),
+	FOREIGN KEY (`gid`) REFERENCES ustc_org(`gid`),
 	INDEX key_time(`time`),
-	IDNEX key_status(`status`)
 );
 -- END Email Notify module
 
