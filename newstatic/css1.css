@@ -1,0 +1,178 @@
+@charset "utf-8";
+/* CSS Document */
+*{
+	margin:0; padding:0;
+	word-wrap:break-word; word-break:normal; 
+	}
+#header{
+	margin:0 auto; 
+	background-color:#FAF7F7;
+	height:60px;
+	width:100%;
+	border-bottom:1px solid #d0cfcd;
+		}
+.head-1160{
+	margin:0 auto;
+	width:1160px;
+	height:59px;
+	overflow:hidden;
+	line-height:58px;
+	vertical-align:middle;
+	}
+.logo{
+	float:left;
+	font-family:"Microsoft Yahei", Arial;
+	font-weight:bold;
+	font-size:40px;
+	color:#c42328;
+	padding:0 15px;
+	margin-right:150px;	
+	}
+.logo a{
+	font-family:"Microsoft Yahei", Arial;
+	font-weight:bold;
+	font-size:40px;
+	color:#c42328;
+	text-decoration:none;}
+.nav{
+	float:left;	border-right:#d0cfcd 1px solid;
+	}
+.login1{
+	float: right;
+	color:#484c4b;	
+	}
+.login1 a , .nav a{
+	font-family:"Microsoft Yahei", Arial;
+	font-weight:bold;
+	font-size:16px;
+	color:#484c4b;
+	padding:0 15px;
+	text-decoration:none;
+	}
+.nav:hover{
+	background-color:#cccaca;
+	}
+	
+#main{
+	margin:0 auto;
+	min-width:1162px;
+	min-height:600px;	
+	background-color:#f5f4f2;
+	}
+#topcon{
+	width:100%;
+	height:30px;
+	line-height:28px;
+	vertical-align:middle;
+	-webkit-box-shadow:inset 0 1px white, 0 1px 3px rgba(34, 25, 25, 0.4);
+	-moz-box-shadow:inset 0 1px white, 0 1px 3px rgba(34, 25, 25, 0.4);
+    box-shadow:inset 0 1px white, 0 1px 3px rgba(34, 25, 25, 0.4);
+	}
+#content{
+	width:100%;
+	margin:10px auto;	
+	}
+/*瀑布效果列表*/
+#content ul {
+	position:relative;
+	font-size:12px;
+	}
+ul li{
+	position:absolute;
+	width:270px;
+	min-height:150px;
+	border:1px solid #ccc;
+	box-shadow:0 1px 3px rgba(34, 25, 25, 0.4);
+	-moz-box-shadow:0 1px 3px rgba(34, 25, 25, 0.4);
+	-webkit-box-shadow:0 1px 3px rgba(34, 25, 25, 0.4);	
+	background-color:#FFF;
+	list-style:none;
+	margin:10px;
+	padding:0px;
+	}
+ul li:hover{
+	border:3px solid #DDD;
+	}
+
+/**以下为列表块div的外观样式**/
+li .celldiv{
+	width:250px;
+	min-height:150px;
+	margin:10px;
+	padding:0px;	
+	}
+/**块div中含有图片的样式，海报展现样式**/
+.celldiv img{
+	width:250px;
+	margin:0;
+	padding:0;
+	}
+.celldiv .detail{
+	margin:5px 0px;
+	width:100%;
+	padding:0px;
+	color:#CCC;
+	font-size:14px;
+}
+.detail .hot{
+	font-size:16px;
+	height:25px;
+	font-family:Microsoft Yahei, "Times New Roman", Times, serif;
+	text-align:left;
+	color:#F36;
+}
+.ding, .shenqing{
+	float:right;
+	height:20px;
+	width:30px;
+	margin-right:3px;
+	border:1px solid #F06;
+	background-color:#f06d62;
+	border-radius:3px;
+	line-height:20px;
+	vertical-align:middle;
+	text-align:center;
+	font-weight:bold;
+	font-size:16px;
+	color:#FFF;
+	}
+.shenqing{width:65px;font-size:14px;}
+.ding:hover,.shenqing:hover{
+	color:#F00;
+	background-color:#FC9;
+	cursor:pointer;
+	}
+
+.school{
+	margin:5px -15px 3px auto;
+	float:right;
+	padding:0 10px;
+	font-family:Microsoft Yahei, "Times New Roman", Times, serif;
+	font-size:16px;
+	line-height:24px;
+	vertical-align:middle;
+	height:25px;
+	color:#333333;
+	background-color:#d0d1d6;
+	}
+/**社团介绍**/
+.title{
+	font-family:Microsoft Yahei, "Times New Roman", Times, serif;
+	font-size:24px;
+	font-weight:bold;
+	color:#0382a8;
+	border-bottom:2px solid #76b8da;
+	text-align:center;
+	}
+.intro{
+	font-family:Microsoft Yahei, "Times New Roman", Times, serif;
+	font-size:16px;
+	color:#c2c2c2;
+	max-height:420px;
+	overflow:hidden;
+	margin:5px 0px;
+	}
+.intro img{ margin:5px 0px;}
+
+.haibao:hover, .shetuan:hover{ cursor:pointer;}	
+.hide {opacity:0;filter:alpha(opacity=0)}

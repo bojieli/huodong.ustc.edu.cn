@@ -1,0 +1,77 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>大学海报</title>
+<link href="css1.css" rel="stylesheet" type="text/css" />
+<script src="jquery-1.6.4.min.js" type="text/javascript"></script>
+<script src="setwaterfall.js" type="text/javascript"></script>
+<!--下面是对滚动和加载的处理-->
+<script>
+<!--
+		$(document).ready(function(){
+		/**
+			setwaterfall($("ul li"));
+			window.onresize = function(){return setwaterfall($("ul li"));};
+		**/
+		var obj = [];
+		obj[0]=["<li class=\"hide\"><div class=\"celldiv shetuan\"><p class=\"title\">学生Joke协会</p><div class=\"intro\">&nbsp;&nbsp;&nbsp;&nbsp;中国科学技术大学学Linux协会是类似单反就睡啦附近的辣椒粉达拉斯加放大率附近的辣椒粉到拉萨封疆大吏fdlllollhai坏人拿命来！elelooellleo</div><div class=\"detail\"><div class=\"hot\">注册会员：888888 人<span class=\"shenqing\"><a>申请加入</a></span></div></div><div class=\"school\">中国科学技术大学</div></div></li>  "];	
+		obj[1]=["<li class=\"hide\"><div class=\"celldiv shetuan\"><p class=\"title\">学生创业协会</p><div class=\"intro\">&nbsp;&nbsp;&nbsp;&nbsp;中国科学技术大学学生创业协会是类似单反就睡啦附近的辣椒粉达拉斯加放大率附近的辣椒粉到拉萨封疆大吏<img height=\"183px\" src=\"http://fmn.rrimg.com/fmn056/xiaozhan/20120621/1245/x_large_p90I_7721000129aa1263.jpg\">h我是好人fdsadsafdsfdsafdlllollelelooellleo</div><div class=\"detail\"><div class=\"hot\">注册会员：998899 人<span class=\"shenqing\"><a>申请加入</a></span></div></div><div class=\"school\">中国科学技术大学</div></div></li>	"];
+		obj[2]=["<li class=\"hide\"><div class=\"celldiv shetuan\"><p class=\"title\">学生Linux协会</p><div class=\"intro\">&nbsp;&nbsp;&nbsp;&nbsp;中国科学技术大学学Linux协会是类似单反就睡啦附近的辣椒粉达拉斯加放大率附近的辣椒粉到拉萨封疆大吏fdlllollhai坏人拿命来！elelooellleo</div><div class=\"detail\"><div class=\"hot\">注册会员：888888 人<span class=\"shenqing\"><a>申请加入</a></span></div></div><div class=\"school\">中国科学技术大学</div></div></li>  "];	
+		obj[3]=["<li class=\"hide\"><div class=\"celldiv shetuan\"><p class=\"title\">学生娱乐协会</p><div class=\"intro\">&nbsp;&nbsp;&nbsp;&nbsp;中国科学技术大学学生创业协会是类似单反就睡啦附近的辣椒粉达拉斯加放大率附近的辣椒粉到拉萨封疆大吏<img height=\"183px\" src=\"http://fmn.rrimg.com/fmn056/xiaozhan/20120621/1245/x_large_p90I_7721000129aa1263.jpg\">h我是好人fdsadsafdsfdsafdlllollelelooellleo</div><div class=\"detail\"><div class=\"hot\">注册会员：998899 人<span class=\"shenqing\"><a>申请加入</a></span></div></div><div class=\"school\">中国科学技术大学</div></div></li>	"];
+		
+
+		
+		$("ul li").setwaterfall();
+		$(window).scroll(function () {
+			var clienth = document.documentElement.clientHeight;
+			var scrollh = document.documentElement.scrollHeight;
+			var scrollt = document.documentElement.scrollTop + document.body.scrollTop;
+			if (clienth + scrollt + 200 > scrollh) {
+				var html = obj.join("");
+				$("ul").append(html);
+				$("ul").append(html);
+				$(".hide").animate({opacity:1},1000); 
+				$("ul li").setwaterfall();
+			}
+		});
+			
+				var flag=0;
+				var sss=obj[0];
+				var html1 = obj.join("");
+			    for(flag=0;flag<3;flag++){							
+					$("ul").append(html1);
+					$(".hide").animate({opacity:1},1000);
+				}
+				$("ul li").setwaterfall();
+				
+								
+		
+		
+		});
+-->
+	</script>
+</head>
+
+<body>
+<!--下面是眉头的代码-->
+<div id="header">
+  <div class="head-1160">
+      <div class="logo"><a href="index.html">大学海报</a></div><div class="nav"><a href="haibao.html">海报墙</a></div><div class="nav"><a href="shetuan.html">大学社团</a></div><div class="nav"><a href="guanli.html">管理我的社团</a></div><div  class="login1"><a href="">登陆</a>/<a href="">注册</a></div>
+  </div><!--head-990-->
+</div><!--header-->
+
+
+<div id="main">
+<div id="topcon">dsf</div>
+<div id="content">
+  <ul style="min-height: 600px; ">
+	
+  </ul>
+			
+			
+</div><!--content-->  
+</div><!--main-->
+
+</body>
+</html>
