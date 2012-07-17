@@ -145,7 +145,7 @@ CREATE TABLE IF NOT EXISTS ustc_user_project (
 	`uid` INT(10) NOT NULL,
 	`pid` INT(10) NOT NULL,
 	FOREIGN KEY (`uid`) REFERENCES ustc_user(`uid`),
-	FOREIGN KEY (`pid`) REFERENCES ustc_org(`pid`)
+	FOREIGN KEY (`pid`) REFERENCES ustc_project(`pid`)
 );
 -- END group info
 
