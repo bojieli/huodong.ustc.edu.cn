@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.0" xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
+  <persistence-unit name="ustcPU" transaction-type="RESOURCE_LOCAL">
+    <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+    <class>com.ustc.domain.UstcUserProject</class>
+    <class>com.ustc.domain.UstcAttachment</class>
+    <class>com.ustc.domain.UstcShare</class>
+    <class>com.ustc.domain.UstcUser</class>
+    <class>com.ustc.domain.UstcForumPost</class>
+    <class>com.ustc.domain.UstcOrg</class>
+    <class>com.ustc.domain.UstcUserProfile</class>
+    <class>com.ustc.domain.UstcActComment</class>
+    <class>com.ustc.domain.UstcTodolist</class>
+    <class>com.ustc.domain.UstcUserOrg</class>
+    <class>com.ustc.domain.UstcSchool</class>
+    <class>com.ustc.domain.UstcProject</class>
+    <class>com.ustc.domain.UstcAct</class>
+    <exclude-unlisted-classes>false</exclude-unlisted-classes>
+    <properties>
+      <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/campusustc"/>
+      <property name="javax.persistence.jdbc.password" value="root"/>
+      <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
+      <property name="javax.persistence.jdbc.user" value="root"/>
+      <property name="eclipselink.ddl-generation" value="create-tables"/>
+    </properties>
+  </persistence-unit>
+</persistence>

@@ -1,0 +1,307 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
+    <h:head>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+        <link rel="stylesheet" type="text/css" href="css/tooltip.css" />
+        <script type="text/javascript" src="javascript/cvi_tip_lib.js"></script>
+        <style type="text/css">
+            body {
+                margin: 0;
+                padding: 0;
+                font-family: geneva, arial, helvetica, sans-serif;
+                font-size:80%;
+            }
+            .ui-growl{
+                top: 200px;
+            }
+            .ui-dialog .ui-dialog-content {
+                padding: 0 0 0 0;
+            }
+        </style>
+
+    </h:head>
+    <h:body >
+        <f:view>
+            <h:form id="form">
+                <p:growl id="growl" showDetail="true" sticky="false" autoUpdate="true"/> 
+                <p:layout fullPage="true" >
+                    <p:layoutUnit id="right" position="west" size="380" resizable="true" closable="false" collapsible="true" >
+                        <p:panelMenu style="width:200px">  
+                            <p:submenu label="用户管理">  
+                                <p:menuitem value="会员管理" actionListener="#{adminBean.userManage}" update="centerTable" icon="ui-icon ui-icon-person"/>  
+                                <p:menuitem value="资料管理" actionListener="#{adminBean.userProfile}" update="centerTable" icon="ui-icon ui-icon-document"/>  
+                                <p:menuitem value="组织管理" actionListener="#{adminBean.userOrg}" update="centerTable" icon="ui-icon ui-icon-contact"/>  
+                                <p:menuitem value="项目管理" actionListener="#{adminBean.userProject}" update="centerTable" icon="ui-icon ui-icon-tag"/>  
+                                <p:menuitem value="登陆日志" actionListener="#{adminBean.userLog}" update="centerTable" icon="ui-icon ui-icon-info"/>  
+                            </p:submenu>  
+                            <p:submenu label="组织项目">  
+                                <p:menuitem value="项目管理" actionListener="#{adminBean.project}" update="centerTable" icon="ui-icon ui-icon-clock"/>  
+                                <p:menuitem value="组织管理" actionListener="#{adminBean.org}" update="centerTable" icon="ui-icon ui-icon-bookmark"/>    
+                            </p:submenu>  
+                            <p:submenu label="TodoList">  
+                                <p:menuitem value="TodoList" actionListener="#{adminBean.todoList}" update="centerTable" icon="ui-icon ui-icon-note"/>  
+                                <p:menuitem value="TodoListHistory" actionListener="#{adminBean.todoListHis}" update="centerTable" icon="ui-icon ui-icon-bookmark"/>    
+                            </p:submenu>  
+                        </p:panelMenu>  
+                    </p:layoutUnit>
+
+                    <p:layoutUnit id="centerTable"  position="center">
+
+                        <p:dataTable var="car" value="#{adminBean.table}" id="carList" editable="true">  
+                            <c:if test="#{adminBean.kind == 1}">
+                                <f:facet name="header">  
+                                    会员管理
+                                </f:facet>  
+                                <p:column headerText="名称" style="width:125px" filterBy="#{car.realname}" filterMatchMode="contains">  
+                                    <p:cellEditor>  
+                                        <f:facet name="output">  
+                                            <h:outputText value="#{car.realname}" />  
+                                        </f:facet>  
+                                        <f:facet name="input">  
+                                            <p:inputText value="#{car.realname}" style="width:100%"/>  
+                                        </f:facet>  
+                                    </p:cellEditor>  
+                                </p:column>  
+
+                                <p:column headerText="Email" style="width:125px">  
+                                    <p:cellEditor>  
+                                        <f:facet name="output">  
+                                            <h:outputText value="#{car.email}" />  
+                                        </f:facet>  
+                                        <f:facet name="input">  
+                                            <p:inputText value="#{car.email}" style="width:100%" label="Year"/>  
+                                        </f:facet>  
+                                    </p:cellEditor>  
+                                </p:column>  
+
+                                <p:column headerText="密码" style="width:125px">  
+                                    <p:cellEditor>  
+                                        <f:facet name="output">  
+                                            <h:outputText value="#{car.password}" />  
+                                        </f:facet>  
+                                        <f:facet name="input">  
+                                            <h:outputText value="#{car.password}" /> 
+                                        </f:facet>  
+                                    </p:cellEditor>  
+                                </p:column>  
+
+                                <p:column headerText="Salt" style="width:125px">  
+                                    <p:cellEditor>  
+                                        <f:facet name="output">  
+                                            <h:outputText value="#{car.salt}" />  
+                                        </f:facet>  
+                                        <f:facet name="input">  
+                                            <h:outputText value="#{car.salt}" />  
+                                        </f:facet>  
+                                    </p:cellEditor>  
+                                </p:column>  
+                                <p:column headerText="状态" style="width:125px" filterBy="#{car.status}" filterMatchMode="contains">  
+                                    <p:cellEditor>  
+                                        <f:facet name="output">  
+                                            <h:outputText value="#{car.status}" />  
+                                        </f:facet>  
+                                        <f:facet name="input">  
+                                            <h:outputText value="#{car.status}" />  
+                                        </f:facet>  
+                                    </p:cellEditor>  
+                                </p:column>  
+                                <p:column headerText="sid" style="width:125px" filterBy="#{car.sid}" filterMatchMode="contains">  
+                                    <p:cellEditor>  
+                                        <f:facet name="output">  
+                                            <h:outputText value="#{car.sid}" />  
+                                        </f:facet>  
+                                        <f:facet name="input">  
+                                            <h:outputText value="#{car.sid}" />  
+                                        </f:facet>  
+                                    </p:cellEditor>  
+                                </p:column>  
+
+                                <p:column headerText="Options" style="width:50px">  
+                                    <p:rowEditor />  
+                                </p:column>  
+                            </c:if>
+                            <c:if test="#{adminBean.kind == 2}">
+                                <f:facet name="header">  
+                                    会员组织管理
+                                </f:facet>  
+                                <p:column headerText="uid" style="width:125px" filterBy="#{car.uid}" filterMatchMode="contains">  
+                                    <p:cellEditor>  
+                                        <f:facet name="output">  
+                                            <h:outputText value="#{car.uid}" />  
+                                        </f:facet>  
+                                        <f:facet name="input">  
+                                            <p:inputText value="#{car.uid}" style="width:100%"/>  
+                                        </f:facet>  
+                                    </p:cellEditor>  
+                                </p:column>  
+
+                                <p:column headerText="gid" style="width:125px" filterBy="#{car.gid}" filterMatchMode="contains">  
+                                    <p:cellEditor>  
+                                        <f:facet name="output">  
+                                            <h:outputText value="#{car.gid}" />  
+                                        </f:facet>  
+                                        <f:facet name="input">  
+                                            <p:inputText value="#{car.gid}" style="width:100%" label="Year"/>  
+                                        </f:facet>  
+                                    </p:cellEditor>  
+                                </p:column>  
+
+                                <p:column headerText="权限" style="width:125px" filterBy="#{car.priv}" filterMatchMode="contains">  
+                                    <p:cellEditor>  
+                                        <f:facet name="output">  
+                                            <h:outputText value="#{car.priv}" />  
+                                        </f:facet>  
+                                        <f:facet name="input">  
+                                            <h:outputText value="#{car.priv}" /> 
+                                        </f:facet>  
+                                    </p:cellEditor>  
+                                </p:column>  
+
+                                <p:column headerText="title" style="width:125px" filterBy="#{car.title}" filterMatchMode="contains">  
+                                    <p:cellEditor>  
+                                        <f:facet name="output">  
+                                            <h:outputText value="#{car.title}" />  
+                                        </f:facet>  
+                                        <f:facet name="input">  
+                                            <h:outputText value="#{car.title}" />  
+                                        </f:facet>  
+                                    </p:cellEditor>  
+                                </p:column>  
+
+                                <p:column headerText="Options" style="width:50px">  
+                                    <p:rowEditor />  
+                                </p:column>  
+                            </c:if>
+                            <c:if test="#{adminBean.kind == 3}">
+                                <f:facet name="header">  
+                                    会员项目管理
+                                </f:facet>  
+                                <p:column headerText="项目id" style="width:125px" filterBy="#{car.pid.pid}" filterMatchMode="contains">  
+                                    <p:cellEditor>  
+                                        <f:facet name="output">  
+                                            <h:outputText value="#{car.pid.pid}" />  
+                                        </f:facet>  
+                                        <f:facet name="input">  
+                                            <p:inputText value="#{car.pid.pid}" style="width:100%"/>  
+                                        </f:facet>  
+                                    </p:cellEditor>  
+                                </p:column>  
+                                <p:column headerText="项目名称" style="width:125px" filterBy="#{car.pid.name}" filterMatchMode="contains">  
+                                    <h:outputText value="#{car.pid.name}" />  
+                                </p:column>  
+
+                                <p:column headerText="会员id" style="width:125px" filterBy="#{car.uid.uid}" filterMatchMode="contains">  
+                                    <p:cellEditor>  
+                                        <f:facet name="output">  
+                                            <h:outputText value="#{car.uid.uid}" />  
+                                        </f:facet>  
+                                        <f:facet name="input">  
+                                            <p:inputText value="#{car.uid.uid}" style="width:100%" label="Year"/>  
+                                        </f:facet>  
+                                    </p:cellEditor>  
+                                </p:column>  
+                                <p:column headerText="会员名称" style="width:125px" filterBy="#{car.uid.realname}" filterMatchMode="contains">  
+                                    <h:outputText value="#{car.uid.realname}" />  
+                                </p:column>  
+                                <p:column headerText="Options" style="width:50px">  
+                                    <p:rowEditor />  
+                                </p:column>  
+                            </c:if>
+                            <c:if test="#{adminBean.kind == 4}">
+                                <f:facet name="header">  
+                                    项目管理
+                                </f:facet>  
+                                <p:column headerText="项目名称" style="width:125px" filterBy="#{car.name}" filterMatchMode="contains">  
+                                    <p:cellEditor>  
+                                        <f:facet name="output">  
+                                            <h:outputText value="#{car.name}" />  
+                                        </f:facet>  
+                                        <f:facet name="input">  
+                                            <p:inputText value="#{car.name}" style="width:100%"/>  
+                                        </f:facet>  
+                                    </p:cellEditor>  
+                                </p:column>  
+
+                                <p:column headerText="组织id" style="width:125px" filterBy="#{car.gid.gid}" filterMatchMode="contains">  
+                                    <p:cellEditor>  
+                                        <f:facet name="output">  
+                                            <h:outputText value="#{car.gid.gid}" />  
+                                        </f:facet>  
+                                        <f:facet name="input">  
+                                            <p:inputText value="#{car.gid.gid}" style="width:100%" label="Year"/>  
+                                        </f:facet>  
+                                    </p:cellEditor>  
+                                </p:column>  
+                                <p:column headerText="组织名称" style="width:125px" filterBy="#{car.gid.name}" filterMatchMode="contains">  
+                                    <h:outputText value="#{car.gid.name}" />  
+                                </p:column> 
+                                <p:column headerText="Options" style="width:50px">  
+                                    <p:rowEditor />  
+                                </p:column>  
+                            </c:if>
+                            <c:if test="#{adminBean.kind == 5}">
+                                <f:facet name="header">  
+                                    组织管理
+                                </f:facet>  
+                                <p:column headerText="组织名称" style="width:125px" filterBy="#{car.name}" filterMatchMode="contains">  
+                                    <p:cellEditor>  
+                                        <f:facet name="output">  
+                                            <h:outputText value="#{car.name}" />  
+                                        </f:facet>  
+                                        <f:facet name="input">  
+                                            <p:inputText value="#{car.name}" style="width:100%"/>  
+                                        </f:facet>  
+                                    </p:cellEditor>  
+                                </p:column>  
+
+                                <p:column headerText="组织管理员id" style="width:125px" filterBy="#{car.owner.uid}" filterMatchMode="contains">  
+                                    <p:cellEditor>  
+                                        <f:facet name="output">  
+                                            <h:outputText value="#{car.owner.uid}" />  
+                                        </f:facet>  
+                                        <f:facet name="input">  
+                                            <p:inputText value="#{car.owner.uid}" style="width:100%" label="Year"/>  
+                                        </f:facet>  
+                                    </p:cellEditor>  
+                                </p:column>  
+
+                                <p:column headerText="组织管理员名称" style="width:125px" filterBy="#{car.owner.name}" filterMatchMode="contains">  
+                                    <p:cellEditor>  
+                                        <f:facet name="output">  
+                                            <h:outputText value="#{car.owner.name}" />  
+                                        </f:facet>  
+                                        <f:facet name="input">  
+                                            <h:outputText value="#{car.owner.name}" /> 
+                                        </f:facet>  
+                                    </p:cellEditor>  
+                                </p:column>  
+
+                                <p:column headerText="组织状态" style="width:125px" filterBy="#{car.status}" filterMatchMode="contains">  
+                                    <p:cellEditor>  
+                                        <f:facet name="output">  
+                                            <h:outputText value="#{car.status}" />  
+                                        </f:facet>  
+                                        <f:facet name="input">  
+                                            <h:outputText value="#{car.status}" />  
+                                        </f:facet>  
+                                    </p:cellEditor>  
+                                </p:column>  
+                                <p:column headerText="Options" style="width:50px">  
+                                    <p:rowEditor />  
+                                </p:column>  
+                            </c:if>
+
+                        </p:dataTable>  
+                    </p:layoutUnit>
+                </p:layout>
+
+            </h:form> 
+        </f:view>
+    </h:body>
+</html>
+
