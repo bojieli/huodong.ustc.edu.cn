@@ -1,0 +1,224 @@
+@charset "utf-8";
+/* CSS Document */
+.{
+	margin:0;
+	padding:0;
+}
+body {
+  text-align:center;
+  min-width:1000px;
+  margin:0;
+}
+#mainbody2{
+	width:100%;	
+	padding:0px;
+	color:#828282;
+	font-family:Microsoft yahei;
+	font-size:14px;
+	font-weight:bold;
+	background:#dfdde6;
+	margin:15px 0px 0px 0px ;
+	border:#bcc3c5 2px solid;
+	text-align:left;	
+	-moz-border-radius: 5px;
+	-khtml-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	border-radius: 5px;
+	-moz-border-radius-topleft: 5px;
+	-moz-border-radius-topright: 5px;
+	-moz-border-radius-bottomright:5px;
+	-moz-border-radius-bottomleft:5px;
+	-webkit-border-top-left-radius:5px;
+	-webkit-border-top-right-radius:5px;
+	-webkit-border-bottom-right-radius:5px;
+	-webkit-border-bottom-left-radius:5px;	
+}
+/*导航三角型,使用div时候，设置底边颜色就可以了，原理就是只有边界的div框，边界是由三角形组成的*/
+.daohang-sj{
+	width:0;
+	height:0;
+	line-height:0;/*解决ie下梯形问题*/
+	border:15px solid transparent;
+	_border:15px solid #fff;/*ie6 不支持边框透明（显示为黑色） 所以只能让边框跟背景同色*/
+}
+/*左边大外框*/
+#mainleft2{
+	/*display:inline-block;
+	*display:inline;*/	
+	width:300px;
+	height:auto;
+	float:left;
+	margin:0px 0px 0px 0px;
+	padding:0px;
+	border-top:#bcc3c5 1px solid;
+	border-right:#bcc3c5 1px solid;
+	overflow: hidden;	
+}
+/*包含列表的框*/
+#leftscroll{
+	margin-top:-30px;
+	float:left;	 
+	width:100%; 
+	height:auto;
+	overflow: hidden;
+}
+/*具体活动框*/
+.kaishiend{
+	font-size:16px;
+	background-color:#d6d5d5;
+	color: #000;
+	text-align:center;
+	line-height:30px;
+	vertical-align:middle;
+	width:100%;
+	float:right;
+	height:30px;	
+	overflow:hidden;
+	border-bottom: 1px solid #bcc3c5;
+}
+/*单个活动的框*/
+.activity{
+	font-size:14px;
+	color: #39C;
+	width:293px;
+	float:right;
+	height:100px;
+	padding-left:2px;
+	padding-right:5px;
+	overflow:hidden;
+	border-bottom: 1px solid #bcc3c5;
+}
+.activity:hover{
+	background:#FFC;
+}
+.activity img{
+	margin-top:6px;
+	width:50px; 
+	height:50px; 
+	border:0px;	
+}
+.activitytitle{
+	font-size:15px;
+	margin-top:4px;
+	margin-bottom:0px;
+	width:235px;
+	float:right;
+	height:44px;
+	overflow:hidden;
+}
+.activitydetail{
+	width:235px;
+	float:right;
+	margin-top:2px;
+	height:40px;
+	overflow:hidden;
+	color:#666;
+	font-size:14px;
+	font-weight:normal;
+}
+/*右边大外框处理*/
+#mainright{
+	width:699px;
+	height:auto;
+	margin:0px;
+	padding:0px;
+	float:left;
+	background:#FFF;
+	border-top:#bcc3c5 1px solid;
+	border-bottom:#bcc3c5 1px solid;
+	border-radius:0px 0px 5px 5px;
+	overflow:auto;	
+}
+#righttop{
+	width:100%; height:30px; margin:0px; padding:0px; background: url(shangyinying.png) repeat-x ; overflow:hidden; position:relative; z-index:100;
+}
+/*右边中间的空间定义，用以装活动或者对话的详情*/
+.activitynotice,.activityhost{
+	margin:-30px 0px 0px 0px;
+	padding:30px 0px 0px 0px;
+	width:100%;
+	color:#000;	
+	overflow:auto;
+}
+/*包含活动表格*/
+#huodong11{
+	margin:0;
+	padding:0;
+	width:100%;
+	height:auto;
+    display:block;
+}
+/*包含对话表格*/
+#duihua11{
+	margin:0;
+	padding:0;
+	width:100%;
+	height:auto;
+    display:none;
+}
+
+/*回复框的定义*/
+.activitymsg{
+	width:100%;
+	height:96px;	
+	border-top: #bcc3c5 1px solid;
+	float:left;	
+	margin:0px;
+	padding:0px;
+}
+#send{
+	width:70px;
+	height:70px;
+	line-height:70px;
+	vertical-align:middle;
+	text-align:center;	
+	padding:0px;
+	margin:12px 40px auto 15px;
+	float:left;
+	background:#EEE;
+	border:#CCC 1px solid;
+	border-radius:5px;
+	font-size:18px;
+}
+.textkuang{
+	font-size:16px;
+	font-family:Microsoft Yahei;
+	width:520px; 
+	height:60px;
+	padding:5px; 
+	margin:12px 0px auto 40px; 
+	overflow:auto; 
+	float:left; 
+	border-radius:5px; 
+	border:#CCC 1px solid; 	
+}
+/*圆角矩形对话框的css 注意此处我们不用radius，是为了让大部分ie用户也能看到圆角效果，毕竟除了ie9外ie都不支持css3属性*/
+/*通用样式--容器宽度值*/
+.sharp{ min-width:100px; max-width:620px; margin:5px 20px 5px 0px;float:left;}
+.sharp1{min-width:100px; max-width:620px; margin:5px 0px 5px 5px;float:right;}
+/*圆角框具体框架*/
+.content{ width:auto; height:auto; padding:5px 5px 0px 5px; font-size:14px; font-weight:normal; word-wrap:break-word; word-break:normal;  }
+/*上圆角框通用设置样式，如果要运用多个不同颜色，以下6句不用重新变化--------------------------------*/
+.b1,.b2,.b3,.b4,.b5,.b6,.b7,.b8{height:1px; font-size:1px; overflow:hidden; display:block;}
+.b1,.b8{margin:0 5px;}
+.b2,.b7{margin:0 3px;border-right:2px solid; border-left:2px solid;}
+.b3,.b6{margin:0 2px;border-right:1px solid; border-left:1px solid;}
+.b4,.b5{margin:0 1px;border-right:1px solid; border-left:1px solid; height:2px;}
+.content {border-right:1px solid;border-left:1px solid;overflow:hidden;}
+/*颜色方案二,绿色边框----------------------------------------*/
+/*下面第一、二句决定边框颜色，第三句决定背景颜色*/
+/*边框色*/
+.color2 .b2,.color2 .b3,.color2 .b4,.color2 .b5,.color2 .b6,.color2 .b7,.color2 .content{border-color:#9BDF70;}
+.color2 .b1,.color2 .b8{background:#9BDF70;}
+/*背景色*/
+.color2 .b2,.color2 .b3,.color2 .b4,.color2 .b5,.color2 .b6,.color2 .b7,.color2 .content{background:#F0FBEB;}
+
+
+/*颜色方案五,粉色边框----------------------------------------*/
+/*下面第一、二句决定边框颜色，第三句决定背景颜色*/
+/*边框色*/
+.color5 .b2,.color5 .b3,.color5 .b4,.color5 .b5,.color5 .b6,.color5 .b7,.color5 .content{border-color:#F8B3D0;}
+.color5 .b1,.color5 .b8{background:#F8B3D0;}
+/*背景色*/
+.color5 .b2,.color5 .b3,.color5 .b4,.color5 .b5,.color5 .b6,.color5 .b7,.color5 .content{background:#FFF5FA;}
+/*以上为圆角框的css代码部分*/

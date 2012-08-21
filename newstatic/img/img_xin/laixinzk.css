@@ -1,0 +1,224 @@
+@charset "utf-8";
+/* CSS Document */
+*{
+	margin:0;
+	padding:0;
+}
+.highlight11{
+	background:FFC;
+}
+a{
+	text-decoration:none;
+}
+body {
+  text-align:center;
+  min-width:1000px;
+  margin:0;
+}
+#mainbody2{
+	width:100%;	
+	padding:0px;
+	color:#828282;
+	font-family:Microsoft yahei;
+	font-size:14px;
+	font-weight:bold;
+	background:#E6E6FA; 
+/*	background:#dfdde6; */
+	margin:15px 0px 0px 0px ;
+/*	border:#bcc3c5 2px solid; */
+    border:#B0C4DE 2px solid;
+	text-align:left;	
+	-moz-border-radius: 5px;
+	-khtml-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	border-radius: 5px;
+	-moz-border-radius-topleft: 5px;
+	-moz-border-radius-topright: 5px;
+	-moz-border-radius-bottomright:5px;
+	-moz-border-radius-bottomleft:5px;
+	-webkit-border-top-left-radius:5px;
+	-webkit-border-top-right-radius:5px;
+	-webkit-border-bottom-right-radius:5px;
+	-webkit-border-bottom-left-radius:5px;	
+}
+.biaoqian11{
+	background:#E6E6FA;
+	width:40px; 
+	height:25px; 
+	float:left;
+	margin:2px 0px 0px 10px; 
+	padding:5px 5px 5px 5px; 
+	border-radius:5px 5px 0 0; 
+	border:#B0C4DE 1px solid;
+	border-bottom:0px;
+	position:relative;	
+	z-index:80; 
+	text-align:center;
+	cursor:pointer;
+}
+/*导航三角型,使用div时候，设置底边颜色就可以了，原理就是只有边界的div框，边界是由三角形组成的*/
+.daohang-sj{
+	width:0;
+	height:0;
+	line-height:0;/*解决ie下梯形问题*/
+	border:15px solid transparent;
+	_border:15px solid #fff;/*ie6 不支持边框透明（显示为黑色） 所以只能让边框跟背景同色*/
+}
+/*左边大外框*/
+#mainleft2{
+	/*display:inline-block;
+	*display:inline;*/	
+	width:300px;
+	height:auto;
+	float:left;
+	margin:0px 0px 0px -122px;
+	padding:0px;
+/*	border-top:#bcc3c5 1px solid;
+	border-right:#bcc3c5 1px solid;
+	border-top:#B0C4DE 1px solid;  */
+	
+	border-right:#B0C4DE 1px solid;
+	border-bottom:#B0C4DE 1px solid;
+	border-radius:0px 0px 5px 5px; 
+	overflow: hidden;
+}
+/*包含列表的框*/
+#leftscroll{
+	margin-top:-30px;
+	float:left;	 
+	width:100%; 
+	height:auto;
+    border-radius:0px 0px 5px 5px; 
+	overflow: hidden;
+	position:relative;
+	z-index:60;
+}
+/*具体活动框*/
+.kaishiend{
+	font-size:16px;	
+	color: #000;
+	text-align:center;
+	line-height:30px;
+	vertical-align:middle;
+	width:100%;
+	float:right;
+	height:30px;	
+	overflow:hidden;
+/*	border-bottom: 1px solid #bcc3c5; */
+	border-bottom: 1px solid #F0F8FF;
+}
+/*单个活动的框*/
+.activity,.activity1{
+	font-size:14px;
+	color: #39C;
+	width:293px;
+	float:right;
+	height:100px;
+	padding-left:2px;
+	padding-right:5px;
+	overflow:hidden;
+/*	border-bottom: 1px solid #bcc3c5; */
+    border-bottom: 1px solid #B0C4DE;
+	cursor:pointer;
+}
+.activity img,.activity1 img{
+	margin-top:6px;
+	width:50px; 
+	height:50px; 
+	border:0px;	
+}
+.activitytitle{
+	font-size:15px;
+	margin-top:4px;
+	margin-bottom:0px;
+	width:235px;
+	float:right;
+	height:44px;
+	overflow:hidden;
+}
+.activitydetail{
+	width:235px;
+	float:right;
+	margin-top:2px;
+	height:40px;
+	overflow:hidden;
+	color:#666;
+	font-size:14px;
+	font-weight:normal;
+}
+/*右边大外框处理*/
+#mainright{
+	width:696px;
+	height:auto;
+	margin:0px;
+	padding:0px;
+	float:left;
+    background:#FFF;
+	border-top:#B0C4DE 1px solid;
+	border-bottom:#B0C4DE 1px solid;
+	border-radius:0px 0px 5px 5px;
+	overflow:auto;	
+}
+#righttop{
+	width:100%; height:30px; margin:0px; padding:0px; background: url(shangyinying.png) repeat-x ; overflow:hidden; position:relative; z-index:100;
+}
+/*右边中间的空间定义，用以装活动或者对话的详情*/
+.activitynotice{
+	margin:-30px 0px 0px 0px;
+	padding:30px 0px 0px 0px;
+	width:100%;
+	color:#000;	
+	overflow:auto;
+}
+/*包含活动表格*/
+#huodong11{
+	margin:0;
+	padding:0;
+	width:100%;
+	height:auto;
+}
+/*包含对话表格*/
+#duihua11{
+	margin:0;
+	padding:0;
+	width:100%;
+	height:auto;
+}
+
+/*回复框的定义*/
+.activitymsg{
+	width:100%;
+	height:96px;	
+	border-top: #B0C4DE 1px solid;
+	float:left;	
+	margin:0px;
+	padding:0px;
+}
+#send{
+	width:70px;
+	height:70px;
+	line-height:70px;
+	vertical-align:middle;
+	text-align:center;	
+	padding:0px;
+	margin:12px 40px auto 15px;
+	float:left;
+/*	background:#EEE; */
+    background:#E6E6FA;
+	border:#B0C4DE 1px solid;
+	border-radius:5px;
+	font-size:18px;
+	cursor:pointer;
+}
+.textkuang{
+	font-size:16px;
+	font-family:Microsoft Yahei;
+	width:510px; 
+	height:60px;
+	padding:5px; 
+	margin:12px 0px auto 40px; 
+	overflow:auto; 
+	float:left; 
+	border-radius:5px; 
+	border:#B0C4DE 1px solid; 	
+}
