@@ -154,10 +154,12 @@ CREATE TABLE IF NOT EXISTS ustc_act (
 	`aid` INT(10) NOT NULL AUTO_INCREMENT,
 	`gid` INT(10) NOT NULL,
 	`name` VARCHAR(255) NOT NULL,
+	`publish_time` INT(10), -- unix timestamp
 	`start_time` INT(10), -- unix timestamp
 	`end_time` INT(10), -- unix timestamp
 	`place` VARCHAR(255),
 	`rate` INT(10) NOT NULL DEFAULT '0',
+	`clicks` INT(10) NOT NULL DEFAULT '0',
 	`shared` INT(10) NOT NULL DEFAULT '0',
 	`poster` VARCHAR(255), -- filename of poster image
 	`description` TEXT,
@@ -407,6 +409,8 @@ CREATE TABLE IF NOT EXISTS ustc_attachment (
 	`attachid` INT(10) NOT NULL AUTO_INCREMENT,
 	`author` INT(10) NOT NULL,
 	`time` INT(10) NOT NULL,
+	`img_height` INT(10) NOT NULL,
+	`img_width` INT(10) NOT NULL,
 	`filename` VARCHAR(255) NOT NULL,
 	`filepath` VARCHAR(255) NOT NULL,
 	PRIMARY KEY (`attachid`),

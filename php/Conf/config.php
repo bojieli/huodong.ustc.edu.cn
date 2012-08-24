@@ -1,7 +1,7 @@
 <?php
 if (!defined('THINK_PATH')) exit();
 
-$config = require("./config.php");
+$config = require("./Conf/dbconfig.php");
 $newconfig = array(
 	'DEFAULT_MODULE' => 'Poster',
 	'SESSION_AUTO_START' => true,
