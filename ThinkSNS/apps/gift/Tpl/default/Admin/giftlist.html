@@ -46,7 +46,10 @@ ctrl.prototype = {
 	del:function(id){
 		var id = id ? id : getChecked();
 		id = id.toString();
-		if(id=='' || id==0) return ;
+		if(id=='' || id==0){
+			ui.error("请选择要删除的礼物");
+			return false;
+		}
 		if( confirm("是否删除{$ts['app']['app_alias']}？") ){
 		  $.post( '__URL__&act=delete',{id:id},function(text ){
 			  if( text == 1 ){
@@ -67,7 +70,10 @@ ctrl.prototype = {
 	forbid:function(id){
 		var id = id ? id : getChecked();
 		id = id.toString();
-		if(id=='' || id==0) return ;
+		if(id=='' || id==0){
+			ui.error("请选择要禁用的礼物");
+			return false;
+		}
 	    if( confirm( "是否禁用{$ts['app']['app_alias']}" ) ){
 	      $.post('__URL__&act=forbid',{id:id},function( text ){
 			 if( text == 1 ){
@@ -90,7 +96,10 @@ ctrl.prototype = {
 	resume:function(id){
 		var id = id ? id : getChecked();
 		id = id.toString();
-		if(id=='' || id==0) return ;
+		if(id=='' || id==0){
+			ui.error("请选择要启用的礼物");
+			return false;
+		}
 	    if( confirm( "是否启用{$ts['app']['app_alias']}" ) ){
 	      $.post('__URL__&act=resume',{id:id},function( text ){
 			 if( text == 1 ){
@@ -127,9 +136,9 @@ var c = null;
     <input type="hidden" name="isSearch" value="1"/>
         <php>if($isSearch != '1') $uid = '';</php>
         <dl class="lineD">
-          <dt>{$ts['app']['app_alias']}ID：</dt>
+          <dt>{$ts['app']['app_alias']}礼物ID：</dt>
           <dd>
-            <input name="id" class="txt" value="{$userId}">
+            <input name="id" class="txt" value="{$id}">
           </dd>
         </dl>
 	    <dl class="lineD">
@@ -179,9 +188,7 @@ var c = null;
     </div>    
     <div class="Toolbar_inbox">
         <div class="page right">{$list.html}</div>
-        <a href="javascript:void(0);" class="btn_a" onclick="searchObject();">
-            <span class="searchObject_action"><neq name="isSearch" value="1">搜索{$ts['app']['app_alias']}<else/>搜索完毕</neq></span>
-        </a>
+        <a href="javascript:void(0);" class="btn_a" onclick="searchObject();"><span class="searchObject_action"><neq name="isSearch" value="1">搜索{$ts['app']['app_alias']}<else/>搜索完毕</neq></span></a>
         <a href="javascript:void(0);" class="btn_a" onclick="c.edit_tab('添加')"><span>添加{$ts['app']['app_alias']}</span></a>
         <a href="javascript:void(0);" class="btn_a" onclick="c.del()"><span>删除{$ts['app']['app_alias']}</span></a>
         <a href="javascript:void(0);" class="btn_a" onclick="c.resume()"><span>启用{$ts['app']['app_alias']}</span></a>
@@ -209,7 +216,7 @@ var c = null;
           <tr id="list_{$vo.id}">          
             <td><input type="checkbox" name="checkbox" id="checkbox2" onclick="checkon(this)" value="{$vo.id}"></td>
             <td>{$vo.id}</td>
-            <td height="70"><img src="{$vo.img|realityImageURL}" /></td>
+            <td height="70"><img src="{$vo.img|realityImageURL}" width="70" height="70" /></td>
             <td>{$vo.name}</td>
             <td>{$categorysInfo[$vo['categoryId']]}</td>
             <td>{$vo.price}</td>

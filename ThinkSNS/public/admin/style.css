@@ -60,18 +60,18 @@ a.actuator:link, a.actuator:visited, a.actuator:hover, a.actuator:active { color
 .form2 dt span { color:#F00 }
 .form2 dd { margin-left:175px; padding:8px 0 8px 5px; vertical-align:middle }
 .form2 p { color:#7d7d7d; line-height:20px; margin:0; padding:0 }
-.form2 label {padding-left:5px}
+.form2 label {}
 
 .no_line { border:0 none; }
 /*列表样式*/
 .bg_on { background-color:#ECEFF4; }
 .bg_hover { background-color:#F3F3F3; }
 .Toolbar_inbox { background-color:#d2dbea; padding:5px; line-height:26px; border-bottom:1px solid #c8cfda }
-.Toolbar_inbox .btn_a, .Toolbar_inbox .btn_a span { background:#fcfcfc url(images/btn_a.gif) no-repeat; cursor:pointer; }
-.Toolbar_inbox .btn_a { background-position:0 0; margin-right:5px; padding-left:8px; display:inline-block; line-height:26px; color: #333; text-decoration: none; }
-.Toolbar_inbox .btn_a span { padding-right:8px; display:inline-block; background-color: #fcfcfc; background-position: right 0; }
-.Toolbar_inbox .btn_a:hover { background-position: 0 -26px; }
-.Toolbar_inbox .btn_a:hover span { background-position: right -26px; }
+.Toolbar_inbox .btn_a, .Toolbar_inbox .btn_a span { background:#fcfcfc url(images/btn_a.gif) no-repeat; cursor:pointer; word-wrap:normal}
+.Toolbar_inbox .btn_a { margin-right:5px;background-position:0 0; padding-left:8px; display:inline-block; line-height:26px; color: #333; text-decoration: none; word-wrap:normal}
+.Toolbar_inbox .btn_a span { padding-right:8px; display:inline-block; background-color: #fcfcfc; background-position: right 0; word-wrap:normal}
+.Toolbar_inbox .btn_a:hover { background-position: 0 -26px;word-wrap:normal }
+.Toolbar_inbox .btn_a:hover span { background-position: right -26px;word-wrap:normal }
 .page { }
 .page span { margin-right:5px; }
 .list { padding-top:1px }
@@ -104,6 +104,7 @@ a.actuator:link, a.actuator:visited, a.actuator:hover, a.actuator:active { color
 .html_clew_box_con { font-size:14px; padding:20px 0; white-space: nowrap; font-weight: bold; }
 .ico_waiting { background:url(images/icon_waiting.gif) no-repeat 0 0; height:32px; line-height:32px; display:inline-block; padding-left:40px; }
 .boxy-content { text-align:left; padding:10px; }
+.boxy-content p{padding:0;margin:10px 0;*margin:7px 0;}
 #input_dismissed { margin:10px 0 10px 0; }
 /*页面弹出层*/
 .html_pop_box { -moz-border-radius:5px 5px 5px 5px; background:none repeat scroll 0 0 #333333; height:100%; margin:-8px; opacity:0.5; padding:8px; position:absolute; width:100%; z-index:-1; }

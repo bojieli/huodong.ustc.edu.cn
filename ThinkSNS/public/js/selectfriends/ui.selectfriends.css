@@ -179,6 +179,8 @@ a img{
     cursor:pointer;
     overflow:hidden;
     border:1px solid #fff;
+    white-space:nowrap;
+    text-overflow:ellipsis;
 }
 .ui-fs a img{
   vertical-align: middle;

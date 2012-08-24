@@ -4,6 +4,8 @@
 	font-family: "宋体";
 	font-size: 14px;
 	clear: both;
+	height: 32px;
+    line-height: 30px;
 	}
 .pagination a {
 	background-position:50% bottom;

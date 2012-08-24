@@ -2,16 +2,21 @@
 
 <link href="../Public/css/photo.css" rel="stylesheet" type="text/css" />
 <link href="../Public/css/mark_photo.css" rel="stylesheet" type="text/css" />
-
+<style>
+#imgslide img{ width:550px;}
+#pre{display:block; float:left; height:100%; background:#003366;filter:Alpha(Opacity=0);opacity:0; z-index:2; width:330px;  cursor:url(../Public/images/pre.cur),auto; }
+#next{z-index:2; display:block; float:left; background:#00CC99;filter:Alpha(Opacity=0);opacity:0; height:100%; width:330px; float:left; cursor:url(../Public/images/next.cur), auto;}
+.xhbsjy_left_centent h1{float:left;}
+</style>
 <script type="text/javascript">
-	var photo_id		=	'{$photo.id}';
-	var photo_name		=	'{$photo.name}';
-	var album_id		=	'{$album.id}';
-	var now_index_id	=	'{$now}';
-	var uid				=	'{$uid}';
-	var now_play		=	'{$play}';
-	var nextid          =   '{$next.id}';
-	var APPNAME         =   '{$ts.app.app_alias}';
+	var photo_id		=	"{$photo.id}";
+	var photo_name		=	"{$photo.name}";
+	var album_id		=	"{$album.id}";
+	var now_index_id	=	"{$now}";
+	var uid				=	"{$uid}";
+	var now_play		=	"{$play}";
+	var nextid          =   "{$next.id}";
+	var APPNAME         =   "{$ts.app.app_alias}";
 	/**
 	//载入大图
 	$(document).ready(function(){
@@ -71,7 +76,7 @@
           	<if condition="$photo['privacy'] eq 1">            
 			{:W('Weibo',array('tpl_name'=>'photo_share_weibo','button_title'=>'分享'))}
             <php>
-                $tpl_data = array('author'=>getUserName($photo['userId']),'title'=>$photo['name'],'source'=>getUserName($photo['userId']).'的相册','url'=>U('photo/Index/photo',array('id'=>$photo['id'],'aid'=>$photo['albumId'],'uid'=>$photo['userId'])),'type'=>1,'type_data'=>$photo['savepath']);
+                $tpl_data = array('author'=>getUserName($photo['userId']),'title'=>html_entity_decode($photo['name'], ENT_QUOTES),'source'=>getUserName($photo['userId']).'的相册','url'=>U('photo/Index/photo',array('id'=>$photo['id'],'aid'=>$photo['albumId'],'uid'=>$photo['userId'])),'type'=>1,'type_data'=>$photo['savepath']);
                 $tpl_data = urlencode(serialize($tpl_data));
        		</php>
 			<input type="button" value="分享" class="BtnShare" onclick="_widget_weibo_start('', '{$tpl_data}');" id="BtnShare_{$photo.id}"/>
@@ -98,8 +103,13 @@
 			</div>
 			<div class="c1" >
 				<!-- 主图 -->
-				<div class="alC" id="big_photo">
-                	<a href="{:U('photo/Index/photo', array('id'=>$next['id'], 'aid'=>$next['albumId'], 'uid'=>$next['userId']))}<neq name="type" value="">&type={$type}</neq>#show_pic"><img src="__ROOT__/thumb.php?w=560&h=560&t=f&url={$photo.savepath|get_photo_url}" pid="{$photo.id}" rel="{$photo.id}" id="big_pic" /></a>
+				<div class="alC" id="big_photo" style="position:relative">
+                	<h1 style="float:none"><img onload="$('#pre').css('height',this.height);$('#next').css('height',this.height);" src="__ROOT__/thumb.php?w=560&h=560&t=f&url={$photo.savepath|get_photo_url}" pid="{$photo.id}" rel="{$photo.id}" id="big_pic" />
+                	<span id="pre" onclick="rollPic({$pre.id},{$uid},{$pre.albumId});" style="height:50px;position:absolute;top:0;left:0">上一张</span>
+                    <span id="next" onclick="rollPic({$next.id},{$uid},{$next.albumId});" style="height:50px;position:absolute;right:0;top:0">下一张</span></h1>
+                   
+                    
+        
                     <br /><span class="lh30 cGray photoName">{$photo.name}</span>
                 </div>
 
@@ -120,5 +130,9 @@
 </div>
 </div>
 </div>
-
+<script>
+function rollPic(id,uid,albumId){
+	window.location.href=U('photo/Index/photo&id='+id+'&aid='+albumId+'&uid='+uid+'#show_pic');
+}
+</script>
 <include file="__THEME__/footer" />

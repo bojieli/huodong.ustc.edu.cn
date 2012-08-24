@@ -1,22 +1,12 @@
 <include file="__THEME__/header" />
 <link href="../Public/login.css" rel="stylesheet" type="text/css" />
-
-<script>
-function changeverify(){
-    var date = new Date();
-    var ttime = date.getTime();
-    var url = "{:U('home/Public/verify')}";
-    $('#verifyimg').attr('src',url+'&'+ttime);
-}
-</script>
-
 <!--表单验证-->
 <script type="text/javascript" src="../Public/js/jquery.validator.reg.js"></script>
 <script type="text/javascript" src="../Public/js/jquery.corners.min.js"></script>
 <script type="text/javascript" src="../Public/js/register.js" ></script>
-
- 
-<php>if($invite_info){</php>  	  <!--- 邀请加入显示邀请人的信息 --->
+<php>$regInfo=model('Xdata')->lget('register');</php>
+<php>if($invite_info){</php>  	  
+<!-- 邀请加入显示邀请人的信息 -->
     <div class="invite_userInfo">
 		<div class="left mt10 ml10" style="width:100px;">
 			<a href="{:U('home/Space/index', array('uid'=>$invite_info['uid']))}" target="_blank">
@@ -30,20 +20,23 @@ function changeverify(){
     		</div>
 		</div>
     </div>	
-<php>}</php> <!--- 邀请加入显示邀请人的信息结束 --->
+<php>}</php> 
+<!-- 邀请加入显示邀请人的信息结束 -->
 <div class="content_holder">
- <div class="content"><!-- 内容 begin  -->
+ <div class="content">
+  <!-- 内容 begin  -->
   <div class="main no_l">
     <div class="mainbox boxspace">
       <div class="mainbox_appR">
         <div style="padding:10px;">
           <p class="pb10">已有帐号？请直接登录</p>
-          <p class="pb10 app_lineB_w"><a href="{:U('home/Public/login')}" class="btn_b">登录</a></p>
+          <p class="pb10"><a href="{:U('home/Public/login')}" class="btn_b">登录</a></p>
+          <div class="login_other_mode">{:Addons::hook('login_input_footer',array('regInfo'=>$regInfo))}</div>
 		</div>
       </div>
       <div class="mainbox_appC boxspace_L">
         <div class="reg_box">
-        <div class="left" style="width:100%">
+        <div class="left" style="width:100%;">
           <h2 class="cBlue"><strong>快速注册</strong></h2>
           </div>
           <form action="{:U('home/Public/doRegister')}" method="post" id="regform" name="reg">
@@ -92,14 +85,16 @@ function changeverify(){
                 </div>
               </li>
               <eq name="register_verify_on" value="1">
-              <li class="form_li">
+              <li class="form_li" style="position:relative">
                 <div class="reg_li_1">验证码：</div>
                 <div class="reg_li_2">
-                  <input type="text" class="text35" style="width:100px;" name="verify" require="true" value="" datatype="require"  msg="验证码不能为空"/>
-                  <a href="javascript:void(0);" onclick="changeverify()"><img src="{:U('home/public/verify')}" id="verifyimg" alt="换一张" /></a> </div>
+                  <input type="text" class="text35" style="width:100px;vertical-align:middle;" name="verify" require="true" value="" datatype="require|ajax"  msg="验证码不能为空" url="{:U('home/Public/isVerifyAvailable')}" />
+                  <img src="__ROOT__/public/captcha.php" id="verifyimg" alt="换一张" style="cursor: pointer;vertical-align:middle;" onclick="changeverify()" /> </div>
                 <div class="reg_li_3">
-                  <div id="success_verify"  style="display:none;"> <span class="ico_cue_ok"></span> </div>
-                  <div class="r error_verify" style="position: relative;display:none;"> <span class="ico_cue_no"></span> <span id="error_verify"></span> </div>
+                  &nbsp;&nbsp;
+                  <a href="###" onclick="changeverify()">换一换</a>
+                  <div id="success_verify" style="position:absolute;left:350px;display:none;top:18px;_top:5px;"> <span class="ico_cue_ok"></span> </div>
+                  <div class="r error_verify" style="position:absolute;left:350px;top:8px;width:200px;display:none;"> <span class="ico_cue_no"></span> <span id="error_verify"></span> </div>
                 </div>
               </li>
               </eq>

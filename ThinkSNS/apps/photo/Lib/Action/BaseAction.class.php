@@ -13,7 +13,6 @@ class BaseAction extends Action{
 		}else{
 			$userName = getUserName($this->uid);
 		}
-		$this->assign('uid', intval($_GET['uid']));
 		$this->assign('userName',$userName);
 		$this->setTitle($userName . '的' . $this->appName);
 	}

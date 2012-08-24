@@ -18,7 +18,7 @@ class WeiboCommentModel extends Model {
         $data['uid']     = intval($uid);
         $data['reply_comment_id']   = intval($post['reply_comment_id']);
         $data['weibo_id']   = intval($post['weibo_id']);
-        $data['content'] = t(getShort($post['content'],140));
+        $data['content'] = t(getShort($post['content'], $GLOBALS['ts']['site']['length']));
         $data['ctime']   = time();
         $miniInfo = D('GroupWeibo', 'group')->where('weibo_id=' . $data['weibo_id'] . ' AND gid=' . $data['gid'] . ' AND isdel=0')->find();
         if( $data['reply_comment_id'] ){
@@ -68,14 +68,13 @@ class WeiboCommentModel extends Model {
             }
 
             // 添加统计
-            D('GroupUserCount')->addCount($data['reply_uid'],'comment');
+            D('GroupUserCount','group')->addCount($data['reply_uid'],'comment');
             if($data['reply_uid'] != $miniInfo['uid']){
-            	D('GroupUserCount')->addCount($miniInfo['uid'],'comment');
+            	D('GroupUserCount','group')->addCount($miniInfo['uid'],'comment');
             }
 
-
             if($api){
-            	return true;
+            	return 1;
             }else{
             	return json_encode($return);
             } 

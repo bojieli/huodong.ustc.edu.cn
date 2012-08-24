@@ -17,7 +17,7 @@ $(document).ready(function(){
   <div class="main no_l"> 
     <!-- 右侧内容 begin  -->
     <div class="mainbox">
-      <div class="mainbox_C mainC_pad" style="margin-right:0"> <include file="../Public/manage_group_top" />
+      <div class="mainbox_C mainC_pad" style="margin-right:20px"> <include file="../Public/manage_group_top" />
         <div class="groupBox">
           <div class="boxL" style="width:100%;margin-top:40px;">
             <form name="editform" action="{:U('group/Manage/index', array('gid'=>$gid))}" method="post" onsubmit="javascript:return group_info.check_form(this);" enctype="multipart/form-data">
@@ -25,7 +25,7 @@ $(document).ready(function(){
                 <li>
                   <div class="c1">群名称：<span class="cRed pr5">*</span></div>
                   <div class="c2">
-                    <input name="name" value="{$groupinfo['name']}" class="text" style="width: 50%;" onBlur="this.className='text';group_info.text_length(this,10);" onFocus="this.className='text2'" type="text" />
+                    <input name="name" value="{$groupinfo['name']}" class="text" style="width: 50%;" onBlur="this.className='text';group_info.text_length(this,30);" onFocus="this.className='text2'" type="text" />
                     <span id="group_name_tips" class="cRed pr5"></span>
                   </div>
                 </li>
@@ -45,7 +45,7 @@ $(document).ready(function(){
                 <li>
                   <div class="c1">群介绍：&nbsp;&nbsp;&nbsp;</div>
                   <div class="c2">
-                    <textarea name="intro" rows="6"  style="padding:8px; width:70%;" class="text"  onBlur="this.className='text';group_info.text_length(this,60);" onFocus="this.className='text2'">{$groupinfo['intro']}</textarea><br /><span id="group_intro_tips" class="cRed pr5"></span>
+                    <textarea name="intro" rows="6"  style="width:400px;height:100px;overflow:auto" class="text"  onBlur="this.className='text';group_info.text_length(this,200);" onFocus="this.className='text2'">{$groupinfo['intro']}</textarea><br /><span id="group_intro_tips" class="cRed pr5"></span>
                   </div>
                 </li>
                 <li>

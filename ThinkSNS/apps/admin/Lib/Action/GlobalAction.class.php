@@ -35,6 +35,24 @@ class GlobalAction extends AdministratorAction {
         if (empty($_POST)) {
             $this->error('参数错误');
         }
+
+        //验证数字参数
+        if( intval($_POST['max_post_time'])<0 
+             || intval($_POST['max_refresh_time'])<0 
+             || intval($_POST['max_following'])<0
+             || intval($_POST['max_search_time'])<0  
+        ){
+            $this->error('数字变量的值必须大于等于0');
+        }
+        $_POST['max_post_time'] = intval($_POST['max_post_time']);
+        $_POST['max_refresh_time'] = intval($_POST['max_refresh_time']);
+        $_POST['max_following'] = intval($_POST['max_following']);
+        $_POST['max_search_time'] = intval($_POST['max_search_time']);
+
+        if (intval($_POST['length']) <= 0) {
+            $this->error('全站微博、评论字数限制的值必须大于0');
+        }
+
         //保存LOGO
         if(!empty($_FILES['site_logo']['name'])){
             $logo_options['save_to_db'] = false;
@@ -258,6 +276,10 @@ class GlobalAction extends AdministratorAction {
         $this->display('editCredit');
     }
     public function doAddCredit() {
+        $name = trim($_POST['name']);
+        if($name == "" && $_POST['name'] != ""){
+            $this->error('名称不能为空格');
+        }
         if ( !$this->__isValidRequest('name') ) $this->error('数据不完整');
 
         $_POST = array_map('t',$_POST);
@@ -302,6 +324,10 @@ class GlobalAction extends AdministratorAction {
         $this->display();
     }
     public function doEditCredit() {
+        $name = trim($_POST['name']);
+        if($name == "" && $_POST['name'] != ""){
+            $this->error('名称不能为空格');
+        }
         if ( !$this->__isValidRequest('id,name') ) $this->error('数据不完整');
 
         $_POST = array_map('t',$_POST);
@@ -583,7 +609,7 @@ class GlobalAction extends AdministratorAction {
         $_POST['is_on_footer']  = intval($_POST['is_on_footer']);
         $_POST['last_editor_id']= $this->mid;
         $_POST['mtime']         = time();
-        if (preg_match('/^\s*((?:https?|ftp):\/\/(?:www\.)?(?:[a-zA-Z0-9][a-zA-Z0-9\-]*\.)?[a-zA-Z0-9][a-zA-Z0-9\-]*(?:\.[a-zA-Z]+)+(?:\:[0-9]*)?(?:\/[^\x{4e00}-\x{9fa5}\s<\'\"“”‘’]*)?)\s*$/u', strip_tags(html_entity_decode($_POST['content'], ENT_QUOTES, 'UTF-8')), $url)
+        if (preg_match('/^\s*((?:https?|ftp):\/\/(?:www\.)?(?:[a-zA-Z0-9][a-zA-Z0-9\-]*\.)?[a-zA-Z0-9][a-zA-Z0-9\-]*(?:\.[a-zA-Z]+)+(?:\:[0-9]*)?(?:\/[^\x{2e80}-\x{9fff}\s<\'\"“”‘’]*)?)\s*$/u', strip_tags(html_entity_decode($_POST['content'], ENT_QUOTES, 'UTF-8')), $url)
             || preg_match('/^\s*((?:mailto):\/\/[a-zA-Z0-9_]+@[a-zA-Z0-9][a-zA-Z0-9\.]*[a-zA-Z0-9])\s*$/u', strip_tags(html_entity_decode($_POST['content'], ENT_QUOTES, 'UTF-8')), $url)) {
             $_POST['content'] = h($url[1]);
         } else {
@@ -714,7 +740,7 @@ class GlobalAction extends AdministratorAction {
 	public function testSendEmail(){
 		$service = service('Mail');
 		$subject = '这是一封测试邮件';
-		$content = '这是一封来自ThinkSNS系统的测试邮件，您能收到这封邮件表明邮件服务器已配置正确。<br />
+		$content = '这是一封来自'.SITE_URL.'的测试邮件，您能收到这封邮件表明邮件服务器已配置正确。<br />
 					如果您不清楚这封邮件的来由，请删除，为给您带来的不便表示歉意';
 		echo ( $info = $service->send_email($_POST['testSendEmailTo'], $subject, $content) )?$info:'1';
 	}

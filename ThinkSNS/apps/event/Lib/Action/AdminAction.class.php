@@ -95,7 +95,8 @@
             $_POST['type']  && $map['type']   =   intval($_POST['type']);
             $_POST['title'] && $map['title'] =   array( 'like','%'.t( $_POST['title'] ).'%' );
             //处理时间
-            $_POST['sTime'] && $_POST['eTime'] && $map['cTime'] = $this->event->DateToTimeStemp(t( $_POST['sTime'] ),t( $_POST['eTime'] ) );
+//            $_POST['sTime'] && $_POST['eTime'] && $map['cTime'] = $this->event->DateToTimeStemp(t( $_POST['sTime'] ),t( $_POST['eTime'] ) );
+            $_POST['sTime'] && $_POST['eTime'] && $map['cTime'] = $this->event->DateToTimeStemp(t( date("Ymd",strtotime($_POST['sTime'])) ),t(date("Ymd",strtotime($_POST['eTime']))) );
 	        //处理排序过程
             $order = isset( $_POST['sorder'] )?t( $_POST['sorder'] )." ".t( $_POST['eorder'] ):"cTime DESC";
 	        $_POST['limit']     && $limit         =   intval( t( $_POST['limit'] ) );
@@ -221,14 +222,23 @@
          * @return void
          */
         public function doAddType(){
+        	$isnull = preg_replace("/[ ]+/si","", t($_POST['name']));
             $type = D( 'EventType' );
-            if( $result = $type->addType( $_POST ) ){
-                echo $result;
+            $name = M('EventType')->where(array('name'=>$isnull))->getField('name');
+            if (empty($isnull)){
+            	echo -2;
+            }
+            if($name !== null){
+            	echo 0;
             }else{
-                echo -1;
+	            if( $result = $type->addType( $_POST ) ){
+	                echo 1;
+	            }else{
+	                echo -1;
+	            }
             }
         }
-
+		
         /**
          * doEditType 
          * 修改分类
@@ -237,12 +247,21 @@
          */
         public function doEditType(){
             $_POST['id']   = intval($_POST['id']);
-            $_POST['name'] = t($_POST['name']);        	
+            $_POST['name'] = t($_POST['name']);
+           	$_POST['name'] = preg_replace("/[ ]+/si","", $_POST['name'] );
+            if(empty($_POST['name'])){
+            	echo -2;
+            }
             $type = D( 'EventType' );
-            if( $result = $type->editType( $_POST ) ){
-                echo 1;
+            $name = M('EventType')->where(array('name'=>t($_POST['name'])))->getField('name');
+            if ($name !== null){
+            	echo 0; //分类名称重复
             }else{
-                echo -1;
+	            if( $result = $type->editType( $_POST ) ){
+	                echo 1; //更新成功
+	            }else{
+	                echo -1;
+	            }
             }
 
         }

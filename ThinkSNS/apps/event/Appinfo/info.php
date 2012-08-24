@@ -15,7 +15,7 @@ return array(
 	// 应用图标 [必填]
 	'LARGE_ICON_URL'			=> SITE_URL . '/apps/event/Appinfo/ico_app.png',
 	// 版本号 [必填]
-	'VERSION_NUMBER'			=> '28172',
+	'VERSION_NUMBER'			=> '33566',
 	// 后台入口 [选填]
 	'ADMIN_ENTRY'				=> 'Admin/index',
 	// 统计入口 [选填]（格式：Model/method）
@@ -27,14 +27,14 @@ return array(
 	// 发布日期
 	'RELEASE_DATE'				=> '2008-08-08',
 	// 最后更新日期
-	'LAST_UPDATE_DATE'			=> '2012-02-14',
+	'LAST_UPDATE_DATE'			=> '2012-07-12',
 
 	// 附加链接名称 [选填]
 	'SIDEBAR_TITLE'				=> '',
 	// 附件链接的入口 [选填]（格式：Action/act）
-	'SIDEBAR_ENTRY'				=> '',
+	'SIDEBAR_ENTRY'				=> '发起',
 	// 附加链接的图标 [选填]
-	'SIDEBAR_ICON_URL'			=> '',
+	'SIDEBAR_ICON_URL'			=> 'Index/addEvent',
 	// 是否在附加链接中展示子菜单 [选填]（0:否 1:是）
 	'SIDEBAR_SUPPORT_SUBMENU'	=> '0',
 
@@ -45,5 +45,5 @@ return array(
 	// 作者主页 [选填]
 	'AUTHOR_HOMEPAGE_URL'		=> '',
 	// 贡献者姓名 [选填]
-	'CONTRIBUTOR_NAMES'			=> '陈伟川，赵杰，曹颖',
+	'CONTRIBUTOR_NAMES'			=> '陈伟川，赵杰，曹莹',
 );

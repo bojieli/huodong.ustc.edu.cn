@@ -137,9 +137,8 @@ var quote = function(id)
 			  </php>
               
               <h3 class="group_Posts_tit">
-              <span class="right"><span class="jh" id="dist_icon" <php>if(!$topic['dist']){</php>style="display:none;"<php>}</php>>精</span><input type="button" name="Submit" value="分享" class="BtnShare mt5 mr5" onclick="_widget_group_weibo_start('{$gid}', '', '{$tpl_data}');" id="BtnShare_{$topic.title}"/></span>
-                <span class="sd" id="lock_icon" <php>if(!$topic['lock']){</php>style="display:none;"<php>}</php>>锁</span>
-                <span class="zd" id="top_icon" <php>if(!$topic['top']){</php>style="display:none;"<php>}</php>>顶</span>{$topic.ctitle}{$topic.title}
+              <span class="right"><input type="button" name="Submit" value="分享" class="BtnShare mt5 mr5" onclick="_widget_group_weibo_start('{$gid}', '', '{$tpl_data}');" id="BtnShare_{$topic.title}"/></span>
+              <span><span class="sd" id="lock_icon" <php>if(!$topic['lock']){</php>style="display:none;"<php>}</php>>锁</span><span class="jh" id="dist_icon" <php>if(!$topic['dist']){</php>style="display:none;"<php>}</php>>精</span><span class="zd" id="top_icon" <php>if(!$topic['top']){</php>style="display:none;"<php>}</php>>顶</span><span style="float:left">{$topic.ctitle}{$topic.title}</span></span>
               </h3>
               <div style="border-bottom:2px solid #E6E6E6">
                 <div class="left" style="width:60px;"><span class="headpic50"><space uid="topic['uid']" target="_blank">{uavatar=m}</space></span><br />
@@ -249,7 +248,7 @@ var quote = function(id)
             	  <textarea id="content" name="content" style="height:150px;"></textarea>
 				</div>
 
-           		<div style="margin-left:70px;">			    
+           		<div style="margin-left:70px;margin-top:10px">			    
                 <input type="hidden" name="gid" value="{$gid}">
 				<input type="hidden" name="tid" value="{$tid}">
 				<input type="submit" class="btn_b mt5"  value="发表" id="send_reply" />

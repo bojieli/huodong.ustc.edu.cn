@@ -37,7 +37,7 @@ return array(
     '_NOT_LOAD_DB_'=>'无法加载数据库',
     '_NOT_SUPPORT_DB_'=>'系统暂时不支持数据库',
     '_NO_DB_CONFIG_'=>'没有定义数据库配置',
-    '_NOT_SUPPERT_'=>'系统不支持',
+    '_NOT_SUPPORT_'=>'系统不支持',
     '_CACHE_TYPE_INVALID_'=>'无法加载缓存类型',
     '_FILE_NOT_WRITEABLE_'=>'目录（文件）不可写',
 	'_METHOD_NOT_EXIST_'=>'您所请求的方法不存在！',

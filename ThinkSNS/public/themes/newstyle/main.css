@@ -15,8 +15,6 @@ menu		网站菜单样式
 skin01		网站主体样式
 
 ------------------------------------------------------------ */
-@import url("public.css?20110429");
-@import url("layout.css?20110429");
 @import url("form.css");
 @import url("link.css");
 @import url("menu.css");

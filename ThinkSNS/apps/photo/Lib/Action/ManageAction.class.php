@@ -213,7 +213,7 @@ class ManageAction extends BaseAction{
 	public function do_update_photo() {
 		$id		        =	intval($_REQUEST['id']);
 		$map['albumId']	=	intval($_REQUEST['albumId']);
-		$map['name']	=	t($_REQUEST['name']);
+		$map['name']	=	h(t($_REQUEST['name']));
 		$nextId			=	intval($_REQUEST['nextId']);
 		$photoDao       =   D('Photo');
 		$albumDao       =   D('Album');
@@ -228,9 +228,14 @@ class ManageAction extends BaseAction{
 		}
 		//返回
 		if($result){
-			echo 1;//成功
+			$data['result'] = 1;
+			$data['message'] = keyWordFilter($map['name']);
+			echo json_encode($data);
+			// echo 1;//成功
 		}else{
-			echo 0;
+			$data['result'] = 0;
+			echo json_encode($data);
+			// echo 0;
 		}
 	}
 

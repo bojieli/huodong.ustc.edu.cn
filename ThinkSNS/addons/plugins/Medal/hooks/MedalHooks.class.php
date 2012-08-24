@@ -50,7 +50,7 @@ class MedalHooks extends Hooks
 	    	$MedalDao->setUserMedalStatus($this->mid, $hide_ids, 0);
     	}
 
-    	$this->assign('jumpUrl', U('home/Account/medal', array('type'=>'manage')));
+    	$this->assign('jumpUrl', U('home/Account/medal', array('type'=>'manage','addon'=>'Medal','hook'=>'home_account_show')));
     	$this->success('操作成功');
     }
 

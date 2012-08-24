@@ -29,7 +29,7 @@
                   <li class="lineD_btm" style="margin:0px;" id ="cate{$vo['id']}">
                     <div class="left" style="width: 40%;">
                       <php>if( $vo['uid'] != 0 ){</php>
-                      <input name="name[{$vo['id']}]" style="width:200px;" type="text" class="text" onBlur="this.className='text'" onFocus="this.className='text2'" value="{$vo['name']}"/>
+                      <input name="name[{$vo['id']}]" style="width:200px;" type="text" class="text" onBlur="this.className='text';cagExist(this)" onFocus="this.className='text2'" value="{$vo['name']}"/>
                       <php>}else{</php>
                       {$vo['name']}
                       <php>}</php>
@@ -59,4 +59,22 @@
   </div>
 </div>
 </div>
+<script>
+function cagExist(obj){
+	var name = obj.value;
+	if(getLength(name.replace(/\s+/g,"")) == 0){
+		ui.error("日志分类名称不能为空");
+		return false;
+	}
+	$.post( U('blog/Index/isCategoryExist'),{name:name},function( txt ){
+    	if(0 == txt) {
+    		ui.error( '添加失败' );
+        }else{
+            ui.error( "分类名已存在" );
+        }
+	});
+ 
+}
+
+</script>
 <include file="../Public/_footer" />

@@ -44,7 +44,7 @@
       <h2>热门群标签</h2>
       <ul class="topic_list">
         <volist name="hot_tags_list" id="hot_tag">
-          <li><a href="{:U('group/Index/search', array('k'=>urlencode($hot_tag['tag_name'])))}">{$hot_tag['tag_name']}({$hot_tag['count']})</a></li>
+          <li><a href="{:U('group/Index/search', array('k'=>urlencode($hot_tag['tag_name'])))}">{$hot_tag['tag_name']}</a></li>
         </volist>
       </ul>
     </div>

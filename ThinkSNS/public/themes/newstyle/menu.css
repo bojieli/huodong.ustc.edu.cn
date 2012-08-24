@@ -3,7 +3,7 @@
  说明: 
 ------------------------------------------------------------ */
 /*tab-menu*/
-.tab-menu{height:32px;overflow: visible;white-space: nowrap;background:url(images/tab_line_bg.gif) repeat-x 0 bottom}
+.tab-menu{height:32px;overflow: visible;white-space: nowrap;background:url(images/tab_line_bg.gif) repeat-x 0 bottom;}
 .myop .tab-menu{}
 .tab-menu ul{height:27px}
 .tab-menu li{float:left;margin-right: 2px}
@@ -11,8 +11,8 @@
 .tab-menu li a:visited{color:#666}
 .tab-menu li a span{height:30px;display:block;font-size:12px;padding-right:20px;float:left;cursor:pointer;text-decoration: none;line-height: 30px;background: #eee url(images/tab_menu.gif) no-repeat right -35px}
 .tab-menu li a span.ico_arrow{background:url(images/ico_arrow.gif) no-repeat right center;padding-right:15px}
-.tab-menu li a.on, .tab-menu li a:hover,.tab-menu li a.on:hover{display:block;height:32px;_height:30px;text-decoration: none;background: #fff url(images/tab_menu.gif) no-repeat 0 0;color:#666}
-.tab-menu li a.on span, .tab-menu li a:hover span,.tab-menu li a.on:hover span{cursor:pointer;line-height:30px;height:31px;display:block;font-weight: bold;background-image: url(images/tab_menu.gif);background-repeat: no-repeat;background-position: right 0}
+.tab-menu li a.on, .tab-menu li a:hover,.tab-menu li a.on:hover{display:block;height:32px;text-decoration: none;background: #fff url(images/tab_menu.gif) no-repeat 0 0;color:#666}
+.tab-menu li a.on span, .tab-menu li a:hover span,.tab-menu li a.on:hover span{cursor:pointer;line-height:30px;height:31px;display:block;background-image: url(images/tab_menu.gif);background-repeat: no-repeat;background-position: right 0}
 .tab-menu li a:hover{background-position:left 0;text-decoration: none;font-weight:normal}
 .tab-menu li a:hover span{cursor:pointer;display:block;height:30px;_height:31px;text-decoration: none;background-position:right 0;font-weight:normal}
 .tab-menu .tab_group{position:relative}
@@ -23,8 +23,8 @@
 .tab-menu .tab_group_hover .Inc_new a:hover{background-color:#F5F5F5}
 /* TAB */
 .tabMenu{height:28px;line-height:26px;background:url(images/tab_line_bg.gif) repeat-x 0 bottom}
-.tabMenu li a{display:block;float:left;margin:0 2px 0 0;_margin:0 2px 0 0;color:#666;line-height:18px;background:url(images/tab_menu.gif) repeat-x 0 -35px}
-.tabMenu li a span{background-color:#fff;height:18px;line-height:18px;padding:5px 10px;background:url(images/tab_menu.gif) repeat-x right -35px;display:inline-block;margin:0 0 0 1px}
+.tabMenu li a:link,.tabMenu li a:visited{display:block;float:left;margin:0 2px 0 0;_margin:0 1px 0 0;color:#666;line-height:18px;background:url(images/tab_menu.gif) repeat-x 0 -35px}
+.tabMenu li a span{background-color:#fff;height:18px;line-height:18px;padding:5px 10px;background:url(images/tab_menu.gif) repeat-x right -35px;display:inline-block;margin:0 0 0 1px;cursor:pointer}
 .tabMenu li.hover a{display:block;float:left;margin:0 2px 0 0;_margin:0 2px 0 0;color:#666;line-height:18px;background:url(images/tab_menu.gif) repeat-x 0 0}
 .tabMenu li.hover a span{background-color:#fff;height:18px;line-height:18px;padding:5px 10px;background:url(images/tab_menu.gif) repeat-x right 0;display:inline-block;margin:0 0 0 1px}
 .tabMenu li a:hover{display:block;float:left;margin:0 2px 0 0;_margin:0 2px 0 0;color:#666;line-height:18px;background:url(images/tab_menu.gif) repeat-x 0 0}
@@ -50,7 +50,7 @@
 .tabMenu .Att_list dd {overflow:hidden}
 .tabMenu .Att_list dd a:link,.tabMenu .Att_list dd a:visited{background:none;font-size:12px;color:#3B5998;line-height:30px;height:30px;padding:0 10px;margin:0;overflow:hidden;white-space:nowrap;float:none;border:none;text-overflow: ellipsis;width:120px;_width:100px;display:block}
 .tabMenu .Att_list dd a:hover{background:#E8E8E8;font-size:12px;color:#3B5998;line-height:30px;height:30px;padding:0 10px;margin:0;border-radius:0 0 0 0;border:none 0}
-.MenuSub{height: 30px;line-height:30px;color:#3B5998}
+.MenuSub{height: 30px;line-height:30px;color:#3B5998;margin:10px 0 0}
 .MenuSub_2{line-height:30px;margin-bottom: 10px;background:url(images/MenuSub.gif) repeat-x 0 bottom;color:#E0E8EA;padding-left:5px;overflow:hidden;width:auto;_width:99%}
 .MenuSub a,.MenuSub_2 a {font-size: 12px;margin-right: 5px;padding: 3px 8px}
 .MenuSub a.on,.MenuSub_2 a.on{color:#fff;font-size: 12px;background-color:#999;border-radius:2px 2px 2px 2px}
@@ -64,8 +64,15 @@
 .square_menu li a:hover{background-color:#507FA5;border-radius: 3px 0 0 3px;color:#fff;text-decoration:none}
 
 /*导航下拉框共用样式*/
-.header .nav ul li .dropmenu,.header .person li .dropmenu{display:none;z-index: 9000;top: 35px;right:0;position: absolute}
-.header .nav ul li.hover .dropmenu,.header .person li.hover .dropmenu{background-color: #fff;z-index: 9000;top: 38px;right:-1px;_right:-2px;position: absolute;text-align: left; display: block;font-size: 12px;border: 1px solid #666;border-top:0 none;white-space:nowrap;box-shadow:1px 1px 3px rgba(0, 0, 0, 0.3);border-radius:0px 0px 3px 3px}
+.header .nav ul li .dropmenu,.header .person li .dropmenu{display:none;z-index: 9000;top: 35px;right:0;position: absolute;}
+.header .nav ul li.hover .dropmenu,.header .person li.hover .dropmenu{background-color: #fff;z-index: 9000;top: 35px;right:-1px;_right:-2px;position: absolute;text-align: left; display: block;font-size: 12px;border: 1px solid #666;border-top:0 none;white-space:nowrap;box-shadow:1px 1px 3px rgba(0, 0, 0, 0.3);border-radius:0px 0px 3px 3px}
+
+.header .nav ul li .ip-dropmenu,.header .person li .ip-dropmenu{display:none;z-index: 9000;top: 50px;right:0;position: absolute;}
+.header .nav ul li.hover .ip-dropmenu,.header .person li.hover .ip-dropmenu{background-color: #fff;z-index: 9000;top: 43px;right:-1px;_right:-2px;position: absolute;text-align: left; display: block;font-size: 12px;border: 1px solid #666;border-top:0 none;white-space:nowrap;box-shadow:1px 1px 3px rgba(0, 0, 0, 0.3);border-radius:0px 0px 3px 3px}
+
+
+
+
 .header .person li.hover .dropmenu a {line-height: 30px;font-size: 12px;background-color:#fff;font-weight: normal;display: block;padding: 0px 7px;color:#143149}
 .header .person li.hover .dropmenu a:hover,.header .nav ul li.hover .dropmenu a:hover{background-color: #e8e8e8;text-decoration: none}
 .header .nav ul li.hover .dropmenu a{line-height: 30px;font-size: 12px;background-color:#fff;font-weight: normal;display: block;padding: 0px 7px;color:#143149}
@@ -87,7 +94,7 @@
 /*群组列表*/
 .header .nav ul li.hover .dropmenu .group_list,.header .nav ul li.hover .dropmenu .group_list_add{width:150px;overflow:hidden}
 .header .nav ul li.hover .dropmenu .group_list{border-bottom:1px solid #ccc}
-.header .nav ul li.hover .dropmenu .group_list dd a,.header .nav ul li.hover .dropmenu .message dd a,.header .nav ul li.hover .dropmenu .setup dd a{line-height:30px;display:block;white-space: nowrap;overflow:hidden;background-color:#fff}
+.header .nav ul li.hover .dropmenu .group_list dd a,.header .nav ul li.hover .dropmenu .message dd a,.header .nav ul li.hover .dropmenu .setup dd a{line-height:25px;display:block;white-space: nowrap;overflow:hidden;background-color:#fff;width:130px;text-overflow:ellipsis;}
 .header .nav ul li.hover .dropmenu .group_list_add a{background-color:#fff;color:#3B5998;text-align:right;display:inline}
 .header .nav ul li.hover .dropmenu .group_list_add a:hover{background:none;display:inline;text-decoration:underline}
 

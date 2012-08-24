@@ -447,7 +447,7 @@ class UploadFile
         //文件上传成功，进行自定义规则检查
         //检查文件大小
         if(!$this->checkSize($file['size'])) {
-            $this->error = '上传文件大小不符！';
+            $this->error = '上传文件过大，请重新选择！';
             return false;
         }
 

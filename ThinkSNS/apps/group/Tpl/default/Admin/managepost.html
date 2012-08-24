@@ -40,7 +40,7 @@ function searchObject() {
       isSearchHidden = 0;
   }else {
       $("#searchObject_div").slideUp("fast");
-      $(".searchObject_action").html("搜索群组");
+      $(".searchObject_action").html("搜索回复");
       isSearchHidden = 1;
   }
 }
@@ -51,7 +51,9 @@ ctrl.prototype = {
 		del:function(id, type){
 			var id = id ? id : getChecked();
 			id = id.toString();
-			if(id=='' || id==0) return;
+			if(id=='' || id==0){
+				alert("请选择要删除的回复");return false;
+			}
 		    if (confirm("确认删除回复？")) {
 		        $.post( '__URL__&act=remove',{id:id,type:type},function(text){
 		        	if (text == 1) {
@@ -83,12 +85,12 @@ var c = null;
 <form method="post">
 	<input type="hidden" name="isSearch" value="1" /><php>if($isSearch != '1') $uid = '';</php>
 	<dl class="lineD">
-		<dt>回复回复ID：</dt>
+		<dt>回复ID：</dt>
 		<dd><input type="text" name="id" class="txt" value="{$id}">
 		</dd>
 	</dl>
 	<dl class="lineD">
-		<dt>回复ID：</dt>
+		<dt>帖子ID：</dt>
 		<dd><input type="text" name="tid" class="txt" value="{$tid}">
 		</dd>
 	</dl>
@@ -166,7 +168,7 @@ var c = null;
 		<td><input type="checkbox" name="checkbox" id="checkbox2" onclick="checkon(this)" value="{$post.id}"></td>
 		<td>{$post.id}</td>
 		<td><a href="{:U('group/Topic/topic',array('gid'=>$post['gid'],'tid'=>$post['tid']))}" target="_blank">{$_topics[$post['tid']]}</a></td>
-		<td>{$post.content|html_entity_decode=###,ENT_QUOTES|getShort=###,300,'……'}</td>
+		<td>{$post.content|html_entity_decode=###,ENT_QUOTES|text|getShort=###,300,'……'}</td>
 		<td><a href="{:U('group/Group/index', array('gid'=>$post['gid']))}" target="_blank">{$_group_names[$post['gid']]}</a></td>
 		<td><space uid="post.uid" target="_blank">{uname}</space></td>
 		<td>{$post.ctime|friendlyDate}</td>

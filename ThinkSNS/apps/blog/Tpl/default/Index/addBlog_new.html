@@ -10,7 +10,7 @@
         <div class="mainbox_C">
         <div class=page_title> 
             <h2>
-                <span class="f12px fn right"><a href="javascript:history.back( -1 )">&lt;&lt;返回上一页</a></span>
+                <!-- <span class="f12px fn right"><a href="javascript:history.back( -1 )">&lt;&lt;返回上一页</a></span> -->
                 发表{$ts['app']['app_alias']}
             </h2>
         </div>
@@ -25,7 +25,7 @@
                       <php>foreach( $category as $value ){</php>
                       <option value="{$value['id']}">{$value['name']}</option>
                       <php>}</php>
-                      
+                      <option value="0">&nbsp;</option>
                       <optgroup id="group">
                       <option value="0">+添加分类</option>
                       </optgroup>

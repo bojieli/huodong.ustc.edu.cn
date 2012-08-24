@@ -12,7 +12,7 @@
   - 开启伪静态和个性化域名:  参见"开启URL伪静态的方法.txt"
   - 恢复或删除漫游平台信息:  参见"恢复或删除漫游平台站点信息的方法.txt"
   - ThinkSNS集成UCenter: 参见"集成UCenter的方法.txt"
-  - 有更多问题: 参见 http://t.thinksns.com/app/blog/detail/1719?mid=10045
+  - 有更多问题: 参见 http://t.thinksns.com/app/blog/detail/2560?mid=30793
 
 ****** ThinkSNS 2.5 sp1 更新说明 ******
 + 注意：此sp1补丁包，包含2月14日发布以来的累计bug和优化，包含应用和插件的优化

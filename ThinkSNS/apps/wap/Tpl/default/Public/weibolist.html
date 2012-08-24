@@ -15,18 +15,44 @@
         <php>if($hideUsername!=1){</php><a href="{:U('wap/Index/weibo',array('uid'=>$weibo['uid']))}">{$weibo['uname']}</a>: <php>}</php>
         <php>$detail_more = get_str_length($weibo['content'], true) > 140 ? ' <a href="' . U('wap/Index/detail',array('id'=>$weibo['weibo_id'])) . '" target="_blank">查看更多&raquo;</a>' : '';</php>
         {$weibo['content']|getShort=###,140,'...'}{$detail_more}<br/>
-        <php>if($weibo['type']==1) {</php>
-        <a href="{:U('wap/Index/detail',array('weibo_id'=>$weibo['weibo_id']))}"><img src="{$weibo['type_data']['thumburl']}" width="100" /></a>
-        <php>}</php>
+        <php>
+		if($weibo['type']==1) {
+			if(isset($weibo['type_data']['picurl'])){
+			</php>
+			<a href="{:U('wap/Index/detail',array('weibo_id'=>$weibo['weibo_id']))}"><img src="{$weibo['type_data']['thumburl']}" width="100" /></a>
+			<php>
+			}else{
+				foreach($weibo['type_data'] as $data){
+			</php>
+			<a href="{:U('wap/Index/detail',array('weibo_id'=>$weibo['weibo_id']))}"><img src="{$data['thumburl']}" width="100" /></a>
+			<php>
+				}
+			
+			}
+		}
+		</php>
     <php>}else {</php>
         <!-- 转发 -->
         <php>$forward = $weibo['transpond_data'];</php>
         <php>if($hideUsername!=1){</php><a href="{:U('wap/Index/weibo',array('uid'=>$weibo['uid']))}">{$weibo['uname']}</a>: <php>}</php>
         <php>$forward_detail_more = get_str_length($forward['content'], true) > 140 ? ' <a href="' . U('wap/Index/detail',array('id'=>$forward['weibo_id'])) . '" target="_blank">查看更多&raquo;</a>' : '';</php>
         转发 <a href="{:U('wap/Index/weibo',array('uid'=>$forward['uid']))}">@{$forward['uname']}</a> 的微博:{$forward['content']|getShort=###,140,'...'}{$forward_detail_more}<br />
-        <php>if($forward['type']==1) {</php>
-        <a href="{:U('wap/Index/detail',array('weibo_id'=>$weibo['weibo_id']))}"><img src="{$forward['type_data']['thumburl']}" width="100" /></a>
-        <php>}</php>
+        <php>
+		if($forward['type']==1) {
+			if(isset($forward['type_data']['picurl'])){
+			</php>
+			<a href="{:U('wap/Index/detail',array('weibo_id'=>$forward['weibo_id']))}"><img src="{$forward['type_data']['thumburl']}" width="100" /></a>
+			<php>
+			}else{
+				foreach($forward['type_data'] as $data){
+			</php>
+			<a href="{:U('wap/Index/detail',array('weibo_id'=>$forward['weibo_id']))}"><img src="{$data['thumburl']}" width="100" /></a>
+			<php>
+				}
+			
+			}
+		}
+		</php>
         <a href="{:U('wap/Index/forward', array('weibo_id'=>$forward['weibo_id']))}">原文转发[{$forward['transpond']}] </a> 
         <a href="{:U('wap/Index/detail',array('weibo_id'=>$forward['weibo_id']))}">原文评论[{$forward['comment']}]</a><br />
         <php>$detail_more = get_str_length($weibo['content'], true) > 140 ? ' <a href="' . U('wap/Index/detail',array('id'=>$weibo['weibo_id'])) . '" target="_blank">查看更多&raquo;</a>' : '';</php>

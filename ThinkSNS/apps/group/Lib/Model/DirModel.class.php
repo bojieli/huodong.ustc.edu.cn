@@ -26,7 +26,13 @@ class DirModel extends Model {
 
    			$map = implode(' AND ',$map);
             //连贯查询.获得数据集
-            $result         = $this->where( $map )->field( $fields )->order( $order )->findPage( $limit) ;
+            // $result         = $this->where( $map )->field( $fields )->order( $order )->findPage( $limit);
+            $map .= ' AND a.id IS NOT NULL';
+            $result = M()->Table('`'.C('DB_PREFIX').'group_attachment` AS ga LEFT JOIN `'.C('DB_PREFIX').'attach` AS a ON a.id = ga.attachId')
+                         ->field('ga.*')
+                         ->where($map)
+                         ->order($order)
+                         ->findPage($limit);
           
             if($html) return $result;
             return $result['data'];

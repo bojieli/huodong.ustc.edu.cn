@@ -83,9 +83,9 @@
 		<input type="checkbox" id="checkbox_handle" onclick="checkAll(this)" value="0">
     	<label for="checkbox"></label>
 	</th>
-    <th class="line_l">ID</th>
-    <th class="line_l">用户信息</th>
-    <th class="line_l">部门信息</th>
+    <th class="line_l" style="80px">ID</th>
+    <th class="line_l" style="300px">用户信息</th>
+    <php>/*<th class="line_l">部门信息</th>*/</php>
     <th class="line_l">用户组</th>
     <th class="line_l">注册时间</th>
     <th class="line_l">状态</th>
@@ -100,14 +100,14 @@
 	    </if>
 	    <td>{$vo.uid}</td>
 	    <td>
-			<div style="float:left;margin-right:10px;border:1px solid #8098A8;height:30px;padding:1px;width:30px;""><img src="{$vo.uid|getUserFace='s'}" width="30"></div>
+			<div style="float:left;margin-right:10px;border:1px solid #8098A8;height:30px;padding:1px;width:30px;"><img src="{$vo.uid|getUserFace='s'}" width="30"></div>
 			<div style="float:left"><space uid="vo.uid" class="fn" target="_blank">{uname}</space><br>{$vo.email}</div></td>
-		<td>
+		<php>/*<td>
 			<php>if(empty($vo['department'])){</php>暂无部门信息<php>}</php>
 			<volist name="vo['department']" id="dept">
 				{$dept['dept_title']}<br />
 			</volist>
-		</td>
+		</td>*/</php>
 	    <td>
 			<php>if(empty($vo['user_group'])){</php>暂无用户组信息<php>}</php>
 			<volist name="vo['user_group']" id="group">
@@ -117,7 +117,6 @@
 	    <td>{$vo.ctime|date="Y-m-d H:i",###}</td>
 	    <td><eq name="vo['is_active']" value="0">未激活<else/>激活</else></eq></td>
 	    <td>
-			<!--<a href="javascript:void(0);" onclick="changeDepartment({$vo['uid']});">转移部门</a>-->
 			<a href="{:U('admin/User/editUser', array('uid'=>$vo['uid']))}">编辑</a>
 			<if condition="0 == $vo['admin_level'] && $mid != $vo['uid']">
 	    		<a href="javascript:void(0);" onclick="deleteUser({$vo['uid']});">删除</a>
@@ -140,7 +139,6 @@
 	<a href="javascript:void(0);" class="btn_a" onclick="deleteUser();"><span>删除用户</span></a>
   </div>
 </div>
-
 <script>
 	//鼠标移动表格效果
 	$(document).ready(function(){
@@ -211,13 +209,23 @@
 	
 	//删除用户
 	function deleteUser(uid) {
-		uid = uid ? uid : getChecked();
-		uid = uid.toString();
+		var length = 0;
+		if(uid) {
+		    length = 1;         
+		}else {
+		    uid    = getChecked();
+		    length = uid.length;
+		    uid    = uid.toString();
+		}
+		if(uid=='') {
+		    ui.error('请先选择一个用户');
+		    return ;
+		}
 		if(uid == '' || !confirm('删除成功后将无法恢复，确认继续？')) return false;
 		
 		$.post("{:U('admin/User/doDeleteUser')}", {uid:uid}, function(res){
 			if(res == '1') {
-				uid = uid.split(',');
+				uid = uid.toString().split(',');
 				for(i = 0; i < uid.length; i++) {
 					$('#user_'+uid[i]).remove();
 				}

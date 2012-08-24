@@ -1,15 +1,15 @@
-.header,.footer{ width:960px}
+.header,.footer{ width:980px}
 
 /*快速注册*/
-.M_login{_padding:57px 0 0}
+.M_login{}
 .reg_box{display:block; overflow:visible}
-.reg_box h2{font-size:18px; font-family: "微软雅黑", "宋体"}
+.reg_box h2{font-size:18px; font-family: "微软雅黑", "宋体";margin-bottom:10px;}
 .reg_box h2 span{color:#999; font-size:12px}
 .reg_box .form_list{padding-bottom:20px}
 .reg_box .form_list em{color:#f00;vertical-align:-4px}
 .reg_box .form_li{float: left; width:100%; padding:10px 0; line-height:35px; font-size:14px}
 .reg_box .form_li .reg_li_1{ float:left; text-align:right;width:85px;padding-right:10px}
-.reg_box .form_li .reg_li_2{ float:left; width:260px}
+.reg_box .form_li .reg_li_2{ float:left; }
 .reg_box .form_li .reg_li_3{float:left;padding-left:10px}
 .reg_box .feed_list li{width:50%;float:left;border-bottom:#eee solid 1px}
 
@@ -27,14 +27,14 @@
 .box_quike_reg span{display:block}
 .list_login{border-right:#ddd solid 1px}
 .list_login dt{padding:0 0 10px 0}
-.list_login dd{padding:0 0 10px 0;overflow:hidden;*zoom:1}
+.list_login dd{padding:0 0 10px 0;overflow:hidden;*zoom:1;text-align:left}
 .list_login label{float:left;display:block;padding:0 10px 0 0;width:40px;text-align:right;line-height:25px}
-.list_login .options_login{margin:0 0 0 50px}
+.list_login .options_login{margin:0 0 0 50px;}
 .list_login .line_tips{width:188px;-webkit-border-radius: 3px;-moz-border-radius: 3px;border-radius: 3px;background-color:#FFFFCC;border:#F5C83C solid 1px;margin:0 0 0 50px;padding:5px;color:#f60}
 .login_other_mode{padding:10px 0;margin:0;color:#999}
 
 /*other*/
-.slogan {height:301px;padding:4px 0 0;margin:0 auto;*zoom:1;position:relative;z-index:9; text-align:left; width:960px;background:url(images/slogan_bg.jpg) no-repeat 0 0; border:1px solid #D0D0D0; border-bottom:0 none}
+.slogan {height:301px;padding:4px 0 0;margin:0 auto;*zoom:1;position:relative;z-index:9; text-align:left; width:980px;background:url(images/slogan_bg.jpg) no-repeat 0 0; border:1px solid #D0D0D0; border-bottom:0 none}
 .slobgs {overflow:hidden;width:960px;margin:0 auto -350px;height:350px; }
 
 .login {height:326px;background:url(images/login.png) no-repeat 0 -326px;_background:url(images/login.gif) no-repeat left -326px;width:253px; position:absolute; right:10px; top:-12px}
@@ -44,10 +44,10 @@
 .regbtn a:focus,.regbtn a:active {background-position:0 -128px}
 
 .talking{bottom:10px; left:10px; line-height:25px; position: absolute; color:#fff;width:680px;height:25px;overflow:hidden;text-overflow: ellipsis;white-space: nowrap}
-.talking a{ margin-right:5px; color:#fff}
+.talking a:link,.talking a:visited{ margin-right:5px; color:#fff}
 .logform {padding:9px 26px 0px 26px}
-.logform .frm {margin:0 0 8px 0; *margin:0 0 6px 0; }
-.logform .frm .text {padding: 6px 5px; width: 191px; }
+.logform .frm { }
+.logform .frm .text {margin:0 0 8px 0; *margin:0 0 6px 0;padding: 6px 5px; width: 191px; }
 .form_label{color: #999;left: -1px;line-height: 30px;padding-left: 8px;position: absolute;top: 0;width: 198px;cursor: text}
 
 .ppsel ul li.tit {background:#f0f0f0;color:#999;padding:4px 6px}
@@ -85,12 +85,12 @@ background-repeat:no-repeat;}
 .bottom li a {margin-left:5px}
 
 /*main*/
-.login_main { background-color:#fff;margin:0 auto;height:517px;clear:both;position:relative;z-index:10; text-align:left; width:960px; border:1px solid #D0D0D0; border-top:0 none}
-.colL {width:248px;border-right:1px solid #efefef;float:left;padding:0 15px}
-.colC {width:420px;float:left;position:relative;overflow:hidden}
-.colR {width:218px;border-left:1px solid #efefef;float:left;padding:0 15px}
+.login_main { background-color:#fff;overflow:hidden;margin:0 auto;clear:both;position:relative;z-index:10; text-align:left; width:980px; border:1px solid #D0D0D0; border-top:0 none}
+.colL {width:248px;float:left;padding:0 15px}
+.colC {width:420px;float:left;position:relative;overflow:hidden;border-right:1px solid #efefef;border-left:1px solid #efefef;}
+.colR {width:218px;float:left;padding:0 15px}
 
-.tit {border-bottom:1px solid #efefef;color:#666}
+.tit {color:#666}
 .tit .opt {float:right;font-size:12px;padding-top:20px;color:#999}
 .tit h3 {font-size:14px;padding:18px 0 6px;font-weight:bold}
 .tit h4 {font-size:12px;padding:5px 0;font-weight:bold}
@@ -117,7 +117,7 @@ background-repeat:no-repeat;}
 
 /* twis */
 .colC .tit {margin:0 20px;border:none 0}
-.colC .twis {margin:0 20px;height:450px;overflow:hidden}
+.colC .twis {margin:0 20px;overflow:hidden}
 .colC .twis .list_weibo{border-top:#eee solid 1px;padding:10px 0}
 .colC .twis .list_weibo dd img{vertical-align:top}
 .colC .mask {height:50px;background:url(images/148.png) repeat-x left bottom;position:absolute;left:0;bottom:0;width:100%;z-index:100}
@@ -130,8 +130,8 @@ background-repeat:no-repeat;}
 .twis {overflow:hidden;_zoom:1}
 
 .colR .tit {margin-bottom:7px;border:none 0}
-.tpl {height:460px;overflow:hidden; width: 217px}
-.tpl li {height:45px;padding:0 3px; overflow:hidden; float:left; width:211px;border-top:#eee solid 1px}
+.tpl {height:460px;overflow:hidden; width: 217px;*zoom:1}
+.tpl li {height:45px;padding:0 3px; overflow:hidden; float:left; width:211px;border-top:#eee solid 1px;*zoom:1}
 .tpl li a {display:block;height:44px}
 .tpl li a:hover {text-decoration:none;background:#f8f8f8}
 .tpl li.hover {background:#f8f8f8 url(images/hr_dt_b0.gif) repeat-x 0 bottom}

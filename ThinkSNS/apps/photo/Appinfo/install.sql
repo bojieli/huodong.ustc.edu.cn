@@ -95,12 +95,12 @@ VALUES
 
 # 增加photo的默认积分配置
 DELETE FROM `ts_credit_setting` WHERE `type` = 'photo';
-INSERT INTO `ts_credit_setting`
+INSERT INTO `ts_credit_setting`  (`id`,`name`, `alias`, `type`, `info`, `score`, `experience`) 
 VALUES
 	('', 'add_album', '创建相册', 'photo', '{action}{sign}了{score}{typecn}', '10', '10'),
 	('', 'delete_album', '删除相册', 'photo', '{action}{sign}了{score}{typecn}', '-10', '-10'),
 	('', 'add_photo', '上传图片', 'photo', '{action}{sign}了{score}{typecn}', '2', '2');
 
-INSERT INTO `ts_system_data` (`uid`,`list`,`key`,`value`,`mtime`) 
+REPLACE INTO `ts_system_data` (`uid`,`list`,`key`,`value`,`mtime`) 
 VALUES 
-    (0,'photo','version_number','s:5:"28172";','2012-02-14 10:00:00');
+    (0,'photo','version_number','s:5:"33566";','2012-07-12 00:00:00');

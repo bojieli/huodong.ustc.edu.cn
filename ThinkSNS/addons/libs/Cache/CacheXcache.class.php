@@ -32,7 +32,7 @@ class CacheXcache extends Cache {
      */
     public function __construct($options='') {
         if ( !function_exists('xcache_info') ) {
-            throw_exception(L('_NOT_SUPPERT_').':Xcache');
+            throw_exception(L('_NOT_SUPPORT_').':Xcache');
         }
         if(!empty($options)) {
             $this->options =  $options;

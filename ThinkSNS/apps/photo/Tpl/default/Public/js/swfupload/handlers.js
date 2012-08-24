@@ -121,10 +121,14 @@ function uploadSuccess(file, serverData) {
 	try {
 		var progress = new FileProgress(file, this.customSettings.progressTarget);
 		if(ts_upload_success(serverData)){
+			this.customSettings.queue_upload_count++;
 			progress.setComplete();
 			progress.setStatus("完成.");
-			progress.toggleCancel(false);
+		} else {
+			progress.setError();
+			progress.setStatus("失败.");
 		}
+		progress.toggleCancel(false);
 	} catch (ex) {
 		this.debug(ex);
 	}

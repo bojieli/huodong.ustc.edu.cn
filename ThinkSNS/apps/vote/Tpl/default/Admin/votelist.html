@@ -48,7 +48,7 @@ function searchVote() {
         isSearchHidden = 0;
     }else {
         $("#searchVote_div").slideUp("fast");
-        $(".searchVote_action").html("搜索用户");
+        $(".searchVote_action").html("搜索投票");
         isSearchHidden = 1;
     }
 }
@@ -59,7 +59,10 @@ ctrl.prototype = {
 	del:function(id){
 		var id = id ? id : getChecked();
 		id = id.toString();
-		if(id=='' || id==0) return ;
+		if(id=='' || id==0){
+			ui.error("请选择要删除的投票");
+			return false;
+		}
 	if( confirm("是否删除{$ts['app']['app_alias']}") ){
 	  $.post( '__URL__&act=doDeleteVote',{id:id},function(text ){
 		  if( text == 1 ){

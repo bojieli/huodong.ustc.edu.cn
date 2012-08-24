@@ -42,7 +42,7 @@
 					&nbsp;
                 </div>
                 <div class="c2">
-               		<input type="button" class="btn_b" value="开始上传" id="btnUpload" onClick='start_upload()' disabled="disabled" />
+               		<input type="button" class="btn_b" value="开始上传" id="btnUpload" onClick='start_upload()' readonly="true" />
                 </div>
         	</li>
 			<!--<li>
@@ -55,7 +55,7 @@
         <div class="clue">
 			<p>·可以同时选择多张图片进行批量上传 (注:一次最多同时上传{$max_flash_upload_num}张图片)    </p>
 			<p>·单张图最大为{$photo_max_size/1024/1024}M，支持{$photo_file_ext}格式，如果上传失败，请尝试小一点的图片。</p>
-			<p>·切换到缩略图模式预览文件夹<br /> 可直观挑选图片： <img src="../Public/images/uploadEx.gif" width="136" height="27" /></p>
+			<p>·切换到缩略图模式预览文件夹， 可直观挑选图片(仅在windows环境下)： <img src="../Public/images/uploadEx.gif" width="136" height="27" /></p>
 			<span class="clue_btm"></span>
 		</div>
 		<!-- 上传图片预览 -->
@@ -128,9 +128,13 @@
 function start_upload(){
 	albumId	=	$('#albumlist').val();
 	if(albumId>0){
-		swfu.addPostParam('albumId',albumId);
-		swfu.startUpload();
-		$('#btnUpload').attr('disabled',true).removeClass('btn5').val("上传中...");
+		var uploadStatus = $('#btnUpload').attr('readonly');
+		if(uploadStatus != true) {
+			swfu.addPostParam('albumId',albumId);
+			swfu.startUpload();
+			// $('#btnUpload').attr('disabled',true).removeClass('btn5').val("上传中...");
+			$('#btnUpload').attr('readonly', false).removeClass('btn5').val("上传中...");
+		}
 	}else{
 		alert('图片{$ts['app']['app_alias']}未选择，请添加新{$ts['app']['app_alias']}或者刷新页面重试！');
 	}
@@ -142,22 +146,19 @@ function ts_upload_success(serverData){
 	if(data.status==true){
 		return true;
 	}else{
-		if(data == '0'){
-			alert('上传失败，格式不允许');
-		}else{
-			alert(data.info);
-		}
-		return true;
+		alert(data.info);
+        return false;
 	}
 }
 
 //当文件队列有文件时
 function enableUploadButton(file){
-	$('#btnUpload').attr('disabled',false).addClass('btn5').val("开始上传");
+	// $('#btnUpload').attr('disabled',false).addClass('btn5').val("开始上传");
+	$('#btnUpload').attr('readonly', false).addClass('btn5').val("开始上传");
 }
 //全部上传完成
 function queueComplete(numFilesUploaded) {
 	$("#up_num").val(numFilesUploaded);
-	$("#muti_edit_photos").submit();
+	( numFilesUploaded > 0 ) && $("#muti_edit_photos").submit();
 }
 </script>

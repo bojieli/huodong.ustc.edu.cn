@@ -4,25 +4,19 @@ class GroupWeiboModel extends Model{
 
 	/**
 	 *
-	 +----------------------------------------------------------
 	 * Description 微博发布
-	 +----------------------------------------------------------
 	 * @author Nonant nonant@thinksns.com
-	 +----------------------------------------------------------
 	 * @param $uid 发布者用户ID
 	 * @param $data 微博主要数据
 	 * @param $from 从哪发布的
 	 * @param $type 微博类型
 	 * @param $type_data   微博类型传来的数据
-	 +----------------------------------------------------------
 	 * @return return_type
-	 +----------------------------------------------------------
 	 * Create at  2010-9-17 下午05:02:06
-	 +----------------------------------------------------------
 	 */
      function publish($uid,$data,$from=0,$type=0,$type_data,$sync, $from_data){
      	$data['content'] =t( $data['content'] );
-        $data['gid']     =  intval($_POST['gid']) ;
+        $data['gid']     =  intval($data['gid']) ;
      	if($id = $this->doSaveWeibo($uid, $data, $from , $type ,$type_data, $sync, $from_data) ){
      		$this->notifyToAtme($uid, $data['gid'], $id, $data['content'] );
      		return $id;
@@ -52,7 +46,7 @@ class GroupWeiboModel extends Model{
         }else{
         	$save['content'] 		= preg_replace('/^\s+|\s+$/i', '', html_entity_decode($data['content'], ENT_QUOTES));
 			$save['content'] 		= preg_replace("/#[\s]*([^#^\s][^#]*[^#^\s])[\s]*#/is",'#'.trim("\${1}").'#',$save['content']);	// 滤掉话题两端的空白
-	        $save['content']		= preg_replace_callback('/((?:https?|ftp):\/\/(?:www\.)?(?:[a-zA-Z0-9][a-zA-Z0-9\-]*\.)?[a-zA-Z0-9][a-zA-Z0-9\-]*(?:\.[a-zA-Z0-9]+)+(?:\:[0-9]*)?(?:\/[^\x{4e00}-\x{9fa5}\s<\'\"“”‘’]*)?)/u',getContentUrl, $save['content']);
+	        $save['content']		= preg_replace_callback('/((?:https?|ftp):\/\/(?:www\.)?(?:[a-zA-Z0-9][a-zA-Z0-9\-]*\.)?[a-zA-Z0-9][a-zA-Z0-9\-]*(?:\.[a-zA-Z0-9]+)+(?:\:[0-9]*)?(?:\/[^\x{2e80}-\x{9fff}\s<\'\"“”‘’]*)?)/u',getContentUrl, $save['content']);
 	        $save['content'] = t(getShort($save['content'], $GLOBALS['ts']['site']['length']));
         }
 
@@ -106,7 +100,7 @@ class GroupWeiboModel extends Model{
 	        	$comment['content']   = $post['content'];
 	        	$comment['ctime']     = time();
 	        	D('WeiboComment', 'group')->addcomment( $comment );
-	        	D('GroupUserCount')->addCount($weiboinfo['uid'],'comment');
+	        	D('GroupUserCount','group')->addCount($weiboinfo['uid'],'comment');
         	}
         }
 
@@ -136,7 +130,7 @@ class GroupWeiboModel extends Model{
     					$atUids[] = $v;
     				}
     			}
-    			D('GroupUserCount')->addCount($atUids,'atme');
+    			D('GroupUserCount', 'group')->addCount($atUids,'atme');
     		}
     		D('WeiboAtme', 'group')->addAtme($arrUids, $gid, $id);
     	}

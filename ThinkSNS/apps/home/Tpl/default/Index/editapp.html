@@ -39,7 +39,7 @@ function remove(appid) {
               <h3 class="lineD_btm"><strong><?php echo $app_type_alias[$type]; ?></strong></h3>
               <ul id="sortable_{$type}">
                 <?php foreach($apps as $app) { ?>
-                <li class="lineD_btm drag">
+                <li class="lineD_btm <?php if($type != 'local_default_app') echo 'drag'; ?>">
                   <input type="hidden" name="{$type}[]" value="{$app['app_id']}"/>
                   <?php if($type == 'myop_app'){ ?>
                   <span class="right ml10"> <a href="javascript:void(0);" onclick="remove('<?php echo $app['app_id'];?>');">卸载</a> </span>
@@ -58,7 +58,7 @@ function remove(appid) {
                   <?php echo $app['app_alias'];?>
                   </a> </span>
                   <?php }else { ?>
-                  <span> <img class="alM mr5" src="<?php echo $app['icon_url'];?>" width="16px" height="16px"/> <a href="<?php echo $app['app_entry'];?>">
+                  <span> <img class="alM mr5" src="<?php echo getAppIconUrl($app['icon_url'],$app['app_name']);?>" width="16px" height="16px"/> <a href="<?php echo $app['app_entry'];?>">
                   <?php echo $app['app_alias'];?>
                   </a> </span>
                   <?php } ?>
@@ -68,7 +68,7 @@ function remove(appid) {
               </div>
               <?php } // END foreach?>
             <div>
-              <input type="submit" class="btn_b" value="保存" name="ordersubmit">  拖拽 <img src="__THEME__/images/drag.gif" /> 排列应用顺序后保存
+              <input type="submit" class="btn_b" value="保存" name="ordersubmit">  拖拽 <img src="__THEME__/images/drag.gif" /> 排列应用顺序后保存，仅针对本地应用
             </div>
           </form>
         </div>

@@ -5,7 +5,7 @@ class TopicsModel extends Model{
 	// 专题列表
 	public function topicsList($post = array())
 	{
-        $post['topics_id'] && $map['topics.topics_id'] = array('in', t($post['id']));
+        $post['topics_id'] && $map['topics.topics_id'] = array('in', t($post['topics_id']));
         $post['name']      && $map['topic.name'] 	    = array('like', '%' . t($post['name']) . '%');
         $post['content']   && $map['topics.content']   = array('like', '%' . t($post['content']) . '%');
 		is_string($post['recommend']) && $map['topics.recommend'] = (string)intval($post['recommend']);

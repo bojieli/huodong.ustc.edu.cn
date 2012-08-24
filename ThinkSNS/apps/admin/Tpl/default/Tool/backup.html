@@ -37,7 +37,7 @@
   <div class="page_tit">数据备份</div>
   <div class="Toolbar_inbox">
     <a href="javascript:void(0);" class="btn_a" onclick="$('#begin_backup').slideDown();"><span>开始备份</span></a>
-    <a href="javascript:void(0);" class="btn_a" onclick="del();"><span>删除备份</span></a>
+    <a href="javascript:void(0);" class="btn_a" onclick="delsql();"><span>删除备份</span></a>
   </div>
   
   <div class="list">
@@ -60,7 +60,7 @@
         <td>{$vo.addtime}</td>
         <td>{$vo.filesize}</td>
         <td>
-            <a href="javascript:void(0);" onclick="importsql('{$vo['filename']}');">导入</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="javascript:void(0);" onclick="delsql('{$filename}');">删除</a>
+          <a href="{:U('admin/Tool/doDownload', array('filename'=>$vo['filename']))}">下载</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="javascript:void(0);" onclick="importsql('{$vo['filename']}');">导入</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="javascript:void(0);" onclick="delsql('{$filename}');">删除</a>
         </td>
       </tr>
   </volist>
@@ -69,7 +69,7 @@
   </div>
   <div class="Toolbar_inbox">
     <a href="javascript:void(0);" class="btn_a" onclick="$('#begin_backup').slideDown();"><span>开始备份</span></a>
-    <a href="javascript:void(0);" class="btn_a" onclick="del();"><span>删除备份</span></a>
+    <a href="javascript:void(0);" class="btn_a" onclick="delsql();"><span>删除备份</span></a>
   </div>
 </div>
 
@@ -103,26 +103,26 @@
 
     //删除备份文件
     function delsql(bid) {
-        bid = bid ? bid : getChecked();
+        var bid = bid ? bid : getChecked();
         bid = bid.toString();
-        if(bid == '')
+        if(bid == 'all' || bid =="all,0"){
+            ui.error("请选择要删除的备份文件");
         	return false;
-        
-        if(!confirm('删除后无法恢复，确定删除？'))
-        	return false;
-
-        //提交删除
-        $.post("{:U('admin/Tool/doDeleteBackUp')}", {selected:bid}, function(res){
-            if(res == '1') {
-                bid = bid.split(',');
-                $.each(bid, function(i,n){
-                    $('#backup_'+n).remove();
-                });
-                ui.success('删除成功');
-            }else {
-                ui.error('删除失败');
-            }
-        });
+        }
+        if(confirm('删除后无法恢复，确定删除？')){
+            //提交删除
+            $.post("{:U('admin/Tool/doDeleteBackUp')}", {selected:bid}, function(res){
+                if(res == '1') {
+                    bid = bid.split(',');
+                    $.each(bid, function(i,n){
+                        $('#backup_'+n).remove();
+                    });
+                    ui.success('删除成功');
+                }else {
+                    ui.error('删除失败');
+                }
+            });
+        }
     }
     
     function importsql( filename ){
@@ -131,7 +131,7 @@
 
     	window.location.href = "{:U('admin/Tool/import')}&filename=" + filename;
     }
-    
+
   //鼠标移动表格效果
     $(document).ready(function(){
         $("tr[overstyle='on']").hover(

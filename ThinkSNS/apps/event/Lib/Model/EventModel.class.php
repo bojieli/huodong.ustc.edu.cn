@@ -1,4 +1,5 @@
 <?php
+include_once SITE_PATH.'/apps/event/Lib/Model/BaseModel.class.php';
 /**
  * EventModel
  * 活动主数据库模型
@@ -11,10 +12,23 @@
  */
 class EventModel extends BaseModel{
 	var $mid;
+	function getConfig($key=NULL){
+		$config = model('Xdata')->lget('event');
+		$config['limitpage']    || $config['limitpage'] =10;
+		$config['canCreate']===0 || $config['canCreat']=1;
+	    ($config['credit'] > 0   || '0' === $config['credit']) || $config['credit']=100;
+	    $config['credit_type']  || $config['credit_type'] ='experience';
+		($config['limittime']   || $config['limittime']==='0') || $config['limittime']=10;//换算为秒
 
+		if($key){
+			return $config[$key];
+		}else{
+			return $config;
+		}
+	}
 	public function getEventList($map='',$order='id DESC',$mid){
 		$this->mid = $mid;
-        $result  = $this->where($map)->order($order)->findPage(getConfig('limitpage'));
+        $result  = $this->where($map)->order($order)->findPage($this->getConfig('limitpage'));
 		//追加必须的信息
         if( !empty( $result['data'] )){
 			$user = self::factoryModel( 'user' );
@@ -151,9 +165,9 @@ class EventModel extends BaseModel{
 				$fids[$k] = $v['fid'];
 			}
 
-            $data['url']     =  U('//eventDetail',array('id'=>$addId,'uid'=>$eventMap['uid']));  
-            $data['title']   = "<a href=\"{$data['url']}\" target=\"_blank\">{$eventMap['title']}</a>";  
-            $data['content'] = t(getBlogShort($eventMap['explain'],40));  
+            $data['url']     =  U('//eventDetail',array('id'=>$addId,'uid'=>$eventMap['uid']));
+            $data['title']   = "<a href=\"{$data['url']}\" target=\"_blank\">{$eventMap['title']}</a>";
+            $data['content'] = t(getBlogShort($eventMap['explain'],40));
             X('Notify')->send($fids,'event_add',$data,$eventMap['uid']);
 		}
 
@@ -195,15 +209,32 @@ class EventModel extends BaseModel{
 		$join = $att;
 		$join['action'] = 'joinIn';
 
+ 		$result['attention'] = $user->getUserList( $att,4 );
 
-		$result['attention'] = $user->getUserList( $att,4 );
 		$result['member']    = $user->getUserList( $join,16 );
+
 		$result['lc'] = 5000000 < $result['limitCount'] ? "无限制":$result['limitCount'];
+
 		$result = $this->appendContent( $result );
 		//TODO
-        $result['cover']     = getCover($result['coverId'],200,200);
+        $result['cover']     = $this->getCover($result['coverId'],200,200);
 		return $result;
 	}
+
+//获取活动封面存储地址
+function getCover($coverId,$width=80,$height=80){
+	$cover = D('Attach')->field('savepath,savename')->find($coverId);
+	if($cover){
+		$cover	=	SITE_URL."/thumb.php?w=$width&h=$height&url=".$this->get_photo_url($cover['savepath'].$cover['savename']);
+	}else{
+		$cover	=	SITE_URL."/thumb.php?w=$width&h=$height&url=./apps/event/Tpl/default/Public/images/hdpic1.gif";
+	}
+	return $cover;
+}
+//根据存储路径，获取图片真实URL
+function get_photo_url($savepath) {
+	return './data/uploads/'.$savepath;
+}
 
 	public function doEditEvent($eventMap,$optsMap,$cover,$id){
 		$eventMap['cTime'] = isset( $eventMap['cTime'] )?$eventMap['cTime']:time();
@@ -234,7 +265,7 @@ class EventModel extends BaseModel{
 	 * @return void
 	 */
 	public static function factoryModel( $name ){
-		return D("Event".ucfirst( $name ));
+		return D("Event".ucfirst( $name ), 'event');
 	}
 
 	/**
@@ -287,7 +318,6 @@ class EventModel extends BaseModel{
 		unset( $map['id'] );
 		$map['cTime']   = time();
 		$map['contact'] = $contacts;
-
 		switch( $data['action'] ){
 			case "attention":
 				if( false === $opts['canAtt'] ){
@@ -301,7 +331,7 @@ class EventModel extends BaseModel{
 				}
 				break;
 			case "joinIn":
-				if( false === $opts['canJoin'] ){
+				if( false === $role['canJoin'] ){
 					return -2;
 				}
                 if(!$role['follow']){
@@ -411,7 +441,7 @@ class EventModel extends BaseModel{
 		//修正成员状态
 		foreach ( $data as $key=>$value ){
 			if( $value['uid'] == $uid ){
-				$result['data'][$key]['role'] = "组织者";
+				$result['data'][$key]['role'] = "发起者";
 			}else{
 				if( 'joinIn' == $value['action'] ){
 					$result['data'][$key]['role'] = "成员";

@@ -4,171 +4,225 @@
  *
  * @author daniel <desheng.young@gmail.com>
  */
-class FriendModel extends Model {
+class FriendModel extends Model
+{
 	protected $tableName = 'friend';
-	protected $default_group_name = '未分组';
 
-	/**
-	 * 查询好友表
-	 *
-	 * @param array|string $map   查询条件
-	 * @param string       $field 默认*
-	 * @param int          $limit 默认空
-	 * @param string       $order 默认空
-	 * @param boolean      $is_find_page 是否分页,默认true
-	 * @return array
-	 */
-	public function getFriedByMap($map = array(), $field = '*', $limit = '', $order = '', $is_find_page = true) {
-		if ($is_find_page) {
-			return $this->Distinct('uid')->where($map)->field($field)->order($order)->findPage($limit);
-		}else {
-			return $this->Distinct('uid')->where($map)->field($field)->order($order)->limit($limit)->findAll();
+	private   $_error = null;
+
+	const FRIEND_STATUS_PEDDING  = 0;
+	const FRIEND_STATUS_ACCEPTED = 1;
+
+	const NOT_FRIENDS  = 0;
+	const ARE_FRIENDS  = 1;
+	const HAVE_APPLIED = 2;
+	const BE_APPLIED   = 3;
+
+	public function getLastError()
+	{
+		return $this->_error;
+	}
+
+	public function getFriendList($map = null, $field = null, $order = 'ctime DESC', $limit = 20, $page = true)
+	{
+		$this->where($map)->field($field)->order($order);
+		if ($page) {
+			$list = $this->findPage($limit);
+			$this->_formatList( $list['data']); // 引用
+		} else {
+			$list = $this->limit($limit)->findAll();
+			$this->_formatList( $list); // 引用
+		}
+		return $list;
+	}
+
+	// [引用] 格式化朋友列表数据，追加与关注列表相同信息
+	private function _formatList(& $list)
+	{
+		$fids = $_list = array();
+		foreach ($list as $l_v) { // 引用
+			$fids[]     = $l_v['friend_uid'];
+			$l_v['fid'] = $l_v['friend_uid'];
+			$_list[$l_v['fid']] = $l_v;
+		}
+		$list = $_list;
+		unset($_list);
+
+		// 追加信息
+		//用户地址
+		$location = M('User')->where("uid in (". implode(",",$fids).")")->field('location,uid')->findAll();
+
+		//关注和粉丝、朋友
+		$following = D('Follow', 'weibo')->field('count(1) as count,uid')->where("uid in (". implode(",",$fids).") AND type={$type}")->group('uid')->findAll();
+		$follower  = D('Follow', 'weibo')->field('count(1) as count,fid')->where("fid in (". implode(",",$fids).") AND type={$type}")->group('fid')->findAll();
+		$friend    = $this->field('count(1) as count,friend_uid')->where("friend_uid in (". implode(",",$fids).") AND status=" . FriendModel::FRIEND_STATUS_ACCEPTED)->group('friend_uid')->findAll();
+
+		//关注状态
+		$followState = D('Follow', 'weibo')->getStateByArr($GLOBALS['ts']['user']['uid'], $fids);
+
+		foreach($followState as $k => $v){
+			$list[$k]['followState'] = $v != 3 ? $v != 1 ? 'unfollow' : 'havefollow' : 'eachfollow';
+		}
+		foreach ($location as $v){
+			$list[$v['uid']]['user']['location'] = $v['location'];
+		}
+		foreach ($following as $v){
+			$list[$v['uid']]['following'] =$v['count'];
+		}
+		foreach ($follower as $v){
+			$list[$v['fid']]['follower'] =$v['count'];
+		}
+		foreach ($friend as $v){
+			$list[$v['friend_uid']]['friend'] =$v['count'];
 		}
 	}
 
-	/**
-	 * 获取好友列表
-	 *
-	 * @param int $uid 				用户ID
-	 * @param int $friend_group_id  好友分组ID 默认null则不分组查找
-	 * @param int $limit 			默认20
-	 * @param string $order 		默认 以好友名字升序，好友ID升序
-	 * @return array
-	 */
-	public function getFriendList($uid, $friend_group_id = null, $limit = 20, $order = 'friend_uname ASC, friend_uid ASC') {
-		if ( !isset($friend_group_id) ) {
-			return $this->where("`uid`=$uid AND `status`=1")->order($order)->findPage($limit);
-		}else {
-			return M('friend_group_link')->where("`uid`=$uid AND `friend_group_id`=$friend_group_id AND `status`=1")
-										 ->order($order)
-										 ->findPage($limit);
+	public function applyFriend($uid, $friend_uid, $message)
+	{
+		$res = $this->_addFriend($uid, $friend_uid, 0, $message);
+
+		/* 通知 */
+		if ($res) {
+			$notify_data['content'] = $message;
+			X('Notify')->send($friend_uid, 'friend_apply', $notify_data, $uid);
 		}
+
+		return $res;
 	}
 
-	/**
-	 * 添加好友
-	 *
-	 * @param int     $uid 					 用户ID
-	 * @param int     $friend_uid 			 好友ID
-	 * @param array   $friend_group_id 		 好友分组ID
-	 * @param boolean $require_authorization 是否需要请求,false:不需要,true:需要
-	 * @param string  $message 				 请求信息
-	 * @return boolean
-	 */
-	public function addFriend($uid, $friend_uid, $friend_group_id = 0, $require_authorization = false, $message = '') {
-		//ts_friend
-		$data['uid'] 			= $uid;
-		$data['friend_uid'] 	= $friend_uid;
-		$data['friend_uname'] 	= getUserName($friend_uid);
-		$data['status'] 		= $require_authorization ? 0 : 1;
-		$data['message']		= $message;
+	public function responseToFriendApplication($uid, $friend_uid, $status)
+	{
+		if ($status) {
+			$res = $this->acceptFriend($uid, $friend_uid);
+		} else {
+			$res = $this->rejectFriend($uid, $friend_uid);
+		}
+		return $res;
+	}
+
+    public function acceptFriend($uid, $friend_uid)
+	{
+		$res = $this->_editFriend($friend_uid, $uid, 1);
+		if ($res) {
+			$res = $this->_addFriend($uid, $friend_uid, 1, '');
+			!$res && $res = $this->_editFriend($uid, $friend_uid, 1); // 二者已互相发出邀请的情况
+		}
+
+		/* 通知 互粉 */
+		if ($res) {
+			// 通知
+			X('Notify')->send($friend_uid, 'friend_accept', '', $uid);
+			// 自动互粉
+			D('Follow', 'weibo')->dofollow($uid, $friend_uid, 0);
+			D('Follow', 'weibo')->dofollow($friend_uid, $uid, 0);
+		}
+
+		return $res;
+	}
+
+    public function rejectFriend($uid, $friend_uid)
+	{
+		$res = $this->_deleteFriend($uid, $friend_uid);
+
+		/* 通知 */
+		if ($res) {
+			X('Notify')->send($friend_uid, 'friend_reject', '', $uid);
+		}
+
+		return $res;
+	}
+
+	public function cancelFriendApplicaition($uid, $friend_uid)
+	{
+		$res = $this->_deleteFriend($uid, $friend_uid);
+
+		/* 通知 */
+		if ($res) {
+			X('Notify')->send($friend_uid, 'friend_cancel_apply', '', $uid);
+		}
+
+		return $res;
+	}
+
+    public function deleteFriend($uid, $friend_uid)
+	{
+		$res = $this->_deleteFriend($uid, $friend_uid);
+
+		/* 通知 */
+		if ($res) {
+			X('Notify')->send($friend_uid, 'friend_cancel', '', $uid);
+		}
+
+		return $res;
+	}
+
+    public function identifyFriend($uid, $friend_uid)
+	{
+		static $_friend_status = array();
+
+		$cache_key = "{$uid}_{$friend_uid}";
+		if (isset($_friend_status[$cache_key])) {
+			return $_friend_status[$cache_key];
+		}
+		// Friend 数据
+		$friend = $this->where("(`uid`={$uid} AND `friend_uid`={$friend_uid}) OR (`uid`={$friend_uid} AND `friend_uid`={$uid})")
+					   ->findAll();
+		// 格式化数据
+		$_friend = array();
+		if (is_array($friend)) {
+			foreach ($friend as $f_v) {
+				$_friend[$f_v['uid']] = $f_v;
+			}
+			$friend = $_friend;
+			unset($_friend);
+		}
+		if (!$friend) {
+			$res = self::NOT_FRIENDS;
+		} else if ($friend[$uid] && self::FRIEND_STATUS_ACCEPTED == $friend[$uid]['status']) {
+			$res = self::ARE_FRIENDS;
+		} else if ($friend[$friend_uid] && self::FRIEND_STATUS_PEDDING == $friend[$friend_uid]['status']) {
+			$res = self::BE_APPLIED;
+		} else if ($friend[$uid] && self::FRIEND_STATUS_PEDDING == $friend[$uid]['status']) {
+			$res = self::HAVE_APPLIED;
+		}
+		$_friend_status[$cache_key] = $res;
+		return $res;
+	}
+
+	/* ------ */
+	private function _addFriend($uid, $friend_uid, $status, $message)
+	{
+		$data['uid'] 			= intval($uid);
+		$data['friend_uid'] 	= intval($friend_uid);
+		$data['status'] 		= 1 == $status ? 1 : 0;
+		$data['message']		= t($message);
 		$data['ctime']			= time();
-		$res = $this->add($data);
-
-		//ts_friend_group_link
-		unset($data['message']);
-		$friend_group_id = $friend_group_id === 0 ? array('0') : $friend_group_id;
-
-		foreach ($friend_group_id as $v) {
-			unset($data['friend_group_id']);
-			$data['friend_group_id'] = $v;
-			M('friend_group_link')->add($data);
+		if ($data['uid'] <= 0 || $data['friend_uid'] <= 0 || $data['uid'] == $data['friend_uid']) {
+			return false;
 		}
-
-		return $res;
+		return $this->add($data);
 	}
 
-	/**
-	 * 接受好友请求
-	 *
-     * @param int   $uid			 用户ID
-     * @param int   $friend_uid		 好友ID
-     * @param array $friend_group_id 好友分组ID
-     * @return boolean
-	 */
-	public function acceptFriend($uid, $friend_uid, $friend_group_id = 0) {
-
-	}
-
-	/**
-	 * 删除好友
-	 *
-	 * @param int     $uid 用户ID
-	 * @param int     $friend_uid 好友ID
-	 * @param boolean $require_authorization 是否发送通知,双方面删除
-	 * @return boolean
-	 */
-	public function deleteFriend($uid, $friend_uid, $require_authorization = false) {
-		if ($require_authorization) {
-			//双方面删除
-			//发送通知
-		}else {
-			//单方面删除
+	private function _editFriend($uid, $friend_uid, $status)
+	{
+		$map['uid']        = intval($uid);
+		$map['friend_uid'] = intval($friend_uid);
+		$data['status']    = $status;
+		if ($map['uid'] <= 0 || $map['friend_uid'] <= 0 || $map['uid'] == $map['friend_uid']) {
+			return false;
 		}
+		return $this->where($map)->save($data);
 	}
 
-	/**
-	 * 判断是否为好友
-	 *
-	 * @param int $uid        用户ID
-	 * @param int $friend_uid 对方ID
-	 * @return boolean
-	 */
-	public function isFriends($uid, $friend_uid) {
-		return $this->where("`uid`=$uid AND `friend_uid`=$friend_uid AND `status`=1")->find();
-	}
-
-	/**
-	 * 获取给定用户的所有好友分组
-	 *
-	 * @param int     $uid
-	 * @param boolean $show_count 统计好友数量
-	 * @return array
-	 */
-	public function getGroupList($uid, $show_count = false) {
-		$res = M('friend_group')->where("`uid`=$uid OR `uid`=0")->order('friend_group_id DESC')->findAll();
-
-		if ($show_count && $res) {
-			$sql = 'SELECT count(friend_uid) AS count, friend_group_id FROM ' . C('DB_PREFIX') . 'friend_group_link
-					WHERE `uid` = ' . $uid . ' AND `status` = 1 GROUP BY friend_group_id';
-			$tmp = $this->query($sql);
-			//格式化统计数据
-			foreach ($tmp as $v) {
-				$count[$v['friend_group_id']] = $v['count'];
-			}
-
-			foreach ($res as $k => $v) {
-				$res[$k]['count'] = intval($count[$v['friend_group_id']]);
-			}
-			//未分组的
-			if ($count[0] > 0 ) {
-				$res[] = array('friend_group_id'=>0,'title'=>$this->default_group_name,'count'=>$count[0]);
-			}
+	private function _deleteFriend($uid, $friend_uid)
+	{
+		$uid        = intval($uid);
+		$friend_uid = intval($friend_uid);
+		if ($uid <= 0 || $friend_uid <= 0 || $uid == $friend_uid) {
+			return false;
 		}
-
-		return $res;
-	}
-
-	/**
-	 * 获取给定用户的给定好友所在的分组
-	 *
-	 * @param int $uid
-	 * @param int $friend_uid
-	 * @return array
-	 */
-	public function getGroupOfFriend($uid, $friend_uid) {
-		$friend_uid = !is_array($friend_uid) ? $friend_uid : implode(',', $friend_uid);
-		$db_prefix	= C('DB_PREFIX');
-		$field 		= "l.friend_uid AS friend_uid, g.friend_group_id AS friend_group_id, g.title AS title";
-		$join 		= "INNER JOIN {$db_prefix}friend_group_link AS l ON g.friend_group_id = l.friend_group_id";
-		$where 		= "l.uid = $uid AND l.friend_uid IN ( $friend_uid ) AND l.status = 1";
-		$res = $this->table("{$db_prefix}friend_group AS g")->field($field)->join($join)->where($where)->findAll();
-
-		//格式化输出
-		foreach ($res as $v) {
-			$group[$v['friend_uid']][] = $v;
-		}
-		return $group;
+		return $this->where("(`uid`={$uid} AND `friend_uid`={$friend_uid}) OR (`uid`={$friend_uid} AND `friend_uid`={$uid})")
+					->delete();
 	}
 
 	/**
@@ -400,4 +454,3 @@ class FriendModel extends Model {
 			return array();
 	}
 }
-?>

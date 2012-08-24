@@ -11,7 +11,9 @@
                 </div>
                 <div class="right rmenu" style="width: 60px; text-align:center">
                   <if condition="$group['status'] eq 1">
+                      <?php if($isLogin) { ?>
                       <a href="{:U('group/Group/index',array('gid'=>$group['id']))}" target="_blank">浏览该群</a><br />
+                      <?php } ?>
                       <php>$level = getLevel($uid, $group['id']);</php>
                       <php>if($level==='0'){</php>
                       &nbsp;待审核
@@ -21,7 +23,9 @@
                       &nbsp;群成员
                       <php>}</php><br />
                       <php>if(getLevel($mid, $group['id']) === null){</php>
+                      <?php if($isLogin) { ?>
                       <a href="javascript:joingroup({$group['id']});">加入该群</a>
+                      <?php } ?>
                       <php>}</php>
                   </if>
                 </div>

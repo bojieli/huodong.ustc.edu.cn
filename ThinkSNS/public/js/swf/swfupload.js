@@ -318,6 +318,7 @@ SWFUpload.prototype.getFlashHTML = function (flashVersion) {
 				'<param name="wmode" value="', this.settings.button_window_mode, '" />',
 				'<param name="movie" value="', (this.support.imageResize ? this.settings.flash_url : this.settings.flash9_url), '" />',
 				'<param name="quality" value="high" />',
+				'<param name="wmode" value="Opaque">',
 				'<param name="transparent" value="wmode" />',
 				'<param name="allowScriptAccess" value="always" />',
 				'<param name="flashvars" value="' + this.getFlashVars() + '" />',

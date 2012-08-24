@@ -11,6 +11,13 @@ class AddonsAction extends AdministratorAction
                 if($v[1] == $value['addonId']) $result['valid']['data'][$key]['admin'] = true;
             }
         }
+
+		foreach($result['valid']['data'] as $key=>$value){
+            foreach($admin as $v){
+                if($v[1] == $value['addonId']) $result['valid']['data'][$key]['admin'] = true;
+            }
+        }
+
 		$this->assign('list',$result);
 		$this->display();
 	}
@@ -47,8 +54,8 @@ class AddonsAction extends AdministratorAction
 
 	public function admin()
 	{
-		
-		
+
+
         $addon = model('Addons')->getAddonObj($_GET['pluginid']);
         $addonInfo = model('Addons')->getAddon($_GET['pluginid']);
         if(!$addon) $this->error('插件未启动或插件不存在');
@@ -60,7 +67,7 @@ class AddonsAction extends AdministratorAction
             $this->display();
             return;
         }
-        
+
         $this->assign('menu',$adminMenu);
 
         if(empty($_GET['page'])){
@@ -72,24 +79,16 @@ class AddonsAction extends AdministratorAction
         $this->assign('addonName',$addonInfo['pluginName']);
         $this->assign('name',$addonInfo['name']);
         $this->assign('isAjax',$this->isAjax());
-        
+
         $this->display();
     }
 
-    public function doAdmin()
-    {
-    	
+    public function doAdmin() {
         $addonInfo = model('Addons')->getAddon($_GET['pluginid']);
         $result = array('status'=>true,'info'=>"");
-           
         F('Cache_App',null);
-        
-        Addons::addonsHook($addonInfo['name'],$_GET['page'],array('result' => & $result));
-        
-        //dump($result);
-       
+        Addons::addonsHook($addonInfo['name'],$_GET['page'],array('result'=>&$result));
         if($result['status']){
-        	
             $this->success($result['info']);
         }else{
             $this->error($result['info']);

@@ -40,7 +40,7 @@ function searchObject() {
       isSearchHidden = 0;
   }else {
       $("#searchObject_div").slideUp("fast");
-      $(".searchObject_action").html("搜索群组");
+      $(".searchObject_action").html("搜索文件");
       isSearchHidden = 1;
   }
 }
@@ -51,7 +51,9 @@ ctrl.prototype = {
 		del:function(id, type){
 			var id = id ? id : getChecked();
 			id = id.toString();
-			if(id=='' || id==0) return;
+			if(id=='' || id==0){
+				alert("请选择要删除的文件");return false;
+			}
 		    if (confirm("确认删除文件？")) {
 		        $.post( '__URL__&act=remove',{id:id,type:type},function(text){
 		        	if (text == 1) {

@@ -52,7 +52,7 @@ VALUES
 
 #积分配置
 DELETE FROM `ts_credit_setting` WHERE `type` = 'vote';
-INSERT INTO `ts_credit_setting`
+INSERT INTO `ts_credit_setting` (`id`, `name`, `alias`, `type`, `info`, `score`, `experience`) 
 VALUES
 	('', 'add_vote', '发起投票', 'vote', '{action}{sign}了{score}{typecn}', '20', '20'),
 	('', 'join_vote', '参与投票', 'vote', '{action}{sign}了{score}{typecn}', '1', '5'),
@@ -61,4 +61,4 @@ VALUES
 
 INSERT INTO `ts_system_data` (`uid`,`list`,`key`,`value`,`mtime`) 
 VALUES 
-    (0,'vote','version_number','s:5:"27435";','2012-02-14 10:00:00');
+    (0,'vote','version_number','s:5:"33566";','2012-07-12 00:00:00');

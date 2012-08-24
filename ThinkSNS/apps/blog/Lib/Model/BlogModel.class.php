@@ -30,12 +30,11 @@ class BlogModel extends BaseModel {
     public function _initialize() {
     //初始化只搜索status为0的。status字段代表没被删除的
         $this->status = 1;
-        //$emotion_obj  = D( 'Smile' );
+
         $config_obj   = D( 'AppConfig','blog' );
         ////获取配置
         $config = $config_obj->getConfig( APP_NAME );
-        $config = self::changeType( $config,'int' ); //将数组各元素转换成int类型
-        $this->setConfig( $config );
+
         parent::_initialize();
     }
 
@@ -53,21 +52,57 @@ class BlogModel extends BaseModel {
      * @access public
      * @return object|array
      */
-    public function getBlogList($map = null,$field=null,$order = null,$limit = null) {
-    //处理where条件
-	    $map = $this->merge( $map );
-        //连贯查询.获得数据集
-        $limit = isset( $limit )?$limit:$this->config->limitpage;
-        $result         = $this->where( $map )->field( $field )->order( $order )->findPage( $limit) ;
-        
-        //对数据集进行处理
-        $data           = $result['data'];
-        $data           = $this->replace( $data ); //本类重写父类的replace方法。替换日志的分类和追加日志的提及到的人
-        //$data           = intval( $this->config->replay ) ? $this->appendReplay($data):$data;//追加回复
-		//dump ($data);
-        $result['data'] = $data;
-        
-     	return $result;
+    public function getBlogList($map = null,$field=null,$order = null,$limit = null, $uid) {
+      //处理where条件
+      $map = $this->merge($map);
+      $limit = isset($limit) ? $limit : $this->config->limitpage;     //连贯查询.获得数据集
+      if(!empty($uid)) {
+        $map['_string'] = ' private = 0 ';
+        // 获取博主关注的UID
+        $blogAuthorUids = M('weibo_follow')->where('fid='.$uid)->field('uid')->findAll();
+        $blogAuthorUids = getSubByKey($blogAuthorUids, 'uid');
+        if(!empty($blogAuthorUids)) {
+          $authorMap = implode(',', $blogAuthorUids);
+          if(!empty($map['_string'])) {
+            $map['_string'] .= ' OR (uid IN ('.$authorMap.') AND private = 2)';
+          } else {
+            $map['_string'] .= '(uid IN ('.$authorMap.') AND private = 2)';
+          }
+        }
+
+        // 获取朋友的UID
+        // $friendUids = M('friend')->where('uid='.$uid.' AND `status`=1')->field('friend_uid')->findAll();
+        // $friendUids = getSubByKey($friendUids, 'friend_uid');
+        // if(!empty($friendUids)) {
+        //   $friendMap = implode(',', $friendUids);
+        //   if(!empty($map['_string'])) {
+        //     $map['_string'] .= ' OR (uid IN('.$friendMap.') AND private = 5)';
+        //   } else {
+        //     $map['_string'] .= ' (uid IN('.$friendMap.') AND private = 5)';
+        //   }
+        // }
+
+        // 仅仅对自己可见
+        if(!empty($map['_string'])) {
+          $map['_string'] .= ' OR (uid = '.$uid.' AND private = 4)';
+        } else {
+          $map['_string'] .= ' (uid = '.$uid.' AND private = 4)';
+        }
+
+        if(!empty($map['_string'])) {
+          $map['_string'] .= ' OR uid='.$uid;
+        } else {
+          $map['_string'] .= ' uid='.$uid;
+        }
+      }
+
+      $result = $this->where($map)->field($field)->order($order)->findPage($limit);
+      //对数据集进行处理
+      $data = $result['data'];
+      $data = $this->replace($data); //本类重写父类的replace方法。替换日志的分类和追加日志的提及到的人
+      $result['data'] = $data;
+
+      return $result;
     }
 
     /**
@@ -99,35 +134,6 @@ class BlogModel extends BaseModel {
      * @return void
      */
     public function getMentionBlog( $uid = null ) {
-        $mention   = self::factoryModel( 'mention' );
-
-
-        if( isset( $uid ) ) {
-            $userId = $uid;
-
-        }else {
-        //获得当前登录者的好友
-            $userId   = $this->getFriends();
-        }
-
-        //通过用户id获得相应的blogid列表
-        $bloglist   = $mention->getUserMention( $userId );
-
-        //获得blogId列表和组装查询条件
-        $blogidlist = array_keys( $bloglist );
-        if( empty( $bloglist ) )
-            return false;
-        $map['id']  = array( 'in',$blogidlist );
-
-        //组合查询条件，如，status=1;
-        $map        = $this->merge( $map );
-
-        //返回查询结果
-        if( $result = $this->where( $map )->findPage( $this->config->limitpage) ) {
-            $data           = $this->replace( $result['data'],$bloglist );
-            $result['data'] = $data;
-            return $result;
-        }
         return false;
 
     }
@@ -172,9 +178,9 @@ class BlogModel extends BaseModel {
 	    $map['isHot'] = 1;
 	    $map['status']= 1;
 	    $order        = 'rTime DESC';
-		
+
 	        //连贯查询.获得数据集
-	   
+
 	    $hotlist = $this->where( $map )->order( $order )->findAll();
         //对数据集进行处理
         //$data           = $result['data'];
@@ -183,28 +189,34 @@ class BlogModel extends BaseModel {
 		//dump ($data);
         return $hotlist;
     }
-    public function getAllData($order){
-                //TODO 根据条件决定排序方式,尚有优化空间
-            $temp_order_map = $this->getOrderMap($order);
-            //根据以上处理条件获取数据集
-            $result             = $this->getBlogList($temp_order_map['map'],null,$temp_order_map['order']);
-            $result['category'] = $this->getCategory();
-            return $result;
+
+    // 获取博客的数据
+    public function getAllData($order, $uid) {
+      //TODO 根据条件决定排序方式,尚有优化空间
+      $temp_order_map = $this->getOrderMap($order);
+      //根据以上处理条件获取数据集
+      // $temp_order_map['map']['private'] = 0;
+      // dump($temp_order_map);exit;
+      $result = $this->getBlogList($temp_order_map['map'],null,$temp_order_map['order'], null, $uid);
+      $result['category'] = $this->getCategory();
+      return $result;
     }
+
     public function getFollowsBlog($mid){
-    	$fl=D("Follow");
-        $followlist=$fl->getfollowList($mid);
-                		//dump ($followlist);
-                		foreach($followlist as $key=>$value)
-						{
- 							 $folist[$key]=$value['fid'];
-						} 
-                		$map['uid']  = array('in',$folist);
-                		$order = 'cTime DESC';
-            $result             = $this->getBlogList($map,null,$order);
-            $result['category'] = $this->getCategory();
-            return $result;	
+    	$fl = D("Follow");
+      $followlist = $fl->getfollowList($mid);
+        		//dump ($followlist);
+  		foreach($followlist as $key=>$value) {
+      	 $folist[$key]=$value['fid'];
+      }
+  		$map['uid']  = array('in',$folist);
+  		// $map['private'] = 0;
+  		$order = 'cTime DESC';
+      $result = $this->getBlogList($map,null,$order,null,$mid);
+      $result['category'] = $this->getCategory();
+      return $result;
     }
+
     private function getOrderMap($order){
            switch( $order ) {
                 case 'hot':    //推荐阅读
@@ -230,7 +242,7 @@ class BlogModel extends BaseModel {
                 default:      //默认时间排行
                     $order = 'cTime DESC';
             }
-            $map['private'] = array('neq',2);
+            // $map['private'] = array('neq',2);
             $result['map'] = $map;
             $result['order'] = $order;
             return $result;
@@ -248,7 +260,7 @@ class BlogModel extends BaseModel {
                     WHERE `category` IN (
                                           SELECT `id`
                                           FROM {$this->tablePrefix}blog_category
-                                          WHERE `uid` = 0 OR `uid` = {$uid} 
+                                          WHERE `uid` = 0 OR `uid` = {$uid}
                                       ) AND `uid` = {$uid} AND `status` = 1
                                           GROUP BY category
             ";
@@ -331,7 +343,7 @@ class BlogModel extends BaseModel {
 //      $this->api	=	new TS_API();
 //     $this->opts = $this->api->option_get();
 //      $result = $this->api->space_changeCount( 'blog',$count );
-        
+
         return $result;
     }
 
@@ -413,7 +425,7 @@ class BlogModel extends BaseModel {
 
         $map    = $this->merge( $map );
         $addId  = $this->add( $map );
-        
+
         $temp = array_filter( $friendsId );
         //$appid = A('Index')->getAppId();
         //添加日志提到的好友
@@ -451,9 +463,10 @@ class BlogModel extends BaseModel {
             $title['title']   = sprintf("<a href=\"%s/Index/show/id/%s/mid/%s\">%s</a>",'{SITE_URL}',$addId,$map['uid'],$map['title']);
             $title['title'] = stripslashes($title['title']);
             //setScore($map['uid'],'add_blog');
-            $body['content'] = getBlogShort($this->replaceSpecialChar(t($map['content'])),80);
+//            $body['content'] = getBlogShort($this->replaceSpecialChar(t($map['content'])),80);
+            $body['content'] = $this->getBlogShort($this->replaceSpecialChar(t($map['content'])),80);
             $body['title'] = stripslashes($body['title']);
-            $this->doFeed("blog",$title,$body);
+            //$this->doFeed("blog",$title,$body);
         }else {
             //setScore($map['uid'],'add_blog');
             $result['appid'] = $addId;
@@ -464,6 +477,12 @@ class BlogModel extends BaseModel {
 
         return $addId;
     }
+
+function getBlogShort($content,$length = 60) {
+	$content	=	real_strip_tags($content);
+	$content	=	getShort($content,$length);
+	return $content;
+}
 
     public function doSaveBlog( $map,$blogid ) {
         $map['mTime'] = isset( $map['cTime'] )?$map['cTime']:time();
@@ -483,7 +502,6 @@ class BlogModel extends BaseModel {
             $result  = $mention->updateMention( $blogid,$friendsId );
         }
         $addId  = $this->where( 'id = '.$blogid )->save( $map );
-
 
         if( !$result && !empty( $friendsId ) ) {
             return false;
@@ -680,12 +698,7 @@ class BlogModel extends BaseModel {
         $result         = $data;
         $categoryname   = $this->getCategory(null);  //获取所有的分类
 
-        //如果$mention为空就需要从数据库中取出数据
-        if ( empty( $mentiondata ) ) {
-            $mention        = self::factoryModel( 'mention' );
-            $mentioncontent = $mention->getUserMention();
 
-        }
         //TODO 配置信息,截取字数控制
 
         foreach ( $result as &$value ) {
@@ -699,10 +712,6 @@ class BlogModel extends BaseModel {
 //                "name" => $categoryname[$value['category']]['name'],
 //                "id"   => $value['category']); //替换日志类型
 
-            //追加日志中提到的内容
-            $value['mention'] = !isset( $mentiondata )?
-                $mentioncontent[$value['id']]:
-                $mentiondata[$value['id']];
             //日志截断
             $short = $this->config->titleshort == 0 ? 4000: $this->config->titleshort;
             
@@ -791,5 +800,42 @@ class BlogModel extends BaseModel {
                            'oneWeek'=>array('day'=>7),
                            );
         return isset($excursion[$options][$field])?$excursion[$options][$field]:0;
+    }
+
+        /**
+         * addRecommendUser 
+         * 添加博客推荐
+         * @param mixed $map 
+         * @param mixed $action 
+         * @param mixed $obj 
+         * @access public
+         * @return void
+         */
+        public function addRecommendUser( $map,$action ){
+            //推荐
+            if( 'recommend' == $action  ){
+                $this->add( $map );
+                $sql = "UPDATE {$this->tablePrefix}blog
+                        SET recommendCount = recommendCount + 1
+                        WHERE `id` = {$map['blogid']}
+                    ";
+            //取消推荐
+            }else{
+                $this->where($map)->delete( );
+                $sql = "UPDATE {$this->tablePrefix}blog
+                        SET recommendCount = recommendCount - 1
+                        WHERE `id` = {$map['blogid']}
+                    ";
+            }
+            $result = $this->execute( $sql ) ;
+            return $result;
+
+        }
+        
+    public function checkRecommend( $uid,$blogid ){
+      $map['uid']    = $uid;
+      $map['type']   = 'recommend';
+      $map['blogid'] = $blogid;
+      return $this->where( $map )->find();
     }
 }

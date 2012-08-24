@@ -173,12 +173,12 @@ $ip = "Unknown";
 //6.t/add_pic 发表一条带图片的微博
     function t_add_pic($content='',$pic_data='',$jing='',$wei='',$format='json') 
     { 
-        $param['format']=$format;
-        $param['pic']=$pic_data;
         $param['content']=$content;
+        $param['format']=$format;
+        $param['pic']='@'. $pic_data;
 		$param['jing']=$jing;
 		$param['wei']=$wei;
-                //print_r($param);
+        $param['clientip']=$this->get_ip();
         return $this->oauth->post( 'http://open.t.qq.com/api/t/add_pic',$param,true); //采用multi form-data方式提交
     } 
 
@@ -623,8 +623,8 @@ function kownperson($ip=false,$format='json')
 } 
 
 
-class QqWeiboOAuth extends WeiboOAuth{
-    
+class QqWeiboOAuth extends WeiboOAuth
+{    
     public $host = "http://open.t.qq.com/"; 
 
     /** 
@@ -633,11 +633,11 @@ class QqWeiboOAuth extends WeiboOAuth{
     /** 
      * @ignore 
      */ 
-    function accessTokenURL()  { return 'https://open.t.qq.com/cgi-bin/access_token'; } 
+    function accessTokenURL()  { return 'http://open.t.qq.com/cgi-bin/access_token'; } 
     /** 
      * @ignore 
      */ 
-    function authorizeURL()    { return 'https://open.t.qq.com/cgi-bin/authorize'; } 
+    function authorizeURL()    { return 'http://open.t.qq.com/cgi-bin/authorize'; } 
     /** 
      * @ignore 
      */ 
@@ -645,7 +645,7 @@ class QqWeiboOAuth extends WeiboOAuth{
    /*
     function requestTokenURL() { return 'http://api.t.sina.com.cn/oauth/request_token'; }
     */ 
-   function requestTokenURL() { return 'https://open.t.qq.com/cgi-bin/request_token'; } 
+   function requestTokenURL() { return 'http://open.t.qq.com/cgi-bin/request_token'; } 
     
 
     /** 
@@ -659,6 +659,5 @@ class QqWeiboOAuth extends WeiboOAuth{
      * @ignore 
      */ 
     function lastAPICall() { return $this->last_api_call; } 
-
 } 
 

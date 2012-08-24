@@ -62,7 +62,7 @@ $(document).ready(function(){
   <include file="_left" />
   <div class="main">
     <div class="mainbox">
-      <div class="main_pad M_star">
+      <div class="main_pad M_star" style="_margin:0">
         <div class="squareStar">
         <div class="type_square">
         <if condition="$user_list">
@@ -103,11 +103,12 @@ $(document).ready(function(){
                 <volist name="g.user_list" id="u">
                   <li style="display:none;">
                     <div class="userPic relative">
-                    <space uid="u.uid">{uavatar}</space>
                      <gt name="mid" value="0">
                      <input name="followuid[]" type="checkbox" value="{$u.uid}" class="ckbox" />
                      </gt>
+                    <space uid="u.uid">{uavatar}</space>
                     </div>
+                    
                     <div id="star_{$u.uid}" class="title">
                       <space uid="u.uid">{uname}</space>
                       </div>
@@ -116,13 +117,13 @@ $(document).ready(function(){
                 <volist name="g.son_list" id="s">
                   <volist name="s.user_list" id="u">  
                     <div style="width:16%; overflow:hidden;" class="left alC">
-                      <div class="userPic" style="float:none; margin:0 auto"><space uid="u.uid">{uavatar}</space></div>
-                      <div>
-                        <gt name="mid" value="0">
+                      <div class="userPic" style="float:none; margin:0 auto">
+                      <gt name="mid" value="0">
                           <input name="followuid[]" type="checkbox" value="{$u.uid}" />
-                          </gt>
-                        <space uid="u.uid">{uname}</space>
-                        </div>
+                      </gt>
+                      <space uid="u.uid">{uavatar}</space>
+                      </div>
+                      <div><space uid="u.uid">{uname}</space></div>
                       </div>
                     </volist>
                   </volist>

@@ -8,12 +8,11 @@
     <div class="mainbox">
       <div class="mainbox_R">
 	    <volist name="ts['ad']['right_top']" id="vo">
-		<div class="setskinbox lineS_btm">
+		<div class="ke-post setskinbox lineS_btm">
 			{$vo['content']}
 		</div>
 		</volist>
 	    {:Addons::hook('home_index_right_top')}
-        {:W('RelatedUser',array('async'=>1))}
         <div class="right_box">
           <h2><a href="javascript:void(0)" onclick="$('.quick_win').show()" class="right" style="font-weight:400;font-size:12px">添加</a>关注的话题</h2>
           <div style="display:none;" class="quick_win">
@@ -50,7 +49,7 @@
 	  </div>
       <div class="feedBox"> 
         <ul class="feed_list">
-        <php>if($type=='send'){</php>
+        <php>if($type=='send' && !empty($list['data'])){</php>
         <li class="t"><span class="left" style="padding:0px 5px 0 6px;"><input onclick="checkAllReply(this)" type="checkbox" /></span>
         <a href="#">全选</a> | <a href="javascript:void(0)" onclick="ui.confirm(this,'确认要删除所选评论?')" callback="doDelete()">删除</a>
         </li>
@@ -114,7 +113,6 @@
             </li>
     <php>}else{</php>
             <li class="lineD_btm">
-              <div class="left" style="padding:0px 5px 0 6px;"><input name="id[]" type="checkbox" value="{$vo.id}" /></div>
               <div class="userPic"><space uid="vo.uid">{uavatar}</space></div>
               <div class="feed_c" style="margin-left:90px">
                 <div class="msgCnt" style="padding-bottom:0; font-size:12px">
@@ -131,7 +129,7 @@
 
 <php>}</php>
 </volist>
-<php>if($type=='send'){</php>
+<php>if($type=='send' && !empty($list['data'])){</php>
            <li class="t"><span class="left" style="padding:0px 5px 0 6px;"><input onclick="checkAllReply(this)" type="checkbox" /></span>
         <a href="#">全选</a> | <a href="javascript:void(0)" onclick="doDelete()">删除</a>
         </li>

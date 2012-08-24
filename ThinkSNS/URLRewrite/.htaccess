@@ -27,6 +27,7 @@ RewriteRule ^/?url/([a-zA-Z0-9]+)$                            shorturl.php?url=$
 RewriteRule ^/?w3g/?$                                         index.php?app=w3g&%{QUERY_STRING} [L]
 RewriteRule ^/?wap/?$                                         index.php?app=wap&%{QUERY_STRING} [L]
 RewriteRule ^/?admin/?$                                       index.php?app=admin&%{QUERY_STRING} [L]
+RewriteRule ^/?index/?$                                        index.php?app=home&mod=Index&act=index&%{QUERY_STRING} [L]
 RewriteRule ^/?home/?$                                        index.php?app=home&mod=User&act=index&%{QUERY_STRING} [L]
 RewriteRule ^/?atme/?$                                        index.php?app=home&mod=User&act=atme&%{QUERY_STRING} [L]
 RewriteRule ^/?favorite/?$                                    index.php?app=home&mod=User&act=collection&%{QUERY_STRING} [L]
@@ -71,6 +72,9 @@ RewriteRule ^/?@([a-zA-Z0-9]+)/?$                             index.php?app=home
 RewriteRule ^/?space/([a-zA-Z0-9]+)/?$                        index.php?app=home&mod=Space&act=index&uid=$1&%{QUERY_STRING} [L]
 RewriteRule ^/?space/([a-zA-Z0-9]+)/following/?$              index.php?app=home&mod=Space&act=follow&uid=$1&type=following&%{QUERY_STRING} [L]
 RewriteRule ^/?space/([a-zA-Z0-9]+)/follower/?$               index.php?app=home&mod=Space&act=follow&uid=$1&type=follower&%{QUERY_STRING} [L]
+RewriteRule ^/?space/([a-zA-Z0-9]+)/friend/?$                 index.php?app=home&mod=Space&act=follow&uid=$1&type=friend&%{QUERY_STRING} [L]
+RewriteRule ^/?space/([a-zA-Z0-9]+)/application/?$            index.php?app=home&mod=Space&act=follow&uid=$1&type=application&%{QUERY_STRING} [L]
+RewriteRule ^/?space/([a-zA-Z0-9]+)/applyme/?$                index.php?app=home&mod=Space&act=follow&uid=$1&type=applyme&%{QUERY_STRING} [L]
 RewriteRule ^/?space/([a-zA-Z0-9]+)/profile/?$                index.php?app=home&mod=Space&act=profile&uid=$1&%{QUERY_STRING} [L]
 
 # 微博
@@ -172,6 +176,14 @@ RewriteRule ^/?app/group/([0-9]+)/file/?$                               index.ph
 RewriteRule ^/?app/group/([0-9]+)/file/upload/?$                        index.php?app=group&mod=Dir&act=upload&gid=$1&%{QUERY_STRING} [L]
 RewriteRule ^/?app/group/([0-9]+)/member/?$                             index.php?app=group&mod=Member&act=index&gid=$1&%{QUERY_STRING} [L]
 
+# 游戏
+# 游戏积分提交URL修正
+RewriteCond %{QUERY_STRING} (ac=save)
+RewriteCond %{QUERY_STRING} (fgid=)
+RewriteRule ^/?(app/game)?(.*)$                                         index.php?app=game&mod=Index&act=index&%{QUERY_STRING} [L]
+RewriteRule ^/?app/game/([0-9]+)/?$                                     index.php?app=game&mod=Index&act=gameplay&gid=$1&%{QUERY_STRING} [L]
+# 论坛
+RewriteRule ^/?app/forum/?$                                             index.php?app=forum&mod=Index&act=index&%{QUERY_STRING} [L]
 # 非法链接
 RewriteRule ^/?([a-zA-Z0-9]+)$                                          index.php?app=home&mod=Public&act=error404&%{QUERY_STRING} [L]
 </IfModule>

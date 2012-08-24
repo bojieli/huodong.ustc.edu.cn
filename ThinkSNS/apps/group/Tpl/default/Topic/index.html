@@ -83,17 +83,17 @@ function add_category(){
 	if(title.length == 0){
 		ui.error('请输入分类标题！');
 	}else if(getLength(title) > 10){
-		ui.error('分组标题字数不能超过10个字符！');
+		ui.error('分类标题字数不能超过10个字符！');
 	}else{
 		var options = {
 				success: function(txt) {
 					if(txt == -1){
-						ui.error('该分组已经存在！');
+						ui.error('该分类已经存在！');
 					}else if(txt > 0){
-						ui.success('创建分组成功');
+						ui.success('创建分类成功');
 						setInterval("location.reload()",500);
 					}else{
-						ui.error('创建分组失败！');
+						ui.error('创建分类失败！');
 					}
 				}
 			};
@@ -119,9 +119,10 @@ function add_category(){
 		              <volist name="category_list" id="_category">
 		              	<span class="cGray2">|</span> <a href="{:U('group/Topic/index', array('gid'=>$gid,'cid'=>$_category['id']))}" <if condition="$cid eq $_category['id']">class="on"</if>>{$_category.title}</a>
 		          	  </volist>
-		          	  <if condition="$isadmin">
-		          		  <if condition="is_numeric($cid) && $cid"><span class="right"><a href="{:U('group/Topic/deleteCategory', array('gid'=>$gid,'cid'=>$cid))}" onclick="return confirm('确定删除当前分组？')"><span style="color:#FF0000;">×</span>删除分组</a>&nbsp;&nbsp;</span></if>
-				          <div style="text-align:right; padding:3px 0px">
+		          	  
+				          <div style="text-align:right; padding:3px 0px;*padding:0">
+				          	  <if condition="$isadmin">
+		          		  <if condition="is_numeric($cid) && $cid"><span class="right"><a href="{:U('group/Topic/deleteCategory', array('gid'=>$gid,'cid'=>$cid))}" onclick="return confirm('确定删除当前分类？')"><span style="color:#FF0000;">×</span>删除分类</a>&nbsp;&nbsp;</span></if>
 				          	  <form action="{:U('group/Topic/addCategory')}" id="addcategory" onsubmit="return add_category();" method="post">
 							    <a href="javascript:void(0);" onclick="addCategoryTab()">+创建分类</a>&nbsp;&nbsp;
 								<input type="text" name="title" value="" class="text mb5 alM" style="height:16px;margin:0;display:none;">
@@ -129,8 +130,9 @@ function add_category(){
 								<input type="submit" value="保存" class="btn_b" style="display:none;">
 								<input type="button" onclick="addCategoryTab('close')" value="取消" class="btn_w" style="margin-right:5px;display:none;">
 						  	  </form>
+							  </if>
 						 </div>
-		        	  </if>
+		        	  
                       <div class="c"></div>
 		        </div>
   <div class="groupBox">
@@ -168,13 +170,13 @@ function add_category(){
             <volist name="topiclist['data']" id="list">
             <li class="lineS_btm">
               <div class="c1 OverH">
-                <php>if($list['dist']){</php><span class="jh" title="精华">精</span><php>}</php>
                 <if condition="$isadmin">
                 <input name="topic_id[]" type="checkbox" value="{$list.id}"  style="float:left"/>
                 </if>
+                <php>if($list['dist']){</php><span class="jh" title="精华">精</span><php>}</php>
                 <php>if($list['lock']){</php><span class="sd" title="锁定">锁</span><php>}</php>
                 <php>if($list['top']){</php><span class="zd" title="置顶">顶</span><php>}</php>
-                <a href="{:U('/Topic/topic',array('gid'=>$gid,'tid'=>$list['id']))}" title="{$list['title']}">
+                <a href="{:U('/Topic/topic',array('gid'=>$gid,'tid'=>$list['id']))}" title="{$list['title']}" style="float:left">
                	    {$list['ctitle']}{$list['title']|getShort=###, 15-get_str_length($list['ctitle']), '...'}</a>
                 	<if condition="$list['attach'] && 'N;' neq $list['attach']"><img src="../Public/images/ico_acc.gif" alt="附件" title="附件" class="alM" /></if>                
               </div>

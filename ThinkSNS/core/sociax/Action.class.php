@@ -141,7 +141,9 @@ abstract class Action extends Think
 		$this->assign('user',$this->user);
 
 		//add By lenghaoran 2011-01-16 判断用户是否为管理员
-		$isSystemAdmin = service('SystemPopedom')->hasPopedom($this->user['uid'], 'admin/*/*', false);
+		$isSystemAdmin = service('SystemPopedom')->hasPopedom($this->mid, 'admin/*/*', false);
+		if($isSystemAdmin)
+			$ts['isSystemAdmin'] = true;
 		$this->assign('isSystemAdmin' , $isSystemAdmin );
 
 		// 检查是否用户初始化
@@ -176,7 +178,8 @@ abstract class Action extends Think
 			$v['app_entry']	    = U($v['app_name'].'/'.$v['app_entry']);
 			$v['admin_entry']   = $v['admin_entry']   ? U($v['app_name'].'/'.$v['admin_entry'])   : '';
 			$v['sidebar_entry'] = $v['sidebar_entry'] ? U($v['app_name'].'/'.$v['sidebar_entry']) : '';
-
+            $v['icon_url']       = getAppIconUrl($v['icon_url'],$v['app_name']);
+            $v['icon_large_url'] = getAppIconUrl($v['icon_large_url'],$v['app_name']);
 			if ($v['status']==1) { // 站点默认应用
 				$user_app['local_default_app'][] = $v;
 			}else { // 用户安装的应用
@@ -239,10 +242,10 @@ abstract class Action extends Think
 	protected function __getMyHasGroupWeibo($apps)
 	{
 	    if($this->__hasApps($apps, 'group')){
-			if(!$cache = S('Cache_MyGroup_'.$this->mid)){
+			//if(!$cache = S('Cache_MyGroup_'.$this->mid)){
 				$cache = D('Group','group')->getAllMyGroup($this->mid,0,array(),6);
-				S('Cache_MyGroup_'.$this->mid,$cache,120);
-			}
+			//	S('Cache_MyGroup_'.$this->mid,$cache,120);
+			//}
 	        return $cache;
 	    }
 	    return false;
@@ -258,8 +261,15 @@ abstract class Action extends Think
 			$place_array = array('middle','header','left','right','footer','right_top');
 			$sql = 'SELECT `content`,`place` FROM ' . C('DB_PREFIX') . 'ad WHERE `is_active` = "1" AND `content` <> "" ORDER BY `display_order` ASC,`ad_id` ASC';
 			$ads = M('')->query($sql);
-			foreach($ads as $v) {
-				$v['content'] = htmlspecialchars_decode($v['content']);
+			foreach($ads as $k => $v) {
+                $content = unserialize($v['content']);
+                if (is_array($content)) {
+                    $this->assign('switch_ad_id', 'ad_' . $k);
+                    $this->assign('switch_ad_content', $content);
+                    $v['content'] = $this->fetch(THEME_PATH.'&switchAd');
+                } else {
+                    $v['content'] = htmlspecialchars_decode($v['content']);
+                }
 				$ts['ad'][$place_array[$v['place']]][] = $v;
 			}
 			F('_action_ad', $ts['ad'] ? $ts['ad'] : array());
@@ -350,10 +360,15 @@ abstract class Action extends Think
      * @return void
      +----------------------------------------------------------
      */
-    public function setTitle($input)
+    public function setTitle($title='',$keywords='',$description='')
     {
     	global $ts;
-    	$ts['site']['page_title'] = $input;
+    	if($title)
+            $ts['site']['page_title'] = $title;
+        if($keywords)
+            $ts['site']['site_header_keywords'] = $keywords;
+        if($description)
+            $ts['site']['site_header_description'] = $description;
 	}
 
     /**

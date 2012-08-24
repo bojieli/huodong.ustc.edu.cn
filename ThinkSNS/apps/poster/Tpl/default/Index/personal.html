@@ -31,7 +31,7 @@
             <volist name="type" id="vo">
               <dd><a href="{:U('//personal',array('uid'=>$_GET['uid'],'pid'=>$_GET['pid'],'stid'=>$vo['id']))}" 
                 <php>if($vo['id'] == $_GET['stid']) echo "class='on'";</php>
-                >{$vo.name}({$vo.count})</a></dd>
+                >{$vo.name}<if condition=" $mid neq $uid">({$vo.count})</if></a></dd>
             </volist>
             </dl>
             <dd class="c"></dd>
@@ -62,7 +62,7 @@
               </li>
             </volist>
           </ul>
-          <div id="Pagination" class="pagination">{$html}</div>
+          <div id="Pagination" class="page">{$html}</div>
         </div>
       </div>
       <!-- 右侧内容 end  -->

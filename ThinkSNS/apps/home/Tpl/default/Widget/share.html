@@ -66,7 +66,7 @@ function _widget_weibo_do_post() {
 	var sourceUrl = '{$sourceUrl}';
 	var $_widget_weibo_post_button = $('#_widget_weibo_post_button');
 	$_widget_weibo_post_button.attr('disabled', 'true');
-	$.post(U('home/Widget/doShare'),{content:content,type:type,typedata:typedata,source:source,sourceUrl:sourceUrl},function(res){
+	$.post(U('home/Widget/doShare'),{content:content,type:type,type_data:typedata,source:source,sourceUrl:sourceUrl},function(res){
 		if(res=='1'){
 			//alert('分享成功');
 			//ui.success('分享成功');

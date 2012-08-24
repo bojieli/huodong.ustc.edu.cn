@@ -111,6 +111,6 @@ VALUES
 	('gift_send_weibo', '礼物赠送', '','我送给{user} 一份礼物:【{title}】{content} 参与送礼{url}', 'zh', 'gift', 'weibo', 0, 1290417734);
 
 #添加版本数据#
-INSERT INTO `ts_system_data` (`uid`,`list`,`key`,`value`,`mtime`) 
+REPLACE INTO `ts_system_data` (`uid`,`list`,`key`,`value`,`mtime`) 
 VALUES 
-    (0,'gift','version_number','s:5:"27435";','2012-02-14 10:00:00');
+    (0,'gift','version_number','s:5:"33566";','2012-07-12 00:00:00');

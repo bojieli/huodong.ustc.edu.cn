@@ -7,6 +7,7 @@
   <div class="main no_l">
     <div class="mainbox boxspace">
       <div class="mainbox_appR">
+      {:Addons::hook('home_weibo_detail_right_top')}
       <div class="right_box">
       <div class="userinfo_detail">
     	<div class="userpic"><span id="my_face"><img src="{$mini.uid|getUserFace='b'}"></span>
@@ -25,7 +26,7 @@
   </div>
   </div>
   <div class="right_box">
-<div class="user_follow_detail app_line_w">
+  <div class="user_follow_detail app_line_w">
   	<span class="app_lineR_w"><a href="{:U('home/Space/follow',array('uid'=>$mini['uid'],'type'=>'following'))}"><strong>{$spaceCount.following}</strong><br>关注</a></span>
     <span class="app_lineR_w"><a href="{:U('home/Space/follow',array('uid'=>$mini['uid'],'type'=>'follower'))}"><strong>{$spaceCount.follower}</strong><br>粉丝</a></span>
     <span><a href="{:U('home/Space/index',array('uid'=>$mini['uid']))}"><strong>{$spaceCount.miniblog}</strong><br>微博</a></span>
@@ -45,13 +46,13 @@
 			<a href="{:U('home/Space/profile',array('uid'=>$mini['uid']))}">更多&raquo;</a></div>
         </div>
         </div>
-	
-        
+        {:Addons::hook('home_weibo_detail_right_bottom')}
       </div>
       <div class="mainbox_appC boxspace_L">
-      <div class="overflowH">
+        {:Addons::hook('home_weibo_detail_left_top')}
+      <div>
       <div class="feedBox">
-		{:W('WeiboList', array('mid'=>$mid, 'list'=>array($mini), 'insert'=>0, 'denounce'=>1, 'show'=>'detail'))}
+		  {:W('WeiboList', array('mid'=>$mid, 'list'=>array($mini), 'insert'=>0, 'denounce'=>1, 'show'=>'detail'))}
       </div>
 <php>if ($mid <= 0) {</php> 
 	  <div class="message"><div style="margin:5px"><a href="{:U('home')}" target="_blank">登录</a>后方可发表评论</div></div>  
@@ -86,7 +87,7 @@
            <dl class="comment_list">
               <dt><space uid="vo.uid">{uavatar}</space></dt>
               <dd>
-                <div class="msgCnt" style="padding-bottom:0; font-size:12px;"><space uid="vo.uid">{uname}</space>{$vo.uid|getUserGroupIcon} {$vo.content|formatComment=true} <em> {$vo.ctime|date='m月d日 H:i',###}</em>
+                <div class="msgCnt" style="padding-bottom:0; font-size:12px;"><p style="vertical-align:top"><space uid="vo.uid">{uname}</space>{$vo.uid|getUserGroupIcon}{$vo.content|formatComment=true}{$vo.ctime|date='m月d日 H:i',###}</p>
                 </div>
 			    <div class="info"> 
 					<span class="right">
@@ -108,6 +109,7 @@
 	  <div class="page">{$comment.html}</div>
       <div class="c"></div>
       </div>
+      {:Addons::hook('home_weibo_detail_left_bottom')}
     </div>
   </div>
   <div class="clear"></div>

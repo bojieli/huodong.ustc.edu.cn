@@ -106,7 +106,7 @@
             </div>
           <else />
 		    <div class="lh35" style="height:35px; overflow:hidden">
-		      <a href="{:U('group/Dir/upload', array('gid'=>$gid))}" class="right mt5 btn_b">上传文件</a>
+		      <a href="{:U('group/Dir/upload', array('gid'=>$gid))}" class="right mt5 btn_b" style="margin-top:5px">上传文件</a>
 		      <div><span class="left mr5"><em class="cGray2">共{$fileList['count']}个文件</em>&nbsp;&nbsp;剩<php>echo formatsize($config['spaceSize']*1024*1024-$usedSpace)</php>/共{$config['spaceSize']} MB ,&nbsp;<php>echo substr((1-$usedRate)*100,0,5)</php>%</span><span class="scale left"><span style="width:{:intval($usedRate*100)}%"></span></span></div>
 		    </div>
           </if>

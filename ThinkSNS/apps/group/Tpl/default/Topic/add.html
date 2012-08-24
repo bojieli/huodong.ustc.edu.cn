@@ -15,13 +15,22 @@
 			return false;
 		}
 		
-		if(checkPostContent(v_form.content.value) == 0) {
+    var content = getEditorContent('content');
+    content = removeHTMLTag(content);
+    if(checkPostContent(content) == 0) {
 			v_form.content.focus();
-			//ui.error('内容不能为空');
-			//return false;
+			ui.error('内容不能为空');
+			return false;
 		}
 		return true;
 	}
+
+  function removeHTMLTag(str) {
+    str = str.replace(/<\/?[^>]*>/g,'');
+    str = str.replace(/[ | ]*\n/g,'\n');
+    str=str.replace(/&nbsp;/ig,'');
+    return str;
+}
 </script>
 <div class="content_holder">
 <div class="content no_bg">
@@ -34,11 +43,11 @@
       <include file="../Public/top" />
         <div class="groupBox">
             <div class="box1">
-            <h2 class="tit_h2">发表新话题</h2>
+            <h2 class="tit_h2">发表新帖</h2>
               <form method="post" action="{:U('group/Topic/doAdd',array('gid'=>$gid))}" onsubmit="return checkform(this);">
                 <ul class="fW100_ul">
                   <li class="mb10" >
-                    <div class="left alR" style="width:110px;"><strong style="line-height:26px">标题：</strong></div>
+                    <div class="left alR" style="width:110px;padding-top:0"><strong style="line-height:26px">标题：</strong></div>
                     <div style="margin-left:120px;">
 	                    <select name="cid" class="text mr5" style="vertical-align:middle">
 	                      <option value="0">未分类</option>
@@ -46,7 +55,7 @@
 	                      <option value="{$value['id']}">{$value['title']}</option>
 	                      <php>}</php>
 	                    </select>
-                      <input name="title" class="text" style="width:70%;" onBlur="this.className='text'" onFocus="this.className='text2'" type="text">
+                      <input name="title" class="text" style="width:60%;" onBlur="this.className='text'" onFocus="this.className='text2'" type="text">
                     </div>
                   </li>
                   <li class="mb10" style="overflow:hidden;*zoom:1">
@@ -57,7 +66,7 @@
                   </li>
                   <if condition="$groupinfo['openUploadFile'] && ($groupinfo['whoUploadFile'] == 3 || ($groupinfo['whoUploadFile'] == 2 && $isadmin))">
                   <li class="mb10">
-                    <div class="left alR" style="width:110px;"><strong>附件：</strong></div>
+                    <div class="left alR" style="width:110px;padding-top:0"><strong style="line-height:26px">附件：</strong></div>
                   	<div style="margin-left:120px;">
                       {:W('UploadAttach', array('uid'=>$mid,'gid'=>$gid))}
                     </div>
@@ -67,7 +76,7 @@
                     <div class="left alR" style="width:110px;">&nbsp;</div>
                     <div style="margin-left:120px;">
                       <input type="hidden" name="addsubmit" value="do" >
-                      <input name="button" type="submit" class="btn_b mt5" id="button" value="发表话题" />
+                      <input name="button" type="submit" class="btn_b mt5" id="button" value="发表帖子" />
                     </div>
                   </li>
                 </ul>

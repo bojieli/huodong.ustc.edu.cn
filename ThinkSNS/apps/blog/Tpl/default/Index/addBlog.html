@@ -6,16 +6,16 @@
   <include file="../Public/_blog_header" />
   <div class="main no_l">
     <div class="mainbox">
-        <include file="../Public/_right" />
+        <include file="../Public/_right_post" />
         <div class="mainbox_appC">
         <div class=page_title>   
             <h2>
-                <span class="f12px fn right"><a href="javascript:history.back( -1 )">&lt;&lt;返回上一页</a></span>
+                <!-- <span class="f12px fn right"><a href="javascript:history.back( -1 )">&lt;&lt;返回上一页</a></span> -->
                 发表{$ts['app']['app_alias']}
             </h2>
         </div>
         <div class="BlogBox">
-          <form name="addBlog" action="__URL__&act=doAddBlog" method="post" onsubmit="return check();">
+          <form name="addBlog" action="__URL__&act=doAddBlog" method="post" onsubmit="return checkBlog();" enctype="multipart/form-data">
             <div class="LogList">
               <ul class="edit">
                 <li style="padding:0;">
@@ -25,6 +25,7 @@
                       <php>foreach( $blog_category as $value ){</php>
                       <option value="{$value['id']}" title="{$value['name']}">{$value['name']|getShort=8}</option>
                       <php>}</php>
+                      <!-- <option value="0">&nbsp;</option> -->
                       <optgroup id="group">
                       <option value="0">+添加分类</option>
                       </optgroup>
@@ -34,8 +35,18 @@
                 </li>
                 <li style="padding:0;">
                   <label>内容: &nbsp;</label>
-                  <div class="c1"><textarea id="content" name="content" style="height:350px;"></textarea></div>
+                  <div class="c1"><textarea id="content" name="content" style="height:350px;" ></textarea></div>
                 </li>
+	            <li style="padding:0;">
+                    <label>访问: &nbsp;</label>
+                    <div class="c1">
+	                <select name="private" class="text mr5">
+	                    <option value="0">所有人可见</option>
+	                    <option value="2">仅我的关注可见</option>
+						<option value="4">仅自己可见</option>
+	                </select>
+	                </div>
+	            </li>
                 <li style="padding:0;">
                   <label>&nbsp;</label>
                   <div class="c1" style="height:30px;"><input type="submit" class="btn_b" value="发表" /></div>
@@ -51,9 +62,38 @@
   </div>
 </div>
 </div>
-<script>
+<script type="text/javascript">
 $(document).ready(function(){
 	loadEditor("content");
 });
-</script> 
+</script>
+<script>
+function checkBlog(){
+	var title = $("#title").val();
+	if( !title || getLength(title.replace(/\s+/g,"")) == 0){
+		ui.error("标题不能为空");
+		$("#title").focus();
+		return false;
+	}else if(getLength($("#title").val()) > 25){
+		ui.error("标题不得大于25个中文字符");
+		$("#title").focus();
+		return false;
+	}else if(getEditorContent('content') == '' || checkPostContent(getEditorContent('content')) == 0){
+		ui.error("日志内容不能为空");
+		$("#content").focus();
+		return false;
+	}
+	
+	// 过滤html，字串检测长度
+	function checkPostContent(content)
+	{
+		content = content.replace(/&nbsp;/g, "");
+		content = content.replace(/<br>/g, "");
+		content = content.replace(/<p>/g, "");
+		content = content.replace(/<\/p>/g, "");
+		return getLength(content);
+	}
+	
+}
+</script>
 <include file="__THEME__/footer" />

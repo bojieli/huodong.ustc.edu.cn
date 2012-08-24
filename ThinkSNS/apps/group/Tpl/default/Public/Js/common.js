@@ -1,5 +1,10 @@
 // 加入群组
 function joingroup(gid) {
+	// 未登录则弹出登录框
+	if ($CONFIG['mid'] <= 0) {
+		ui.quicklogin();
+		return ;
+	}
     ui.box.load(U('group/Group/joinGroup')+'&gid='+gid,{title:'加入群组'});
 }
 // 删除群组

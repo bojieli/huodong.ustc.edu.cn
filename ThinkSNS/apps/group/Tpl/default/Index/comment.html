@@ -48,8 +48,10 @@
 	              </div>
 	            </li>
 	            </volist>
-	            <li class="t"><span class="left" style="padding:0px 5px 0 6px;"><label><input onclick="checkAllReply(this)" type="checkbox" /></span><a href="javascript:;">全选</a></label> | <a href="javascript:void(0)" onclick="doDelete()">删除</a>
+	            <php>if(!empty($comment_list['data'])) {</php>
+	            <li class="t"><span class="left" style="padding:0px 5px 0 6px;"><label><input onclick="checkAllReply(this)" type="checkbox" /></span>全选</label> | <a href="javascript:void(0)" onclick="doDelete()" >删除</a>
 		        </li>
+		        <php>}</php>
 			<php>}else{</php>
 				<volist id="_comment" name="comment_list.data">
 	            <li class="lineD_btm">
@@ -153,9 +155,7 @@
 			ui.error('未选择评论');
 			return false;
 		}
-
 		var url = "<php>echo $from_app=='weibo' ? U('group/WeiboOperate/deleteMuleComment') : U('home/Comment/doDelete');</php>";
-
 		$.post(url,{id:selectid},function(txt){
 			if (txt) {
 				ui.success('删除成功');

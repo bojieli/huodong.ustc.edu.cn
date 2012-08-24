@@ -15,18 +15,26 @@
 	function editC(){
         var name = $( '#name' ).val();
         var id       = '{$id}';
+        if(getLength(name.replace(/\s+/g,"")) == 0){
+            alert("分类名称不能为空！");
+            $("#name").focus();
+            return false;
+        }
         if( name != "" ){
 			if(id){
             	$.post( "__URL__&act=editCategory",{name:name,id:id},function( res ){
 					switch ( res ){
 						case '-1':
-							ui.error( '分类名称不能为空！' );
+							alert( '分类名称不能为空！' );
 							break;
 						case '1':
 							$('#category_name_'+id).html(name);
 							ui.box.close();
 							ui.success('修改分类成功');
-							//location.reload();
+							break;
+						case '2':
+							ui.box.close();
+							ui.success("分类名称未改变");
 							break;
 						default:
 							ui.error('修改失败');
@@ -36,11 +44,11 @@
             	$.post( "__URL__&act=addCategory",{name:name},function( res ){
 					switch ( res ){
 						case '-1':
-							ui.error( '分类名称不能为空' );
+							alert( '分类名称不能为空' );
 							break;
 						case '1':
-							//ui.box.close();
-							//ui.success('添加分类成功');
+							ui.box.close();
+							ui.success('添加分类成功');
 							location.reload();
 							break;
 						default:
@@ -49,7 +57,9 @@
             	});
 			}
         }else{
-            ui.error( '分类名称不能为空！' );
+            alert( '分类名称不能为空！' );
+            $( '#name' ).focus();
+            return false;
         }
     }
 </script>

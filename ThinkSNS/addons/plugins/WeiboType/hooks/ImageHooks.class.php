@@ -90,7 +90,6 @@ class ImageHooks extends AbstractWeiboTypeHooks
         if(!isset($typeData['picurl'])){
             $hasMore = true;
         }
-
         $this->assign('hasMore',$hasMore);
         $this->assign('data',$typeData);
         $this->assign('rand',$rand);
@@ -185,20 +184,22 @@ class ImageHooks extends AbstractWeiboTypeHooks
 			$middlepic	=	$info['info']['savepath'].'middle_'.$info['info']['savename'];
 
 			//缩图
-			if(extension_loaded("imagick")){
-                $this->_imageickThumb( UPLOAD_PATH.'/'.$bigpic, UPLOAD_PATH.'/'.$smallpic, $size['small']['x'], $size['small']['y'], false);
-                $this->_imageickThumb( UPLOAD_PATH.'/'.$bigpic, UPLOAD_PATH.'/'.$middlepic, $size['middle']['x'], $size['middle']['y'], false);
-            }else{
+			// if(extension_loaded("imagick")){
+   //              $this->_imageickThumb( UPLOAD_PATH.'/'.$bigpic, UPLOAD_PATH.'/'.$smallpic, $size['small']['x'], $size['small']['y'], false);
+   //              $this->_imageickThumb( UPLOAD_PATH.'/'.$bigpic, UPLOAD_PATH.'/'.$middlepic, $size['middle']['x'], $size['middle']['y'], false);
+   //          }else{
                 include_once SITE_PATH.'/addons/libs/Image.class.php';
                 Image::thumb( UPLOAD_PATH.'/'.$bigpic , UPLOAD_PATH.'/'.$smallpic , '' , $size['small']['x'] , $size['small']['y'] );
                 Image::thumb( UPLOAD_PATH.'/'.$bigpic , UPLOAD_PATH.'/'.$middlepic , '' , $size['middle']['x'] , ($size['middle']['y']==-1)?'auto':$size['middle']['y'] );
-            }
+            // }
             $typedata['thumburl']		= $smallpic;
 			$typedata['thumbmiddleurl'] = ($info['info']['extension']=='gif')?$bigpic:$middlepic;
 			$typedata['picurl']			= $bigpic;
             $typedata['attach_id']      = $info['info']['id'];
 			//为微博缩略图-小图不加水印，大图、中图加水印
-			if($fileext!='gif'){
+			//if($fileext!='gif'){
+            
+            if($info['info']['extension']!='gif'){
 				require_cache(SITE_PATH."/addons/libs/WaterMark/WaterMark.class.php");
 				WaterMark::iswater(UPLOAD_PATH.'/'.$bigpic);
 				WaterMark::iswater(UPLOAD_PATH.'/'.$middlepic);

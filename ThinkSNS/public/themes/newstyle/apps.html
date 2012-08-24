@@ -15,7 +15,7 @@
             	$user_credit = $userInfoCache['credit'];
             	foreach($user_credit as $k => $v) {
             </php>
-           		<p>{$v['alias']}：<a href="{:U('home/Account/credit')}"><span class="cRed">{$v['credit']}</span></a></p>
+           		<p>{$v['alias']}：<a href="{:U('home/Account/credit')}" title="{$v['credit']}"><span class="cRed">{$v['credit']}</span></a></p>
             <php>
                 }
                 unset($user_credit);
@@ -59,7 +59,7 @@
 				<php>if($vo['sidebar_entry']){</php>
 				    <span class="user_app_entry" target="_blank" url="{$vo.sidebar_entry}">{$vo.sidebar_title}</span>
                 <php>}</php>
-                <img src="{$vo.icon_url}" class="user_app_icon" />{$vo.app_alias}</a>
+                <img src="{:getAppIconUrl($vo['icon_url'],$vo['app_name']);}" class="user_app_icon" />{$vo.app_alias|getShort=###,5,'...'}</a>
 
   	        </li>
   	    </volist>

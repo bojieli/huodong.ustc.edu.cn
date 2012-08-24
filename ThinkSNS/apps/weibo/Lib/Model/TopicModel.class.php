@@ -13,7 +13,8 @@ class TopicModel extends Model{
 
 	//添加话题
 	private function addKey($key, $weiboId, $data){
-		$map['name'] = trim(t(mStr(preg_replace("/#/",'',trim($key)),150,'utf-8',false)));
+		//$map['name'] = trim(t(mStr(preg_replace("/#/",'',trim($key)),150,'utf-8',false)));
+		$map['name'] = trim(preg_replace("/#/",'',trim($key)));
 		if( $this->where($map)->count() ){
 			$this->setInc('count',$map);
 			if($weiboId) {
@@ -83,8 +84,9 @@ class TopicModel extends Model{
 	 */
 	public function getTopicId($name)
 	{
-		$topic_length = 20;
-		$map['name'] = trim(t(mStr(preg_replace("/#/",'',$name), $topic_length, 'utf-8', false)));
+		//$topic_length = 20;
+		//$map['name'] = trim(t(mStr(preg_replace("/#/",'',$name), $topic_length, 'utf-8', false)));
+		$map['name'] = t(preg_replace("/#/",'',$name));
 		if (empty($map['name']))
 			return 0;
 
@@ -109,37 +111,24 @@ class TopicModel extends Model{
 		$type     = 'recommend' == $type ? 'recommend' : 'auto';
 		$expire   = 1 * 3600; // 1 hour
 		$range    = !$range ? $expire : intval($range);
-		$cache_id = '_weibo_topic_model_hot_topic_' . $type.$range;
-		$cache_tid = '_weibo_topic_model_hot_topic_t_' . $type.$range;
+		$cache_id = '_weibo_hot_topic_' . $type.'_'.$range;
 	
 
 		//首页改用锁机制
-
-		if(($cache = S($cache_id)) === false){
-    		S($cache_tid,time()); //缓存未设置 先设置缓存设定时间
-    	}else{
-    		if(($cacheSetTime =  S($cache_tid)) === false || $cacheSetTime+$expire <= time()){
-    			S($cache_tid,time()); //缓存未设置 先设置缓存设定时间
-    		}else{
-    			return $cache;
-    		}
+		if($hot_list = S($cache_id)){
+    		return $hot_list;
     	}
+
 		if ('recommend' == $type) {
 			$hot_list = D('Topics', 'weibo')->getHot();
 		} else if ('auto' == $type) {
-			$config   = model('Xdata')->lget('weibo');
 			$map['count'] = array('gt', '0');
 			//热门话题时间范围
 			if ($range >= 1) {
 				$map['ctime'] = array('gt', mktime(0,0,0,date("m"),date("d")+1,date("Y"))-$range*24*3600);
 			}
-			if ($config['maskHotTopic']) {
-				$mask_topics = explode('|', trim($config['maskHotTopic'],'|'));
-				$map['name']  = array('not in', $mask_topics);
-				$hot_list = $this->where($map)->order('`count` DESC')->limit($limit)->findAll();
-			}else {
-				$hot_list = $this->where($map)->order('`count` DESC')->limit($limit)->findAll();
-			}
+			$map['lock'] = 0;
+			$hot_list = $this->where($map)->order('`count` DESC')->limit($limit)->findAll();
 		}
 		//取热度 - 按照当前值与最大值的比例计算
 		$hot_counts = max(getSubByKey($hot_list, 'count'));
@@ -147,44 +136,7 @@ class TopicModel extends Model{
 			$hot_list[$k]['name']	=	htmlspecialchars($v['name']);
 			$hot_list[$k]['rating'] = ceil(($v['count']/$hot_counts)*100);
 		}
-		S($cache_id, $hot_list);
-
-/*
-		$cache_id = '_weibo_topic_model_hot_topic';
-		$expire   = 1 * 3600; // 1 hour
-
-		if (($hot_list = S($cache_id)) === false) {
-			if ($config['openHotTopic'] && $config['hotTopic']) {
-				$map['name'] = array('in', $config['hotTopic']);
-				$res = $this->where($map)->limit(count($config['hotTopic']))->findAll();
-
-				// 转换为array($name => $count)格式
-				foreach ($res as $v) {
-					$temp[$v['name']] = $v['count'];
-				}
-
-				// 组装最后结果
-				foreach ($config['hotTopic'] as $k => $v) {
-					$hot_list[] = array(
-						'name'  => $v,
-						'count' => intval($temp[$v]),
-						'note'  => $config['hotTopicNote'][$k],
-					);
-				}
-			}else {
-				if ($config['maskHotTopic']) {
-					$mask_topics = explode('|', $config['maskHotTopic']);
-					$map['name']  = array('not in',$mask_topics);
-					$map['count'] = array('gt','0');
-					$hot_list = $this->where($map)->order('`count` DESC')->limit(10)->findAll();
-				}else {
-					$hot_list = $this->where('`count` > 0')->order('`count` DESC')->limit(10)->findAll();
-				}
-			}
-
-			S($cache_id, $hot_list, $expire);
-		}
-*/
+		S($cache_id, $hot_list, $expire);
 		return $hot_list;
 	}
 

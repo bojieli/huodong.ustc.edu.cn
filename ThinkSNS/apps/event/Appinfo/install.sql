@@ -123,12 +123,13 @@ VALUES
 
 # 增加默认积分配置
 DELETE FROM `ts_credit_setting` WHERE `type` = 'event';
-INSERT INTO `ts_credit_setting`
+INSERT INTO `ts_credit_setting` (`id`,`name`, `alias`, `type`, `info`, `score`, `experience`) 
 VALUES
     ('', 'add_event', '发起活动', 'event', '{action}{sign}了{score}{typecn}', '10', '10'),
     ('', 'delete_event', '删除活动', 'event', '{action}{sign}了{score}{typecn}', '-10', '-10'),
     ('', 'join_event', '参加活动', 'event', '{action}{sign}了{score}{typecn}', '3', '2'),
     ('', 'cancel_join_event', '取消参加活动', 'event', '{action}{sign}了{score}{typecn}', '-3', '-2');
-INSERT INTO `ts_system_data` (`uid`,`list`,`key`,`value`,`mtime`) 
+
+REPLACE INTO `ts_system_data` (`uid`,`list`,`key`,`value`,`mtime`) 
 VALUES 
-    (0,'event','version_number','s:5:"28172";','2012-02-14 10:00:00');
+    (0,'event','version_number','s:5:"33566";','2012-07-12 10:00:00');

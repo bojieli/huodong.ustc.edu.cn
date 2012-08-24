@@ -89,7 +89,7 @@ this.imagePreview = function(){
 
 // starting the script on page load
 $(document).ready(function(){
-	if(photo_preview==1){
+	if(typeof(photo_preview) != 'undefined' && photo_preview==1){
 		imagePreview();
 	}
 });

@@ -32,7 +32,7 @@ class VideoHooks extends AbstractWeiboTypeHooks
     {
         $link = $type_data;
         $parseLink = parse_url($link);
-        if(preg_match("/(youku.com|youtube.com|5show.com|ku6.com|sohu.com|mofile.com|sina.com.cn|tudou.com)$/i", $parseLink['host'], $hosts)) {
+        if(preg_match("/(youku.com|youtube.com|5show.com|ku6.com|sohu.com|mofile.com|sina.com.cn|tudou.com|yinyuetai.com)$/i", $parseLink['host'], $hosts)) {
             $flashinfo = $this->_video_getflashinfo($link, $hosts[1]);
         }
         if ($flashinfo['flashvar']) {
@@ -55,9 +55,6 @@ class VideoHooks extends AbstractWeiboTypeHooks
         return $res;
     }
 
-
-
-
     /**
      * uploadImage
      * 上传图片接受处理
@@ -67,9 +64,8 @@ class VideoHooks extends AbstractWeiboTypeHooks
     public function paramUrl()
     {
         $link = t($_POST['url']);
-        $parseLink = parse_url($link);
-        if(preg_match("/(youku.com|youtube.com|ku6.com|sohu.com|mofile.com|sina.com.cn|tudou.com)$/i", $parseLink['host'], $hosts)) {
-            $return['boolen'] = 1;
+        if(preg_match("/(youku.com|youtube.com|ku6.com|sohu.com|mofile.com|sina.com.cn|tudou.com|yinyuetai.com)/i", $link, $hosts)) {
+             $return['boolen'] = 1;
             $return['data']   = getShortUrl($link);
         }else{
             $return['boolen'] = 0;
@@ -89,8 +85,14 @@ class VideoHooks extends AbstractWeiboTypeHooks
     private function _video_getflashinfo($link, $host)
     {
         $return='';
-        $content = file_get_contents("compress.zlib://".$link);//获取
-        if('youku.com' == $host)
+		if(extension_loaded("zlib")){
+			$content = file_get_contents("compress.zlib://".$link);//获取
+        }
+
+		if(!$content)
+			$content = file_get_contents($link);//有些站点无法获取
+
+		if('youku.com' == $host)
         {
 			// 2012/3/7 修复优酷链接图片的获取
             preg_match('/http:\/\/profile\.live\.com\/badge\/\?[^"]+/i', $content, $share_url);
@@ -133,7 +135,8 @@ class VideoHooks extends AbstractWeiboTypeHooks
 
 			if( $defaultIid ){
 				preg_match('~'.$defaultIid.'.*?icode\s*[\:\=]\s*[\"\']([\w\d\-\_]+)[\"\']~s',$content,$flashvar);
-				preg_match('~'.$defaultIid.'.*?title\s*[\:\=]\s*[\"\']([^\"\']+?)[\"\']~s',$content,$title);
+				//preg_match('~'.$defaultIid.'.*?title\s*[\:\=]\s*[\"\']([^\"\']+?)[\"\']~s',$content,$title);
+                preg_match("/<title>(.*?)<\/title>/i",$content,$title);
 				preg_match('~'.$defaultIid.'.*?pic\s*[\:\=]\s*[\"\']([^\"\']+?)[\"\']~s',$content,$img);
 				$title[1] = iconv("GBK","UTF-8",$title[1]);
 			}
@@ -155,6 +158,12 @@ class VideoHooks extends AbstractWeiboTypeHooks
             preg_match("/\/([\w\-]+)\.shtml/",$link,$flashvar);
             preg_match("/thumbpath=\"(.*?)\";/i",$content,$img);
             preg_match("/<title>(.*?)<\/title>/i",$content,$title);
+        }
+        elseif('yinyuetai.com' == $host)
+        {
+            preg_match("/video\/([\w\-]+)$/",$link,$flashvar);
+            preg_match("/<meta property=\"og:image\" content=\"(.*)\"\/>/i",$content,$img);
+            preg_match("/<meta property=\"og:title\" content=\"(.*)\"\/>/i",$content,$title);
         }
 
         $return['flashvar'] = $flashvar[1];

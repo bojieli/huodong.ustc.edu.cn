@@ -240,10 +240,15 @@ class StarModel extends Model {
 				$map['uid']  = $uid;
 				$data['uid'] = $uid;
 				$star = $this->where($map)->find();
-				if(!$star){
-					$res = $this->add($data);
+				$isUser = M('user')->where('uid='.$uid)->find();
+				if(!$star && $isUser){
+					$res['code'] = $this->add($data);
 				}else{
-					$res = -3;
+					if($star) {
+						$res['code'] = -3;
+					} else {
+						$res['code'] = -4;
+					}
 				}
 			}elseif(strpos($uid,',')){
 				$uid = array_unique(explode(',',$uid));
@@ -251,25 +256,36 @@ class StarModel extends Model {
 					$map['uid']  = $v;
 					$data['uid'] = $v;
 					$star = $this->where($map)->find();
-					if(!$star){
-						$res[] = $this->add($data);
+					$isUser = M('user')->where('uid='.$v)->find();
+					if(!$star && $isUser){
+						$res['isJoin'][] = $this->add($data);
+					} else {
+						if(!$isUser) {
+							$res['data'][] = $v;
+						}
 					}
 				}
-				if(empty($res)){
-					$res = -3;
+				if(empty($res['isJoin'])){
+					$res['code'] = -3;
+				}
+				if(!empty($res['data'])) {
+					$res['code'] = -5;
 				}
 			}else{
-				return 0;
+				$res['code'] = 0;
+				return json_encode($res);
 			}
 
 			if($res){
 				$this->_cleanStarCache();
-				return $res;
+				return json_encode($res);
 			}else{
-				return 0;
+				$res['code'] = 0;
+				return json_encode($res);
 			}
 		}else{
-			return -2;
+			$res['code'] = -2;
+			return json_encode($res);
 		}
 	}
 

@@ -42,7 +42,7 @@
           <div class="Search_bg">
           <div>
           <form action="{:U('home/user/searchuser')}" method="post"  >
-            <input type="text" name="k" class="text_findUser left" style="width:530px;"
+            <input type="text" name="k" class="text_findUser left" style="width:530px;" maxlength="40"
              value="{$search_key}" onfocus="if(this.value == '{$search_key}')this.value='';" onblur="if(this.value == '')this.value='{$search_key}';" 
             />
             <input class="btn_search_big" type="submit" value=""/>
@@ -51,11 +51,11 @@
           </div>
 		
           <div class="lh35 left" style="width:100%">
-			<php>if(empty($search_key)) {</php>
+			<p><php>if(empty($search_key)) {</php>
 			请输入关键字后点击搜索
 			<php>}else {</php>
 			搜索"<span class="cRed">{$search_key}</span>"找到 {$list.count}  位相关用户
-			<php>}</php>
+			<php>}</php></p>
           </div>
         </div>
         <div class="feedBox">

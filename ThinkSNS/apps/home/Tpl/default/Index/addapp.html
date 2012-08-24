@@ -18,7 +18,7 @@
           <volist name="data" id="vo">
           <dl class="add_app_list">
             <php>if(empty($vo['large_icon_url'])) $vo['large_icon_url'] = $vo['icon_url'];</php>
-            <dt><img src="{$vo['large_icon_url']}" width="64px" height="64px"/></dt>
+            <dt><img src="{:getAppIconUrl($vo['large_icon_url'],$vo['app_name']);}" width="64px" height="64px"/></dt>
             <dd class="lineD_btm">
                 <h3><a href="{:U($vo['app_name'].'/'.$vo['app_entry'])}">{$vo['app_alias']}</a></h3>
                 <p style="margin-right:100px;">{$vo['description']}</p>
@@ -28,7 +28,8 @@
 	                <php>}else {</php>
 	                <a href="{:U('home/Index/install',array('app_id'=>$vo['app_id']))}" class="right">我要添加</a>
 	                <php>}</php>
-                    作者: <a href="{$vo['homepage_url']}">{$vo['author_name']}</a> &nbsp;
+             <!--    作者: <a href="{$vo['homepage_url']}">{$vo['author_name']}</a> &nbsp; -->
+                    作者: {$vo['author_name']} &nbsp;
                     <php>if(!empty($vo['contributor_name'])) {</php>
                     贡献者:{$vo['contributor_name']}
                     <php>}</php>

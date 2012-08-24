@@ -427,13 +427,13 @@ class View extends Think
      * @return string
      +----------------------------------------------------------
      */
-    private function showTime() {
+    private function showTime($showAll=false) {
         // 显示运行时间
         $startTime =  $GLOBALS['_viewStartTime'];
         $endTime = microtime(TRUE);
         $total_run_time =   number_format(($endTime - $GLOBALS['_beginTime']), 3);
         $showTime   =   'Process: '.$total_run_time.'s ';
-        if(C('SHOW_ADV_TIME')) {
+        if(C('SHOW_ADV_TIME') || $showAll) {
             // 显示详细运行时间
             $_load_time =   number_format(($GLOBALS['_loadTime'] -$GLOBALS['_beginTime'] ), 3);
             $_init_time =   number_format(($GLOBALS['_initTime'] -$GLOBALS['_loadTime'] ), 3);
@@ -441,17 +441,17 @@ class View extends Think
             $_parse_time    =   number_format(($endTime - $startTime), 3);
             $showTime .= '( Load:'.$_load_time.'s Init:'.$_init_time.'s Exec:'.$_exec_time.'s Template:'.$_parse_time.'s )';
         }
-        if(C('SHOW_DB_TIMES') && class_exists('Db',false) ) {
+        if((C('SHOW_DB_TIMES') || $showAll) && class_exists('Db',false) ) {
             // 显示数据库操作次数
             $db =   Db::getInstance();
             $showTime .= ' | DB :'.$db->Q().' queries '.$db->W().' writes ';
         }
-        if(C('SHOW_CACHE_TIMES') && class_exists('Cache',false)) {
+        if((C('SHOW_CACHE_TIMES') || $showAll) && class_exists('Cache',false)) {
             // 显示缓存读写次数
             $cache  =   Cache::getInstance();
             $showTime .= ' | Cache :'.$cache->Q().' gets '.$cache->W().' writes ';
         }
-        if(MEMORY_LIMIT_ON && C('SHOW_USE_MEM')) {
+        if(MEMORY_LIMIT_ON && (C('SHOW_USE_MEM') || $showAll)) {
             // 显示内存开销
             $startMem    =  array_sum(explode(' ', $GLOBALS['_startUseMems']));
             $endMem     =  array_sum(explode(' ', memory_get_usage()));
@@ -473,6 +473,7 @@ class View extends Think
         $traceFile  =   CONFIG_PATH.'trace.php';
         $_trace =   is_file($traceFile)? include $traceFile : array();
          // 系统默认显示信息
+        $this->trace('运行信息',    $this->showTime(true));
         $this->trace('当前页面',    $_SERVER['REQUEST_URI']);
         $this->trace('模板缓存',    C('CACHE_PATH').md5($this->templateFile).C('TMPL_CACHFILE_SUFFIX'));
         $this->trace('请求方法',    $_SERVER['REQUEST_METHOD']);

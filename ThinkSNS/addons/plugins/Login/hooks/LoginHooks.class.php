@@ -34,15 +34,15 @@ class LoginHooks extends Hooks {
         $passport = service ( 'Passport' );
         $passwd = $_POST['passwd']?$_POST['passwd']:true;
         $user = $passport->getLocalUser($email,$passwd);
-        //如果获取到信息，则是对已有账号进行绑定
+        //如果获取到信息，则是对已有帐号进行绑定
         if($user){
             //对昵称进行覆盖绑定操作
             $user['uname'] = $uname;
-            $res = $this->_bindaccunt($type, &$result,$user);
-        }else{//反之，则是创建新的账号,或者账号密码错误
+            $res = $this->_bindaccunt($type, $result,$user);
+        }else{//反之，则是创建新的帐号,或者帐号密码错误
             $res = D('User','home')->getUserByIdentifier($email, 'email');
             if(!$res){
-                $res = $this->_register($type, &$result);
+                $res = $this->_register($type, $result);
             }else{
                 $result ['status'] = 0;
                 $result ['info'] = "登录邮箱密码错误，请检查邮箱密码";
@@ -67,10 +67,10 @@ class LoginHooks extends Hooks {
         }
         switch ($_REQUEST ['connectMod']) {
         case "bind" :
-            $this->_bindaccunt ( $type, &$result );
+            $this->_bindaccunt ( $type, $result );
             break;
         case "createNew" :
-            $this->_register ( $type, &$result );
+            $this->_register ( $type, $result );
             break;
         default :
             $result ['status'] = 0;
@@ -141,7 +141,7 @@ class LoginHooks extends Hooks {
             $call_back_url = Addons::createAddonShow('Login','no_register_display',array('type'=>$type,'do'=>"bind"));
             $url = $platform->getUrl ( $call_back_url );
             Session::pause();
-            echo '<dl class="pop_sync"><dt></dt>您还未绑定' . $type . '账号, 请点这里<dd><a class="btn_b" href="' . $url . '">开始绑定</a></dd></dl>';
+            echo '<dl class="pop_sync"><dt></dt>您还未绑定' . $type . '帐号, 请点这里<dd><a class="btn_b" href="' . $url . '">开始绑定</a></dd></dl>';
             exit ();
         }
 
@@ -205,11 +205,18 @@ class LoginHooks extends Hooks {
         $content = $data['content'];
         if($type_info = unserialize($data['type_data'])){
             if(isset($type_info[0])){
-                $temp=array_shift($type_info);
+                $temp = array_shift($type_info);
                 $type_data = $temp['picurl'];
             }else{
                 $type_data = $type_info['picurl'];
             }
+			if($data['type']==1){
+				if(isset($type_info['picurl'])){
+					$pic = UPLOAD_PATH.'/'.$type_info['picurl'];
+				}elseif(isset($type_info[0]['picurl'])){
+					$pic = UPLOAD_PATH.'/'.$type_info[0]['picurl'];
+				}
+			}
         }
         if(!empty($sync)){
             $result = array();
@@ -226,7 +233,7 @@ class LoginHooks extends Hooks {
                     $syncData = $platform->update ( $content, $v );
                     break;
                 case 1:
-                    $syncData = $platform->update ( $content."  ".U('home/space/detail',array('id'=>$id)), $v );
+                    $syncData = $platform->upload ( $content."  ".U('home/space/detail',array('id'=>$id)), $v, $pic );
                     break;
                 default:
                     $syncData = $platform->update ( $content."  ".U('home/space/detail',array('id'=>$id)), $v );
@@ -305,7 +312,7 @@ class LoginHooks extends Hooks {
         $type = strtolower($param['type']);
         $result = &$param['res'];
         if ($_GET ['do'] == "bind") {
-            $this->_bindPublish ( $type, &$param['res'] );
+            $this->_bindPublish ( $type, $param['res'] );
         } else {
             $type = t ( $_GET ['type'] );
            $this->_loadTypeLogin($type);
@@ -366,6 +373,9 @@ class LoginHooks extends Hooks {
             $object = new $type ();
             $url = Addons::createAddonShow('Login','no_register_display',array('type'=>$type));
             $url = $object->getUrl($url);
+			if(!$url){
+				dump($type.'-login-error:'.$object->getError());
+			}
             redirect($url);
         }
 
@@ -389,7 +399,7 @@ class LoginHooks extends Hooks {
         }
         if ($regInfo ['register_type'] == 'open' && ! empty ( $platform )) {
 			$html = "<div class='frm alC lh35' style='border-top:1px solid #C9C9C9; margin: 10px 0 0;'>";
-			$html .= "<div class='tit'>你也可以通过站外账号进行登录!";
+			$html .= "<div class='tit'>你也可以通过站外帐号进行登录!";
 			$html .= "</div>";
 			foreach ( $platform as $key => $vo ) {
 				$url = $vo;
@@ -468,14 +478,13 @@ class LoginHooks extends Hooks {
 			$result ['info'] = "获取用户信息失败";
 			return;
 		}
-
 		//如果该类型的绑定已经进行过，则是系统异常。正确流程并不会进行两次绑定
 		$sync['uid'] = $user['uid'];
 		$sync['type'] = $type;
 		if(M('login')->where($sync)->count()){
 		    $result ['status'] = 0;
 		    $result ['jumpUrl'] = SITE_URL;
-		    $result ['info'] = "系统异常";
+		    $result ['info'] = "该帐号已经绑定了其他新浪微博帐号";
 		    return;
 		}
 

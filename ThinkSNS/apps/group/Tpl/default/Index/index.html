@@ -105,7 +105,7 @@
                     <php>if( $vo['uid'] == $mid ){</php>
                     <a href="javascript:void(0)" onclick="ui.confirm(this,'确认要删除这条微博?')" callback="weibo.deleted({$vo.id}, {$vo.gid})">删除</a>&nbsp;&nbsp;|&nbsp;&nbsp;
                     <php>}</php>
-                    <a href="javascript:void(0)" onclick="weibo.transpond({$vo.id}, {$vo.gid})">转发({$vo.transpond})</a>&nbsp;&nbsp;|&nbsp;&nbsp; <a href="javascript:void(0)" onclick="weibo.share({$vo.id}, {$vo.gid})">分享</a>&nbsp;&nbsp;|&nbsp;&nbsp; <a href="javascript:void(0)" rel="comment" minid="{$vo.id}" groupid="{$vo.gid}">评论({$vo.comment})</a> </span> <cite> <a href="{:U('group/Group/detail',array('gid'=>$vo['gid'],'id'=>$vo['id']))}">{$vo.ctime|friendlyDate}</a></cite> 来自 <cite><a href="{:U('group/Group/index', array('gid'=>$vo['gid']))}">{$vo.group_name}</a></cite> </div>
+                    <a href="javascript:void(0)" onclick="weibo.transpond({$vo.id}, {$vo.gid})">转发({$vo.transpond})</a>&nbsp;&nbsp;|&nbsp;&nbsp; <a href="javascript:void(0)" onclick="weibo.share({$vo.id}, {$vo.gid})">分享</a>&nbsp;&nbsp;|&nbsp;&nbsp; <a href="javascript:void(0)" rel="comment" minid="{$vo.id}" groupid="{$vo.gid}">评论({$vo.comment})</a> </span> <cite> <a href="{:U('group/Group/detail',array('gid'=>$vo['gid'],'id'=>$vo['id']))}">{$vo.ctime|friendlyDate}</a></cite> 来自 <cite><a href="{:U('group/Group/index', array('gid'=>$vo['gid']))}">{$group_names[$vo['gid']]}</a></cite> </div>
                   <div id="comment_list_{$vo.id}" style=""></div>
                 </div>
               </li>

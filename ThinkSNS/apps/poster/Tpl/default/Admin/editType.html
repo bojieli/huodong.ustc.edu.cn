@@ -74,6 +74,25 @@
        }
     }
     </script>
+    <script>
+    function checkType(){
+      var name = $("#name").val();
+      var explain = $("#explain").val();
+      if (!name || getLength(name.replace(/\s+/g,"")) == 0) {
+        ui.error("分类名称不能为空");
+        $("#name").focus();
+        return false;
+      }else if (getLength($("#name").val()) > 20){
+        ui.error("分类名称不得大于20个字");
+        $("#name").focus();
+        return false;
+      }else if(!explain || getLength(explain.replace(/\s+/g,"")) == 0){
+        ui.error("描述不能为空");
+        $("#explain").focus();
+        return false;
+      }
+    }
+    </script>
 
   <div id="container" class="so_main">
     <include file="_tab" />
@@ -81,21 +100,17 @@
       <div class="Toolbar_inbox">
         <span>{$ts['app']['app_alias']}大分类编辑</span>
       </div>
-      <form action="__URL__&act=doEditType" method="post">
+      <form action="__URL__&act=doEditType" method="post" onsubmit="return checkType();">
         <div class="form2 no_line">
           <dl class="lineD">
-            <dt>
-                                      分类名：
-            </dt>
+            <dt>分类名：</dt>
             <dd>
-              <input name="name" class="txt" value="{$poster.name}" />
+              <input name="name" class="txt" value="{$poster.name}" id="name"/>
               <p>填写在前台显示的{$ts['app']['app_alias']}大分类：如招聘，物品交换。</p>
             </dd>
           </dl>
           <dl class="lineD">
-            <dt>
-                                      子分类：
-            </dt>
+            <dt>子分类：</dt>
             <dd>              
               <select name="type">
                 <option value="0">未启用小分类</option>
@@ -107,9 +122,7 @@
             </dd>
           </dl>
           <dl class="lineD">
-            <dt>
-                                      图标：
-            </dt>
+            <dt>图标：</dt>
             <dd>
               <div style="width:420px;">
               <volist name="ico" id="vo">
@@ -120,9 +133,7 @@
             </dd>
           </dl>
           <dl class="lineD">
-            <dt>
-                                      额外字段：
-            </dt>
+            <dt>额外字段：</dt>
             <dd>
               <div id="poster_widget">
               <volist name="poster.extraField" id="vo" empty="未启用任何额外字段">
@@ -139,11 +150,9 @@
             </dd>
           </dl>
           <dl>
-            <dt>
-                                      描述：
-            </dt>
+            <dt>描述：</dt>
             <dd>              
-              <textarea name="explain" class="txt" cols="44" rows="8">{$poster.explain}</textarea>
+              <textarea name="explain" class="txt" cols="44" rows="8" id="explain">{$poster.explain}</textarea>
               <p>填写对这个分类的描述。会在前台显示。</p>
             </dd>
           </dl>
@@ -155,9 +164,7 @@
       </form>
         <div class="form2 no_line">
           <dl class="lineD">
-            <dt>
-                                     添加额外项：
-            </dt>
+            <dt>添加额外项：</dt>
             <dd>
               <select id="widget">
                 <option value="0">无额外项</option>

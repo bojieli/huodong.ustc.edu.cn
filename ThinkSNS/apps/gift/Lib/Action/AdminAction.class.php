@@ -265,7 +265,7 @@ class AdminAction extends AdministratorAction {
 		$this->display();
 	}
 	public function addCategory(){
-        $data['name'] = t($_POST['name']);
+        $data['name'] = t(h($_POST['name']));
         $data['status'] = 1;
         if (empty($data['name'])) {
          	echo -1;
@@ -278,16 +278,17 @@ class AdminAction extends AdministratorAction {
         }
 	}
 	public function editCategory(){
-        $data['name'] = t($_POST['name']);
+        $data['name'] = t(h($_POST['name']));
         $data['status'] = 1;
         $map['id'] = intval($_POST['id']);
-        if (empty($data['name'])) {
+        if (empty($data['name']) ) {
          	echo -1;
         }else{
-			if($this->category->where($map)->save($data)){
+        	$res = $this->category->where($map)->save($data);
+			if($res == 1 ){
 				echo 1;
-			}else{
-				echo 0;
+			}else if ($res == 0){
+				echo 2;
 			}
         }
 	}

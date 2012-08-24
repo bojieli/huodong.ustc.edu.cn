@@ -3,10 +3,10 @@
 <link rel="stylesheet" href="../Public/event.css" type="text/css" media="screen" charset="utf-8" />
 <script  type="text/javascript" src="__PUBLIC__/js/rcalendar.js" ></script>
 <script type="text/javascript" src="../Public/js/event.js"></script>
-<include file="../Public/_mainNav" />
 <div class="content_holder">
-<div class="content">
+<div class="content no_bg">
   <!-- 内容 begin  -->
+<include file="../Public/_mainNav" />
   <div class="main no_l">
     <div class="mainbox">
       <!-- 画布 begin  -->
@@ -120,10 +120,10 @@
           </li>
           -->
                 <?php 
-          $alow = "";
+          $allow = "";
           $friend = "";
-            if( $opts['alow'] ){
-              $alow = "checked";
+            if( $opts['allow'] ){
+              $allow = "checked";
             }
             if( $opts['friend'] ){
               $friend = "checked";
@@ -136,7 +136,7 @@
                       <input type="checkbox" name="friend" id="choice1" value="1" {$friend}/>
                       只允许我关注的人参加该活动</div>
                     <div>
-                      <input type="checkbox" name="alow" id="choice2" value="1" {$alow}/>
+                      <input type="checkbox" name="allow" id="choice2" value="1" {$allow}/>
                       活动参加人员需要审批</div>
                   </div>
                 </dd>
@@ -144,7 +144,7 @@
                   <label>活动海报：&nbsp;&nbsp;&nbsp;</label>
                   <div class="c2">
                     <input name="cover" type="file" />
-                    <span class="cGray2">图片将上传您的默认相册</span><br />
+                    <!--<span class="cGray2">图片将上传您的默认相册</span><br /> -->
                   </div>
                   <input name="old_cover" type="hidden" value='{$coverId}'>
                 </dd>
@@ -165,6 +165,7 @@
               </dl>
             </form>
           </div>
+          <div class="c"></div>
         </div>
         <!-- end  -->
       </div>
@@ -183,6 +184,6 @@ $(document).ready(function(){
 });
 function selectArea(){
     var typevalue = $("#current").val();
-	ui.box.load(U('event/Area/area')+'&selected='+typevalue,{title:'选择城市'});
+    ui.box.load(U('event/Area/area')+'&selected='+typevalue,{title:'选择城市'});
 }
 </script>

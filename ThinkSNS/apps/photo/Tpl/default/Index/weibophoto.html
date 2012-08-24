@@ -3,6 +3,12 @@
 <script type="text/javascript" src="{:U('weibo/Plugins/init')}"></script>
 <link href="../Public/css/photo.css" rel="stylesheet" type="text/css" />
 <link href="../Public/css/mark_photo.css" rel="stylesheet" type="text/css" />
+<style>
+#imgslide img{ width:550px;}
+#pre{display:block; float:left; height:100%; background:#003366;filter:Alpha(Opacity=0);opacity:0; z-index:2; width:330px;  cursor:url(../Public/images/pre.cur),auto; }
+#next{z-index:2; display:block; float:left; background:#00CC99;filter:Alpha(Opacity=0);opacity:0; height:100%; width:330px; float:left; cursor:url(../Public/images/next.cur), auto;}
+.xhbsjy_left_centent h1{float:left;}
+</style>
 {* 修改所有地址 *}
 <script type="text/javascript">
 	var photo_id		=	'{$photo.id}';
@@ -83,8 +89,14 @@
 			
 			<!-- 主图 -->
 			<div class="c1" >
-				<div class="alC" id="big_photo">
-                	<a href="{:U('photo/Index/weibophoto', array('id'=>$next['id'], 'uid'=>$next['userId']))}#show_pic"><img src="{*UPLOAD_URL}/{$photo.savepath}middle_{$photo.savename}" pid="{$photo.id}" rel="{$photo.id}" id="big_pic" /></a>
+				<div class="alC" id="big_photo" style="position:relative">
+                	<h1 style="float:none">
+                	<php>$photoUrl = $photo['savepath'].'middle_'.$photo['savename'];</php>
+                	<img onload="$('#pre').css('height',this.height);$('#next').css('height',this.height);" src="__ROOT__/thumb.php?w=560&h=560&t=f&url={$photoUrl|get_photo_url}" pid="{$photo.id}" rel="{$photo.id}" id="big_pic" />
+                	<span id="pre" onclick="rollPic({$pre.id},{$uid});" style="height:50px;position:absolute;top:0;left:0">上一张</span>
+                    <span id="next" onclick="rollPic({$next.id},{$uid});" style="height:50px;position:absolute;right:0;top:0">下一张</span>
+                	</h1>
+                   
                     <br /><span class="lh30 cGray photoName">{$photo.name}</span>
 					<br /><span class="lh30 cGray photoName">来自{$weibo.uid|getUserSpace}的微博: {$weibo.content}</span>
                 </div>
@@ -214,7 +226,11 @@ function doDelComment(id){
 		ui.success('删除成功');
 		setTimeout("location.reload()",1000);
 	});
-}	
+}
+
+function rollPic(id,uid){
+	window.location.href=U('photo/Index/weibophoto&id='+id+'&uid='+uid+'#show_pic');
+}
 </script>
 
 <include file="__THEME__/footer" />

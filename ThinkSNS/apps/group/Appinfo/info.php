@@ -15,7 +15,7 @@ return array(
 	// 应用图标 [必填]
 	'LARGE_ICON_URL'			=> SITE_URL . '/apps/group/Appinfo/ico_app.png',
 	// 版本号 [必填]
-	'VERSION_NUMBER'			=> '28172',
+	'VERSION_NUMBER'			=> '33566',
 	// 后台入口 [选填]
 	'ADMIN_ENTRY'				=> 'Admin/index',
 	// 统计入口 [选填]（格式：Model/method）
@@ -27,7 +27,7 @@ return array(
 	// 发布日期
 	'RELEASE_DATE'				=> '2008-08-08',
 	// 最后更新日期
-	'LAST_UPDATE_DATE'			=> '2012-2-14',
+	'LAST_UPDATE_DATE'			=> '2012-07-12',
 
 	// 附加链接名称 [选填]
 	'SIDEBAR_TITLE'				=> '',

@@ -9,7 +9,7 @@
 		}else if(op == 'normal'){
 			v_prompt = '你确定设置该用户成为普通会员';
 		}else if(op == 'out'){
-			v_prompt = '你确定要剔除该用户';
+			v_prompt = '你确定要踢出该用户';
 		}else if(op == 'allow'){
 			v_prompt = '你确定设置该用户成为该群组成员'
 		}
@@ -23,6 +23,41 @@
 		document.actionform.op.value = op;
 		document.actionform.submit();
 	}
+	
+	function manageBatch(op) {
+		var uidJson = new Array();
+		$('input[rel="member"]').each(function() {
+			if($(this).attr('checked') == true && $(this).val() != 0) {
+				uidJson.push($(this).val());
+			}
+		});
+		if(uidJson.length == 0) {
+			alert('请选择用户');
+			return;
+		}
+		var v_prompt = "";
+		if(op == "admin") {
+			v_prompt = '你确定设置该用户成为管理员';
+		} else if(op == "out") {
+			v_prompt = '你确定要踢出该用户';
+		}
+		if(v_prompt.length != 0) {
+			if(!confirm(v_prompt)) {
+				return;
+			}
+		}
+		document.actionform.uid.value = uidJson;
+		document.actionform.op.value = op;
+		document.actionform.submit();
+	}
+	
+	function checkAll(o){
+        if( o.checked == true ){
+            $('input[name="checkbox"]').attr('checked','true');
+        }else{
+            $('input[name="checkbox"]').removeAttr('checked');
+        }
+    }
 </script>
 </head>
 <body>
@@ -47,8 +82,8 @@
         <div class="groupBox">
           <div style="width:100%;">
             <dl class="memberlist">
-              <dt>
-              <div class="left"><input name="" type="checkbox" value="" class="ck"></div>
+              <dt class="cGray2">
+              <div class="left mr10"><input name="checkbox" type="checkbox" value="0" class="ck" style="margin-top:3px" onclick="checkAll(this)"></div>
                 <div class="c1">名字</div>
                 <div class="c2">身份</div>
                 <div class="c3">操作</div>
@@ -56,7 +91,7 @@
               </dt>
               <volist name="memberlist['data']" id="member">
                 <dd>
-                <div class="left"><input name="" type="checkbox" value=""  class="ck"></div>
+                <div class="left mr10"><input name="checkbox" type="checkbox" rel="member" value="{$member['uid']}"  class="mt10 ck"></div>
                   <div class="c1"><span class="pic30 mr5 alM"><space uid="member['uid']" target="_blank">{uavatar=s}</space></span><space uid="member.uid" class="fn" target="_blank">{uname}</space></div>
                   <div class="c2">
                     <eq name="member['level']" value="1">创建者</eq>
@@ -80,8 +115,8 @@
                 </dd>
               </volist>
               <dd class="cGray2">
-                <input name="" type="checkbox" value="" class="ck">
-                <label><a href="#">升为管理员</a>&nbsp;|&nbsp;<a href="#">踢出本群</a></label>
+                <input name="checkbox" type="checkbox" value="0" class="ck" onclick="checkAll(this)" />
+                <label><a href="javascript:void(0)" onclick="manageBatch('admin')">升为管理员</a>&nbsp;|&nbsp;<a href="javascript:void(0)" onclick="manageBatch('out')">踢出本群</a></label>
                 <div class="c"></div>
               </dd>
             </dl>

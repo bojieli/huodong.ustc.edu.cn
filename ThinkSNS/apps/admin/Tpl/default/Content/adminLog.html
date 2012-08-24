@@ -27,10 +27,10 @@
       <dt>类型：</dt>
       <dd>
       	<select name="type">
-      		<option value="0">选择类型</option>
-      		<option value="1">增加</option>
-      		<option value="2">删除</option>
-      		<option value="3">修改</option>
+      		<option value="0" <php>if($type == "") echo 'selected';</php>>选择类型</option>
+      		<option value="1" <php>if($type == 1) echo 'selected';</php>>增加</option>
+      		<option value="2" <php>if($type == 2) echo 'selected';</php>>删除</option>
+      		<option value="3" <php>if($type == 3) echo 'selected';</php>>修改</option>
       	</select>
       </dd>
     </dl>

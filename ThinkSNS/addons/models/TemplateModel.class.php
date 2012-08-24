@@ -15,7 +15,7 @@ class TemplateModel extends Model {
 	 * @param int          $limit 一次查询条数  默认30
 	 * @return array
 	 */
-	public function getTemplate($map = array(), $order = 'name ASC,tpl_id ASC', $limit = 30) {
+	public function getTemplate($map = array(), $order = 'tpl_id DESC', $limit = 30) {
 		return $this->where($map)->order($order)->findPage($limit);
 	}
 

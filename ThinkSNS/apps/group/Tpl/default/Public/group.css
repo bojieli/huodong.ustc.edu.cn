@@ -1,6 +1,6 @@
 @charset "utf-8";
 .btn_create_group{background:url(images/add_btn_s.png) no-repeat left top;display:block;width:160px;height:52px}
-.add_group{overflow:hidden}
+.add_group{overflow:hidden;_zoom:1;}
 .groupBox {}
 .groupBox .tit_h2 {font-size:14px;margin:20px 40px 10px}
 .group_pic {float:left}
@@ -9,7 +9,8 @@
 .box_createGroup{padding:10px;margin:0;background-color:#FFFFCC;border-radius:3px 3px 3px 3px;border:1px solid #F5C83C;text-align:center}
 .box_createGroup h4{font-weight:400;height:20px;font-size:14px;padding:10px 0 0 0}
 .searchGroup{float:right;position:relative;overflow:hidden;*zoom:1}
-.searchGroup .btn_s{position:absolute;right:5px;top:5px;cursor:pointer}
+.searchGroup *{word-wrap:normal}
+.searchGroup .btn_s{position:absolute;right:5px;top:5px;cursor:pointer;}
 .titround_Ann{font-weight:bold;color:#fff;text-align:center;height:21px;line-height:21px;padding:0 5px;background-color:#FF9900;-moz-border-radius:3px;-khtml-border-radius:3px;-webkit-border-radius:3px;border-radius:3px;float:left}
 .lineAnn{line-height:21px;overflow:hidden;*zoom:1;margin:0 0 10px}
 .interest {}
@@ -38,7 +39,6 @@
 .memberlist dd .c1, .memberlist dt .c1{float: left; width: 25%}
 .memberlist dd .c2, .memberlist dt .c2{float: left; width: 15%}
 .memberlist dd .c3, .memberlist dt .c2{float: left; width: 20%}
-.memberlist dd .c2, .memberlist dd .c3{height:18px;line-height:18px;padding:8px 0}
 .memberlist dd .c4, .memberlist dt .c4{float: left; width: 25%}
 .pic30 {display:inline-block; vertical-align:middle}
 .pic30 img {height:30px; width:30px;}
@@ -61,14 +61,14 @@
 .search li .rmenu a {display: block; line-height: 20px; padding-left: 5px}
 .search li .rmenu a:hover {color:#cc3333; text-decoration:underline}
 .headpic50 img {background-color: #fff; height: 50px; width: 50px; border:1px solid #CCCCCC; padding:2px}
-a.btn_shenqing:link,a.btn_shenqing:visited {background-color:#a2a2a2; display:inline-block;line-height:16px;height:16px; padding:2px 5px 2px 0; color:#fff;-moz-border-radius: 3px; -khtml-border-radius: 3px; -webkit-border-radius: 3px; border-radius: 3px}
-a.btn_shenqing:hover {background-color:#2D8ED5; color:#fff; text-decoration: none; line-height:16px;height:16px; padding:2px 5px 2px 0}
+a.btn_shenqing:link,a.btn_shenqing:visited {background-color:#a2a2a2; display:inline-block;height:16px;line-height:16px;padding:2px 5px 2px 0; color:#fff;-moz-border-radius: 3px; -khtml-border-radius: 3px; -webkit-border-radius: 3px; border-radius: 3px;_height:16px;_padding-top:3px;}
+a.btn_shenqing:hover {background-color:#2D8ED5; color:#fff; text-decoration: none; height:16px;line-height:16px; padding:2px 5px 2px 0;_height:16px;_padding-top:3px}
 
 
 .postsList {}
-.postsList li {color: #999999; height: 20px; line-height: 20px; padding: 5px; overflow:hidden }
+.postsList li {color: #999999; height: 20px; line-height: 20px; padding: 5px; overflow:hidden;_zoom:1 }
 .postsList li.tit {background-color:#F7F7F7}
-.postsList li .c1 {float: left; width: 50%; overflow:hidden; text-align:left }
+.postsList li .c1 {float: left; width: 50%; overflow:hidden; text-align:left;}
 .postsList li .c2 {float: left; width: 10%; text-align:center}
 .postsList li .c3 {float: left; width: 10%; text-align:center}
 .postsList li .c4 {float: left; width: 13%; text-align:center; overflow:hidden; line-height:20px; height:20px}
@@ -87,16 +87,16 @@ a.btn_shenqing:hover {background-color:#2D8ED5; color:#fff; text-decoration: non
 .msg h2 {font-size: 14px; font-weight: bold; color: #000000}
 .msg img {float: left; margin-top: 5px; margin-right: 5px}
 .msg p {margin: 0px; color: #000000; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 20px}
-.group_Posts_tit {font-size:20px; background-color: #EDF0F5; margin:10px 0; padding:5px}
+.group_Posts_tit {font-size:20px; background-color: #EDF0F5; margin:10px 0; padding:5px;overflow:hidden;*zoom:1;}
 .g_quotes {background: none repeat scroll 0 0 #FEFDF4; border: 1px dashed #FFCC00; margin: 10px 0px; padding: 10px;width:560px;overflow:hidden}
 .g_quotes h5 {color: #000000; font-size: 14px; font-weight: bold}
 .g_quotes em {color: #999999; display: block; font-size: 12px; font-style: italic; line-height: 30px}
 .g_quotes p {color: #444444; font-size: 14.8px;  }
-.mg_lapinfo{display:none}
-.zd,.jh,.sd {display: inline-block; background:url(images/group_BBS.gif) no-repeat 0 0; width:18px; height:20px;text-indent: 20px; overflow:hidden; vertical-align:middle}
-.jh {background-position:0 -17px; margin-right:5px}
-.sd {background-position:0 -42px}
-.zd {background-position:0 2px;_background-position:0 2px}
+.mg_lapinfo{display:none;}
+.zd,.jh,.sd {display: inline-block; background:url(images/group_BBS.gif) no-repeat 0 0; width:18px; height:20px;text-indent: 20px; vertical-align:middle;overflow:hidden;_zoom:1;}
+.jh {background-position:0 -17px; float:left}
+.sd {background-position:0 -42px;float:left;}
+.zd {background-position:0 2px;float:left;_background-position:0 2px;}
 
 .creator,.newer{background:url(images/user_type.gif) no-repeat 0 0; height:14px; width:14px; display:inline-block}
 .newer{background-position:0 bottom}
@@ -121,7 +121,7 @@ a.btn_shenqing:hover {background-color:#2D8ED5; color:#fff; text-decoration: non
     width: 400px;}
 .Annex{border: 1px dashed #FF9A9A;font-size: 12px;margin: 10px 0;padding: 8px;width: 400px;}
 .fW100_ul{overflow:hidden;}
-.fW100_ul li{width:100%; _width:50%;}
+.fW100_ul li{width:100%;*width:99%}
 .l250{width:230px; color:#666;}
 .l400{width:370px;}
 .w300{width:300px; background:#fff; margin:0 5px 0 0;}
@@ -196,7 +196,7 @@ a.btn_shenqing:hover {background-color:#2D8ED5; color:#fff; text-decoration: non
 /*mod_class*/
 .mod_class h2, .mod_ranking h2, .mod_tag h2, .mod_hot_topic h2, .mod_join h2, .mod_interest h2{clear: both;display: block;font-size: 14px;padding: 10px 0;color:#333}
 .mod_class{padding:0 0 10px;border-bottom:#ddd solid 1px}
-.mod_announcement{background-color: #FFFFCC;border: 1px solid #F5C83C;padding: 10px;line-height: 21px;margin: 0 0 10px;overflow: hidden}
+.mod_announcement{background-color: #FFFFCC;border: 1px solid #F5C83C;padding: 10px;line-height: 21px;margin: 0 0 10px;overflow: hidden;_zoom:1;}
 .mod_announcement span{padding:0 0 0 15px;background:url(images/ico_left.gif) no-repeat 0 6px;color:#FF6600;display:block;margin:0 30px 0 60px;word-break:break-all;word-wrap:break-word}
 .mod_interest .list_interest li{padding:0 0 10px;overflow:hidden;*zoom:1}
 .mod_interest .list_interest .userinfo{margin:0 0 0 60px;line-height:18px}

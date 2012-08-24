@@ -12,6 +12,7 @@ class WidgetAction extends Action
 		}
 		$_REQUEST['name']  = t($_REQUEST['name']);
 		$_REQUEST['param'] = unserialize(urldecode($_REQUEST['param']));
+		send_http_header('utf8');
 		echo empty($_REQUEST['name']) ? 'Invalid Param.' : W($_REQUEST['name'], $_REQUEST['param']);
 	}
 
@@ -29,28 +30,37 @@ class WidgetAction extends Action
 		if ($_POST['uid'] <= 0) {
 			echo 0;
 		} else {
-			D('Follow', 'weibo')->dofollow($this->mid, $_POST['uid']);
+			
 			$related_user = unserialize($_SESSION['_widget_related_user']);
+			$uid = $this->mid;
+			$data = D('Follow', 'weibo')->where('uid ='.$uid)->findAll();
+			// dump($GLOBALS['ts']['isSystemAdmin']);
+			$count = count($data);
 			if (empty($related_user)) {
 				echo '';
-			} else {
+			}
+			if($count >= $GLOBALS['ts']['site']['max_following'] && $GLOBALS['ts']['isSystemAdmin'] == false){
+				echo '14';
+			}else {
+				D('Follow', 'weibo')->dofollow($this->mid, $_POST['uid']);
 				$shifted_user = array_shift($related_user);
-				$_SESSION['_widget_related_user'] = serialize($related_user);
-
-				$html = '';
-	            $html .= '<li id="related_user_' . $shifted_user['uid'] . '">';
-	            $html .= 	'<div class="userPic">';
-	            $html .= 		'<a title="" href="'.U("home/Space/index",array("uid"=>$shifted_user['uid'])).'">';
-	            $html .= 			'<img src="'.getUserFace($shifted_user['uid'],'m').'" card="1">';
-	            $html .=		'</a>';
-	            $html .= 	'</div>';
-	            $html .=	'<div class="interest_info">';
-            	$html .= 		'<p><a href="'.U("home/Space/index",array("uid"=>$shifted_user['uid'])).'">'.getUserName($shifted_user['uid']).'</a></p>';
-	            $html .= 		'<p><a href="javascript:void(0);" class="guanzhu" onclick="subscribe('.$shifted_user['uid'].')">加关注</a></p>';
-	            $html .=		'<p class="cGray2">'.$shifted_user['reason'].'</p>';
-	            $html .= 	'</div>';
-	            $html .= '</li>';
-	            echo $html;
+				if(isset($shifted_user['uid'])){
+					$_SESSION['_widget_related_user'] = serialize($related_user);
+					$html = '';
+		            $html .= '<li id="related_user_' . $shifted_user['uid'] . '">';
+		            $html .= 	'<div class="userPic">';
+		            $html .= 		'<a title="" href="'.U("home/Space/index",array("uid"=>$shifted_user['uid'])).'">';
+		            $html .= 			'<img src="'.getUserFace($shifted_user['uid'],'m').'" card="1">';
+		            $html .=		'</a>';
+		            $html .= 	'</div>';
+		            $html .=	'<div class="interest_info">';
+	            	$html .= 		'<p><a href="'.U("home/Space/index",array("uid"=>$shifted_user['uid'])).'">'.getUserName($shifted_user['uid']).'</a></p>';
+		            $html .= 		'<p><a href="javascript:void(0);" class="guanzhu" onclick="subscribe('.$shifted_user['uid'].')">加关注</a></p>';
+		            $html .=		'<p class="cGray2">'.$shifted_user['reason'].'</p>';
+		            $html .= 	'</div>';
+		            $html .= '</li>';
+		            echo $html;
+		        }
 			}
 		}
 	}
@@ -98,8 +108,8 @@ class WidgetAction extends Action
 		// 解析模板(统一使用模板的body字段)
 		$_REQUEST['data']	= unserialize(urldecode($_REQUEST['data']));
 		$content		= model('Template')->parseTemplate(t($_REQUEST['tpl_name']), array($active_field=>$_REQUEST['data']));
-		//$content		= preg_replace_callback('/((?:https?|ftp):\/\/(?:www\.)?(?:[a-zA-Z0-9][a-zA-Z0-9\-]*\.)?[a-zA-Z0-9][a-zA-Z0-9\-]*(?:\.[a-zA-Z0-9]+)+(?:\:[0-9]*)?(?:\/[^\x{4e00}-\x{9fa5}\s<\'\"“”‘’]*)?)/u','getContentUrl', $content);
-		$this->assign('content', text($content[$active_field]));
+		//$content		= preg_replace_callback('/((?:https?|ftp):\/\/(?:www\.)?(?:[a-zA-Z0-9][a-zA-Z0-9\-]*\.)?[a-zA-Z0-9][a-zA-Z0-9\-]*(?:\.[a-zA-Z0-9]+)+(?:\:[0-9]*)?(?:\/[^\x{2e80}-\x{9fff}\s<\'\"“”‘’]*)?)/u','getContentUrl', $content);
+		$this->assign('content', h($content[$active_field]));
 		$this->assign('source',$_REQUEST['data']['source']);
 		$this->assign('sourceUrl',$_REQUEST['data']['url']);
 		$this->assign('type',$_REQUEST['data']['type']);
@@ -200,9 +210,9 @@ class WidgetAction extends Action
 			$map['reason'] = trim( $_POST['reason'] );
 			$map['ctime'] = time();
 			if( $id = M( 'Denounce' )->add( $map ) ){
-				echo 'ui.success(L("report_success"));';
+				echo 1;
 			}else{
-				echo 'ui.error(L("report_failed"));';
+				echo 0;
 			}
 		}
 	}
@@ -227,6 +237,87 @@ class WidgetAction extends Action
 
     	$data['uid'] = $this->uid;
 
+    	$this->assign($data);
+		$this->display();
+	}
+
+	// 评论箱
+	public function webpageComment()
+	{
+		$url = t(urldecode($_GET['url']));
+		if (!$url) {
+			exit('URL参数不可为空');
+		}
+		// 获取已生成的包含该地址的微博ID
+		$hash = md5($url);
+		$webpage_model = M('webpage');
+		$webpage_info = $webpage_model->where("`hash`='{$hash}'")->find();
+		// 若不存在对应的微博，则创建之
+		if (!$webpage_info) {
+			$content = file_get_contents($url);
+			// 抓取内容失败，则退出
+			if (!$content) {
+				exit('网页不存在');
+			}
+			// 网页标题
+			preg_match("/<title>\s*(.+)\s*<\/title>/i", $content, $title);
+			$title = $title[1];
+			// 拼装微博内容
+			$weibo_content = array(
+				'content' => $title . ' ' . $url,
+			);
+			// // 评论箱UID
+			// $uid = 10315;
+			// // 生成微博
+			// $weibo_id = D('Weibo', 'weibo')->publish(10315, $weibo_content);
+			// if (false == $weibo_id) {
+			// 	exit('添加微博失败');
+			// }
+			// 保存信息
+			$webpage_info = array(
+				'url'  => $url,
+				'hash' => $hash,
+				'title' => t($title),
+			);
+			$webpage_id = $webpage_model->add($webpage_info);
+			if (false === $webpage_id) {
+				exit('添加网页失败');
+			}
+			$webpage_info['webpage_id'] = $webpage_id;
+		}
+
+    	// 微博秀样式
+    	$data['style']['width']  = $_GET['width'] < 190 ? 190 : ($_GET['width'] > 1024 ? 1024 : intval($_GET['width']));
+    	$data['style']['skin']   = t($_GET['skin']);
+
+    	$this->assign('webpage_info', $webpage_info);
+    	$this->assign($data);
+		$this->display();
+	}
+
+	// 批量关注挂件
+	public function bulkFollow()
+	{
+		$uids = t($_GET['uids']);
+		$uids = $uids ? explode(',', $uids) : array();
+		$uids = array_unique(array_filter(array_map('intval', $uids)));
+
+		$map['uid'] = array('IN', $uids);
+		$user_list  = D('User', 'home')->getUserByMap($map, null, null, null, false);
+
+		// 按照$_GET['uids'] 的顺序排序
+		$_user_list = array_combine($uids, $uids);
+		foreach ($user_list as $user) {
+			$_user_list[$user['uid']] = $user;
+		}
+		// 过滤不存在的uid
+		$user_list = array_diff($_user_list, $uids);
+
+    	// 微博秀样式
+    	$data['style']['width']  = $_GET['width'] < 190 ? 190 : ($_GET['width'] > 1024 ? 1024 : intval($_GET['width']));
+    	$data['style']['skin']   = t($_GET['skin']);
+
+    	$this->assign('user_list', $user_list);
     	$this->assign($data);
 		$this->display();
 	}

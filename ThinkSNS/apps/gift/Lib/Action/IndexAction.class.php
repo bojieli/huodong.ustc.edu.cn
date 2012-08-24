@@ -29,9 +29,13 @@ class IndexAction extends Action{
 		$this->user_gift->setGift($this->gift);
 		$this->user_gift->setCategory($this->gift_category);		
 		$this->gift_category->setGift($this->gift);
-		
+
 		global $ts;
 		$this->app_alias = $ts['app']['app_alias'];
+
+		// 获取礼品单位
+		$config['creditName'] = '经验值';
+		$this->assign('config', $config);
 	}
 	
 	/**
@@ -60,6 +64,12 @@ class IndexAction extends Action{
 		//获取收到的礼物列表
 		$gift = $this->user_gift->receiveList($this->mid);
 
+		$type = getConfig('credit');
+		if ($type == 'score'){
+			$this->assign('type','积分');
+		}else if($type == 'experience'){
+			$this->assign('type','经验');
+		}
 		$this->assign('gifts',$gift);
 		$this->setTitle("收到的{$this->app_alias}");
 		$this->display();
@@ -76,6 +86,13 @@ class IndexAction extends Action{
 			$this->assign('tpl_data',$_SESSION['gift_send_weibo']);
 			unset($_SESSION['gift_send_weibo']);	
 		}
+		$type = getConfig('credit');
+		if ($type == 'score'){
+			$this->assign('type','积分');
+		}else if($type == 'experience'){
+			$this->assign('type','经验');
+		}
+		
 		$this->assign('gifts',$gift);
 		$this->setTitle("送出的{$this->app_alias}");
 		$this->display();

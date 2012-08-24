@@ -16,25 +16,32 @@
           <li>
             <a href="{:U('home/Message/index')}" class="right">&lt;&lt; 返回私信列表</a>
             <span>
-              我和<volist name="message.to" id="mb"><php>
-                  if ($i > 1) echo '、';
-                </php>{$mb.member_uid|getUserName}</volist>的私信(共 <span id="message_content_count">{$message['message_num']}</span> 条对话)
+              我和<volist name="message.to" id="mb">
+                <php>
+                if ($i > 10) continue;
+                if ($i > 1) echo '、';
+                </php>
+                {$mb.member_uid|getUserName}
+                </volist>
+              <php>
+                if(count($message['to']) > 5 ){
+                  echo ' 等...';
+                }
+              </php>
+              的私信(共 <span id="message_content_count">{$message['message_num']}</span> 条对话)
             </span>
           </li>
           <!-- 快速回复 -->
           <li class="send_msg lineS_btm">
 	             <div class="msgCnt" style="padding-bottom:0;">
                    <div style="padding-left:70px">
-                   <strong>发私信给:</strong>
-                   <volist name="message.to" id="mb"><php>
-                    if ($i > 1) echo '、';
-                  </php><space uid="mb.member_uid" target="_blank">{uname}</space></volist>
-                  </div>
-				   <div class="mt5" style="position:relative">
-     		         <div class="arr_left"></div>
+                   <strong>发私信给所有人:</strong>
+                   </div>
+				            <div class="mt5" style="position:relative">
                      <div class="userPic"><space uid="ts['user']['uid']" target="_blank">{uavatar=m}</space></div>
+                     <div class="arr_left"></div>
                      <div class="feed_massage">
-	                     <textarea id="reply_content" style="width:98.5%;_width:98.1%" rows="5" cols="" onblur="this.className='text_massage'" onfocus="this.className='text_massage_on'" class="text_massage"></textarea>
+	                     <textarea id="reply_content" cols="" onblur="this.className='text_massage'" onfocus="this.className='text_massage_on'" class="text_massage"></textarea>
 	                     <div class="mt5">
 	                     	<input type="button" value="发送" class="btn_b mt5 right" onclick="doReply();"/>
 	                     	<a href="javascript:void(0)" target_set="reply_content" onclick="ui.emotions(this)" class="a52"><img class="icon_add_face_d" src="__THEME__/images/zw_img.gif" />表情</a>
@@ -176,5 +183,15 @@
             }
         });
 	}
+
+// 限制textarea文本框输入的大小
+$(function() {
+  $('#reply_content').keydown(function(event) {
+    if(this.value.length > 200 && event.which != '8' && event.which != '46') {
+      event.preventDefault();
+      return;
+    }
+  });
+});
 </script> 
 <include file="__THEME__/footer" /> 

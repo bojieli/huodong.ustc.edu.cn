@@ -11,7 +11,26 @@ class PublicTypeHooks extends Hooks
 
     public function weibo_js_plugin()
     {
-        echo '<script type="text/javascript" src="'.Addons::createAddonUrl('WeiboType','loadJs').'"></script>';
+        // echo '<script type="text/javascript" src="'.Addons::createAddonUrl('WeiboType','loadJs').'"></script>';
+        $weibo_type = array('1', '3', '4', '7', '8');
+
+        //处理默认值
+        $config = model('AddonData')->lget('weibo_type');
+        $config = $this->_defaultConfig($config);
+        if(!in_array(1,$config['open'])){
+            $config['open'][] = 1;
+        }
+        if(!in_array(3,$config['open'])){
+            $config['open'][] = 3;
+        }
+        if(!in_array(4,$config['open'])){
+            $config['open'][] = 4;
+        }
+        foreach($weibo_type as $value){
+            if(in_array($value,$config['open'])){
+            echo '<script type="text/javascript" src="'.Addons::createAddonUrl('WeiboType','loadJs', array('type'=>$value)).'"></script>';
+            }
+        }
     }
 
     public function loadJs()
@@ -19,7 +38,7 @@ class PublicTypeHooks extends Hooks
 //     	if(extension_loaded('zlib')){//检查服务器是否开启了zlib拓展
 // 	    	ob_start('ob_gzhandler');
 //         }
-	  	header ("content-type: text/css; charset: UTF-8");//注意修改到你的编码
+	  	header ("content-type: text/javascript; charset: UTF-8");//注意修改到你的编码
 	  	header ("cache-control: must-revalidate");
         if(!defined('__PUBLIC__')){
             define('__PUBLIC__',SITE_PATH.'/public');
@@ -33,12 +52,12 @@ class PublicTypeHooks extends Hooks
 	  	        '1'=>array(__PUBLIC__.'/js/swf/swfupload.js',$this->path.'/html/image.js'),
 	  	        '3'=>array($this->path.'/html/video.js'),
 	  	        '4'=>array($this->path.'/html/music.js'),
-	  	        '5'=>array($this->path.'/html/file.js'),
+	  	        // '5'=>array($this->path.'/html/file.js'),
 	  	        '8'=>array($this->path.'/html/blog.js'),
 	  	        '7'=>array($this->path.'/html/vote.js')
 	  	        );
 
-        //包含你的全部css和js文档
+        //包含你的全部js文档
         $htmlPath = $this->htmlPath.'/html/images/';
         //处理默认值
         $config = $this->_defaultConfig($config);
@@ -51,13 +70,21 @@ class PublicTypeHooks extends Hooks
         if(!in_array(4,$config['open'])){
             $config['open'][] = 4;
         }
-        foreach($js as $key=>$value){
-            if(in_array($key,$config['open'])){
-                foreach($value as $v){
-                    include $v;
-                }
+        // foreach($js as $key=>$value){
+        //     if(in_array($key,$config['open'])){
+        //         foreach($value as $v){
+        //             include $v;
+        //         }
+        //     }
+        // }
+
+        $type = intval($_GET['type']);
+        if(in_array($type,$config['open'])){
+            foreach($js[$type] as $v){
+                include $v;
             }
         }
+
 // 	  	if(extension_loaded('zlib')){
 // 		    ob_end_flush();//输出buffer中的内容，即压缩后的css文件
 // 	  	}

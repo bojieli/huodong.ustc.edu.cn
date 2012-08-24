@@ -20,7 +20,7 @@ class SquareAction extends Action
 
     //广场 首页
     public function index(){
-    	$cacheTime = 3600;
+    	$cacheTime = 600;
     	// 今日看点
     	$data = S('S_square_xdata');
     	if(empty($data)) {

@@ -6,6 +6,7 @@
   <div class="main no_l">
     <div class="mainbox boxspace">
       <div class="mainbox_appR">
+       {:Addons::hook('home_topic_detail_right_top')}
 		<php>if(!empty($search_key)){</php>
 		  <gt name="mid" value="0">
 			<div class="right_box">
@@ -34,16 +35,20 @@
 		<php>}</php>
         <div class="right_box">
         {:W('HotTopic', array('type'=>'auto'))} {:W('HotTopic', array('type'=>'recommend'))}</div>
+        {:Addons::hook('home_topic_detail_right_bottom')}
       </div>
-      <div class="mainbox_appC boxspace_L">
+      <div class="mainbox_appC boxspace_L" >
+        {:Addons::hook('home_topic_detail_left_top')}
         <if condition="$topics['topic_id']">
-        <div class="topics_info"><if condition="$topics['pic']"><img alt="#{$topics.name}#" src="{:SITE_URL}/data/uploads/{$topics.pic}" /></if>
+        <div class="topics_info">
+          <if condition="$topics['pic']"><img alt="#{$topics.name}#" src="thumb.php?url={:SITE_URL}/data/uploads/{$topics.pic}&w=625&h=170" /></if>
           <dl class="topics_info_dl">
             <dt>#{$topics.name}#</dt>
             <dd>{$topics.content}<if condition="$topics['link']"><a href="{$topics.link}" target="_blank">&gt;&gt;详细</a></if></dd>
           </dl>
         </div>
         </if>
+        {:Addons::hook('home_topic_detail_left_middle')}
         <div class="talkBox" style="height:160px">
           <form method="post" action="{:U('weibo/operate/publish')}" id="miniblog_publish" class="formObj" oncomplete="false">
             <input type="hidden" name="publish_type" value="0">
@@ -89,6 +94,7 @@
         </div>
         <div class="c"></div>
         <div class="page">{$list.html}</div>
+        {:Addons::hook('home_topic_detail_left_bottom')}
       </div>
     </div>
     <div class="clear"></div>

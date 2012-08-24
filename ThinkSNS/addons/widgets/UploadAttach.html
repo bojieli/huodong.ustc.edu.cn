@@ -61,7 +61,7 @@ $num   = jiami($limit);
 		now_PageCount--;
 		if(limit !=0 && now_PageCount <= limit){
 			$('#ajax_upload_attach_button<php> echo $end;</php>').removeAttr('disabled');
-			$('#ajax_upload_attach_button<php> echo $end;</php>').attr('class','btn_sea btn_b');
+			$('#ajax_upload_attach_button<php> echo $end;</php>').attr('class','btn_b');
 		}
 	}
 	
@@ -100,7 +100,7 @@ $num   = jiami($limit);
   <div id="attach_upload_tool">
 	<div class="left text_file_diwei">
 		<input class="in_put mr5" id="ajax_upload_attach_process{$end}" disabled="disabled" style="vertical-align:middle" />
-		<button class="btn_sea"  id="ajax_upload_attach_button{$end}" disabled="disabled" style="vertical-align:middle" onclick="return false;">{:L('upload_attach_loading')}</button>
+		<button class="btn_b"  id="ajax_upload_attach_button{$end}" disabled="disabled" style="vertical-align:middle" onclick="return false;">{:L('upload_attach_loading')}</button>
 	</div>
 	<neq name='nodiwei' value='1'>
 	<div class="di_wei left" style="padding-top:7px;+padding-top:0;_padding-top:7px;">
@@ -114,7 +114,7 @@ $num   = jiami($limit);
 		</div>
 	</div>
 	</neq>
-    <div class="C"></div>
+    <div class="c"></div>
   </div>
 </div>
 <php>unset($end);</php>

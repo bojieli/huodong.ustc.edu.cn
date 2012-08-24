@@ -57,12 +57,22 @@
                     <p><span class="cGray2">发起人：</span><space uid="vo.uid" >{uname}</space></p>
                     <php> if( false == empty( $vo['users'] ) ){ </php>
                     <p><span class="cGray2">参与者：</span>
-                      <php> foreach( $vo['users'] as $so ) { </php>
-                      <a href="{:U('home/space/',array('uid'=>$so['uid']))}" >{$so['uid']|getUserName}</a>
-                      <php> } </php>
+                    <php>$vo['users'];</php>
+                      <php> 
+                      $_i=0;
+                      //dump($vo['users']);
+                      foreach( $vo['users'] as $so ) {
+                        $_i++;
+                        if($_i++ <17){
+                      </php>
+                      <a href="{:U('home/space/',array('uid'=>$so['uid']))}" >{$so['uid']|getUserName}</a> &nbsp;
+                      <php> }}</php>
+                      <php>if(count($vo['users']) > 8){</php>
+                      <a href="{:U('//member', array('id'=>$vo['id'],'action'=>'join'))}">更多>></a>
+                      <php>}</php>
                     </p>
                     <php> } </php>
-                    <p class="alR"><span class=" mr10"><if condition="$vo['opts']['allow']">待审人数（{$vo['verifyCount']}）</if> 参加人数（{$vo['joinCount']}） 关注人数（{$vo['attentionCount']}）</span></p>
+                    <p class="alR"><span class=" mr10"><?php if($vo['opts']['allow'] && $vo['uid'] == $mid) echo "待审人数（".$vo['verifyCount']."）";?> 参加人数（{$vo['joinCount']}） 关注人数（{$vo['attentionCount']}）</span></p>
                   </div>
                 </li>
               </volist>

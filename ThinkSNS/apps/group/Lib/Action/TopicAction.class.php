@@ -8,6 +8,7 @@
 
 			// 判断功能是否开启
 			if (!$this->groupinfo['openBlog']) {
+				$this->assign('jumpUrl', U('group/Group/index', array('gid'=>$this->gid)));
 				$this->error('帖子功能已关闭');
 			}
 
@@ -49,7 +50,7 @@
 				unset($category_list[$k]);
 			}
 
-			$search_key = $this->_getSearchKey();
+			$search_key = $this->_getSearchKey('k','group_topic_search');
 			$search_key = $search_key?" AND title LIKE '%{$search_key}%' ":'';
 
 			$topiclist = $this->topic
@@ -209,6 +210,7 @@
 				if (!$topic) {
 					$this->error('帖子不存在或已被删除');
 				} else if($topic['lock'] == 1) {
+					$this->assign('jumpUrl', U('group/Topic/topic', array('gid'=>$this->gid, 'tid'=>$tid)));
 					$this->error('帖子已被锁定，不可回复');
 				}
 
@@ -345,7 +347,10 @@
 			$this->topic->setInc('viewcount','id='.$tid);
 			$thread = $this->topic->getThread($tid);     //获取主题
 			// 判读帖子存不存在
-			if(!$thread) $this->error('帖子不存在');
+			if(!$thread) {
+				$this->assign('jumpUrl', U('group/Group/index', array('gid'=>$this->gid)));
+				$this->error('帖子不存在');
+			}
 			// 帖子的分类
 			$thread['ctitle'] = M('group_topic_category')->getField('title', "id={$thread['cid']} AND gid={$this->gid}");
 			$thread['ctitle'] = $thread['ctitle'] ? "[{$thread['ctitle']}]" : '';
@@ -435,9 +440,9 @@
 					}
 				}
 
-				exit(json_encode(array('flag'=>'1', 'msg'=>'话题设为精华成功')));
+				exit(json_encode(array('flag'=>'1', 'msg'=>'帖子设为精华成功')));
 			}else{
-				exit(json_encode(array('flag'=>'0', 'msg'=>'话题设为精华失败')));
+				exit(json_encode(array('flag'=>'0', 'msg'=>'帖子设为精华失败')));
 			}
 		}
 
@@ -462,7 +467,7 @@
 				$this->_setOperationLog('取消了精华', $topicInfo);
 
 				//setScore($this->mid,'group_topic_cancel_dist');
-				exit(json_encode(array('flag'=>'1','msg'=>'话题取消精华成功')));
+				exit(json_encode(array('flag'=>'1','msg'=>'帖子取消精华成功')));
 			}else{
 				exit(json_encode(array('flag'=>'0','msg'=>'取消精华失败')));
 			}
@@ -503,9 +508,9 @@
 					}
 				}
 
-				exit(json_encode(array('flag'=>'1','msg'=>'话题置顶成功')));
+				exit(json_encode(array('flag'=>'1','msg'=>'帖子置顶成功')));
 			}else{
-				exit(json_encode(array('flag'=>'0','msg'=>'话题置顶失败')));
+				exit(json_encode(array('flag'=>'0','msg'=>'帖子置顶失败')));
 			}
 		}
 
@@ -639,6 +644,11 @@
 
 		protected function _setOperationLog($operation, &$post_info)
 		{
+            $content =  '把 ' . getUserSpace($post_info['uid'], 'fn', '_blank', '@' . getUserName($post_info['uid']))
+						 . ' 的帖子“<a href="' . U('group/Topic/topic', array('gid'=>$this->gid, 'tid'=>$post_info['id'])) . '" target="_blank">'
+						 . $post_info['title'] . '</a>” ' . $operation;
+			D('Log')->writeLog($this->gid, $this->mid, $content, 'topic');
+            /*
 			//设置日志
 			if (!is_array($post_info[0])) {
 				$post_info[] = $post_info;
@@ -652,6 +662,7 @@
 						 . $v['title'] . '</a>” ' . $operation;
 				D('Log')->writeLog($this->gid, $this->mid, $content, 'topic');
 			}
+            */
 		}
 /*
 		public function addShare_check(){

@@ -34,7 +34,9 @@
 	  		del:function(id){
   		        var id = id ? id : getChecked();
   		        id = id.toString();
-  		        if(id=='' || id==0) return ;
+  		        if(id=='' || id==0){
+                    alert('请选择要删除的分类');return false;
+                }
   		        if( confirm("是否删除分类？") ){
   		          $.post( '__URL__&act=doDeleteType',{id:id},function(text ){
   		              if( text == 1 ){
@@ -54,9 +56,13 @@
   		          });
   		        }
   		    },
-  		    edit_tab:function(id){
+  		    add_tab:function(id){
                 ui.box.load('__URL__&act=editEventTab&id='+id,{title:'增加类型'});
   		    },
+  		    edit_tab:function(id){
+                ui.box.load('__URL__&act=editEventTab&id='+id,{title:'编辑类型'});
+  		    },
+  		  	
   		    edit:function(id,act){
   		      if( act == 'recommend' ){
   		          v= "推荐";
@@ -87,7 +93,7 @@
   <include file="_tab" />
 
     <div class="Toolbar_inbox">
-        <a href="javascript:void(0);" class="btn_a" onclick="c.edit_tab()"><span>添加分类</span></a>
+        <a href="javascript:void(0);" class="btn_a" onclick="c.add_tab()"><span>添加分类</span></a>
         <a href="javascript:void(0);" class="btn_a" onclick="c.del()"><span>删除分类</span></a>
     </div>
 
@@ -118,7 +124,7 @@
     </div>
  
     <div class="Toolbar_inbox">
-        <a href="javascript:void(0);" class="btn_a" onclick="c.edit_tab()"><span>添加分类</span></a>
+        <a href="javascript:void(0);" class="btn_a" onclick="c.add_tab()"><span>添加分类</span></a>
         <a href="javascript:void(0);" class="btn_a" onclick="c.del()"><span>删除分类</span></a>
     </div>
     

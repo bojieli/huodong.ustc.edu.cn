@@ -3,7 +3,7 @@
 a.username, .username{ font-weight: normal}
 .headpic50{height:55px;}
 .groupBox{overflow:hidden; margin-top: 10px}
-.boxL{overflow: hidden}
+.boxL{}
 .box1{padding-bottom: 8px;  overflow: hidden;}
 .box1 h3{font-size: 14px; font-weight: normal; line-height: 30px; padding-left: 5px; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #A4C4DD}
 .box1 h4{font-size: 12px; font-weight: bold; line-height: 30px}
@@ -24,11 +24,11 @@ overflow:hidden;}
 
 /*分类信息*/
 .sort{  border:1px solid #eee; background-color:#F5F5F5 }
-.sort dl{ width:99.9%; overflow:hidden;_width:98%;}
+.sort dl{ width:99.9%;margin:0 0 0 5px;overflow:hidden;*width:98%;*zoom:1}
 .sort dt{ clear: both; font-weight: bold; line-height: 25px; padding-left: 10px; _padding-left:5px}
-.sort dd{ float: left; width: 20%; line-height: 30px;  }
+.sort dd{ float: left;line-height: 30px;white-space:nowrap;}
 .sort dd a.on{color:#000; font-weight:bold; display:block; float:left; background-color:#fff}
-.sort dd a{ padding:0 5px; margin-left:5px}
+.sort dd a{ padding:0 8px;}
 /*全部活动式*/
 .search{ margin:0; padding: 10px 0 0px;width:auto; *width:99%; overflow:hidden}
 .search li{padding-bottom: 10px; clear:both; margin-bottom:10px;}
@@ -83,5 +83,5 @@ overflow:hidden;}
 .pop_select_city dd .ullist{list-style-type:none;white-space: nowrap;overflow:hidden;*zoom:1}
 .pop_select_city .ullist li{margin:5px 5px 5px 0;float:left;}
 .pop_select_city .ullist li a{}
-.pop_select_city .ullist .on a{border-radius:3px;background-color:#999;padding:0 3px;color:#fff;*padding:3px}
+.pop_select_city .ullist .on a{border-radius:3px;background-color:#999;padding:0 3px;color:#fff;*padding:0}
 

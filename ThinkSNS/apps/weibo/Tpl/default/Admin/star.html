@@ -104,14 +104,23 @@ ctrl.prototype = {
 		ui.box.load('__URL__&act=addStarTab',{title:'添加名人：'+gstatus});
 	},
     del:function(id){
-        var id = id ? id : getChecked();
-        id = id.toString();
-        if(id=='' || id==0) return ;
+        var length = 0;
+        if(id) {
+            length = 1;         
+        }else {
+            id    = getChecked();
+            length = id.length;
+            id    = id.toString();
+        }
+        if(id=='') {
+            ui.error('请先选择一个名人');
+            return ;
+        }
         if( confirm("是否删除名人？") ){
           $.post( '__URL__&act=delStar',{id:id},function(text ){
               if( text == 1 ){
                   ui.success( "删除多个名人成功" );
-                  var id_list = id.split( ',' );   
+                  var id_list = id.toString().split( ',' );   
                   for (var j=0 ; j< id_list.length ; j++   ){
                       $('#list_'+id_list[j]).remove(); 
                   }
@@ -125,12 +134,18 @@ ctrl.prototype = {
         }
     },
     transfer:function(id){
-      var id = id ? id : getChecked();
-      id = id.toString();
-      if(id=='' || id==0){
-          ui.error('请选择名人！');
-           return ;
-      }
+       var length = 0;
+        if(id) {
+            length = 1;         
+        }else {
+            id    = getChecked();
+            length = id.length;
+            id    = id.toString();
+        }
+        if(id=='') {
+            ui.error('请先选择一个名人');
+            return ;
+        }
       ui.box.load('__URL__&act=editStarBox&id='+id,{title:'名人分组转移'});
     },
     edit_group:function(){
@@ -190,7 +205,7 @@ var c = null;
         <if condition="$group['star_group_id']">
           <a href="javascript:void(0)" class="btn_a" onclick="c.add_star()"><span>添加名人</span></a>
           <a href="javascript:void(0)" class="btn_a" onclick="c.edit_group()"><span>编辑分组名称</span></a>
-          <a href="{:U('weibo/admin/delStarGroup',array('gid'=>$group['star_group_id']))}" onclick="return confirm('确认删除当前名人分组“{$group['title']}”？同时还会删除该分组下的所有名人，但不会删除名人账号！');" class="btn_a"><span>删除当前分组</span></a>
+          <a href="{:U('weibo/admin/delStarGroup',array('gid'=>$group['star_group_id']))}" onclick="return confirm('确认删除当前名人分组“{$group['title']}”？同时还会删除该分组下的所有名人，但不会删除名人帐号！');" class="btn_a"><span>删除当前分组</span></a>
         </if>
   </div>
 
@@ -227,7 +242,7 @@ var c = null;
         <if condition="$group['star_group_id']">
           <a href="javascript:void(0)" class="btn_a" onclick="c.add_star()"><span>添加名人</span></a>
           <a href="javascript:void(0)" class="btn_a" onclick="c.edit_group()"><span>编辑分组名称</span></a>
-          <a href="{:U('weibo/admin/delStarGroup',array('gid'=>$group['star_group_id']))}" onclick="return confirm('确认删除当前名人分组“{$group['title']}”？同时还会删除该分组下的所有名人，但不会删除名人账号！');" class="btn_a"><span>删除当前分组</span></a>
+          <a href="{:U('weibo/admin/delStarGroup',array('gid'=>$group['star_group_id']))}" onclick="return confirm('确认删除当前名人分组“{$group['title']}”？同时还会删除该分组下的所有名人，但不会删除名人帐号！');" class="btn_a"><span>删除当前分组</span></a>
         </if>
   </div>
 

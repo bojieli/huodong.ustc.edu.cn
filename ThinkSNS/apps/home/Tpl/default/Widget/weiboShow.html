@@ -11,12 +11,14 @@
 	var _PUBLIC_ = '__PUBLIC__';
 	var _LENGTH_ = {$GLOBALS['ts']['site']['length']};
 	var $CONFIG = {
-	    $uid  : "{$uid}",
+	    $uid  : "{$uid}"
 	};
 </script>
 <script type="text/javascript" src="__PUBLIC__/js/jquery.js"></script>
 <script type="text/javascript" src="__PUBLIC__/js/common.js"></script>
 <script type="text/javascript" src="../Public/js/weiboshow.wall.js"></script>
+<link href="__THEME__/public.css?20110429" rel="stylesheet" type="text/css" />
+<link href="__THEME__/layout.css?20110429" rel="stylesheet" type="text/css" />
 <link href="__THEME__/main.css?20110429" rel="stylesheet" type="text/css" />
 <link href="../Public/css/weiboshow.css?20111205" rel="stylesheet" type="text/css" />
 </head>
@@ -59,14 +61,38 @@
 			                    <a href="{:U('home/Space/detail',array('id'=>$weibo['weibo_id']))}" target="_blank"></a>
 			                    <span class="mbTxtB" >
 			                    	{$weibo['content']|getShort=###,140,'...'}
-				                    <php>if(1 == $weibo['type']) {</php>
+				                    <php>
+									if(1 == $weibo['type']) {
+									if(isset($weibo['type_data']['picurl'])){
+									</php>
 								        <br /><img src="{$weibo['type_data']['thumburl']}" width="100" />
-								    <php>}</php>
+								    <php>
+									}else{
+										foreach($weibo['type_data'] as $data){
+										</php>
+								        <br /><img src="{$data['thumburl']}" width="100" />
+								        <php>
+										}
+									}
+									}
+									</php>
 				                    <php>if ($weibo['transpond_id'] > 0) {</php>
 				                    [转发] {$weibo['transpond_data']['content']|getShort=###,140,'...'}
-				                      <php>if(1 == $weibo['transpond_data']['type']) {</php>
+				                      <php>
+									  if(1 == $weibo['transpond_data']['type']) {
+									   if(isset($weibo['transpond_data']['type_data']['picurl'])){
+									  </php>
 								        <br /><img src="{$weibo['transpond_data']['type_data']['thumburl']}" width="100" />
-								      <php>}</php>
+								      <php>
+										}else{
+										foreach($weibo['transpond_data']['type_data'] as $data){
+										</php>
+								        <br /><img src="{$data['thumburl']}" width="100" />
+								        <php>
+										}
+										}
+									   }
+									  </php>
 				                    <php>}</php>
                     			</span>
 		                    </dd>

@@ -27,7 +27,7 @@
 	    <td>
 			<div id="user_group_name_{$vo.user_group_id}" style="float:left">{$vo.title}</div>
 		</td>
-		<td id="user_group_icon_{$vo.user_group_id}"><php>if($vo['icon']){</php> <img src="__THEME__/images/{$vo.icon}"> <php>}else{</php> &nbsp;<php>}</php></td>
+		<td id="user_group_icon_{$vo.user_group_id}"><php>if($vo['icon'] != ""){</php> <img src="__THEME__/images/usergroup_icon/{$vo.icon}"> <php>}else{</php> &nbsp;<php>}</php></td>
 	    <td>{$vo.ctime|date="Y-m-d H:i",###}</td>
 	    <td>
 			<a href="javascript:void(0);" onclick="edit({$vo['user_group_id']});">编辑</a> 

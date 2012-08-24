@@ -1,7 +1,7 @@
 <?php
-include_once( '_OAuth/oauth.php');
+include_once('_OAuth/oauth.php');
 include_once('_OAuth/WeiboOAuth.php');
-include_once( 'qq/txwboauth.php' );
+include_once('qq/txwboauth.php');
 class qq{
 
 	var $loginUrl;
@@ -9,10 +9,13 @@ class qq{
 	function getUrl($url){
 		$o = new QqWeiboOAuth( QQ_KEY , QQ_SECRET  );
 
-
 		$keys = $o->getRequestToken($url);
 
-		$this->loginUrl = $o->getAuthorizeURL( $keys['oauth_token'] ,false , "");
+		// QQ 返回的oauth_token 的键名有问题，在此临时修正
+		$_temp['oauth_token'] = array_shift($keys);
+		$keys = array_merge($_temp, $keys);
+
+		$this->loginUrl = $o->getAuthorizeURL( $keys['oauth_token'] ,false , $url);
 		$_SESSION['qq']['keys'] = $keys;
 		return $this->loginUrl;
 	}
@@ -59,20 +62,27 @@ class qq{
 	function checkUser(){
         $o = new QqWeiboOAuth( QQ_KEY , QQ_SECRET , $_SESSION['qq']['keys']['oauth_token'] , $_SESSION['qq']['keys']['oauth_token_secret']  );
         $access_token = $o->getAccessToken(  $_REQUEST['oauth_verifier'] ) ;
+
+		// QQ 返回的oauth_token 的键名有问题，在此临时修正
+		$_temp['oauth_token'] = array_shift($access_token);
+		$access_token = array_merge($_temp, $access_token);
+
 		$_SESSION['qq']['access_token'] = $access_token;
 		$_SESSION['open_platform_type'] = 'qq';
 	}
 
 	//发布一条微博
 	function update($text,$opt){
-            //print_r($this->doClient($opt));
-           // print_r($this->doClient($opt)->t_add($text));
 		return $this->doClient($opt)->t_add($text);
 	}
 
 	//上传一个照片，并发布一条微博
-	function upload($text,$pic,$opt){
-		return $this->doClient($opt)->t_add_pic($text,$pic);
+	function upload($text,$opt,$pic){
+		if(file_exists($pic)){
+			return $this->doClient($opt)->t_add_pic($text,$pic);
+		}else{
+			return $this->doClient($opt)->t_add($text);
+		}
 	}
 
 	function saveData($data){

@@ -16,10 +16,20 @@
           	<h2><strong>{$uid|getUserName}</strong><php>Addons::hook('user_name_end', array('uid'=>$uid, 'html'=>& $user_name_end));echo $user_name_end;</php>{$uid|getUserGroupIcon}</h2>
             <div class="info_deta">
             	<dl>
+              <dd>
+                  <php>
+                    foreach($user_credit as $k => $v) {
+                  </php>
+                    <div class="c1">{$v['alias']}:</div><div class="c2"><a href="{:U('home/Account/credit')}" title="{$v['credit']}"><span class="cRed">{$v['credit']}</span></a></div>
+                  <php>
+                      }
+                      unset($user_credit);
+                  </php>
+              </dd>
             	<volist name="userinfo" id="vo">
             		<dd><div class="c1">{$key}:</div><div class="c2">{$vo}</div></dd>
             	</volist>
-            <p class="alR pb10 cGray2 right">
+            <dd class="alR pb10 cGray2 right">
                 <a href="{:U('home/space/profile',array('uid'=>$uid))}">详细资料</a>
                 <php>if ($mid > 0 && !$privacy['blacklist']) {</php>
                     <i class="vline">|</i><a href="javascript:void(0)" onclick="weibo.quickpublish('快来看看 @{$uid|getUserName} 的微博')">推荐给朋友</a>
@@ -29,12 +39,18 @@
                     <i class="vline">|</i><a href="javascript:void(0)" onclick="ui.sendmessage({$uid})">发私信</a>
                 <php>}</php>
                 
-                <php>if ($mid > 0 && $mid != $uid && $followstate != 'unfollow' && $isBlackList == false) {</php>
+                <php>if ($mid > 0 && $mid != $uid && $followstate != 'unfollow') {</php>
                     <i class="vline">|</i>
-                    <a href="javascript:void(0)" onclick="weibo.quickpublish('@{$uid|getUserName} ')">@TA</a><i class="vline">|</i>
-                    <a href="javascript:void(0)" onclick="followGroupSelectorBox('{$uid}')">设置分组</a><i class="vline">|</i>
+                    <a href="javascript:void(0)" onclick="weibo.quickpublish('@{$uid|getUserName} ')">@TA</a>
+                    <i class="vline">|</i>
+                    <a href="javascript:void(0)" onclick="followGroupSelectorBox('{$uid}')">设置分组</a>
+                <php>}</php>
+
+                <php>if ($mid > 0 && $mid != $uid && $isBlackList == false) {</php>
+                    <i class="vline">|</i>
                     <a href="javascript:void(0)" onclick="ui.confirm(this,'您确定要将此用户加入黑名单?')" callback="setBlacklist({$uid},'add')">加入黑名单</a>
                 <php>}</php>
-             </p>
+
+             </dd>
          </div>
 </div>

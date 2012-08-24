@@ -35,7 +35,7 @@ function searchObject() {
         isSearchHidden = 0;
     }else {
         $("#searchObject_div").slideUp("fast");
-        $(".searchObject_action").html("搜索用户");
+        $(".searchObject_action").html("搜索招贴");
         isSearchHidden = 1;
     }
 }
@@ -46,7 +46,9 @@ ctrl.prototype = {
     del:function(id){
         var id = id ? id : getChecked();
         id = id.toString();
-        if(id=='' || id==0) return ;
+        if(id=='' || id==0){
+			ui.error("请选择要删除的招贴");return false;
+		}
         if( confirm("是否删除{$ts['app']['app_alias']}？") ){
           $.post( '__URL__&act=doDeletePoster',{id:id},function(text ){
               if( text == 1 ){
@@ -108,7 +110,7 @@ var c = null;
         <dl class="lineD">
           <dt>用户ID：</dt>
           <dd>
-            <input name="uid" class="txt" value="{$uid}"><span> 多个用户用逗号隔开。</span>
+            <input name="uid" class="txt" value="{$uid}"><span> 多个用户用英文逗号隔开。</span>
           </dd>
         </dl>
         <dl class="lineD">

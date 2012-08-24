@@ -8,7 +8,7 @@
 	<input type="hidden" name="weibo_id" value="{$weibo_id}">
 	<input type="hidden" name="reply_comment_id" id="replyid_{$randtime}">
 		 <a class="faceicon1" href="javascript:void(0)" onclick="ui.emotions(this)" target_set="comment_{$randtime}"></a>
-      <textarea class="left text"  name="comment_content" rows="1" style="word-wrap" id="comment_{$randtime}" ></textarea>
+      <textarea class="left text"  name="comment_content" rows="1" style="word-wrap;height:8px\9;" id="comment_{$randtime}" ></textarea>
       <input type="submit" value="确定" class="N_but" style="*vertical-align:middle;">
       <div style="clear:both; color:#666; margin-left:32px;">
         <label>
@@ -27,12 +27,14 @@
 <php>}</php>
 	<volist id="vo" name="list['data']">
     <dl class="comment_list" id="comment_list_c_{$vo.comment_id}">
-    <dt><space uid="vo.uid" target="_blank" class="pic">{uavatar=s}</space></dt>
+    <dt><space uid="vo.uid" target="_blank" class="pic userface">{uavatar=s}</space></dt>
       <dd>
       <p><space uid="vo.uid" class="null" target="_blank">{uname}</space>{$vo.uid|getUserGroupIcon} : {$vo.content|formatComment=true} ({$vo.ctime|friendLydate})</p>
       <p class="info">
       <span class="right">
-      	<php>if( $vo['uid']==$mid || $data['uid']==$mid){</php>
+		<php>if($ts['isSystemAdmin']){</php>
+			<a href="javascript:void(0)" onclick="ui.confirm(this,'确认要删除这条评论?')" callback="delComment({$vo.comment_id})" style="color:red">删除</a>
+		<php>}elseif( $vo['uid']==$mid || $data['uid']==$mid){</php>
 			<a href="javascript:void(0)" onclick="ui.confirm(this,'确认要删除这条评论?')" callback="delComment({$vo.comment_id})">删除</a>
 		<php>}</php>
 		<php>if($privacy['weibo_comment']){</php>&nbsp;&nbsp;<a href="javascript:void(0)" onclick="reply('{$vo.uid|getUserName}',{$randtime},{$vo.comment_id})">回复</a><php>}</php>
@@ -70,10 +72,12 @@
 	    	reply('{$quick_reply_uname}',{$randtime},'{$quick_reply_comment_id}');
 	    <php>}</php>
 
-	    shortcut('ctrl+return',	function(){ $('#comment_list_before_{$weibo_id} form').submit();},{'target':'comment_<?php echo $randtime; ?>'});
+	    <?php if($privacy['weibo_comment']) { ?>
+		    shortcut('ctrl+return',	function(){ $('#comment_list_before_{$weibo_id} form').submit();},{'target':'comment_<?php echo $randtime; ?>'});
 
-		var url = "{:U('home/User/searchTips')}";
-		userAutoTips({id:'comment_<?php echo $randtime; ?>',url: url});
+			var url = "{:U('home/User/searchTips')}";
+			userAutoTips({id:'comment_<?php echo $randtime; ?>',url: url});
+		<?php } ?>
 	});
 
 

@@ -2,21 +2,21 @@
 // 格式化内容
 function wapFormatContent($content, $url = false, $from_url = '') {
 	if($url){
-		$content = preg_replace('/((?:https?|ftp):\/\/(?:www\.)?(?:[a-zA-Z0-9][a-zA-Z0-9\-]*\.)?[a-zA-Z0-9][a-zA-Z0-9\-]*(?:\.[a-zA-Z]+)+(?:\:[0-9]*)?(?:\/[^\x{4e00}-\x{9fa5}\s<\'\"“”‘’]*)?)/u', '<a href="'.U('wap/Index/urlalert').'&from_url='.$from_url.'&url=\1">\1</a>\2', $content);
+		$content = preg_replace('/((?:https?|ftp):\/\/(?:www\.)?(?:[a-zA-Z0-9][a-zA-Z0-9\-]*\.)?[a-zA-Z0-9][a-zA-Z0-9\-]*(?:\.[a-zA-Z]+)+(?:\:[0-9]*)?(?:\/[^\x{2e80}-\x{9fff}\s<\'\"“”‘’]*)?)/u', '<a href="'.U('wap/Index/urlalert').'&from_url='.$from_url.'&url=\1">\1</a>\2', $content);
 	}
 	$content = preg_replace_callback("/(?:#[^#]*[^#^\s][^#]*#|(\[.+?\]))/is",replaceEmot,$content);
 	$content = preg_replace_callback("/#([^#]*[^#^\s][^#]*)#/is",wapFormatTopic,$content);
-	$content = preg_replace_callback("/@([\w\x{4e00}-\x{9fa5}\-]+)/u",wapFormatUser,$content);
+	$content = preg_replace_callback("/@([\w\x{2e80}-\x{9fff}\-]+)/u",wapFormatUser,$content);
 	return $content;
 }
 
 // 格式化评论
 function wapFormatComment($content,$url=false, $from_url = '') {
 	if($url){
-		$content = preg_replace('/((?:https?|ftp):\/\/(?:www\.)?(?:[a-zA-Z0-9][a-zA-Z0-9\-]*\.)?[a-zA-Z0-9][a-zA-Z0-9\-]*(?:\.[a-zA-Z]+)+(?:\:[0-9]*)?(?:\/[^\x{4e00}-\x{9fa5}\s<\'\"“”‘’]*)?)/u', '<a href="'.U('wap/Index/urlalert').'&from_url='.$from_url.'&url=\1">\1</a>\2', $content);
+		$content = preg_replace('/((?:https?|ftp):\/\/(?:www\.)?(?:[a-zA-Z0-9][a-zA-Z0-9\-]*\.)?[a-zA-Z0-9][a-zA-Z0-9\-]*(?:\.[a-zA-Z]+)+(?:\:[0-9]*)?(?:\/[^\x{2e80}-\x{9fff}\s<\'\"“”‘’]*)?)/u', '<a href="'.U('wap/Index/urlalert').'&from_url='.$from_url.'&url=\1">\1</a>\2', $content);
 	}
     $content = preg_replace_callback("/(\[.+?\])/is",replaceEmot,$content);
-    $content = preg_replace_callback("/@([\w\x{4e00}-\x{9fa5}\-]+)/u",wapFormatUser,$content);
+    $content = preg_replace_callback("/@([\w\x{2e80}-\x{9fff}\-]+)/u",wapFormatUser,$content);
     return $content;
 }
 

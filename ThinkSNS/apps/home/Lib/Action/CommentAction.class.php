@@ -27,12 +27,12 @@
         		$list['data'][$key]['ctime'] = friendlyDate($value['cTime']);
         		$list['data'][$key]['comment'] = formatComment($value['comment']);
         		$list['data'][$key]['uname']   = getUserName($value['uid']);
-        		$list['data'][$key]['del_state']   = ($appUid==$this->mid || $value['uid']==$this->mid)?1:0;
+        		$list['data'][$key]['del_state']   = ($GLOBALS['ts']['isSystemAdmin'])?2:(($appUid==$this->mid || $value['uid']==$this->mid)?1:0);
         		$list['data'][$key]['userGroupIcon']   = getUserGroupIcon($value['uid']);
         	}
         	exit(json_encode($list));
         }
-        
+
         // 快速回复
         public function quickReply() {
         	$_POST['to_id'] = intval($_POST['to_id']);
@@ -41,7 +41,7 @@
         	$this->assign('callback', t($_POST['callback']));
         	$this->display();
         }
-        
+
         public function doQuickReply() {
         	$_POST['to_id'] 	= intval($_POST['to_id']);
         	$_POST['comment']	= t(getShort($_POST['comment_content'], $GLOBALS['ts']['site']['length']));
@@ -67,7 +67,7 @@
         	$data['quietly'] = $former_comment['quietly'];
         	$data['to_uid']	 = $former_comment['uid'];
         	$data['data']	 = $former_comment['data'];
-
+			$data['comment_ip']=get_client_ip();
         	$res = M('comment')->add($data);
 
         	if($res) {
@@ -114,7 +114,7 @@
         	$_POST['table']					= t($_POST['table']);
         	$_POST['id_field']				= t($_POST['id_field']);
         	$_POST['comment_count_field']	= t($_POST['comment_count_field']);
-
+			//$_POST['comment_ip'] = get_client_ip();
 	        $app_alias	= getAppAlias($_POST['type']);
 
         	// 被回复内容
@@ -133,11 +133,12 @@
         	$map['status']	= 0; // 0: 未读 1:已读
         	$map['quietly']	= 0;
         	$map['to_uid']	= $former_comment['uid'] ? $former_comment['uid'] : $_POST['author_uid'];
+			$map['comment_ip'] = get_client_ip();
         	$map['data']	= serialize(array(
         									'title' 				=> $_POST['title'],
         									'url'					=> $_POST['url'],
-        									'table'					=> $_POST['table'], 
-        									'id_field'				=> $_POST['id_field'], 
+        									'table'					=> $_POST['table'],
+        									'id_field'				=> $_POST['id_field'],
         									'comment_count_field'	=> $_POST['comment_count_field'],
         								));
         	$res = M('comment')->add($map);
@@ -169,7 +170,7 @@
 																 ),
 												), 0, 0, '', '', $from_data);
         		}
-/*        		
+/*
 	        	// 给被回复人发送通知
 				if ($former_comment['uid']) {
 					$data = array(
@@ -194,7 +195,7 @@
 					unset($data);
 				}
 */
-				
+
 				// 组装结果集
 				$result = $map;
 				$result['data']['uavatar']  		= getUserSpace($this->mid,'null','_blank','{uavatar}');
@@ -211,12 +212,12 @@
                 echo -1;
             }
         }
-        
+
         public function doDelete() {
         	$_POST['id'] = explode(',', t($_POST['id']));
         	if ( empty($_POST['id']) )
         		return ;
-        	if(model('GlobalComment')->deleteComment($_POST['id'])){	
+        	if(model('GlobalComment')->deleteComment($_POST['id'])){
         		//积分处理
 				$setCredit = X('Credit');
 				$setCredit->setUserCredit($this->mid,'delete_comment');
@@ -225,12 +226,12 @@
 				echo 0;
 			}
         }
-        
+
         // 评论成功后, 回调处理, 增加评论计数
         private function __doAddCallBack($appid, $table,$id_field = 'id', $comment_count_field = 'commentCount') {
         	return $table ? M($table)->setInc($comment_count_field, "`$id_field`='$appid'") : false;
         }
-        
+
         private function getInterFaceUid($type,$intId){
         	 $info = M('blog')->where("type='{$type}' AND id={$intId}")->field('uid')->find();
         	 return $info['uid'];

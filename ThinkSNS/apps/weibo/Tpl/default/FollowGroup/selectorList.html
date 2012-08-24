@@ -1,15 +1,13 @@
-<span id="followGroupSelector">
+<span id="followGroupSelector" class="mod-group-list">
 	<volist name="group_list" id="g">
-		<label><input type="checkbox" name="gids[]" value="{$g.follow_group_id}" onclick="setFollowGroup(this.value)" /> {$g.title}</label><br />
+		<label><input type="checkbox" name="gids[]" value="{$g.follow_group_id}" onclick="setFollowGroup(this.value)" class="ck">{$g.title}</label>
 	</volist>
 </span>
-<span id="createFollowGroup" style="margin:0 0 15px 0;">
+<span id="createFollowGroup" class="add-group">
 	<a href="javascript:void(0);" onclick="createFollowGroupTab('')" class="openTab">+创建分组</a>
-	<input type="text" name="followGroupTitle" value="" class="text mb5" style="display:none;width:85px">
-    <p class="mt5">
+	<input type="text" name="followGroupTitle" value="" class="text mb5" style="display:none; width:88px;margin:0 0 5px"><br />
 	<input type="button" onclick="createFollowGroup()" class="btn_b" value="保存" style="display:none;">
 	<a href="javascript:void(0);" onclick="createFollowGroupTab('close')" class="cancelTab" style="display:none;">取消</a>
-    </p>
 </span>
 <script>
 var fid = '{$fid}';
@@ -52,7 +50,7 @@ function createFollowGroup(){
 		if(res.status != 0){
 			createFollowGroupTab('close');
 			$('#followGroup').append('<a href="'+U('home/space/follow')+'&uid='+_UID_+'&type=following&gid='+res.info+'">'+title+'</a>');
-			$('#followGroupSelector').append('<input type="checkbox" name="gids[]" value="'+res.info+'" onclick="setFollowGroup(this.value)" checked />'+title+'<br />');
+			$('#followGroupSelector').append('<label><input type="checkbox" name="gids[]" value="'+res.info+'" onclick="setFollowGroup(this.value)" checked class="ck" />'+title+'</label>');
 			setFollowGroup(res.info);
 		}else{
 			ui.error(res.info);

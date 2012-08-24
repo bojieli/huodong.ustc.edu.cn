@@ -39,11 +39,12 @@ function do_update_photo(){
 	var id		=	$('#photoId').val();
 	var name	=	$('#name').val();
 	var albumId	=	$('#albumId').val();
-	if(!name)	{ 
-		ui.error('图片名字不能为空！');
+	if(!name || getLength(name.replace(/\s+/g,"")) == 0){
+		alert('图片名字不能为空！');
+        return false;
 	}
 	$.post(U('photo/Manage/do_update_photo'),{id:id,name:name,albumId:albumId},function(data){
-	    if(data==1){
+	    if(data.result==1){
 			if(albumId!=albumIdold){
 				if(nextid==id||nextid==''){
 					location.href=U('photo/Index/album')+'&id='+album_id+'&uid='+_UID_;
@@ -52,7 +53,8 @@ function do_update_photo(){
 				}
 				return;
 			}else{
-				$('.photoName').html(name);
+				// $('.photoName').html(name);
+				$('.photoName').html(data.message);
 			}
 			ui.box.close();
 			ui.success('修改成功！');
@@ -60,5 +62,5 @@ function do_update_photo(){
 			ui.box.close();
 			ui.error('图片信息无变化！');
 		}
-	});
+	}, 'json');
 }

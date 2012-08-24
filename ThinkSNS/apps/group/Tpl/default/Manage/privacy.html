@@ -8,7 +8,7 @@
   <div class="main no_l"> 
     <!-- 右侧内容 begin  -->
     <div class="mainbox">
-      <div class="mainbox_C mainC_pad" style=" margin-right:0"> <include file="../Public/manage_group_top" />
+      <div class="mainbox_C mainC_pad" style=" margin-right:20px"> <include file="../Public/manage_group_top" />
         <div class="groupBox">
           <div style="width:100%;margin-top:40px;">
             <form method="post" action="{:U('group/Manage/privacy',array('gid'=>$gid))}">
@@ -17,20 +17,22 @@
                   <div class="c1">内容权限：</div>
                   <div class="c2">
                     <p>
-                      <label><input name="brower_level" type="radio" value="-1"<eq name="groupinfo['brower_level']" value="-1"> checked </eq>/> 公开</label>
+                      <label><input name="brower_level" type="radio" value="-1" onclick="isShow(-1)"<eq name="groupinfo['brower_level']" value="-1"> checked </eq>/> 公开</label>
                       <span class="cGray2">（群组内容公开，所有用户可见）</span>
                     </p>
                     <p>
-                      <label><input name="brower_level" type="radio" value="1"<eq name="groupinfo['brower_level']" value="1"> checked </eq>/> 私密</label>
+                      <label><input name="brower_level" type="radio" value="1" onclick="isShow(1)"<eq name="groupinfo['brower_level']" value="1"> checked </eq>/> 私密</label>
                       <span class="cGray2">（群组内容私密，仅成员可见）</span></p>
                   </div>
                 </li>
                 <li>
                   <div class="c1">加入方式：</div>
                   <div class="c2">
-                    <p>
+                     
+                    <p class="isHidden" <eq name="groupinfo['brower_level']" value="1"> style="display:none;"</eq>>
                       <label><input  name="need_invite" type="radio" value="0"<eq name="groupinfo['need_invite']" value="0"> checked </eq>/> 任何人均可加入</label>
                     </p>
+
                     <p>
                       <label><input  name="need_invite" type="radio" value="1"<eq name="groupinfo['need_invite']" value="1"> checked </eq>/> 需管理员批准后方可加入</label>
                     </p>
@@ -113,4 +115,15 @@ function doSwitch(i,name){
 }
 doSwitch({$groupinfo['openUploadFile']},'openUploadFile');
 </script> 
+
+<script>
+function isShow(i){
+  if (i == 1) {
+    $(".isHidden").css('display','none');
+  }else if(i == -1){
+    $(".isHidden").css('display','block');
+  }
+}
+</script>
+
 <include file="__THEME__/footer" />

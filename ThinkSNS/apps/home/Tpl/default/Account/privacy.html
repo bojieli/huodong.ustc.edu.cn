@@ -12,11 +12,6 @@
     <!-- 切换标签 end  -->
     
     <div class="mainbox_C_C">
-    <div class="mainbox_R">
-    <div class="right_box">
-    完善您的个人资料以便您的朋友快速的找到您！！
-    </div>
-    </div>
 		<div class="setupBox">
 		  <!-- 修改密码 -->
           <div class="setItems">
@@ -53,6 +48,19 @@
 		                      <div class="left mr5"><input type="radio" name='userset[message]' value="1" <eq name="userset['message']" value="1">checked="true"</eq> >我关注的人</div>
 		                    </div>
 		                </dd>
+                        <dd>
+                            <label>空间：</label>
+                            <div class="left" style="width: 50%;">
+                              <div class="left mr5">设置谁可以查看我的个人空间</div>
+                            </div>
+                        </dd>
+                        <dd>
+                            <label>&nbsp;</label>
+                            <div class="left">
+                              <div class="left mr5"><input type="radio" name='userset[space]' value="0" <eq name="userset['space']" value="0">checked="true"</eq> >所有人(不包括你的黑名单用户)</div><br>
+                              <div class="left mr5"><input type="radio" name='userset[space]' value="1" <eq name="userset['space']" value="1">checked="true"</eq> >我关注的人</div>
+                            </div>
+                        </dd>
 		           </dl>
 						{:Addons::hook('home_account_privacy')}
 		           <dl class="set_basic"><dd><label>&nbsp;</label><input type="submit" class="btn_b" value="保存" /></dd></dl>
@@ -72,8 +80,8 @@
 		            <ul>
 		            <php>if($blacklist){</php>
 		            <volist id="vo" name="blacklist">
-		                <li>
-		                    <div class="left alR" style="width: 15%;"><space uid="vo.fid" target="_blank">{uname}</space></div>
+		                <li id="black_{$vo.fid}">
+		                    <div class="left alR" style="width: 15%;"><space uid="vo.fid" target="_blank">{uname}</space>&nbsp;&nbsp;&nbsp;&nbsp;<a href="javascript:void(0)" onclick="release('{$vo.fid}')">解除</a></div>
 		                    <div class="left" style="width: 50%;">
 		                      <div class="right mr5">{$vo.ctime|friendLyDate}</div>
 		                    </div>
@@ -86,6 +94,12 @@
 		                    </div>
 		                </li>
 		             <php>}</php>
+		             <li>
+		             	<form action="__URL__&act=setBlack" method="POST" >
+			            <input type="text" name="blackname" value="">
+			            <input type="submit" name="submit" value="添加">
+			            </form>
+		             </li>
 		           </ul>
 		        </div><!-- 修改密码 end  -->
             </div>
@@ -117,8 +131,6 @@
 			}
 			location.href='#'+$(this).attr('rel');
 		})
-		
-	
 	});
 	
 	//切换操作模块
@@ -131,6 +143,16 @@
 		handle.next('.setItemsInfo').show();
 	}
 
-	
-	
+	//解除黑名单
+	function release(id){
+          $.get(U('home/Account/release'),{id:id},function(msg){
+             if(msg == 0){
+                ui.error('解除失败！');
+             }else{
+                ui.success('解除成功！');
+                $('#black_'+id).remove();
+                setTimeout("location.href = location.href",1000);               
+             }   
+          });  
+	}	
 </script>

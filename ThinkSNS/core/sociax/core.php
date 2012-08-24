@@ -24,6 +24,8 @@ return array(
     CORE_PATH.'/sociax/View.class.php',
 	CORE_PATH.'/sociax/Service.class.php',
     CORE_PATH.'/sociax/alias.php',
-	CORE_PATH.'/sociax/Page.class.php',
+	CORE_PATH.'/sociax/Page.class.php',    
+    CORE_PATH.'/sociax/Cache.class.php',
+    ADDON_PATH.'/libs/Cache/CacheFile.class.php',
 );
 ?>

@@ -17,11 +17,11 @@
 .albumlist ul li dl dt { font-size: 14px; line-height: 30px}
 .albumlist ul li dl dd { font-size: 12px; color: #666; line-height: 20px}
 .view { clear: both; overflow: hidden; width: 100%; padding-top: 10px}
-.view .c1 { text-align:center; margin-top:10px;}
+.view .c1 { text-align:center; margin-top:10px;margin-top:20px\0;}
 .view .c1 .info { font-size: 12px; line-height: 30px; padding-left:5px; background-color:#eee; color:#666}
-.view .c2 {  text-align: center; margin:0 auto; width:350px; height:70px;}
-.view .c2 li{ float:left;}
-.view .c2 img { margin:5px; padding: 3px; border: 1px solid #DFDEE6; display: block}
+.view .c2 {  text-align: center; margin:0 auto;  height:70px;}
+.view .c2 li{ display: inline-block;*display:inline}
+.view .c2 img { margin:5px; padding: 3px; border: 1px solid #DFDEE6; display: block;*display: inline}
 
 /*滚动小图*/
 
@@ -50,12 +50,12 @@
 
 .falbumlist ul li .box { margin-bottom:10px}
 .falbumlist ul li .c1 { }
-.falbumlist ul li .c2 { }
+.falbumlist ul li .c2 {height:110px; }
 .falbumlist ul li dl { margin: 0px; padding: 0px}
 .falbumlist ul li dl a { }
 .falbumlist ul li dl dt { font-size: 14px; line-height: 30px;height:30px;width:146px;overflow:hidden;word-wrap: break-word;white-space:nowrap}
 .falbumlist ul li dl dt span{ font-size: 12px; color:#666}
-.falbumlist ul li dl dd { font-size: 12px; color: #999999; line-height: 20px}
+.falbumlist ul li dl dd { font-size: 12px; color: #999999; line-height: 20px;width:140px;white-space:nowrap;text-overflow:ellipsis;overflow:hidden;}
 /*圈有我的图片*/
 .mark { clear: both; overflow: hidden; display:table; display:inline-block; width: 100%; padding-top: 10px; padding-right: 0px; padding-bottom: 0px; padding-left: 0px; margin-top: 1px; margin-right: 0px; margin-bottom: 0px; margin-left: 0px}
 .mark li { float: left; overflow: hidden; width: 137px; text-align: center; padding-right: 20px; margin-bottom: 10px}
@@ -106,8 +106,8 @@
 .upload .clue_btm { height: 5px; display: block; width: 100%}
 .upload ul { float: left; width: 450px}
 .upload li { clear: both; overflow: hidden; display:table; display:inline-block; width: 100%; margin-bottom: 10px}
-.upload li .c1 { width: 85px; float: left; line-height: 20px; text-align: right; margin-right: 5px; position:relative;zoom:1 }
-.upload li .c2 { margin-left:85px;}
+.upload li .c1 { width: 85px; float: left; line-height: 20px; padding-right: 5px; }
+.upload li .c2 { margin-left:80px;}
 .upload li .c2 .rank {  }
 .upload .edit_list { width: 810px; clear:both}
 .upload .edit_list h3 { font-size: 12px; font-weight: normal; margin-left: 10px}
@@ -137,14 +137,17 @@
 .RecommendedAlbums .c2 dd{line-height:20px;}
 
 /*推荐专辑(新)*/
-.list_topalbums{background-color:#eee;border-radius:3px}
+ .mod-recalbums{background-color:#eee;border-radius:3px;}
+.list_topalbums{}
 .list_topalbums li{padding:10px 20px;border-top:#fff solid 1px;border-bottom:#bbb solid 1px}
-.list_topalbums .albums_info dt{padding-top:5px;line-height:25px;}
+.albums_img{float:left;}
+.albums_info{margin-left:73px;}
+.albums_info dl{*display:inline}
 .list_topalbums .albums_info dd{line-height:20px;}
 .list_topalbums .tit{margin:0 auto;padding:5px 0;border-bottom:#ddd solid 1px;height:5px;text-align:center}
 .list_topalbums .btm{margin:0 auto;padding:5px 0;border-top:#fff solid 1px;height:5px;text-align:center}
-.list_topalbums .ico_up{
-	border-color: #9ABBC8 transparent transparent;
+.list_topalbums .ico_up,  .mod-recalbums .ico_up{
+    border-color: #9ABBC8 transparent transparent;
     border-style: solid dashed dashed;
     border-width: 4px 4px 0;
     display: inline-block;
@@ -155,24 +158,27 @@
     vertical-align: middle;
     width: 0;
 }
-.list_topalbums .ico_down{border-color: transparent transparent #bbb;
+.list_topalbums .ico_down, .mod-recalbums .ico_down{
+    border-color: transparent transparent #9ABBC8;
     border-style: dashed dashed solid;
     border-width: 0 4px 4px;
-    display:inline;
+    border-width:0 5px 5px \9;
+    display:inline-block;
     font-size: 0;
     height: 0;
     line-height: 0;
     margin: 0 auto;
     vertical-align: middle;
-	width:4px
+    width: 0;
     }
 /*推荐专辑(新广场下)*/
 .list_Recalbums{background-color:#eee;border-radius:3px}
-.list_Recalbums li{padding:10px 20px;border-top:#fff solid 1px;border-bottom:#bbb solid 1px}
-.list_Recalbums .albums_info dt{padding-top:5px;line-height:25px;}
+.list_Recalbums li{padding:10px 0 10px 10px;border-top:#fff solid 1px;border-bottom:#bbb solid 1px;_width:100%}
+.list_Recalbums .albums_info dt{line-height:25px;}
 .list_Recalbums .albums_info dd{line-height:20px;}
-.list_Recalbums .tit{margin:0 auto;padding:5px 0;border-bottom:#ddd solid 1px;height:5px;text-align:center}
-.list_Recalbums .btm{margin:0 auto;padding:5px 0;border-top:#fff solid 1px;height:5px;text-align:center}
+.list_Recalbums .tit, .mod-recalbums .tit{margin:0 auto;padding:5px 0;border-bottom:#bbb solid 1px;height:5px;text-align:center;_width:105%}
+.list_Recalbums .btm, .mod-recalbums .btm{margin:0 auto;padding:5px 0;border-top:#fff solid 1px;height:5px;text-align:center;}
+ .mod-recalbums .tit, .mod-recalbums .btm{*height:auto;*padding:0}
 .list_Recalbums .ico_up{
 	border-color: #9ABBC8 transparent transparent;
     border-style: solid dashed dashed;

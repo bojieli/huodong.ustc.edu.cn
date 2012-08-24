@@ -82,19 +82,55 @@ toggle:function(obj){
    this[obj.checked ? 'all' : 'unAll']();
  },
 del:function(weibo_id,uid){
-	var weibo_id = weibo_id ? weibo_id : getChecked();
-	weibo_id = weibo_id.toString();
-	if(weibo_id=='' || weibo_id==0) return;
+  var length = 0;
+    if(weibo_id) {
+        length = 1;         
+    }else {
+        weibo_id    = getChecked();
+        length = weibo_id.length;
+        weibo_id    = weibo_id.toString();
+    }
+    if(weibo_id=='') {
+        ui.error('请先选择一个微博');
+        return ;
+    }
 	if( confirm("是否删除微博") ){
 	  $.post( "{:U('weibo/Admin/operate')}",{dotype:'del',weibo_id:weibo_id,uid:uid},function(text ){
 	      if( text == 1 ){
-			  var id_list = weibo_id.split( ',' );   
-			  for (var j=0 ; j< id_list.length ; j++   ){
-				  $('#weibo_list_'+id_list[j]).remove(); 
-			  }
+          weibo_id = weibo_id.toString().split(',');
+          $.each(weibo_id, function(i,n){
+          $('#weibo_list_'+n).remove();
+        });   
 	    	  ui.success( "删除成功" );
 	      }else{
 	    	  ui.error( "删除失败" );
+	      }
+	  });
+	}
+},
+restore:function(weibo_id,uid){
+	var length = 0;
+    if(weibo_id) {
+        length = 1;         
+    }else {
+        weibo_id    = getChecked();
+        length = weibo_id.length;
+        weibo_id    = weibo_id.toString();
+    }
+    if(weibo_id=='') {
+        ui.error('请先选择一个微博');
+        return ;
+    }
+	if( confirm("是否恢复微博") ){
+	  $.post( "{:U('weibo/Admin/restore')}",{weibo_id:weibo_id,uid:uid},function(text ){
+	      if( text == 1 ){
+			    weibo_id = weibo_id.toString().split(',');
+          $.each(weibo_id, function(i,n){
+          $('#weibo_list_'+n).remove();
+        });  
+	    	  ui.success( "恢复成功" );
+	      }else{
+	    	  ui.error( "恢复失败" );
 	      }
 	  });
 	}
@@ -186,6 +222,7 @@ var c = null;
             <span class="searchBlog_action"><neq name="isSearch" value="1">搜索微博<else/>搜索完毕</neq></span>
         </a>
         <a href="javascript:void(0);" class="btn_a" onclick="c.del()"><span>删除微博</span></a>
+		<eq name="_GET['recycle']" value="1"> <a href="javascript:void(0);" class="btn_a" onclick="c.restore()"><span>恢复微博</span></a></eq>
     </div>
   
     <div class="list">
@@ -208,7 +245,7 @@ var c = null;
         <volist id="vo" name="list['data']">      
 	      	<tr overstyle='on' id="weibo_list_{$vo.weibo_id}">
 		        <td><input type="checkbox" name="checkbox" id="checkbox2" onclick="checkon(this)" value="{$vo.weibo_id}"></td>
-		        <td><a href="{:U('home/space/detail',array('id'=>$vo['weibo_id']))}" target="_blank">{$vo.weibo_id}</a></td>
+		        <td><if condition="$recycle">{$vo.weibo_id}<else /><a href="{:U('home/space/detail',array('id'=>$vo['weibo_id']))}" target="_blank">{$vo.weibo_id}</a></if></td>
 		        <td>{$vo.uid} </td>
 		        <td><space uid="vo.uid" target="_blank">{uname}</space></td>
 		        <td style="width:400px;overflow:hidden">{$vo.content}</td>
@@ -234,7 +271,10 @@ var c = null;
 		        </switch>
 		        </td>
 		        <td><?php echo getFrom($vo['from'], $vo['from_data']);?></td>
-		        <td><a href="javascript:void(0)" onclick="c.del({$vo.weibo_id},{$vo.uid})">删除</a></td>
+		        <td>
+					<eq name="_GET['recycle']" value="1"><a href="javascript:void(0)" onclick="c.restore({$vo.weibo_id},{$vo.uid})">恢复</a> | </eq>
+					<a href="javascript:void(0)" onclick="c.del({$vo.weibo_id},{$vo.uid})">删除</a>
+				</td>
 	      	</tr>
 		</volist>
         </table>
@@ -246,6 +286,7 @@ var c = null;
             <span class="searchBlog_action"><neq name="isSearch" value="1">搜索微博<else/>搜索完毕</neq></span>
         </a>
         <a href="javascript:void(0);" class="btn_a" onclick="c.del()"><span>删除微博</span></a>
+		<eq name="_GET['recycle']" value="1"> <a href="javascript:void(0);" class="btn_a" onclick="c.restore()"><span>恢复微博</span></a></eq>
     </div>
 </div>
 <script type="text/javascript">

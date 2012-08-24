@@ -43,6 +43,9 @@ $.extend({
         $.extend(this,{
                 obj:null,
                 countNew:function(){
+                    if(_MID_ <= 0){
+                        return ;
+                    }
                     if(!opt.show_feed && opt.lastId>0){
                         setInterval(function(){
                             operateFactory.create('countNew',function(txt){
@@ -156,6 +159,9 @@ $.extend({
                 },
                 //收藏
                 favorite:function(id,o){
+                    if(_MID_ <= 0){
+                        ui.error('请登录后再操作'); return ;
+                    }
                     operateFactory.create('favorite',function(txt){
                         if( txt ){
                             $(o).wrap('<span id=content_'+id+'></span>');
@@ -167,7 +173,10 @@ $.extend({
                 },
                 //取消收藏
                 unFavorite:function(id,o){
-                   operateFactory.create('unFavorite',function(txt){
+                    if(_MID_ <= 0){
+                        ui.error('请登录后再操作'); return ;
+                    }
+                    operateFactory.create('unFavorite',function(txt){
                          if( txt ){
                             $('#list_li_'+id).slideUp('slow');
                         }else{
@@ -177,6 +186,9 @@ $.extend({
                 },
                 // 分享微博
                 share:function(id){
+                    if(_MID_ <= 0){
+                        ui.error('请登录后再操作'); return ;
+                    }
                     var upcontent = ( upcontent == undefined ) ? 1 : 0;
                     operateFactory.loadbox('share',{id:id,upcontent:upcontent});
                 },
@@ -187,6 +199,9 @@ $.extend({
                 },
                 //关注话题
                 followTopic:function(name){
+                    if(_MID_ <= 0){
+                        ui.error('请登录后再操作'); return ;
+                    }
                     operateFactory.create('followTopic',function(txt){
                         txt = eval( '(' + txt + ')' );
                         if(txt.code==12){
@@ -202,6 +217,9 @@ $.extend({
                     },{topicId:id});
                 },
                 quickpublish:function(text){
+                    if(_MID_ <= 0){
+                        ui.error('请登录后再操作'); return ;
+                    }
                     operateFactory.create('quickpublish',function(txt){
                        ui.box.show(txt,{title:'说几句',closeable:true});
                     },{text:text});
@@ -449,7 +467,7 @@ $.extend({
                     obj.removeAttr('disabled').removeClass('btn_big_disable').addClass('btn_big_after');
                 break;
                 case 'off':
-                    obj.attr('disabled','true');
+                    obj.attr('disabled','true').removeClass('btn_big_after').addClass('btn_big_disable');
                 break;
                 case 'sending':
                     obj.attr('disabled','true').removeClass('btn_big_after').addClass('btn_big_disable');
@@ -472,6 +490,9 @@ $.extend({
         },
         //发布前的检测
         before_publish = function(obj){
+            if(_MID_ <= 0){
+                ui.error('请登录后再操作'); return ;
+            }
             obj = obj==undefined?$(opt.publishForm.textarea):obj;
             if( $.trim( obj.val() ) == '' ){
                 ui.error('内容不能为空');     
@@ -550,6 +571,10 @@ $.extend({
                            if(txt){
                                if(txt==0){
                                    ui.success('您发布的微博含有敏感词，请等待审核！');
+                               }else if(txt=='submitlocked'){
+								   ui.error('亲，您的操作太频繁了，请稍后再发布！');
+							   }else if(txt=='duplicatecontent'){
+                                   ui.error('亲，请不要连续发布相同的内容哦！');
                                }else{
                                    callback.enter(formObj,buttonObj,contentObj,numObj,txt);
                                    upCount('weibo');
@@ -557,6 +582,8 @@ $.extend({
                                    if(opt.lastId>0){
                                        setLastIdByWeiboListDiv();
                                    }
+                                   textareaStatus('off',buttonObj);
+                                   return ;
                                }
                            }else{
                                ui.error(buttonObj.attr('error'));
@@ -580,6 +607,9 @@ $.extend({
                     );
                 },
                 loadNew:function(){
+                    if(_MID_ <= 0){
+                        return ;
+                    }
                     $(opt.loadNewDiv).find('a').click(function() {
                         var limit = $(this).attr('limit');
                         operateFactory.create("loadNew",function(txt){
@@ -599,24 +629,38 @@ $.extend({
                      $(opt.loadMoreDiv).click(function() {
                         $(this).html('加载中...');
                         var self = this;
+                        loadMoreCount = typeof(loadMoreCount) == 'undefined' ? 0 : loadMoreCount;
                         operateFactory.create("loadMore",function(txt){
                             clearInterval(isLoading);
                             isLoading = false;
-                            $(opt.weiboListDiv).append(txt);
+                            loadMoreCount++ ;
+                            if(parseInt(opt.sinceId) !== 0) {
+                                $(opt.weiboListDiv).append(txt);
+                            }
                             try{
-                            	// var tempSinceId = $(opt.weiboListDiv).find('li:last').attr('id').split("_").pop();
-                            	var tempSinceId = $(opt.weiboListDiv).find("li[id^='list_li_']").last().attr('id').split('_').pop();
+                                // var tempSinceId = $(opt.weiboListDiv).find('li:last').attr('id').split("_").pop();
+                                var tempSinceId = $(opt.weiboListDiv).find("li[id^='list_li_']").last().attr('id').split('_').pop();
                             }catch(e){
-                            	var tempSinceId = false;
+                                var tempSinceId = false;
                             }
                             opt.sinceId = typeof(sinceId) == 'undefined' ? tempSinceId : (tempSinceId || sinceId) ;
-							//判断没有更多数据时.不显示更多按钮
-							if(txt.indexOf('<HASNEW>')==-1){
-								$(self).parent().html('<span class="morefoot">没有更多数据了</span>');
-							}else{
-								$(self).html('<span class="ico_morefoot"></span>更多');
-							}
-						});
+                            //判断没有更多数据时.不显示更多按钮
+                            if(txt.indexOf('<HASNEW>')==-1){
+                                $(self).parent().html('<span class="morefoot">没有更多数据了</span>');
+                            }else{
+                                //if(loadMoreCount<5){
+                                    $(self).html('<span class="ico_morefoot"></span>更多');
+                                //}else{
+                                    //显示分页
+                                //  $(self).html('这里是分页');
+                                //}
+                            }
+                            //loadmore后修改弹窗黑背景的高度
+                            var obj = document.getElementById('boxy-modal-blackout');
+                            if(obj !== null) {
+                                $('#boxy-modal-blackout').css('height', document.body.clientHeight + 100);
+                            }
+                        });
                     });
                 },
                 comment:function(){
@@ -627,6 +671,10 @@ $.extend({
                          if( $comment_list.html() == '' ){
                              $comment_list.html(opt.loading);
                              operateFactory.create("comment",function(txt){
+                                 if(_MID_ <= 0){
+                                    $comment_list.html("") ;
+                                    ui.error('请登录后再操作'); return ;
+                                 }
                                  $comment_list.html( txt ) ;
                              },{id:id});
                          }else{
@@ -635,6 +683,9 @@ $.extend({
                       });
                       
                        $(opt.weiboList.comment.form).live("submit", function(){
+                        if(document.getElementById('emotions') != null) {
+                            $('#emotions').remove();
+                        }
                         var _this = $(this);
                         var _comment_content = _this.find("textarea[name='comment_content']");
                         if( _comment_content.val()=='' ){
@@ -645,6 +696,22 @@ $.extend({
                         _button.val( '评论中...').attr('disabled','true') ;
                         var options = {
                             success: function(txt) {
+								if(txt=='submitlocked'){
+									_this.find("input[type='submit']").val( '确定');
+									_this.find("input[type='submit']").removeAttr('disabled') ;
+									ui.error('您的操作太频繁了，请稍后再发布！');
+                                    return false;
+								}else if(txt=='duplicatecontent'){
+                                    _this.find("input[type='submit']").val( '确定');
+                                    _this.find("input[type='submit']").removeAttr('disabled') ;
+                                    ui.error('亲，请不要连续发布相同的内容哦！');
+                                    return false;
+                                }else if(txt=='emptycontent'){
+                                    _this.find("input[type='submit']").val( '确定');
+                                    _this.find("input[type='submit']").removeAttr('disabled') ;
+                                    ui.error('评论内容不能为空！');
+                                    return false;
+                                }
                                 if(_this.attr('reload')=="true"){
                                     ui.success('回复成功');
                                     _button.removeAttr('disabled');
@@ -662,7 +729,7 @@ $.extend({
                                     //更新评论数
                                     $("a[rel='comment'][minid='"+txt.data['weibo_id']+"']").html("评论("+txt.data['comment']+")");
                                 }else{
-                                    ui.error(txt.info)
+                                    ui.error(txt.info);
                                 }
                               
                             }
@@ -674,18 +741,17 @@ $.extend({
                 scrollResize:function(){
                     if(opt.initForm){
                         var loadCount = 0;
-                         $(window).bind('scroll resize',function(event){
-                             if(loadCount <3 && !isLoading){
-                                 var bodyTop = document.documentElement.scrollTop + document.body.scrollTop;
-                                    //滚动到底部时出发函数
-                                    //滚动的当前位置+窗口的高度 >= 整个body的高度
-                                 if(bodyTop+$(window).height() >= $(document.body).height()){
-                                        isLoading = true;
-                                        $(opt.loadMoreDiv).click();
-                                        loadCount ++;
-                                 }
-                             }
-                             
+                        $(window).bind('scroll resize',function(event){
+                            if(loadCount <3 && !isLoading){
+                                var bodyTop = document.documentElement.scrollTop + document.body.scrollTop;
+                                //滚动到底部时出发函数
+                                //滚动的当前位置+窗口的高度 >= 整个body的高度
+                                if(bodyTop+$(window).height() >= $(document.body).height()){
+                                    isLoading = true;
+                                    $(opt.loadMoreDiv).click();
+                                    loadCount ++;
+                                }
+                            }
                         });
                     }
                 },
@@ -740,6 +806,5 @@ var CallBack = function(){
 }
 
 CallBack.Vote = {
-    addSuccess:function(data){
-    }
+    addSuccess:function(data){ }
 }

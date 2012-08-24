@@ -19,7 +19,7 @@ class DenounceModel extends Model {
 	public function deleteDenounce( $ids ){
         $weiboIds = $this->_getWeiboIdsByDenounce($ids);
         $weibo_map['weibo_id'] = array('in',$weiboIds);
-        $weibo_set=D('Weibo','weibo')->where ( $weibo_map )->save ( array('isdel'=>1) );
+        $weibo_set=D('Weibo','weibo')->where ( $weibo_map )->save ( array('isdel'=>4) );
 		return $weibo_set && $this->where($this->_paramMaps($ids))->save(array('state'=>'1'));
 	}
 	/**
@@ -28,7 +28,7 @@ class DenounceModel extends Model {
 	public function reviewDenounce( $ids ){
         $weiboIds = $this->_getWeiboIdsByDenounce($ids);
 		$weibo_map['weibo_id'] = array('in',$weiboIds);
-        $weibo_set = M('Weibo')->where ( $weibo_map )->save ( array('isdel'=>1) );
+        $weibo_set = M('Weibo')->where ( $weibo_map )->save ( array('isdel'=>3) );
 		return $weibo_set && $this->where($this->_paramMaps($ids))->save(array('state'=>'2'));
 	}
 

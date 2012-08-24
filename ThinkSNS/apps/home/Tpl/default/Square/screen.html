@@ -101,7 +101,7 @@ $(document).ready(function(){
 				<dl class="top_topic_list">
 					<volist id="vo" name="top_users_by_follower">
 					<php> if($key>2){ $class='no'; }else{ $class='no top'.($key+1); }</php>
-					<dt>
+					<dd>
 						<span class="{$class}">{$key+1}</span>
 						<span class="topic_list">
 							<span class="cardshow_list">
@@ -110,7 +110,7 @@ $(document).ready(function(){
 							<space uid="vo.uid">{uname}</space>
 						</span>
 						<span class="time_list">{$vo.count}</span>
-					</dt>
+					</dd>
 					</volist>
 				</dl>
             </div>
@@ -127,7 +127,7 @@ $(document).ready(function(){
 				<dl class="top_topic_list">
 			  	<volist id="vo" name="top_users_by_rating">
 					<php> if($key>2){ $class='no'; }else{ $class='no top'.($key+1); }</php>
-					<dt>
+					<dd>
 						<span class="{$class}">{$key+1}</span>
 						<span class="topic_list_rt">
 							<a href="{:U('home/space/index',array('uid'=>$vo['uid']))}"><img src="{$vo.uid|getUserFace}" class="photo_list" /></a>
@@ -137,7 +137,7 @@ $(document).ready(function(){
 
 						<span class="time_list_rt">{$vo.rating}<!--<em class="icodown"></em>--></span>
 						<span class="percent_rt"><em style="width:{$vo.hot_rating}%"></em></span>
-					</dt>
+					</dd>
 				</volist>
 				</dl>
             </div>

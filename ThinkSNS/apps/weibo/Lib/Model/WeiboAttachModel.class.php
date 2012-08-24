@@ -52,6 +52,28 @@ class WeiboAttachModel extends Model{
 		return $result;
 	}
 
+	// 获取用户的微博附件 - 相册使用
+	public function getUserAttachDataNew($uid, $weibo_type, $row = 0) {
+		if(!$row) {
+			$result = M()->Table(C('DB_PREFIX').'weibo_attach AS w LEFT JOIN '.C('DB_PREFIX').'attach AS a ON w.attach_id = a.id')
+						 ->field('a.*, w.weibo_id')
+						 ->where("w.uid={$uid} AND w.weibo_type={$weibo_type} AND a.userId={$uid} AND a.isDel=0")
+						 ->group('w.attach_id')
+						 ->order("w.attach_id DESC")
+						 ->findAll();
+		} else {
+			$result = M()->Table(C('DB_PREFIX').'weibo_attach AS w LEFT JOIN '.C('DB_PREFIX').'attach AS a ON w.attach_id = a.id')
+						 ->field('a.*, w.weibo_id')
+						 ->where("w.uid={$uid} AND w.weibo_type={$weibo_type} AND a.userId={$uid} AND a.isDel=0")
+						 ->group('w.attach_id')
+						 ->order("w.attach_id DESC")
+						 ->findPage($row);
+		}
+
+		return $result;
+	}
+
+
 	//获取微博相册
 	public function getWeiboAlbum($uid){
 		$count = $this->getUserAttachCount($uid,1);

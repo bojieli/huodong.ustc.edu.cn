@@ -121,7 +121,13 @@ class AlbumModel extends Model{
 		$photoDao  = D('Photo');
 		$map['id'] = array('in',$pids);
 		$photos	   = $photoDao->where($map)->findAll();
-
+		//删除封面
+		foreach ($photos as $key => $value){
+			$id = $value['albumId'];
+			$data['coverImageId'] = '';
+			$data['coverImagePath'] = '';
+			D('Album')->where(array('id'=>$id))->save($data);
+		}
 		///删除图片
 		//$save['isDel']	=	1;
 		$result	   = $photoDao->where($map)->delete();

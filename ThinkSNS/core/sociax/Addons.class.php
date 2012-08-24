@@ -67,6 +67,7 @@ class Addons
     }
 
     static public function addonsHook($addonsName,$name,$param=array(),$admin = false){
+
 		if(!$addonsName) throw new ThinkException("您加载的插件不存在！");
         //$addonsName = ucfirst($addonsName)."Hooks";
         //检查插件类型
@@ -74,7 +75,9 @@ class Addons
         $urlDir  = SITE_URL . '/addons/plugins';
         $path = $dirName.'/'.$addonsName;
         $addonUrl = $urlDir.'/'.$addonsName;
-
+		if(!preg_match('/^[a-zA-Z0-9_]+$/i',$addonsName)){
+			throw new ThinkException("您加载的插件不存在！");
+		}
         $adminHooks = array();
         if(isset(self::$addonsObj[$addonsName])){
             $obj = self::$addonsObj[$addonsName];
@@ -119,7 +122,7 @@ class Addons
 	{
         //加载所有有效的插件
         self::$validHooks = F('thinksns_addon_list');
-        if(empty(self::$validHooks)){
+        if(false === self::$validHooks){
             self::$validHooks = model('Addons')->resetAddonCache();
         }
 	}

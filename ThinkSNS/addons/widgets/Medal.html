@@ -12,8 +12,8 @@ $(document).ready(function(){
 <else />
 <div class="medal_list">
     <php>if($show_alert && !empty($alert)) {</php>
-    <div class="iine_warning lh20" style="margin:0 10px 5px 0; padding:5px" id="_widget_medal_alert_div">
-        <a title="{:L('close')}" class="del right" onclick="_widget_medal_close_alert();" href="javascript:void(0)"></a>{$alert['content']}
+    <div class="iine_warning lh20" style="margin:0 0 5px 0; padding:5px" id="_widget_medal_alert_div">
+        <a title="{:L('close')}" class="del right" onclick="_widget_medal_close_alert();" href="javascript:void(0)" style="margin-right:0"></a>{$alert['content']}
     </div>
     <php>}</php>
     <volist name="user_medal" id="vo">

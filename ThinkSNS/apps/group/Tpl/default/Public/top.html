@@ -16,25 +16,39 @@ $(document).ready(function(){
             <a href="{:U('group/Group/index', array('gid'=>$gid))}"><img src="__ROOT__/thumb.php?w=80&h=80&url={$groupinfo['logo']|get_photo_url}"/></a>
         </dt>
         <dd class="userInfo">
-            <p class="right alR">
-                    <if condition="$groupinfo['brower_level'] eq -1">
-                        <php>
-                            $tpl_data = array('author'=>getUserName($groupinfo['uid']),'name'=>$groupinfo['name'],'url'=>U('group/Group/index',array('gid'=>$gid)));
-                            $tpl_data = urlencode(serialize($tpl_data));
-                        </php>
-                        <a href="javascript:void(0)" onclick="_widget_weibo_start('', '{$tpl_data}');">分享群组</a></if><php>if (($ismember && $groupinfo['need_invite'] != 2) || $isadmin) { </php><span class="vline">|</span><a href="{:U('group/Invite/create',array('gid'=>$groupinfo['id']))}">邀请好友</a><php>}</php><php>if($isadmin){</php><span class="vline">|</span><span class="ico_Modify"></span><a href="{:U('/Manage/',array('gid'=>$groupinfo['id']))}">管理群组</a><php>}</php>
-                    <php>if(!isadmin($mid,$gid) && !ismember($mid,$gid)){</php>
-                        <php>if($groupinfo['membercount'] == $config['groupMaxUser']){</php>
-                           <span class="vline">|</span>人数已经满({$groupinfo['membercount']})
-                        <php>}else{</php>
-                            <span class="vline">|</span><a href="javascript:joingroup({$gid})" class="btn_shenqing">&nbsp;<img src="../Public/images/transparent.gif" class="addnew" style="vertical-align:middle"/>加入该群</a>
-                        <php>}</php>
+        
+        <div class="right alR">
+            <div class="mb10">	    
+                <if condition="$groupinfo['brower_level'] eq -1">
+                    <php>
+                        $tpl_data = array('author'=>getUserName($groupinfo['uid']),'name'=>$groupinfo['name'],'url'=>U('group/Group/index',array('gid'=>$gid)));
+                        $tpl_data = urlencode(serialize($tpl_data));
+                    </php>
+                    <a href="javascript:void(0)" onclick="_widget_weibo_start('', '{$tpl_data}');">分享群组</a>
+                    
+                </if>
+                <php>if (($ismember && $groupinfo['need_invite'] != 2) || $isadmin) { </php>
+                    &nbsp;&nbsp;<span class="cGray2">|</span>&nbsp;&nbsp;<a href="{:U('group/Invite/create',array('gid'=>$groupinfo['id']))}">邀请好友</a>
+                <php>}</php>
+                <php>if($isadmin){</php>&nbsp;&nbsp;<span class="cGray2">|</span>&nbsp;&nbsp;
+                    <span class="ico_Modify"></span><a href="{:U('/Manage/',array('gid'=>$groupinfo['id']))}">管理群组</a>
+                    
+                <php>}</php>
+                <php>if(!isadmin($mid,$gid) && !ismember($mid,$gid)){</php>
+                    <php>if($groupinfo['membercount'] == $config['groupMaxUser']){</php>
+                        &nbsp;&nbsp;<span class="cGray2">|</span>&nbsp;&nbsp;人数已经满({$groupinfo['membercount']})
+                    <php>}else{</php>
+                        &nbsp;&nbsp;<span class="cGray2">|</span>&nbsp;&nbsp;<a href="javascript:joingroup({$gid})" class="btn_shenqing"><span class="addnew"></span>加入该群</a>
+                    <php>}</php>
                     <php>} elseif(iscreater($mid,$gid)){</php>
                         
                     <php>} else {</php>
                         <span class="vline">|</span><span class="cGray2">已加入群组</span> <a href="javascript:quitgroup({$gid})">退出</a>
                     <php>}</php>
-              </p>
+                    
+              </div>
+        </div>
+              
                 <p class="hd"><a href="{:U('group/Group/index', array('gid'=>$gid))}">{$groupinfo['name']}</a> <span  class="f12px cGray2 fw100 fn">({$groupinfo['membercount']}人)</span></p>
                 <p class="member"><if condition=" $groupinfo['need_invite'] eq 1 "> <if condition=" $isadmin ">等待审核成员：{$gid|getApplyCount}人</if></if>         </p>
                 <p class="date">创建时间：{$groupinfo['ctime']|friendlyDate}</p>

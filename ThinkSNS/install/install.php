@@ -8,7 +8,7 @@ session_start();
 define('THINKSNS_INSTALL', TRUE);
 define('THINKSNS_ROOT', str_replace('\\', '/', substr(dirname(__FILE__), 0, -7)));
 
-$_TSVERSION = '2.5';
+$_TSVERSION = '2.8';
 
 include 'install_function.php';
 include 'install_lang.php';
@@ -264,7 +264,7 @@ elseif ($v == '3')
 <p><input type="password" name="db_password" value="" size="40" class='input' /></p>
 
 <h5><?php echo $i_message['install_mysql_name'];?></h5>
-<p><input type="text" name="db_name" value="thinksns_2_5" size="40" class='input' />
+<p><input type="text" name="db_name" value="thinksns_2_8" size="40" class='input' />
 </p>
 
 <h5><?php echo $i_message['install_mysql_prefix'];?></h5>

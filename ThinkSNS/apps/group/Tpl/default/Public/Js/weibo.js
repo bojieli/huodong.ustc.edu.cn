@@ -214,7 +214,7 @@ weibo.prototype = {
 	},
 	publish_type_box:function(type_num,content,mg_left){
 		var __THEME__ = "<?php echo __THEME__;?>";
-		var html = '<div class="talkPop"><div  style="position: relative; height: 7px; line-height: 3px;z-index:99">'
+		var html = '<div class="talkPop" ><div  style="position: relative; height: 7px; line-height: 3px;z-index:99">'
 		     + '<img class="talkPop_arrow" style="margin-left:'+ mg_left +'px;position:absolute;" src="'+__THEME__+'/images/zw_img.gif" /></div>'
              + '<div class="talkPop_box">'
 			 + '<div class="pop_tit close" id="weibo_close_handle"><a href="javascript:void(0)" class="del" onclick=" delTypeBox()" > </a></div>'
@@ -244,7 +244,7 @@ weibo.prototype = {
 					}	
 				});	
 			});
-	},
+	}
 
 }
 

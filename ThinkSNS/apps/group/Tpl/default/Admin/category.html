@@ -23,6 +23,8 @@
 		<th class="line_l">分类名</th>
 		<th class="line_l">操作</th>
 	</tr>
+	{$category_tree|cateTree}
+	<!--
 	<volist name="category_tree" id="category_top">
 	<tr>
 		<td><strong>{$category_top['a']}</strong></td>
@@ -38,11 +40,12 @@
 		<td>{$category_top['t']} - {$category_son['t']}</td>
 		<td><a href="javascript:;" onclick="edit('{$category_son['a']}')">修改</a>
 		<a
-			href="{:U('group/Admin/delCategory', array('id'=>$category_son['a']))}"
+			href="{:U('group/Admin/delCategory', array('id'=>$category_son['a'], 'pid'=>$category_top['a']))}"
 			onclick="javascript:return confirm('确实删除“{$category_top['t']} - {$category_son['t']}”？');">删除</a></td>
 	</tr>
 	</volist>
 	</volist>
+	-->
 </table>
 </div>
 </div>
@@ -62,8 +65,7 @@ function checkForm()
 }
 
 /* 编辑分类 */
-function edit(id)
-{
+function edit(id) {
     ui.box.load( '{:U('group/Admin/editCategory')}' + '&id=' + id,{title:'修改'});
 }
 </script>

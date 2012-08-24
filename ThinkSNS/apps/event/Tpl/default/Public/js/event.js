@@ -2,7 +2,7 @@ function EventAction( id,allow,action ){
   $.post( U('event/Index/doAction'),{id:id,allow:allow,action:action},function( text ){
       if( text == 1 ){
         if( allow == 1 ){
-        	ui.success( '您的申请已经成功提交，该活动需要发起人审核，请耐心等待...' );
+        	ui.success( '申请成功，该活动需要发起人审核，请耐心等待...' );
         }else{
         	ui.success( '操作成功' );
         }
@@ -126,7 +126,7 @@ function endEvent( id ){
             if( text == 1 ){
               ui.success('提前结束活动成功');
               $('#event_satus_' + id).html('活动结束');//活动列表
-              $('#event_satus').html('此活动已经结束,报名时间已到');//活动详细页
+              $('#event_satus').html('此活动已经结束');//活动详细页
               $('#event_edit_button').html('');//活动详细页
             }else if( text == -1 ){
               ui.error( '非法访问' );
@@ -169,24 +169,46 @@ function removeHTMLTag(str) {
 function check(){
   var title      = $( '#title' ).val();
   var type       = $( '#type' ).val();
+  var address    = $( '#address' ).val();
   var limitCount = $( '#limitCount' ).val();
   var explain    = getEditorContent('explain');//$( '#explain' ).val();
   var stime      = $( '#sTime' ).val();
   var etime      = $( '#eTime' ).val();
   var deadline      = $( '#deadline' ).val();
-
-  if( title.length<4 ) {alert( '标题必须大于4个字符' ); return false;}
-  if( type == 0 ) {alert( '请选择类型' );return false;}
-  if( type == 0 ) {alert( '请选择类型' );return false;}
+  
+  if(!title || getLength(title.replace(/\s+/g,"")) == 0){
+	  ui.error("活动名称不能为空");
+	  return false;
+  }
+  if( title.length<4 ) {
+	  ui.error( '活动名称必须大于4个字符' );
+	  return false;
+  }
+  if( address == 0 ) {
+	  ui.error( '请填写活动地点' );
+	  return false;
+  }
+  if( type == 0 ) {
+	  ui.error( '请选择活动分类' );
+	  return false;
+  }
   //if ( limitCount.test( '/^d+$/' ) ){alert( '人数只允许数字类型' ) return false}
-  
- 
   explain = removeHTMLTag(explain);
-  
-  if(explain.length <10 ){alert( '描述不得小于10个字符' );return false;}
-  
-  if( !stime ) {alert( '请填写开始时间' );return false;}
-  if( !etime ) {alert( '请填写结束时间' );return false;}
-  if( !deadline ) {alert( '请填写截至报名时间' );return false;}
+
+  if(explain.length <10 ){
+	  ui.error( '活动介绍不得小于10个字符' );
+	  return false;
+  }
+  if( !stime ) {
+	  ui.error( '请填写开始时间' );
+	  return false;}
+  if( !etime ) {
+	  ui.error( '请填写结束时间' );
+	  return false;
+  }
+  if( !deadline ) {
+	  ui.error( '请填写截止报名时间' );
+	  return false;
+  }
   return true;
 }

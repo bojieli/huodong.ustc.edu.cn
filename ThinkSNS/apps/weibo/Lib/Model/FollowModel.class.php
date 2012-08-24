@@ -200,6 +200,7 @@ class FollowModel extends Model{
 		$following = array(); // 已关注的用户
 		$top_user  = array(); // 最终结果
 
+
 		if ($uid > 0) {
 			$following = $this->query($this->getNowFollowingSql($uid));
 			$following = getSubByKey($following, 'fid');
@@ -215,45 +216,64 @@ class FollowModel extends Model{
 		if (($top_user = S($cache_id)) === false) {
 
 			// 隐藏无头像用户时, 为了保证最后结果满足$limit, 查询时使用3倍的$limit
-			$limit   += $hide_no_avatar ? $count * 3 : $count;
+			$limit += $hide_no_avatar ? $count * 3 : $count;
 
 			$where = 'WHERE `type` = 0 ';
-			if ($hide_auto_friend) { // 隐藏默认关注的用户时
+
+			// 隐藏默认关注的用户时，limit+默认关注用户人数，再去掉默认关注用户，这样效率更好
+			if ($hide_auto_friend) { 
 				$auto_friend = model('Xdata')->get('register:register_auto_friend');
+			
 				$auto_friend = explode(',', $auto_friend);
-				if (count($auto_friend) > 1)
-					$where .= 'AND `fid` NOT IN ( ' . implode(',', $auto_friend) . ' )';
+				//if (count($auto_friend) > 1)
+				//	$where .= 'AND `fid` NOT IN ( ' . implode(',', $auto_friend) . ' )';
+				$auto_friend_count = count($auto_friend);
+				$limit += $auto_friend_count;
 			}
+			
+			//$sql = "SELECT `fid` AS `uid`, count(`uid`) AS `count` FROM {$this->tablePrefix}weibo_follow " .
+			//	   $where . " GROUP BY `fid` " .
+			//	   "ORDER BY `count` DESC LIMIT {$limit}";
+			
 			$sql = "SELECT `fid` AS `uid`, count(`uid`) AS `count` FROM {$this->tablePrefix}weibo_follow " .
 				   $where . " GROUP BY `fid` " .
 				   "ORDER BY `count` DESC LIMIT {$limit}";
+			
+
 			$res = $this->query($sql);
 			$res = $res ? $res : array();
-
+			
 			if (!empty($res)) { // 过滤
-				$index = 1;
 				$noPic = array();
 				foreach ($res as $k => $v) {
-					if ($index > $count) {
-						break;
-					} else if ($hide_no_avatar && !hasUserFace($v['uid'])) { // 剔除无头像的用户
-						$noPic[] = $v;
+					//剔除默认关注用户
+					if ($hide_auto_friend && in_array($v['uid'], $auto_friend)) { 
 						unset($res[$k]);
-						continue ;
-					} else if ($uid > 0 && in_array($v['uid'], $following)) { // 剔除已关注的用户
+					//剔除已关注用户
+					}elseif ($uid > 0 && in_array($v['uid'], $following)) { 
 						unset($res[$k]);
-						continue ;
+					}else{
+						$top_user[] = $v;
 					}
-					$top_user[] = $v;
-					++ $index;
 				}
+				unset($res);
+				//剔除无头像的用户
+				foreach ($top_user as $k=>$v){
+					if ($hide_no_avatar && !hasUserFace($v['uid'])) { 
+						$noPic[] = $v;
+						unset($top_user[$k]);
+					}
+				}
+				//如果全都是无头像的.那就补充上去
+				if(empty($top_user) && !empty($noPic))
+					$top_user = $noPic;
 			}
-			unset($res);
-			if(empty($top_user) && !empty($noPic)){
-				$top_user = $noPic;
-			}
+			
+			//截取需要的前$count个
+			if(is_array($top_user))
+				$top_user = array_slice($top_user, 0, $count);
 
-			S($cache_id,empty($top_user)?array():$top_user,$expire);
+			S($cache_id, $top_user, $expire);
 		}
 
 		return $top_user;

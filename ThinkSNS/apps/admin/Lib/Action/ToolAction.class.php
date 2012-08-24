@@ -110,7 +110,7 @@ class ToolAction extends AdministratorAction {
 			if($dh = opendir($dir)){
 				while (($filename = readdir($dh)) !== false) {
 					if($filename != '.' && $filename != '..'){
-            			if(substr($filename,strrpos($filename,'.')) == '.sql'){
+            			if(substr($filename,strrpos($filename,'.')) == '.sql' || substr($filename,strrpos($filename,'.')) == '.php'){
             				$file = $dir.$filename;
             				$filemtime = date('Y-m-d H:i:s',filemtime($file));
             				$addtime[] = $filemtime;
@@ -186,9 +186,11 @@ class ToolAction extends AdministratorAction {
 		!$complete && $tableid--;
 
 		if ( trim($tabledump) ) {
-			$filepath = './data/database/'.$filename."_$volume".'.sql';
-			$fp = @fopen($filepath,'wb');
-			
+			// $filepath = './data/database/'.$filename."_$volume".'.sql';
+			$filepath = './data/database/'.$filename."_$volume".'.php';
+			$fp = @fopen($filepath,'ab');
+			fwrite($fp, "#<?php exit;?>\n\n");
+			fwrite($fp,$tabledump);
 			if ( ! fwrite($fp,$tabledump) ) {
 				$this->error('文件目录写入失败, 请检查data目录是否可写');
 			}else {
@@ -238,7 +240,8 @@ class ToolAction extends AdministratorAction {
 		$_POST['selected'] = explode(',', t($_POST['selected']));
 		
 		foreach($_POST['selected'] as $file){
-			$file = './data/database/'.$file.'.sql';
+			// $file = './data/database/'.$file.'.sql';
+			$file = './data/database/'.$file.'.php';
 			file_exists($file) && @unlink($file);
 		}
 		
@@ -328,7 +331,7 @@ class ToolAction extends AdministratorAction {
 	 * 邀请统计
 	 */
 	public function inviteRecord()
-	{
+	{	
 		$records = model('InviteRecord')->getStatistics($_POST['uid']);
 		$this->assign($records);
 		$this->display();
@@ -396,5 +399,20 @@ class ToolAction extends AdministratorAction {
 		model('Xdata')->lput('cnzz', $data);
 		$this->assign('jumpUrl', U('admin/Tool/cnzz'));
 		$this->success('删除成功');
+	}
+
+	public function doDownload(){
+		$filename = $_REQUEST['filename'];
+		//下载函数
+		require_cache('./addons/libs/Http.class.php');
+		$file_path = SITE_PATH.'/data'.'/database' . '/' .$filename;
+		// $file_path = UPLOAD_PATH . '/' .$attach['savepath'] . $attach['savename'];
+		if(file_exists($file_path)) {
+			$filename = iconv("utf-8",'gb2312',$filename);
+			Http::download($file_path, $filename);
+		}else{
+			$this->error("数据不存在！");
+		}
+
 	}
 }

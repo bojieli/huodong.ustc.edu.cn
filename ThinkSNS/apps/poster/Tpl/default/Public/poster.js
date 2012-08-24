@@ -54,14 +54,16 @@ $(function(){
 });
 
 function check(type){
+    var title = $('#title').val();
 	if(type==true){
 		if($(':radio[name=type][checked]').val() == null){
 			ui.error("类别没有选择");
 			return false;
 		}
 	}
-	if($('#title').val() == ""){
+	if(!title || getLength(title.replace(/\s+/g,"")) == 0){
 		ui.error('请输入标题');
+		$("#title").focus();
 		return false;
 	}
 	if($('#title').val().length >30) {
@@ -76,10 +78,24 @@ function check(type){
 		ui.error("截止时间不能在当前时间之前");
 		return false;
 	}
-	
-	
+	if(getEditorContent('explain') == '' || checkPostContent(getEditorContent('explain')) == 0){
+		ui.error("详细介绍不能为空");
+		$("#explain").focus();
+		return false;
+	}
+
 	return true;
 }
+//过滤html，字串检测长度
+function checkPostContent(content)
+{
+	content = content.replace(/&nbsp;/g, "");
+	content = content.replace(/<br>/g, "");
+	content = content.replace(/<p>/g, "");
+	content = content.replace(/<\/p>/g, "");
+	return getLength(content);
+}
+
 function currentDate(){
 	//获取当前时间
 	   var myDate= new Date();
@@ -90,7 +106,7 @@ function currentDate(){
 	   var Minute = 0;
 	   var Second = 0;
 	   var currentDate = "";
-	   //初始化时间   
+	   //初始化时间
 	   Year       = myDate.getFullYear();
 	   Month      = myDate.getMonth()+1;
 	   Day        = myDate.getDate();

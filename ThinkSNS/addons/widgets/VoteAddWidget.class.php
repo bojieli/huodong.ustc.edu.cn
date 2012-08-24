@@ -17,7 +17,7 @@ class VoteAddWidget extends Widget
 		self::$rand ++;
 		$data['rand'] = self::$rand;
 		$data['time'] = getdate();
-		$data['count'] = 3;
+		$data['count'] = 2;
 		$data['exit'] = isset($data['exit'])?$data['exit']:true;
 		$content = $this->renderFile(ADDON_PATH . '/widgets/VoteAdd.html',$data);
 		return $content;

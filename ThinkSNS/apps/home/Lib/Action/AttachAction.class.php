@@ -240,8 +240,11 @@ class AttachAction extends Action{
 		//加密传输这个字段,防止客户端乱设置.
 		$options['allow_exts']	=	t(jiemi($_REQUEST['exts']));
 		$options['allow_size']	=	t(jiemi($_REQUEST['size']));
+		$jiamiData = jiemi(t($_REQUEST['token']));
+		list($options['allow_exts'], $options['need_review'], $fid) = explode("||", $jiamiData);
 		$options['limit']       =   intval(jiemi($_REQUEST['limit']));
 		$options['now_pageCount'] = intval($_REQUEST['now_pageCount']);
+
 		$info	=	X('Xattach')->upload($attach_type,$options);
 		if($info['status']==true){
 			unset($info['info'][0]['savename']);

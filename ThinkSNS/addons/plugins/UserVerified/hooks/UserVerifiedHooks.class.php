@@ -21,30 +21,39 @@ class UserVerifiedHooks extends Hooks
 	public function home_account_show()
 	{
     	$verified = M('user_verified')->where("uid={$this->mid}")->find();
+    	$verifyruler = model('Xdata')->lget('square', $_POST);
+    	$this->assign('verifyruler',$verifyruler);
     	$this->assign('verified', $verified);
     	$this->display('home_account_show');
 	}
 
 	public function home_account_do($param)
 	{
+    	$data['attachment']=$_POST['attach']['0'];
     	$data['uid'] 	  = $this->mid;
-    	$data['realname'] = preg_match('/^[\x{4e00}-\x{9fa5}]+$|^[a-zA-Z\.·]+$/u', $_POST['realname']) ? $_POST['realname'] : '';
+    	$data['realname'] = preg_match('/^[\x{2e80}-\x{9fff}]+$|^[a-zA-Z\.·]+$/u', $_POST['realname']) ? $_POST['realname'] : '';
     	$data['phone']	  = preg_match('/^[\d]{11}$/', $_POST['phone']) ? $_POST['phone'] : '';
-    	$data['reason']	  = h(t($_POST['reason']));
+    	$data['reason']	  = h($_POST['reason']);
+    	$data['reasonLength'] = strlen($data['reason']);
+    	if($data['reasonLength'] == 0){
+    		$this->error('认证资料不能为空');
+    	}
     	if (!$data['realname'] || !$data['phone'] || !$data['reason']) {
     		echo 0;
     	}
     	$data['verified'] = '0';
     	if (is_numeric($_POST['id']) && $_POST['id'] > 0) {
     		$data['id'] = $_POST['id'];
-    		$res = M('user_verified')->save($data);
+    		$res = M('user_verified')->where('uid ='.$this->mid)->save($data);
     	} else {
     		$res = M('user_verified')->add($data);
     	}
     	if (false !== $res) {
-    		echo 1;
+    		// echo 1;?    		
+    		$this->success('保存成功');
     	} else {
-    		echo 0;
+    		$this->error('保存失败');
+    		// echo 0;
     	}
 	}
 
@@ -86,10 +95,11 @@ class UserVerifiedHooks extends Hooks
 	public function verified()
 	{
     	//为使搜索条件在分页时也有效，将搜索条件记录到SESSION中
+
 		if ( !empty($_POST) ) {
 			$_SESSION['admin_searchVerifiedUser'] = serialize($_POST);
     		$this->assign('type', 'searchUser');
-		}else if ( isset($_GET[C('VAR_PAGE')]) ) {
+		}else if ( isset($_GET[C('VAR_PAGE')]) && !is_null($_SESSION['admin_searchVerifiedUser']) ) {
 			$_POST = unserialize($_SESSION['admin_searchVerifiedUser']);
     		$this->assign('type', 'searchUser');
 		}else {
@@ -103,13 +113,49 @@ class UserVerifiedHooks extends Hooks
 
     	$verified = ('verifying' == $_GET['page']) ? '0' : '1';
 		$map['verified'] = "{$verified}";
-
+		$dataList = M('user_verified')->where($map)->findPage();
+		$data =$dataList['data'];
+		foreach ($data as $v) {
+			$attach_id = $v['attachment'];
+			$attach = D('attach')->where('id ='.$attach_id)->find();
+			$v['attachment'] = $attach['name'];
+            $data = $attach['id'];
+            $attach_id = array('attach_id' =>$data);
+            $v = array_merge($v,$attach_id);
+            $data1[] = $v;
+		}
+		$this->assign('data1',$data1);
     	$this->assign($_POST);
     	$this->assign('verified', $verified);
-    	$this->assign(M('user_verified')->where($map)->findPage());
+    	$this->assign($dataList);
 		$this->display('verified');
 	}
+   /*
+     * 下载附件
+     */
+    public function download(){
+        $aid    =   intval($_REQUEST['id']);
 
+        $attach   =   M('attach')->where("id={$aid}")->find();
+        //$attach   =   model('Xattach')->where("id='$aid'")->find();
+        if(!$attach){
+            $this->error('附件不存在或者已被删除！');
+        }
+        //下载函数
+        //import("ORG.Net.Http");             //调用下载类
+        require_cache('./addons/libs/Http.class.php');
+        if(file_exists(UPLOAD_PATH.'/'.$attach['savepath'].$attach['savename'])) {
+            //增加下载次数
+            //model('Xattach')->setInc('totaldowns',"id={$aid}");    
+            //输出文件
+            $filename   =   $attach['name'];
+            $filename   =   auto_charset($filename,"UTF-8",'GBK');
+            //$filename =   'attach_'.$attach['id'].'.'.$attach['extension'];
+            Http::download(UPLOAD_PATH.'/'.$attach['savepath'].$attach['savename'],$filename);
+        }else{
+            $this->error('附件不存在或者已被删除！');
+        }
+    }
 	public function doVerifiedTab()
 	{
 		if (intval($_GET['uid']) > 0) {
@@ -128,6 +174,19 @@ class UserVerifiedHooks extends Hooks
     		$this->assign('jumpUrl', $_SERVER['HTTP_REFERER']);
     	}
     	$this->display('addVerifiedUser');
+	}
+
+	public function setVerifyRuler()
+	{
+		// $data	=	model('AddonData')->get('verifyruler');
+		$data = model('Xdata')->lget('square', $_POST);
+		$this->assign($data);
+    	$this->display('setVerifyRuler');
+	}
+
+	public function saveVerifyRuler()
+	{
+		 model('Xdata')->lput('square', $_POST);
 	}
 
     public function doVerified()
@@ -169,23 +228,37 @@ class UserVerifiedHooks extends Hooks
     	$data = M('user_verified')->create();
     	if (!$data['uid']) {
     		$this->error('请选择用户');
-    	} else if (!$data['info']) {
+    	} 
+    	if (!$data['info']) {
     		$this->error('请填写认证资料');
-    	} else {
-    		if ($data['id'] > 0) {
-    			$res = M('user_verified')->save();
-    		} else {
-    			$res = M('user_verified')->add();
-    		}
-    		if (false !== $res) {
+    	} 
+
+    	$uid = t($_POST['uid']);
+        $res_user = M('user')->where('uid ='.$_POST['uid'])->find();
+        if(!$res_user){
+           $this->error('该用户不存在！');
+        }
+        $res_search = M('user_verified')->where('uid ='.$_POST['uid'])->find();
+        if($res_search['verified'] != $_POST['verified']){
+	        $map['uid'] =  t($_POST['uid']);
+	        if($res_search['verified'] == 1){
+	          $data['verified'] = "0";  
+	        }
+	        if($res_search['verified'] == 0){
+	            $data['verified'] = "1";
+	        }
+	    }
+       $res = M('user_verified')->where($map)->save($data);
+       if (false !== $res) {
     		    $this->_removeVerifiedCache($data['uid']);
-    			$jumpUrl = $_POST['jumpUrl'] ? $_POST['jumpUrl'] : U('admin/User/addVerifiedUser');
+    		    #http://localhost/ts/index.php?app=admin&mod=Addons&act=admin&pluginid=7&page=addVerifiedUser
+    			// $jumpUrl = $_POST['jumpUrl'] ? $_POST['jumpUrl'] : U('admin/User/addVerifiedUser');
+    			$jumpUrl = $_POST['jumpUrl'] ? $_POST['jumpUrl'] : U('admin/Addons/admin').'&pluginid=7&page=addVerifiedUser';
     			$this->assign('jumpUrl', $jumpUrl);
     			$this->success();
     		} else {
     			$this->error();
     		}
-    	}
     }
 
     public function deleteVerified()

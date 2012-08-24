@@ -97,8 +97,8 @@ function removeItem(ids) {
 	    <td>{$vo.fieldkey}</td>
 	    <td>{$vo.fieldname}</td>
 	    <td><switch name="vo.module"><case value="base">基本资料</case><case value="intro">个人情况</case><case value="contact">联系方式</case></switch></td>
-	    <td><eq name="vo.status" value="1">是<else />否</eq></td>
-	    <td><eq name="vo.showspace" value="1">是<else />否</eq></td>
+	    <td><eq name="vo.status" value="1"><a href="{:U('admin/user/setStatus',array('id'=>$vo['id']))}">是</a><else /><a href="{:U('admin/user/setStatus',array('id'=>$vo['id']))}">否</a></eq></td>
+	    <td><eq name="vo.showspace" value="1"><a href="{:U('admin/user/setSpace',array('id'=>$vo['id']))}">是</a><else /><a href="{:U('admin/user/setSpace',array('id'=>$vo['id']))}">否</a></eq></td>
 	    <td><a href="javascript:void(0);" onclick="deleteField('{$vo['id']}');">删除</a></td>
 	  </tr>
    </volist>

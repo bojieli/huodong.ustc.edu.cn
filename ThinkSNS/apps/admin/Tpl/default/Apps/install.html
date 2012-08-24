@@ -24,7 +24,7 @@
   
   <volist id="vo" name="uninstalled">
       <tr overstyle='on' id="app_{$vo['uid']}">
-        <td><img src="{$vo['icon_url']}" width="30" /></td>
+        <td><img src="{:getAppIconUrl($vo['icon_url'],$vo['app_name'])}" width="30" /></td>
         <td>
             <php>if(!empty($vo['homepage_url'])){</php>
             <a href="{$vo['homepage_url']}" target="_blank">{$vo['app_name']}</a>

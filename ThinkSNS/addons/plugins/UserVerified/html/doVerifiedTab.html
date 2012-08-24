@@ -3,8 +3,8 @@ var doVerified = function(id)
 {
 	var $info = $('#info')
 	var info  = $info.val()
-	if ( '' == info || undefined == info) {
-		ui.error('请输入认证身份');
+	if ( '' == info || undefined == info || getLength(info.replace(/\s+/g,"")) == 0) {
+		alert('请输入认证身份');
 		$info.focus();
 		return false;
 	}

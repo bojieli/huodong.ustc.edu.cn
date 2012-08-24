@@ -153,7 +153,7 @@ function getApplyCount($gid){
 
 //获取群组分类
 function getCategorySelect($pid=0) {
-	return json_encode(D('Category')->_makeTree($pid));
+	return json_encode(D('Category')->_maskTreeNew($pid));
 }
 
 //给城市下拉菜单赋值
@@ -314,4 +314,29 @@ function getSiteTitle(){
 		'member_index'=>'成员',
 
 	);
+}
+
+//无限极分类
+function cateTree($data,$p='',$pid){
+	$p = empty($p) ? '' : $p.' - ';
+	$cls = empty($p) ? "style ='font-weight:bold'" : '';
+	$html = '';
+	foreach($data as $k) {
+		$html .= "<tr>
+				  <td $cls>".$k['a']."</td>
+				  <td $cls> ".$p.$k['t']."</td>
+				  <td $cls>
+				  <a href='javascript:;' onclick='edit(".$k['a'].")'>修改</a>&nbsp;";
+
+		if(empty($p)) {
+			$html .= "<a href='".U('group/Admin/delCategory', array('id'=>$k['a']))."' onclick='javascript:return confirm('确实删除“".$k['t']."”？');'>删除</a>";
+		} else {
+			$html .= "<a href='".U('group/Admin/delCategory', array('id'=>$k['a'], 'pid'=>$pid))."' onclick='javascript:return confirm('确实删除“".$p.$k['t']."”？');'>删除</a>";
+		}
+
+		$html .= "</td></tr>";	  
+		$html .= !empty($k['d']) ? cateTree($k['d'], $p.$k['t'], $k['a']) : '';
+    }
+
+    return $html;
 }

@@ -213,6 +213,7 @@ class IndexAction extends Action {
         //处理选项
         $opts['cost']        = intval( $_POST['cost'] );
         $opts['costExplain'] = t( $_POST['costExplain'] );
+        $opts['costExplain'] = keyWordFilter(t($_POST['costExplain']));
         $friend              = isset( $_POST['friend'] )?1:0;
         $allow               = isset( $_POST['allow'] )?1:0;
         $opts['opts']        = array( 'friend'=>$friend,'allow'=>$allow );
@@ -278,6 +279,7 @@ class IndexAction extends Action {
         $test = array( $id,$uid );
         //检测id和uid是否为0
         if( false == $this->checkUrl( $test ) ) {
+            $this->assign('jumpUrl',U('Event/Index/index'));
             $this->error( "错误的访问页面，请检查链接" );
         }
 
@@ -291,6 +293,7 @@ class IndexAction extends Action {
             $this->setTitle($result['title'].' - '.$result['time'].' - '.$result['city'].' - '.$result['address'].' - '.$result['type']);
             $this->display();
         }else {
+            $this->assign('jumpUrl',U('Event/Index/index'));
             $this->error( '错误的访问页面，请检查链接' );
         }
     }

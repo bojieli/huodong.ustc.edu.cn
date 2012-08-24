@@ -1,24 +1,3 @@
--- phpMyAdmin SQL Dump
--- version 3.3.4
--- http://www.phpmyadmin.net
---
--- 主机: localhost
--- 生成日期: 2011 年 06 月 28 日 11:13
--- 服务器版本: 5.0.22
--- PHP 版本: 5.3.2
-
-SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
-
-
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8 */;
-
---
--- 数据库: `sociax_2_0`
---
-
 -- --------------------------------------------------------
 
 --
@@ -518,19 +497,19 @@ VALUES
 
 #积分配置
 DELETE FROM `ts_credit_setting` WHERE `type` = 'group';
-INSERT INTO `ts_credit_setting` (`name`, `alias`, `type`, `info`, `score`, `experience`)
-VALUES
-	('add_group', '创建群组', 'group', '{action}{sign}了{score}{typecn}', '5', '5'),
-	('delete_group', '解散群租', 'group', '{action}{sign}了{score}{typecn}', '-5', '-5'),
-	('join_group', '加入群组', 'group', '{action}{sign}了{score}{typecn}', '2', '2'),
-	('quit_group', '退出群组', 'group', '{action}{sign}了{score}{typecn}', '-2', '-2'),
-	('group_add_topic', '发表帖子', 'group', '{action}{sign}了{score}{typecn}', '5', '5'),
-	('group_reply_topic', '回复帖子', 'group', '{action}{sign}了{score}{typecn}', '2', '2'),
-	('group_delete_topic', '删除帖子', 'group', '{action}{sign}了{score}{typecn}', '-5', '-5'),
-	('group_upload_file', '上传文件', 'group', '{action}{sign}了{score}{typecn}', '5', '5'),
-	('group_download_file', '下载文件', 'group', '{action}{sign}了{score}{typecn}', '2', '2'),
-	('group_delete_file', '删除文件', 'group', '{action}{sign}了{score}{typecn}', '-5', '-5');
+INSERT INTO `ts_credit_setting` (`id`, `name`, `alias`, `type`, `info`, `score`, `experience`) 
+VALUES  
+	('', 'add_group', '创建群组', 'group', '{action}{sign}了{score}{typecn}', '5', '5'),
+	('', 'delete_group', '解散群租', 'group', '{action}{sign}了{score}{typecn}', '-5', '-5'),
+	('', 'join_group', '加入群组', 'group', '{action}{sign}了{score}{typecn}', '2', '2'),
+	('', 'quit_group', '退出群组', 'group', '{action}{sign}了{score}{typecn}', '-2', '-2'),
+	('', 'group_add_topic', '发表帖子', 'group', '{action}{sign}了{score}{typecn}', '5', '5'),
+	('', 'group_reply_topic', '回复帖子', 'group', '{action}{sign}了{score}{typecn}', '2', '2'),
+	('', 'group_delete_topic', '删除帖子', 'group', '{action}{sign}了{score}{typecn}', '-5', '-5'),
+	('', 'group_upload_file', '上传文件', 'group', '{action}{sign}了{score}{typecn}', '5', '5'),
+	('', 'group_download_file', '下载文件', 'group', '{action}{sign}了{score}{typecn}', '2', '2'),
+	('', 'group_delete_file', '删除文件', 'group', '{action}{sign}了{score}{typecn}', '-5', '-5');
 
-INSERT INTO `ts_system_data` (`uid`,`list`,`key`,`value`,`mtime`) 
+REPLACE INTO `ts_system_data` (`uid`,`list`,`key`,`value`,`mtime`) 
 VALUES 
-    (0,'group','version_number','s:5:"28172";','2012-02-14 10:00:00');
+    (0,'group','version_number','s:5:"33566";','2012-07-12 00:00:00');

@@ -13,7 +13,7 @@
                 <dt>将应用"{$app_alias}"添加到您的账户吗？</dt>
                 <dd style="width:285px; ">
                     <php>if(empty($large_icon_url)) $large_icon_url = $icon_url;</php>
-                    <div class="appIco"><img src="{$large_icon_url}" /></div>
+                    <div class="appIco"><img src="{:getAppIconUrl($large_icon_url,$app_name);}" /></div>
                     <!-- 
                     <div class="tishi">
                         <strong>隐私提示：</strong>

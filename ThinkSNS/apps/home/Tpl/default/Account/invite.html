@@ -23,7 +23,7 @@
                  <php>if($receivecount){</php>
 				 <form act="{:U('home/Account/invite')}" method="post">
 				 	<div class="lh30">
-				 	<input type="submit" value="领取邀请码" class="btn_green_w121 hand" />   您目前拥有<span class="cRed">{$receivecount}个</span>邀请码，每个邀请码可以邀请1个朋友
+				 	<!-- <input type="submit" value="领取邀请码" class="btn_green_w121 hand" /> -->   您目前拥有<span class="cRed">{$receivecount}个</span>邀请码，每个邀请码可以邀请1个朋友
 					</div>
 				</form>
 				<php>}</php>
@@ -36,7 +36,7 @@
                     <ul>
                     <volist name="list" id="vo">
                       <li>
-                          <div class="left alR"><input type="text"  class="text" style="width:450px;" onfocus="this.className='text2'" onblur="this.className='text'"  name="intro[{$vo.field}]" value="{:SITE_URL}/index.php?invite={$vo.code}"/></div><div class="left ml5 pb5"><embed width="62" height="24" align="middle" type="application/x-shockwave-flash" pluginspage="http://www.adobe.com/go/getflashplayer" allowscriptaccess="sameDomain" wmode="transparent" quality="high" src="__PUBLIC__/js/copy.swf" flashvars="txt={:SITE_URL}/index.php?invite={$vo.code}"></div>
+                          <div class="left"><input type="text"  class="text" style="width:450px;" onfocus="this.className='text2'" onblur="this.className='text'"  name="intro[{$vo.field}]" value="{:SITE_URL}/index.php?invite={$vo.code}"/></div><div class="left ml5"><embed width="62" height="24" align="middle" type="application/x-shockwave-flash" pluginspage="http://www.adobe.com/go/getflashplayer" allowscriptaccess="sameDomain" wmode="transparent" quality="high" src="__PUBLIC__/js/copy.swf" flashvars="txt={:SITE_URL}/index.php?invite={$vo.code}"></div>
                         </li>
                     </volist>
 					</ul>

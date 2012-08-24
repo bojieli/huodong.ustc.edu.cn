@@ -116,19 +116,3 @@ function isAddApp() {
 function friend_areFriends() {
 	return true;
 }
-
-/**
- * browseCount
- * 浏览计数
- * 返回ture为可以计数。返回false为不需要计数
- * @param mixed $type 应用名，请用APP_NAME做参数
- * @param mixed $id 应用ID
- * @param mixed $uid 当前访问者ID
- * @param mixed $lifttime 防刷新时间.单位秒
- * @access public
- * @return true|false
-// */
-//function browseCount( $type,$id,$uid,$lifttime = 30 ) {
-//    $options = array( 'id'=>$id,'uid'=>$uid,'type'=>$type,'lefttime'=>$lifttime );
-//    return B( 'Browse',$options );
-//}

@@ -43,7 +43,7 @@
     <a href="javascript:void(0);" class="btn_a" onclick="searchAttach();">
         <span class="search_action"><neq name="isSearch" value="1">搜索附件<else/>搜索完毕</neq></span>
     </a>
-    <a href="javascript:void(0);" class="btn_a" onclick="deleteFile();"><span>删除记录</span></a>
+    <a href="javascript:void(0);" class="btn_a" onclick="deleteFile();"><span>删除附件</span></a>
   </div>
   <div class="list">
   <table width="100%" border="0" cellspacing="0" cellpadding="0">
@@ -75,12 +75,14 @@
         <td>{$vo.extension}</td>
         <td>{$vo.uploadTime|date="Y-m-d H:i",###}</td>
         <td>
+            <php>/*
         	<if condition="$vo['weibo_id']">
         	  <a href="{:U('home/Space/detail', array('id'=>$vo['weibo_id']))}" target="_blank">[查看微博]</a>
         	<else />
         	  [查看微博]
         	</if>
-            <a href="javascript:void(0);" onclick="deleteFile('{$vo.id}')">删除记录</a>
+        	*/</php>
+            <a href="javascript:void(0);" onclick="deleteFile('{$vo.id}')">删除附件</a>
         </td>
       </tr>
   </volist>
@@ -91,7 +93,7 @@
     <a href="javascript:void(0);" class="btn_a" onclick="searchAttach();">
         <span class="search_action"><neq name="isSearch" value="1">搜索附件<else/>搜索完毕</neq></span>
     </a>
-    <a href="javascript:void(0);" class="btn_a" onclick="deleteFile();"><span>[删除记录]</span></a>
+    <a href="javascript:void(0);" class="btn_a" onclick="deleteFile();"><span>[删除附件]</span></a>
   </div>
 </div>
 

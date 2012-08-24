@@ -48,17 +48,11 @@ class App
             // 直接读取编译后的项目文件
             C(include RUNTIME_PATH.'/~app.php');
 			//载入基本配置
-			if(is_file(SITE_PATH.'/config.inc.php'))
-				C(include SITE_PATH.'/config.inc.php');
         } else {
             // 预编译项目
             App::build();
         }
         //[/RUNTIME]
-
-        //加载所有插件
-        Addons::loadAllValidAddons();
-
 
         if (!defined('MODULE_NAME'))
             define('MODULE_NAME', App::getModule()); // Module名称
@@ -66,13 +60,23 @@ class App
             define('ACTION_NAME', App::getAction()); // Action操作
 
         // If already slashed, strip.
-        if (get_magic_quotes_gpc()) {
+        if (get_magic_quotes_gpc()) {//get_magic_quotes_gpc取得 PHP 环境变量 magic_quotes_gpc 的值
             $_GET    = stripslashes_deep( $_GET    );
             $_POST   = stripslashes_deep( $_POST   );
             $_COOKIE = stripslashes_deep( $_COOKIE );
         }
 
 		$_REQUEST = array_merge($_GET,$_POST);
+
+        // 重塑Session (必须位于session_start()之前)
+        if (isset($_POST['PHPSESSID'])) {
+            Session::destroy();
+            session_id($_POST['PHPSESSID']);
+        }
+
+        // 初始化Session
+        if (C('SESSION_AUTO_START'))
+            Session::start();
 
         // 初始化运行时缓存
         object_cache_init();
@@ -83,6 +87,10 @@ class App
 
         // 站点设置
         App::checkSiteOption();
+
+        // 加载所有插件
+        if (C('APP_PLUGIN_ON'))
+            Addons::loadAllValidAddons();
 
         // 项目开始标签
         if (C('APP_PLUGIN_ON'))
@@ -95,16 +103,6 @@ class App
         // 允许注册AUTOLOAD方法
         if (C('APP_AUTOLOAD_REG') && function_exists('spl_autoload_register'))
             spl_autoload_register(array('Think', 'autoload'));
-
-        // 重塑Session (必须位于session_start()之前)
-        if (isset($_POST['PHPSESSID'])) {
-            Session::destroy();
-            session_id($_POST['PHPSESSID']);
-        }
-
-        // 初始化Session
-        if (C('SESSION_AUTO_START'))
-            Session::start();
 
         /*
          * 应用调度过滤器
@@ -129,9 +127,9 @@ class App
             	;
             else if (MODULE_NAME == 'Widget' && ACTION_NAME == 'addonsRequest')
                 ;
-            else if (isiOS() || isAndroid()) // iOS和Android跳转至3G版
-                U('w3g/Index/index', '', true);
-            else if (isMobile()) // 其他手机跳转至WAP版
+            //else if (isiPhone() || isAndroid()) // iOS和Android跳转至3G版
+            //   U('w3g/Index/index', '', true);
+            else if (isMobile() && !isiPad()) // 其他手机跳转至WAP版
                 U('wap/Index/index', '', true);
         }
 
@@ -248,7 +246,20 @@ class App
                 $defs = get_defined_constants(TRUE);
 
 			//sociax:2010-1-12 修改核心，删除几个编译后被重复定义的常量。
-			unset($defs['user']['SITE_DOMAIN'],$defs['user']['UPLOAD_PATH'],$defs['user']['SITE_PATH'],$defs['user']['CORE_PATH'],$defs['user']['APPS_PATH'],$defs['user']['ADDON_PATH'],$defs['user']['HAS_ONE'],$defs['user']['BELONGS_TO'],$defs['user']['HAS_MANY'],$defs['user']['MANY_TO_MANY'],$defs['user']['CLIENT_MULTI_RESULTS']);
+			unset( $defs['user']['HTTP_SESSION_STARTED'],
+                $defs['user']['HTTP_SESSION_CONTINUED'],
+                $defs['user']['SITE_DATA_PATH'],
+                $defs['user']['SITE_DOMAIN'],
+                $defs['user']['UPLOAD_PATH'],
+                $defs['user']['SITE_PATH'],
+                $defs['user']['CORE_PATH'],
+                $defs['user']['APPS_PATH'],
+                $defs['user']['ADDON_PATH'],
+                $defs['user']['HAS_ONE'],
+                $defs['user']['BELONGS_TO'],
+                $defs['user']['HAS_MANY'],
+                $defs['user']['MANY_TO_MANY'],
+                $defs['user']['CLIENT_MULTI_RESULTS'] );
 
                 $content  = array_define($defs['user']);
                 $content .= substr(file_get_contents(RUNTIME_PATH.'/~runtime.php'),5);
@@ -348,6 +359,12 @@ class App
 
         // 定义当前语言
         define('LANG_SET', $langSet);
+        // 定义数据库SQL查询的当前语言
+        $sqlLangSet = array(
+            'en' => 'en',
+            'zh-cn' => 'cn',
+        );
+        define('SQL_LANG_SET', $sqlLangSet[$langSet]);
 
         // 加载框架语言包
         if(is_file(THINK_PATH.'/Lang/'.$langSet.'.php'))
@@ -443,17 +460,30 @@ class App
      */
     static private function checkSiteOption(){
         global $ts;
+        
         //初始化站点配置信息，在站点配置中：表情，网站头信息，网站的应用列表，应用权限等
-        $ts['site']     = model('Xdata')->lget('siteopt');
-        // 全站微博、评论字数限制，默认140
-        $ts['site']['length'] = $ts['site']['length'] > 0 ? $ts['site']['length'] : 140;
-        $my_status     = model('Xdata')->lget('myop');
-        $ts['site']['my_status'] = $my_status['my_status'];
+        $ts['site'] = model('Xdata')->lget('siteopt');
+
+        //刷新频率 - 不对后台进行判断
+        // if(APP_NAME != 'admin'){
+        //     $ts['site']['max_refresh_time'] = $ts['site']['max_refresh_time'] > 0 ? $ts['site']['max_refresh_time'] : 1;
+        //     $refresh_key = md5($_SERVER['REQUEST_URI']);
+        //     if(isset($_SESSION['refresh'][$refresh_key]) && ($_SESSION['refresh'][$refresh_key]+$ts['site']['max_refresh_time']) > time()){
+        //         send_http_header('utf8');
+        //         die('不要频繁刷新,请稍候再试!');
+        //     }else{
+        //         $_SESSION['refresh'][$refresh_key] = time();
+        //     }
+        // }
 
         // 检测网站关闭
         if (1 == $ts['site']['site_closed']) {
-            if ( APP_NAME == 'home' && MODULE_NAME == 'Public' && in_array(ACTION_NAME, array('adminlogin','doAdminLogin','verify')) ) {
-                // 管理员登录页面/验证码 不受站点关闭的控制
+            // 管理员登录/管理员退出/验证码相关 不受站点关闭的控制
+            $home_public_action = array(
+                'adminlogin','doAdminLogin','logoutAdmin',
+                'verify', 'code', 'isVerifyAvailableLogin'
+            );
+            if ( APP_NAME == 'home' && MODULE_NAME == 'Public' && in_array(ACTION_NAME, $home_public_action) ) {
                 return ;
 
             }else if (APP_NAME == 'admin') {
@@ -484,7 +514,7 @@ class App
 						$stop_ip = ip2long(str_replace('*','255',$v));
 						$client_ip = ip2long($client_ip);
 						//判断当前是否不在白名单网段
-						if($client_ip>=$start_ip && $start_ip<=$stop_ip){
+						if($client_ip>=$start_ip && $client_ip<=$stop_ip){
 							$in_white_list = true;
 						}
 					}
@@ -512,7 +542,7 @@ class App
 						$stop_ip = ip2long(str_replace('*','255',$v));
 						$client_ip = ip2long($client_ip);
 						//判断当前是否在被屏蔽网段
-						if($client_ip>=$start_ip && $start_ip<=$stop_ip){
+						if($client_ip>=$start_ip && $client_ip<=$stop_ip){
 							$in_black_list = true;
 						}
 					}
@@ -530,6 +560,28 @@ class App
 			}
 		}
 
+		//检查是否启用rewrite
+		if(isset($ts['site']['site_rewrite_on'])){
+			C('URL_ROUTER_ON',($ts['site']['site_rewrite_on']==1));
+		}
+        
+        //初始化manyou设置
+        $my_status = model('Xdata')->lget('myop');
+        $ts['site']['my_status'] = $my_status['my_status'];
+        
+        //全站微博、评论字数限制，默认140
+        $ts['site']['length'] = $ts['site']['length'] > 0 ? $ts['site']['length'] : 140;
+        
+        //全站微博、评论频率
+        $ts['site']['max_post_time'] = $ts['site']['max_post_time'] > 0 ? $ts['site']['max_post_time'] : 5;
+        
+        //最大关注用户数
+        $ts['site']['max_following'] = $ts['site']['max_following'] > 0 ? $ts['site']['max_following'] : 1000;
+        $GLOBALS['max_following'] = $ts['site']['max_following'];
+        
+        //搜索频率
+        $ts['site']['max_search_time'] = $ts['site']['max_search_time'] > 0 ? $ts['site']['max_search_time'] : 5;
+        
         return;
     }
 
@@ -575,6 +627,9 @@ class App
             service('Validation')->dispatchValidation();
         // 验证登录
         if (!service('Passport')->isLogged()) { // 未登录
+            //后台判断
+            if ( MODULE_NAME == 'Admin'  )
+                    redirect(U('home/Public/adminlogin'));
             // 邀请
             if (APP_NAME == 'home' && MODULE_NAME == 'Index' && ACTION_NAME=='index' && isset($_REQUEST['invite']))
                 redirect(SITE_URL.'/index.php?app=home&mod=Public&act=register&invite='.$_REQUEST['invite']);
@@ -793,16 +848,20 @@ class App
       switch ($errno) {
           case E_ERROR:
           case E_USER_ERROR:
-            $errorStr = "[$errno] $errstr ".basename($errfile)." 第 $errline 行.";
-            if(C('LOG_RECORD')) Log::write($errorStr,Log::ERR);
+            if(C('LOG_RECORD')){
+                $errorStr = "[$errno] $errstr ".basename($errfile)." 第 $errline 行.";
+                Log::write($errorStr,Log::ERR);
+            }
             halt($errorStr);
             break;
           case E_STRICT:
           case E_USER_WARNING:
           case E_USER_NOTICE:
           default:
-            $errorStr = "[$errno] $errstr ".basename($errfile)." 第 $errline 行.";
-            Log::record($errorStr,Log::NOTICE);
+            if(C('LOG_RECORD')) {
+                $errorStr = "[$errno] $errstr ".basename($errfile)." 第 $errline 行.";
+                Log::record($errorStr,Log::NOTICE);
+            }
             break;
       }
     }

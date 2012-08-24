@@ -5,7 +5,6 @@ class IndexAction extends Action{
 		echo './Public/miniblog.js';
 	}
 
-
     //加载评论
     function loadcomment(){
         $intMinId = intval( $_POST['id'] );
@@ -34,7 +33,7 @@ class IndexAction extends Action{
     function loadmore(){
         $data['showfeed'] = intval($_REQUEST['showfeed']);
         $data['lastId'] = intval($_POST['since']);
-        $data['type']   = intval($_POST['type']);
+        $data['type']   = t($_POST['type']);
         $data['follow_gid'] = intval($_POST['follow_gid']);
         $uid = isset($_POST['hasUid']) ? intval($_POST['hasUid']):$this->mid;
     	$data['list'] = D('Operate')->loadMore($uid,$data['lastId'],$data['type'],$data['follow_gid']);
@@ -43,21 +42,14 @@ class IndexAction extends Action{
     }
 
     function loadnew(){
-//     	// 每120秒刷新一次!
-//     	if ( !lockSubmit('120') ) {
-//     		exit('<TSAJAX>');
-//     	}
     	$data['showfeed'] = intval($_REQUEST['showfeed']);
     	$data['lastId'] = intval($_POST['since']);
-    	$data['type']   = intval($_POST['type']);
+    	$data['type']   = t($_POST['type']);
     	$data['follow_gid'] = intval($_POST['follow_gid']);
     	$data['limit']      = intval($_POST['limit']);
     	$uid = isset($_POST['hasUid']) ? intval($_POST['hasUid']):$this->mid;
     	$data['list'] = D('Operate')->loadNew($uid,$_POST['since'],$data['limit'],$data['type'],$data['follow_gid']);
     	$this->assign($data);
-
-    	// NO unlockSubmit(); !!!
-
     	$this->display('loadmore');
     }
 
@@ -65,7 +57,7 @@ class IndexAction extends Action{
     function countnew(){
     	$data['showfeed'] = intval($_REQUEST['showfeed']);
     	$data['lastId'] = intval($_POST['lastId']);
-    	$data['type']   = intval($_POST['type']);
+    	$data['type']   = t($_POST['type']);
     	$data['follow_gid'] = intval($_POST['follow_gid']);
     	//重构该处，完全没有用到的功能。
     	//$data['since'] = $list[0]['weibo_id'];

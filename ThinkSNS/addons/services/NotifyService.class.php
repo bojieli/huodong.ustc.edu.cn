@@ -161,7 +161,7 @@ class NotifyService extends Service{
 	 * @return void
 	 */
 	public function send( $receive , $type , $data  , $from ) {
-		$this->__put( $receive , $type , $data , $from );
+		return $this->__put( $receive , $type , $data , $from );
 	}
 
 	/**
@@ -173,7 +173,7 @@ class NotifyService extends Service{
 	 * @return void
 	 */
 	public function sendIn( $receive , $type , $data  ) {
-		$this->__put( $receive , $type , $data  , 0 , true );
+		return $this->__put( $receive , $type , $data  , 0 , true );
 	}
 
 	/**
@@ -274,7 +274,8 @@ class NotifyService extends Service{
 		unset($i_data['data']);
 		extract ( $i_data, EXTR_OVERWRITE );
 		$template_type = explode('_',$i_data['type']);
-		$template = require( SITE_PATH.'/apps/'.$template_type[0].'/Language/cn/notify.php' );
+		if(file_exists(SITE_PATH.'/apps/'.$template_type[0].'/Language/cn/notify.php'))
+			$template = require( SITE_PATH.'/apps/'.$template_type[0].'/Language/cn/notify.php' );
 
 		$return['title']    = str_replace(array_keys($replace),array_values($replace),$template[$i_data['type']]['title']);
 		$return['body']     = str_replace(array_keys($replace),array_values($replace),$template[$i_data['type']]['body']);

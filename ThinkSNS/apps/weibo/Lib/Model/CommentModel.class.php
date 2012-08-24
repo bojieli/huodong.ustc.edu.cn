@@ -3,6 +3,7 @@ class CommentModel extends Model {
     var $tableName = 'weibo_comment';
     //发布评论
     function addcomment($data){
+			$data['comment_ip'] = get_client_ip();
          if( $id= $this->add( $data ) ){
              D('Weibo','weibo')->_removeWeiboCache($data['weibo_id']);
               D('Weibo', 'weibo')->setInc('comment', 'weibo_id='.$data['weibo_id'] );
@@ -19,7 +20,9 @@ class CommentModel extends Model {
         $data['reply_comment_id']   = intval($post['reply_comment_id']);
         $data['weibo_id']   = intval($post['weibo_id']);
         $data['content'] = t(getShort($post['content'],$GLOBALS['ts']['site']['length']));
+        $data['content'] = preg_replace_callback('/((?:https?|ftp):\/\/(?:www\.)?(?:[a-zA-Z0-9][a-zA-Z0-9\-]*\.)?[a-zA-Z0-9][a-zA-Z0-9\-]*(?:\.[a-zA-Z0-9]+)+(?:\:[0-9]*)?(?:\/[^\x{2e80}-\x{9fff}\s<\'\"“”‘’]*)?)/u',getContentUrl, $data['content']);
         $data['ctime']   = time();
+		//$data['comment_ip']		  = get_client_ip();
         $miniInfo = D('Weibo', 'weibo')->where('weibo_id='.$data['weibo_id'].' AND isdel=0')->find();
         if( $data['reply_comment_id'] ){
         	$replyInfo = $this->where('comment_id='.$data['reply_comment_id'].' AND isdel=0')->find();
@@ -117,17 +120,17 @@ class CommentModel extends Model {
 	    	}
 	    	*/
     		//$list = $this->where($map." AND reply_uid=".$uid.' AND isdel=0')->order('comment_id DESC')->findPage();
-    		
-    	
-    		
+
+
+
     		$list = $this->field('c.*')
     					 ->table("{$this->tablePrefix}weibo_comment AS c LEFT JOIN {$this->tablePrefix}weibo AS w ON c.weibo_id=w.weibo_id")
     					 ->where("c.isdel=0 AND w.isdel=0 AND (c.reply_uid={$uid} OR w.uid={$uid} ) and c.uid != {$uid}")
     					 ->order('c.comment_id DESC')
     					 ->findPage(10);
-    		
+
     	}
-    	
+
 
     	// 缓存被评论的微博, 被回复的评论, 评论的发表人, 被回复的用户
     	$ids = getSubBeKeyArray($list['data'], 'comment_id,reply_comment_id,weibo_id,uid,reply_uid');
@@ -153,7 +156,7 @@ class CommentModel extends Model {
     	$pMiniBlog = D('Weibo', 'weibo');
        	$info = $this->where('comment_id='.$id)->find();
        	$webInfo = $pMiniBlog->where('weibo_id='.$info['weibo_id'])->field('uid,comment')->find();
-    	if( $info['uid']==$uid || $webInfo['uid']==$uid ){
+    	if( $info['uid']==$uid || $webInfo['uid']==$uid || $GLOBALS['ts']['isSystemAdmin']){
     		if($info['isdel'] == 0 && $this->setField('isdel',1,'comment_id='.$id.' AND isdel=0')){
     			$pMiniBlog->setDec('comment', 'weibo_id='.$info['weibo_id'] );
     			if($info['uid'] != $info['reply_uid']){//删除自己给自己的评论，不扣积分
@@ -163,6 +166,7 @@ class CommentModel extends Model {
     		}elseif($info['isdel'] == 1){
     			$this->where('comment_id='.$id.' AND isdel=1')->delete();
     		}
+            $pMiniBlog->_removeWeiboCache($info['weibo_id']);
     		$r['boolen'] = 1;
     		$r['message'] = L('del_success');
     		$r['count']   = intval( $webInfo['comment'] -1 );
@@ -175,7 +179,7 @@ class CommentModel extends Model {
 
     //批量删除评论
     function deleteMuleComments($id,$uid) {
-    	$pMiniBlog = D('Weibo');
+    	$pMiniBlog = D('Weibo', 'weibo');
     	$id = is_array($id) ? $id : explode(',', $id);
     	foreach ($id as $k=>$v){
     		$info = $this->where('comment_id='.$v)->find();
@@ -190,6 +194,7 @@ class CommentModel extends Model {
 	    		}elseif($info['isdel'] == 1){
 	    			$this->where('comment_id='.$v.' AND isdel=1')->delete();
 	    		}
+                $pMiniBlog->_removeWeiboCache($info['weibo_id']);
 	    	}
     	}
     	return true;

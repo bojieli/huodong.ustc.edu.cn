@@ -19,18 +19,20 @@ class ManageAction extends BaseAction
 			$group['name']  = h(t($_POST['name']));
 			$group['intro'] = h(t($_POST['intro']));
 			$group['cid0']  = intval($_POST['cid0']);
-			intval($_POST['cid1']) > 0	&& $group['cid1']  = intval($_POST['cid1']);
+			// intval($_POST['cid1']) > 0	&& $group['cid1']  = intval($_POST['cid1']);
+			$cid1 = D('Category')->_digCateNew($_POST);
+			intval($cid1) > 0 && $group['cid1'] = intval($cid1);
 
 			if (!$group['name'])
-				$this->error('标题不能为空');
-			else if (get_str_length($group['name']) > 20)
-				$this->error('标题不能超过20个字节');
+				$this->error('群组名称不能为空');
+			else if (get_str_length($group['name']) > 30)
+				$this->error('群组名称不能超过30个字');
 
 			if (D('Category')->getField('id', 'name=' . $group['name'])) {
 				$this->error('请选择群分类');
 			}
-			if (get_str_length($group['intro']) > 60) {
-				$this->error('群组简介请不要超过60个字');
+			if (get_str_length($group['intro']) > 200) {
+				$this->error('群组简介请不要超过200个字');
 			}
 			if (!preg_replace("/[,\s]*/i", '', $_POST['tags']) || count(array_filter(explode(',', $_POST['tags']))) > 5) {
 				$this->error('标签不能为空或者不要超过5个');
@@ -139,6 +141,12 @@ class ManageAction extends BaseAction
 
 	//操作：设置成管理员，降级成为普通会员，剔除会员，允许成为会员
 	public function memberaction() {
+		$batch = false;
+		$uidArr = explode(',', $_POST['uid']);
+		if(is_array($uidArr)) {
+			$batch = true;
+		}
+
 		if(!isset($_POST['op']) || !in_array($_POST['op'],array('admin','normal','out','allow'))) exit();
 
 		switch ($_POST['op'])
@@ -147,8 +155,19 @@ class ManageAction extends BaseAction
 				if (!iscreater($this->mid,$this->gid)) {
 					$this->error('创建者才有的权限');  // 创建者才可以进行此操作
 				}
-				$content = '将用户 ' . getUserSpace($this->uid, 'fn', '_blank', '@' . getUserName($this->uid)) . '提升为管理员 ';
-				$res = D('Member')->where('gid=' . $this->gid . ' AND uid=' . $this->uid . ' AND level<>1')->setField('level', 2);   //3 普通用户
+				if($batch) {
+					$uidStrLog = array();
+					foreach($uidArr as $val) {
+						$uidInfo = getUserSpace($val, 'fn', '_blank', '@' . getUserName($val));
+						array_push($uidStrLog, $uidInfo);
+					}
+					$uidStr = implode(',', $uidStrLog);
+					$content = '将用户 '.$uidStr.'提升为管理员 ';
+					$res = D('Member')->where('gid=' . $this->gid . ' AND uid IN ('.$_POST['uid'].') AND level<>1')->setField('level', 2);   //3 普通用户
+				} else {
+					$content = '将用户 ' . getUserSpace($this->uid, 'fn', '_blank', '@' . getUserName($this->uid)) . '提升为管理员 ';
+					$res = D('Member')->where('gid=' . $this->gid . ' AND uid=' . $this->uid . ' AND level<>1')->setField('level', 2);   //3 普通用户
+				}
 				break;
 			case 'normal':   // 降级成为普通会员
 				if (!iscreater($this->mid,$this->gid)) {
@@ -158,19 +177,38 @@ class ManageAction extends BaseAction
 				$res = D('Member')->where('gid=' . $this->gid . ' AND uid=' . $this->uid . ' AND level=2')->setField('level', 3);   //3 普通用户
 				break;
 			case 'out':     // 剔除会员
-				$content = '将用户 ' . getUserSpace($this->uid, 'fn', '_blank', '@' . getUserName($this->uid)) . '剔除群组 ';
 				if (iscreater($this->mid, $this->gid)) {
 					$level = ' AND level<>1';
 				} else {
 					$level = ' AND level<>1 AND level<>2';
 				}
-				$current_level = D('Member')->getField('level', 'gid=' . $this->gid . ' AND uid=' . $this->uid . $level);
-				$res = D('Member')->where('gid=' . $this->gid . ' AND uid=' . $this->uid . $level)->delete();   //剔除用户
-				if ($res) {
-					D('Group')->setDec('membercount', 'id=' . $this->gid);     //用户数量减少1
-					// 被拒绝加入不扣积分
-					if (intval($current_level) > 0) {
-						X('Credit')->setUserCredit($this->uid, 'quit_group');
+				if($batch) {
+					$current_level = D('Member')->field('uid, level')->where('gid = '.$this->gid.' AND uid IN ('.$_POST['uid'].')'.$level)->findAll();
+					$res = D('Member')->where('gid='.$this->gid.' AND uid IN ('.$_POST['uid'].')'.$level)->delete();
+					if($res) {
+						$count = count($current_level);
+						$uidStrLog = array();
+						foreach($current_level as $value) {
+							$uidInfo = getUserSpace($value['uid'], 'fn', '_blank', '@' . getUserName($value['uid']));
+							array_push($uidStrLog, $uidInfo);
+							if($value['level'] > 0) {
+								D('Group')->setDec('membercount', 'id=' . $this->gid);
+								X('Credit')->setUserCredit($value['uid'], 'quit_group');
+							}
+						}
+						$uidStr = implode(',', $uidStrLog);
+						$content = '将用户 '.$uidStr. '踢出群组 ';
+					}
+				} else {
+					$current_level = D('Member')->getField('level', 'gid=' . $this->gid . ' AND uid=' . $this->uid . $level);
+					$res = D('Member')->where('gid=' . $this->gid . ' AND uid=' . $this->uid . $level)->delete();   //剔除用户
+					if ($res) {
+						$content = '将用户 ' . getUserSpace($this->uid, 'fn', '_blank', '@' . getUserName($this->uid)) . '踢出群组 ';
+						// 被拒绝加入不扣积分
+						if (intval($current_level) > 0) {
+							D('Group')->setDec('membercount', 'id=' . $this->gid);     //用户数量减少1
+							X('Credit')->setUserCredit($this->uid, 'quit_group');
+						}
 					}
 				}
 				break;
@@ -196,7 +234,7 @@ class ManageAction extends BaseAction
 	public function announce()
 	{
 		if (isset($_POST['editsubmit'])) {
-			$groupinfo['announce'] = t(getShort($_POST['announce'], 60));
+			$groupinfo['announce'] = t(getShort($_POST['announce'], 200));
 			$res = $this->group->where('id='.$this->gid)->save($groupinfo);
 
 			if ($res !== false) {

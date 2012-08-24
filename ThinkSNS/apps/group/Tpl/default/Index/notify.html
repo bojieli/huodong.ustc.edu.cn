@@ -74,5 +74,18 @@
 </div>
 <!-- 右侧内容 end  -->
 </div>
-<!-- 内容 end --> 
+<!-- 内容 end -->
+<script>
+function deleteNotify(notify_id){
+	$.post( U('home/Message/delnotify'),{notify_id:notify_id},function(txt){
+		if(txt){
+			$("#notify_"+notify_id).slideUp("fast",function(){
+				$(this).remove();
+				}); 
+		}else{
+			alert('删除失败');
+		}
+	});
+}
+</script>	
 <include file="__THEME__/footer" />

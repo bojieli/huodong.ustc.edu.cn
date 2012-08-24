@@ -25,7 +25,7 @@ $param_data = urlencode(serialize(array('has_status'=>1,'is_success_status'=>1,'
       <div class="userPic" ><space uid="uid" >{uavatar}</space></div>
       <div style="padding-left:70px;">
         <h2>
-            <span class="right fn f12px"><a id="test" href="javascript:history.back( -1 )">返回上一页</a></span>
+            <!-- <span class="right fn f12px"><a id="test" href="javascript:history.back()">返回上一页</a></span> -->
             <space uid="uid" class="null">{uname}</space> 的{$ts['app']['app_alias']}
         </h2>
 		<p>
@@ -68,7 +68,7 @@ $param_data = urlencode(serialize(array('has_status'=>1,'is_success_status'=>1,'
                 </eq>
             </p>
           </div>
-          <php>if( $isOwner == 0 && $private == 2 ){</php>
+          <php>if( $isOwner == 0 && $private == 4 ){</php>
           <div class="bg_msg">
             <div class="bg_msg_btm">
               <table width="100%" border="0" cellpadding="0" cellspacing="0">
@@ -79,32 +79,13 @@ $param_data = urlencode(serialize(array('has_status'=>1,'is_success_status'=>1,'
               </table>
             </div>
           </div>
-          <php>}else if($isOwner == 0 && $private == 3){</php>
-          <div class="bg_msg">
-            <div class="bg_msg_btm">
-              <table width="100%" border="0" cellpadding="0" cellspacing="0">
-                <tr>
-                  <td width="40" align="center"><img src="../Public/images/ico_yaoshi.png" width="20" height="20" /></td>
-                  <td colspan="3">本日志需要密码才能访问</td>
-                </tr>
-                <form method="post" action="">
-                  <tr>
-                    <td height="50" align="center">&nbsp;</td>
-                    <td width="37">密码:</td>
-                    <td width="140"><input name="password" type="password" class="text" id="title" onfocus="this.className='text2'" onblur="this.className='text'" size="20" maxlength="30"/></td>
-                    <td width="71"><input type="submit" value="确定" class="btn_b"/></td>
-                  </tr>
-                </form>
-              </table>
-            </div>
-          </div>
-          <php>}elseif( $isOwner == 0 && $private == 1 && false == $isFriend){</php>
+          <php>}elseif( $isOwner == 0 && $private == 2 && $relationship=='unfollow'){</php>
           <div class="bg_msg">
             <div class="bg_msg_btm">
               <table width="100%" border="0" cellpadding="0" cellspacing="0">
                 <tr>
                   <td width="40" align="center"><img src="../Public/images/ico_suo.png" width="20" height="20" /></td>
-                  <td>只有主人的好友可以查看此日志</td>
+                  <td>只有主人关注的人可以查看此日志</td>
                 </tr>
               </table>
             </div>

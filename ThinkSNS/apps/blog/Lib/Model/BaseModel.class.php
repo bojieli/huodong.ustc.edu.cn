@@ -1,5 +1,5 @@
 <?php
-    Import( '@.Unit.Common' );
+
     /**
      * BaseModel 
      * 心情的base类
@@ -12,96 +12,6 @@
      * @license PHP Version 5.2 {@link www.sampeng.cn}
      */
     class BaseModel extends Model{
-        /**
-         * API 
-         * API名,可以为common里面的扩展API类
-         * @var string
-         * @access protected
-         */
-        protected $api;
-
-        /**
-         * config 
-         * mini的配置
-         * @var mixed
-         * @access protected
-         */
-        protected $config;
-
-        /**
-         * write 
-         * 写入配置文件的处理类
-         * @var mixed
-         * @access protected
-         */
-        protected $write;
-
-        /**
-         * _initialize 
-         * 进行mini博客的时候进行初始化
-         *
-         * 获取uid,mid,或者friendsId.
-         * @access protected
-         * @return void
-         */
-        protected function _initialize(){
-            //$this->api = new TS_API();
-        }
-        
-        /**
-         * fileAwayCount 
-         * 归档计数，和fileAway获得归档具体内容一样处理。只是是获得记录数
-         * @param mixed $findTime 
-         * @param mixed $condition 
-         * @access public
-         * @return void
-         */
-        public function fileAwayCount( $findTime,$condition ){
-                if( is_array( $findTime) ){
-                    $start_temp   = $this->paramData( strval($findTime[0] ));
-                    $end_temp     = $this->paramData( strval($findTime[1] ));
-                                                      
-                    $start        = $start_temp[0];
-                    $end          = $end_temp[1];
-                }else{
-                    $findTime  = strval( $findTime );
-                    $paramTime = self::paramData( $findTime );
-                    $start     = $paramTime[0];
-                    $end       = $paramTime[1];
-                }
-
-                $this->cTime = array( 'between', array( $start,$end ) );
-                //如果查询时没有设置其它查询条件，就只是按时间来进行归档查询
-                $map = $this->merge( $condition );
-                $result = $this->where( $map )->field( "count(*)" )->findAll();
-                return $result;
-
-        }
-        /**
-         * feed_publish 
-         * 发送动态
-         * @param mixed $type 
-         * @param mixed $title 
-         * @param mixed $body 
-         * @static
-         * @access protected
-         * @return void
-         */
-        public function doFeed($type,$title,$body = null){
-            //$appid = A('Index')->getAppId();
-            //return api("Feed_put", $appid . "_" . $type, $title,$body);
-            //return $this->api->feed_publish( $type,$title,$body,$appid);
-        }
-
-        protected  function doNotify($uid,$type,$title,$body,$url){
-        	//return api("Notify_put", $appid . "_" . $type, $uid, $title,$body);
-            //$this->api->notify_setAppId(A('Index')->getAppId());
-            //return $this->api->notify_send( $uid,$type,$title,$body,$url );
-        }
-
-        public function getFriends(){
-            //return $this->api->friend_get();
-        }
 
         /**
          * checkNull 
@@ -172,45 +82,6 @@
 
 
         /**
-         * getOneName 
-         * 获得某一个人的姓名
-         * @param mixed $uid 
-         * @access protected
-         * @return void
-         */
-        public function getOneName( $uid ){
-            //return $this->api->user_getInfo($uid,'name');
-        }
-
-        /**
-         * setConfig 
-         * 设置配置控制器
-         * @param mixed $model 
-         * @access protected
-         * @return void
-         */
-        protected function setConfig( $data ){
-            //引入配置管理类
-            Import( '@.Unit.Config' );
-            //引入配置信息
-            //配置管理对象,把配置数组交给配置管理对象处理
-            $config = new Config( $data  );
-                
-            $this->config = $config;
-        }
-
-        /**
-         * setWrite 
-         * 设置配置写入类
-         * @param ArrayWrite $write 
-         * @access protected
-         * @return void
-         */
-        protected function setWrite( ArrayWrite $write ){
-            $this->write = $write;
-        }
-
-        /**
          * merge 
          * 合并条件
          * @param mixed $map 
@@ -226,54 +97,7 @@
 
             return $map;
         }
-
-        public function getApi(  ){
-            return $this->api;
-        }
-
-        /**
-         * replace 
-         * 在数据集中替换
-         * @param mixed $data 
-         * @access private
-         * @return void
-         */
-        protected function replace( $data ){
-            $result = $data;
-
-            //修改content
-            foreach( $result as &$value ){
-                $value['content'] = str_replace('{PUBLIC_URL}',__PUBLIC__,$this->replaceContent( $value['content'] ));
-            
-            }
-            return $result;
-        }
-
-        /**
-         * replaceContent 
-         * 替换内容
-         * @param mixed $content 
-         * @access private
-         * @return void
-         */
-        protected function replaceContent( $content ){
-            $path = '{PUBLIC_URL}/images/biaoqing/mini/';//路径
-            
-
-            //循环替换掉文本中所有ubb表情
-            foreach( $this->config->ico as $value ){
-
-                $img = sprintf("<img title='%s' src='%s%s'>",$value['title'],$path,$value['filename']);
-                $content = str_replace( $value['emotion'],$img,$content );
-
-            }
-            return $content;
-        }
-
-        protected function replayPath( ){
-            $config = $this->config->replay; //回复的配置
-        }
-
+        
         /**
          * getBlogContent 
          * 获得某一条日志的详细页面
@@ -334,8 +158,6 @@
                                     "id"   => $result['category']
                                         );
             //追加日志中提到的内容
-            $mention            = $mention->getBlogMention( $result['id'] );
-            $result['mention']  = $mention[$result['id']];
             $result['count']    = $this->where( "uid = '".$result['uid']."' AND status = 1 " )->count();
             $result['num']      = $this->where( 'id <'.$result['id']." AND status = 1 AND uid =".$uid )->count()+1;
             $result['content']  = stripslashes( $result['content'] );
@@ -352,5 +174,9 @@
          */
         public static function factoryModel( $name ){
             return D("Blog".ucfirst( $name ));
+        }
+
+        public function getOneName($uid){
+            return getUserName($uid);
         }
 }

@@ -23,6 +23,7 @@ function doSetPopedom(_this) {
 		if(res == '1') {
 			ui.box.close();
 			ui.success('保存成功');
+			location.replace(location.href);
 		}else {
 			ui.box.close();
 			ui.error('保存失败');

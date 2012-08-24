@@ -9,13 +9,14 @@
 	  <php>if(!empty($search_key)){</php>
 	  <gt name="mid" value="0">
       <div class="right_box">
-	  <span class="ico_tuijian" style="margin:0"></span>
 	  <span class="ico_tuijian"></span>
-      <span id="followTopic" style="font-size:14px; font-weight:bold"></span><php>if($followState){</php>已关注该话题 <a href="javascript:void(0)" onclick="weibo.unfollowTopic('{$search_key_id}','{$search_key}')">已关注该话题</a>
-		  <php>}else{</php>
-		  <a href="javascript:void(0)" onclick="weibo.followTopic('{$search_key}')">关注该话题</a>
-		  <php>}</php>
-		  </span>
+		<span id="followTopic" style="font-size:14px; font-weight:bold">
+			<php>if($followState){</php>
+				<a href="javascript:void(0)" onclick="weibo.unfollowTopic('{$search_key_id}','{$search_key}')">已关注该话题</a>
+			<php>}else{</php>
+				<a href="javascript:void(0)" onclick="weibo.followTopic('{$search_key}')">关注该话题</a>
+			<php>}</php>
+		</span>
       <h2><span class="ico_tuijian"></span><a href="javascript:void(0)" onclick="weibo.quickpublish('大家来谈谈#{$search_key}#这个话题吧！')">推荐该话题给朋友</a></h2>
       </div>
       </gt>

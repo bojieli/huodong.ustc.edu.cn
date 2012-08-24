@@ -10,8 +10,8 @@ function clearnotice() {
 }
 function checknotice() {
 	var length = getLength(document.noticeform.announce.value);
-	if (length > 60) {
-		ui.error('公告不能超过60个字')
+	if (length > 200) {
+		ui.error('公告不能超过200个字')
 		return false;
 	}
 	return true;
@@ -26,14 +26,14 @@ function checknotice() {
   <div class="main no_l"> 
     <!-- 右侧内容 begin  -->
     <div class="mainbox">
-      <div class="mainbox_C mainC_pad" style="margin-right:0;"> <include file="../Public/manage_group_top" />
+      <div class="mainbox_C mainC_pad" style="margin-right:20px;"> <include file="../Public/manage_group_top" />
         <div class="groupBox">
           <div style="width:100%;">
             <form action="{:U('group/Manage/announce',array('gid'=>$gid))}" method="post" name="noticeform" onSubmit="return checknotice();">
               <div class="msg" id="msg" style="display:none;">修改成功</div>
-              <h2 class="tit_h2">发布公告</h2>
+              <h2 class="tit_h2">发布公告(最多可输入200个汉字)</h2>
               <div class="alR" style="margin:0 50px 0 40px;">
-                <textarea name="announce" rows="5" class="text" style="padding:8px; width: 97.8%;"  onBlur="this.className='text'" onFocus="this.className='text2'">{$groupinfo['announce']}</textarea>
+                <textarea name="announce" rows="5" class="text" style="width:850px;height:90px;overflow:auto"  onBlur="this.className='text'" onFocus="this.className='text2'">{$groupinfo['announce']}</textarea>
                 <div class="alR mt10">
                   <input type="hidden" name="gid" value="{$gid}">
                   <input type="hidden" name="editsubmit" value="1">

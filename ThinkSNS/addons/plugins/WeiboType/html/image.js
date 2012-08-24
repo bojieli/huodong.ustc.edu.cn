@@ -97,7 +97,7 @@ jQuery.extend(weibo.plugin.image, {
 				file_types : this.fileType,
 				file_types_description : "JPEG Images;GIF Images;JPG Images;PNG Image",
 				file_upload_limit : <?php echo $config['image']['limit']; ?>,
-				file_queue_limit : 5,
+				file_queue_limit : <?php echo $config['image']['limit']; ?>,
         file_post_name: 'pic',
 
 				// Event Handler Settings - these functions as defined in Handlers.js

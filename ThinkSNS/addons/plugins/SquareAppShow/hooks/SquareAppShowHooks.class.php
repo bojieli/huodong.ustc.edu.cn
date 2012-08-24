@@ -9,9 +9,9 @@ class SquareAppShowHooks extends Hooks
 		echo '<style type="text/css">
 		.ico_blog, .ico_blog_on, .ico_photo, .ico_photo_on, .ico_group, .ico_group_on
 		{background: url("' . __THEME__ . '/images/ico_sidebar.png") no-repeat scroll 0 0 transparent; display: inline-block;}
-		.ico_blog{background-position:0 -95px}.ico_blog_on{background-position:-26px -95px}
-		.ico_photo{background-position:0 -114px}.ico_photo_on{background-position:-26px -114px}
-		.ico_group{background-position:0 -190px}.ico_group_on{background-position:-26px -190px}
+		.ico_blog{background-position:-26px -95px}.ico_blog_on{background-position:-26px -95px}
+		.ico_photo{background-position:-26px -114px}.ico_photo_on{background-position:-26px -114px}
+		.ico_group{background-position:-26px -190px}.ico_group_on{background-position:-26px -190px}
 		</style>';
 	}
 
@@ -79,7 +79,7 @@ class SquareAppShowHooks extends Hooks
 
 		//获取配置参数
 		$config = getConfig();
-		$data['photos'] = D('Photo', 'photo')->where($map)->order($order)->findPage(16);
+		$data['photos'] = D('Photo', 'photo')->where($map)->order($order)->findPage(15);
 		$data['photo_preview'] = $config['photo_preview'];
 		$this->assign($data);
 		$this->display('photo');
@@ -167,8 +167,8 @@ class SquareAppShowHooks extends Hooks
 
 	public function saveConfig($param)
 	{
-		if (!$_POST['__hash__'])
-			$this->error();
+		if ($_POST['__hash__'])
+			unset($_POST['__hash__']);
 
 		$apps_show_list = array('photo', 'blog', 'group');
 		foreach ($apps_show_list as $v) {

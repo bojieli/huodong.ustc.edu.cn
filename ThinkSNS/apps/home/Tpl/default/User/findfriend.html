@@ -42,7 +42,7 @@
         </div>
         <div class="MenuSub">
         	<a href="{:U('home/user/findfriend',array('type'=>'newjoin'))}" <eq name="type" value="newjoin">class="on"</eq> >最新加入</a>| 
-        	<a href="{:U('home/user/findfriend',array('type'=>'understanding'))}" <eq name="type" value="understanding">class="on"</eq> >可能认识</a>| 
+        	<a href="{:U('home/user/findfriend',array('type'=>'understanding'))}" <eq name="type" value="understanding">class="on"</eq> >可能认识</a> 
         	<!--<a href="{:U('home/user/findfriend',array('type'=>'followers'))}" <eq name="type" value="followers">class="on"</eq> >粉丝最多</a>| 
         	<a href="{:U('home/user/findfriend',array('type'=>'hot'))}" <eq name="type" value="hot">class="on"</eq> >活跃用户</a>-->
         </div>
@@ -51,10 +51,10 @@
         <input type="hidden" name="doajax" value="1">
           <ul class="feed_list">
           <volist id="vo" name="list">
-            <li class="lineD_btm" style="width:50%; height:70px;float:left;padding:10px 0">
+            <li class="lineD_btm" style="width:50%;height:70px;float:left;padding:10px 0;_width:49%">
             <div class="left" style="width:25px; padding-top:20px;*padding-top:17px;"><input name="followuid[]" type="checkbox" checked="checked" value="{$vo.uid}" /></div>
               <div class="userPic"><space uid="vo.uid">{uavatar}</space></div>
-              <div style="margin-left: 95px;" class="feed_c">
+              <div style="margin-left: 95px;_margin-left:90px" class="feed_c">
                 <div style="padding-bottom: 0pt;">
                   <!-- 
                   <div class="right pr10" style="display:none;" id="follow_list_{$vo.uid}">

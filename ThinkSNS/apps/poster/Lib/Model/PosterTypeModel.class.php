@@ -21,7 +21,7 @@ class PosterTypeModel extends Model{
         $rs = $this->add($data);
         return $rs;
 	}
-	public function getType($id=null){
+	public function getType($id=null, $pid=null){
 	   if(isset($id)){
             if(is_array($id)){
                 $map['id'] = array('in',$id);
@@ -34,7 +34,7 @@ class PosterTypeModel extends Model{
        	   foreach($rs as &$value){
        	        if(!empty($value['templet'])){
        	        	$fieldId = strpos($value['templet'],',') !== false ?explode(',',$value['templet']):$value['templet'];
-       	        	$value['extraField'] = D('PosterWidget')->getWidget($fieldId);
+       	        	$value['extraField'] = D('PosterWidget')->getWidget($fieldId, $pid);
        	        
        	        }
        	   }

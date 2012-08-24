@@ -32,7 +32,14 @@ class WeiboModel extends Model{
 
     //发布微博
     function doSaveWeibo($uid, $data, $from=0, $type=0, $type_data=null, $from_data=null){
-        /*if(!$data['content']){
+		//用户不存在时无法发微博、把用户退出处理
+		$result = M('User')->find($uid);
+		if(!$result){
+			//退出登录
+			service('Passport')->logoutLocal();
+			return false;
+		}
+		/*if(!$data['content']){
         	return false;
         }*/
 
@@ -44,15 +51,16 @@ class WeiboModel extends Model{
         $save['transpond']      = 0;
         $save['isdel']          = 0;
         $save['comment']        = 0;
+		$save['pub_ip']	 = get_client_ip();
 		$save['ctime']      = time();
 		$save['from_data']		= $from_data;
         // 微博内容处理
         if(Addons::requireHooks('weibo_publish_content')){
         	Addons::hook("weibo_publish_content",array(&$save));
         }else{
-        	$save['content'] 		= preg_replace('/^\s+|\s+$/i', '', html_entity_decode($data['content'], ENT_QUOTES));
-			$save['content'] 		= preg_replace("/#[\s]*([^#^\s][^#]*[^#^\s])[\s]*#/is",'#'.trim("\${1}").'#',$save['content']);	// 滤掉话题两端的空白
-	        $save['content']		= preg_replace_callback('/((?:https?|ftp):\/\/(?:www\.)?(?:[a-zA-Z0-9][a-zA-Z0-9\-]*\.)?[a-zA-Z0-9][a-zA-Z0-9\-]*(?:\.[a-zA-Z0-9]+)+(?:\:[0-9]*)?(?:\/[^\x{4e00}-\x{9fa5}\s<\'\"“”‘’]*)?)/u',getContentUrl, $save['content']);
+        	$save['content'] = preg_replace('/^\s+|\s+$/i', '', html_entity_decode($data['content'], ENT_QUOTES));
+			$save['content'] = preg_replace("/#[\s]*([^#^\s][^#]*[^#^\s])[\s]*#/is",'#'.trim("\${1}").'#',$save['content']);	// 滤掉话题两端的空白
+	        $save['content'] = preg_replace_callback('/((?:https?|ftp):\/\/(?:www\.)?(?:[a-zA-Z0-9][a-zA-Z0-9\-]*\.)?[a-zA-Z0-9][a-zA-Z0-9\-]*(?:\.[a-zA-Z0-9]+)+(?:\:[0-9]*)?(?:\/[^\x{2e80}-\x{9fff}\s<\'\"“”‘’]*)?)/u',getContentUrl, $save['content']);
 	        $save['content'] = t(getShort($save['content'], $GLOBALS['ts']['site']['length']));
         }
 
@@ -90,6 +98,12 @@ class WeiboModel extends Model{
         	if($type && $save['type']){
         		Addons::hook('weibo_type_publish', array("weiboId"=>$id,"type"=>$type,"typeData"=>$type_data, "data"=>$save));
         	}
+
+            //更新粉丝的dashboard.更新最新微博ID,最后更新时间.
+            //$sql = "UPDATE ".C('DB_PREFIX')."weibo_dashboard SET last_post_weibo_id=$id,last_post_time=".time()." WHERE uid IN (SELECT uid FROM ".C('DB_PREFIX')."weibo_follow WHERE fid={$uid} AND type=0) OR uid={$uid}";
+            //M('')->execute($sql);
+            //S('dashboard_'.$uid,null);
+            
         	return $id;
         }else{
         	return false;
@@ -152,7 +166,7 @@ class WeiboModel extends Model{
 	        	$comment['content']   = $post['content'];
 	        	$comment['ctime']     = time();
 	        	D('Comment','weibo')->addcomment( $comment );
-	        	Model('UserCount')->addCount($weiboinfo['uid'],'comment');
+	        	model('UserCount')->addCount($weiboinfo['uid'],'comment');
         	}
         }
 
@@ -189,16 +203,16 @@ class WeiboModel extends Model{
     	}
     }
 
-   	function getOne($id,$value,$api=false){
+   	function getOne($id,$value,$api=false, $uid){
    		if($api){
    			return $this->getOneApi($id,$value);
    		}else{
-   			return $this->getOneLocation($id, $value);
+   			return $this->getOneLocation($id, $value, true, $uid);
    		}
    	}
 
     //返回一个站内使用的解析微博
-    public function getOneLocation($id, $value, $show_transpond = true)
+    public function getOneLocation($id, $value, $show_transpond = true, $uid)
     {
     	if (!$value){
     	    $value = $this->getWeiboDetail($id);
@@ -208,7 +222,8 @@ class WeiboModel extends Model{
     		return false;
         $result = $value;
 
-        $result['is_favorited'] = isset($value['is_favorited']) ? intval($value['is_favorited']) : D('Favorite','weibo')->isFavorited($value['weibo_id'], $value['uid']);
+        $uid = empty($uid) ? $value['uid'] : $uid;
+        $result['is_favorited'] = isset($value['is_favorited']) ? intval($value['is_favorited']) : D('Favorite','weibo')->isFavorited($value['weibo_id'], $uid);
         Addons::requireHooks("weibo_show_detail",array(&$result));
         if ($show_transpond && $result['transpond_id']){
         	$result['expend']   = $this->getOne($result['transpond_id']);
@@ -236,10 +251,18 @@ class WeiboModel extends Model{
     	$value['face']  = getUserFace($value['uid']);
    		if ($value['type'] == 1 && $value['transpond_id'] == 0) {
     		$value['type_data'] 				  = unserialize($value['type_data']);
-    		$value['type_data']['picurl'] 		  = SITE_URL.'/data/uploads/'.$value['type_data']['picurl'];
-    		$value['type_data']['thumbmiddleurl'] = SITE_URL.'/data/uploads/'.$value['type_data']['thumbmiddleurl'];
-    		$value['type_data']['thumburl'] 	  = SITE_URL.'/data/uploads/'.$value['type_data']['thumburl'];
-    	}
+			if(isset($value['type_data']['thumburl'])){
+				$value['type_data']['picurl'] 		  = SITE_URL.'/data/uploads/'.$value['type_data']['picurl'];
+    			$value['type_data']['thumbmiddleurl'] = SITE_URL.'/data/uploads/'.$value['type_data']['thumbmiddleurl'];
+    			$value['type_data']['thumburl'] 	  = SITE_URL.'/data/uploads/'.$value['type_data']['thumburl'];
+    		}else{
+				foreach($value['type_data'] as $k=>$v){
+					$value['type_data'][$k]['picurl'] 		  = SITE_URL.'/data/uploads/'.$value['type_data'][$k]['picurl'];
+    				$value['type_data'][$k]['thumbmiddleurl'] = SITE_URL.'/data/uploads/'.$value['type_data'][$k]['thumbmiddleurl'];
+    				$value['type_data'][$k]['thumburl'] 	  = SITE_URL.'/data/uploads/'.$value['type_data'][$k]['thumburl'];
+				}
+			}
+		}
 
     	$value['transpond_data'] = ($value['transpond_id'] > 0) ? $this->getOneApi($value['transpond_id']) : '';
     	$value['timestamp'] 	 = $value['ctime'];

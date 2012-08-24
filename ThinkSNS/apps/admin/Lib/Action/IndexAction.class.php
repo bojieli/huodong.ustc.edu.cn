@@ -20,7 +20,7 @@ class IndexAction extends AdministratorAction {
     		'content'		=>	'内容',
     		'user'			=>	'用户',
     		'apps'			=>	'应用',
-    		'extension'		=>	'扩展',
+    		'extension'		=>	'插件',
     	);
     }
 
@@ -28,21 +28,15 @@ class IndexAction extends AdministratorAction {
     	$menu = array();
     	//注意顺序！！
 
-    	$apps_menu = array();
-    	$apps_menu['微博'] = U('weibo/Admin/index');
-    	$apps_menu['漫游'] = SITE_URL . '/apps/myop/myop.php?my_suffix=' . urlencode('/appadmin/list');
-
-    	$apps = model('App')->getAdminApp('app_name,app_alias,admin_entry');
-    	foreach ($apps as $v) {
-    		$apps_menu[$v['app_alias']] = U($v['app_name'].'/'.$v['admin_entry']);
-    	}
-
     	// 后台管理首页
     	$menu['index'] 		=   array(
     		'首页'			=>	array(
     			'首页'		=>	U('admin/Home/statistics'),
-    			'系统升级'	=>	U('admin/Home/update'),
-    		),
+                '缓存更新'    =>  SITE_URL . '/cleancache.php?all',
+    			'系统升级'	 =>	U('admin/Home/update'),
+                '数据备份'    =>  U('admin/Tool/backup'),
+                'CNZZ统计'   =>  U('admin/Tool/cnzz'),
+            ),
     	);
 
     	//全局
@@ -57,6 +51,8 @@ class IndexAction extends AdministratorAction {
     			'附件配置'	=>	U('admin/Global/attachConfig'),
 				'文章配置'	=>	U('admin/Global/document'),
     			'审核配置'	=>	U('admin/Global/audit'),
+                '地区配置'    =>  U('admin/Tool/area'),
+                '粉丝榜配置' =>  U('admin/User/follower'),
     		),
     	);
 
@@ -67,11 +63,11 @@ class IndexAction extends AdministratorAction {
     			'模板管理'	=>	U('admin/Content/template'),
     			'附件管理'	=>	U('admin/Content/attach'),
     			'评论管理'	=>	U('admin/Content/comment'),
-    			'短消息管理'	=>	U('admin/Content/message'),
+    			'私信管理'	=>	U('admin/Content/message'),
     			'通知管理'	=>	U('admin/Content/notify'),
     			'动态管理'	=>	U('admin/Content/feed'),
     			'举报管理'	=>	U('admin/Content/denounce'),
-    			'后台管理日志'=>	U('admin/Content/adminLog'),
+    			'管理日志'   =>	U('admin/Content/adminLog'),
     		),
     	);
 
@@ -81,9 +77,9 @@ class IndexAction extends AdministratorAction {
     			'用户管理'	=>	U('admin/User/user'),
     			'用户组管理'	=>	U('admin/User/userGroup'),
     			'资料配置'	=>	U('admin/User/setField'),
-    			'相关用户配置' =>	U('admin/User/relateUser'),
-    			'粉丝榜配置'	=>	U('admin/User/follower'),
     			'消息群发'	=>	U('admin/User/message'),
+                '邀请统计'    =>  U('admin/Tool/inviteRecord'),
+			    '登陆日志'	=>	U('admin/Login/index'),
     		),
     		'权限'			=>	array(
     			'节点管理'	=>	U('admin/User/node'),
@@ -93,32 +89,32 @@ class IndexAction extends AdministratorAction {
 
     	//应用
     	$menu['apps'] 		=	array(
-    		'应用管理'		=>	array(
+    		'应用'		=>	array(
     			'应用列表'	=>	U('admin/Apps/applist'),
     			'应用安装'	=>	U('admin/Apps/install'),
     		),
-    		'应用配置'		=>	$apps_menu,
     	);
+
+            $menu['apps']['应用']['漫游平台'] = SITE_URL . '/apps/myop/myop.php?my_suffix=' . urlencode('/appadmin/list');
+            $menu['apps']['应用']['微博'] = U('weibo/Admin/index');
+
+            $apps = model('App')->getAdminApp('app_name,app_alias,admin_entry');
+            foreach ($apps as $v) {
+                $menu['apps']['应用'][$v['app_alias']] = U($v['app_name'].'/'.$v['admin_entry']);
+                //$apps_menu[$v['app_alias']] = U($v['app_name'].'/'.$v['admin_entry']);
+            }
+
 
     	$menu['extension']	=	array(
-    		'工具'			=>	array(
-    			'数据备份'	=>	U('admin/Tool/backup'),
-    			'缓存更新'	=>	SITE_URL . '/cleancache.php?all',
-    			'地区管理'	=>	U('admin/Tool/area'),
-    			'邀请统计'	=>	U('admin/Tool/inviteRecord'),
-    			'CNZZ统计'	=>	U('admin/Tool/cnzz'),
-    		),
-
     		'插件'			=>	array(
     			'插件列表'   =>  U('admin/Addons/index'),
-    			//'短网址配置'	=>	U('admin/Plugin/shorturl'),
     		),
     	);
 
-		$addons = model('Addons')->getAddonsAdmin();
-    	foreach($addons as $value){
-			$menu['extension']['插件'][$value[0]] = U('admin/Addons/admin',array('pluginid' => $value[1]));
-		}
+    		$addons = model('Addons')->getAddonsAdmin();
+        	foreach($addons as $value){
+    			$menu['extension']['插件'][$value[0]] = U('admin/Addons/admin',array('pluginid' => $value[1]));
+    		}
 
 
     	return $menu;

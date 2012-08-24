@@ -1,12 +1,12 @@
 <?php
 class PosterModel extends Model{
 	private $api;
-	
-	
+
+
 	public function _initialize(){
 	     	//$this->api = new TS_API();
 	}
-	
+
 	public function getPosterList($pid=null,$type=null,$uid = null,$title = null){
 		isset($pid) && $map['pid'] = $pid;
 		isset($type) && $map['type'] = $type;
@@ -33,12 +33,12 @@ class PosterModel extends Model{
         $result['address'] = getAreaInfo($result['address_province'].','.$result['address_city']);
         return $result;
 	}
-	
+
 	public function deletePoster($id,$mid){
 		$poster = $this->where('id='.$id)->find();
 		if(!$poster) return -2;
 		if($poster['uid'] != $mid) return -1;
-		
+
 		$rs = $this->where('id='.$id)->delete();
 		if($rs){
 			return 1;
@@ -46,7 +46,7 @@ class PosterModel extends Model{
 			return 0;
 		}
 	}
-	
+
     private function replace($data){
     	$result = $data;
     	$posterSmallTypeDao = D('PosterSmallType');

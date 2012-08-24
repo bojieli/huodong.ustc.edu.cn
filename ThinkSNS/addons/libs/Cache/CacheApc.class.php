@@ -33,7 +33,7 @@ class CacheApc extends Cache {
      */
     function __construct($options='') {
         if(!function_exists('apc_cache_info')) {
-            throw_exception(L('_NOT_SUPPERT_').':Apc');
+            throw_exception(L('_NOT_SUPPORT_').':Apc');
         }
         if(!empty($options)) {
             $this->options =  $options;

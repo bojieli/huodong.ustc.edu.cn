@@ -19,7 +19,7 @@ class DirAction extends BaseAction
 	function index() {
 		parent::base();
 
-		$search_key = $this->_getSearchKey();
+		$search_key = $this->_getSearchKey('k','group_file_search');
 		if ($search_key) {
 			$map[] = "name LIKE '%{$search_key}%'";
 		}
@@ -150,6 +150,8 @@ class DirAction extends BaseAction
 	//下载
 	function download()
 	{
+		$gid = $this->groupinfo['id'];
+		$this->assign('jumpUrl',U('group/Dir/index', array('gid'=>$gid)));
 		//权限判读 用户没有加入过
 		if (3 == intval($this->groupinfo['whoDownloadFile']) && !$this->ismember) {
 			$this->error('对不起，该群只允许群内成员下载文件');

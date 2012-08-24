@@ -45,7 +45,7 @@ function checkAll(o){
     }
 }
 
-//搜索用户
+//搜索日志
 var isSearchHidden = <neq name="isSearch" value="1">1<else/>0</neq>;
 function searchBlog() {
     if(isSearchHidden == 1) {
@@ -54,7 +54,7 @@ function searchBlog() {
         isSearchHidden = 0;
     }else {
         $("#searchBlog_div").slideUp("fast");
-        $(".searchBlog_action").html("搜索用户");
+        $(".searchBlog_action").html("搜索日志");
         isSearchHidden = 1;
     }
 }
@@ -85,8 +85,10 @@ toggle:function(obj){
 del:function(id){
 	var id = id ? id : getChecked();
     id = id.toString();
-    if(id=='' || id==0) return ;
-      if( confirm( "是否彻底删除博客") ){
+    if(id=='' || id==0){
+    	alert('请选择要删除的日志！');return false;
+    }
+      if( confirm( "是否彻底删除日志") ){
         var act = "delete"; 
         $.post( '__URL__&act=recycleMan',{id:id,type:act},function(text ){
             if( text == 1 ){
@@ -107,8 +109,10 @@ del:function(id){
 edit:function(id){
 	var id = id ? id : getChecked();
     id = id.toString();
-    if(id=='' || id==0) return ;
-       if( confirm( '是否恢复选中的博客' ) ){
+    if(id=='' || id==0){
+    	alert('请选择要恢复的日志！');return false;
+    }
+       if( confirm( '是否恢复选中的日志' ) ){
          var act="resume";
          $.post( '__URL__&act=recycleMan',{id:id,type:act},function( text ){
             if( text == 1 ){

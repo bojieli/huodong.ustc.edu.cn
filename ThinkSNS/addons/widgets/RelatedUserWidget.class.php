@@ -35,6 +35,7 @@ class RelatedUserWidget extends Widget
 			$data['param'] = urlencode(serialize($data));
 			$data['async'] = 1;
 		}
+		$data['oldUser'] = $data['user'];
 
 		$content = $this->renderFile(ADDON_PATH . '/widgets/RelatedUser.html', $data);
 

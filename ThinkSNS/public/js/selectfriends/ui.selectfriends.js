@@ -274,7 +274,7 @@ if(typeof giant.ui === 'undefined')
                                         }
                                 },
                                 success:function(msg) {
-                                        var myData = eval(msg);
+                                        var myData = eval('(' + msg + ')');
                                         if (myData && myData.length > 0) {
                                                 var arr = [];
                                                 $.each(myData, function(i, n) {
@@ -339,7 +339,7 @@ if(typeof giant.ui === 'undefined')
                 addUser:function(fUid, name, image) {
                         var $this = this;
                         if( parseInt( $("#ui_fri_num").html() )<=0 ){
-                        	ui.error('最多发送给10个人');
+                        	ui.error('最多可选10个人');
                         	return ;
                         }
                         //如果当前用户不存在

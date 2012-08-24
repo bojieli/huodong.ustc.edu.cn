@@ -1,18 +1,18 @@
 <?php
     /**
-     * AdminAction 
+     * AdminAction
      * 心情管理
      * @uses Action
      * @package Admin
      * @version $id$
-     * @copyright 2009-2011 SamPeng 
-     * @author SamPeng <sampeng87@gmail.com> 
+     * @copyright 2009-2011 SamPeng
+     * @author SamPeng <sampeng87@gmail.com>
      * @license PHP Version 5.2 {@link www.sampeng.cn}
      */
     import('admin.Action.AdministratorAction');
 	  class AdminAction extends AdministratorAction {
         /**
-         * blog 
+         * blog
          * BlogModel的实例化对象
          * @var mixed
          * @access private
@@ -20,14 +20,14 @@
         private $blog;
 
         /**
-         * smile 
+         * smile
          * Smile的实例化对象
          * @var mixed
          * @access private
          */
         private $smile;
         /**
-         * config 
+         * config
          * BlogConfig的实例化对象
          * @var mixed
          * @access private
@@ -36,31 +36,30 @@
 
         private $category;
         /**
-         * _initialize 
+         * _initialize
          * 初始化
          * @access public
          * @return void
          */
         public function _initialize(){
         	parent::_initialize();
-        	
         	$this->config = D( 'AppConfig' );
             $this->blog  = D( 'Blog' );
         }
         /**
-         * basic 
+         * basic
          * 基础设置管理
          * @access public
          * @return void
          */
         public function index (){
-            $config   = Common::changeType( $this->config->getConfigData(),"int");
+            $config   = $this->config->getConfigData();
             $this->assign( $config );
             $this->display();
         }
 
         /**
-         * recycle 
+         * recycle
          * 回收站
          * @access public
          * @return void
@@ -74,9 +73,9 @@
 			}else {
 				unset($_SESSION['blog_admin_search_recycle']);
 			}
-			
+
         	$this->assign('isSearch', isset($_POST['isSearch'])?'1':'0');
-        	
+
             //姓名，uid,日志内容
             //$_POST['name']     && $map['name']    = t( $_POST['name'] );
             $_POST['uid']      && $map['uid']     = intval( t( $_POST['uid'] ) );
@@ -96,11 +95,12 @@
             $list = $this->blog->where( $map )->order( $order )->findPage( 20 );
             $list['uid'] = $map['uid'];
             $this->assign( $list );
+            $this->assign($_POST);
             $this->display();
         }
 
         /**
-         * recycleAction 
+         * recycleAction
          * 回收站动作
          * @access public
          * @return void
@@ -154,7 +154,7 @@
             return true;
         }
         /**
-         * ico 
+         * ico
          * 图像设置
          * @access public
          * @return void
@@ -178,18 +178,18 @@
             $this->display(  );
         }
 
-        
+
         public function category() {
      	    $this->assign( 'category_list',$this->blog->getCategory());
             $this->display();
         }
-        
+
         public function addCategory() {
         	$this->display('editCategory');
         }
-        
+
         public function doAddCategory(){
-            $data['name'] = t($_POST['title']);
+            $data['name'] = t(h($_POST['title']));
             $data['uid']  = 0;
             if (empty($data['name'])) {
             	echo 0;
@@ -197,7 +197,7 @@
             	echo intval( M('blog_category')->add($data) );
             }
         }
-        
+
         public function editCategory() {
         	$category = M('blog_category')->where('id='.intval($_GET['gid']))->find();
         	$this->assign('category', $category);
@@ -205,29 +205,29 @@
         }
 
         public function doEditCategory() {
-            $_POST['title'] = t($_POST['title']);
+            $_POST['title'] = t(h($_POST['title']));
             if ( empty($_POST['title']) ) {
             	echo 0;
             }else {
             	echo M('blog_category')->where('`id`='.intval($_POST['gid']))->setField('name', $_POST['title']) ? '1' : '0';
             }
         }
-        
+
 	  	public function doDeleteCategory(){
             echo M('blog_category')->where('`id`='.intval($_POST['gid']))->delete() ? '1' : '0';
         }
-        
+
         public function isCategoryExist() {
         	echo D('BlogCategory')->isCategoryExist( t($_POST['title']), 0, intval($_POST['gid']) ) ? '1' : '0';
         }
-        
+
         public function isCategoryEmpty() {
         	echo D('BlogCategory')->isCategoryEmpty(intval($_POST['gid'])) ? '1' : '0';
         }
-        
-        
+
+
         /**
-         * bloglist 
+         * bloglist
          * 获得所有人的bloglist
          * @access public
          * @return void
@@ -241,9 +241,9 @@
 			}else {
 				unset($_SESSION['blog_admin_search']);
 			}
-			
+
         	$this->assign('isSearch', isset($_POST['isSearch'])?'1':'0');
-        	
+
             //姓名，uid,日志内容
             //$_POST['name']		&& $this->blog->name    = t( $_POST['name'] );
             $_POST['uid']		&& $this->blog->uid     = intval( t( $_POST['uid'] ) );
@@ -264,13 +264,13 @@
         }
 
         /**
-         * doDeleteBlog 
+         * doDeleteBlog
          * 删除mili
          * @access public
          * @return void
          */
         public function doDeleteBlog(){
-            $blogid['id'] = array( 'in',$_REQUEST['id']);//要删除的id.              
+            $blogid['id'] = array( 'in',$_REQUEST['id']);//要删除的id.
             $result       = $this->blog->doDeleteBlog($blogid);
             if( false !== $result){
                 if ( !strpos($_REQUEST['id'],",") ){
@@ -284,7 +284,7 @@
         }
 
         /**
-         * doChangeBase 
+         * doChangeBase
          * 修改全局设置
          * @access public
          * @return void
@@ -300,11 +300,11 @@
         }
 
         public function doChangeIsHot(){
-            
+
         	$blog['id'] = array( 'in',$_REQUEST['id']);        //要推荐的id.
         	//$blog['id'] = array( 'in',$_POST['id']);        //要推荐的id.
             $act  = $_REQUEST['type'];  //推荐动作
-			
+
             $result  = $this->blog->doIsHot($blog,$act);
 
             if( false !== $result){
@@ -313,9 +313,9 @@
                 echo -1;               //推荐失败
             }
         }
-     
+
         /**
-         * doChangeIco 
+         * doChangeIco
          * 删除表情
          * @access public
          * @return void
@@ -337,14 +337,14 @@
         }
 
         public function doChangePath(){
-            
+
         }
 
         /**
-         * changeType 
+         * changeType
          * 将数组中的数据转换成指定类型
-         * @param mixed $data 
-         * @param mixed $type 
+         * @param mixed $data
+         * @param mixed $type
          * @access private
          * @return void
          */

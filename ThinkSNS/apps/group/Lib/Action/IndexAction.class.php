@@ -196,7 +196,15 @@ class IndexAction extends BaseAction
     	D('GroupUserCount')->setZero($this->mid, 'atme');
         $index_list = D('WeiboOperate','group')->getAtme($this->mid);
 
+        $group_map['id'] = array('IN', array_unique(getSubByKey($index_list['data'], 'gid')));
+        $group_info = D('Group', 'group')->field('id,name')->where($group_map)->findAll();
+        $group_names = array();
+        foreach ($group_info as $value) {
+        	$group_names[$value['id']] = $value['name'];
+        }
+
         $this->assign('index_list', $index_list);
+        $this->assign('group_names', $group_names);
         $this->setTitle('群内@到我的');
     	$this->display('index');
     }
@@ -266,6 +274,9 @@ class IndexAction extends BaseAction
     public function interesting()
     {
 		$group_list =  $this->group->interestingGroup($this->mid);
+		if($group_list['count']==0){
+			exit;
+		}
 
 		$this->assign('next_page', ($group_list['nowPage'] < $group_list['totalPages'])?($group_list['nowPage'] + 1):'1');
 		$this->assign('now_page', $group_list['nowPage']);
@@ -290,6 +301,13 @@ class IndexAction extends BaseAction
         $this->setTitle("创建群组");
 		$this->display();
 	}
+	public function code(){
+		if (md5(strtoupper($_POST['verify'])) == $_SESSION['verify']) {
+			echo 1;
+		}else{
+			echo 0;
+		}
+	}
 
 	//做创建操作
 	public function doAdd()
@@ -304,7 +322,7 @@ class IndexAction extends BaseAction
 
 		if (trim($_POST['dosubmit'])) {
 			//检查验证码
-			if (md5($_POST['verify']) != $_SESSION['verify']) {
+			if (md5(strtoupper($_POST['verify'])) != $_SESSION['verify']) {
 				$this->error('验证码错误');
 			}
 
@@ -312,19 +330,22 @@ class IndexAction extends BaseAction
 			$group['name']  = h(t($_POST['name']));
 			$group['intro'] = h(t($_POST['intro']));
 			$group['cid0']  = intval($_POST['cid0']);
-			intval($_POST['cid1']) > 0	&& $group['cid1']  = intval($_POST['cid1']);
+			// intval($_POST['cid1']) > 0	&& $group['cid1']  = intval($_POST['cid1']);
+			$cid1 = D('Category','group')->_digCateNew($_POST);
+			intval($cid1) > 0 && $group['cid1'] = intval($cid1);
 
 			if (!$group['name']) {
-				$this->error('标题不能为空');
-			} else if (get_str_length($_POST['name']) > 20) {
-				$this->error('标题不能超过20个字');
+				$this->error('群组名称不能为空');
+			} else if (get_str_length($_POST['name']) > 30) {
+				$this->error('群组名称不能超过30个字');
 			}
 
-			if (D('Category')->getField('id', 'name=' . $group['name'])) {
-				$this->error('请选择群分类');
+			if (D('Group','group')->where(array('name'=>$group['name']))->find()) {
+				$this->error('这个群组名称已被占用');
 			}
-			if (get_str_length($_POST['intro']) > 60) {
-				$this->error('群组简介请不要超过60个字');
+
+			if (get_str_length($_POST['intro']) > 200) {
+				$this->error('群组简介请不要超过200个字');
 			}
 			if (!preg_replace("/[,\s]*/i", '' ,$_POST['tags']) || count(array_filter(explode(',', $_POST['tags']))) > 5) {
 				$this->error('标签不能为空或者不要超过五个');
@@ -332,15 +353,10 @@ class IndexAction extends BaseAction
 
 			$group['type']  = $_POST['type'] == 'open'?'open':'close';
 
-			/*
-			$group['need_invite'] = intval($this->config[$group['type'] . '_invite']);  //是否需要邀请
-			$group['need_verify'] = intval($this->config[$group['type'] . '_review']);   //申请是否需要同意
-			$group['actor_level'] = intval($this->config[$group['type'] . '_sayMember']);  //发表话题权限
-			$group['brower_level'] = intval($this->config[$group['type'] . '_viewMember']); //浏览权限
-			*/
 			$group['need_invite']  = intval($this->config[$group['type'] . '_invite']);  //是否需要邀请
 			$group['brower_level'] = $_POST['type'] == 'open'?'-1':'1'; //浏览权限
 
+			$group['openWeibo'] = intval($this->config['openWeibo']);
 			$group['openUploadFile'] = intval($this->config['openUploadFile']);
 			$group['whoUploadFile'] = intval($this->config['whoUploadFile']);
 			$group['whoDownloadFile'] = 3;
@@ -500,16 +516,29 @@ class IndexAction extends BaseAction
 			$current_category = D('Category')->field('id,title,pid')->where('id=' . intval($_GET['cid']))->find();
 			$this->assign('current_cid', $current_category['id']);
 			$map = 'is_del=0';
-			if ($current_category['pid'] > 0) {
+			// 判断是否未最小分类
+			$isMinCate = D('Category')->where('pid='.intval($_GET['cid']))->count();
+			if($isMinCate == 0 && $current_category['pid'] > 0) {
 				$map .= ' AND cid1=' . $current_category['id'];
 				$top_cid = $current_category['pid'];
 				// 当前顶级分类
-				$this->assign('top_category', D('Category')->field('id,title')->where("id={$current_category['pid']}")->find());
+				$topCateInfo = D('Category')->field('id,title')->where("id={$current_category['pid']}")->find();
+				$this->assign('top_category', $topCateInfo);
+				// 面包屑
+				$this->assign('top_path', D('Category')->getPathWithCateId($topCateInfo['id']));
 			} else {
-				$map .= ' AND cid0=' . $current_category['id'];
+				// 获取所有分类下的所有cid
+				$allPid = D('Category')->getAllCateIdWithPid($current_category['id']);
+				array_push($allPid, $current_category['id']);
+				if(!empty($allPid)) {
+					$map .= ' AND cid1 IN ('.implode(',', $allPid).')';
+				}
+				// $map .= ' AND cid0=' . $current_category['id'];
 				$top_cid = $current_category['id'];
 				// 当前顶级分类
 				$this->assign('top_category', $current_category);
+				// 面包屑
+				$this->assign('top_path', D('Category')->getPathWithCateId($current_category['id']));
 			}
 			// 当前顶级分类的子分类列表
 			$son_categorys = D('Category')->field('id,title')->where("pid='{$top_cid}'")->findAll();

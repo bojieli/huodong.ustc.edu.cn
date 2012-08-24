@@ -62,9 +62,18 @@ var ctrl = function(){
 }
 ctrl.prototype = {
 	del:function(topics_id){
-		var topics_id = topics_id ? topics_id : getChecked();
-		topics_id = topics_id.toString();
-		if(topics_id=='' || topics_id==0) return;
+		 var length = 0;
+        if(topics_id) {
+            length = 1;         
+        }else {
+            topics_id    = getChecked();
+            length = topics_id.length;
+            topics_id    = topics_id.toString();
+        }
+        if(topics_id=='') {
+            ui.error('请先选择一个专题');
+            return ;
+        }
 		if( confirm("是否删除专题") ){
 		  $.post( "{:U('weibo/Admin/deleteTopics')}",{topics_id:topics_id},function(text){
 		      if( text == 1 ){
@@ -85,11 +94,11 @@ ctrl.prototype = {
 		$.post( "{:U('weibo/Admin/doRecommendTopics')}",{topics_id:topics_id, type:type},function(text){
 		    if(1 == text){
 		        if ('recommend' == type) {
-			        $e.html("已推荐到话题");
+			        $e.html("已设为推荐话题");
 			        $e.attr('type', 'cancel');
 			        $e.addClass('cRed');
 		        } else {
-			        $e.html("未推荐到话题");
+			        $e.html("设为推荐话题");
 			        $e.attr('type', 'recommend');
 			        $e.removeClass('cRed');
 		        }
@@ -120,7 +129,7 @@ var c = null;
         <dl class="lineD">
           <dt>话题：</dt>
           <dd>
-            <input name="name" type="text" value="{$name}"> (注意：多个ID用英文,隔开)
+            <input name="name" type="text" value="{$name}">
           </dd>
         </dl>
         <dl class="lineD">
@@ -159,29 +168,29 @@ var c = null;
 		        <input type="checkbox" id="checkbox_handle" onclick="checkAll(this)" value="0">
 		        <label for="checkbox"></label>
 		    </th>
-		    <th class="line_l">ID</th>
-		    <th class="line_l">话题</th>
-		    <th class="line_l" width="220">注释</th>
-		    <th class="line_l" width="400">内容</th>
-            <th class="line_l" width="250">图片</th>
-            <th class="line_l">时间</th>
-            <th class="line_l">状态</th>
-            <th class="line_l">操作</th>
+		    <th class="line_l" width="5%">ID</th>
+		    <th class="line_l" width="10%">话题</th>
+		    <th class="line_l" width="15%">注释</th>
+		    <th class="line_l" width="15%">内容</th>
+            <th class="line_l" width="20%">图片</th>
+            <th class="line_l" width="10%">时间</th>
+            <th class="line_l" width="10%">状态</th>
+            <th class="line_l" width="10%">操作</th>
         </tr>
         <volist id="vo" name="list['data']">      
 	      	<tr overstyle='on' id="topics_list_{$vo.topics_id}">
 		        <td><input type="checkbox" name="checkbox" id="checkbox2" onclick="checkon(this)" value="{$vo.topics_id}"></td>
 		        <td>{$vo.topics_id}</td>
 		        <td><a href="{:U('home/User/topics/', array('k'=>urlencode($vo['name'])))}" target="_blank">#{$vo.name}#</a></td>
-		        <td>{$vo.note}</td>
-		        <td>{$vo.content}</td>
+		        <td>{$vo.note}&nbsp;</td>
+		        <td>{$vo.content}&nbsp;</td>
 		        <td><img alt="" src="{:SITE_URL}/data/uploads/{$vo.pic}" height="60" />&nbsp;</td>
 		        <td>{$vo.ctime|friendlyDate='ymd'}</td>
 		        <td>
 		        	<eq name="vo.recommend" value="1">
-		        		<a href="javascript:;" onclick="c.change_recommend({$vo.topics_id}, this)" type="cancel" class="cRed">已推荐到话题</a>
+		        		<a href="javascript:;" onclick="c.change_recommend({$vo.topics_id}, this)" type="cancel" class="cRed">已设为推荐话题</a>
 		        	<else />
-		        		<a href="javascript:;" onclick="c.change_recommend({$vo.topics_id}, this)" type="recommend">未推荐到话题</a>
+		        		<a href="javascript:;" onclick="c.change_recommend({$vo.topics_id}, this)" type="recommend">设为推荐话题</a>
 		        	</eq>
 		        </td>
 		        <td>
@@ -198,6 +207,7 @@ var c = null;
         <a href="javascript:void(0);" class="btn_a" onclick="searchBlog();">
             <span class="searchBlog_action"><neq name="isSearch" value="1">搜索专题<else/>搜索完毕</neq></span>
         </a>
+        <a href="{:U('weibo/Admin/editTopicsTab')}" class="btn_a"><span>添加专题</span></a>
         <a href="javascript:void(0);" class="btn_a" onclick="c.del()"><span>删除专题</span></a>
     </div>
 </div>

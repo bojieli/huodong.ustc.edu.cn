@@ -21,7 +21,7 @@
 		<div class="photoBox">
         	<form method="post" action="{:U('/Upload/upload_muti_pic')}" enctype="multipart/form-data" name="upload_single_pic" id="upload_single_pic" onsubmit="return start_upload();">
 			<div class="upload">
-			<ul>
+			<ul style="width:60%">
         	<li>
             	<div class="c1">选择图片{$ts['app']['app_alias']}：</div>
               	<div class="c2">
@@ -60,7 +60,8 @@
         	</li>
         	</ul>
        		<div class="clue">
-          		<p>严禁上传色情、暴力、恐怖、反动等违法图片！</p>
+              <p>· 图片大小最好为140*140，支持jpeg,jpg,gif,png格式</p>
+          	  <p>· 严禁上传色情、暴力、恐怖、反动等违法图片！</p>
        			<span class="clue_btm"></span>
      		</div>
     		</div>

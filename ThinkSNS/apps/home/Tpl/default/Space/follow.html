@@ -14,12 +14,14 @@
           <include file="../Space/userMenu" />
       </div>
       <div style="clear:left; height:5px;"></div>
-      <div class="tab-menu"><!-- 切换标签 begin  -->
+      <div class="tab-menu mt10"><!-- 切换标签 begin  -->
         <ul>
           <li><a id="feed_all_item" rel="all" class="<eq name='type' value='following'>on</eq> feed_item" href="{:U('home/space/follow',array('uid'=>$uid,'type'=>'following'))}"><span>关注</span></a></li>
-		 <li><a id="feed_colleague_item" rel="colleague" class="<eq name='type' value='follower'>on</eq> feed_item"  href="{:U('home/space/follow',array('uid'=>$uid,'type'=>'follower'))}"><span>粉丝</span></a></li>
+		 <li><a id="feed_colleague_item" rel="colleague" class="<eq name='type' value='follower'>on</eq> feed_item"  href="{:U('home/space/follow',array('uid'=>$uid,'type'=>'follower'))}"><span>粉丝</span></a></li>            
         </ul>
       </div>
+
+      <!-- /个人主页分类添加 end -->
       <if condition="$type eq 'following'">
       <div class="MenuSub ">
         <php>if ($mid > 0 && $uid == $mid) {</php>
@@ -93,9 +95,9 @@
 </div>
 </div>
 </div>
-<script>
+<script type="text/javascript">
 var weibo = $.weibo({
-      timeStep : 10000,
+      timeStep: 10000
 });
 </script> 
 {:Addons::hook('weibo_js_plugin')}

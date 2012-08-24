@@ -54,7 +54,7 @@ function searchBlog() {
         isSearchHidden = 0;
     }else {
         $("#searchBlog_div").slideUp("fast");
-        $(".searchBlog_action").html("搜索用户");
+        $(".searchBlog_action").html("搜索日志");
         isSearchHidden = 1;
     }
 }
@@ -85,8 +85,10 @@ toggle:function(obj){
 del:function(id){
 	var id = id ? id : getChecked();
 	id = id.toString();
-	if(id=='' || id==0) return ;
-if( confirm("是否删除博客") ){
+	if(id=='' || id==0){
+		ui.error('请选择要删除的日志！');return false;
+	}
+if( confirm("是否删除日志？") ){
   $.post( '__URL__&act=doDeleteBlog',{id:id},function(text ){
       if( text == 1 ){
     	  ui.success( "删除成功" );
@@ -116,13 +118,10 @@ edit:function(id,act){
   }
 if( confirm( '是否'+v ) ){
   $.post('__URL__&act=doChangeIsHot',{id:id,type:act},function( text ){
-          if( text == 1 ){
+       if( text == 1 ){
           ui.success( "操作成功" );
-          $( '#button'+id ).val( v2 );
-          location.reload();
-          //$('#button'+id).click(function() "c.edit"+id+",'"+act2+"')")
+          $('#button'+id).html('<a href="javascript:void(0);" onclick="c.edit('+id+',\''+act2+'\')">'+v2+'</a>');
        }else{
-       
         ui.error( "设置失败" );
        }
  });
@@ -218,7 +217,7 @@ var c = null;
                 $act    = 'recommend';
               }
               </php>
-		      <a href="javascript:void(0);" onclick="c.edit({$vo['id']},'{$act}')">{$button}</a>
+		      <span id="button{$vo['id']}" ><a href="javascript:void(0);" onclick="c.edit({$vo['id']},'{$act}')">{$button}</a></span>
 		      <a href="javascript:void(0);" onclick="c.del({$vo['id']})">删除</a>
           </td>
         </tr>

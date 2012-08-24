@@ -1,10 +1,11 @@
 @charset "utf-8";
 /* CSS Document */
 
+*{word-wrap:break-word;word-break:break-all}
 body { font:12px Arial, Verdana, Helvetica, sans-serif; text-align:center; color:#333; }
 body, div, dl, dt, dd, ul, ol, li, pre, form, fieldset, blockquote, h1, h2, h3, h4, h5, h6 { padding:0; margin:0 }
 table, td, tr, th { font-size:12px }
-input, select { vertical-align: middle; }
+input, select { vertical-align: middle; font-size:12px;}
 table { margin:0 auto }
 img { border:none }
 ol, ul, li{ list-style:none }
@@ -52,5 +53,13 @@ a:active { color:#3b5999 }
 .wn { white-space: nowrap; }
 
 .lineD{border-bottom:1px dashed #e2e2e2}
-.btn_b{ background:#567ab4 url(images/btn_b.gif) no-repeat 0 0; border:0 none; width:60px; height:24px; color:#fff;}
+.sea_left{padding-left:200px}
+.btn_b{ background:#567ab4 url(images/btn_b.gif) no-repeat 0 0; border:0 none; width:60px; height:24px; color:#fff;padding:0\0;}
 .btn_w{background:#fcfcfc url(images/btn_w.gif) no-repeat 0 0; border:0 none; width:60px; height:24px; color:#333}
+
+/*checkbox*/
+.s-ck{margin:0 3px 0 0;_margin:-3px 0 0;padding:0}
+.check-line{_margin:0 0 0 -3px}
+.force{word-break: break-word}
+#blog_list{table-layout:fixed;}
+.list table{table-layout:fixed}

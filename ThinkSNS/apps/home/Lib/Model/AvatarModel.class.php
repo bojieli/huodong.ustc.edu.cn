@@ -37,7 +37,14 @@ class AvatarModel extends Model{
         	$return['message'] = L('photo_upload_failed');
         	$return['code']    = '0';
         }else{
-        
+        	$validExts = array('image/jpg', 'image/jpeg', 'image/png', 'image/gif','image/pjpeg','image/x-png');
+        	if(!in_array(strtolower($_FILES['Filedata']['type']), $validExts)) {
+        		@unlink($_FILES['Filedata']['tmp_name']);
+        		$return['message'] = '仅允许上传jpg,jpeg,png,gif格式图片';
+        		$return['code'] = 0;
+        		return json_encode($return);
+        	}
+        	
 	        $file = @$_FILES['Filedata']['tmp_name'];
 	        file_exists($pic_path) && @unlink($pic_path);
 	        if(@copy($_FILES['Filedata']['tmp_name'], $pic_path) || @move_uploaded_file($_FILES['Filedata']['tmp_name'], $pic_path)) 

@@ -242,46 +242,6 @@ function highlight_code($str,$show=false) {
         return $result;
     }
 }
-/**
- * 过滤得到安全的html
- * @param string $text 待过滤的字符串
- * @param string $type 默认为string,可选项:INT,FLOAT,BOOL,WORD,ALNUM,CMD,BASE64,ARRAY,PATH,USERNAME
- * @param bool $tagsMethod true为开启黑名单，白名单失效。false为开启白名单，黑名单失效.
- * @param bool $attrMethod 同上
- * @param array $tags 标签的过滤白名单
- * @param array $attr 属性名的过滤白名单
- * @param array $tagsBlack 标签的过滤黑名单
- * @param array $attrBlack 标签中属性的过滤黑名单
- */
-//function h($text,$type,$tagsMethod=true,$attrMethod=true,$xssAuto = 1,$tags=array(),$attr=array(),$tagsBlack=array(),$attrBlack=array()){
-//	if(!class_exists('Security')){
-//		vendor('libs.SamLib.filter.Security','','.class.php');
-//	}
-//	$inputConfig ['tagsMethod'] = 1;  //默认开启黑名单
-//	$inputConfig ['attrMethod'] = 1;  //默认开启黑名单
-//	$inputConfig ['xssAuto'] = 1 ;    //默认开启黑名单
-//	$inputConfig ['tagsFilter'] = array();  //默认白名单为空
-//	$inputConfig ['attrFilter'] = array();  //默认白名单为空
-//	$inputConfig ['tagBlacklist'] = array ('applet', 'body', 'bgsound', 'base', 'basefont', 'frame', 'frameset', 'head',
-//											'html', 'id', 'iframe', 'ilayer', 'layer', 'link', 'meta', 'name',  'script',
-//											'style', 'title', 'xml','vbscript','javascript','input','form','textarea','select','option','button'); //默认的黑名单
-//	$inputConfig ['attrBlacklist'] = array ('action', 'codebase', 'dynsrc', 'lowsrc','onclick','onload','onsubmit'); //默认的黑名单
-//
-//
-//
-//	$filter = Security::getInstance($type,$inputConfig);
-//
-//	$filter->setTagsMethod($tagsMethod);
-//	$filter->setAttrMethod($attrMethod);
-//	$filter->setXss($xssAuto);
-//	//白名单.当$tagsMethod=false的时候无效
-//	!empty($tags) && $filter->setTagsFilter($tags);
-//	!empty($attr) && $filter->setAttrFilter($attr);
-//	//黑名单.当$tagsMethod=true时候有效
-//	!empty($tagsBlack) && $filter->setTagBlacklist($tagsBlack);
-//	!empty($attrBlack) && $filter->setAttrBlacklist($attrBlack);
-//	return $filter->inputFilter($text);
-//}
 
 //输出安全的html
 function h($text, $tags = null){
@@ -375,7 +335,7 @@ function safe($text,$type='html',$tagsMethod=true,$attrMethod=true,$xssAuto = 1,
     $form_tags	=	$base_tags.'<form><input><textarea><button><select><optgroup><option><label><fieldset><legend>';
 
     //内容等允许HTML的格式
-    $html_tags	=	$base_tags.'<ul><ol><li><dl><dd><dt><table><caption><td><th><tr><thead><tbody><tfoot><col><colgroup><div><span><object><embed>';
+    $html_tags	=	$base_tags.'<ul><ol><li><dl><dd><dt><table><caption><td><th><tr><thead><tbody><tfoot><col><colgroup><div><span><object><embed><param>';
 
     //专题等全HTML格式
     $all_tags	=	$form_tags.$html_tags.'<!DOCTYPE><html><head><title><body><base><basefont><script><noscript><applet><object><param><style><frame><frameset><noframes><iframe>';
@@ -441,7 +401,15 @@ function unescape($str) {
 //解析UBB
 function ubb($Text) {
   $Text=trim($Text);
-  //$Text=htmlspecialchars($Text);
+  $Text = str_replace('&#091;','[',$Text);
+  $Text = str_replace('&#093;',']',$Text);
+  // $Text=htmlspecialchars($Text);
+  $Text = html_entity_decode($Text);
+  // $Text=preg_replace("/\[p\](.+?)\[\/p\]/is", "<p>\\1</p>", $Text );
+  // $Text=preg_replace("/\[p=(.+?)\](.+?)\[\/p\]/is", "<p class=\"\\1\">\\2</p>", $Text );
+  // $Text=preg_replace("/\[span=(.+?)\](.?)\[\/span\]/is", "<span class=\"\\1\">\\2</span>", $Text );
+  $Text=preg_replace("/\[face:(.+?)\]/","<img src=\"".SITE_URL.'/apps/forum/Tpl/default/Public/js/kissy/smilies/default/'."\\1.gif\" />",$Text);
+  
   $Text=preg_replace("/\\t/is","  ",$Text);
   $Text=preg_replace("/\[h1\](.+?)\[\/h1\]/is","<h1>\\1</h1>",$Text);
   $Text=preg_replace("/\[h2\](.+?)\[\/h2\]/is","<h2>\\1</h2>",$Text);
@@ -1335,14 +1303,13 @@ function getUserFace($uid,$size){
 }
 
 // 将用户ID转换为三级路径
-function convertUidToPath($uid)
-{
+function convertUidToPath($uid){
 	return '/' . $uid;
 	//$md5 = md5($uid);
 	//return '/' . substr($md5, 0, 2) . '/' . substr($md5, 2, 2) . '/' . substr($md5, 4, 2);
 }
 
-function hasUserFace($uid) {
+function hasUserFace($uid){
 	return getUserFace($uid, 'm') != THEME_URL."/images/user_pic_middle.gif";
 }
 
@@ -2031,11 +1998,11 @@ function checkKeyWord( $content ){
  */
 function format($content,$url=false){
 	if($url){
-		$content = preg_replace('/((?:https?|ftp):\/\/(?:www\.)?(?:[a-zA-Z0-9][a-zA-Z0-9\-]*\.)?[a-zA-Z0-9][a-zA-Z0-9\-]*(?:\.[a-zA-Z0-9]+)+(?:\:[0-9]*)?(?:\/[^\x{4e00}-\x{9fa5}\s<\'\"“”‘’]*)?)/u', '<a href="\1" target="_blank">\1</a>\2', $content);
+		$content = preg_replace('/((?:https?|ftp):\/\/(?:www\.)?(?:[a-zA-Z0-9][a-zA-Z0-9\-]*\.)?[a-zA-Z0-9][a-zA-Z0-9\-]*(?:\.[a-zA-Z0-9]+)+(?:\:[0-9]*)?(?:\/[^\x{2e80}-\x{9fff}\s<\'\"“”‘’]*)?)/u', '<a href="\1" target="_blank">\1</a>\2', $content);
 	}
     $content = preg_replace_callback("/(?:#[^#]*[^#^\s][^#]*#|(\[.+?\]))/is",replaceEmot,$content);
 	$content = preg_replace_callback("/#([^#]*[^#^\s][^#]*)#/is",themeformat,$content);
-	$content = preg_replace_callback("/@([\w\x{4e00}-\x{9fa5}\-]+)/u",getUserId,$content);
+	$content = preg_replace_callback("/@([\w\x{2e80}-\x{9fff}\-]+)/u",getUserId,$content);
 	$content = keyWordFilter($content);
     return $content;
 }
@@ -2051,11 +2018,11 @@ function group_weibo_format($content, $gid, $url=false){
     $_SESSION['_group_weibo_format'] = $gid;
 
     if($url){
-        $content = preg_replace('/((?:https?|ftp):\/\/(?:www\.)?(?:[a-zA-Z0-9][a-zA-Z0-9\-]*\.)?[a-zA-Z0-9][a-zA-Z0-9\-]*(?:\.[a-zA-Z]+)+(?:\:[0-9]*)?(?:\/[^\x{4e00}-\x{9fa5}\s<\'\"“”‘’]*)?)/u', '<a href="\1" target="_blank">\1</a>\2', $content);
+        $content = preg_replace('/((?:https?|ftp):\/\/(?:www\.)?(?:[a-zA-Z0-9][a-zA-Z0-9\-]*\.)?[a-zA-Z0-9][a-zA-Z0-9\-]*(?:\.[a-zA-Z]+)+(?:\:[0-9]*)?(?:\/[^\x{2e80}-\x{9fff}\s<\'\"“”‘’]*)?)/u', '<a href="\1" target="_blank">\1</a>\2', $content);
     }
     $content = preg_replace_callback("/(?:#[^#]*[^#^\s][^#]*#|(\[.+?\]))/is", replaceEmot, $content);
     $content = preg_replace_callback("/#([^#]*[^#^\s][^#]*)#/is", group_themeformat, $content);
-    $content = preg_replace_callback("/@([\w\x{4e00}-\x{9fa5}\-]+)/u", getUserId, $content);
+    $content = preg_replace_callback("/@([\w\x{2e80}-\x{9fff}\-]+)/u", getUserId, $content);
     $content = keyWordFilter($content);
     return $content;
 }
@@ -2081,12 +2048,29 @@ function group_themeformat($data){
  */
 function formatComment($content,$url=false){
 	if($url){
-		$content = preg_replace('/((?:https?|ftp):\/\/(?:www\.)?(?:[a-zA-Z0-9][a-zA-Z0-9\-]*\.)?[a-zA-Z0-9][a-zA-Z0-9\-]*(?:\.[a-zA-Z0-9]+)+(?:\:[0-9]*)?(?:\/[^\x{4e00}-\x{9fa5}\s<\'\"“”‘’]*)?)/u', '<a href="\1" target="_blank">\1</a>\2', $content);
+		$content = preg_replace('/((?:https?|ftp):\/\/(?:www\.)?(?:[a-zA-Z0-9][a-zA-Z0-9\-]*\.)?[a-zA-Z0-9][a-zA-Z0-9\-]*(?:\.[a-zA-Z0-9]+)+(?:\:[0-9]*)?(?:\/[^\x{2e80}-\x{9fff}\s<\'\"“”‘’]*)?)/u', '<a href="\1" target="_blank">\1</a>\2', $content);
 	}
 	$content = preg_replace_callback("/(\[.+?\])/is",replaceEmot,$content);
-	$content = preg_replace_callback("/@([\w\x{4e00}-\x{9fa5}\-]+)/u",getUserId,$content);
+	$content = preg_replace_callback("/@([\w\x{2e80}-\x{9fff}\-]+)/u",getUserId,$content);
 	$content = keyWordFilter( $content );
 	return $content;
+}
+
+/**
+ * 格式化内容, 替换URL
+ *
+ * @param string  $content 待格式化的内容
+ * @return string
+ */
+function formatUrl($content){
+    // $content = strip_tags($content);
+    $finda = "</a>";
+    if( strpos($content, $finda) === false){
+    $contents = preg_replace('/((?:https?|ftp):\/\/(?:www\.)?(?:[a-zA-Z0-9][a-zA-Z0-9\-]*\.)?[a-zA-Z0-9][a-zA-Z0-9\-]*(?:\.[a-zA-Z0-9]+)+(?:\:[0-9]*)?(?:\/[^\x{2e80}-\x{9fff}\s<\'\"“”‘’]*)?)/u', '<a href="\1" target="_blank">\1</a>\2', $content);
+    }else{
+    $contents = $content;
+    }
+    return $contents;
 }
 
 /**
@@ -2098,7 +2082,6 @@ function formatComment($content,$url=false){
 function themeformat($data){
 	return "<a href=".U('home/user/topics',array('k'=>urlencode($data[1]))).">".$data[0]."</a>";
 }
-
 /**
  * 表情替换 [格式化微博与格式化评论专用]
  *
@@ -2330,10 +2313,11 @@ function getFrom($type, $type_data) {
  * @param int $life_time 表单锁的有效时间(秒). 如果有效时间内未解锁, 表单锁自动失效.
  * @return boolean 成功锁定时返回true, 表单锁已存在时返回false
  */
-function lockSubmit($life_time = 30) {
+function lockSubmit($life_time = null) {
 	if ( isset($_SESSION['LOCK_SUBMIT_TIME']) && intval($_SESSION['LOCK_SUBMIT_TIME']) > time() ) {
 		return false;
 	}else {
+        $life_time = $life_time ? $life_time : $GLOBALS['ts']['site']['max_post_time'];
 		$_SESSION['LOCK_SUBMIT_TIME'] = time() + intval($life_time);
 		return true;
 	}
@@ -2345,7 +2329,7 @@ function lockSubmit($life_time = 30) {
  * @return boolean 表单已锁定时返回true, 否则返回false
  */
 function isSubmitLocked() {
-	return isset($_SESSION['LOCK_SUBMIT_TIME']) && intval($_SESSION['LOCK_SUBMIT_TIME']) < time();
+	return isset($_SESSION['LOCK_SUBMIT_TIME']) && intval($_SESSION['LOCK_SUBMIT_TIME']) > time();
 }
 
 /**
@@ -2355,6 +2339,20 @@ function isSubmitLocked() {
  */
 function unlockSubmit() {
 	unset($_SESSION['LOCK_SUBMIT_TIME']);
+}
+
+/**
+ * 检查表单是否已锁定
+ *
+ * @return boolean 表单已锁定时返回true, 否则返回false
+ */
+function isDuplicateContent($content) {
+    $content = md5($content);
+    $res = ($_SESSION['LOCK_SUBMIT_CONTENT'] === $content);
+    if (!$res) {
+        $_SESSION['LOCK_SUBMIT_CONTENT'] = $content;
+    }
+    return $res;
 }
 
 /**
@@ -2465,7 +2463,7 @@ function getBrowser(){
 function isLegalUsername( $username )
 {
    // GB2312: preg_match("/^[".chr(0xa1)."-".chr(0xff)."A-Za-z0-9_-]+$/", $username)
-   return preg_match("/^[\x{4e00}-\x{9fa5}A-Za-z0-9_-]+$/u", $username) &&
+   return preg_match("/^[\x{2e80}-\x{9fff}A-Za-z0-9_-]+$/u", $username) &&
    		  mb_strlen($username, 'UTF-8') >= 2 &&
    		  mb_strlen($username, 'UTF-8') <= 10;
 }
@@ -2679,4 +2677,9 @@ function getRequestUri(){
 		}
 	}
 	return $uri;
+}
+
+// getAppIconUrl
+function getAppIconUrl($icon,$app='gift'){
+	return SITE_URL.'/apps/'.$app.'/Appinfo/'.basename($icon);
 }

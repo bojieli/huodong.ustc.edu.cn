@@ -64,7 +64,7 @@
       </div>
 <if condition="$ismember">
 <php>if($privacy['weibo_comment']){</php>      
-	  <form action="{:U('group/WeiboOperate/addcomment')}" method="post" callback="addDetailComment" rel="miniblog_comment">
+	  <form action="{:U('group/WeiboOperate/addcomment')}" method="post" callback="addDetailComment" rel="miniblog_comment" id="weibo_comment_list">
 		<input type="hidden" name="gid" value="{$mini.gid}">
 		<input type="hidden" name="weibo_id" value="{$mini.id}">
 		<input type="hidden" name="reply_comment_id" id="replyid_{$mini.id}">	
@@ -139,6 +139,8 @@
 		});
 
 	    shortcut('ctrl+return',	function(){ $("form[rel='miniblog_comment']").submit();},{'target':'comment_<?php echo $mini['id']; ?>'});
+
+	    $('#weibo_comment_list').submit(addDetailComment);
  });
  
  
@@ -179,5 +181,17 @@
 			setInterval("location.reload()",1000);
 		});
 	}	
+
+	var gid = '<?php echo $gid; ?>';
+
+	var weibo = $.weibo({
+		      timeStep : 10000,
+		      gid:'<php> echo $gid;</php>',
+		      weiboType:'<php> echo $type;</php>',
+		      type:1,
+		      typeList:{
+		          GROUP:1
+		      },
+		});
 </script>
 <include file="__THEME__/footer" /> 

@@ -28,8 +28,6 @@ CREATE TABLE `ts_blog` (
   KEY `hot` (`hot`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-
-
 DROP TABLE IF EXISTS `ts_blog_category`;
 
 CREATE TABLE `ts_blog_category` (
@@ -42,91 +40,6 @@ CREATE TABLE `ts_blog_category` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 INSERT INTO `ts_blog_category` (`name`,`uid`,`pid`) VALUES ('未分类',0,0);
-
-DROP TABLE IF EXISTS `ts_blog_item`;
-
-CREATE TABLE `ts_blog_item` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `sourceId` int(11) DEFAULT NULL,
-  `snapday` int(11) DEFAULT NULL,
-  `pubdate` int(11) DEFAULT NULL,
-  `boot` tinyint(1) NOT NULL DEFAULT '0',
-  `title` varchar(255) DEFAULT NULL,
-  `link` varchar(255) DEFAULT NULL,
-  `summary` text,
-  PRIMARY KEY (`id`),
-  KEY `source_id` (`sourceId`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
-
-
-DROP TABLE IF EXISTS `ts_blog_mention`;
-
-CREATE TABLE `ts_blog_mention` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `blogid` int(20) DEFAULT NULL,
-  `uid` int(11) DEFAULT NULL,
-  `name` varchar(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
-  `type` varchar(20) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `blogid` (`blogid`,`uid`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
-
-DROP TABLE IF EXISTS `ts_blog_outline`;
-
-CREATE TABLE `ts_blog_outline` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `uid` int(11) NOT NULL DEFAULT '0',
-  `name` varchar(20) DEFAULT NULL,
-  `title` varchar(255) DEFAULT NULL,
-  `category` mediumint(5) DEFAULT NULL,
-  `cover` varchar(255) DEFAULT NULL,
-  `content` longtext,
-  `readCount` int(11) NOT NULL DEFAULT '0',
-  `commentCount` int(11) NOT NULL DEFAULT '0',
-  `tags` varchar(255) DEFAULT NULL,
-  `cTime` int(11) DEFAULT NULL,
-  `mTime` int(11) DEFAULT NULL,
-  `isHot` varchar(1) NOT NULL DEFAULT '0',
-  `type` int(1) DEFAULT NULL,
-  `status` varchar(1) NOT NULL DEFAULT '1',
-  `private` tinyint(1) NOT NULL DEFAULT '0',
-  `hot` int(11) NOT NULL DEFAULT '0',
-  `friendId` text,
-  `canableComment` tinyint(1) NOT NULL DEFAULT '1',
-  PRIMARY KEY (`id`),
-  KEY `hot` (`hot`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
-
-DROP TABLE IF EXISTS `ts_blog_source`;
-
-CREATE TABLE `ts_blog_source` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `service` varchar(10) DEFAULT NULL,
-  `username` char(30) DEFAULT NULL,
-  `cTime` int(11) DEFAULT NULL,
-  `lastSnap` int(11) DEFAULT NULL,
-  `isNew` tinyint(1) DEFAULT NULL,
-  `changes` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `username` (`username`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
-
-
-DROP TABLE IF EXISTS `ts_blog_subscribe`;
-
-CREATE TABLE `ts_blog_subscribe` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `sourceId` int(11) DEFAULT NULL,
-  `uid` int(11) DEFAULT NULL,
-  `type` tinyint(4) DEFAULT '0',
-  `newNum` int(11) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`),
-  KEY `sourceId` (`sourceId`,`uid`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 #添加ts_system_data数据
 REPLACE INTO `ts_system_data` (`uid`,`list`,`key`,`value`,`mtime`)
@@ -154,6 +67,10 @@ VALUES
 
 # 积分配置
 DELETE FROM `ts_credit_setting` WHERE `type` = 'blog';
-INSERT INTO `ts_credit_setting` VALUES ('','add_blog','发表博客','blog','{action}{sign}了{score}{typecn}','5','5');
-INSERT INTO `ts_credit_setting` VALUES ('','delete_blog','删除博客','blog','{action}{sign}了{score}{typecn}','-5','-5');
-INSERT INTO `ts_system_data` (`uid`,`list`,`key`,`value`,`mtime`) VALUES (0,'blog','version_number','s:5:"28172";','2012-02-14 00:30:00');
+INSERT INTO `ts_credit_setting` (`id`,`name`, `alias`, `type`, `info`, `score`, `experience`) 
+VALUES
+    ('','add_blog','发表博客','blog','{action}{sign}了{score}{typecn}','5','5'),
+    ('','delete_blog','删除博客','blog','{action}{sign}了{score}{typecn}','-5','-5');
+
+REPLACE INTO `ts_system_data` (`uid`,`list`,`key`,`value`,`mtime`) 
+VALUES (0,'blog','version_number','s:5:"33566";','2012-07-12 00:00:00');

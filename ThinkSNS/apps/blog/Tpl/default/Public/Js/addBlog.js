@@ -6,7 +6,7 @@ function getMessage() {
 
 function check(){
   if( $( '#title' ).val().length>30 ){
-    Alert( "标题不得大于30个中文字符" );
+    alert( "标题不得大于30个中文字符" );
     return false;
   }
   if($('#select').val()=='0'){
@@ -24,9 +24,9 @@ $( document ).ready( function(){
 
     });
 /**
- * addCategory 
+ * addCategory
  * 添加分类
- * @param category $category 
+ * @param category $category
  * @access public
  * @return void
  */
@@ -36,15 +36,24 @@ function addCategory(tp){
         select.children( ':first' ).attr( 'selected',true );
         return ui.box.close();
     }
-	
+
     // 在发表博客时, 添加新分类
     var category = $('#newCategory').val();
-    
-    
+    if($('#newCategory').val().length>10){
+    	alert('分类名称不能大于10个中文字符');
+        $("#newCategory").focus();
+    	return false;
+    }
+    if(getLength(category.replace(/\s+/g,"")) == 0){
+        alert('分类名不能为空');
+        $("#newCategory").focus();
+    	return false;
+    }
+
 	if( category != "" ){
     $.post( U('blog/Index/addCategory'),{name:category},function(txt){
         ui.box.close();
-        
+
     	if( -1 == txt ){
         	ui.error( '添加失败' );
         }else if(  -2  == txt){
@@ -52,14 +61,18 @@ function addCategory(tp){
         }else if( -3 == txt  ){
         	ui.error( '添加失败，分类名不能为空' );
         }else{
-        	select = $( '#group' );
-        	select.before( select.children(':first').clone().val(txt).html(category));
-        	$("#select option[value='"+txt+"']").attr( 'selected',true );
-        	return;
+          $.post(U('blog/Index/filterCategory'), {name:category}, function(msg) {
+        	  select = $( '#group' );
+          	select.before( select.children(':first').clone().val(txt).html(msg));
+          	$("#select option[value='"+txt+"']").attr( 'selected',true );
+          	return;
+          });
         }
   });
 	}else{
-		ui.error( '请输入分类名' );
+		alert( '请输入分类名' );
+        $("#newCategory").focus();
+        return false;
 	}
 
     var select = $( '#select' );
@@ -68,9 +81,9 @@ function addCategory(tp){
 }
 
 /**
- * changePrivacy 
+ * changePrivacy
  * 隐私按钮改变时
- * @param _this  $_this  
+ * @param _this  $_this
  * @access public
  * @return void
  */
@@ -83,17 +96,17 @@ function changePrivacy( _this ){
 }
 
 function changeCategory( _this ){
-	
+
 	if( 0 == _this.val()){
 		getMessage();
 	}
 }
 
 /**
- * autosave 
+ * autosave
  * 自动保存
- * @param inst $inst 
- * @param time  $time  
+ * @param inst $inst
+ * @param time  $time
  * @access public
  * @return void
  */

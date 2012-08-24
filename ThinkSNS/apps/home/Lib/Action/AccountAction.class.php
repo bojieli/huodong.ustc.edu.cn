@@ -84,12 +84,13 @@ class AccountAction extends Action
 
     //教育、工作情况
     function addproject(){
-        $pUserProfile = D('UserProfile');
+        S('S_userInfo_'.$_SESSION['userInfo']['uid'],null);
+		$pUserProfile = D('UserProfile');
         $pUserProfile->uid = $this->mid;
         $strType = t( $_POST['addtype'] );
         if( $strType =='education' ){
-            $data['school'] = msubstr( t($_POST['school']),0,70,'utf-8',false );
-            $data['classes']= msubstr( t($_POST['classes']),0,70,'utf-8',false );
+            $data['school'] = msubstr( t(h($_POST['school'])),0,70,'utf-8',false );
+            $data['classes']= msubstr( t(h($_POST['classes'])),0,70,'utf-8',false );
             $data['year']   = $_POST['year'];
             if( empty( $data['school'] ) ){
                 $return['message']  = L('schoolname_nonull');
@@ -97,8 +98,8 @@ class AccountAction extends Action
                 exit( json_encode($return) );
             }
         }elseif ($strType == 'career' ){
-            $data['company']   = msubstr( t($_POST['company']),0,70,'utf-8',false );
-            $data['position']  = msubstr( t($_POST['position']),0,70,'utf-8',false );
+            $data['company']   = msubstr( t(h($_POST['company'])),0,70,'utf-8',false );
+            $data['position']  = msubstr( t(h($_POST['position'])),0,70,'utf-8',false );
             $data['begintime'] = intval( $_POST['beginyear'] ).'-'.intval($_POST['beginmonth']);
             $data['endtime']   = ( $_POST['nowworkflag'] ) ? L('now') : intval( $_POST['endyear'] ).'-'.intval($_POST['endmonth']);
             //2011-03-11 添加
@@ -118,6 +119,12 @@ class AccountAction extends Action
             	$return['message'] = L('start_time_later');
             	$return['boolen'] = "0";
             	exit(json_encode($return));
+            }
+
+            if($data['endtime'] != L('now') && $end > time()) {
+                $return['message'] = '结束时间不能超过当前时间';
+                $return['boolen'] = 0;
+                exit(json_encode($return));
             }
         }
         $data['id'] = $pUserProfile->dosave($strType,$data,'list',true);
@@ -183,8 +190,10 @@ class AccountAction extends Action
     			$this->error(L('invite_code_error'));
     		}
     	}else{
-	    	$invitecode = model('Invite')->getInviteCode( $this->mid );
+            $map['uid'] = $this->mid;
+	    	// $invitecode = model('Invite')->getInviteCode( $this->mid );
 	    	$receivecount = model('Invite')->getReceiveCount( $this->mid );
+            $invitecode = model('Invite')->where($map)->findAll();
 			$this->assign('receivecount',$receivecount);
 			$this->assign('list',$invitecode);
 			$this->setTitle(L('invite'));
@@ -248,14 +257,15 @@ class AccountAction extends Action
 
     //删除资料
     function delprofile(){
-        $intId = intval( $_REQUEST['id'] );
+        S('S_userInfo_'.$_SESSION['userInfo']['uid'],null);
+		$intId = intval( $_REQUEST['id'] );
         $pUserProfile = D('UserProfile');
         echo $pUserProfile->delprofile( $intId ,$this->mid );
     }
 
     //帐号安全
     public function security() {
-    	// UCenter账号同步失败则重新设置
+    	// UCenter帐号同步失败则重新设置
     	if(UC_SYNC){
     		global $ts;
 	    	$uc_user_ref = ts_get_ucenter_user_ref($this->mid);
@@ -275,6 +285,7 @@ class AccountAction extends Action
     function privacy(){
     	if($_POST){
     		$r = D('UserPrivacy')->dosave($_POST['userset'],$this->mid);
+    		$this->success("保存成功");
     	}
     	$userSet = D('UserPrivacy')->getUserSet($this->mid);
     	$blacklist = D('UserPrivacy')->getBlackList($this->mid);
@@ -294,6 +305,35 @@ class AccountAction extends Action
     		echo '0';
     	}
     }
+    //设置黑名单
+    function setBlack(){
+        $uname = t($_POST['blackname']);
+        $data = M('user')->where("`uname` = '$uname'")->find();
+        $mid = $this->mid;
+        if($data['uid'] == $mid){
+            $this->error('不能添加自己为黑名单！');
+        }
+        if(!$data){
+            $this->error('没有该用户！');
+        }else{
+            $map['uid'] = $this->mid;
+            $map['fid'] = $data['uid'];
+            $map['ctime'] =time();
+            D('UserBlacklist')->add($map);
+             $this->assign('jumpUrl', U('home/Account/privacy#email'));
+            $this->success('设置成功！');
+        }
+    }
+    function release(){
+        $fid = $_GET['id'];
+        $res = D('UserBlacklist')->where("fid = ".$fid)->delete();
+        dump(D('UserBlacklist')->getlastsql());
+        if($res){
+           echo 1;
+         }else{
+           echo 0;        
+      }
+    }
 
     //个性化域名
     function domain(){
@@ -303,7 +343,14 @@ class AccountAction extends Action
         	$this->error(L('self_domain_off'));
 
     	if($_POST){
-    		$domain = h($_POST['domain']);
+			S('S_userInfo_'.$_SESSION['userInfo']['uid'],null);
+			$domain = h($_POST['domain']);
+
+            $dmMap['domain'] = $domain;
+            $isExistDomain = M('user')->where($dmMap)->find();
+            if(!is_null($isExistDomain)) {
+                $this->error('此个性域名已被占用，请重新输入');
+            }
 
     		if( !ereg('^[a-zA-Z][a-zA-Z0-9]+$', $domain)){
     			$this->error(L('domain_english_only'));
@@ -381,6 +428,7 @@ class AccountAction extends Action
 
     //修改帐号
     public function modifyEmail() {
+		S('S_userInfo_'.$_SESSION['userInfo']['uid'],null);
     	$_POST['email']    = t($_POST['email']);
     	$_POST['oldemail'] = t($_POST['oldemail']);
     	if ( !isValidEmail($_POST['email']) || !isValidEmail($_POST['oldemail']) ) {
@@ -444,7 +492,7 @@ EOD;
     	}
     }
 
-    // 设置UCenter账号
+    // 设置UCenter帐号
     public function doModifyUCenter() {
     	include_once(SITE_PATH.'/api/uc_client/uc_sync.php');
     	if(UC_SYNC){

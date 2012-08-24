@@ -16,7 +16,11 @@ if(!defined('UPLOAD_PATH'))		define('UPLOAD_PATH'	, SITE_DATA_PATH.'/uploads');
 //应用路径解析
 if(isset($_GET['app'])){
 	//判断开放的应用列表，进行必要的应用名过滤
-	$app_name	=	strtolower(str_replace(array('/','\\'),'',strip_tags(urldecode($_GET['app']))));
+	if(!preg_match('/^[a-zA-Z0-9_]+$/i',$_GET['app'])){
+		die('Wrong parameters, app_name must be a charactor form a-zA-Z0-9!');
+	}else{
+		$app_name	=	strtolower($_GET['app']);
+	}
 }else{
 	$app_name = 'home';
 }

@@ -77,7 +77,7 @@ function move(app_id, direction) {
   
   <volist id="vo" name="data">
       <tr overstyle='on' id="{$vo['app_id']}">
-        <td><img src="{$vo['icon_url']}" /></td>
+        <td><img src="{:getAppIconUrl($vo['icon_url'],$vo['app_name'])}" /></td>
         <td>
             <php>if(!empty($vo['homepage_url'])){</php>
             <a href="{$vo['homepage_url']}" target="_blank">{$vo['app_name']}</a>

@@ -78,7 +78,7 @@ $.fn.json2select=function(json,dft,name,deep) {
 		dft=dft||[];			//默认值
 	//换内容的时候删除旧的select
 	$("[name="+name+deep+"]",_this).nextAll().remove();
-	if (json[0]) {
+	if (json && json[0]) {
 		//新建一个select
 		var slct=$("<select name='"+name+$("select",_this).length+"'></select>");
 		//建立一个默认项，value为空，修改请保留为空
@@ -90,7 +90,7 @@ $.fn.json2select=function(json,dft,name,deep) {
 		//绑定这个select的change事件
 		slct.change(function(e,dftflag) {
 			//如果选的不是value为空的，则调用方法本身。如果已经初始化过了,即，不是由trigger触发的，而是手工点的，则不将dft传递进去。
-			$(this).val() && _this.json2select($(":selected",this).data("d"),dftflag?dft.slice(1):[],name,$(this).attr("name").match(/\d+/)[0]);
+			_this.json2select($(":selected",this).data("d"),dftflag?dft.slice(1):[],name,$(this).attr("name").match(/\d+/)[0]);
 			//设置初始值，并且触发change事件，传递true参数进去。
 		}).appendTo(_this).val(dft[0]||'').trigger("change",[true]);
 	}

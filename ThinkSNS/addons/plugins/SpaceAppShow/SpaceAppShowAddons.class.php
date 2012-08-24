@@ -94,6 +94,8 @@ class SpaceAppShowAddons extends SimpleAddons
 		require_once SITE_PATH . '/apps/group/Common/common.php';
 		// 群组列表
         $data['grouplist'] = D('Group', 'group')->getAllMyGroup($uid, 1);
+        $isLogin = empty($_SESSION['mid']) ? false : true;
+        $this->assign('isLogin', $isLogin);
 		$this->assign($data);
 		$this->display('group');
 	}
@@ -139,7 +141,8 @@ class SpaceAppShowAddons extends SimpleAddons
 	}
 
 	public function saveConfig(){
-	    if(empty($_POST)) return;
+	    if(empty($_POST)) 
+	    	$this->error('最少开启一个应用类型');
 	    if(empty($_POST['open'])) $_POST['open'] = array();
 	    $data = $_POST;
 	    $res = model('AddonData')->lput('space_app_show', $data);

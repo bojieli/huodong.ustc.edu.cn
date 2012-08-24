@@ -37,7 +37,7 @@ function U($url, $params = false, $redirect = false, $suffix = true)
 	$act  = ($urls[2]) ? $urls[2] : 'index';
 
 	// 组合默认路径
-	$site_url = SITE_URL.'/index.php?'.C('VAR_APP').'='.$app.'&'.C('VAR_MODULE').'='.$mod.'&'.C('VAR_ACTION').'='.$act;
+	$site_url = SITE_URL.'/index.php?app='.$app.'&mod='.$mod.'&act='.$act;
 
 	// 填充附加参数
 	if ($params) {
@@ -143,17 +143,17 @@ function halt($error) {
     else
     {
         //否则定向到错误页面
-        $error_page =   C('ERROR_PAGE');
-        if(!empty($error_page)){
-            redirect($error_page);
-        }else {
+        //$error_page =   C('ERROR_PAGE');
+        //if(!empty($error_page)){
+        //    redirect($error_page);
+        //}else {
             if(C('SHOW_ERROR_MSG'))
                 $e['message'] =  is_array($error)?$error['message']:$error;
             else
                 $e['message'] = C('ERROR_MESSAGE');
             // 包含异常页面模板
             include C('TMPL_EXCEPTION_FILE');
-        }
+        //}
     }
     exit;
 }
@@ -565,10 +565,19 @@ function L($name=null,$value=null) {
     if (is_string($name) )
     {
         $name = strtoupper($name);
-        if (is_null($value))
+        if (is_null($value)) {
             return isset($_lang[$name]) ? $_lang[$name] : $name;
-        $_lang[$name] = $value;// 语言定义
-        return;
+        }
+        
+        if(is_array($value)) {
+        	if(isset($_lang[$name])) {
+        		$_lang[$name] = str_replace(array_keys($value), $value, $_lang[$name]);
+        		return $_lang[$name];
+        	}
+        } else {
+	        $_lang[$name] = $value;// 语言定义
+	        return;
+        }
     }
     // 批量定义
     if (is_array($name))
@@ -655,11 +664,15 @@ function X($name,$params=array(),$domain='Service') {
         return $_service[$domain.'_'.$app.'_'.$name];
 
 	$class = $name.$domain;
-	if(file_exists(LIB_PATH.$domain.'/'.$class.'.class.php')){
-		require_cache(LIB_PATH.$domain.'/'.$class.'.class.php');
-	}else{
-		require_cache(SITE_PATH.'/addons/'.strtolower($domain).'s/'.$class.'.class.php');
-	}
+    
+    if(!class_exists($class)){
+    	if(file_exists(LIB_PATH.$domain.'/'.$class.'.class.php')){
+    		require_cache(LIB_PATH.$domain.'/'.$class.'.class.php');
+    	}else{
+    		require_cache(SITE_PATH.'/addons/'.strtolower($domain).'s/'.$class.'.class.php');
+    	}
+    }
+
 	//服务不可用时 记录日志 或 抛出异常
 	if(class_exists($class)){
 		$obj   =  new $class($params);
@@ -704,8 +717,9 @@ function W($name, $data = array(), $return = false) {
 function S($name,$value='',$expire='',$type='') {
 
 	static $_cache;
-	
-    require_once CORE_PATH . '/sociax/Cache.class.php';
+
+    if(!class_exists('Cache'))
+        require_once CORE_PATH . '/sociax/Cache.class.php';
 
     $cache = Cache::getInstance();
 
@@ -735,35 +749,7 @@ function S($name,$value='',$expire='',$type='') {
 
 // 快速文件数据读取和保存 针对简单类型数据 字符串、数组
 function F($name,$value='',$path=false) {
-
-	static $_cache = array();
-	
-    require_once CORE_PATH . '/sociax/Cache.class.php';
-
-    $cache = Cache::getInstance();
-
-    $name = C('DATA_CACHE_PREFIX').$name;
-
-    if('' !== $value) {
-
-        if(is_null($value)) {
-            // 删除缓存
-            $result =   $cache->rm($name);
-            if($result)   unset($_cache[$name]);
-            return $result;
-        }else{
-            // 缓存数据
-            $cache->set($name,$value);
-            $_cache[$name]     =   $value;
-        }
-        return ;
-    }
-    if(isset($_cache[$name]))
-        return $_cache[$name];
-    // 获取缓存数据
-    $value      =  $cache->get($name);
-    $_cache[$name]     =   $value;
-    return $value;
+	return S($name,$value);
 }
 
 // 根据PHP各种类型变量生成唯一标识号

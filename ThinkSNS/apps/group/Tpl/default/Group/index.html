@@ -94,13 +94,17 @@
           </case>
         </switch>
         <div class="feedBox">
-          <div id="countNew"></div>
-          <php>if (ACTION_NAME == 'search' && !$list['data']) {</php> 
+          <!--<div id="countNew"></div>-->
+          <php>if (ACTION_NAME == 'search' && isset($list['data']) && !$list['data']) {</php> 
             <li>未搜索到相关的话题</li>
           <php>} else {</php>
            {:W('WeiboList', array('mid'=>$mid, 'list'=>$list['data'], 'insert'=>1,'simple'=>2))}
-		  <php>}</php>
-           <p class="moreFoot"><a id="loadMoreDiv" href="javascript:void(0)"><span class="ico_morefoot"></span>更多</a></p>
+		      <php>}</php>
+          <php>if(ACTION_NAME != 'search'){</php>
+          <p class="moreFoot"><a id="loadMoreDiv" href="javascript:void(0)"><span class="ico_morefoot"></span>更多</a></p>
+          <php>} else {</php>
+          <div class="page">{$list['html']}</div>
+          <php>}</php>
         </div>
         <div class="c"></div>
         </div>
@@ -113,11 +117,6 @@
 </div>
   </div><!-- 右侧内容 end  -->
 <include file="__THEME__/footer" />
-<php>if($_SESSION['mid']>0){</php>
-<php> 
-$c = count($list['data']);
-$sinceId = $c>0 ? $list['data'][$c-1]['id'] : 0;
-</php>
 
 <script>
 var gid = '<?php echo $gid; ?>';
@@ -125,15 +124,15 @@ var gid = '<?php echo $gid; ?>';
 var weibo = $.weibo({
 	      sinceId:'<php>echo $sinceId;</php>',
 	      timeStep : 10000,
-	      initForm:true,
+	      <php>if($_SESSION['mid']>0){</php>initForm:true,<php>}</php>
 	      lastId:'<php> echo $list["data"][0] ? $list["data"][0]["id"] : 0;</php>',
 	      gid:'<php> echo $gid;</php>',
 	      weiboType:'<php> echo $type;</php>',
 	      type:1,
 	      typeList:{
 	          GROUP:1
-	      }
+	      },
+        initForm:'<php> echo empty($ismember) ? false : true;</php>'
 	});
 </script>
 {:Addons::hook('weibo_js_plugin')}
-<php>}</php>

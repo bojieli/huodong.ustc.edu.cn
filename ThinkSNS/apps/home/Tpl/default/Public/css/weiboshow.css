@@ -302,6 +302,7 @@ body {
 	margin: 5px 9px 2px;
 	overflow: hidden;
 	line-height: 30px;
+	font-size:12px;
 }
 
 .tblog_wrap .fans_list h4 span {
@@ -935,19 +936,20 @@ a.add_atn:link, a.add_atn:visited,a.add_atn:active {
 }
 
 /*微博秀页面样式*/
-.side_basicSet h4,.side_basicPreview h4{line-height:30px;font-size:14px;font-weight:bold}
+.side_basicSet h4,.side_basicPreview h4{line-height:30px;font-size:14px;font-weight:bold;padding:0 10px;}
 .side_basicSet{margin-right:420px}
-.side_basicPreview{float:right;width:380px}
+.side_basicPreview{float:right;width:380px;}
 .box_basicPre{border:#E5E5E5 solid 1px;border-radius:3px;overflow:hidden}
-.box_basicSet{border:#ccc solid 1px;padding:15px;overflow:hidden;*zoom:1}
+.box_basicSet{border:#ccc solid 1px;padding:15px 0;display:table;width:100%;*zoom:1;*width:99%;}
 .box_Embed_code{}
 .block_hisfans h4{font-size:12px;font-weight:400;margin:0 10px}
 .block_showBlog{padding:10px}
 .block_showBlog b{background-color:#E3E3E3;display:block;height:10px}
-.list_setSize{border-bottom:dotted 1px #ccc;padding-bottom:10px}
+.list_setSize{border-bottom:dotted 1px #ccc;margin:0 10px 10px 10px}
 .list_setSize dt{font-size:14px;font-weight:bold;margin-bottom:10px}
 .list_setSize dd{line-height:25px;padding:0 0 0 15px}
 .list_setSize .warning{background: none repeat scroll 0 0 #FEE7E7;border: 1px solid #DFB9BA;color: #CC0000}
+.list_showSkin{margin:0 10px;}
 .list_showSkin li{float:left;border:#ccc solid 1px;width:30px;height:30px;padding:1px;margin:5px}
 .list_showSkin a{display:block;width:30px;height:30px}
 .list_showSkin a:hover{opacity:0.5}

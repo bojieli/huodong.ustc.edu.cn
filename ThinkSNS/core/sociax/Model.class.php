@@ -356,11 +356,15 @@ class Model extends Think
     // 插入数据前的回调方法
     protected function _before_insert(&$data,$options) {
 		//敏感词过滤规则提取
-		if(false== ($badwords = F('system_badwords'))){
+//		if(false== ($badwords = F('system_badwords'))){
 			$badwords = C('badwords');
 			$badfields		= array();
 			$defaultfields	= array();
-			$tableName = strtolower($this->tableName);
+    			if(!empty($this->tableName)) {
+				$tableName = strtolower($this->tableName);
+			} else {
+				$tableName = strtolower($this->name);
+			}
 			if(is_array($badwords[$tableName])){
 				$badfields = $badwords[$tableName];
 			}
@@ -368,8 +372,8 @@ class Model extends Think
 				$defaultfields = $badwords['*'];
 			}
 			$badfields = array_filter(array_unique(array_merge($badfields,$defaultfields)));
-			F('system_badwords',$badfields);
-		}
+//			F('system_badwords',$badfields);
+//		}
 		//敏感词过滤 - TODO序列化字段的处理.
 		if(count($badfields)>0 && count($data)>0){
 			foreach($data as $k=>$v){
@@ -458,7 +462,34 @@ class Model extends Think
         return $result;
     }
     // 更新数据前的回调方法
-    protected function _before_update(&$data,$options) {}
+    protected function _before_update(&$data,$options) {
+    	//敏感词过滤规则提取
+//		if(false== ($badwords = F('system_badwords'))){
+			$badwords = C('badwords');
+			$badfields		= array();
+			$defaultfields	= array();
+			if(!empty($this->tableName)) {
+				$tableName = strtolower($this->tableName);
+			} else {
+				$tableName = strtolower($this->name);
+			}
+			if(is_array($badwords[$tableName])){
+				$badfields = $badwords[$tableName];
+			}
+			if(is_array($badwords['*'])){
+				$defaultfields = $badwords['*'];
+			}
+			$badfields = array_filter(array_unique(array_merge($badfields,$defaultfields)));
+//			F('system_badwords',$badfields);
+//		}
+		//敏感词过滤 - TODO序列化字段的处理.
+		if(count($badfields)>0 && count($data)>0){
+			foreach($data as $k=>$v){
+				if(in_array($k,$badfields))
+					$data[$k] = keyWordFilter($v);
+			}
+		}
+    }
     // 更新成功后的回调方法
     protected function _after_update($data,$options) {}
 

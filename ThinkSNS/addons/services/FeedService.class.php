@@ -1,7 +1,16 @@
 <?php
-// +----------------------------------------------------------------------// | ThinkSNS// +----------------------------------------------------------------------// | Copyright (c) 2009 http://www.thinksns.com All rights reserved.// +----------------------------------------------------------------------// | Author: nonant <nonant@thinksns.com>// +----------------------------------------------------------------------//
+// +----------------------------------------------------------------------
+// | ThinkSNS
+// +----------------------------------------------------------------------
+// | Copyright (c) 2009 http://www.thinksns.com All rights reserved.
+// +----------------------------------------------------------------------
+// | Author: nonant <nonant@thinksns.com>
+// +----------------------------------------------------------------------
+//
 
-/** * 动态服务 */
+/**
+ * 动态服务
+ */
 class FeedService extends Service {
 	public function __construct() {
 	}
@@ -115,19 +124,23 @@ class FeedService extends Service {
 
 	}
 	
-	//启动服务，未编码	public function _start() {
+	//启动服务，未编码
+	public function _start() {
 		return true;
 	}
 	
-	//停止服务，未编码	public function _stop() {
+	//停止服务，未编码
+	public function _stop() {
 		return true;
 	}
 	
-	//安装服务，未编码	public function _install() {
+	//安装服务，未编码
+	public function _install() {
 		return true;
 	}
 	
-	//卸载服务，未编码	public function _uninstall() {
+	//卸载服务，未编码
+	public function _uninstall() {
 		return true;
 	}
 }

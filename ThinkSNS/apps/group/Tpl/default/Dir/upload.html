@@ -19,7 +19,7 @@
                 <p>回到<a href="{:U('group/Dir/index', array('gid'=>$gid))}">文件共享区</a>，或者继续<a href="{:U('group/Dir/upload', array('gid'=>$gid))}">上传文件</a></p>
               </div>
               <else />
-              <form method="post" action="{:U('group/Dir/upload', array('gid'=>$gid))}" enctype="multipart/form-data" onSubmit="return checkForm()">
+              <form method="post" id="upload_attach" action="{:U('group/Dir/upload', array('gid'=>$gid))}" enctype="multipart/form-data" onSubmit="return checkForm()">
                 <div class="lh35 cGray2">上传文件</div>
                 <dl class="postsList">
                   <dd>
@@ -31,7 +31,7 @@
                   <dd style="height:auto;">
                     <label>文件注释：</label>
                     <div class="c1">
-                      <textarea name="note" cols="50" rows="3"></textarea>
+                      <textarea id="note" name="note" cols="50" rows="3"></textarea>
                     </div>
                   </dd>
                   <dd>
@@ -39,7 +39,7 @@
                       <input type="hidden" name="uploadsubmit" value="1">
                       <input name="submit" type="submit" class="btn_b" value="上 传"/>
                       &nbsp;
-                      <input name="reset" type="button" class="btn_w" value="取 消" />
+                      <input type="button" class="btn_w" onclick="unSetAttach()" value="重 置" />
                     </div>
                   </dd>
                 </dl>
@@ -60,5 +60,12 @@
 		if($('#file').val() == '') {alert('请选择上传文件');return false;}
 		return true;
 	}
+
+  // 附件取消问题
+  function unSetAttach() {
+    document.getElementById("upload_attach").reset();
+    $("#file").attr("value", "");
+    $("#note").attr("value", "");
+  }
 </script> 
 <include file="__THEME__/footer" /> 

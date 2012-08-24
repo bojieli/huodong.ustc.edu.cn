@@ -61,4 +61,7 @@ class AlbumListWidget extends Widget{
 		$out	.=	'</select>';
 		return	$out;
 	}
+	public function getData($data){
+       return $data;
+    }
 }

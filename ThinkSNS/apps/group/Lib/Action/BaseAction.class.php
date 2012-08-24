@@ -44,10 +44,12 @@
             /* + ------ 后台全局限制 END */
 
             if (!$groupinfo) {
+              $this->assign('jumpUrl', U('group/Index/newIndex'));
             	$this->error('该群组不存在，或者被删除');
             } else if (0 == $groupinfo['status'] && !in_array(ACTION_NAME,array('delGroupDialog', 'delGroup'))) {
-		 		$this->error("该{$GLOBALS['ts']['app']['app_alias']}正在审核中");
-		 	}
+              $this->assign('jumpUrl', U('group/Index/newIndex'));
+		 		      $this->error("该{$GLOBALS['ts']['app']['app_alias']}正在审核中");
+		 	      }
 
           	// 判读当前用户的成员状态
           	$member_info = D('Member')->where("uid={$this->mid} AND gid={$this->gid}")->find();
@@ -69,6 +71,8 @@
             $groupinfo['type_name'] = $groupinfo['brower_level'] == -1?'公开':'私密';
             $groupinfo['tags']		= D('GroupTag')->getGroupTagList($this->gid);
             $groupinfo['openUploadFile'] = (model('Xdata')->get('group:uploadFile')) ? $groupinfo['openUploadFile'] : 0 ;
+            $groupinfo['path'] = D('Category')->getPathWithCateId($groupinfo['cid1']);
+            $groupinfo['path'] = implode(' - ', $groupinfo['path']);
             $this->groupinfo = $groupinfo;
 
             $this->assign('groupinfo',$groupinfo);
@@ -84,7 +88,11 @@
             	}
 	            if ($groupinfo['brower_level'] == 1) {
             		if (MODULE_NAME != 'Group' || (ACTION_NAME != 'index' && ACTION_NAME != 'joinGroup')) {
-            			$this->redirect('group/Group/index', array('gid'=>$this->gid));
+            			if(ACTION_NAME!='loadmore'){
+            				$this->redirect('group/Group/index', array('gid'=>$this->gid));
+            			}else{
+            				exit();
+            			}
             		} else if('index' == ACTION_NAME) {
 		            	$this->display();
 		            	exit;
@@ -168,7 +176,7 @@
 	    	}
 	    }
 
-	    protected function _getSearchKey($key_name = 'k') {
+	    protected function _getSearchKey($key_name = 'k',$prefix="group_search") {
 	    	$key = '';
 		    // 为使搜索条件在分页时也有效，将搜索条件记录到SESSION中
 			if ( isset($_REQUEST[$key_name]) && !empty($_REQUEST[$key_name]) ) {
@@ -180,10 +188,12 @@
 				// 关键字不能超过30个字符
 				if ( mb_strlen($key, 'UTF8') > 30 )
 					$key = mb_substr($key, 0, 30, 'UTF8');
-				$_SESSION['group_search_' . $key_name] = serialize( $key );
+				$_SESSION[$prefix.'_' . $key_name] = serialize( $key );
 			}else if ( is_numeric($_GET[C('VAR_PAGE')]) ) {
-				$key = unserialize( $_SESSION['group_search_' . $key_name] );
-			}
+				$key = unserialize( $_SESSION[$prefix.'_' . $key_name] );
+			} else {
+        unset($_SESSION[$prefix.'_' . $key_name]);
+      }
         	$this->assign('search_key', h(t($key)));
 			return trim($key);
 	    }

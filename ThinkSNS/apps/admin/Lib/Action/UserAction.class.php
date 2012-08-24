@@ -7,6 +7,17 @@ class UserAction extends AdministratorAction {
     public function user() {
     	$dao = D('User', 'home');
     	$res = $dao->getUserList('', true, true);
+        $uids = getSubByKey($res['data'], 'uid');
+        $map['uid'] = array('IN', $uids);
+        $loginData = M('login')->field('uid, oauth_token, oauth_token_secret')->where($map)->findAll();
+        foreach($res['data'] as &$value) {
+            foreach($loginData as $val) {
+                if($value['uid'] == $val['uid']) {
+                    $value['oauth_token'] = $val['oauth_token'];
+                    $value['oauth_token_secret'] = $val['oauth_token_secret'];
+                }
+            }
+        }
     	$this->assign($res);
         $this->display();
     }
@@ -25,7 +36,7 @@ class UserAction extends AdministratorAction {
 		$required_field = array(
 			'email'		=> 'Email',
 			'password'	=> '密码',
-			'uname'		=> '姓名',
+			'uname'		=> '昵称',
 		);
 		foreach ($required_field as $k => $v) {
 			if ( empty($_POST[$k]) ) $this->error($v . '不可为空');
@@ -48,7 +59,7 @@ class UserAction extends AdministratorAction {
 		if( is_array( $haveName ) && sizeof($haveName)>0 ){
 			$this->error('昵称已被使用');
 		}
-
+       
 		//注册用户
 		$_POST['uname']		= escape(h(t($_POST['uname'])));
         $_POST['password']  = md5($_POST['password']);
@@ -57,7 +68,8 @@ class UserAction extends AdministratorAction {
 		$_POST['is_active'] = intval($_POST['is_active']);
 		$_POST['sex']		= intval($_POST['sex']);
 		$_POST['is_init']   = '1';
-
+		$_POST['register_ip'] = get_client_ip();
+		$_POST['login_ip']	 = get_client_ip();
 		$_LOG['uid'] = $this->mid;
 		$_LOG['type'] = '1';
 		$data[] = '用户 - 用户管理 ';
@@ -66,11 +78,26 @@ class UserAction extends AdministratorAction {
 		$_LOG['data'] = serialize($data);
 		$_LOG['ctime'] = time();
 		M('AdminLog')->add($_LOG);
-
+        if(!empty($_POST['domain'])){
+            $map['domain'] = $_POST['domain'];
+            $user = M('User')->where($map)->find();
+            if($user){
+                $this->error('该域名已存在');
+            }
+        }
+       
 		$uid = M('user')->add($_POST);
 		if (!$uid) {
 			$this->error('抱歉：注册失败，请稍后重试');
 			exit;
+		} else {
+		//保存积分设置
+			$credit      = X('Credit');
+			$credit_type = $credit->getCreditType();
+			foreach($credit_type as $v){
+				$credit_action[$v['name']] = intval($_POST[$v['name']]);
+			}
+			$credit->setUserCredit($uid,$credit_action,'reset');
 		}
 
 		//添加用户组信息
@@ -83,7 +110,6 @@ class UserAction extends AdministratorAction {
     public function editUser() {
     	$_GET['uid']  = intval($_GET['uid']);
     	if ($_GET['uid'] <= 0) $this->error('参数错误');
-
     	$map['uid']	= $_GET['uid'];
     	$user = M('user')->where($map)->find();
     	if(!$user) $this->error('无此用户');
@@ -102,7 +128,7 @@ class UserAction extends AdministratorAction {
     public function doEditUser() {
     	//参数合法性检查
     	$_POST['uid']	= intval($_POST['uid']);
-    	S('S_userInfo_'.$_POST['uid'],null);
+    	// S('S_userInfo_'.$_POST['uid'],null);
     	if (!M('user')->getField('email', "uid={$_POST['uid']}")) {	// 非本地Email帐号（即第三方）的用户
     		unset($_POST['email']); // 无法编辑其Email
 			unset($_POST['password']); // 无法编辑其密码
@@ -136,6 +162,31 @@ class UserAction extends AdministratorAction {
 			$this->error('昵称不能超过10个字符');
 		}
 
+        $domain = h($_POST['domain']);
+        if(!empty($domain)){
+            $dmMap['uid']    = array('neq',$_POST['uid']);
+            $dmMap['domain'] = $domain;
+            $isExistDomain = M('user')->where($dmMap)->find();
+            if(!is_null($isExistDomain)) {
+                $this->error('此个性域名已被占用，请重新输入');
+            }
+         
+
+        // 域名只能以英文字母开头
+        if(!ereg('^[a-zA-Z][a-zA-Z0-9]+$', $domain)) {
+            $this->error('域名只能以英文字母开头');
+        }
+
+        // 域名需大于1个字符
+        if(strlen($domain) < 2) {
+            $this->error('域名需大于1个字符');
+        }
+
+        // 域名需小于20个字符
+        if(strlen($domain) > 20) {
+            $this->error('域名需小于20个字符');
+        }
+}
 		//保存修改
 		$key   			 = array('email','uname','sex','is_active','domain');
 		$value 			 = array($_POST['email'], escape(h(t($_POST['uname']))), intval($_POST['sex']), intval($_POST['is_active']),h($_POST['domain']));
@@ -171,6 +222,9 @@ class UserAction extends AdministratorAction {
 		}
 		$credit->setUserCredit($map['uid'],$credit_action,'reset');
 
+        //修改登录用户缓存信息--名称
+        S('S_userInfo_'.$_POST['uid'], NULL);
+
 		//添加用户组信息
 		model('UserGroup')->addUserToUserGroup( $_POST['uid'], t($_POST['user_group_id']) );
 
@@ -184,7 +238,7 @@ class UserAction extends AdministratorAction {
     public function doDeleteUser() {
     	$_POST['uid'] = t($_POST['uid']);
     	$_POST['uid'] = explode(',', $_POST['uid']);
-
+        $member_uid = $_POST['uid'];
     	$_LOG['uid'] = $this->mid;
 		$_LOG['type'] = '2';
 		$data[] = '用户 - 用户管理 ';
@@ -193,7 +247,8 @@ class UserAction extends AdministratorAction {
 		$_LOG['data'] = serialize($data);
 		$_LOG['ctime'] = time();
 		M('AdminLog')->add($_LOG);
-
+        $member_uid = implode(',', $_POST['uid']);
+        M('message_member')->where('member_uid in('.$member_uid.')')->delete();
     	//ts_user
     	$res = D('User', 'home')->deleteUser($_POST['uid']);
     	if($res) {echo 1;		  }
@@ -244,6 +299,7 @@ class UserAction extends AdministratorAction {
     //字段配置
     public function setField() {
         $data['list'] = D('UserSet')->getFieldList();
+
         $this->assign( $data );
         $this->display();
     }
@@ -268,6 +324,25 @@ class UserAction extends AdministratorAction {
             $this->display();
         }
     }
+    public function updateField(){
+    	$id = intval($_POST['id']);
+    	$data['fieldname'] = $_POST['fieldname'];
+    	$data['status'] = intval($_POST['status']);
+    	$data['module'] = $_POST['module'];
+    	$data['showspace'] = intval($_POST['showspace']);
+    	if (M('UserSet')->where(array('id'=>$id))->limit(1)->save($data) !== ''){
+    		$this->success('更新成功');
+    	}else {
+    		$this->error('更新失败');
+    	}
+    	
+    }
+    public function editField(){
+    	$id = intval($_GET['id']);
+    	$fields = M("UserSet")->where(array('id'=>$id))->find();
+    	$this->assign('fields',$fields);
+    	$this->display('editField');
+    }
 
     public function deleteField() {
     	$_LOG['uid'] = $this->mid;
@@ -279,7 +354,7 @@ class UserAction extends AdministratorAction {
 		$_LOG['ctime'] = time();
 		M('AdminLog')->add($_LOG);
 
-    	echo D('UserSet')->deleteField(intval($_POST['ids'])) ? '1' : '0';
+    	echo D('UserSet')->where($map)->delete() ? '1' : '0';
     }
 
     public function relateUser()
@@ -310,7 +385,10 @@ class UserAction extends AdministratorAction {
     	if ($_POST) {
     		$data['hide_no_avatar']   = intval($_POST['hide_no_avatar']);
     		$data['hide_auto_friend'] = intval($_POST['hide_auto_friend']);
-    		model('Xdata')->lput('top_follower', $data);
+    		$res = model('Xdata')->lput('top_follower', $data);
+            if($res){
+                $this->success('设置成功！');
+            }
 			//修改后清缓存
 			$cache_id = '_weibo_top_followed_10_00'. intval($data['hide_auto_friend']) . intval($data['hide_no_avatar']);
 			$cache_tid =  '_weibo_top_followed_t_10_'. intval($data['hide_auto_friend']) . intval($data['hide_no_avatar']);
@@ -334,6 +412,7 @@ class UserAction extends AdministratorAction {
     }
 
     public function doSendMessage() {
+        set_time_limit(0);
     	$_POST['user_group_id'] = intval($_POST['user_group_id']);
     	$_POST['type']			= intval($_POST['type']);
     	$_logpost = $_POST?$_POST:'0';
@@ -356,10 +435,18 @@ class UserAction extends AdministratorAction {
     	$res = false;
     	if ( $_POST['type'] == 0 ) {
     		// 站内信
-    		if( $_POST['title'] && $_POST['content'] ){
-    			$res = model('Message')->postMessage($_POST, $this->mid);
-    			$res = !empty($res);
-    		}
+    		//if( $_POST['title'] && $_POST['content'] ){
+            //    $_POST['type'] = 0;
+    		//	$res = model('Message')->postMessage($_POST, $this->mid);
+    		//	$res = !empty($res);
+    		//}
+            //原系统私信改发系统通知
+            if( $_POST['title'] && $_POST['content'] ){
+                $notify_data = array ('title' => $_POST['title'], 'content' => $_POST['content'] );
+                $res = service('Notify')->sendIn($_POST['to'], 'admin_notification', $notify_data);
+                $res = !empty($res);
+            }
+
     	}else {
     		// Email
     		$service = service('Mail');
@@ -405,6 +492,14 @@ class UserAction extends AdministratorAction {
     //添加or编辑用户组
     public function editUserGroup() {
     	$_GET['gid'] = intval($_GET['gid']);
+    	
+        require_once ADDON_PATH.'/libs/Io/Dir.class.php';
+    	
+        $dirs   = new Dir(SITE_PATH.'/public/themes/newstyle/images/usergroup_icon');
+        $dirs   = $dirs->toArray();
+
+        $this->assign('iconlist',$dirs);
+       
     	if ($_GET['gid'] > 0) {
     		//编辑时，显示原用户组名称
     		$user_group = model('UserGroup')->getUserGroupById($_GET['gid']);
@@ -414,6 +509,7 @@ class UserAction extends AdministratorAction {
     }
 
     public function doAddUserGroup() {
+        $name = $_POST['icon'];
     	$_POST['title'] = escape(t($_POST['title']));
     	if ( empty($_POST['title']) ) {
     		echo 0;
@@ -564,7 +660,22 @@ class UserAction extends AdministratorAction {
 
     public function doAddNode($old_nid = 0) {
     	//module为*时，action被忽略
+        $app_name = trim($_POST['app_name']);
+        $mod_name = trim($_POST['mod_name']);
+        if( $app_name == "" && strlen($_POST['app_name']) != 0)
+        {
+            $this->error('应用名不能为空！');
+        }
+        if( $mod_name == "" && strlen($_POST['mod_name']) != 0)
+        {
+            $this->error('模块名不能为空！');
+        }
     	$_POST['act_name']	   = $_POST['mod_name'] == '*' ? $_POST['mod_name'] : $_POST['act_name'];
+        $act_name = trim($_POST['act_name']);
+        if( $act_name == "" && strlen($_POST['act_name']) != 0)
+        {
+            $this->error('方法名不能为空！');
+        }
 
     	if (!$this->__isValidRequest('app_name,mod_name,act_name'))
     		$this->error('参数不完整');
@@ -781,4 +892,41 @@ class UserAction extends AdministratorAction {
 		}
 		return true;
 	}
+
+    //资料设置开关
+    public function setStatus(){
+        $map['id'] = t($_GET['id']);
+        $data =  D('UserSet')->where($map)->find();
+        if($data['status'] == 0){
+            $data['status'] = 1;
+        }else{
+            $data['status'] = 0;
+        }
+        $res = D('UserSet')->where('id ='.$map['id'])->data($data)->save();
+        if($res){
+            $this->assign('jumpUrl', U('admin/User/setField'));
+            $this->success('设置成功！');
+        }else{
+            $this->assign('jumpUrl', U('admin/User/setField'));
+            $this->error('设置失败！');
+        }
+    }
+    //设置空间是否显示
+    public function setSpace(){
+        $map['id'] = t($_GET['id']);
+        $data =  D('UserSet')->where($map)->find(); 
+        if($data['showspace'] == 1){
+            $data['showspace'] = 0;
+        }else{
+            $data['showspace'] = 1;
+        }
+        $res = D('UserSet')->where('id ='.$map['id'])->data($data)->save();
+        if($res){
+            $this->assign('jumpUrl', U('admin/User/setField'));
+            $this->success('设置成功！');
+        }else{
+            $this->assign('jumpUrl', U('admin/User/setField'));
+            $this->error('设置失败！');
+        }
+    }
 }

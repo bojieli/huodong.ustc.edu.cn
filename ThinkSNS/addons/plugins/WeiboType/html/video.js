@@ -50,15 +50,13 @@ function showFlash( host, flashvar) {
 	var flashAddr = {
 		'youku.com' : 'http://player.youku.com/player.php/sid/FLASHVAR/v.swf',
 		'ku6.com' : 'http://player.ku6.com/refer/FLASHVAR/v.swf',
-		//'sina.com.cn' : 'http://vhead.blog.sina.com.cn/player/outer_player.swf?vid=FLASHVAR',
 		'sina.com.cn' : 'http://you.video.sina.com.cn/api/sinawebApi/outplayrefer.php/vid=FLASHVAR/s.swf',
-		//'tudou.com' : 'http://www.tudou.com/v/FLASHVAR',
 		'tudou.com' : 'http://www.tudou.com/v/FLASHVAR/&autoPlay=true/v.swf',
 		'youtube.com' : 'http://www.youtube.com/v/FLASHVAR',
 		'5show.com' : 'http://www.5show.com/swf/5show_player.swf?flv_id=FLASHVAR',
-		//'sohu.com' : 'http://v.blog.sohu.com/fo/v4/FLASHVAR',
 		'sohu.com' : 'http://share.vrs.sohu.com/FLASHVAR/v.swf',
 		'mofile.com' : 'http://tv.mofile.com/cn/xplayer.swf?v=FLASHVAR',
+		'yinyuetai.com' : 'http://player.yinyuetai.com/video/player/FLASHVAR/v_0.swf',
 		'music' : 'FLASHVAR',
 		'flash' : 'FLASHVAR'
 	};

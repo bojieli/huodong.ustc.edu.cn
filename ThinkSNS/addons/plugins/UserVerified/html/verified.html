@@ -64,15 +64,16 @@
     	<label for="checkbox"></label>
 	</th>
     <th class="line_l">ID</th>
-    <th class="line_l">用户信息</th>
+    <th class="line_l" style="width:160px">用户信息</th>
     <th class="line_l">真实姓名</th>
     <th class="line_l">手机号</th>
-    <th class="line_l" width="350">认证原因</th>
-	<eq name="verified" value="1"><th class="line_l" width="350">认证资料</th></eq>
+    <th class="line_l">认证原因</th>
+	<eq name="verified" value="1"><th class="line_l">认证资料</th></eq>
+	<th class="line_l">认证附件</th>
     <th class="line_l">状态</th>
     <th class="line_l">操作</th>
   </tr>
-  <volist id="vo" name="data">
+  <volist id="vo" name="data1">
 	  <tr overstyle='on' id="user_{$vo['uid']}">
 	    <td><input type="checkbox" name="checkbox" id="checkbox2" onclick="checkon(this)" value="{$vo.uid}"></td>
 	    <td>{$vo.uid}</td>
@@ -83,6 +84,7 @@
 	    <td>{$vo.phone}</td>
 	    <td>{$vo.reason}</td>
 	    <eq name="verified" value="1"><td>{$vo.info}</td></eq>
+	    <td><a href="{:U('home/Attach/download',array('id'=>$vo['attach_id'],'uid'=>$vo['uid']))}">{$vo.attachment}</a></td>
 	    <td><eq name="vo['verified']" value="0">待认证<else/>已认证</eq></td>
 	    <td>
 	    	<eq name="vo['verified']" value="0">
@@ -171,10 +173,18 @@
 	ctrl.prototype = {
 	    del:function(uid)
 	    {
+	    	var uid = uid ? uid : getChecked();
+	        if(uid == '' || uid ==0){
+	        	ui.error("请选择要驳回认证的用户");return false;
+	        }
 	        ui.box.load( '{:Addons::adminPage('deleteVerifiedTab')}' + '&uid=' + uid + '&verified=<?php echo $verified; ?>',{title:'取消认证'});
 	    },
 	    verified:function(id)
 	    {
+	    	var id = id ? id : getChecked();
+	        if(id == '' || id ==0){
+	        	ui.error("请选择要通过认证的用户");return false;
+	        }
 	        ui.box.load( '{:Addons::adminPage('doVerifiedTab')}' + '&uid=' + id,{title:'请填写认证资料：'});
 	    }
 	}

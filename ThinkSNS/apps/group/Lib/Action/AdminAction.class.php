@@ -67,8 +67,10 @@ class AdminAction extends AdministratorAction {
 		/*$categoryList	=	$this->Category->getCategoryList(0);
 			$this->assign('categoryList',$categoryList);*/
 		
-		$this->assign ( 'category_tree', D ( 'Category' )->_makeTree ( 0 ) );
-		$this->display ();
+		$categoryList = D('Category')->_maskTreeNew(0);
+		$this->assign('category_tree', $categoryList);
+		// $this->assign('category_tree', D('Category')->_makeTree (0));
+		$this->display();
 	}
 	
 	//添加分类
@@ -79,8 +81,8 @@ class AdminAction extends AdministratorAction {
 		
 		$cate ['title'] = t ( $_POST ['title'] );
 		
-		//$cate['pid']	=	$this->Category->_digCate($_POST); //多级分类需要打开
-		$cate ['pid'] = intval ( $_POST ['cid0'] ); //1级分类
+		$cate['pid'] = $this->Category->_digCateNew($_POST); //多级分类需要打开
+		// $cate ['pid'] = intval ( $_POST ['cid0'] ); //1级分类
 		S('Cache_Group_Cate_0',null);
 		S('Cache_Group_Cate_'.$cate ['pid'],null);
 		$categoryId = $this->Category->add ( $cate );
@@ -96,15 +98,22 @@ class AdminAction extends AdministratorAction {
 	public function editCategory() {
 		if (isset ( $_POST ['editSubmit'] )) {
 			$id = intval ( $_POST ['id'] );
+			$cate ['title'] = preg_replace('/^\s+|\s+$/', t ( $_POST ['title'] ));
+
 			if (! $this->Category->getField ( 'id', 'id=' . $id )) {
 				$this->error ( '分类不存在！' );
-			} else if (empty ( $_POST ['title'] )) {
+			} else if (empty ( $cate ['title'] )) {
 				$this->error ( '名称不能为空！' );
+			} else if ( get_str_length($cate ['title']) > 10) {
+				$this->error ( '名称不能超过10个字！' );
 			}
 			
-			$cate ['title'] = t ( $_POST ['title'] );
 			
-			$pid = $cate ['pid'] = intval ( $_POST ['cid0'] ); //1级分类
+			// $pid = $cate ['pid'] = intval ( $_POST ['cid0'] ); //1级分类
+			$pid = $this->Category->_digCateNew($_POST);
+			if($pid == intval($_POST['id'])) {
+				$this->error('不能选择所编辑分类为上级');
+			}
 			
 			S('Cache_Group_Cate_0',null);
 			S('Cache_Group_Cate_'.$pid,null);
@@ -132,11 +141,15 @@ class AdminAction extends AdministratorAction {
 	
 	// 删除分类
 	public function delCategory() {
+		$pid = intval ( $_GET ['pid'] );
 		$id = intval ( $_GET ['id'] );
+		S('Cache_Group_Cate_0',null);
+		$pid && S('Cache_Group_Cate_'.$pid,null);
+		S('Cache_Group_Cate_'.$id,null);
 		if ($this->Category->where ( 'id=' . $id )->delete ()) {
 			$this->Category->where ( 'pid=' . $id )->delete ();
 			S('Cache_Group_Cate_0',null); 
-			$this->success ();
+			$this->success ("删除成功！");
 		} else {
 			$this->error ( '删除失败！' );
 		}
@@ -222,6 +235,11 @@ class AdminAction extends AdministratorAction {
 	    		$_group_names[$v['id']] = $v['name'];
 	    	}
 	    	$this->assign('_group_names', $_group_names);
+		}
+
+		foreach($list['data'] as &$value) {
+            $groupinfo['path'] = D('Category', 'group')->getPathWithCateId($value['cid1']);
+			$value['path'] = implode(' - ', $groupinfo['path']);
 		}
 
 		$this->assign ( 'list', $list );

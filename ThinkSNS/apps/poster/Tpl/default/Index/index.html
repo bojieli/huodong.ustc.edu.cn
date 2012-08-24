@@ -18,13 +18,12 @@
 		</div><!-- 切换标签 end  -->
         
         <div class="boxL poster_boxL"><!-- 招贴列表begin  -->
-    	 <div class="sort mt10 pb5 pt5" >
+    	 <div class="sort mt10" >
          <dl>
     	   <volist name="posterType" id="vo">
 		     <dd><a href="{:U('//',array('pid'=>$vo['id']))}" <php>if($vo['id'] == $_GET['pid']) echo "class='on'";</php>>{$vo.name}</a></dd>
 		   </volist>
            </dl>
-           <div class="c"></div>
 	     </div>
          
 	      <php>if(!empty($type)){</php>

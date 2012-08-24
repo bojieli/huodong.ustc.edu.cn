@@ -12,8 +12,8 @@ a:active {color:#3B5998 }
 .cWhite, .cWhite:visited, a.cWhite {color:#fff }
 .cYellow, .cYellow:visited {color:#ff0 }
 .cGray, .cGray:visited, a.cGray {color:#7F7F7F }
-.cGray2, .cGray2:visited, a.cGray2 {color:#999 }
+.cGray2, .cGray2:visited, a.cGray2 {color:#999; }
 .cBlack, .cBlack:visited, a.cBlack {color:#000 }
 .cBlue, .cBlue:visited, a.cBlue {color:#3488AD }
-.cRed, .cRed:visited, a.cRed {color:Red }
+.cRed, .cRed:visited, a.cRed {color:#b85b00 }
 .cGreen, a.cGreen:link, a.cGreen:visited {color:#008000}

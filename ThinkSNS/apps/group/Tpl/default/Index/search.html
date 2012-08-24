@@ -10,13 +10,12 @@
       <div class="mainbox_appC">
       <div>
         <if condition="$search_key">
-          <div class="f14px"><span class="f12px fn right"><a href="{:U('group/Index/find')}#group_category">&gt;&gt; 全部分类</a></span>搜索"<span class="cRed">{$search_key}</span>"群({$group_list['data']|count})</div>          
+          <div class="f14px">搜索"<span class="cRed">{$search_key}</span>"群({$group_list['count']})</div>          
           
         <elseif condition="$current_cid" />
-          <h2 class="f14px lh30" style="line-height:30px"><span class="right fn f12px"><a href="{:U('group/Index/find')}#group_category">&gt;&gt; 全部分类</a></span><strong>{$top_category['title']}</strong></h2>
-          
+          <!-- <h2 class="f14px lh30" style="line-height:30px"><span class="right fn f12px"><a href="{:U('group/Index/find')}#group_category">&gt;&gt; 全部分类</a></span><strong>{:implode(' > ', $top_path)}</strong></h2> -->
           <div style="width:auto; _width:99%; overflow:hidden">
-            <a href="{:U('group/Index/search', array('cid'=>$top_category['id']))}" <php>if ($top_category['id'] == $current_cid) {</php>style="font-weight:bold;color:#000;"<php>}</php>>全部</a>
+            <a href="{:U('group/Index/search', array('cid'=>$top_category['id']))}" <php>if ($top_category['id'] == $current_cid) {</php>style="font-weight:bold;color:#000;"<php>}</php>>{$top_category['title']}</a> > 
           	<volist name="son_categorys" id="son">
              <span class="ml10"><a href="{:U('group/Index/search', array('cid'=>$son['id']))}" <php>if ($son['id'] == $current_cid) {</php>style="font-weight:bold;color:#000;"<php>}</php>>{$son['title']}</a></span>
           	</volist>
@@ -34,7 +33,7 @@
         </div>
         <if condition="$search_key && !$group_list['data']">
         <div class="f14px cGray" style="margin:20px 0">
-            <p>你来早了一步，"<span class="cRed">{$search_key}</span>"群还没人创建呢……  现在就<a class="ml5" href="{:U('group/Index/add', array('k'=>$search_key))}" target="_blank"><strong>创建一个</strong></a></p>
+            <p>你来早了一步，"<span class="cRed">{$search_key}</span>"群还没人创建呢……  现在就<a class="ml5" href="{:U('group/Index/add', array('k'=>$search_key))}" ><strong>创建一个</strong></a></p>
         </div>
         </if>
         <ul class="search">

@@ -114,15 +114,15 @@ abstract class Hooks
         C('HTML_CACHE_ON',false);
         if($status) { //发送成功信息
             // 成功操作后默认停留1秒
-            $this->assign('waitSecond',"1");
+            if(!$this->view->get('waitSecond')) $this->assign('waitSecond',"1");
             // 默认操作成功自动返回操作前页面
-            $this->assign("jumpUrl",$_SERVER["HTTP_REFERER"]);
+            if(!$this->view->get('jumpUrl')) $this->assign("jumpUrl",$_SERVER["HTTP_REFERER"]);
 			echo $this->view->fetch(THEME_PATH.'&success');
 		}else{
             //发生错误时候默认停留3秒
-            $this->assign('waitSecond',"5");
+            if(!$this->view->get('waitSecond')) $this->assign('waitSecond',"5");
             // 默认发生错误的话自动返回上页
-            $this->assign('jumpUrl',"javascript:history.back(-1);");
+            if(!$this->view->get('jumpUrl')) $this->assign('jumpUrl',"javascript:history.back(-1);");
 
 			echo $this->view->fetch(THEME_PATH.'&success');
         }

@@ -24,7 +24,7 @@ class PosterWidgetModel extends Model{
 		return $result;
 	}
 	
-	public function getWidget($id = null){
+	public function getWidget($id = null, $pid = null){
 		if(isset($id)){
 			if(is_array($id)){
 				$map['id'] = array('in',$id);
@@ -33,9 +33,26 @@ class PosterWidgetModel extends Model{
 			}
 		}
 		$data = $this->where($map)->findAll();
+		$field = getSubByKey($data, 'field');
+		$posterData = M('poster')->field($field)->where('id='.$pid)->find();
 		foreach($data as &$value){
 			$value['data'] = stripslashes($value['data']);
 			$value['data'] = unserialize($value['data']);
+			if($value['widget'] == 'CheckBox') {
+				$poster = $posterData[$value['field']];
+				$poster = preg_replace("'([\r\n])[\s]+'", "", $poster);
+				$poster = explode(',', $poster);
+				$value['data'] = preg_replace("'([\r\n])[\s]+'", "", $value['data']);
+				$validData = array();
+				foreach($value['data'] as &$val) {
+					$val = str_replace("[selected]", "", $val); 
+					if(in_array($val, $poster)) {
+						$val = $val.'[selected]';
+					}
+				}
+			} else {
+				$value['data'] = $posterData[$value['field']];
+			}
 		}
 		return $data;
 	}

@@ -10,7 +10,7 @@ jQuery.extend(ui, {
 
 jQuery.extend(ui.box, {
     
-    WRAPPER:    "<table cellspacing='0' id='tsbox' cellpadding='0' border='0' style='display:none;z-Index:9999999;' class='boxy-wrapper'>" +
+    WRAPPER:    "<table cellspacing='0' id='tsbox' cellpadding='0' border='0' style='display:none;z-Index:1000000;' class='boxy-wrapper'>" +
                 "<tr><td class='boxy-top-left'></td><td class='boxy-top'></td><td class='boxy-top-right'></td></tr>" +
                 "<tr><td class='boxy-left'></td><td class='boxy-inner'>"+
                 "<div class='title-bar'></div>"+
@@ -34,7 +34,7 @@ jQuery.extend(ui.box, {
 		//	top:	pageScroll[1]	+	(this.getPageHeight() / 10),
 		//	left:	pageScroll[0]	+	document.body.clientWidth/2 - $('#tsbox').width()/2
 		//}).show();
-		jQuery('<div class="boxy-modal-blackout"></div>')
+		jQuery('<div id="boxy-modal-blackout" class="boxy-modal-blackout"><iframe style="position:absolute;_filter:alpha(opacity=0);opacity=0;z-index:-1;width:100%;height:100%;top:0;left:0;scrolling:no;" frameborder="0" src="about:blank"></iframe></div>')
         .css(jQuery.extend(ui.box._cssForOverlay(), {
             zIndex: 999999, opacity: 0.3
         })).appendTo(document.body);
@@ -87,7 +87,8 @@ jQuery.extend(ui.box, {
 	   
 	   if("undefined" != typeof(_MID_)){ //需要才判断
 		   //增加判断未登录时的登录操作,可能有些地方需要排除.允许弹窗.
-		   if(_MID_<=0 && option.title!='快速登录'){
+		   // if(_MID_<=0 && option.title!='快速登录'){
+           if(_MID_<=0){
 				option.title = '快速登录';
 				data = U('home/Public/quick_login');
 		   }
@@ -128,9 +129,10 @@ jQuery.extend(ui.box, {
 	
 	 _cssForOverlay: function() {
         if (ui.box.IE6) {
-            return ui.box._viewport();
+            // return ui.box._viewport();
+            return {width: '100%', height: jQuery(document).height() - 5};
         } else {
-            return {width: '100%', height: jQuery(document).height()};
+            return {width: '100%', height: jQuery(document).height() - 5};
         }
     },
     

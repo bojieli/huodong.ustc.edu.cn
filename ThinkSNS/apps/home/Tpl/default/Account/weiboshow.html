@@ -15,13 +15,10 @@
     <div class="mainbox">
       <div class="mainbox_appC no_r">
         <div class="tab-menu">
-        	<ul>
-            <li><a href="{:U('home/Account/weiboshare')}" class="feed_item"><span>分享代码</span></a></li>
-            <li><a href="{:U('home/Account/weiboshow')}" class="feed_item on"><span>微博秀</span></a></li>
-            </ul>
+            <include file="../Public/_toolTab" />
         </div>
     <!-- 切换标签 end  -->
-    <div class="mainbox_C_C">
+    <div class="mainbox_C_C" style="width:100%">
 		<div class="setItems">
         <div class="side_basicPreview">
         	<h4>效果预览</h4>
@@ -52,7 +49,7 @@
             </div>
         	<h4 class="mt10">设置完成,获得嵌入代码:</h4> 
             <div class="box_Embed_code">
-            <textarea id="input_copyhtml" name="" cols="" rows="3" style="width:99%;max-width:99%;min-width:99%;*width:97%;height:100px;max-height:100px;min-height:100px" class="text">
+            <textarea id="input_copyhtml" name="" cols="" rows="3" style="width:500px;height:100px;overflow:hidden;" class="text">
             </textarea>
             <div class="mt10"><input id="copy" type="button" value="复制代码" class="btn_w mr5" style="vertical-align:middle" />请将代码添加到您的网站</div>
             </div>

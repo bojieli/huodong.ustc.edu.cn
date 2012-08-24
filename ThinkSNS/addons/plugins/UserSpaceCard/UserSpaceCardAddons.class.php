@@ -24,6 +24,8 @@ class UserSpaceCardAddons extends SimpleAddons
     //在public_footer插件位中增加小名片展示的js代码
     public function showSpaceCard()
 	{
-			$this->display('card');
+		$isLogin = empty($_SESSION['mid']) ? false : true;
+		$this->assign('isLogin', $isLogin);
+		$this->display('card');
     }
 }

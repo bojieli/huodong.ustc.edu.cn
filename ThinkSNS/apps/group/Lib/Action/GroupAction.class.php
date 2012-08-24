@@ -18,7 +18,6 @@ class GroupAction extends BaseAction
         }elseif($this->groupinfo['openWeibo']==0 && $this->groupinfo['openBlog']==0){
             redirect(U('group/Member/index', array('gid' => $this->gid)));
         }
-
         $data['weibo_menu'] = array(
 	        ''  => L('all'),
 	        'original' => L('original'),
@@ -30,6 +29,11 @@ class GroupAction extends BaseAction
         $data['type'] = $strType;
         $data['list'] = D('WeiboOperate')->getHomeList($this->mid, $this->gid, $strType, '', 10);
 
+		$_last_weibo = reset($data ['list'] ['data']);
+		$data['lastId'] = $_last_weibo['id'];
+		$_since_weibo = end($data ['list'] ['data']);
+		$data['sinceId'] =  empty($_since_weibo['id']) ? 0 : $_since_weibo['id'];
+
         $this->assign($data);
 		$this->setTitle($this->groupinfo['name'].' - '.$this->groupinfo['intro']);
         $this->display();
@@ -38,11 +42,12 @@ class GroupAction extends BaseAction
     //查找微博话题
     public function search()
     {
-        $data['search_key']    = $this->_getSearchKey();
+        $data['search_key']    = $this->_getSearchKey('k','group_weibo_search');
         $data['type']          = t($_REQUEST['type']);
-        $data['list']          = D('WeiboOperate')->doSearch( $data['search_key'], $this->gid, $data['type'] );
+        $data['type'] = empty($data['type']) ? "" : $data['type'];
+        $data['list']          = D('WeiboOperate', 'group')->doSearch( $data['search_key'], $this->gid, $data['type'] );
         //$data['hotTopic']        = D('WeiboTopic','weibo')->getHot();
-        $data['search_key_id'] = D('WeiboTopic')->getTopicId($data['search_key'], $this->gid);
+        $data['search_key_id'] = D('WeiboTopic', 'group')->getTopicId($data['search_key'], $this->gid);
         //$data['followTopic']   = D('Follow','weibo')->getTopicList($this->mid);
         $this->assign($data);
 		$this->setTitle('搜群组: '.$data['search_key']);
@@ -53,7 +58,10 @@ class GroupAction extends BaseAction
     public function detail()
     {
         $data['mini']      = D('GroupWeibo', 'group')->getOneLocation($_GET['id'], $this->gid);
-        if(!$data['mini']) $this->error('提交错误参数');
+        if(!$data['mini']) {
+            $this->assign('jumpUrl', U('group/Group/index', array('gid'=>$this->gid)));            
+            $this->error('提交错误参数');
+        }
         $data['comment']   =  D('WeiboComment','weibo')->getComment($_GET['id'], $this->gid);
         $data['privacy'] = D('UserPrivacy','home')->getPrivacy($this->mid,$data['mini']['uid']);
 
@@ -93,7 +101,8 @@ class GroupAction extends BaseAction
 
                 $message_data['title']   = "申请加入群组 {$this->groupinfo['name']}";
                 $message_data['content'] = "你好，请求你批准加入“{$this->groupinfo['name']}” 群组，点此"
-                                         . U('group/Manage/membermanage', array('gid'=>$this->gid,'type'=>'apply')) . '进行操作。';
+                                         ."<a href='".U('group/Manage/membermanage', array('gid'=>$this->gid,'type'=>'apply'))."' target='_blank'>"
+                                         . U('group/Manage/membermanage', array('gid'=>$this->gid,'type'=>'apply')) . '</a>进行操作。';
                 $message_data['to']      = $toUserIds;
                 $res = model('Message')->postMessage($message_data,  $this->mid);
 
@@ -135,11 +144,12 @@ class GroupAction extends BaseAction
 
     //删除该群
     function delGroup() {
-        if (md5($_POST['verify']) != $_SESSION['verify']) {
+        if (md5(strtoupper($_POST['verify'])) != $_SESSION['verify']) {
             exit('验证码错误');
         }
         if(!iscreater($this->mid,$this->gid))  exit('你没有权限');
         D('Group')->remove($this->gid);
+        S('Cache_MyGroup_'.$this->mid, NULL);
         exit('1');
     }
 

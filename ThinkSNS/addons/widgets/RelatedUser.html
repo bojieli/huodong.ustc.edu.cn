@@ -29,19 +29,23 @@
 	        </li>
 	        <php>}</php>
 	    </ul>
-	    <php>$_SESSION['_widget_related_user'] = serialize($user);</php>
+	    <php>$_SESSION['_widget_related_user'] = serialize($oldUser);</php>
 	</div>
 	
 	<script type="text/javascript">
 	    function subscribe(uid) {
 	        $.post("{:U('home/Widget/doFollowRelatedUser')}", {uid:uid}, function(res){
-	            if ('0' == res) {
-	                ui.success('关注失败');
-	            }else {
-	    			followGroupSelectorBox(uid);
-	                $('#related_user_'+uid).remove();
-	                $('#related_user').append(res);
-	            }
+	        	if('14' == res){
+	        		ui.error('关注人数已超过配置最大数量，关注失败！');
+	        	}else{
+		            if ('0' == res) {
+		                ui.success('关注失败');
+		            }else{
+		    			//followGroupSelectorBox(uid);
+		                $('#related_user_'+uid).remove();
+		                $('#related_user').append(res);
+		            }
+	        	}
 	        });
 	    }
 	    

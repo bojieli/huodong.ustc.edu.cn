@@ -22,28 +22,186 @@ class ContentAction extends AdministratorAction {
 
 	public function addAd() {
 		$this->assign('type', 'add');
-		$this->display('editAd');
+		$this->display('addAd');
 	}
 
 	public function editAd() {
 		$map['ad_id'] = intval($_GET['id']);
 		$ad = M('ad')->where($map)->find();
+		//$this->assign('ad',$ad);
+
+		$ad_content = unserialize($ad['content']);
+		if($ad_content){
+			$ad['content'] = $ad_content;
+			 $ad['type_id'] =3;
+			
+		} 
+		if($ad['display_type'] == 1){
+			$ad['type_id'] =1;
+		}
+		if($ad['display_type'] == 2){
+			$ad['type_id'] =2;
+		}
 		if(empty($ad))
 			$this->error('参数错误');
-		$this->assign($ad);
-
-		$this->assign('type', 'edit');
-		$this->display('editAd');
+			$this->assign('banner',$ad['content']);
+			$this->assign($ad);
+			$this->assign('ad_id',$map['ad_id']);
+			$this->assign('type', 'edit');
+			$this->display('editAd');
 	}
 
+	public function doUpdateAd(){
+		$map['ad_id'] = $_POST['ad_id'];
+		$res = M('ad')->where($map)->find();
+		if($res['display_type'] == 1){
+			$_POST['content'] = $_POST['content'];
+		}
+		if($res['display_type'] == 2){
+			$_POST['content'] = $_POST['content'];
+		}
+		if($res['display_type'] == 3){
+			$file = X('Xattach')->upload($attach_type='banner');
+			if($file['status'] == false){
+				foreach ($_POST['bannerOld'] as $key => $value) {
+				$content[] = array('img'=>$value,
+								  'url'=>$_POST['bannerUrlOld'][$key]);
+				}
+				$countOld = count($content);
+				if($countOld <= 1){
+						$this->error('轮播广告至少需要两条');
+					}
+				$content = serialize($content);
+				$_POST['content'] = $content;		
+				// 格式化数据
+				$_POST['title']			= h(t($_POST['title']));
+				$_POST['content'] = $_POST['content'];
+			}else{
+				foreach ($_POST['bannerUrl'] as $v) {
+					if(empty($v)){
+						$this->assign('jumpUrl', U('admin/Content/addAd'));
+						$this->error('URL不能为空！');
+					}
+				}
+				foreach ($file['info'] as $k=>$v) {
+					$url[$k]['img'] = SITE_URL.'/data/uploads/'.$v['savepath'].$v['savename'];
+					$url[$k]['url'] = $_POST['bannerUrl'][$k];
+				}
+			
+				foreach ($_POST['bannerOld'] as $key => $value) {
+					$url[] = array('img'=>$value,
+								  'url'=>$_POST['bannerUrlOld'][$key]);
+				}
+				$countNew = count($url);
+				if($countNew <= 1){
+					$this->error('轮播广告至少需要两条');
+				}
+				$url = serialize($url);
+				$_POST['content'] = $url;
+			}
+			$_POST['place']			= intval($_POST['place']);
+			$_POST['is_active']		= intval($_POST['is_active'])   == 0 ? '0' : '1';
+			$_POST['is_closable']	= 0; // intval($_POST['is_closable']) == 0 ? '0' : '1';
+			$_POST['mtime']			= time();
+			if ( !isset($_POST['ad_id']) )
+				$_POST['ctime']		= time();
+
+			// 数据检查
+			if(empty($_POST['title']))
+				$this->error('标题不能为空');
+			if($_POST['place'] < 0 || $_POST['place'] > 5)
+				$this->error('参数错误');
+
+			$_LOG['uid'] = $this->mid;
+			$_LOG['type'] = isset($_POST['ad_id']) ? '3' : '1';
+			$data[] = '内容 - 广告管理 ';
+			isset($_POST['ad_id']) && $data[] =  M('ad')->where( array( 'ad_id'=>intval($_POST['ad_id']) ) )->find();
+			if ( isset($_POST['ad_id']) ) unset( $data['1']['ctime'] );
+			unset( $data['1']['display_order'] );
+			if( $_POST['__hash__'] )unset( $_POST['__hash__'] );
+			$data[] = $_POST;
+			$_LOG['data'] = serialize($data);
+			$_LOG['ctime'] = time();
+			M('AdminLog')->add($_LOG);
+		}
+		// 提交数据
+		$res = isset($_POST['ad_id']) ? M('ad')->save($_POST) : M('ad')->add($_POST);
+
+		//编辑控制
+		$aid = $_GET['id'];
+		$editdata = M( 'ad' )->where( 'ad_id='.$aid )->find();
+		$this->assign('editdata',$editdata);
+
+		if($res) {
+			if( !isset($_POST['ad_id']) ) {
+				// 为排序方便, 新建完毕后, 将display_order设置为ad_id
+				M('ad')->where("`ad_id`=$res")->setField('display_order', $res);
+				$this->assign('jumpUrl', U('admin/Content/addAd'));
+			}else {
+				$this->assign('jumpUrl', U('admin/Content/ad'));
+			}
+			F('_action_ad',null);	//删除广告缓存
+			$this->success('保存成功');
+		}else {
+			$this->error('保存失败');
+		}
+	}
+//编辑广告
+	public function updataAd(){
+		$map['ad_id'] = intval($_GET['id']);
+		$ad = M('ad')->where($map)->find();
+		$this->assign('ad',$ad);
+
+		$ad_content = unserialize($ad['content']);
+		if($ad_content){
+			$ad['content'] = $ad_content;
+		}
+		if(empty($ad))
+			$this->error('参数错误');
+			$this->assign('banner',$ad['content']);
+			$this->assign($ad);
+			$this->assign('type', 'edit');
+			$this->display('updataAd');
+	}
 	public function doEditAd() {
+		$count = count($_POST['banner']);
+		$_POST['display_type'] == intval($_POST['display_type']);
 		if( ($_POST['ad_id'] = intval($_POST['ad_id'])) <= 0 )
 			unset($_POST['ad_id']);
-
 		// 格式化数据
 		$_POST['title']			= h(t($_POST['title']));
-		//$_POST['content']		= h(t($_POST['content']));
-		$_POST['content']		= $_POST['content'];
+		// $bannerUrl = $_POST['bannerUrl'];
+		// $bannerUrl = serialize($bannerUrl);
+
+		$file = X('Xattach')->upload($attach_type='banner');
+		if($file['status'] == false){
+			$_POST['content'] = $_POST['content'];
+			if(empty($_POST['content'])){
+				$_POST['content']	=$_POST['hide'];
+			}
+		}else{
+			foreach ($_POST['bannerUrl'] as $v) {
+				if(empty($v)){
+					$this->assign('jumpUrl', U('admin/Content/addAd'));
+					$this->error('URL不能为空！');
+				}
+			}
+			foreach ($file['info'] as $k=>$v) {
+				$url[$k]['img'] = SITE_URL.'/data/uploads/'.$v['savepath'].$v['savename'];
+				$url[$k]['url'] = $_POST['bannerUrl'][$k];
+			}
+		
+			foreach ($_POST['bannerOld'] as $key => $value) {
+				$url[] = array('img'=>$value,
+							  'url'=>$_POST['bannerUrlOld'][$key]);
+			}
+			$count = count($url);
+			if($count <= 1){
+				$this->error('轮播广告至少需要两条');
+			}
+			$url = serialize($url);
+			$_POST['content'] = $url;
+		}
 		$_POST['place']			= intval($_POST['place']);
 		$_POST['is_active']		= intval($_POST['is_active'])   == 0 ? '0' : '1';
 		$_POST['is_closable']	= 0; // intval($_POST['is_closable']) == 0 ? '0' : '1';
@@ -71,6 +229,11 @@ class ContentAction extends AdministratorAction {
 
 		// 提交数据
 		$res = isset($_POST['ad_id']) ? M('ad')->save($_POST) : M('ad')->add($_POST);
+
+		//编辑控制
+		$aid = $_GET['id'];
+		$editdata = M( 'ad' )->where( 'ad_id='.$aid )->find();
+		$this->assign('editdata',$editdata);
 
 		if($res) {
 			if( !isset($_POST['ad_id']) ) {
@@ -106,6 +269,9 @@ class ContentAction extends AdministratorAction {
 		F('_action_ad',null);	//删除广告缓存
 	}
 
+	public function deleteBanner(){
+		echo "1";
+	}
 	public function doAdOrder() {
 		$_POST['ad_id']  = intval($_POST['ad_id']);
 		$_POST['baseid'] = intval($_POST['baseid']);
@@ -358,7 +524,16 @@ class ContentAction extends AdministratorAction {
 		$_LOG['data'] = serialize($data);
 		$_LOG['ctime'] = time();
 		M('AdminLog')->add($_LOG);
-
+		$map['attach_id'] = $map['id'];
+		unset($map['id']);
+		$weibo = M('weibo_attach')->where($map)->findAll();
+		unset($map['attach_id']);
+		foreach ($weibo as $v) {
+			$weibo_id[] = $v['weibo_id'];
+		}
+		$weibo_id = implode(',', $weibo_id);
+		$map['weibo_id'] = array('in',$weibo_id);
+		M('weibo')->where($map)->delete();
 		echo model('Attach')->deleteAttach( t($_POST['ids']), intval($_POST['withfile']) ) ? '1' : '0';
 	}
 
@@ -395,6 +570,7 @@ class ContentAction extends AdministratorAction {
 					'to_uid'		=> $v['reply_uid'],
 					'url'			=> U('home/Space/detail',array('id'=>$v['weibo_id'])),
 					'ctime'			=> $v['ctime'],
+					'comment_ip'	=>$v['comment_ip'],
 				);
 			}else if ($from_app == 'other') {
 				unset($data['data'][$k]);
@@ -407,6 +583,7 @@ class ContentAction extends AdministratorAction {
 					'to_uid'		=> $v['to_uid'],
 					'url'			=> $v['data']['url'],
 					'ctime'			=> $v['cTime'],
+					'comment_ip'	=>$v['comment_ip'],
 				);
 			}
 		}
@@ -634,7 +811,6 @@ class ContentAction extends AdministratorAction {
 		$_LOG['data'] = serialize($data);
 		$_LOG['ctime'] = time();
 		M('AdminLog')->add($_LOG);
-
 		echo model('Denounce')->reviewDenounce( t($_POST['ids']) ) ? '1' : '0';
 	}
 	/**
@@ -663,6 +839,7 @@ class ContentAction extends AdministratorAction {
         $_POST = array_map('t',$_POST);
 
 		$map = $this->_getSearchMap(array('in'=>array('id','uid','type')));
+		$this->assign('type',$_POST['type']);
 		$this->adminLog($map);
 	}
 

@@ -61,8 +61,8 @@ class IndexAction extends Action {
                 $this->assign('jumpUrl', U('vote/Index/pollDetail',array('id'=>$result)));
                 $this->ajaxData['url'] = U('vote/Index/pollDetail',array('id'=>$result));
                 $this->ajaxData['id']  = $result;
-                $this->ajaxData['title'] = $data['title'];
-                $this->ajaxData['opt']   = array_filter($opt);
+                $this->ajaxData['title'] = keyWordFilter($data['title']);
+                $this->ajaxData['opt']   = array_filter(keyWordFilter($opt));
                 $this->ajaxData['deadline'] = $data['deadline'];
                 $this->success('添加投票成功');
             }else{
@@ -219,14 +219,16 @@ class IndexAction extends Action {
 
                 $id = intval($_GET["id"]);
                 if( empty( $id ) || 0 == $id ) {
-                        $this->error( "非法访问投票页面" );
-                        exit;
+                    $this->assign('jumpUrl', U('vote/Index/index'));
+                    $this->error( "非法访问投票页面" );
+                    exit;
                 }
 
                 //投票详情
                 $vote = D("Vote")->find($id);
                 if( false == $vote ) {
-                        $this->error( "浏览的投票不存在或者被删除" );
+                    $this->assign('jumpUrl', U('vote/Index/index'));
+                    $this->error( "浏览的投票不存在或者被删除" );
                 }
 				$vote[name]=getUserName($vote['uid']);
                 $this->assign("vote", $vote);
@@ -417,7 +419,7 @@ class IndexAction extends Action {
                         echo -1;
                         return;
                 }
-                $map['name'] = t( $_POST['name'] );
+                $map['name'] = t(h($_POST['name']));
                 $map['vote_id'] = $id;
                 //查找这个投票的所有选项
                 $voteDao = D( 'VoteOpt' );

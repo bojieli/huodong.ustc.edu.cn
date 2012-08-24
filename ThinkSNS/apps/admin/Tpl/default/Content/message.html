@@ -20,10 +20,10 @@
     </dl>
         
     <dl class="lineD">
-      <dt>标题：</dt>
+      <dt>内容：</dt>
       <dd>
-        <input name="content" type="text" value="{$content}">
-        <p>使用标题关键字进行模糊查询</p>
+        <input name="content" type="text" value="<php>echo substr(substr($content,0,strlen($content)-1),1,strlen($content)-1);</php>">
+        <p>使用内容关键字进行模糊查询</p>
       </dd>
     </dl>
     <div class="page_btm">
@@ -50,8 +50,8 @@
     </th>
     <th class="line_l">ID</th>
     <th class="line_l">列ID</th>
-    <th class="line_l">发信人</th>
-    <th class="line_l">收信人</th>
+    <th class="line_l">发信人UID</th>
+    <th class="line_l">发件人昵称</th>
     <th class="line_l">内容</th>
     <th class="line_l">时间</th>
     <th class="line_l">操作</th>
@@ -61,8 +61,8 @@
         <td><input type="checkbox" name="checkbox" id="checkbox2" onclick="checkon(this)" value="{$vo.message_id}"></td>
         <td>{$vo.message_id}</td>
         <td>{$vo.list_id}</td>
-        <td>{$vo.from_uid}<br/>{$vo.from_uid|getUserName}</td>
-        <td>{$vo.to_uid}<br/>{$vo.to_uid|getUserName}</td>
+        <td>{$vo.from_uid} | {$vo.from_uid|getUserName}</td>
+        <td>{$vo.to_uid} | {$vo.to_uid|getUserName}</td>
         <td>{$vo.content|getShort=20}</td>
         <td>{$vo.mtime|date="Y-m-d H:i",###}</td>
         <td><a href="javascript:void(0);" onclick="deleteRecord('{$vo.message_id}')">删除</a></td>

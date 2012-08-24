@@ -122,6 +122,7 @@ class IndexAction extends BaseAction{
 		$album	  =	$albumDao->where("id={$id}")->find();
 
 		if(!$album){
+			$this->assign('jumpUrl', U('photo/Index/index'));
 			$this->error('专辑不存在或已被删除！');
 		}
 
@@ -131,11 +132,11 @@ class IndexAction extends BaseAction{
 			if($album['privacy']==3){
 				$this->error('这个'.$this->appName.'，只有主人自己可见。');
 			}elseif($album['privacy']==2 && $relationship=='unfollow'){
-				$this->error('这个'.$this->appName.'，只有主人关注的人可见。');
+				$this->error('这个'.$this->appName.'，只有关注自己的人可见。');
 			}elseif($album['privacy']==4){;
 				$cookie_password	=	cookie('album_password_'.$album['id']);
 				//如果密码不正确，则需要输入密码
-				if($cookie_password != md5($album['privacy_data'].'_'.$album['id'].'_'.$album['userId'])){
+				if($cookie_password != md5($album['privacy_data'].'_'.$album['id'].'_'.$album['userId'].'_'.$this->mid)){
 					$this->need_password($album);
 					exit;
 				}
@@ -169,10 +170,10 @@ class IndexAction extends BaseAction{
 
 	//显示一张图片
 	public function photo() {
-
-		$id		=	intval($_REQUEST['id']);
-		$aid	=	intval($_REQUEST['aid']);
-		$type	=	t($_REQUEST['type']);	//图片来源类型，来自某相册，还是其它的
+		$uid  = intval($_REQUEST['uid']);
+		$aid  =	intval($_REQUEST['aid']);
+		$id   = intval($_REQUEST['id']);
+		$type =	t($_REQUEST['type']);	//图片来源类型，来自某相册，还是其它的
 
 		//判断来源类型
 		if(!empty($type) && $type!='mAll'){
@@ -180,22 +181,25 @@ class IndexAction extends BaseAction{
 		}
 		$this->assign('type',$type);
 
-		//获取图片信息
-		$photoDao = D('Photo');
-		$photo	  =	$photoDao->where(" id={$id} AND albumId={$aid} AND userId={$this->uid} ")->find();
-		$this->assign('photo',$photo);
-
-		//验证图片信息是否正确
-		if(!$photo){
-			$this->error('图片不存在或已被删除！');
-		}
-
 		//获取所在相册信息
 		$albumDao = D('Album');
 		$album = $albumDao->find($aid);
 		if(!$album){
+			$this->assign('jumpUrl', U('photo/Index/index'));
 			$this->error('专辑不存在或已被删除！');
 		}
+
+		//获取图片信息
+		$photoDao = D('Photo');
+		$photo	  =	$photoDao->where(" albumId={$aid} AND `id`={$id} AND userId={$uid} ")->find();
+		$this->assign('photo',$photo);
+
+		//验证图片信息是否正确
+		if(!$photo){
+			$this->assign('jumpUrl', U('photo/Index/album', array('uid'=>$this->uid,'id'=>$aid)));
+			$this->error('图片不存在或已被删除！');
+		}
+
 		//隐私控制
 		if($this->mid!=$album['userId']){
 			$relationship	=	getFollowState($this->mid,$this->uid);
@@ -206,7 +210,7 @@ class IndexAction extends BaseAction{
 			}elseif($album['privacy']==4){;
 				$cookie_password	=	cookie('album_password_'.$album['id']);
 				//如果密码不正确，则需要输入密码
-				if($cookie_password != md5($album['privacy_data'].'_'.$album['id'].'_'.$album['userId'])){
+				if($cookie_password != md5($album['privacy_data'].'_'.$album['id'].'_'.$album['userId'].'_'.$this->mid)){
 					$this->need_password($album,$id);
 					exit;
 				}
@@ -307,18 +311,16 @@ class IndexAction extends BaseAction{
 		$uid	=	intval($_REQUEST['uid']);
 		$password	=	t($_REQUEST['password']);
 		$_REQUEST['pid'] && $pid = intval($_REQUEST['pid']);
-
 		//获取相册信息
 		$album	=	D('Album')->where(" id='$aid' AND userId='$uid' ")->find();
-
-		if(!$album){
+		$id = $album['id'];
+		if($album['isDel'] != 0){
 			$this->error('专辑不存在或已被删除！');
 		}
-
-		if($pid>0){
-			//跳转到图片页面
-			$url	=	U('/Index/photo',array('id'=>$pid,'uid'=>$this->$album['userId'],'aid'=>$album['id']));
-		}else{
+		if($password == $album['privacy_data']){
+		// 	//跳转到图片页面
+		// 	$url	=	U('/Index/photo',array('uid'=>$album['userId'],'aid'=>$album['id']));
+		// }else{
 			//跳转到相册页面
 			$url	=	U('/Index/album',array('uid'=>$album['userId'],'id'=>$album['id']));
 		}
@@ -326,7 +328,7 @@ class IndexAction extends BaseAction{
 		if( $password == $album['privacy_data'] ){
 
 			//加密保存密码
-			$cookie_password	=	md5($album['privacy_data'].'_'.$album['id'].'_'.$album['userId']);
+			$cookie_password	=	md5($album['privacy_data'].'_'.$album['id'].'_'.$album['userId'].'_'.$this->mid);
 			//密码保存7天
 			cookie( 'album_password_'.$album['id'] , $cookie_password , 3600*24*7 );
 			$this->assign('jumpUrl',$url);
@@ -447,7 +449,8 @@ class IndexAction extends BaseAction{
 		//获取微博图片数据
 		$config = getConfig();
 
-		$photos = D('WeiboAttach','weibo')->getUserAttachData($this->uid,1,$config['photo_raws']);
+		// $photos = D('WeiboAttach','weibo')->getUserAttachData($this->uid,1,$config['photo_raws']);
+		$photos = D('WeiboAttach','weibo')->getUserAttachDataNew($this->uid,1,$config['photo_raws']);
 
 		$this->assign('photos',$photos);
 		$this->setTitle(getUserName($this->uid).'的微博相册');

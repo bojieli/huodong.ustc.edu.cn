@@ -13,7 +13,7 @@
      	<div class="mainbox_appC">
         <div class=page_title>
           <!-- page_title begin -->
-          <h2><span class="right fn f12px"><a href="javascript:history.back( -1 )">返回上一页</a></span>{$title}</h2>
+          <h2><span class="right fn f12px"><a href="<php>if($_SERVER[HTTP_REFERER] == U('event/Index/doAddEvent')){echo U('event/Index/AddEvent');}else{echo $_SERVER[HTTP_REFERER];}</php>">返回上一页</a></span>{$title}</h2>
         </div>
         <!-- page_title end -->
         <div class="tab-menu">
@@ -58,11 +58,36 @@
                       <div class="c2"><space uid="uid" class="fn">{uname}</space></div>
                     </li>
                     <li>
-                      <div class="c1"> 活动类型：</div>
+                      <div class="c1"> 活动分类：</div>
                       <div class="c2"> {$type} </div>
                     </li>
                     <li>
-                      <div class="c1"> 活动区域：</div>
+                      <div class="c1"> 活动经费：</div>
+                      <div class="c2">
+                      	<php>
+	                      	if($cost == '0'){
+	                      		echo '免费';
+	                      	}elseif($cost == '1'){
+	                      		echo 'AA制';
+	                      	}elseif($cost == '2'){
+	                      		echo '50元以下';
+	                      	}elseif($cost == '3'){
+	                      		echo '50-200元';}
+	                      	elseif($cost == '4'){
+	                      		echo '200-500元';}
+	                      	elseif($cost == '5'){
+	                      		echo '500-1000元';}
+	                      	elseif($cost == '6'){
+	                      		echo '1000元以上';}
+                      	</php>
+                      </div>
+                    </li>
+                    <li>
+                      <div class="c1"> 资费说明：</div>
+                      <div class="c2"> {$costExplain} </div>
+                    </li>
+                    <li>
+                      <div class="c1"> 活动城市：</div>
                       <div class="c2"> {$city} </div>
                     </li>
                     <li>
@@ -82,12 +107,16 @@
                       <div class="c2"> {$lc} </div>
                     </li>
                     <li>
+                      <div class="c1"> 联系方式：</div>
+                      <div class="c2"> {$contact} </div>
+                    </li>
+                    <li>
                       <div class="c1"> 需要审核：</div>
                       <div class="c2">
                         <?php if( $opts['allow'] ) {echo'是';}else{echo'否';}?>
                       </div>
                     </li>
-                    <li>参加人数（{$joinCount}） 关注人数（{$attentionCount}）<if condition="$verifyCount">待审人数（{$verifyCount}）</if></li>
+                    <li>参加人数（<a href="{:U('//member', array('id'=>$id,'action'=>'join'))}">{$joinCount}</a>） 关注人数（<a href="{:U('//member', array('id'=>$id,'action'=>'att'))}">{$attentionCount}</a>）<if condition="$verifyCount">待审人数（<a href="{:U('//member', array('id'=>$id,'action'=>'verify'))}">{$verifyCount}</a>）</if></li>
                     <?php if( $deadline>time()){ ?>
                     <li> <span class="cGreen lh35" id="event_satus">此活动正在进行中……</span> </li>
                     <li>
@@ -127,7 +156,7 @@
                     </li>
                     <?php }else { ?>
                     <li>
-                      <span class="cGreen lh35">此活动已经结束,报名时间已到</span>
+                      <span class="cGreen lh35">此活动已经结束</span>
                     </li>
                     <?php } ?>
                   </ul>
@@ -142,7 +171,7 @@
             <div class="box1">
               <h3><span class="alR lh30n right f12px"><a href="{:U('//member', array('id'=>$id,'action'=>'join'))}">查看全部>></a></span><strong>活动成员</strong>(共{$joinCount}人)</h3>
               <ul class="pic50box">
-                <volist name="member" id="vo">
+                <volist name="member" id="vo" offset= "0" length= '8' >
                   <li><span class="headpic50"><a href="{:U('home/space/', array('uid'=>$vo['uid']))}" target="_blank"><img src="{$vo['uid']|getUserFace}" /></a></span><a href="{:U('home/space/', array('uid'=>$vo['uid']))}" target="_blank">{$vo['uid']|getUserName}</a></li>
                 </volist>
                 <div class="c"></div>

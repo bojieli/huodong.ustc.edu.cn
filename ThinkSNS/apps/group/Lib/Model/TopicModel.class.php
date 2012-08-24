@@ -4,7 +4,7 @@ class TopicModel extends Model
 	var $tableName = 'group_topic';
 	
 	//获取帖子
-	function getThread($tid,$field='*') {
+	public function getThread($tid,$field='*') {
 		
 		$thread = $this->where('id='.$tid.' AND is_del=0')->field($field)->find();
 		
@@ -15,13 +15,24 @@ class TopicModel extends Model
 		return $thread;
 	}
 
+    //获取帖子
+    public function getThreadDetail($gid,$tid,$field='*') {
+        
+        $thread = $this->where('id='.$tid.' AND is_del=0')->field($field)->find();
+        
+        if($thread) {
+            $thread['content'] =  D('Post')->getField('content','istopic=1 AND tid='.$tid);
+            $thread['pid'] =  D('Post')->getField('id','istopic=1 AND tid='.$tid);
+        }
+        return $thread;
+    }
+
 	//获取帖子列表
 	  /**
       * getTopicList 
-    
      */
-     public function getTopicList($html=1, $map = null, $fields=null, $order = null, $limit = null, $isDel=0)
-     {
+    public function getTopicList($html=1, $map = null, $fields=null, $order = null, $limit = null, $isDel=0)
+    {
             //处理where条件
             if(!$isDel)$map[] = 'is_del=0';
             else $map[] = 'is_del=1';
@@ -29,14 +40,13 @@ class TopicModel extends Model
    			$map = implode(' AND ', $map);
             //连贯查询.获得数据集
             $result         = $this->where( $map )->field( $fields )->order( $order )->findPage( $limit ) ;
-          
             if($html) return $result;
             return $result['data'];
-     }
+    }
      
      
      //搜索
-     function getSearch($keywords,$gid){
+    public function getSearch($keywords,$gid){
      	
      	import("ORG.Util.Page");
      
@@ -52,10 +62,10 @@ class TopicModel extends Model
         $tList = $this->query($sql);
         
      	return array('html'=>$p->show(),'count'=>intval($count[0]['count']),'data'=>$tList);
-     }
+    }
      
-     //回收站
-     function remove($id){
+    //回收站
+    public function remove($id){
      	$id = is_array($id) ? '('.implode(',',$id).')' : '('.$id.')';  //判读是不是数组回收
      	$uids = D('Topic')->field('uid')->where('id IN' . $id)->findAll();
      	$res  = D('Topic')->setField('is_del', 1, 'id IN' . $id); //回收话题
@@ -67,29 +77,28 @@ class TopicModel extends Model
      		}
      	}
      	return $res;
-     }
+    }
 
-     // 删除
-     function del($id) {
+    // 删除
+    public function del($id) {
      	$id = in_array($id) ? '('.implode(',',$id).')' : '('.$id.')';  //判读是不是数组回收
      	D('Topic')->where('id IN'.$id)->delete(); //删除话题
      	D('Post')->where('tid IN'.$id)->delete(); //删除回复
-     }
+    }
 
-     function recover($id){
+    public function recover($id){
      	$id = in_array($id) ? '('.implode(',',$id).')' : '('.$id.')';  //判读是不是数组回收
      	D('Topic')->setField('is_del',0,'id IN'.$id); //回收话题
      	D('Post')->setField('is_del',0,'tid IN'.$id); //回复
-     }
+    }
 
      // 帖子分类列表
-     public function categoryList($gid)
-     {
+    public function categoryList($gid){
      	return M('group_topic_category')->where('gid=' . intval($gid))->order('id ASC')->findAll();
-     }
+    }
      
      // 群组热贴
-     public function getHotThread(){
+    public function getHotThread(){
      	// 1分钟锁缓存 
     	if(!($cache = S('Cache_Hot_Thread'))){
     		S('Cache_Hot_Thread_t',time()); //缓存未设置 先设置缓存设定时间	
@@ -112,5 +121,5 @@ class TopicModel extends Model
                            ->limit(10)->findAll();
         S('Cache_Hot_Thread',$cache);
         return $cache;                   
-     }
+    }
 }

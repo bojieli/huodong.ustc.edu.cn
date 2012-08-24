@@ -24,8 +24,8 @@ class IndexAction extends Action {
         	//parent::_initialize();
 
 			//设置日志Action的数据处理层
-            $this->blog = D( 'Blog' );
-            $this->follow=D('Follow');
+            $this->blog  = D('Blog','blog');
+            $this->follow= D('Follow');
         }
         protected $app = null;
         /**
@@ -40,7 +40,7 @@ class IndexAction extends Action {
 			$list = $this->__getBlog(null,'*','cTime desc');
 			//检查是否可以查看全部日志
 			if( $this->__checkAllModel() ) {
-					$list = $this->blog->getAllData('popular');
+					$list = $this->blog->getAllData('popular', $this->mid);
 					$relist= $this->blog->getIsHot();
 					$this->assign('relist',$relist);
 					$this->assign( 'api',$this->api);
@@ -128,7 +128,7 @@ class IndexAction extends Action {
         public function news() {
 	        //检查是否可以查看这个页面
 			if( $this->__checkAllModel() ) {
-    			$list = $this->blog->getAllData('new');
+    			$list = $this->blog->getAllData('new', $this->mid);
                 $relist= $this->blog->getIsHot();
                 $this->assign('relist',$relist);
                 $this->assign( 'api',$this->api);
@@ -181,88 +181,107 @@ class IndexAction extends Action {
          * @return void
          */
         public function show() {
-				unset($_SESSION['blog_use_widget_share']);
-        //获得日志id
-                $id      = $_GET['id'];
-                $this->blog->setUid( $this->mid );
+			
+            unset($_SESSION['blog_use_widget_share']);
+            //获得日志id
+            $id      = $_GET['id'];
+            $this->blog->setUid( $this->mid );
 
-                //全站日志
-                if( $this->blog->getConfig( 'all' ) ) {
-                        $this->assign( 'all','true' );
+            //全站日志
+            if( $this->blog->getConfig( 'all' ) ) {
+                 $this->assign( 'all','true' );
+            }
+
+
+            //日志所有者
+            $bloguid = intval($_GET['mid']);
+
+
+            //获得日志的详细内容,第二参数通知是当前还是上一篇下一篇
+            isset( $_GET['action'] ) && $how = $_GET['action'];
+            $list     = $this->blog->getBlogContent($id,$how,$bloguid);
+
+			if($this->mid != $bloguid){
+				$relationship = getFollowState($this->mid, $bloguid);
+				if($list['private'] == 4){
+                    $this->assign('jumpUrl', U('blog/Index/index'));
+					$this->error('本日志仅主人自己可见');
+				}elseif($list['private'] == 2 && $relationship=='unfollow'){
+                    $this->assign('jumpUrl', U('blog/Index/index'));
+					$this->error('本日志仅主人关注的人可见');
+				} else if ($list['private'] == 5 && model('Friend')->identifyFriend($this->mid, $bloguid) != FriendModel::ARE_FRIENDS) {
+                    $this->assign('jumpUrl', U('blog/Index/index'));
+					$this->error('本日志仅主人朋友可见');
+				}
+			}
+
+            //Converts special HTML entities back to characters.
+            $list['content'] = htmlspecialchars_decode($list['content']);
+            $isExist = $this->blog->where('id='.$id)->find();
+            //检测是否有值。不允许非正常id访问
+            if( false == $list || empty($isExist) || $isExist['status'] == 2) {
+            		$this->assign('jumpUrl',U('blog/Index'));
+                    $this->error( '日志不存在或者已删除！' );
+            }
+             //Converts special HTML entities back to characters.
+            $list['content'] = htmlspecialchars_decode($list['content']);
+
+            //获得正确的当前日志ID
+            $id = $list['id'];
+            // 关注关系
+            $this->assign( 'relationship', $relationship );
+
+            //检测密码
+            if (isset($_POST['password'])) {
+                if(md5(t($_POST['password'])) == $list['private_data']) {
+                        // Cookie::set($id.'password',md5(t($_POST['password'])));
+                        cookie($id.'password',md5(t($_POST['password'])));
+                        $list['private'] = 0;
                 }
-
-
-                //日志所有者
-                $bloguid = $_GET['mid'];
-
-
-                //获得日志的详细内容,第二参数通知是当前还是上一篇下一篇
-                isset( $_GET['action'] ) && $how = $_GET['action'];
-                $list     = $this->blog->getBlogContent($id,$how,$bloguid);
-
-                //检测是否有值。不允许非正常id访问
-                if( false == $list ) {
-                		$this->assign('jumpUrl',U('blog/Index'));
-                        $this->error( '日志不存在或者已删除！' );
+            } else {
+                // if( 3 == $list['private'] && Cookie::get($id.'password') == $list['private_data']) {
+                if( 3 == $list['private'] && cookie($id.'password') == $list['private_data']) {
+                        $list['private'] = 0;
                 }
-                 //Converts special HTML entities back to characters.
-                $list['content'] = htmlspecialchars_decode($list['content']);
-                
-                //获得正确的当前日志ID
-                $id = $list['id'];
-                //是否是好友
-                $this->assign( 'isFriend',friend_areFriends( $bloguid,$this->mid ) );
+            }
 
-                //检测密码
-                if (isset($_POST['password'])) {
-                        if(md5(t($_POST['password'])) == $list['private_data']) {
-                                Cookie::set($id.'password',md5(t($_POST['password'])));
-                                $list['private'] = 0;
-                        }
-
-                } else {
-                        if( 3 == $list['private'] && Cookie::get($id.'password') == $list['private_data']) {
-                                $list['private'] = 0;
-                        }
-                }
-
-                //不是日志所有人读日志才会刷新阅读数.只有非日志发表人才进行阅读数刷新
-                if( !empty( $bloguid ) && $this->mid != $bloguid ) {
-                        $options = array( 'id'=>$id,'uid'=>$this->mid,'type'=>APP_NAME,'lefttime'=>"30" );
-                        //浏览计数，防刷新
-                        //if(  browseCount( APP_NAME,$id,$this->mid,'30') ) {
-                                $this->blog->changeCount( $id );
-                        //}
-                }
+            //不是日志所有人读日志才会刷新阅读数.只有非日志发表人才进行阅读数刷新
+            if( !empty( $bloguid ) && $this->mid != $bloguid ) {
+                $options = array( 'id'=>$id,'uid'=>$this->mid,'type'=>APP_NAME,'lefttime'=>"30" );
+                //浏览计数，防刷新
+                //if(  browseCount( APP_NAME,$id,$this->mid,'30') ) {
+                        $this->blog->changeCount( $id );
+                //}
+            }
 
 
                 //获取发表人的id
-                $name          = $this->blog->getOneName( $bloguid );
+            $name          = $this->blog->getOneName( $bloguid );
 
-                //他人日志渲染特殊的变量和数据
-                if( $this->mid != $bloguid ) {
-                //查看这篇日志，访问者是否推荐过
-                        $recommend = D( 'BlogMention' )->checkRecommend( $this->mid,$list['id'] );
+            //他人日志渲染特殊的变量和数据
+            if( $this->mid != $bloguid ) {
+            //查看这篇日志，访问者是否推荐过
+                $recommend = D( 'Blog' )->checkRecommend( $this->mid,$list['id'] );
 
-                        //如果是其它人的日志。需要获得最新的10条日志
-                        $bloglist  = $this->blog->getBlogTitle( $list['uid'] );
-                        $this->assign( 'bloglist',$bloglist );
-                        $this->assign( 'recommend',$recommend );
-                }
+                //如果是其它人的日志。需要获得最新的10条日志
+                $bloglist  = $this->blog->getBlogTitle( $list['uid'] );
+                $this->assign( 'bloglist',$bloglist );
+                //$this->assign( 'recommend',$recommend );
+            }
 
-                //渲染公共变量
-                $relist= $this->blog->getIsHot();
-                $this->assign('relist',$relist);
-                $this->assign( $list );
-                $this->assign( 'blog', $list );
-                $this->assign( 'guest',$this->mid );
-                $this->assign( 'name',$name['name'] );
-                $this->assign( 'uid',$bloguid );
-                $this->assign('isOwner', $this->mid == $bloguid ? '1' : '0');
+            //渲染公共变量
+            $relist= $this->blog->getIsHot();
+            $this->assign('relist',$relist);
+            $this->assign( $list );
+            $this->assign( 'blog', $list );
+            $this->assign( 'guest',$this->mid );
+            $this->assign( 'name',$name['name'] );
+            $this->assign( 'uid',$bloguid );
+            $this->assign('isOwner', $this->mid == $bloguid ? '1' : '0');
 
-                global $ts;
-                $this->setTitle(getUserName($list['uid']).'的文章: '.$list['title']);
-                $this->display('blogContent');
+            global $ts;
+            $this->setTitle(getUserName($list['uid']).'的文章: '.$list['title']);
+            $this->display('blogContent');
         }
 
         /**
@@ -309,10 +328,10 @@ class IndexAction extends Action {
                         $cateId = intval($_GET['cateId']);
                 }
                 $category = $this->blog->getBlogCategory($uid,$cateId);
-                if(!$category) {
-                        $this->error(L('参数错误'));
-                        exit;
-                }
+                // if(!$category) {
+                //         $this->error(L('参数错误'));
+                //         exit;
+                // }
                 return $category;
         }
 
@@ -423,21 +442,6 @@ class IndexAction extends Action {
                                 $this->error( L( 'error_no_role' ) );
                         }
 
-                        //处理提到的好友的格式数据
-                        $mention = array_filter(unserialize( $list['friendId'] ));
-                        if( !empty($mention) ) {
-                                $friends = $this->api->user_getInfo( $mention,'id,name' );
-
-                                foreach ( $friends as &$value ) {
-                                        $value['uid'] = $value['id'];
-                                        unset( $value['id'] );
-                                }
-
-                                $list['mention'] = $friends;
-                        }else {
-                                $list['mention'] = null;
-                        }
-
                         $list['saveId'] = $list['id'];
                         unset( $list['id'] );
 
@@ -458,22 +462,10 @@ class IndexAction extends Action {
                                 $this->error( L( 'error_no_role' ) );
                 }
 
-                foreach ( $list['mention'] as &$value ) {
-                        $value['face']  = getUserFace( $value['uid'] );
-                }
 
-                $list['mention'] = json_encode( $list['mention'] );
-				                         $relist= $this->blog->getIsHot();
-                        $this->assign('relist',$relist);
-                 //表情控制
-//                $smile     = array();
-//                $smileType = $this->opts['ico_type'];
-//
-//
-//                $smileList = $this->getSmile($smileType);
-//                $smilePath = $this->getSmilePath($smileType);
-//                $this->assign( 'smileList',$smileList );
-//                $this->assign( 'smilePath',$smilePath );
+				$relist= $this->blog->getIsHot();
+                $this->assign('relist',$relist);
+
                 $this->assign( 'link',$link );
                 $this->assign( $list );
                 $this->display();
@@ -486,7 +478,7 @@ class IndexAction extends Action {
          * @return void
          */
         public function doAddBlog() {
-            $title = text($_POST['title']);
+            $title = text(h($_POST['title']));
 
 
         	if(empty($title)) {
@@ -500,7 +492,7 @@ class IndexAction extends Action {
 
                 //检查是否为空
                 if( empty($_POST['content']) || empty( $content )  ) {
-                        $this->error( "请填写内容" );
+                        $this->error( "请填写文字内容" );
                 }
 
                 //得到发日志人的名字
@@ -513,8 +505,8 @@ class IndexAction extends Action {
 
                 //如果是有自动保存的数据。删除自动保存数据
                 if( isset( $_POST['saveId'] ) && !empty( $_POST['saveId'] ) ) {
-                        $mention = D( 'BlogOutline' );
-                        $mention->where( 'id = '.$_POST['saveId'] )->delete();
+                        $BlogOutline = D( 'BlogOutline' );
+                        $BlogOutline->where( 'id = '.$_POST['saveId'] )->delete();
                 }
 
                 if( $add ) {
@@ -552,7 +544,7 @@ class IndexAction extends Action {
                 $content = h($_POST['content']);
 
                 if( empty( $content ) ) {
-                    $this->error( "请填写内容" );
+                    $this->error( "请填写文字内容" );
                 }
 
                 $userName = $this->blog->getOneName( $this->mid );
@@ -582,7 +574,7 @@ class IndexAction extends Action {
                 $data['password'] = text($_POST['password']);
                 $data['mention']  = $_POST['fri_ids'];
                 $data['title']    = !empty($_POST['title']) ?text($_POST['title']):"无标题";
-                $data['private']  = text( $_POST['privacy'] );
+                $data['private']  = intval($_POST['private']);
                 $data['canableComment'] = intval(t($_POST['cc']));
 
                 //处理attach数据
@@ -614,7 +606,7 @@ class IndexAction extends Action {
                 $content = trim(str_replace('&amp;nbsp;','',t($_POST['content'])));
                 //检查是否为空
                 if( empty($_POST['content']) || empty( $content )  ) {
-                        $this->error( "请填写内容" );
+                        $this->error( "请填写文字内容" );
                         exit();
                 }
 
@@ -629,7 +621,7 @@ class IndexAction extends Action {
                 $data['password'] = $_POST['password'];
                 $data['mention']  = $_POST['mention'];
                 $data['title']    = !empty($_POST['title']) ?$_POST['title']:"无标题";
-                $data['private']  = $_POST['privacy'];
+                $data['private']  = intval($_POST['private']);
                 $data['canableComment'] = intval(t($_POST['cc']));
                 if( isset( $_POST['updata'] ) ) {
                 //更新数据，而不是添加新的草稿
@@ -685,169 +677,6 @@ class IndexAction extends Action {
         }
 
         /**
-         * blogImport
-         * 外站博客导入
-         * @access public
-         * @return void
-         */
-        public function blogImport() {
-        //检测和返回本登录用户已经订阅的源地址
-                $subscribe = $this->blog->checkGetSubscribe( $this->mid );
-
-                $this->assign( "subscribe",$subscribe );
-                $this->display();
-        }
-
-        /**
-         * importList
-         * 导入日志的列表
-         * @access public
-         * @return void
-         */
-        public function importList() {
-                Import( '@.Unit.LeadIn' );
-                $url = $_REQUEST['url'];
-                //解析url。确定服务名和用户名
-                $paramUrl = $this->_paramUrl($url);
-                if ( false == $paramUrl ) $this->error( "URL解析失败" );
-                $options = array(
-                    "username" => $paramUrl['username'],
-                    "service"  => $paramUrl['service'],
-                );
-                if(!is_string($paramUrl['username']) || !is_string($paramUrl['username'])){
-                	    $this->error( "用户名必须为字符串" );
-                        return false ;
-                }
-                $lead = new LeadIn( $options );
-                //采集站点日志
-                $result = $lead->get_source_data( $this->mid );
-                if( false === $result ) {
-                        $this->error( "此格式博客URL暂不支持，请检查链接" );
-                        return false ;
-                }
-
-                //调用私有方法处理得到已经采集到但未导入的日志
-                $importBlog = $this->_getImportData( $result );
-                $category   = $this->blog->getCategory( $this->mid );
-
-
-
-                //显示数据，供用户选择
-                $this->assign( "importBlog",$importBlog );
-                $this->assign( "category",$category );
-
-                $this->display();
-
-        }
-
-
-        /**
-         * doUpdateImport
-         * 更新日志列表
-         * @access public
-         * @return void
-         */
-        public function doUpdateImport() {
-                $sourceId = $_POST['id'];
-
-                //根据源id获得服务名和用户名
-                $map['id']                          = $sourceId[0];
-                count( $sourceId ) >1 && $map['id'] = array('in',implode(",",$sourceId));
-                $source_data                        = D( 'BlogSource' )->getSource( $map );
-                //根据结果集进行更新采集
-                Import( '@.Unit.LeadIn' );
-                $leadIn = new LeadIn();
-
-                $result = $leadIn->update_data( $source_data );
-
-                //调用私有方法处理得到已经采集到但未导入的日志
-                $importBlog = array();
-                if( count( $sourceId ) >1 ) {
-                        foreach ( $result as $value ) {
-                                $temp = $this->_getImportData( $value );
-                                if( empty($temp) ) {
-                                        continue;
-                                }
-                                $importBlog = array_merge($importBlog,$temp);
-                        }
-                }else {
-                        $importBlog = $this->_getImportData( $result );
-                }
-                $category   = $this->blog->getCategory( $this->mid );
-
-
-                //显示数据，供用户选择
-                $this->assign( "importBlog",$importBlog );
-                $this->assign( "category",$category );
-
-                $this->display('importList');
-        }
-
-        /**
-         * doDeleteSubscribe
-         * 删除订阅源
-         * @access public
-         * @return void
-         */
-        public function doDeleteSubscribe() {
-                Import( '@.Unit.LeadIn' );
-
-                $sourceId = array_filter( explode( ',' , $_POST['sourceId'] ) );
-
-                if( empty($sourceId) ) {
-                        echo -1;
-                        exit;
-                }
-                $leadIn = new LeadIn();
-                if( $leadIn->deleSubscribe( $sourceId,$this->mid ) ) {
-                        echo 1;
-                        exit;
-                }
-
-        }
-        /**
-         * doImport
-         * 执行导入日志到本地日志数据库
-         * @access public
-         * @return void
-         */
-        public function doImport() {
-                $id        = $_POST['id'];
-                //从item取出数据信息
-
-                $map['id'] = array( 'in',$id );
-                $blog      = D( 'BlogItem' )->getItem( $map,'*' );
-                unset( $map );
-                foreach( $id as $key=>$value ) {
-                        $map['title']    = $blog[$key]['title'];
-                        $map['cTime']    = $blog[$key]['pubdate'];
-                        $map['type']     = $blog[$key]['sourceId'];
-                        $map['uid']      = $this->mid;
-                        $name            = $this->blog->getOneName( $this->mid );
-                        $map['content']  = $blog[$key]['summary'];
-                        $map['name']     = $name['name'];
-                        $map['category'] = $_POST["class_".$value];
-                        $map['private']  = $_POST["privacy_".$value];
-                        $result[$value] = $this->blog->doAddBlog( $map,false );
-                        $feedTitle[] = $result[$value]['title'];
-                        $result[$value] = $result[$value]['appid'];
-                }
-                //发送动态
-                $title['count'] = count($feedTitle);
-                $feedTitle = array_slice($feedTitle,0,3);
-                $body['title'] = implode('<br />', $feedTitle);
-                $title['uid'] = $this->mid;
-
-                $this->blog->doFeed("blog_import",$title,$body);
-                if( !empty( $result ) ) {
-                //删除已删除的
-                        D( 'BlogItem' )->deleteImportBlog( $result );
-                        $this->redirect( 'my','Index' );
-                }
-
-        }
-
-        /**
          * admin
          * 个人管理页面
          * @access public
@@ -883,6 +712,7 @@ class IndexAction extends Action {
                 $this->display();
 
         }
+
         /**
          * addCategory
          * 添加分类
@@ -892,6 +722,7 @@ class IndexAction extends Action {
         public function addCategory() {
                 $data['name'] = h(t($_POST['name']));
                 $data['uid']  = $this->mid;
+                $data['name'] = keyWordFilter(h(t($_POST['name'])));
 
                 $category   = D( 'BlogCategory' );
                 $result = $category->addCategory($data,$this->blog);
@@ -901,6 +732,21 @@ class IndexAction extends Action {
                 $this->display();
         }
 
+        //检测分类名是否存在
+        public function isCategoryExist() {
+            $name = t($_POST['name']);
+            $list = M("BlogCategory")->where(array('name'=>$name,'uid'=>$this->mid))->getField("name");
+            if($list){
+                echo 1;//已存在
+            }else{
+                echo 0;
+            }
+        }
+
+        public function filterCategory() {
+            $category = t($_POST['name']);
+            echo keyWordFilter($category);
+        }
 
         /**
          * editCategory
@@ -943,7 +789,7 @@ class IndexAction extends Action {
                 $action        = $_POST['act'];
 
                 //添加推荐和推荐人数据。并且更新日志的推荐数
-                if( $result = D( 'BlogMention' )->addRecommendUser( $map,$action ) ) {
+                if( $result = D( 'Blog' )->addRecommendUser( $map,$action ) ) {
                         echo 1;
                 }else {
                         echo -1;
@@ -963,6 +809,7 @@ class IndexAction extends Action {
                 $this->api->comment_notify('blog',$data,$this->appId);
                 echo $count;
         }
+
         /**
          * TODO 删除
          */
@@ -977,15 +824,16 @@ class IndexAction extends Action {
                 $result['title_body']['comment'] = $data->comment;
                 $result['title_data']['title'] = sprintf("<a href='%s'>%s</a>",$result['url'],$need['title']);
                 $result['title_data']['type']  = "日志";
-                if(empty($data->toUid) && $this->mid != $need['uid'] && $data->quietly == 0){
-                    $title['title'] = $result['title_data']['title'];
-                    $uid = $result["uids"];
-                    $title['user'] = '<a href="__TS__/space/'.$uid.'">'.getUserName($uid)."</a>";
-                    $body['comment'] = $data->comment;
-                    $this->blog->doFeed('blog_comment',$title,$body);
-                }
+                // if(empty($data->toUid) && $this->mid != $need['uid'] && $data->quietly == 0){
+                //     $title['title'] = $result['title_data']['title'];
+                //     $uid = $result["uids"];
+                //     $title['user'] = '<a href="__TS__/space/'.$uid.'">'.getUserName($uid)."</a>";
+                //     $body['comment'] = $data->comment;
+                //     $this->blog->doFeed('blog_comment',$title,$body);
+                // }
                 return $result;
         }
+
         /**
          * TODO 删除
          */
@@ -993,6 +841,7 @@ class IndexAction extends Action {
                 $id = $_POST['id'];
                 echo $this->__setBlogCount($id);;
         }
+
         /**
          * TODO 删除
          */
@@ -1029,12 +878,6 @@ class IndexAction extends Action {
         	//将数字或者数字型字符串转换成整型
                 is_numeric( $uid ) && $uid = intval( $uid );
 
-                //获取被提到的好友数据列表
-                if( isset( $_GET['mention'] ) ) {
-                        $this->assign( "mention",1 );
-                        return $this->blog->getMentionBlog($uid);
-                }
-
                 //归档
                 if( isset( $_GET['date'] ) ) {
                         return $this->fileAway( $uid,$_GET['cateId'] );
@@ -1048,7 +891,17 @@ class IndexAction extends Action {
 
                 //给blog对象的uid属性赋值
                 if( isset( $uid ) ) {
-                        $map['uid']   = $uid;
+                	$map['uid']   = $uid;
+                    if ($uid != $this->mid) {
+                    	$relationship	=	getFollowState($uid,$this->mid);
+						if($relationship=='eachfollow'||$relationship=='havefollow'){
+							$map['private']	= array('in',array(0,2));
+						// } else if (model('Friend')->identifyFriend($this->uid, $this->mid) == FriendModel::ARE_FRIENDS) {
+						// 	$map['private']	= array('in',array(0,5));
+						}else{
+							$map['private']	= 0;
+						}
+                    }
                 }else {
                         $gid     = $_GET['gid'];
                        // $friends = $this->api->friend_getGroupUids($gid);
@@ -1079,96 +932,6 @@ class IndexAction extends Action {
                 $map['APP']       = __APP__;
                 return $map;
         }
-
-        /**
-         * _paramUrl
-         * 解析导入的路径
-         * @param mixed $url
-         * @access private
-         * @return void
-         */
-        private function _paramUrl( $url ) {
-        //判断合法性
-                if ( false == preg_match("/^http:\/\/[A-Za-z0-9]+\.[A-Za-z0-9]+[\/=\?%\-&_~`@[\]\':+!]*([^<>\"])*$/", $url)) {
-                        $this->error( "不是合法的URL格式" );
-                        return false;
-                }
-                $result = array( 'service'=>'','username'=>'' );
-                $url      = str_replace( 'http://','',$url );
-                $urlarray = explode( '/',$url );
-                $target   = array( '163','baidu','spaces','sohu','sina','msn' );
-                foreach( $target as $value ) {
-                        if( strpos( $urlarray[0],$value ) ) {
-                                switch( $value ) {
-                                        case '163':
-                                                $result['service'] = '163';
-                                                $temp = explode( '.',$urlarray[0] );
-                                                $result['username'] = $temp[0];
-                                                break;
-                                        case 'baidu':
-                                                $result['service'] = 'baidu';
-                                                $result['username'] = $urlarray[1];
-                                                break;
-                                        case 'sohu':
-                                                $result['service'] = 'sohu';
-                                                $temp = explode( '.',$urlarray[0] );
-                                                $result['username'] = $temp[0];
-                                                break;
-                                        case 'sina':
-                                                $result['service'] = 'sina';
-                                                $result['username'] = isset( $urlarray[2] )?$urlarray[2]:$urlarray[1];
-                                                break;
-                                        case 'msn':
-                                                $result['service'] = 'msn';
-                                                $result['username'] = $urlarray[1];
-                                                break;
-                                        case 'spaces':
-                                                $result['service'] = 'msn';
-                                                $temp = explode( '.',$urlarray[0] );
-                                                $result['username'] = $temp[0];
-                                                break;
-                                        default:
-                                                $this->assign( '错误的URL' );
-                                                return false;
-                                //throw new ThinkException( "错误的url" );
-                                }
-                        }
-                }
-                //检测格式。过滤掉特殊格式。防止解析出错
-                if( strpos( '.', $result['username'] ) ) {
-                        return false;
-                }elseif( strpos( '/',$result['username'] ) ) {
-                        return false;
-                }
-                return $result;
-        }
-
-        /**
-         * _getImportData
-         * 获得引入日志的数据
-         * @param mixed $result
-         * @access private
-         * @return void
-         */
-        private function _getImportData( $result ) {
-                if( !empty( $result['change_ids'] ) ) {
-                        $map = "`id` IN ( ".implode( ",",$result['change_ids'] )." )";
-                }
-
-                if( !empty( $result['change_ids'] ) && !empty( $result['source_id'] ) ) {
-                        $map .= " OR ";
-                }
-
-                if( !empty( $result['source_id'] ) ) {
-                        $map .= '(`sourceId` = '.$result['source_id']." AND `boot` = 0)";
-                }
-
-                $item = D( 'BlogItem' );
-                $importBlog = $item->getItem( $map,'id,link,title' );
-                return $importBlog;
-        }
-
-
 
         /**
          * _checkCategory

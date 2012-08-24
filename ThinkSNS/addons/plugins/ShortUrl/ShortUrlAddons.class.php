@@ -52,6 +52,14 @@ class ShortUrlAddons extends SimpleAddons
 			return ;
 		}
 
+		//使用网易126.am短网址
+		if($data['shorturlapi']=='netease'){
+			include_once(dirname(__FILE__).'/hooks/NeteaseShortUrlHooks.class.php');
+			$shorten = new NeteaseShortUrlHooks;
+			(false != $short = $shorten->getShortUrl($param['url'],$data['neteasekey'])) && $param['url'] = $short;
+			return ;
+		}
+
 		//使用本地短网址
 		if($data['shorturlapi']=='local'){
 			include_once(dirname(__FILE__).'/hooks/LocalShortUrlHooks.class.php');

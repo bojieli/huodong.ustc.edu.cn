@@ -35,7 +35,7 @@ function searchObject() {
         isSearchHidden = 0;
     }else {
         $("#searchObject_div").slideUp("fast");
-        $(".searchObject_action").html("搜索用户");
+        $(".searchObject_action").html("搜索活动");
         isSearchHidden = 1;
     }
 }
@@ -46,7 +46,9 @@ ctrl.prototype = {
     del:function(id){
         var id = id ? id : getChecked();
         id = id.toString();
-        if(id=='' || id==0) return ;
+        if(id=='' || id==0){
+        	alert('请选择要删除的活动！');return false;
+        }
         if( confirm("是否删除{$ts['app']['app_alias']}？") ){
           $.post( '__URL__&act=doDeleteEvent',{id:id},function(text ){
               if( text == 1 ){
@@ -67,7 +69,9 @@ ctrl.prototype = {
     transfer:function(id){
       var id = id ? id : getChecked();
       id = id.toString();
-      if(id=='' || id==0) return ;
+      if(id=='' || id==0){
+      	alert('请选择要转移的活动！');return false;
+      }
       ui.box.load('__URL__&act=transferEventTab&id='+id,{title:'活动分类转移'});
     },
     edit:function(id,act){
@@ -95,6 +99,7 @@ ctrl.prototype = {
 }
 var c = null;
 </script>
+<script  type="text/javascript" src="__PUBLIC__/js/rcalendar.js" ></script>
 <div class="so_main">
   <include file="_tab" />
 
@@ -135,12 +140,12 @@ var c = null;
         </dl>
         <dl class="lineD">
           <dt>发表时间：</dt>
-          <dd>
-                                 开始时间：<input name="sTime" class="txt" value="{$sTime}"/>
-            <br />
-                                结束时间：<input name="eTime" class="txt" value="{$eTime}"/>
-            <br />
-            <span>根据发表时间(格式YYMMDD),支持YYMM月份搜索,例：2009年5月1号请输入:20090501.2009年5月:200905</span>
+           <dd>
+           <div class="c2">
+			<input name="sTime" type="text" class="text" id="sTime" onfocus="this.className='text2';rcalendar(this,'full');" onblur="this.className='text'" readonly />-
+			<input name="eTime" type="text" class="text" id="eTime" onfocus="this.className='text2';rcalendar(this,'full');" onblur="this.className='text'" readonly />
+            </div>
+          <div class="c"></div>
           </dd>
         </dl>
         <dl>
@@ -186,7 +191,7 @@ var c = null;
             </th>
             <th>ID</th>
             <th>{$ts['app']['app_alias']}标题</th>
-            <th>组织者</th>
+            <th>发起者</th>
             <th>参与/关注</th>
             <th>城市</th>
             <th>发起时间</th>

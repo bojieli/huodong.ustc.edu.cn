@@ -17955,7 +17955,7 @@ KISSY.Editor.add("smiley/support", function() {
         DOM = S.DOM;
 
     DOM.addStyleSheet('.ke-smiley-sprite {'
-        + ' background: url("http://a.tbcdn.cn/sys/wangwang/smiley/sprite.png") no-repeat scroll -1px 0 transparent;'
+        + ' background: url("' + _PUBLIC_ + '/js/editor/editor/plugins/smiley/sprite.png") no-repeat scroll -1px 0 transparent;'
         + ' height: 235px;'
         + ' width: 288px;'
         + ' margin: 5px;'
@@ -17980,7 +17980,7 @@ KISSY.Editor.add("smiley/support", function() {
         smiley_markup = "<div class='ke-smiley-sprite'>";
         for (var i = 0; i <= 98; i++) {
             smiley_markup += "<a href='#' " +
-                "data-icon='http://a.tbcdn.cn/sys/wangwang/smiley/48x48/" + i + ".gif'>" +
+                "data-icon='" + _PUBLIC_ + "/js/editor/editor/plugins/smiley/48x48/" + i + ".gif'>" +
                 "</a>"
         }
         smiley_markup += "</div>";

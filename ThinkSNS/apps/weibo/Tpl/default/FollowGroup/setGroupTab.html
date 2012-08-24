@@ -1,6 +1,6 @@
 <dl id="createFollowGroup2" class="pop_add_group">
 	<dt>
-        <if condition="$gid">修改分组：<else />创建分组：</if><input type="text" name="followGroupTitle" value="{$title}" class="text" style="width:280px;" />
+        <if condition="$gid">修改分组：<else />创建分组：</if><input type="text" maxlength="8" name="followGroupTitle" value="{$title}" class="text" style="width:280px;" />
     </dt>
 	<dd>
         <input type="button" onclick="createFollowGroup()" class="btn_b" value="确定" />
@@ -12,10 +12,10 @@ function createFollowGroup(title){
 	var title = $("input[name='followGroupTitle']").val();
 	title = $.trim(title);
 	if(title == ''){
-		ui.error('请输入分组标题！');
+		alert('请输入分组标题！');
 		return false;
 	}else if(title.length>8){
-		ui.error('分组标题字数不能超过8个字符');
+		alert('分组标题字数不能超过8个字符');
 		return false;
 	}
 	<if condition="$gid">

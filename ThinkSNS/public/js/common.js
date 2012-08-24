@@ -29,6 +29,7 @@
 
 //字符串长度-中文和全角符号为1，英文、数字和半角为0.5
 var getLength = function(str, shortUrl) {
+	str = str + '';
 	if (true == shortUrl) {
 		// 一个URL当作十个字长度计算
 		return Math.ceil(str.replace(/((news|telnet|nttp|file|http|ftp|https):\/\/){1}(([-A-Za-z0-9]+(\.[-A-Za-z0-9]+)*(\.[-A-Za-z]{2,5}))|([0-9]{1,3}(\.[0-9]{1,3}){3}))(:[0-9]*)?(\/[-A-Za-z0-9_\$\.\+\!\*\(\),;:@&=\?\/~\#\%]*)*/ig, 'xxxxxxxxxxxxxxxxxxxx')
@@ -136,38 +137,57 @@ function async_form(form)
 
 // 复制剪贴板
 function copy_clip(copy){
-	if (window.clipboardData) {
-		 window.clipboardData.setData("Text", copy);
-	 } else if (window.netscape) {
-		  try {
-			   netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-		  } catch (e) {
-			   alert("你的浏览器不支持脚本复制或你拒绝了浏览器安全确认，请尝试手动[Ctrl+C]复制。");
-			   return false;
-		  }
-		  var clip = Components.classes['@mozilla.org/widget/clipboard;1'].createInstance(Components.interfaces.nsIClipboard);
-		  if (!clip) {
-			  return false;
-		  }
-		  var trans = Components.classes['@mozilla.org/widget/transferable;1'].createInstance(Components.interfaces.nsITransferable);
-		  if (!trans) {
-			  return false;
-		  }
-		  trans.addDataFlavor('text/unicode');
-		  var str = new Object();
-		  var len = new Object();
-		  var str = Components.classes["@mozilla.org/supports-string;1"].createInstance(Components.interfaces.nsISupportsString);
-		  var copytext = copy;
-		  str.data = copytext;
-		  trans.setTransferData("text/unicode",str,copytext.length*2);
-		  var clipid = Components.interfaces.nsIClipboard;
-		  if (!clip) {
-			  return false;
-		  }
-		  clip.setData(trans,null,clipid.kGlobalClipboard);
-	 }
-	 ui.success("复制成功！请Ctrl+V键粘贴到要加入的页面。");
-	 return true;	 
+	var copy_clip = function(g){
+		if(window.clipboardData&&(jQuery.browser.msie && jQuery.browser.version < 7)){
+			window.clipboardData.clearData();
+			window.clipboardData.setData("Text",g);
+			return true;
+		}else{
+			if(jQuery.browser.msie){
+				try{
+					window.clipboardData.clearData();
+					window.clipboardData.setData("Text",g);
+					return true;
+				}catch(l){
+					return false;
+				}
+			}else{
+				try{
+					netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+					var d=Components.classes["@mozilla.org/widget/clipboard;1"].createInstance(Components.interfaces.nsIClipboard);
+					if(!d){
+						return
+					}
+					var n=Components.classes["@mozilla.org/widget/transferable;1"].createInstance(Components.interfaces.nsITransferable);
+					if(!n){
+						return
+					}
+					n.addDataFlavor("text/unicode");
+					var m={};
+					var k={};
+					m=Components.classes["@mozilla.org/supports-string;1"].createInstance(Components.interfaces.nsISupportsString);
+					var b=g;
+					m.data=b;
+					n.setTransferData("text/unicode",m,b.length*2);
+					var a=Components.interfaces.nsIClipboard;
+					if(!d){
+						return false
+					}
+					d.setData(n,null,a.kGlobalClipboard);
+					return true
+				}catch(l){
+					return false
+				}
+			}
+		}
+	}
+	if ( copy_clip( copy ) ) {
+		ui.success( "复制成功！请Ctrl+V键粘贴到要加入的页面。" );
+		return true;
+	} else {
+		ui.error("你的浏览器不支持脚本复制或你拒绝了浏览器安全确认，请尝试手动[Ctrl+C]复制。");
+		return false;
+	}
 }
 
 //举报
@@ -190,6 +210,9 @@ function dofollow(type,target,uid){
 	var html = '';
 	$('#follow_state').html( '<img src="'+ _THEME_+'/images/icon_waiting.gif" width="15">' );
 	$.post( U('weibo/Operate/follow') ,{uid:uid,type:type},function(txt){
+		if(txt=='14'){
+			ui.error('关注人数已超过设置最大数量，关注失败！');
+		}
 		if(txt=='12'){
 			html = followState('havefollow');
 			followGroupSelectorBox(uid);
@@ -283,8 +306,10 @@ function addFollowTopic(){
 		if(txt.code=='12'){
 			$("input[name='quick_name']").val('');
 			$('.quick_win').hide();
-			var html = '<li onmouseover="$(this).find(\'.del\').show()" onmouseout="$(this).find(\'.del\').hide()"><a class="del right" title="删除" href="javascript:void(0)" onclick="deleteFollowTopic(this,\''+txt.topicId+'\')"></a><a href="'+U('home/user/search',['k='+txt.name])+'">'+txt.name+'</a></li>';
-			$("ul[rel='followTopicArea']").append(html);	
+			ui.success("添加关注话题成功");
+			window.location.reload(true);
+			//var html = '<li onmouseover="$(this).find(\'.del\').show()" onmouseout="$(this).find(\'.del\').hide()"><a class="del right" title="删除" href="javascript:void(0)" onclick="deleteFollowTopic(this,\''+txt.topicId+'\')"></a><a href="'+U('home/user/search',['k='+txt.name])+'">'+txt.name+'</a></li>';
+			//$("ul[rel='followTopicArea']").append(html);
 		}else if(txt.code=='11'){
 			alert('已关注过此话题');
 		}else{
@@ -304,7 +329,7 @@ function deleteFollowTopic(o,key){
 ui = window.ui ||{
 	success:function(message,error){
 		var style = (error==1)?"html_clew_box clew_error ":"html_clew_box";
-		var html   =   '<div class="" id="ui_messageBox" style="display:none">'
+		var html   =   '<div class="" id="ui_messageBox" style="display:none;z-index:1000001">'
 					   + '<div class="html_clew_box_close"><a href="javascript:void(0)" onclick="$(this).parents(\'.html_clew_box\').hide()" title="关闭">关闭</a></div>'
 					   + '<div class="html_clew_box_con" id="ui_messageContent">&nbsp;</div></div>';
 		var init      =  0;
@@ -322,9 +347,9 @@ ui = window.ui ||{
 			
 			var v =  ui.box._viewport() ;
 			
-			jQuery('<div class="boxy-modal-blackout"></div>')
+			jQuery('<div id="boxy-modal-blackout" class="boxy-modal-blackout"><iframe style="position:absolute;_filter:alpha(opacity=0);opacity=0;z-index:-1;width:100%;height:100%;top:0;left:0;scrolling:no;" frameborder="0" src="about:blank"></iframe></div>')
 	        .css(jQuery.extend(ui.box._cssForOverlay(), {
-	            zIndex: 9999, opacity: 0.2
+	            zIndex: 9999999, opacity: 0.2
 	        })).appendTo(document.body);
 			
 			
@@ -412,11 +437,14 @@ ui = window.ui ||{
 		var $talkPop = $('div.talkPop');
 		var $body = $('body');
 		var $o = $(o);
+		if($talkPop.html() !== null) {
+			$('#emotions').remove();
+		}
 		if (1 != $talkPop.data('type')) {
 			$talkPop.hide();
 		}
 		this.emotdata = $body.data("emotdata");
-		this.html = '<div class="talkPop alL" id="emotions" style="*padding-top:20px;">'
+		this.html = '<div class="talkPop alL" id="emotions">'
 				 + '<div style="position: relative; height: 7px; line-height: 3px;z-index:99">'
 				 + '<img src="' + _THEME_ + '/images/zw_img.gif" style="margin-left: 10px; position: absolute;" class="talkPop_arrow"></div>'
 				 + '<div class="talkPop_box">'
@@ -447,11 +475,11 @@ ui = window.ui ||{
 			$('#emot_content').html(content);
 		};
 		
-		$body.live('click',function(event){
-			if( $(event.target).attr('target_set')!=target_set ){
-				$('#emotions').remove();
-			}
-		})
+		// $body.live('click',function(event){
+		// 	if( $(event.target).attr('target_set')!=target_set ){
+		// 		$('#emotions').remove();
+		// 	}
+		// })
 	},
 	
 	emotions_c:function(emot,target){
@@ -475,7 +503,7 @@ ui = window.ui ||{
                              appmessage:{url:U('home/message/appmessage'),name:"系统消息"}
                              };
 		    messageList.html("");
-			if(txt.total!="0"){
+			if(txt.total && txt.total!="0"){
 			   
 			    for(var one in list){
 			        if(txt[one] != undefined && parseInt(txt[one]) >0){
@@ -538,7 +566,8 @@ ui = window.ui ||{
 	},
 	getarea:function(prefix,init_style,init_p,init_c){
 		var style = (init_style)?'class="'+init_style+'"':'';
-		var html = '<select name="'+prefix+'_province" '+style+'><option>省/直辖市</option></select> <select name="'+prefix+'_city" '+style+'><option value=0>不限</option></select>';
+		var html = '<select name="'+prefix+'_province" '+style+'><option>省/直辖市</option></select> '+
+				'<select name="'+prefix+'_city" '+style+' style="width:180px"><option value=0>不限</option></select>';
 		document.write(html);
 		// _PUBLIC_+'/js/area.js'
 		$.getJSON(U('home/Public/getArea'), function(json){
@@ -851,7 +880,7 @@ var config = {
 		positionHTML:'<span id="autoUserTipsPosition">&nbsp;123</span>',
 		className:'autoSelected'
 	};
-//var html = '<div id="autoTalkBox" style="text-align:left;z-index:-2000;top:$top$px;left:$left$px;width:$width$px;height:$height$px;z-index:1;position:absolute;scroll-top:$SCTOP$px;overflow:hidden;overflow-y:auto;visibility:hidden;word-break:break-all;word-wrap:break-word;"><span id="autoTalkText" style="font-size:14px;margin:0;"></span></div><div id="recipientsTips" class="recipients-tips"><div style="font-size:12px;text-align:left;font-weight: bold;padding:2px;">格式：@+W3账号、姓名</div><ul id="autoTipsUserList"></ul></div>';
+//var html = '<div id="autoTalkBox" style="text-align:left;z-index:-2000;top:$top$px;left:$left$px;width:$width$px;height:$height$px;z-index:1;position:absolute;scroll-top:$SCTOP$px;overflow:hidden;overflow-y:auto;visibility:hidden;word-break:break-all;word-wrap:break-word;"><span id="autoTalkText" style="font-size:14px;margin:0;"></span></div><div id="recipientsTips" class="recipients-tips"><div style="font-size:12px;text-align:left;font-weight: bold;padding:2px;">格式：@+W3帐号、姓名</div><ul id="autoTipsUserList"></ul></div>';
 //var listHTML = '<li style="text-align:left"><a title="$ACCOUNT$" rel="$ID$" >$NAME$(@$SACCOUNT$)</a></li>';
 var html = '<div id="autoTalkBox" style="text-align:left;z-index:-2000;top:$top$px;left:$left$px;width:$width$px;height:$height$px;z-index:1;position:absolute;scroll-top:$SCTOP$px;overflow:hidden;overflow-y:auto;visibility:hidden;word-break:break-all;word-wrap:break-word;"><span id="autoTalkText" style="font-size:14px;margin:0;"></span></div><div id="recipientsTips" class="recipients-tips"><h4>格式：@用户昵称</h4><ul id="autoTipsUserList"></ul></div>';
 var listHTML = '<li style="text-align:left"><a rel="$ID$" >@$SACCOUNT$</a></li>';
@@ -1033,7 +1062,7 @@ var selectList = {
 	},
 	setSelected:function(ind){
 		if(selectList.index >= 0) selectList.list[selectList.index].className = '';
-		selectList.list[ind].className = config.className;
+		if(selectList.list[ind]) selectList.list[ind].className = config.className;
 		selectList.index = ind;
 		return false;
 	}
@@ -1204,3 +1233,114 @@ window.userAutoTips = function(args){
 			a.bind();
 	}
 })()
+
+//更换注册码
+function changeverify(){
+    var date = new Date();
+    var ttime = date.getTime();
+    var url = _PUBLIC_+"/captcha.php";
+    $('#verifyimg').attr('src',url+'?'+ttime);
+}
+
+/* 图片切换 */
+(function(){
+
+var fSwitchPic = function( oPicSection, nInterval ) {
+	try {
+		this.dPicSection = "string" === typeof oPicSection ? document.getElementById( oPicSection ) : oPicSection;
+		this.nInterval = nInterval > 0 ? nInterval : 2000;
+
+		this.dPicList  = this.dPicSection.getElementsByTagName( "div" );
+		this.nPicNum   = this.dPicList.length;
+	} catch( e ) {
+		return e;
+	}
+
+	this.nCurrentPic = this.nPicNum - 1;
+	this.nNextPic = 0;
+	this.fInitPicList();
+
+	this.dPicNav = this.dPicSection.getElementsByTagName( "ul" )[0];
+	this.fInitPicNav();
+
+	clearTimeout( this.oTimer );
+	this.fSwitch();
+	this.fStart();
+};
+
+fSwitchPic.prototype = {
+	constructor: fSwitchPic,
+	fInitPicList: function() {
+		var oSwitchPic = this;
+		this.dPicSection.onmouseover = function() {
+			oSwitchPic.fPause();
+		};
+		this.dPicSection.onmouseout  = function() {
+			oSwitchPic.fGoon();
+		};
+	},
+	fInitPicNav: function() {
+		var oSwitchPic = this,
+			sPicNav = '',
+			nPicNum = this.nPicNum;
+
+		for ( var i = 0; i < nPicNum; i ++ ) {
+			sPicNav += '<li style="list-style-type:none;"><a href="javascript:;" target="_self">' + ( i + 1 ) + '</a></li>';
+		}
+		this.dPicNav.innerHTML = sPicNav;
+
+		// 追加属性和Event
+		var dPicNavMenu = this.dPicNav.getElementsByTagName( "a" ),
+		    nL = dPicNavMenu.length;
+
+		while ( nL -- > 0 ) {
+			dPicNavMenu[nL].nIndex = nL;
+			dPicNavMenu[nL].onclick     = function() {
+				oSwitchPic.fGoto( this.nIndex );
+				return false;
+			};
+		}
+		this.dPicNavMenu = dPicNavMenu;
+	},
+	fSwitch: function() {
+		var nCurrentPic = this.nCurrentPic,
+			nNextPic    = this.nNextPic;
+
+		this.dPicList[nNextPic].style.display = "";
+		this.dPicList[nCurrentPic].style.display = "none";
+
+		this.dPicNavMenu[nNextPic].className = "sel";
+		this.dPicNavMenu[nCurrentPic].className = "";
+
+		this.nCurrentPic = nNextPic;
+		this.nNextPic = ( nNextPic < this.nPicNum - 1 ) ? ( nNextPic + 1 ) : 0;
+	},
+	fStart: function() {
+		var oSwitchPic = this;
+		this.oTimer = setTimeout( function() {
+			oSwitchPic.fSwitch();
+			oSwitchPic.fStart();
+		}, this.nInterval );
+	},
+	fPause: function() {
+		clearTimeout( this.oTimer );
+	},
+	fGoon: function() {
+		clearTimeout( this.oTimer );
+		this.fStart();
+	},
+	fGoto: function( nIndex ) {
+		var nIndex = parseInt( nIndex );
+		if ( nIndex == this.nCurrentPic ) {
+			return false;
+		}
+
+		clearTimeout( this.oTimer );
+		this.nNextPic = nIndex;
+		this.fSwitch();
+	}
+};
+
+window.fSwitchPic = fSwitchPic;
+
+})();

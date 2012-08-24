@@ -3,10 +3,20 @@ class OperateAction extends Action{
 
     //发布
     function publish(){
+		if(isSubmitLocked()){
+			die('submitlocked');
+		} else if (isDuplicateContent(trim($_POST['content'] . $_POST['publish_type_data']))) {
+            if (0 == $_POST['publish_type']) {
+                die('duplicatecontent');
+            }
+        }
 		$pWeibo = D('Weibo');
 		$data['content'] =  $_POST['content'];
 		$id = $pWeibo ->publish( $this->mid , $data, 0 ,intval( $_POST['publish_type']) , $_POST['publish_type_data']);
 		if( $id ){
+			//锁定发布
+			lockSubmit();
+
         	//发布成功后，检测后台是否开启了自动举报功能
         	$weibo_option = model('Xdata')->lget('weibo');
         	if( $weibo_option['openAutoDenounce'] ){
@@ -31,13 +41,22 @@ class OperateAction extends Action{
     function transpond(){
     	$pWeibo = D('Weibo');
     	if($_POST){
+			if(isSubmitLocked()){
+				die('submitlocked');
+			} else if (isDuplicateContent(trim($_POST['content']))) {
+                die('duplicatecontent');
+            }
 	        $post['content']         = $_POST['content'];
 	        $post['transpond_id']    = intval( $_POST['transpond_id'] );
 	        $post['reply_weibo_id']  = $_POST['reply_weibo_id'];
 	        if( $id = $pWeibo->transpond($this->mid,$post) ){
+				//锁定发布
+				lockSubmit();
+
 	        	$data = $pWeibo->getOneLocation($id);
 				X('Credit')->setUserCredit($this->mid,'forward_weibo')
 						   ->setUserCredit($data['expend']['uid'],'forwarded_weibo');
+
         		$this->assign('data',$data);
         		$this->display('publish');
 	        }
@@ -57,12 +76,23 @@ class OperateAction extends Action{
 
     //添加评论
     function addcomment(){
+        $_POST['comment_content'] = preg_replace('/^\s+|\s+$/', '', $_POST['comment_content']);
+		if(isSubmitLocked()){
+			die('submitlocked');
+		} else if (!$_POST['comment_content']) {
+            die('emptycontent');
+        } else if (isDuplicateContent($_POST['comment_content'])) {
+            die('duplicatecontent');
+        }
     	$post['reply_comment_id'] = intval( $_POST['reply_comment_id'] );   //回复 评论的ID
     	$post['weibo_id']         = intval( $_POST['weibo_id'] );           //回复 微博的ID
     	$post['content']          = html_entity_decode(h(t($_POST['comment_content'])));         //回复内容
     	$post['transpond']        = intval($_POST['transpond']);            //是否同是发布一条微博
+		$post['comment_ip'] = get_client_ip();
     	$result = D('Comment')->doaddcomment($this->mid, $post);
     	if($result){
+			//锁定发布
+			lockSubmit();
     	    echo $result;
     	}else{
             $this->error("评论失败");
@@ -115,9 +145,16 @@ class OperateAction extends Action{
 
     //关注人
     function follow(){
-    	if($_POST['type']=='dofollow'){
+        if($_POST['type']=='dofollow'){
+            $uid = $this->mid;
+            $data = D('Follow', 'weibo')->where('uid ='.$uid)->findAll();
+            $count = count($data);
+            if($count >= $GLOBALS['max_following']){
+            echo '14';
+            }else{
     		echo D('Follow')->dofollow( $this->mid,intval($_POST['uid']) );
-    	}else{
+            }
+        }else{
     		echo D('Follow')->unfollow( $this->mid,intval($_POST['uid']) );
     	}
     }

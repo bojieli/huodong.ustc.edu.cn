@@ -1,7 +1,7 @@
 <include file="__THEME__/header" />
 <link href="../Public/css/space.css" rel="stylesheet" type="text/css" />
 <script type="text/javascript" src="__PUBLIC__/js/jquery.form.js"></script>
-<script type="text/javascript" src="{:U('weibo/plugins/init')}"></script>
+<!--<script type="text/javascript" src="{:U('weibo/plugins/init')}"></script>-->
 <script type="text/javascript" src="__PUBLIC__/js/weibo.js"></script>
 <style>
 .autoimage{
@@ -36,6 +36,31 @@
                     	<php>if($vo['value']){</php></php><dd><div class="c1">{$vo.name}:</div><div class="c2">{$vo.value}</div></dd><php>}</php>
 					</volist>
                 </dl>
+                <php>if($userInfo['profile'] && $userInfo['profile']['list']){</php>
+                <dl class="lineD_top">
+                  <dt>教育、工作情况</dt>
+                  <volist id="vo" name="userInfo.profile.list"></php>
+                      <dd>
+                          <switch name="vo['module']">
+                              <case value="education">
+                                  <div class="projectlist">
+                                      <h3>
+                                      [教育]&nbsp;&nbsp;<a target="_blank">{$vo.school}</a>
+                                      </h3><p>{$vo.year}入学 - {$vo.classes}</p>
+                                  </div>
+                              </case>
+                              <case value="career">
+                                  <div class="projectlist">
+                                      <h3>
+                                      [公司/机构]&nbsp;&nbsp;<a target="_blank">{$vo.company}</a>
+                                      </h3><p>{$vo.begintime} 至 {$vo.endtime}<br>{$vo.position}</p>
+                                  </div>
+                              </case>
+                          </switch>
+                      </dd>
+                  </volist>
+                </dl>
+                <php>}</php>
             </div>
           </div>
           <div class="c"></div>

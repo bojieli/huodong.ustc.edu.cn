@@ -1,12 +1,16 @@
 <?php
-include_once( '_OAuth/oauth.php');
-include_once('_OAuth/WeiboOAuth.php');
+include_once('_OAuth/oauth.php');
 include_once( 'sina/weibooauth.php' );
 class sina{
 
 	var $loginUrl;
 	private $_sina_akey;
 	private $_sina_skey;
+	var $error_code;
+
+	function getError(){
+		return $this->error_code;
+	}
 
 	public function __construct() {
 		$this->_sina_akey = SINA_WB_AKEY;
@@ -66,14 +70,18 @@ class sina{
         $_SESSION['open_platform_type'] = 'sina';
 	}
 
-	//发布一条微博
+	//发布一条微博 - 可以发图片微博
 	function update($text,$opt){
 		return $this->doClient($opt)->update($text);
 	}
 
 	//上传一个照片，并发布一条微博
-	function upload($text,$pic,$opt){
-		return $this->doClient($opt)->upload($text,$pic);
+	function upload($text,$opt,$pic){
+		if(file_exists($pic)){
+			return $this->doClient($opt)->upload($text,$pic);
+		}else{
+			return $this->doClient($opt)->update($text);
+		}
 	}
 
 	function saveData($data){

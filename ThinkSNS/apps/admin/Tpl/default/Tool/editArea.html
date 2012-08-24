@@ -1,7 +1,7 @@
 <dl style="margin:10px 10px 5px; height:22px" class="clear">
-  <dt class="left alR " style="width:70px;">名称：</dt><dd class="left alL"><input type="text" id="title" value="{$area['title']}"></dd>
+  <dt class="left alR " style="width:70px;line-height:20px">名称：</dt><dd class="left alL"><input type="text" id="title" value="{$area['title']}"></dd>
 </dl>
-<div style="background:#F8F8F8; border-top:1px solid #E6E6E6; padding:5px;" class="alR">
+<div style="background:#F8F8F8; border-top:1px solid #E6E6E6; padding:5px;text-align:center" class="alR">
   <php>if (isset($area)) {</php>
   <input type="button" class="btn_b" onclick="editArea()" value="确定" />
   <php>}else {</php>
@@ -14,10 +14,12 @@
 //添加地区
 function addArea() {
 	var title = $('#title').val();
+	var title = title.replace(/(^\s*)|(\s*$)/g, ""); 
 	var pid   = "{$pid}";
-	
-	if(title=='') {
-		ui.error('请输入名称');
+
+	if(title.length == 0 ) {
+		ui.box.close();
+		ui.error('请输入地区名称');
 		return ;
 	}
 

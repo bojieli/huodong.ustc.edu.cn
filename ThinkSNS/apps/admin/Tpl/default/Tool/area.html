@@ -1,6 +1,6 @@
 <include file="../Public/_header" />
 <div class="so_main">
-  <div class="page_tit">地区管理</div>
+  <div class="page_tit">地区配置</div>
   <div class="Toolbar_inbox">
     <neq name="back_id" value="-1"><a href="{:U('admin/Tool/area',array('pid'=>$back_id))}" class="btn_a"><span>返回</span></a></neq>
     <a href="javascript:void(0);" class="btn_a" onclick="add();"><span>添加地区</span></a>
@@ -91,10 +91,19 @@
     
     //删除地区
     function del(aid) {
-        aid = aid ? aid : getChecked();
-        aid = aid.toString();
-        if(aid == '') return false;
 
+       var length = 0;
+      if(aid) {
+            length = 1;         
+        }else {
+            aid    = getChecked();
+            length = aid.length;
+            aid    = aid.toString();
+        }
+        if(aid=='') {
+            ui.error('请先选择地区');
+            return ;
+        }
         //提交删除
         $.post("{:U('admin/Tool/doDeleteArea')}", {ids:aid}, function(res){
 	        if(res == '1') {

@@ -17,6 +17,16 @@ class MessageAction extends Action
 		$dao = model('Message');
 
 		$list = $dao->getMessageListByUid($this->mid, array(1, 2));
+
+		$map['list_id'] = array('IN', getSubByKey($list['data'], 'list_id'));
+		$countlist=M('message_content')->where($map)->field("count(list_id) AS count,list_id")->group('list_id')->findall();
+		foreach($countlist as $k=>$v){
+			$newcount[$v['list_id']]=$v['count'];
+		}
+		foreach($list['data'] as &$value){
+			$value['message_num']=$newcount[$value['list_id']];
+			$value['last_message']['content'] = t($value['last_message']['content']);
+		}
 		$this->assign($list);
 
 		// 设置私信为已读
@@ -41,6 +51,8 @@ class MessageAction extends Action
 			$this->mid != $v['member_uid'] && $message['to'][] = $v;
 		}
 
+		$map['list_id']=$_GET['id'];
+		$message['message_num']=M('message_content')->where($map)->count();
 		$this->assign('message', $message);
 
 		$this->assign('type', intval($_GET['type']));
@@ -64,7 +76,7 @@ class MessageAction extends Action
 	}
 
 	public function doPost() {
-		if (!lockSubmit(10)) {
+		if (!lockSubmit()) {
 			echo -1;
 			exit;
 		}

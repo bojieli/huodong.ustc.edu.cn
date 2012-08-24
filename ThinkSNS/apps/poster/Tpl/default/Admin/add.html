@@ -32,6 +32,27 @@
          
     }        
 </script>
+<script>
+function checkAdd(){
+	var name = $("#name").val();
+	var data = $("#data").val();
+	if(!name || getLength(name.replace(/\s+/g,"")) == 0){
+		ui.error("请输入属性名");
+		$("#name").focus();
+		return false;
+	}else if(getLength($("#name").val()) > 6){
+		ui.error("属性名不得大于6个字");
+		$("#name").focus();
+		return false;
+	}else if(!data || getLength(data.replace(/\s+/g,"")) == 0){
+		ui.error("渲染器数据不能为空");
+		$("#data").focus();
+		return false;
+	}
+	
+}
+
+</script>
 
   <div id="container" class="so_main">
     <include file="_tab" />
@@ -43,21 +64,17 @@
         </ul>
       </div>
       <if condition="$_GET['action'] eq 'extra'">
-      <form action = "__URL__&act=doAddWidget" method="post">
+      <form action = "__URL__&act=doAddWidget" method="post" onsubmit="return checkAdd();">
         <div class="form2 no_line">
           <dl class="lineD">
-            <dt>
-                                      属性名：
-            </dt>
+            <dt>属性名：</dt>
             <dd>              
-              <input name="name" class="txt"/>
+              <input name="name" class="txt" id="name"/>
               <p>额外属性名。</p>
             </dd>
           </dl>
           <dl class="lineD">
-            <dt>
-                                      选择渲染器：
-            </dt>
+            <dt>选择渲染器：</dt>
             <dd>              
               <select name="widget">
                 <volist name="widget" k="key" id="vo">
@@ -68,18 +85,14 @@
             </dd>
           </dl>
           <dl class="lineD">
-            <dt>
-                                      渲染器数据：
-            </dt>
+            <dt>渲染器数据：</dt>
             <dd>              
-              <textarea name="data" class="txt" cols="30" rows="10"></textarea>
+              <textarea name="data" class="txt" cols="30" rows="10" id="data"></textarea>
               <p>对以上渲染器的数据进行填写。</p>
             </dd>
           </dl>
           <dl class="lineD">
-            <dt>
-                                      数据库字段选择：
-            </dt>
+            <dt>数据库字段选择：</dt>
             <dd>              
               <select name="field">
               <php>for($i=1;$i<6;$i++){</php>
@@ -95,22 +108,18 @@
         </div>
       </form>
       <elseif condition="$_GET['action'] eq 'smallType'" />
-      <form action = "__URL__&act=doAddSmallType" method="post">
+      <form action = "__URL__&act=doAddSmallType" method="post" onsubmit="return checkSmallType();">
         <div class="form2 no_line">
           <dl class="lineD">
-            <dt>
-                                      小分类集合名：
-            </dt>
+            <dt>小分类集合名：</dt>
             <dd>              
-              <input name="name" class="txt"/>
+              <input name="name" class="txt" id="name"/>
             </dd>
           </dl>
           <dl>
-            <dt>
-                                      小分类项：
-            </dt>
+            <dt>小分类项：</dt>
             <dd>              
-              <textarea name="data" class="txt" cols="30" rows="10"></textarea>
+              <textarea name="data" class="txt" cols="30" rows="10" id="data"></textarea>
               <p>即集合内的各个小分类选项( 小分类名之间换行隔开)。</p>
             </dd>
           </dl>
@@ -120,21 +129,17 @@
         </div>
       </form>
       <else />
-      <form action = "__URL__&act=doAddType" method="post">
+      <form action = "__URL__&act=doAddType" method="post" onsubmit="return checkType();">
         <div class="form2 no_line">
           <dl class="lineD">
-            <dt>
-                                      分类名：
-            </dt>
+            <dt>分类名：</dt>
             <dd>              
-              <input name="name" class="txt"/>
+              <input name="name" class="txt" id="name" maxlength="40"/>
               <p>填写在前台显示的{$ts['app']['app_alias']}大分类：如招聘，物品交换。</p>
             </dd>
           </dl>
           <dl class="lineD">
-            <dt>
-                                      图标：
-            </dt>
+            <dt>图标：</dt>
             <dd>
               <div style="width:420px;">
               <volist name="ico" id="vo">
@@ -145,11 +150,9 @@
             </dd>
           </dl>
           <dl class="lineD">
-            <dt>
-                                      描述：
-            </dt>
+            <dt>描述：</dt>
             <dd>              
-              <textarea name="explain" class="txt" cols="44" rows="8"></textarea>
+              <textarea name="explain" class="txt" cols="44" rows="8" id="exp"></textarea>
               <p>填写对这个分类的描述。会在前台显示。</p>
             </dd>
           </dl>
@@ -160,4 +163,45 @@
       </form>
       </if>
   </div>
+<script>
+function checkType(){
+  var name = $("#name").val();
+  var explain = $("#exp").val();
+  if (!name || getLength(name.replace(/\s+/g,"")) == 0) {
+	ui.error("分类名称不能为空");
+	$("#name").focus();
+	return false;
+  }
+  if (getLength($("#name").val()) > 12){
+	ui.error("分类名称不得大于12个字符");
+	$("#name").focus();
+	return false;
+  }
+  if (!explain || getLength(explain.replace(/\s+/g,"")) == 0) {
+	ui.error("描述不能为空");
+	$("#explain").focus();
+	return false;
+  }
+  
+}
+function checkSmallType(){
+	var name = $("#name").val();
+	var explain = $("#data").val();
+	if (!name || getLength(name.replace(/\s+/g,"")) == 0) {
+		ui.error("小分类集合名称不能为空");
+		$("#name").focus();
+		return false;
+	}
+	if (getLength($("#name").val()) > 12){
+		ui.error("小分类集合名称不得大于12个字符");
+		$("#name").focus();
+		return false;
+	}
+	if (!explain || getLength(explain.replace(/\s+/g,"")) == 0) {
+		ui.error("小分类项不能为空");
+		$("#data").focus();
+		return false;
+	}
+}
+</script>
 <include file="_footer" />

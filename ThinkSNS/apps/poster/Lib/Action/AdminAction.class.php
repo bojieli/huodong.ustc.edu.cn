@@ -3,9 +3,9 @@
      * GiftAction
      * 礼物控制层
      *
-     * @uses 
-     * @package 
-     * @version 
+     * @uses
+     * @package
+     * @version
      * @copyright 2009-2011 SamPeng
      * @author SamPeng <sampeng87@gmail.com>
      * @license PHP Version 5.2 {@link www.sampeng.cn}
@@ -44,9 +44,18 @@ class AdminAction extends AdministratorAction {
     	$this->assign('smallType',$smallType);
     	$this->display();
     }
-
+	
+	//更新小分类
     public function doEditSmallType(){
     	$posterSmallType = D('PosterSmallType');
+        $type = array_unique($_POST['type']);
+        $more = $_POST['more'];
+        if(count($_POST['type']) != count($type)){
+            $this->error('小分类项不能重复'); 
+        }
+        if(count(array_intersect($type , $more)) > 0){
+            $this->error('小分类项不能重复'); 
+        }   
     	foreach($_POST['type'] as $key=>$value){
     		$map= array();
     		if(empty($_POST['type'][$key])){
@@ -80,20 +89,28 @@ class AdminAction extends AdministratorAction {
     }
     public function adminPoster(){
 
-            //为使搜索条件在分页时也有效，将搜索条件记录到SESSION中
-            if ( !empty($_POST) ) {
-                $_SESSION['admin_search'] = serialize($_POST);
-            }else if ( isset($_GET[C('VAR_PAGE')]) ) {
-                $_POST = unserialize($_SESSION['admin_search']);
-            }else {
-                unset($_SESSION['admin_search']);
-            }   
-            $this->assign('isSearch', isset($_POST['isSearch'])?'1':'0');   
-    
-            $_POST['uid']   && $uid    =   t($_POST['uid']);
-            $_POST['pid']   && $pid    =   intval($_POST['pid']);
-            $_POST['type']  && $typeId =   intval($_POST['type']);
-            $_POST['title'] && $title  =   t( $_POST['title'] );
+        //为使搜索条件在分页时也有效，将搜索条件记录到SESSION中
+        if ( !empty($_POST) ) {
+            $_SESSION['admin_search'] = serialize($_POST);
+        }else if ( isset($_GET[C('VAR_PAGE')]) ) {
+            $_POST = unserialize($_SESSION['admin_search']);
+        }else {
+            unset($_SESSION['admin_search']);
+        }
+        $this->assign('isSearch', isset($_POST['isSearch'])?'1':'0');
+
+
+        $_POST['pid']   && $pid    =   intval($_POST['pid']);
+        $_POST['type']  && $typeId =   intval($_POST['type']);
+        $_POST['title'] && $title  =   t( $_POST['title'] );
+
+        if ( !strpos($_POST['uid'],",") ){
+            //单个
+            $_POST['uid']   && $uid = t(h($_POST['uid']));
+        }else{
+            //多个
+            $_POST['uid']   && $uid =  explode(",",$_POST['uid']);
+        }
 
         $posterTypeDao = D('PosterType');
         $posterSmallType = D('PosterSmallType');
@@ -108,7 +125,7 @@ class AdminAction extends AdministratorAction {
         $this->assign($poster);
         $this->display();
     }
-    
+
     public function doDeletePoster(){
     	$posterDao = D('Poster');
     	$id = t($_REQUEST['id']);
@@ -140,7 +157,7 @@ class AdminAction extends AdministratorAction {
             $leave_field = $widget;
         }
         $ico = $posterTypeDao->getIcoList();
-               
+
         $this->assign('liveField',$leave_field);
         $this->assign('smallType',$smallType);
         $this->assign('widget',$widget);
@@ -150,8 +167,8 @@ class AdminAction extends AdministratorAction {
         $this->assign('ico',$ico);
         $this->display();
     }
-    
-    
+
+
     public function add(){
         switch($_GET['action']){
             case 'extra':       //额外字段
@@ -184,7 +201,7 @@ class AdminAction extends AdministratorAction {
     		$this->error("修改失败");
     	}
     }
-
+	//删除招贴大分类
     public function doTypeDel(){
     	$posterTypeDao = D('PosterType');
         $posterDao = D('Poster');
@@ -195,19 +212,49 @@ class AdminAction extends AdministratorAction {
     	}
     	$map['id'] = $id;
     	if(0 == $id){
-    		$this->error('删除失败.未知错误');
+    		echo 0;
     	}else{
     		$posterTypeDao->where($map)->delete();
     		unset($map);
     		$map['pid'] = $id;
             $posterDao->where($map)->delete();
+    		if ( !strpos($_POST['id'],",") ){
+            	echo 2;            //说明只是删除一个
+            }else{
+            	echo 1;            //删除多个
+            }
     	}
-    	$this->success('删除成功');
-    	
     }
+    //删除二级分类
+	public function doDeleteSmallType(){
+		$posterSmallDao = D('PosterSmallType');
+		if(!strpos($_REQUEST['id'],",") ){
+			$id = $_REQUEST['id'];
+			$map['label'] = $id;
+        }else{
+            $id = explode(',',$_REQUEST['id']);
+            $map['label'] = array('in',$id);
+        }
+        $res = $posterSmallDao->where($map)->delete();
+        // dump($posterSmallDao->getlastsql());exit;
+        if($res){
+            echo 1;
+        }else{
+            echo 0;
+        }
+    }
+    //添加二级分类
     public function doAddSmallType(){
     	$type = explode('<br />',nl2br($_POST['data']));
+        if(count(array_unique($type)) != count($type)){
+            $this->error("小分类项不能重复");
+        }        
     	$dao = D('PosterSmallType');
+        $map['name'] = $_POST['name'];
+        $res = $dao->where($map)->find();
+        if($res){
+            $this->error('该小分类集合名已存在');
+        }
         foreach($type as $value){
         	$map['label'] = trim($_POST['name']);
         	$map['name']  = str_replace('\r\n','',$value);
@@ -216,20 +263,10 @@ class AdminAction extends AdministratorAction {
         $this->assign('jumpUrl',U('/Admin/editSmallType',array('id'=>$map['label'])));
         $this->success('添加成功,将跳转到小分类编辑页面');
     }
-    public function doDeleteSmallType(){
-        $posterSmallDao = D('PosterSmallType');
-        $id = $_REQUEST['id'];
-        if(is_array($id)){
-            $map['label'] = array('in',$id);
-        }else{
-            $map['label'] = $id;
-        }
-        $posterSmallDao->where($map)->delete();
-        $this->success('删除成功');
-    }
+
     public function doAddType(){
     	$data['name'] = trim($_POST['name']);
- 
+
     	$data['ico'] = trim($_POST['ico']);
     	$data['explain'] = trim($_POST['explain']);
     	$posterTypeDao = D('PosterType');
@@ -256,14 +293,14 @@ class AdminAction extends AdministratorAction {
     			$this->success('添加成功,即将跳转到大分类编辑页面');
     	}
     }
-    
+
     public function doAddWidget(){
-    	$data['label'] = trim($_POST['name']);
+    	$data['label'] = t(h($_POST['name']));
     	$data['widget'] = str_replace('Widget','',$_POST['widget']);
     	require_once APP_PATH."/Lib/Widget/".$_POST['widget'].'.class.php';
         $class = new $_POST['widget']();
         $data['data'] = serialize($class->getData($_POST['data']));
-        $data['field'] = trim($_POST['field']);
+        $data['field'] = t(h($_POST['field']));
         $posterWidgetDao = D('PosterWidget');
         $rs = $posterWidgetDao->addWidget($data);
             switch($rs){

@@ -77,7 +77,9 @@ ctrl.prototype = {
 	del:function(id, act){
 		var id = id ? id : getChecked();
 		id = id.toString();
-		if(id=='' || id==0) return ;
+		if(id=='' || id==0){
+			alert("请选择要删除的群组");return false;
+		}
 	    if (confirm( "确认删除{$ts['app']['app_alias']}？")) {
 	        $.post( '__URL__&act=remove',{id:id,act:act},function(text){
 	              if( text == 1 ){
@@ -187,7 +189,7 @@ var c = null;
 		<td><a href="{:U('group/Group/index', array('gid'=>$vo['id']))}"
 			target="_blank">{$vo.name}</a></td>
 		<td>{$vo['membercount']}</td>
-		<td>{$vo['cname0']}<?php echo $vo['cname1']?' - ' . $vo['cname1']:''; ?></td>
+		<td>{$vo['path']}</td>
 		<td><!--
               <span id="button{$vo['id']}" ><eq name="group['isrecom']" value="1"><a
               href="javascript:recom(0,{$group.id},'group');">取消推荐</a><else /><a

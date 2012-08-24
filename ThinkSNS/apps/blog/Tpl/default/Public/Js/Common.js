@@ -1,8 +1,8 @@
 // 前台管理的添加分类
 function addCategory(name) {
-	if(name=="") {
+	if(name=="" || getLength(name.replace(/\s+/g,"")) == 0) {
 		ui.error("请输入分类名");
-		return ;
+		return false;
 	}
 	
     var a = $( "li[id]:first" ).clone();
@@ -81,7 +81,7 @@ function deleteCategoryBlog( toCate,formCate ){
 function deleteCategory( id ){
     var count = $( '#c'+id ).text();
     if( count > 0 ){
-    	 ui.box.load(U("blog/iIndex/deleteCateFrame",["id="+id,"count="+count] ),{title:'转移分类',closeable:true});
+    	 ui.box.load(U("blog/Index/deleteCateFrame",["id="+id,"count="+count] ),{title:'转移分类',closeable:true});
        return;
     }
     if( confirm("是否确定删除" ))

@@ -18,7 +18,7 @@
 </script>
 
 <php>if ($groupinfo['need_invite'] == 2 && !$is_invited) {</php>
-<dl class="pop_group" style="padding:20px 0">该群需要邀请才能加入</div>
+<dl class="pop_group" style="padding:20px 0;_display:block;_width:400px">该群需要邀请才能加入</dl>
 <php>} else if ($config['joinMaxGroup'] && $joinCount >= $config['joinMaxGroup']) {</php>
     <!--加入群组弹窗-->
     <dl class="pop_group">
@@ -44,7 +44,7 @@
     <if condition="$groupinfo['need_invite'] eq 1 && !$is_invited">
             <dt>需通过该群管理员的审核才能加</dt>
             <dd>申请加入理由：</dd>
-            <dd><textarea name="textarea" class="Text" cols="" name="reason" id="reason" rows="" style="width:100%; height:50px;"></textarea></dd>
+            <dd><textarea name="textarea" class="Text" cols="" name="reason" id="reason" rows="" style="width:350px; height:50px;"></textarea></dd>
             <dd>
                 <input name="input" type="button" class="btn_b" value="确 定" onclick="addsubmit(1)"/>
                 <input name="input2" type="button" class="btn_w" value="取 消" onclick="ui.box.close()"/> 
@@ -84,3 +84,15 @@
         </dd>
     </dl>
     <!--End 加入群组弹窗-->
+
+<script type="text/javascript">
+// 对输入框进行字数控制显示
+$(function() {
+    $('#reason').keydown(function(event) {
+        if(this.value.length > 25 && event.which != '8' && event.which != '46') {
+            event.preventDefault();
+            return;
+        }
+    });
+});
+</script>

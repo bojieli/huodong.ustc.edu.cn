@@ -25,7 +25,7 @@ class MessageModel extends Model
      * 私信列表
      *
      * @param int       $uid  用户ID
-     * @param int|array $type 1:一对一私信 2:多人聊天 默认1
+     * @param int|array $type 0:系统私信 1:一对一私信 2:多人聊天 默认1
      * @return array
      */
     public function getMessageListByUid($uid, $type = 1)
@@ -37,7 +37,7 @@ class MessageModel extends Model
                 ->where("`mb`.`member_uid`={$uid} AND `li`.`type`{$type}")
                 ->order('`mb`.`new` DESC,`mb`.`list_ctime` DESC')
                 ->findPage();
-        $this->_parseMessageList(& $list['data'], $uid); // 引用
+        $this->_parseMessageList( $list['data'], $uid); // 引用
         return $list;
     }
 
@@ -66,22 +66,26 @@ class MessageModel extends Model
         $uid  = intval($uid);
         $type = is_array($type) ? ' IN (' . implode(',', $type) . ')' : "={$type}";
         if ($since_id) {
-            $since_id = " `li`.`list_id`>{$since_id}";
+            $since_id = " AND `li`.`list_id`>{$since_id}";
+        }else{
+            $since_id = '';
         }
         if ($max_id) {
-            $max_id = " `li`.`list_id`<{$max_id}";
+            $max_id = " AND `li`.`list_id`<{$max_id}";
+        }else{
+            $max_id ='';
         }
         $limit = ($page-1) * $count . ',' . $count;
         $list = M('message_member')->table("`{$this->tablePrefix}message_member` AS `mb`")
                 ->join("`{$this->tablePrefix}message_list` AS `li` ON `mb`.`list_id`=`li`.`list_id`")
-                ->where("`mb`.`member_uid`={$uid} AND `li`.`type`{$type}")
+                ->where("`mb`.`member_uid`={$uid} AND `li`.`type`{$type} {$since_id} {$max_id}")
                 ->order('`mb`.`new` DESC,`mb`.`list_id` DESC')
                 ->limit($limit)
                 ->findAll();
-        $this->_parseMessageList(& $list, $uid); // 引用
+        $this->_parseMessageList( $list, $uid); // 引用
         foreach ($list as & $_l) {
             $_l['from_uid'] = $_l['last_message']['from_uid'];
-            $_l['content']  = $_l['last_message']['content'];
+            $_l['content']  = h($_l['last_message']['content']);
             $_l['mtime']    = $_l['list_ctime'];
         }
 
@@ -116,16 +120,16 @@ class MessageModel extends Model
     	->order('`mb`.`list_id` DESC')
     	->limit($limit)
     	->findAll();
-    	$this->_parseMessageList(& $list, $uid); // 引用
+    	$this->_parseMessageList( $list, $uid); // 引用
     	foreach ($list as & $_l) {
     		$_l['from_uid'] = $_l['last_message']['from_uid'];
-    		$_l['content']  = $_l['last_message']['content'];
+    		$_l['content']  = h($_l['last_message']['content']);
     		$_l['mtime']    = $_l['list_ctime'];
     	}
-    
+
     	return $list;
     }
-    
+
     /**
      * 收件箱消息列表
      *
@@ -233,13 +237,16 @@ class MessageModel extends Model
             $map['list_id'] = $id;
             $map['is_del']  = 0;
             $res = M('message_content')->where($map)->order('message_id DESC')->findAll();
+            $res['content'] = t($res['content']);
             return $res;
         }else {
             // `mb`.`member`={$uid} 可验证当前用户是否依然为该私信成员
-            return M('message_content')->table("`{$this->tablePrefix}message_content` AS `ct`")
+            $res = M('message_content')->table("`{$this->tablePrefix}message_content` AS `ct`")
                    ->join("`{$this->tablePrefix}message_member` AS `mb` ON `ct`.`list_id`=`mb`.`list_id` AND `ct`.`from_uid`=`mb`.`member_uid`")
                    ->where("`mb`.`member_uid`={$uid} AND `ct`.`message_id`={$id} AND `ct`.`is_del`=0")
                    ->find();
+            $res['content'] = t($res['content']);
+            return $res;
         }
     }
 
@@ -275,6 +282,9 @@ class MessageModel extends Model
         }
         $res['data']  = M('message_content')->where($where)->order('message_id DESC')->limit($limit)->findAll();
         $res['count'] = count($res['data']);
+        foreach($res['data'] as $k=>$v){
+            $res['data'][$k]['content'] = t($v['content']);
+        }
         if ($since_id > 0) {
             $res['since_id'] = $res['data'][0]['message_id'];
             $res['max_id']   = $res['data'][$res['count'] - 1]['message_id'];
@@ -379,7 +389,7 @@ class MessageModel extends Model
 
         // 添加新记录
         $data['list_id']  = $list_id;
-        $data['content']  = $content;
+        $data['content']  = h($content);
         $data['mtime']    = $time;
         $new_message_id = $this->_addMessage($data, $from_uid);
         unset($data);
@@ -463,7 +473,7 @@ class MessageModel extends Model
         $map['member_uid']     = $member_uid;
         return $this->where($map)->setField('new', 0);
     }
-   
+
     /**
      * 用户删除私信
      *
@@ -707,7 +717,7 @@ class MessageModel extends Model
         }
         $message['list_id']  = $data['list_id'];
         $message['from_uid'] = $from_uid;
-        $message['content']  = t($data['content']);
+        $message['content']  = h($data['content']);
         $message['is_del']   = 0;
         $message['mtime']    = $data['mtime'];
         return M('message_content')->data($message)->add();

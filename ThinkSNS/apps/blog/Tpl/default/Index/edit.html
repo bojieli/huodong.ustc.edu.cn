@@ -6,16 +6,16 @@
   <include file="../Public/_blog_header" />
   <div class="main no_l">
     <div class="mainbox">
-        <include file="../Public/_right" />
+        <include file="../Public/_right_post" />
         <div class="mainbox_appC">
         <div class=page_title> 
             <h2>
-                <span class="f12px fn right"><a href="javascript:history.back( -1 )">&lt;&lt;返回上一页</a></span>
+                <!-- <span class="f12px fn right"><a href="javascript:history.back( -1 )">&lt;&lt;返回上一页</a></span> -->
                 修改{$ts['app']['app_alias']}
             </h2>
         </div>
         <div class="BlogBox">
-		<form name="editBlog" action="{$link}" method="post" onsubmit="return check()">
+		<form name="addBlog" action="{$link}" method="post" onsubmit="return check()">
             <div class="LogList">
               <ul class="edit">
                 <li style="padding:0;">
@@ -25,6 +25,7 @@
                       <php>foreach( $blog_category as $value ){</php>
                       <option value="{$value['id']}" <eq name="category['id']" value="$value['id']">selected=selected</eq> title="{$value['name']}">{$value['name']|getShort=8}</option>
                       <php>}</php>
+                      <option value="0">&nbsp;</option>
                       <optgroup id="group">
                       <option value="0">+添加分类</option>
                       </optgroup>
@@ -35,6 +36,16 @@
                 <li style="padding:0;">
                   <label>内容: &nbsp;</label>
                   <div class="c1"><textarea id="content" name="content" style="height:350px;">{$content}</textarea></div>
+                </li>
+                <li style="padding:0;">
+                    <label>访问: &nbsp;</label>
+                    <div class="c1">
+                    <select name="private" class="text">
+                    <option value="0" <eq name="private" value="0">selected="selected"</eq>>所有人可见</option>
+                    <option value="2" <eq name="private" value="2">selected="selected"</eq>>仅我的关注可见</option>
+                    <option value="4" <eq name="private" value="4">selected="selected"</eq>>仅自己可见</option>
+                    </select>
+                    </div>
                 </li>
                 <li style="padding:0;">
                            

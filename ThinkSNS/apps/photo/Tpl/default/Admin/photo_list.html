@@ -50,7 +50,10 @@ ctrl.prototype = {
 	del:function(id){
 		var id = id ? id : getChecked();
 		id = id.toString();
-		if(id=='' || id==0) return ;
+		if(id=='' || id==0){
+			ui.error("请选择要删除的图片");
+			return false;
+		}
 		if( confirm("是否删除图片？") ){
 		  $.post( '__URL__&act=delete_photo',{id:id},function(text ){
 			  if( text == 1 ){
@@ -75,7 +78,7 @@ var c = null;
   <include file="_tab" />
 
     <div id="searchPhoto_div" <neq name="isSearch" value="1">style="display:none;"</neq>>
-    <div class="page_tit">搜索{$ts['app']['app_alias']} [ <a href="javascript:void(0);" onclick="searchPhoto();">隐藏</a> ]</div>
+    <div class="page_tit">搜索图片 [ <a href="javascript:void(0);" onclick="searchPhoto();">隐藏</a> ]</div>
     <div class="form2">
     <form action="__URL__&act=photo_list" method="post">
     <input type="hidden" name="isSearch" value="1"/>

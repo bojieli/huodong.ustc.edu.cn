@@ -1,10 +1,14 @@
 <?php
 class PublicAction extends Action{
 
-	public function _initialize() {
-
+	public function code(){
+		if (md5(strtoupper($_POST['verify'])) == $_SESSION['verify']) {
+			echo 1;
+		}else{
+			echo 0;
+		}
 	}
-
+	
 	public function adminlogin() {
 		if ( service('Passport')->isLoggedAdmin() ) {
 			redirect(U('admin/Index/index'));
@@ -15,16 +19,13 @@ class PublicAction extends Action{
 
 	public function doAdminLogin() {
 		// 检查验证码
-		if ( md5($_POST['verify']) != $_SESSION['verify'] ) {
+		if ( md5(strtoupper($_POST['verify'])) != $_SESSION['verify'] ) {
 			$this->error(L('error_security_code'));
 		}
 
 		// 数据检查
 		if ( empty($_POST['password']) ) {
 			$this->error(L('password_notnull'));
-		}
-		if ( isset($_POST['email']) && ! isValidEmail($_POST['email']) ) {
-			$this->error(L('email_format_error'));
 		}
 
 		// 检查帐号/密码
@@ -45,7 +46,7 @@ class PublicAction extends Action{
 			$this->success(L('login_success'));
 		}else {
 			$this->assign('jumpUrl', U('home/Public/adminlogin'));
-			$this->error(L('login_error'));
+			$this->error(service('Passport')->getLastError());
 		}
 	}
 
@@ -53,7 +54,7 @@ class PublicAction extends Action{
 	{
 
 		if (service('Passport')->isLogged())
-			U('home','',true);
+			redirect(U('home/User/index'));
 
 		unset($_SESSION['sina'], $_SESSION['key'], $_SESSION['douban'], $_SESSION['qq'],$_SESSION['open_platform_type']);
 
@@ -64,45 +65,9 @@ class PublicAction extends Action{
 		}
 
 		$data['email'] = t($_REQUEST['email']);
+		$data['uname'] = t($_REQUEST['uname']);
 		$data['uid']   = t($_REQUEST['uid']);
-		$uids = array();
-
-
-		// 正在热议 1小时缓存
-		$data['hot_topic'] = D('Topic', 'weibo')->getHot();
-
-		// 人气推荐
-		$data['hot_user']  = D('Follow', 'weibo')->getTopFollowerUser();
-		$uids = array_merge($uids, getSubByKey($data['hot_user'], 'uid'));
-
-		// 正在发生 (原创的文字微博)
-		$data['lastest_weibo'] = D('Operate', 'weibo')->getLastWeibo();
-		$uids = array_merge($uids, getSubByKey($data['lastest_weibo'], 'uid'));
-		$this->assign('since_id', empty($data['lastest_weibo']) ? 0 : $data['lastest_weibo'][0]['weibo_id'] );
-
-		// 原创的图片微博
-		$data['pic_weibo'] = S('S_login_pic_weibo');
-		if(empty($data['pic_weibo'])) {
-			$map['transpond_id'] = 0;
-			$map['type']		 = 1;
-			$data['pic_weibo'] = D('Operate', 'weibo')->where($map)->order('weibo_id DESC')->limit(3)->findAll();
-			S('S_login_pic_weibo', $data['pic_weibo'], 3600);
-		}
-		$uids = array_merge($uids, getSubByKey($data['pic_weibo'], 'uid'));
-		foreach ($data['pic_weibo'] as $k => $v){
-			$imageData = unserialize($v['type_data']);
-			if(isset($imageData[0])) {
-				$data['pic_weibo'][$k]['type_data'] = $imageData[0];
-			} else {
-				$data['pic_weibo'][$k]['type_data'] = $imageData;
-			}
-		}
-
-		D('User', 'home')->setUserObjectCache(array_flip(array_flip($uids)));
-		// 第三方平台
-
-		$this->assign($data);
-		$this->assign('regInfo',model('Xdata')->lget('register'));
+		Addons::hook('public_before_login',array(&$data));
 		$this->setTitle(L('login'));
 		$this->display();
 	}
@@ -329,24 +294,29 @@ class PublicAction extends Action{
 	public function doLogin() {
 		// 检查验证码
 		$opt_verify = $this->_isVerifyOn('login');
-		if ($opt_verify && md5($_POST['verify'])!=$_SESSION['verify']) {
+		if ($opt_verify && (md5(strtoupper($_POST['verify']))!=$_SESSION['verify'])) {
 			$this->error(L('error_security_code'));
 		}
 
+		Addons::hook('public_before_dologin',$_POST);
+
 		$username =	$_POST['email'];
 		$password =	$_POST['password'];
+
 
 		if(!$password){
 			$this->error(L('please_input_password'));
 		}
 		$result = service('Passport')->loginLocal($username,$password,intval($_POST['remember']));
-
+		$lastError = service('Passport')->getLastError(); 
 	    //检查是否激活
-	    if (!$result && service('Passport')->getLastError()=='用户未激活') {
+	    if (!$result && $lastError =='用户未激活') {
 	        $this->assign('jumpUrl',U('home/public/login'));
 	        $this->error('该用户尚未激活，请更换帐号或激活帐号！');
 	        exit;
 	    }
+
+		Addons::hook('public_after_dologin',$result);
 
 		if($result) {
 			if(UC_SYNC && $result['reg_from_ucenter']){
@@ -362,7 +332,7 @@ class PublicAction extends Action{
 			$this->assign('jumpUrl',$refer_url);
 			$this->success($username.L('login_success').$result['login']);
 		}else {
-			$this->error(L('login_error'));
+			$this->error($lastError);
 		}
 	}
 
@@ -370,7 +340,7 @@ class PublicAction extends Action{
 
 		// 检查验证码
 		$opt_verify = $this->_isVerifyOn('login');
-		if ($opt_verify && md5($_POST['verify'])!=$_SESSION['verify']) {
+		if ($opt_verify && (md5(strtoupper($_POST['verify']))!=$_SESSION['verify'])) {
 			$return['message']	=	L('error_security_code');
 			$return['status']	=	0;
 			exit(json_encode($return));
@@ -379,6 +349,8 @@ class PublicAction extends Action{
 		$username =	$_POST['email'];
 		$password =	$_POST['password'];
 
+		Addons::hook('public_before_doajaxlogin',$_POST);
+
 		if(!$password){
 			$return['message']	=	L('password_notnull');
 			$return['status']	=	0;
@@ -386,49 +358,34 @@ class PublicAction extends Action{
 		}
 
 		$result = service('Passport')->loginLocal($username,$password, intval($_POST['remember']) === 1);
-
-		$user = $result['user'];
-
-
-		//获取帐号信息
-		if(!$user) {
-			$return['message']	=	L('create_user_information_failed');
+		if($result){
+			$return['message']	=	L('login_success');
+			$return['status']	=	1;
+			if(UC_SYNC && $uc_user[0])
+				$return['callback']	=	uc_user_synlogin($uc_user[0]);
+		}else{
+			$error_message = service('Passport')->getLastError();
+			$return['message']	=	$error_message;
 			$return['status']	=	0;
-			exit(json_encode($return));
 		}
-
-		//检查是否激活
-		if ($user['is_active'] == 0) {
-			$return['message']	=	L('account_inactive');
-			$return['status']	=	0;
-			exit(json_encode($return));
-		}
-
-		if(!$result){
-			$return['message']	=	L('account_login_failed');
-			$return['status']	=	0;
-			exit(json_encode($return));
-		}
-
-		if(UC_SYNC && $uc_user[0]){
-			$return['callback']	=	uc_user_synlogin($uc_user[0]);
-		}
-		$return['message']	=	L('login_success');
-		$return['status']	=	1;
+		
+		Addons::hook('public_after_doajaxlogin',$result);
 
 		exit(json_encode($return));
 	}
 
 	public function logout() {
 		service('Passport')->logoutLocal();
-		$this->assign('jumpUrl',U('home/index'));
+		
+		Addons::hook('public_after_logout');
+
+		$this->assign('jumpUrl',U('home/Index/index'));
 		$this->success(L('exit_success'). ( (UC_SYNC)?uc_user_synlogout():'' ) );
 	}
 
 	public function logoutAdmin() {
 		// 成功消息不显示头部
 		$this->assign('isAdmin','1');
-
 		service('Passport')->logoutLocal();
 		$this->assign('jumpUrl',U('home/Public/adminlogin'));
 		$this->success(L('exit_success'));
@@ -467,10 +424,17 @@ class PublicAction extends Action{
 
 	public function register()
 	{
+
+		if (service('Passport')->isLogged())
+			redirect(U('home/User/index'));
+		
 		//验证码
 		$opt_verify = $this->_isVerifyOn('register');
-		if ( $opt_verify )
+		if ( $opt_verify ) {
 			$this->assign('register_verify_on', 1);
+		}
+
+		Addons::hook('public_before_register');
 
 		// 邀请码
 		$invite_code = h($_REQUEST['invite']);
@@ -505,16 +469,18 @@ class PublicAction extends Action{
 
 	public function doRegister()
 	{
-
 		// 验证码
 		$verify_option = $this->_isVerifyOn('register');
-		if ($verify_option && md5($_POST['verify']) != $_SESSION['verify'])
+		if ($verify_option && (md5(strtoupper($_POST['verify'])) != $_SESSION['verify'])){
 			$this->error(L('error_security_code'));
+			exit;
+		}
+
+		Addons::hook('public_before_doregister', $_POST);
 
 		// 邀请码
 		$invite_code = h($_REQUEST['invite_code']);
 		$invite_info = null;
-
 
 		// 是否允许注册
 		$register_option = model('Xdata')->get('register:register_type');
@@ -525,17 +491,17 @@ class PublicAction extends Action{
 
 			// 邀请方式
 			$invite_option = model('Invite')->getSet();
+			
 			if ($invite_option['invite_set'] == 'close') { // 关闭邀请
 				$this->error(L('reg_invite_close'));
 			} else { // 普通邀请 OR 使用邀请码
-
 				if (!$invite_code)
 					$this->error(L('reg_invite_warming'));
 				else if (!($invite_info = $this->__getInviteInfo($invite_code)))
 					$this->error(L('reg_invite_code_error'));
-
 			}
 		} else { // 公开注册
+
 			if (!($invite_info = $this->__getInviteInfo($invite_code)))
 				unset($invite_code, $invite_info);
 		}
@@ -560,8 +526,6 @@ class PublicAction extends Action{
 		if (!$this->isEmailAvailable($_POST['email']))
 			$this->error(L('email_used_retype'));
 
-
-
 		// 是否需要Email激活
 		$need_email_activate = intval(model('Xdata')->get('register:register_email_activate'));
 
@@ -571,9 +535,12 @@ class PublicAction extends Action{
 		$data['uname']	   = t($_POST['nickname']);
 		$data['ctime']	   = time();
 		$data['is_active'] = $need_email_activate ? 0 : 1;
-
+		$data['register_ip']= get_client_ip();
+		$data['login_ip']	 = get_client_ip();
 		if (!($uid = D('User', 'home')->add($data)))
 			$this->error(L('reg_filed_retry'));
+
+		Addons::hook('public_after_doregister',$uid);
 
 		// 将用户添加到myop_userlog，以使漫游应用能获取到用户信息
 		$user_log = array(
@@ -586,7 +553,7 @@ class PublicAction extends Action{
 
 		// 将邀请码设置已用
 		model('Invite')->setInviteCodeUsed($invite_code);
-
+		model('InviteRecord')->addRecord($invite_info['uid'],$uid);
 		// 同步至UCenter
 		if (UC_SYNC) {
 
@@ -603,16 +570,13 @@ class PublicAction extends Action{
 			// 置为已登录, 供完善个人资料时使用
 			service('Passport')->loginLocal($uid);
 
-			// 缓存邀请信息, 供完善个人资料后使用
-			$_SESSION["invite_info_{$uid}"] = $invite_info;
-
-			if (!is_numeric(stripos($_POST['HTTP_REFERER'], dirname('http://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']))) && $register_option != 'invite') {
+			//if (!is_numeric(stripos($_POST['HTTP_REFERER'], dirname('http://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']))) && $register_option != 'invite') {
                 //注册完毕，跳回注册页之前
-                redirect($_POST['HTTP_REFERER']);
-			} else {
+            //    redirect($_POST['HTTP_REFERER']);
+			//} else {
 				//注册完毕，跳转至帐号修改页
 				redirect(U('home/Public/userinfo'));
-			}
+			//}
 		}
 	}
 
@@ -645,8 +609,7 @@ class PublicAction extends Action{
 			M('user')->where("uid={$this->mid}")->data($data)->save();
 
 			// 关联操作
-			$this->registerRelation($this->mid, $_SESSION["invite_info_{$this->mid}"]);
-			unset($_SESSION["invite_info_{$this->mid}"]);
+			$this->registerRelation($this->mid);
 
 			S('S_userInfo_'.$this->mid,null);
 
@@ -671,10 +634,14 @@ class PublicAction extends Action{
 			if ($_POST['doajax']) {
 				echo '1';
 			} else {
-				redirect(U('home/user/index'));
+				redirect(U('home/User/index'));
 			}
 		} else {
-			$users      = D('Follow', 'weibo')->getTopFollowerUser($this->mid, 12);
+			$users      = D('Follow', 'weibo')->getTopFollowerUser($this->mid, 50);
+			//随机打散取10个
+			shuffle($users);
+			$users = array_slice($users,0,10);
+			//获取用户详细信息
 			$user_model = D('User', 'home');
 			$user_model->setUserObjectCache(getSubByKey($users, 'uid'));
 			foreach ($users as $k => $v) {
@@ -682,7 +649,6 @@ class PublicAction extends Action{
 				$users[$k]['uname']    = $user['uname'];
 				$users[$k]['location'] = $user['location'];
 			}
-
 			$this->assign('users', $users);
 			$this->setTitle(L('recommend_user'));
 			$this->display();
@@ -773,6 +739,11 @@ EOD;
 		}
 		$uid = $invite['from_uid'];
 
+		$invite['data'] = unserialize($invite['data']);
+		//邀请信息
+		if($invite['data']){
+
+		}
         $user = M('user')->where("`uid`=$uid")->find();
         if ($user['is_active'] == 1) {
         	$this->assign('jumpUrl', U('home/Public/login'));
@@ -786,7 +757,7 @@ EOD;
 			service('Passport')->registerLogin($user);
 
 			//关联操作
-			$this->registerRelation($user['uid'], $invite);
+			$this->registerRelation($user['uid']);
 
 			service('Validation')->unsetValidation();
 
@@ -862,6 +833,15 @@ EOD;
         if ( $code[1] == md5($code[0] . '+' . $user["password"]) ) {
 	        $user['password'] = md5($_POST['password']);
 	        $res = M('user')->save($user);
+			//同步设置UC密码
+			include_once(SITE_PATH.'/api/uc_client/uc_sync.php');
+			if(UC_SYNC){
+				$ucenter_user_ref = ts_get_ucenter_user_ref($code[0]);
+				$uc_res = uc_user_edit($ucenter_user_ref['uc_username'],'',$_POST['password'],'',1);
+				if($uc_res == -8){
+					$this->error(L('userprotected_no_right'));
+				}
+			}
 			//去掉用户缓存信息
 			S('S_userInfo_'. $code[0],null);
 	        if ($res) {
@@ -932,12 +912,58 @@ EOD;
 		}
 	}
 
-	//检查昵称是否符合规则，且是否为唯一
+	// 检查验证码是否可用
+	public function isVerifyAvailable($verify = null) {
+		$return_type = empty($verify) ? 'ajax' : 'return';
+		$verify = empty($verify) ? $_POST['verify'] : $verify;
+		$verify_option = $this->_isVerifyOn('register');
+		if($verify_option && md5(strtoupper($verify)) == $_SESSION['verify']) {
+			if($return_type === 'ajax') {
+				echo 'success';
+			} else {
+				return true;
+			}
+		} else {
+			if($return_type === 'ajax') {
+				echo '验证码输入错误';
+			} else {
+				return false;
+			}
+		}
 
-	public function isValidNickName($name)
-	{
+	}
+
+	// 登陆检查验证码是否可用
+	public function isVerifyAvailableLogin($verify = null) {
+		$return_type = empty($verify) ? 'ajax' : 'return';
+		$verify = empty($verify) ? $_POST['verify'] : $verify;
+		if( md5(strtoupper($verify)) == $_SESSION['verify']) {
+			if($return_type === 'ajax') {
+				echo 'success';
+			} else {
+				return true;
+			}
+		} else {
+			if($return_type === 'ajax') {
+				echo '验证码输入错误';
+			} else {
+				return false;
+			}
+		}
+
+	}
+
+	//检查昵称是否符合规则，且是否为唯一
+	public function isValidNickName($name) {
+
 		$return_type  = empty($name)  ? 'ajax' 		   			: 'return';
 		$name		  = empty($name)  ? t($_POST['nickname']) 	: $name;
+		
+		//昵称不能是纯数字昵称
+		if(is_numeric($name)){
+			echo '昵称不能是纯数字昵称';
+			return;
+		}
 
 		//检查禁止注册的用户昵称
 		$audit = model('Xdata')->lget('audit');
@@ -947,10 +973,10 @@ EOD;
 				$bannedunames = explode('|',$bannedunames);
 				if(in_array($name,$bannedunames)){
 					if ($return_type === 'ajax') {
-						echo '这个昵称进制注册';
+						echo '这个昵称禁止注册';
 						return;
 					} else {
-						$this->error('这个昵称进制注册');
+						$this->error('这个昵称禁止注册');
 					}
 				}
 			}
@@ -1019,24 +1045,28 @@ EOD;
 	}
 
 	// 注册的关联操作
-    public function registerRelation($uid, $invite_info = null)
+    public function registerRelation($uid,$invite_uid)
     {
     	if (($uid = intval($uid)) <= 0)
     		return;
 
     	$dao = D('Follow','weibo');
-
+   
     	// 使用邀请码时, 建立与邀请人的关系
-    	if ($invite_info['uid']) {
+    	$inviter = model('InviteRecord')->getInviter($uid);
+    	if ($inviter) {
     		// 互相关注
-    		D('Follow', 'weibo')->dofollow($uid, $invite_info['uid']);
-			D('Follow', 'weibo')->dofollow($invite_info['uid'], $uid);
+    		$dao->dofollow($uid, $inviter['uid']);
+			$dao->dofollow($inviter['uid'], $uid);
+
+			// 设置邀请信息
+			model('InviteRecord')->setRecordValid($uid);
 
 			// 添加邀请记录
-			model('InviteRecord')->addRecord($invite_info['uid'], $uid);
+			//model('InviteRecord')->addRecord($inviter['uid'], $uid);
 
 			//邀请人积分操作
-			X('Credit')->setUserCredit($invite_info['uid'], 'invite_friend');
+			X('Credit')->setUserCredit($inviter['uid'], 'invite_friend');
     	}
 
         // 默认关注的好友
@@ -1216,8 +1246,16 @@ EOD;
 			if($pageId != 1) {
 				$pageHtml .= '<a href="javascript:void(0)" onclick="pageShow('.($pageId - 1).')">上一页</a>';
 			}
+			if($list['totalPages']<=5){
+				for($i = 1; $i <= $list['totalPages']; $i++) {
+					if($i == $list['nowPage']) {
+						$pageHtml .= '<span class="current">'.$i.'</span>';
+					} else {
+						$pageHtml .= '<a href="javascript:void(0)" onclick="pageShow('.$i.')">'.$i.'</a>';
+					}
+				}
 
-			if($list['nowPage'] <= 3) {
+			}elseif($list['nowPage'] <= 3) {
 				for($i = 1; $i <= 5; $i++) {
 					if($i == $list['nowPage']) {
 						$pageHtml .= '<span class="current">'.$i.'</span>';
@@ -1327,6 +1365,84 @@ EOD;
             }
         }catch(ThinkException $e){
             $this->error($e->getMessage());
+        }
+    }
+	    //敏感词过滤keyWordFilter($content)
+    public function destroyWords(){
+    	$keywords = model('Xdata')->lget('audit');
+    	$words = explode('|', $keywords['keywords']);
+    	$badwords = C('badwords');
+    	$dbprefix = C('DB_PREFIX');
+    	foreach ($badwords as $k => $v ){
+    		foreach($v as $value) {
+	    	//	$where = "{$value} like '%".implode("%' or $value like '%",$words)."%'";
+	    		$select = M($k)->field($value)->findall();
+				echo M()->getLastSql();
+				echo "<br/>";
+				echo "<br/>";
+	    		if ($select !== FALSE && $select !== null){
+					//dump($select);
+	    			foreach ($select as $skey => $svalue ){
+	    				$content = $svalue["$value"];
+	    				$upcontent = keyWordFilter($content);
+	    				$map = $save = array();
+	    				$map[$value] = $content;
+	    				$save[$value] = $upcontent;
+	    				M($k)->where($map)->save($save);
+	    				echo M()->getLasloginql();
+	    			}
+	    		}
+    		}
+    	}
+    }
+
+    // 定期扫库功能 - 过滤敏感词
+    public function scanTables() {
+        set_time_limit(0);
+        $badWords = C('badwords');
+        $dbPrefix = C('DB_PREFIX');
+
+        // 自定义过滤表
+        foreach($badWords as $key => $val) {
+            if($key != '*') {
+                $data['tableName'] = $dbPrefix.$key;
+                $data['field'] = $val;
+                $badTable[] = $data;
+            } 
+        }
+
+        // 自定义表过滤操作
+        foreach($badTable as $value) {
+            $tableInfo = M()->query('DESCRIBE '.$value['tableName']);
+            foreach($tableInfo as $pValue) {
+                if($pValue['Key'] == 'PRI') {
+                    $priKey = $pValue['Field'];
+                    break;
+                }
+            }
+            $field = $value['field'];
+            array_unshift($field, $priKey);
+            foreach($field as &$formatField) {
+                $formatField = '`'.$formatField.'`';
+            }
+            $field = implode(',', $field);
+            $data = M()->Table($value['tableName'])->field($field)->findAll();
+
+            foreach($data as $cValue) {
+                $map[$priKey] = $cValue[$priKey];
+                foreach($value['field'] as $fValue) {
+                    $contentVal = $cValue[$fValue];
+                    $filterVal = keyWordFilter($contentVal);
+                    if($contentVal != $filterVal) {
+                        $save[$fValue] = $filterVal;
+                    }
+                }
+                if(!empty($save)) {
+                    M()->Table($value['tableName'])->where($map)->save($save);
+                }
+                unset($map);
+                unset($save);
+            }
         }
     }
 }

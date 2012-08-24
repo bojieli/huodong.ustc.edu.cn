@@ -10,6 +10,8 @@
 </neq>    
 </title>
 <!-- 全局风格CSS -->
+<link href="__THEME__/public.css?20110429" rel="stylesheet" type="text/css" />
+<link href="__THEME__/layout.css?20110429" rel="stylesheet" type="text/css" />
 <link href="__THEME__/main.css?20110429" rel="stylesheet" type="text/css" />
 <link href="../Public/login.css" rel="stylesheet" type="text/css" />
 <!-- 核心JS加载 -->
@@ -27,12 +29,12 @@
             <form action="{:U('home/Public/doAjaxLogin')}" method="post" name="ajaxLoginForm">
             	<div class="box_quike_login">
                 	<dl class="list_login">
-                    <!--<dt><label>&nbsp;</label><div class="line_tips" id="login_tips">请输入帐号和密码</div></dt>-->
+                    <div class="line_tips" id="login_tips" style="display:none;">请输入帐号和密码</div>
                     <dd><label>帐号:</label><div class="options_login"><input name="email" type="text" class="text_Pop" title="登录帐号" style="width:188px"/></div></dd>
                     <dd><label>密码:</label><div class="options_login"><input name="pwd" type="password" class="text_Pop" title="登录密码" style="width:188px"/></div></dd>
 					<php> $login_verify_on = in_array('login',$ts['site']['site_verify']); </php>
 					<eq name="login_verify_on" value="1">
-					<dd><label>验证码:</label><div class="options_login"><input name="verify" type="text" class="text_Pop" title="验证码" style="width:100px"/> &nbsp; <a href="javascript:void(0);" onclick="changeverify()"><img src="{:U('home/Public/verify')}" id="verifyimg" alt="换一张" class="alM" /></a></div></dd>
+					<dd><label>验证码:</label><div class="options_login"><input name="verify" type="text" class="text_Pop" title="验证码" style="width:100px"/> &nbsp; <a href="javascript:void(0);" onclick="changeverify()"><img src="__ROOT__/public/captcha.php" id="verifyimg" alt="换一张" class="alM" /></a></div></dd>
                     <else />
 					<input name="verify" type="hidden" class="text_Pop" value="" />
 					</eq>
@@ -59,14 +61,19 @@ function ajaxLogin(){
 	var password = document.ajaxLoginForm.pwd.value;
 	var verify = document.ajaxLoginForm.verify.value;
 	var remember = document.ajaxLoginForm.remember.checked;
+	if(email=='' || password==''){
+		$('#login_tips').html('帐号和密码不能为空！').show('fast');
+		return false;
+	}
 	$.post( '{:U('home/Public/doAjaxLogin')}',{email:email,password:password,remember:remember,verify:verify},function(txt){
 		json = eval('('+txt+')');
 		//登录成功
 		if(json.status==1){
-			//window.location.reload();
-			window.location.href='{:U('home/User/index')}';
+			$('#login_tips').html('登录成功，页面跳转中...').show('fast');
+			window.location.reload();
+			//window.location.href='{:U('home/User/index')}';
 		}else{
-			$('#login_tips').html(json.message);
+			$('#login_tips').html(json.message).show('fast');
 			//alert(json.status +'-'+json.message );
 		}
 	});

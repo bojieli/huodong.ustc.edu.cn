@@ -29,7 +29,7 @@
 .search li p{line-height: 18px; margin: 0px; padding: 0px}
 .search li .rmenu{}
 .search li .rmenu a{display: block; line-height: 20px; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #CCCCCC; padding-left: 5px}
-.search li .rmenu a:hover{color: #fff; background-color: #005FAB; text-decoration: none}
+.search li .rmenu a:hover{color: #fff; background-color: #F37B03; text-decoration: none}
 .rSort{float: right; width: 200px}
 .rSort h4{font-weight: bold; line-height: 25px; font-size: 12px}
 .rSort ul{width: auto}
@@ -78,18 +78,18 @@
 .text22{border: 1px solid #BDC7D8; font-size: 12px; height: 22px; line-height: 24px; margin: 0; padding: 0; vertical-align: middle}
 /*推荐专辑*/
 .Recommended li{clear:both; margin:0 0 10px 0}
-.Recommended li .c1{float:left; margin:0 5px 0 0}
-.Recommended li .c1 img{margin:4px 0 0 0}
+.Recommended li .c1{float:left; margin:0 5px 0 0;width:80px;height:80px;}
+.Recommended li .c1 img{margin:4px 0 0 0;width:70px;height:70px;}
 .Recommended li .c2{float:left}
 /*选择城市弹窗*/
 .pop_select_city{width:420px;padding:20px 0;text-align:left;overflow:hidden;*zoom:1}
 .pop_select_city dt,.pop_select_city dd{padding:10px 20px 0}
 .pop_select_city dt{padding:0 20px 10px}
 .pop_select_city dd span{margin:0 5px 0 0}
-.pop_select_city .ullist{list-style-type:none;white-space: nowrap;overflow:hidden;*zoom:1}
+.pop_select_city .ullist{list-style-type:none;white-space:nowrap;overflow:hidden;*zoom:1}
 .pop_select_city dd .ullist{list-style-type:none;white-space: nowrap;overflow:hidden;*zoom:1}
-.pop_select_city .ullist li{margin:5px 5px 5px 0;float:left;}
-.pop_select_city .ullist li a{}
+.pop_select_city .ullist li{margin:5px 5px 5px 0;float:left;white-space:nowrap}
+.pop_select_city .ullist li a{padding:0 3px;}
 .pop_select_city .ullist .on a{border-radius:3px;background-color:#999;padding:0 3px;color:#fff}
 /*---分享微博弹窗---*/
 .pop_share_weibo{padding:0 0 10px 0;width:400px;text-align:left;overflow:hidden;*zoom:1}

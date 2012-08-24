@@ -2,6 +2,8 @@
 <include file="__THEME__/header" />
 <php>}else {</php>
 <body>
+<link href="__THEME__/public.css?20110429" rel="stylesheet" type="text/css" />
+<link href="__THEME__/layout.css?20110429" rel="stylesheet" type="text/css" />
 <link href="__THEME__/main.css" rel="stylesheet" type="text/css" />
 <php>}</php>
 <script>
@@ -27,7 +29,7 @@ document.onload = setTimeout("Jump()" , {$waitSecond}* 1000);
         </present>
         <notpresent name="closeWin" >
           <p>系统将在 <span style="color:blue;font-weight:bold">{$waitSecond}</span> 秒后自动跳转,如果不想等待,直接点击 <A HREF="{$jumpUrl}">这里</A> 跳转<br/>
-            或者 <a href="__ROOT__/">返回首页</a></p>
+            或者 <a href="<php>if(APP_NAME=='admin' || ACTION_NAME=='Admin'){echo U('admin/Index/index'); }else{echo "__ROOT__/" ;}</php>">返回首页</a></p>
         </notpresent>
       </dd>
     </dl>
@@ -50,7 +52,7 @@ document.onload = setTimeout("Jump()" , {$waitSecond}* 1000);
       </present>
       <notpresent name="closeWin" >
         <p>系统将在 <span style="color:blue;font-weight:bold">{$waitSecond}</span> 秒后自动跳转,如果不想等待,直接点击 <A HREF="{$jumpUrl}">这里</A> 跳转<br/>
-          或者 <a href="__ROOT__/">返回首页</a></p>
+          或者 <a href="<php>if(APP_NAME=='admin' || ACTION_NAME=='Admin'){echo U('admin/Index/index'); }else{echo "__ROOT__/" ;}</php>">返回首页</a></p>
       </notpresent>
       </dd>
     </dl>

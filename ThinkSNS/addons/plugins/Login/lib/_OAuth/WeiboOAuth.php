@@ -205,91 +205,122 @@ abstract class WeiboOAuth
     }
 
     /**
-     * Make an HTTP request
+     * Http请求接口
      *
-     * @return string API results
+     * @param string $url
+     * @param string $method 支持 GET / POST / DELETE
+     * @param string $postfields
+     * @param boolean $multi false:普通post true: 文件上传
+     * @return string
      */
-    function http($url, $method, $postfields = NULL , $multi = false) {
-        $this->http_info = array();
-        $ci = curl_init();
-        /* Curl settings */
-        curl_setopt($ci, CURLOPT_USERAGENT, $this->useragent);
-        curl_setopt($ci, CURLOPT_CONNECTTIMEOUT, $this->connecttimeout);
-        curl_setopt($ci, CURLOPT_TIMEOUT, $this->timeout);
-        curl_setopt($ci, CURLOPT_RETURNTRANSFER, TRUE);
-
-        curl_setopt($ci, CURLOPT_SSL_VERIFYPEER, $this->ssl_verifypeer);
-
-        curl_setopt($ci, CURLOPT_HEADERFUNCTION, array($this, 'getHeader'));
-
-        curl_setopt($ci, CURLOPT_HEADER, FALSE);
-
-        switch ($method) {
-        case 'POST':
-            curl_setopt($ci, CURLOPT_POST, TRUE);
-            if (!empty($postfields)) {
-                curl_setopt($ci, CURLOPT_POSTFIELDS, $postfields);
-                //echo "=====post data======\r\n";
-                //echo $postfields;
+    function http($url, $method, $postfields = NULL , $multi = false)
+    {
+        //for test ,print all send params
+//      ksort($params);
+//      print_r($params);
+        
+        $method = strtoupper($method);
+        $postdata = '';
+        $urls = @parse_url($url);
+        $httpurl = $urlpath = $urls['path'] . ($urls['query'] ? '?' . $urls['query'] : '');
+        if( !$multi )
+        {
+            if ($postfields)
+            {
+                $postdata = $postfields;
+                $httpurl = $httpurl . (strpos($httpurl, '?') ? '&' : '?') . $postdata;
             }
-            break;
-        case 'DELETE':
-            curl_setopt($ci, CURLOPT_CUSTOMREQUEST, 'DELETE');
-            if (!empty($postfields)) {
-                $url = "{$url}?{$postfields}";
+            else
+            {
             }
         }
+        
+        $host = $urls['host'];
+        $port = $urls['port'] ? $urls['port'] : 80;
+        $version = '1.1';
+        if($urls['scheme'] === 'https')
+        {
+            $port = 443;
+        }
+        $headers = array();
+        if($method == 'GET')
+        {
+            $headers[] = "GET $httpurl HTTP/$version";
+        }
+        else if($method == 'DELETE')
+        {
+            $headers[] = "DELETE $httpurl HTTP/$version";
+        }
+        else
+        {
+            $headers[] = "POST $urlpath HTTP/$version";
+        }
+        $headers[] = 'Host: ' . $host;
+        $headers[] = 'User-Agent: OpenSDK-OAuth';
+        $headers[] = 'Connection: Close';
 
-        $header_array = array();
+        if($method == 'POST')
+        {
+            if($multi)
+            {
+                $headers[]= 'Content-Type: multipart/form-data; boundary=' . OAuthUtil::$boundary;
+                $postdata = $postfields;
+            }
+            else
+            {
+                $headers[]= 'Content-Type: application/x-www-form-urlencoded';
+            }
+        }
+        $ret = '';
+        $fp = fsockopen($host, $port, $errno, $errstr, 5);
 
-/*
-        $header_array["FetchUrl"] = $url;
-        $header_array['TimeStamp'] = date('Y-m-d H:i:s');
-        $header_array['AccessKey'] = SAE_ACCESSKEY;
+        if(! $fp)
+        {
+            $error = 'Open Socket Error';
+            return '';
+        }
+        else
+        {
+            if( $method != 'GET' && $postdata )
+            {
+                $headers[] = 'Content-Length: ' . strlen($postdata);
+            }
+            $this->fwrite($fp, implode("\r\n", $headers));
+            $this->fwrite($fp, "\r\n\r\n");
+            if( $method != 'GET' && $postdata )
+            {
+                $this->fwrite($fp, $postdata);
+            }
+            while(! feof($fp))
+            {
+                $ret .= fgets($fp, 1024);
+            }
+            fclose($fp);
+            //skip headers
+            $pos = strpos($ret, "\r\n\r\n");
+            if($pos)
+            {
+                $rt = trim(substr($ret , $pos+1));
+                $responseHead = trim(substr($ret, 0 , $pos));
+                $responseHeads = explode("\r\n", $responseHead);
+                $httpcode = explode(' ', $responseHeads[0]);
+                $this->_httpcode = $httpcode[1];
+                if(strpos( substr($ret , 0 , $pos), 'Transfer-Encoding: chunked'))
+                {
+                    $response = explode("\r\n", $rt);
+                    $t = array_slice($response, 1, - 1);
 
+                    return implode('', $t);
+                }
+                return $rt;
+            }
+        }
+        return $ret;
+    }
 
-        $content="FetchUrl";
-
-        $content.=$header_array["FetchUrl"];
-
-        $content.="TimeStamp";
-
-        $content.=$header_array['TimeStamp'];
-
-        $content.="AccessKey";
-
-        $content.=$header_array['AccessKey'];
-
-        $header_array['Signature'] = base64_encode(hash_hmac('sha256',$content, SAE_SECRETKEY ,true));
-*/
-        //curl_setopt($ci, CURLOPT_URL, SAE_FETCHURL_SERVICE_ADDRESS );
-
-        //print_r( $header_array );
-        $header_array2=array();
-        if( $multi )
-        	$header_array2 = array("Content-Type: multipart/form-data; Expect: ");
-        foreach($header_array as $k => $v)
-            array_push($header_array2,$k.': '.$v);
-
-        curl_setopt($ci, CURLOPT_HTTPHEADER, $header_array2 );
-        curl_setopt($ci, CURLINFO_HEADER_OUT, TRUE );
-
-
-        curl_setopt($ci, CURLOPT_URL, $url);
-
-        $response = curl_exec($ci);
-        $this->http_code = curl_getinfo($ci, CURLINFO_HTTP_CODE);
-        $this->http_info = array_merge($this->http_info, curl_getinfo($ci));
-        $this->url = $url;
-
-        //echo '=====info====='."\r\n";
-        //print_r( curl_getinfo($ci) );
-
-        //echo '=====$response====='."\r\n";
-       //print_r( $response );
-
-        curl_close ($ci);
-        return $response;
+    private function fwrite($handle,$data)
+    {
+        fwrite($handle, $data);
     }
 
     /**

@@ -12,7 +12,12 @@ class OperateModel extends WeiboModel{
 
     //删除一条微博
     function deleteMini($id,$uid){
-    	if( $info = $this->where("weibo_id=$id AND uid=$uid")->find() ){
+		if($GLOBALS['ts']['isSystemAdmin']){
+			$where = "weibo_id=$id";
+		}else{
+			$where = "weibo_id=$id AND uid=$uid";
+		}
+    	if( $info = $this->where($where)->find()){
     	    $opt = $this->setField('isdel',1,'weibo_id='.$info['weibo_id'].' AND isdel=0');
     		if($info['isdel'] == 0 && $opt){
 	    		//关联操作
@@ -27,11 +32,13 @@ class OperateModel extends WeiboModel{
 
 	    		//同时删除评论
 	    		D('Comment','weibo')->setField('isdel',1,'weibo_id='.$info['weibo_id']);
+
 	    		//删除附件
                 D('WeiboAttach','weibo')->del($uid,$id);
 
                 $this->_removeWeiboCache($id);
-	    		//同时更新话题微博数
+
+				//同时更新话题微博数
 //	    		preg_match_all('/#(.*)#/isU',$info['content'],$topic_arr);
 				D('Topic', 'weibo')->deleteWeiboJoinTopic($info['content'], $info['weibo_id']);
 
@@ -264,13 +271,17 @@ class OperateModel extends WeiboModel{
 	    return $this->__optToNew( $uid,$lastId,$type,$follow_gid,$limit);
 	}
 
-	private function __optToNew($uid,$lastId,$type=null,$follow_gid=null,$limit = 0,$since = false){
-		$followCount = D('Follow','weibo')->getUserFollowCount($uid);
-	    if(!empty($type) && $type >0)
+	private function __optToNew($uid,$lastId,$type='index',$follow_gid=null,$limit = 0,$since = false){
+
+		if(!empty($type) && $type >0){
 	        $type_str = " and type=".intval($type);
-		if($type=='original')
-			 $type_str = " and transpond_id=0";
-	    if($since){
+		}
+
+		if($type==='original'){
+			$type_str = " and transpond_id=0";
+	    }
+
+		if($since){
 	        if($lastId >0){
 	            $weiboId = "weibo_id<{$lastId} and";
 	        }
@@ -280,20 +291,25 @@ class OperateModel extends WeiboModel{
 	        }
 	    }
 
-
 	    $map="{$weiboId} isdel=0 {$type_str}";
 
-	    if($followCount){
-	        if(!empty($follow_gid)){
-	            $fids = D('FollowGroup','weibo')->getUsersByGroup($uid,$follow_gid);
-	            $map.=' AND uid IN ('.implode(',',$fids).')';
-	        }else{
-				$map.=" AND ( uid IN (SELECT fid FROM {$this->tablePrefix}weibo_follow WHERE uid=$uid AND type=0 OR fid={$uid}))";
-	        }
-	    }
+		if($uid>0){
+			$followCount = D('Follow','weibo')->getUserFollowCount($uid);
+			if($followCount){
+				if(!empty($follow_gid)){
+					$fids = D('FollowGroup','weibo')->getUsersByGroup($uid,$follow_gid);
+					$map.=' AND uid IN ('.implode(',',$fids).')';
+				}else{
+					$map.=" AND ( uid IN (SELECT fid FROM {$this->tablePrefix}weibo_follow WHERE uid=$uid AND type=0) OR uid={$uid} )";
+				}
+			}else{//无关注时.数据为空.
+				$map.=' AND uid = '.$uid;
+			}
+		}
 
 	    if($limit){
 	        $list = $this->field('weibo_id')->where($map)->order('weibo_id DESC')->limit($limit)->findAll();
+			unset($map);
 	        //取出微博的实际数据
 	        $weibo_id_list = getSubByKey($list,'weibo_id');
 	        $data= $this->getWeiboDetail($weibo_id_list);
@@ -309,64 +325,11 @@ class OperateModel extends WeiboModel{
 	    return $list;
 	}
 
-    //如果limit>0，则是加载。如果为0，则为计数
-    //如果$uid为空，则是正在发生的
-//	private function __optToNew($uid,$lastId,$type=null,$follow_gid=null,$limit = 0,$since = false){
-//		$followCount = D('Follow','weibo')->getUserFollowCount($uid);
-//	    if(!empty($type) && $type >0)
-//	        $type_str = " and w.type=".$type;
-//	    if($since){
-//	        if($lastId >0){
-//	            $weiboId = "w.weibo_id<{$lastId} and";
-//	        }
-//	    }else{
-//	        if($lastId >0){
-//	            $weiboId = "w.weibo_id>{$lastId} and";
-//	        }
-//	    }
-//
-//
-//	    $map="{$weiboId} w.isdel=0 {$type_str}";
-//
-//	    if($followCount){
-//	        if(!empty($follow_gid)){
-//	            $fids = D('FollowGroup','weibo')->getUsersByGroup($uid,$follow_gid);
-//	            $map.=' AND f.uid IN ('.implode(',',$fids).')';
-//	        }else{
-//	            $map.=" AND f.uid = ".$uid;
-//	        }
-//	    }
-//
-//	    if($limit){
-//	        $table = '`'.C('DB_PREFIX').'weibo` as w';
-//	        if(!empty($uid)){
-//	            $table = '`'.C('DB_PREFIX').'weibo` as w
-//                    left join '.C('DB_PREFIX').'weibo_follow as f
-//                    on w.uid = f.fid';
-//	        }
-//	        $list = $this->table($table)->field('w.weibo_id')->where($map)->order('w.weibo_id DESC')->limit($limit)->findAll();
-//	        //取出微博的实际数据
-//	        $weibo_id_list = getSubByKey($list,'weibo_id');
-//	        $data= $this->getWeiboDetail($weibo_id_list);
-//
-//	        $result = array();
-//	        foreach( $data as $key=>$value){
-//	            $result[] = $this->getOne('',$value);
-//	        }
-//	        $list['data'] = $result;
-//	    }else{
-//	        $list = $this->table('`'.C('DB_PREFIX').'weibo` as w
-//                    left join '.C('DB_PREFIX').'weibo_follow as f
-//                    on w.uid = f.fid')->where($map)->count();
-//	    }
-//	    return $list;
-//	}
 
     //获取首页微博列表
     function getHomeList($uid, $type='index', $since, $row=10, $gid='') {
     	$row = $row?$row:10;
-		$followCount = D('Follow','weibo')->getUserFollowCount($uid);
-    	if($type=='original'){  //原创
+		if($type=='original'){  //原创
 			$map = 'transpond_id=0 AND isdel=0';
     		if($since){
     			$map.=" AND weibo_id<$since";
@@ -385,16 +348,23 @@ class OperateModel extends WeiboModel{
     		}
 			$map.=" AND type=".$type;
     	}
-    	if ($followCount) { // 有关注时, 展示关注的用户的微博
-	    	if (is_numeric($gid)) {
-	    		$fids = D('FollowGroup','weibo')->getUsersByGroup($uid,$gid);
-	    		$map.=' AND uid IN ('.implode(',',$fids).')';
-	    	}else{
-    			$map.=" AND ( uid IN (SELECT fid FROM {$this->tablePrefix}weibo_follow WHERE uid=$uid AND type=0 or fid={$uid}))";
-	    	}
-    	}
+
+		if($uid>0){
+			$followCount = D('Follow','weibo')->getUserFollowCount($uid);
+			if ($followCount) { // 有关注时, 展示关注的用户的微博
+				if (is_numeric($gid)) {
+					$fids = D('FollowGroup','weibo')->getUsersByGroup($uid,$gid);
+					$map.=' AND uid IN ('.implode(',',$fids).')';
+				}else{
+					$map.=" AND ( uid IN (SELECT fid FROM {$this->tablePrefix}weibo_follow WHERE uid=$uid AND type=0) OR uid={$uid})";
+				}
+			}else{//无关注时.数据为空.
+				$map.=' AND uid = '.$uid;
+			}
+		}
+
     	$list = $this->field('weibo_id')->where($map)->order('weibo_id DESC')->limit($row)->findAll();
-    	unset($map);
+		unset($map);
         $return['data'] = $this->_paramResultData($list,$uid);
 
         unset( $result, $list);
@@ -409,7 +379,7 @@ class OperateModel extends WeiboModel{
     	} else {    //其它类型
     		$map = "uid=$uid AND type=".$type.' AND isdel=0';
     	}
-		$list = $this->field('weibo_id')->where($map)->order('weibo_id DESC')->findPage(20, model('UserCount')->getUserWeiboCount($uid, $type));
+        $list = $this->field('weibo_id')->where($map)->order('weibo_id DESC')->findPage(20);
         return $this->_paramResultData($list,$uid,true);
     }
 

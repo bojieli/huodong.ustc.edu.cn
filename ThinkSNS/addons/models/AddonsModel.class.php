@@ -24,8 +24,11 @@ class AddonsModel extends Model
 	}
 
 	public function resetAddonCache(){
+		
 		if(empty($this->fileAddons)) $this->_getFileAddons();
+		
 		$addonList = $this->getAddonsValid();
+	
 		$addonCache = array();
 		foreach($addonList as $key => $value){
 			if(isset($this->fileAddons[$value['name']])){
@@ -38,6 +41,7 @@ class AddonsModel extends Model
 
 	public function getAddonsValid()
 	{
+			
 		$map['status'] = '1';
 		return $this->where($map)->findAll();
 	}

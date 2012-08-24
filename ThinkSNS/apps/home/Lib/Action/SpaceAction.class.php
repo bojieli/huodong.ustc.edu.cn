@@ -11,6 +11,7 @@ class SpaceAction extends Action
 	   			$this->uid = $domainuser['uid'];
 	   			$this->assign('uid',$this->uid);
 	   		}else {
+	   			$this->assign('jumpUrl',$_SERVER['HTTP_REFERER']);
    	   			$this->error(L('user_not_exist'));
 	   		}
 		} else {
@@ -28,7 +29,9 @@ class SpaceAction extends Action
     			// 基本信息-钩子
 	   	   		Addons::hook('home_space_profile_base', array('uid' => $this->uid, 'user_info' => & $userinfo));
 				$this->assign('userinfo', $userinfo);
+				$this->assign('user_credit', service('Credit')->getUserCredit($this->uid));
 	   	   	} else {
+	   	   		$this->assign('jumpUrl',$_SERVER['HTTP_REFERER']);
    	   			$this->error(L('user_not_exist'));
 	   		}
 
@@ -53,22 +56,39 @@ class SpaceAction extends Action
     // 用户空间首页
     public function index()
     {
-        $menu[''] = L('weibo');
+    	$this->_canViewSpace();
+
+        $menu['weibo'] = L('weibo');
         Addons::hook('home_space_tab', array('uid' => $this->uid, 'menu' => & $menu));
         $this->assign('space_menu', $menu);
 
-        $data['type'] = in_array($_GET['type'], array_flip($menu)) ? $_GET['type'] : '';
-        if (in_array($data['type'], array('', 'original', '1', '3','4'))) {
-        	$data['list'] = D('Operate','weibo')->getSpaceList($this->uid, $data['type']);
-        }
-
         $data['user'] = D('User')->getUserByIdentifier($this->uid);
-
 		//判断用户是否存在
 		if(!$data['user']['uid']){
+			$this->assign('jumpUrl', $_SERVER['HTTP_REFERER']);
 			$this->error('用户不存在或已被删除！');
 		}
 
+        $data['type'] = $_GET['type'] ? h($_GET['type']) : 'weibo';
+        if ('weibo' === $data['type']) {
+	        $weiboType = $data['weibo_type'] = h($_GET['weibo_type']);
+	        $data['list'] = D('Operate','weibo')->getSpaceList($this->uid, $weiboType);
+			//微博menu组装
+	        $data['weibo_menu'] = array(
+	                        ''  => L('all'),
+	                        'original' => L('original'),
+	                      );
+	        Addons::hook('home_index_weibo_tab', array(&$data['weibo_menu']));
+	    	if(!empty($weiboType)) {
+	            $this->assign('typeClass',"on");
+	            $this->assign('view','block');
+	        }else{
+	            $this->assign('typeClass','off');
+	            $this->assign('view','none');
+	        }
+        }
+
+        
         $this->assign($data);
         $this->setTitle($data['user']['uname'] . '的空间');
     	$this->display();
@@ -77,6 +97,8 @@ class SpaceAction extends Action
     //个人资料
     public function profile()
     {
+    	$this->_canViewSpace();
+
     	$pUserProfile = D('UserProfile');
     	$pUserProfile->uid = $this->uid;
     	$data['userInfo']  = $pUserProfile->getUserInfo(true);
@@ -132,6 +154,8 @@ class SpaceAction extends Action
 
     //关注
     function follow(){
+    	$this->_canViewSpace();
+
     	$data['type'] = ($_GET['type']=='follower')?'follower':'following';
     	if($data['type'] == 'following'){
     		//关注分组列表
@@ -160,11 +184,13 @@ class SpaceAction extends Action
 		    	}
 	    	}
     	}
+
     	// 关注的人列表
     	$data['list'] = D('Follow','weibo')->getList($this->uid,$data['type'],0,$data['gid']);
     	$this->assign($data);
     	$this->setTitle(getUserName($this->uid) . '的' . ($data['type'] == 'follower' ? '粉丝' : '关注'));
     	$this->display();
+
     }
 
     //小名片
@@ -189,5 +215,23 @@ class SpaceAction extends Action
     	}else{
     		$this->ajaxReturn('',L('get_success'),0);
     	}
+    }
+
+    private function _canViewSpace()
+    {
+    	$user_set = D('UserPrivacy')->getUserSet($this->mid);
+    	$can_view = true;
+    	if (1 == $user_set['space']) {
+    	    // 我关注的人
+    	    if ($this->mid && $this->mid != $this->uid && 'unfollow' === getFollowState($this->mid, $this->uid, 0)) {
+	    		$can_view = false;
+    	    }
+    	} else {
+    		// 所有人（不包括黑名单）
+	    	if ($this->mid && $this->mid != $this->uid && isBlackList($this->uid, $this->mid)) {
+	    		$can_view = false;
+	    	}
+    	}
+    	!$can_view && $this->error('对方不允许访问');
     }
 }

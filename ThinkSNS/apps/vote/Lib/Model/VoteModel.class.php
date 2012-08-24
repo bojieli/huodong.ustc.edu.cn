@@ -23,8 +23,8 @@ class VoteModel extends BaseModel
         //检测选项是否重复
         $opt_test = array_filter($opt);
         foreach($opt as $value){
-            if(get_str_length($value) >20){
-                throw new ThinkException("投票选项每项20个字符");
+            if(get_str_length($value) >200){
+                throw new ThinkException("投票选项不能超过200个字符");
             }
         }
 

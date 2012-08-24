@@ -21,7 +21,7 @@
             <div class="left" style="width:560px;">
 			<php>if($gift['sendWay']==3) { </php>
 			
-				  <div class="lh20">神秘人物 	在 {$gift.cTime|friendlyDate} 花费了 {$gift.giftPrice}个{$config.creditName} 赠送给您的礼物。 </div>
+				  <div class="lh20">神秘人物 	在 {$gift.cTime|friendlyDate} 花费了 {$gift.giftPrice}点{$type} 赠送给您的礼物。 </div>
 	              
 				  <php>if($gift['toUserId']==$mid) { </php>
 				  <div class="cGray2 lh30">				  
@@ -37,7 +37,7 @@
 					神秘人物
 				  <php> } </php>
 						  
-				  在 {$gift.cTime|friendlyDate} 花费了 {$gift.giftPrice}个{$config.creditName} 赠送给您的礼物。<br />
+				  在 {$gift.cTime|friendlyDate} 花费了 {$gift.giftPrice}点{$type} 赠送给您的礼物。<br />
 				  <php>if($gift['toUserId']==$mid) { </php>
 					<a href="{:U('gift/Index/index', array('uid'=>$gift['fromUserId']))}">给{$gift.fromUserId|getUserName}回赠礼物</a></div>
 				  <div class="cGray2 lh30"><php>echo getUserWo($gift['fromUserId'],$mid);</php>还给您留言说：</div>
@@ -46,7 +46,7 @@
 				      </div>
 				  <php> } </php>
 			<php>} else {</php> 
-			  <div class="lh20"><space uid="gift.fromUserId" class="fn" target="_blank">{uname}</space> 在 {$gift.cTime|friendlyDate} 花费了 {$gift.giftPrice}个{$config.creditName} 赠送给您的礼物。<br /> 
+			  <div class="lh20"><space uid="gift.fromUserId" class="fn" target="_blank">{uname}</space> 在 {$gift.cTime|friendlyDate} 花费了 {$gift.giftPrice}点{$type} 赠送给您的礼物。<br /> 
                 <a href="{:U('gift/Index/index', array('uid'=>$gift['fromUserId']))}">给{$gift.fromUserId|getUserName}回赠礼物</a></div>
               <div class="cGray2 lh30"><php>echo getUserWo($gift['fromUserId'],$mid);</php>还给您留言说：</div>
               <div class="quote" style="margin:0;"><p>{$gift.sendInfo}<span class="quoteR">&nbsp;</span></p></div>

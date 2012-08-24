@@ -29,6 +29,23 @@ class CategoryModel extends Model
 		$pid==0 && S('Cache_Group_Cate_'.$pid,$cTrees);	// pid=0 才缓存
 		return $cTrees;
 	}
+
+	//生成分类Tree - new
+	public function _maskTreeNew($pid) {
+		$c = $this->where("pid='$pid'")->findAll();
+		if(!empty($c)) {
+			foreach($c as $v) {
+				$cTree['t'] = $v['title'];
+				$cTree['a'] = $v['id'];
+				$maskInfo = $this->_maskTreeNew($v['id']);
+				$cTree['d'] = empty($maskInfo) ? '' : $maskInfo;
+				$cTrees[] = $cTree;
+			}
+		}
+
+		return $cTrees;
+	}
+
 	//获取LI列表
 	public function getCategoryList($pid='0') {
 		$list	=	$this->_makeLiTree($pid);
@@ -77,6 +94,21 @@ class CategoryModel extends Model
 		unset($cates);
 		return intval($pid);
 	}
+
+	//解析分类 - new 
+	public function _digCateNew($array) {
+		foreach($array as $k=>$v){
+			$nk	=	str_replace('cid','',$k);
+			if(is_numeric($nk) && !empty($v)){
+				$cates[$nk]	=	intval($v);
+			}
+		}
+		$pid = is_array($cates)?end($cates):0;
+
+		unset($cates);
+		return intval($pid);
+	}
+
 	//解析分类树
 	public function _digCateTree($array) {
 		foreach($array as $k=>$v){
@@ -95,7 +127,7 @@ class CategoryModel extends Model
 	public function _makeParentTree($id,$onlyShowPid=false) {
 		$tree	=	$this->_makeCateTree($id);
 		if($onlyShowPid){
-			$tree	=	str_replace(','.$id,'',$tree);
+			$tree	=	preg_replace('/^' . $id . '|,'.$id.'$/','',$tree);
 		}
 		return $tree;
 	}
@@ -109,6 +141,31 @@ class CategoryModel extends Model
 			$tree	=	$id;
 		}
 		return $tree;
+	}
+
+	//获取指定分类下的子分类ID
+	public function getAllCateIdWithPid($pid) {
+		static $result;
+		$allPid = $this->field('id')->where('pid='.$pid)->findAll();
+		if(!empty($allPid)) {
+			foreach($allPid as $value) {
+				$this->getAllCateIdWithPid($value['id']);
+				$result[] = $value['id'];
+			}
+		}
+
+		return $result;
+	}
+
+	//通过子分类ID，获取完整路径
+	public function getPathWithCateId($cid) {
+		$pInfo = $this->where('id='.$cid)->find();
+		if(!empty($pInfo)) {
+			$path = $this->getPathWithCateId($pInfo['pid']);
+			$path[] = $pInfo['title'];
+		}
+
+		return $path;
 	}
 }
 ?>

@@ -36,7 +36,7 @@ group_info.prototype = {
 			}
 		}
 		if (_tag_num > 5) {
-			$tag_change.html('添加标签最多可设置五个');
+			$tag_change.html('添加标签最多可设置5个');
 			this.$input_tags.focus();
 		} else {
 			$tag_change.html('');
@@ -47,8 +47,9 @@ group_info.prototype = {
 	{
 	    var date = new Date();
 	    var ttime = date.getTime();
-	    var url = U('home/Public/verify');
-	    $('#verifyimg').attr('src',url+'&'+ttime);
+	    //var url = U('home/Public/verify');
+	    var url = _PUBLIC_+'/captcha.php';
+		$('#verifyimg').attr('src',url+'&'+ttime);
 	},
 	check_form:function(v_form)
 	{
@@ -56,16 +57,16 @@ group_info.prototype = {
 			ui.error("群组名称不能为空");
 			v_form.name.focus();
 			return false;
-		} else if (getLength(v_form.name.value) > 20) {
-			ui.error("群组名称不能超过20个字");
+		} else if (getLength(v_form.name.value) > 30) {
+			ui.error("群组名称不能超过30个字");
 			v_form.name.focus();
 			return false;
 		} else if (v_form.cid0.value <= 0) {
 			ui.error("请选择群组分类");
 			v_form.cid0.focus();
 			return false;
-		} else if (getLength(v_form.intro.value) > 60) {
-			ui.error("群组简介不能超过60个字");
+		} else if (getLength(v_form.intro.value) > 200) {
+			ui.error("群组简介不能超过200个字");
 			v_form.intro.focus();
 			return false;
 		} else if (getLength(v_form.tags.value.replace(/,/ig,'')) == 0) {
@@ -73,7 +74,7 @@ group_info.prototype = {
 			v_form.tags.focus();
 			return false;
 		} else if (this.tag_num() >5) {
-			ui.error("标签个数请不能超过五个");
+			ui.error("标签个数不能超过5个");
 			return false;
 		} else if (getLength(v_form.verify.value) == 0) {
 			ui.error("请输入验证码！");

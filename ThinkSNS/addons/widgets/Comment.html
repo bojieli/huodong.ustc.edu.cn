@@ -8,7 +8,7 @@
         <span><a target_set="comment_{$appid}" onclick="ui.emotions(this)" href="javascript:void(0)" class="faceicon1"></a></span>
         <span><label><input type="checkbox" value="1" id="with_new_weibo">{:L('send_a_microblog_sametime')}</label></span>
     </dd>
- </dl>   
+</dl>
 </div>
 <div class="feedBox">
     <ul class="feed_list">
@@ -58,7 +58,7 @@ function getCommentList(url){
 	$(".feed_list").html('<li class="loading">loading....</li>');
 	$.get(url,{type:type,appid:appid},function(txt){
 		txt = $.parseJSON(txt);
-		if( txt.data ){
+		if( txt != null && txt.data ){
 			var html = '';
 			$.each(txt.data,function(i,n){
 				html+=_parseTemplate(n);
@@ -126,6 +126,11 @@ function doAddComment(){
 	$comment_commit.attr('disabled','true');
 	$.post(U('home/Comment/doAddComment'),{comment:content,with_new_weibo:with_new_weibo,type:type,appid:appid,to_id:to_id,author_uid:author_uid,title:title,url:url,table:table,id_field:id_field,comment_count_field:comment_count_field},function(txt){
 		txt = $.parseJSON(txt);
+		if(txt == null){
+			ui.error("请先登录再评论");
+			window.location.reload();
+			return false;
+		}
 		var html = _parseTemplate(txt.data);
 		if( $('.feed_list').find('li[rel="nocomment"]').html()==null ){
 			$('.feed_list').prepend(html);

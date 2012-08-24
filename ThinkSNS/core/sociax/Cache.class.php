@@ -103,7 +103,10 @@ class Cache extends Think
         if(empty($type))  $type = C('DATA_CACHE_TYPE');
         $cachePath = ADDON_PATH.'/libs/Cache/';
         $cacheClass = 'Cache'.ucwords(strtolower(trim($type)));
-        require_cache($cachePath.$cacheClass.'.class.php');
+
+        if(!class_exists($cacheClass))
+            require_cache($cachePath.$cacheClass.'.class.php');
+        
         if(class_exists($cacheClass))
             $cache = new $cacheClass($options);
         else

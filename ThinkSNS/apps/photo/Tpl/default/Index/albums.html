@@ -12,9 +12,17 @@
           <!-- 看别人的图片时显示  -->
           <if condition=" $mid neq $uid">
             <div class="person_info">
-              <div class="userPic"> <a href="{:U('home/Space/index',array(uid=>$user[uid]))}"><img src="{$uid|getUserFace}" /></a> </div>
+              <div class="userPic"> <a href="{:U('home/Space/index',array(uid=>$uid))}"><img src="{$uid|getUserFace}" /></a> </div>
               <div style="padding-left: 70px;">
               	<a class="right" href="javascript:window.history.back(-1)">返回上一页</a>
+                <h2>{$userName}的图片</h2>
+                <p><a href="{:U('home/Space/index',array(uid=>$uid))}">{$userName}的空间</a> ┊ <a onclick="ui.sendmessage({$uid})" href="javascript:void(0)">发私信</a></p>
+              </div>
+            </div>
+            <else />
+            <div class="person_info">
+              <div class="userPic"> <a href="{:U('home/Space/index',array(uid=>$mid))}"><img src="{$mid|getUserFace}" /></a> </div>
+              <div style="padding-left: 70px;">
                 <h2>{$userName}的图片</h2>
                 <p><a href="{:U('home/Space/index',array(uid=>$uid))}">{$userName}的空间</a> ┊ <a onclick="ui.sendmessage({$uid})" href="javascript:void(0)">发私信</a></p>
               </div>

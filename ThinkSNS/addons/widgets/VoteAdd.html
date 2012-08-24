@@ -27,7 +27,7 @@
                 <div class="c1">
                     <select id="type{$rand}" name="type" class="mr5 ml5">
                         <option value="0">{:L('single')}</option>
-                        <php>for($i=1;$i<20;$i++){</php>
+                        <php>for($i=1;$i<10;$i++){</php>
                         <option value="{$i}">{:L('can_multi_select')}{$i+1}{:L('options_most')}</option>
                         <php>}</php>			
                     </select>
@@ -36,7 +36,7 @@
                 </li>
                 <li style="width:100%">
                     <label>&nbsp;</label>
-                    <div class="c1"><a href="javascript:void(0)" onclick="Vote.more(this)" class="ml5">增加新选项</a></div>
+                    <div class="c1"><a href="javascript:void(0)" onclick="Vote.more(this)" class="ml5" id="ops">增加新选项</a></div>
                     <div class="c"></div>
                 </li>
                 <div class="c"></div>
@@ -70,9 +70,9 @@
 				</div>
 				</dd>
                 <dd class="mt5">
-                <label>&nbsp;</label>
+                <label>描述:</label>
                 <div class="c1">
-                <textarea name="explain" id="explain{$rand}" rows="5" class="text ml5"  style="width:70%" onfocus="this.className='text2 ml5';" onblur="this.className='text ml5';"></textarea></div>
+                  <textarea name="explain" id="explain{$rand}" rows="5" class="text ml5"  style="width:70%" onfocus="this.className='text2 ml5';" onblur="this.className='text ml5';"></textarea></div>
                 <div class="c1">
                 </dd>
 			</div>
@@ -113,6 +113,10 @@ var Vote = (function(){
 						ui.error("标题不能为空！");
 						return false;
 					}
+					if(getLength(title) >50){
+						ui.error("标题长度不大于100个字符");
+						return false;
+					}
 					var flag = 0;
 						$(".vote_opt{$rand}").each(function (i) {
 								if($.trim($(this).val())) flag++;									
@@ -132,10 +136,15 @@ var Vote = (function(){
 					var mustReturn = false;
 					$(".vote_opt{$rand}").each(function(i){
 						data.opt[i] = $.trim($(this).val());
-					    if(data.opt[i].length > 20){
-					        ui.error("{:L('option_length')}");
+					    if(getLength(data.opt[i]) > 50){
+					        ui.error("候选项名称不能大于100个字符");//选项最多20个字符
 					        mustReturn = true;
-					        return;
+					        return false;
+					    }
+					    if(data.opt[i] == '' || getLength(data.opt[i].replace(/\s+/g,"")) == 0){
+					    	ui.error("请填写完整候选项内容");
+					    	mustReturn = true;
+					    	return false;
 					    }
 					});
 					if(mustReturn) return;
@@ -168,6 +177,7 @@ var Vote = (function(){
 					
 				},
 				exit:function(){
+				$('.vote_dealtime_custom{$rand}').hide();
 				<php>if($inner){</php>
 					document.getElementById("voteForm{$rand}").reset()
 				<php>}else{</php>
@@ -223,6 +233,10 @@ var Vote = (function(){
 				    $('.vote_delete').click(function(){
                         $(this).parent().parent().remove();
                         self.resort();
+						var size = $('#opt_list{$rand}').children('dl').size();
+						if(size < num_limit){
+							$('#ops').parent().parent().show();
+						}
                     });
 				    
 				},

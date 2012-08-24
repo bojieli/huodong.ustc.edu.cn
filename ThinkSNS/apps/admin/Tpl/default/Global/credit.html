@@ -97,8 +97,18 @@
 	}
 	
 	function deleteCredit(ids) {
-		ids = ids ? ids : getChecked();
-		ids = ids.toString();
+		var length = 0;
+	    if(ids) {
+	        length = 1;         
+	    }else {
+	        ids    = getChecked();
+	        length = ids.length;
+	        ids    = ids.toString();
+	    }
+	    if(ids=='') {
+	        ui.error('请先选择一个规则');
+	        return ;
+	    }
 		if(ids == '' || !confirm('删除成功后将无法恢复，确认继续？')) return false;
 		
 		$.post("{:U('admin/Global/doDeleteCredit')}", {ids:ids}, function(res){

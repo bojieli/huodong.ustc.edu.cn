@@ -26,7 +26,7 @@
 				<div class="c2">
 				<select name="album_privacy" id="privacy" onchange="javascript:changePrivacy(this);change_flag=true;" class="text">
 					<option value="1" <if condition="$album['privacy'] eq 1">selected="selected"</if>>所有人可见</option>
-					<option value="2" <if condition="$album['privacy'] eq 2">selected="selected"</if>>仅好友可见</option>
+					<option value="2" <if condition="$album['privacy'] eq 2">selected="selected"</if>>仅我关注可见</option>
 					<option value="3" <if condition="$album['privacy'] eq 3">selected="selected"</if>>仅自己可见</option>
 					<option value="4" <if condition="$album['privacy'] eq 4">selected="selected"</if>>凭密码访问</option>
 				</select>				
@@ -124,8 +124,10 @@ function changePrivacy(obj){
 
 //表单验证
 function check_form(obj){
-	if(obj.album_name.value==''){
-		alert('{$ts['app']['app_alias']}名字不能为空');
+	var name = $("#album_name").val();
+	if(obj.album_name.value=='' || getLength(name.replace(/\s+/g,"")) == 0){
+		ui.error('{$ts['app']['app_alias']}名字不能为空');
+		return false;
 	}
 
 	//提交表单不弹出提醒

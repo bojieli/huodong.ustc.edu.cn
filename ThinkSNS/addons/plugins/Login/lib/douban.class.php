@@ -1,13 +1,17 @@
 <?php
+date_default_timezone_set('Asia/Chongqing');
 require_once 'douban/OAuth.php';
 require_once 'douban/doubanOAuth.php';
-date_default_timezone_set('Asia/Chongqing');
-
-class douban {
+class douban{
 
 	private $_authorize_url;
 	private $_douban_key;
 	private $_douban_secret;
+	var $error_code;
+
+	function getError(){
+		return $this->error_code;
+	}
 
 	public function __construct() {
 		$this->_douban_key		= DOUBAN_KEY;

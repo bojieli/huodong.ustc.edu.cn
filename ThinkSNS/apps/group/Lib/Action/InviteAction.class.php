@@ -32,7 +32,8 @@ class InviteAction extends BaseAction {
 			}
 
 			$message_data['title']   = "邀您加入群组 {$this->groupinfo['name']}";
-			$message_data['content'] = "你好，诚邀您加入“{$this->groupinfo['name']}” 群组，点击" . U('group/Group/index', array('gid'=>$this->gid)) . '进入。';
+			$url = '<a href="' . U('group/Group/index', array('gid'=>$this->gid)).'" target="_blank">去看看</a>';
+			$message_data['content'] = "你好，诚邀您加入“{$this->groupinfo['name']}” 群组，点击   " . $url . '进入。';
 			foreach ($toUserIds as $t_u_k => $t_u_v) {
 				$message_data['to'] 	 = $t_u_v;
 	            $res = model('Message')->postMessage($message_data,  $this->mid);

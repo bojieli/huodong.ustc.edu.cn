@@ -95,17 +95,27 @@
 
 	//删除节点
 	function deleteNode(ids) {
-		ids = ids ? ids : getChecked();
-		ids = ids.toString();
+		var length = 0;
+		if(ids) {
+		    length = 1;         
+		}else {
+		    ids    = getChecked();
+		    length = ids.length;
+		    ids    = ids.toString();
+		}
+		if(ids=='') {
+		    ui.error('请先选择一个节点');
+		    return ;
+		}
 		if(ids == '' || !confirm('删除成功后将无法恢复，确认继续？')) return false;
 		
 		$.post("{:U('admin/User/doDeleteNode')}", {ids:ids}, function(res){
 			if(res == '1') {
-				ids = ids.split(',');
+				ids = ids.toString().split(',');
 				for(i = 0; i < ids.length; i++) {
 					$('#node_'+ids[i]).remove();
 				}
-				ui.success('保存成功');
+				ui.success('删除成功');
 			}else {
 				ui.error('保存失败');
 			}

@@ -1,11 +1,73 @@
 <?php
 class IndexAction extends Action{
 	
-	public function _initialize() {
-	}
-	
 	public function index() {
-		U('home/User/index', '', true);
+		if (service('Passport')->isLogged())
+			redirect(U('home/User/index'));
+		else
+			$this->showIndex();
+	}
+
+	private function showIndex(){
+		
+		unset($_SESSION['sina'], $_SESSION['key'], $_SESSION['douban'], $_SESSION['qq'],$_SESSION['open_platform_type']);
+
+		//验证码
+		$opt_verify = $this->_isVerifyOn('login');
+		if ($opt_verify) {
+			$this->assign('login_verify_on', $opt_verify);
+		}
+
+		$data['email'] = t($_REQUEST['email']);
+		$data['uid']   = t($_REQUEST['uid']);
+		$uids = array();
+
+		// 正在热议 1小时缓存
+		$data['hot_topic'] = D('Topic', 'weibo')->getHot();
+
+		// 人气推荐
+		$data['hot_user']  = D('Follow', 'weibo')->getTopFollowerUser();
+		$data['hot_user'] = array_slice($data['hot_user'], 0, 10);
+		$uids = array_merge($uids, getSubByKey($data['hot_user'], 'uid'));
+
+		// 正在发生 (原创的文字微博)
+		$data['lastest_weibo'] = D('Operate', 'weibo')->getLastWeibo();
+		$data['lastest_weibo'] = array_slice($data['lastest_weibo'], 0, 6);
+		$uids = array_merge($uids, getSubByKey($data['lastest_weibo'], 'uid'));
+		$this->assign('since_id', empty($data['lastest_weibo']) ? 0 : $data['lastest_weibo'][0]['weibo_id'] );
+
+		// 原创的图片微博
+		$data['pic_weibo'] = S('S_login_pic_weibo');
+		if(empty($data['pic_weibo'])) {
+			$map['transpond_id'] = 0;
+			$map['type']		 = 1;
+			$map['isdel'] 		 = 0;
+			$data['pic_weibo'] = D('Operate', 'weibo')->where($map)->order('weibo_id DESC')->limit(3)->findAll();
+			S('S_login_pic_weibo', $data['pic_weibo'], 3600);
+		}
+
+		$uids = array_merge($uids, getSubByKey($data['pic_weibo'], 'uid'));
+		foreach ($data['pic_weibo'] as $k => $v){
+			$imageData = unserialize($v['type_data']);
+			if(isset($imageData[0])) {
+				$data['pic_weibo'][$k]['type_data'] = $imageData[0];
+			} else {
+				$data['pic_weibo'][$k]['type_data'] = $imageData;
+			}
+		}
+
+		D('User', 'home')->setUserObjectCache(array_flip(array_flip($uids)));
+		
+		$this->assign($data);
+		$this->assign('regInfo',model('Xdata')->lget('register'));
+		$this->display();
+	}
+
+	private function _isVerifyOn($type='login'){
+		// 检查验证码
+		if($type!='login' && $type!='register') return false;
+		$opt_verify = $GLOBALS['ts']['site']['site_verify'];
+		return in_array($type, $opt_verify);
 	}
 
 	/**  前台 应用管理  **/

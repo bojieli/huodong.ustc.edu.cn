@@ -38,7 +38,7 @@
 	.boxy-inner { background-color: white; padding: 0; color:#333; }
 	.boxy-inner a:link{}
 		.boxy-inner a.null{color:#345974;}
-	.boxy-content { }
+	.boxy-content .pop tr{line-height:30px;}
 	
 	/* Question Boxes */
 

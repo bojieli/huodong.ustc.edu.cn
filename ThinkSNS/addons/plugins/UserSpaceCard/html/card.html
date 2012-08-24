@@ -48,7 +48,7 @@ $.fn.userCard = function(options){
 	//初始化小名片
 	if( !element ){
 		element = $("<div/>")
-		.css({display:'none',position:'absolute','background-color':'white','z-index':1024})
+		.css({display:'none',position:'absolute','background-color':'white','z-index':9999999})
 		.attr('id','space_card_content')
 		.appendTo(document.body).bind('mouseenter',function(){
 			clearTimeout( _this.v );
@@ -126,31 +126,38 @@ $.fn.userCard = function(options){
 			element.css({top:position.top, left:position.left}).show();
 		}
 
-		//渲染关注按钮
-		if( data['follow_state'] =='unfollow' ){
-			$('#space_card_toolbar').html('<span><a href="javascript:;" class="btn_b" onclick="space_card_dofollow(\'dofollow\','+uid+')">加关注</a></span>');
-		}else if(data['follow_state'] =='havefollow'){
-			$('#space_card_toolbar').html('<span>已关注 | <a href="javascript:;" onclick="space_card_dofollow(\'unflollow\','+uid+')">取消</a></span> <a href="javascript:void(0);" onclick="ui.sendmessage('+uid+');$(\'#space_card_content\').hide();">发私信</a>');
-		}else if(data['follow_state'] =='eachfollow'){
-			$('#space_card_toolbar').html('<span>互相关注 | <a href="javascript:;" onclick="space_card_dofollow(\'unflollow\','+uid+')">取消</a></span> <a href="javascript:void(0);" onclick="ui.sendmessage('+uid+');$(\'#space_card_content\').hide();">发私信</a>');
+		var isLogin = "<?php echo $isLogin;?>";
+		if(isLogin) {
+			//渲染关注按钮
+			if( data['follow_state'] =='unfollow' ){
+				$('#space_card_toolbar').html('<span><a href="javascript:;" class="btn_b" onclick="space_card_dofollow(\'dofollow\','+uid+',\''+data['uname']+'\')">加关注</a></span>');
+			}else if(data['follow_state'] =='havefollow'){
+				$('#space_card_toolbar').html('<span>已关注 | <a href="javascript:;" onclick="space_card_dofollow(\'unflollow\','+uid+',\''+data['uname']+'\')">取消</a></span> <a href="javascript:void(0)" onclick="weibo.quickpublish(\'@' + data['uname'] +'\');$(\'#space_card_content\').hide();">@TA</a><i class="vline">|</i><a href="javascript:void(0);" onclick="ui.sendmessage('+uid+');$(\'#space_card_content\').hide();">发私信</a>');
+			}else if(data['follow_state'] =='eachfollow'){
+				$('#space_card_toolbar').html('<span>互相关注 | <a href="javascript:;" onclick="space_card_dofollow(\'unflollow\','+uid+',\''+data['uname']+'\')">取消</a></span> <a href="javascript:void(0)" onclick="weibo.quickpublish(\'@' + data['uname'] +'\');$(\'#space_card_content\').hide();">@TA</a><i class="vline">|</i> <a href="javascript:void(0);" onclick="ui.sendmessage('+uid+');$(\'#space_card_content\').hide();">发私信</a>');
+			}
 		}
 	}
 };
 })(jQuery);
 
-function space_card_dofollow(type,uid){
+function space_card_dofollow(type,uid,username){
 	var html = '';
 	$('#space_card_toolbar').html( '<img src="'+ _THEME_+'/images/icon_waiting.gif" width="15">' );
 	$.post( U('weibo/Operate/follow') ,{uid:uid,type:type},function(txt){
 		if(txt=='12'){
-			$('#space_card_toolbar').html('<span>已关注 | <a href="javascript:;" onclick="space_card_dofollow(\'unflollow\','+uid+')">取消</a></span> <a href="javascript:void(0);" onclick="ui.sendmessage('+uid+');$(\'#space_card_content\').hide();">发私信</a>');
+			$('#space_card_toolbar').html('<span>已关注 | <a href="javascript:;" onclick="space_card_dofollow(\'unflollow\','+uid+',\''+username+'\')">取消</a></span> <a href="javascript:void(0)" onclick="weibo.quickpublish(\'@' + username +'\');$(\'#space_card_content\').hide();">@TA</a><i class="vline">|</i> <a href="javascript:void(0);" onclick="ui.sendmessage('+uid+');$(\'#space_card_content\').hide();">发私信</a>');
 			//userInfoList[uid]['follow_state'] = 'havefollow';
+				followGroupSelectorBox(uid);
 		}else if(txt=='13'){
-			$('#space_card_toolbar').html('<span>互相关注 | <a href="javascript:;" onclick="space_card_dofollow(\'unflollow\','+uid+')">取消</a></span> <a href="javascript:void(0);" onclick="ui.sendmessage('+uid+');$(\'#space_card_content\').hide();">发私信</a>');
+			$('#space_card_toolbar').html('<span>互相关注 | <a href="javascript:;" onclick="space_card_dofollow(\'unflollow\','+uid+',\''+username+'\')">取消</a></span>  <a href="javascript:void(0)" onclick="weibo.quickpublish(\'@' + username +'\');$(\'#space_card_content\').hide();">@TA</a><i class="vline">|</i><a href="javascript:void(0);" onclick="ui.sendmessage('+uid+');$(\'#space_card_content\').hide();">发私信</a>');
 			//userInfoList[uid]['follow_state'] = 'eachfollow';
+				followGroupSelectorBox(uid);
 		}else if(txt=='01'){
-			$('#space_card_toolbar').html('<span><a href="javascript:;" class="btn_b" onclick="space_card_dofollow(\'dofollow\','+uid+')">加关注</a></span>');
+			$('#space_card_toolbar').html('<span><a href="javascript:;" class="btn_b" onclick="space_card_dofollow(\'dofollow\','+uid+',\''+username+'\')">加关注</a></span>');
 			//userInfoList[uid]['follow_state'] = 'unfollow';
+		}else if(txt == '14'){
+			ui.error('关注人数已超过配置最大数量，关注失败！');
 		}else{
 			ui.error('系统错误，请稍后再试！');
 		}

@@ -24,14 +24,12 @@ $CONFIG['location'] = 'msglist';
                 <i class="vline">|</i> 
                 <a href="javascript:void(0)" onclick="if('' == getChecked()){ ui.error('请选择私信');return false;}ui.confirm(this,'确定要删除该私信?')" callback="delMessage()" onclick="delMessage();">删除</a>
             </li>
-
-            <php>if(empty($data)) {</php>暂无信息<php>}</php>
-
+            <li style="padding:0"><php>if(empty($data)) {</php>暂无信息<php>}</php></li>
             <volist name="data" id="vo">
               <li class="lineD_btm" id="message_{$vo['list_id']}">
-          	    <div class="left" style="padding:16px 5px 0 6px;"><input type="checkbox" value="{$vo.list_id}" onclick="checkon(this);" class="ck"/></div>
+          	    <div class="left" style="padding:16px 5px 0 6px;*padding:16px 3px 0 6px"><input type="checkbox" value="{$vo.list_id}" onclick="checkon(this);" class="ck"/></div>
                 <div class="userPic"><space uid="vo.last_message.from_uid" target="_blank">{uavatar}</space></div>
-                <div class="feed_c" style="margin-left:90px">
+                <div class="feed_c" style="margin-left:90px;*margin-left:98px">
                 	<a href="javascript:void(0);" onclick="ui.confirm(this,'确定要删除该私信?')" callback="delMessage({$vo['list_id']})" class="hover del"></a>
                     <div class="msgCnt">
                       <switch name="vo.type">
@@ -43,14 +41,18 @@ $CONFIG['location'] = 'msglist';
                             <else />
                               <space uid="vo['last_message']['from_uid']" target="_blank">{uname}</space> 对
                               <space uid="vo['last_message']['to_uid'][0]" target="_blank">您</space> 说：
-                            </if>{$vo.last_message.content|getShort=###, 100}<if condition="$vo['new']"><span class="message_new">&nbsp;</span></if>
+                            </if>
+                            {$vo.last_message.content|htmlspecialchars_decode|getShort=###, 200|formatUrl}
+                            <if condition="$vo['new']"><span class="message_new">&nbsp;</span></if>
                           </div>
                         </case>
                         <case value="2">
                     	  <div style="padding:0 0 10px 0" class="message_group">
                             <a href="{:U('home/Message/detail', array('id'=>$vo['list_id'],'type'=>$vo['type']))}">{$vo.title}<if condition="$vo['new']"><span class="message_new">&nbsp;</span></if></a>
                           </div>
-                          <div><space uid="vo.last_message.from_uid" target="_blank">{uname}</space>：{$vo.last_message.content|getShort=###, 100}</div>
+                          <div><space uid="vo.last_message.from_uid" target="_blank">{uname}</space>
+                            {$vo.last_message.content|htmlspecialchars_decode|getShort=###, 200|formatUrl}
+                          </div>
                         </case>
                       </switch>
                     </div>
@@ -70,9 +72,9 @@ $CONFIG['location'] = 'msglist';
                 <span class="left" style="padding:0px 5px 0 6px;"><input name="" type="checkbox" value="0" onclick="checkAll(this);" id="checkbox_checkAll" class="ck"/></span>
                 <a href="javascript:void(0)" onclick="checkAll();">全选</a> | 
                 <a href="javascript:void(0)" onclick="setIsRead();">标记已读</a> |
-                <a href="javascript:void(0)" onclick="ui.confirm(this,'确定要删除该私信?')" callback="delMessage()" onclick="delMessage();">删除</a>
+                <a href="javascript:void(0)" onclick="if('' == getChecked()){ ui.error('请选择私信');return false;}ui.confirm(this,'确定要删除该私信?')" callback="delMessage()" onclick="delMessage();">删除</a>
             </li>
-        </li>
+        
         </ul>
         <p class="page">{$html}</p>
       </div>
@@ -115,7 +117,10 @@ $CONFIG['location'] = 'msglist';
 
     function setIsRead() {
         var ids = getChecked();
-        if (ids == '') ui.error('请选择私信');
+        if (ids == ''){
+        	ui.error('请选择私信')
+        	return false;
+        }
         
         $.post("{:U('home/Message/doSetIsRead')}", {ids:ids.toString()}, function(res){
             if (res == '1') {
@@ -144,7 +149,11 @@ $CONFIG['location'] = 'msglist';
 				}
 				var $message_list_count = $('#message_list_count');
                 var message_list_count  = parseInt($message_list_count.html());
-                $message_list_count.html(message_list_count - ids.length);
+				if(ids.length == 1){
+					$message_list_count.html(message_list_count - ids.length);
+				}else{
+					$message_list_count.html(message_list_count - ids.length + 2);
+				}
             }else {
                 ui.error('删除失败');
             }

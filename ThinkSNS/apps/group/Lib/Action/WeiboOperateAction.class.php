@@ -19,11 +19,19 @@ class WeiboOperateAction extends BaseAction{
 
     //发布
     function publish(){
+		if(isSubmitLocked()){
+			die('submitlocked');
+		} else if (isDuplicateContent(trim($_POST['content'] . $_POST['publish_type_data']))) {
+            die('duplicatecontent');
+        }
     	$pWeibo = D('GroupWeibo');
         $data['content'] =  $_POST['content'];
         $data['gid']     =  $this->gid;
         $id = $pWeibo ->publish( $this->mid , $data, 0 ,intval( $_POST['publish_type']) , $_POST['publish_type_data']);
         if( $id ){
+			//锁定发布
+			lockSubmit();
+
         	if ($_POST['myweibo']) {
 				$weibo = $pWeibo->find($id);
         		$from_data = array('app_type'=>'local_app', 'app_name'=>'group', 'gid'=>$this->gid, 'title'=>$this->groupinfo['name'], 'url'=>U('group/Group/index', array('gid'=>$this->gid)));
@@ -117,7 +125,7 @@ class WeiboOperateAction extends BaseAction{
 		// 解析模板(统一使用模板的body字段)
 		$_GET['data']	= unserialize(urldecode($_GET['data']));
 		$content		= model('Template')->parseTemplate(t($_GET['tpl_name']), array($active_field=>$_GET['data']));
-		//$content		= preg_replace_callback('/((?:https?|ftp):\/\/(?:www\.)?(?:[a-zA-Z0-9][a-zA-Z0-9\-]*\.)?[a-zA-Z0-9][a-zA-Z0-9\-]*(?:\.[a-zA-Z0-9]+)+(?:\:[0-9]*)?(?:\/[^\x{4e00}-\x{9fa5}\s<\'\"“”‘’]*)?)/u',group_get_content_url, $content);
+		//$content		= preg_replace_callback('/((?:https?|ftp):\/\/(?:www\.)?(?:[a-zA-Z0-9][a-zA-Z0-9\-]*\.)?[a-zA-Z0-9][a-zA-Z0-9\-]*(?:\.[a-zA-Z0-9]+)+(?:\:[0-9]*)?(?:\/[^\x{2e80}-\x{9fff}\s<\'\"“”‘’]*)?)/u',group_get_content_url, $content);
 		$this->assign('content', $content[$active_field]);
 
 		$this->assign('type',$_GET['data']['type']);
@@ -147,12 +155,22 @@ class WeiboOperateAction extends BaseAction{
     //添加评论
     function addcomment()
     {
+        $_POST['comment_content'] = preg_replace('/^\s+|\s+$/', '', $_POST['comment_content']);
+		if(isSubmitLocked()){
+			die('submitlocked');
+		} else if (!$_POST['comment_content']) {
+            die('emptycontent');
+        } else if (isDuplicateContent($_POST['comment_content'])) {
+            die('duplicatecontent');
+        }
     	$post['reply_comment_id'] = $_POST['reply_comment_id'];   //回复 评论的ID
     	$post['weibo_id']         = $_POST['weibo_id'];           //回复 微博的ID
     	$post['gid']         	  = $this->gid;           		  //群组的ID
     	$post['content']          = $_POST['comment_content'];    //回复内容
     	$post['transpond']        = $_POST['transpond'];          //是否同是发布一条微博
 		echo D('WeiboComment')->doaddcomment($this->mid, $post);
+		//锁定发布
+		lockSubmit();
 		if(intval($_POST['transpond_weibo_id'])){//同时评论给原文作者
 			unset($post['reply_comment_id']);
 			unset($post['transpond']);

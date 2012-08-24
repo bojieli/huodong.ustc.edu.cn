@@ -10,10 +10,12 @@ return array(
 	'HOST_TYPE'					=> '0',
 	// 前台入口 [必填]（格式：Action/act）
 	'APP_ENTRY'					=> 'Index/index',
+	// 前台展示图标 [必填]（0:不展示，1:展示）
+	'APP_SHOW'					=> '1',
 	// 应用图标 [必填]
-	'ICON_URL'					=> '',
+	'ICON_URL'					=> SITE_URL . '/apps/vote/Appinfo/ico_app.png',
 	// 应用图标 [必填]
-	'LARGE_ICON_URL'			=> '',
+	'LARGE_ICON_URL'			=> SITE_URL . '/apps/vote/Appinfo/ico_app_large.png',
 	// 后台入口 [选填]
 	'ADMIN_ENTRY'				=> 'Admin/index',
 	// 统计入口 [选填]（格式：Model/method）

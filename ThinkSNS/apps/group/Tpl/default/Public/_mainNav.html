@@ -1,4 +1,4 @@
-<div class=page_tit>
+<div class="page_tit">
   <h2><img src="{$ts['app']['icon_url']}" /> {$ts['app']['app_alias']}</h2>  
   <ul class="tit_tab">
     <li>
@@ -8,8 +8,9 @@
     	<a href="{:U('group/SomeOne')}" class="{$my_class} hover">我的{$ts['app']['app_alias']} <span class="more"></span></a>
     	<div class="mg_lapinfo" style="width:120px">
     	    <volist name="all_my_app" id="vo">
-    		  <a href="{:U('group/Group/index',array('gid'=>$vo['id']))}" class="g">
-    			<img src="__ROOT__/thumb.php?w=80&h=80&url={$vo['logo']|get_photo_url}" class="mg_lpimg">{$vo.name|getShort=11,'...'}
+    		  <a href="{:U('group/Group/index',array('gid'=>$vo['id']))}" class="g" style="">
+    			<img src="__ROOT__/thumb.php?w=80&h=80&url={$vo['logo']|get_photo_url}" class="mg_lpimg">
+				<div style="width:70px;height:18px;line-height:18px;overflow:hidden;margin-left:20px;cursor:pointer">{$vo.name|getShort=11,'...'}</div>
     		  </a>
     		  <php>if($key>=4){
     		      $hasMoreGroup = true;

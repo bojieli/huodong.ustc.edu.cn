@@ -357,6 +357,16 @@ class OAuthRequest {
     // Grab all parameters
     $params = $this->parameters;
 
+    // remove pic 
+    if (isset($params['pic'])) { 
+        unset($params['pic']); 
+    }
+    
+      if (isset($params['image'])) 
+     { 
+        unset($params['image']); 
+    }
+
     // Remove oauth_signature if present
     // Ref: Spec: 9.1.1 ("The oauth_signature parameter MUST be excluded.")
     if (isset($params['oauth_signature'])) {
@@ -426,8 +436,12 @@ class OAuthRequest {
   /**
    * builds the data one would send in a POST request
    */
-  public function to_postdata() {
-    return OAuthUtil::build_http_query($this->parameters);
+  public function to_postdata( $multi = false ) {
+    // return OAuthUtil::build_http_query($this->parameters);    
+    if( $multi )
+        return OAuthUtil::build_http_query_multi($this->parameters); 
+    else 
+        return OAuthUtil::build_http_query($this->parameters); 
   }
 
   /**
@@ -744,6 +758,7 @@ class OAuthDataStore {
 }
 
 class OAuthUtil {
+  public static $boundary = '';
   public static function urlencode_rfc3986($input) {
   if (is_array($input)) {
     return array_map(array('OAuthUtil', 'urlencode_rfc3986'), $input);
@@ -891,5 +906,80 @@ class OAuthUtil {
     // For each parameter, the name is separated from the corresponding value by an '=' character (ASCII code 61)
     // Each name-value pair is separated by an '&' character (ASCII code 38)
     return implode('&', $pairs);
+  }
+
+  // file
+  public static function build_http_query_multi($params) { 
+      if (!$params) return ''; 
+
+  //print_r( $params );
+  //return null;
+      
+      // Urlencode both keys and values 
+      // $keys = array_keys($params);
+      // $values = array_values($params);
+      //$keys = OAuthUtil::urlencode_rfc3986(array_keys($params)); 
+      //$values = OAuthUtil::urlencode_rfc3986(array_values($params)); 
+      // $params = array_combine($keys, $values); 
+
+      // Parameters are sorted by name, using lexicographical byte value ordering. 
+      // Ref: Spec: 9.1.1 (1) 
+      uksort($params, 'strcmp');
+      
+      self::$boundary = $boundary = uniqid('------------------');
+      $MPboundary = '--' . $boundary;
+      $endMPboundary = $MPboundary . '--';
+      $multipartbody = '';
+
+      foreach ($params as $parameter => $value) {
+          //if( $parameter == 'pic' && $value{0} == '@' )
+          if( in_array($parameter,array("pic","image")) && $value{0} == '@' )
+          {
+              $url = ltrim( $value , '@' );
+              $content = file_get_contents( $url );
+              $filename = reset( explode( '?' , basename( $url ) ));
+              $mime = self::get_image_mime($url);
+
+              $multipartbody .= $MPboundary . "\r\n";
+              $multipartbody .= 'Content-Disposition: form-data; name="' . $parameter . '"; filename="' . $filename . '"' . "\r\n";
+              $multipartbody .= 'Content-Type: ' . $mime . "\r\n\r\n";
+              $multipartbody .= $content . "\r\n";
+          }
+          else
+          {
+              $multipartbody .= $MPboundary . "\r\n";
+              $multipartbody .= 'Content-Disposition: form-data; name="' . $parameter . "\"\r\n\r\n";
+              $multipartbody .= $value . "\r\n";
+        
+          }
+      } 
+
+      $multipartbody .= $endMPboundary . "\r\n";
+      // For each parameter, the name is separated from the corresponding value by an '=' character (ASCII code 61) 
+      // Each name-value pair is separated by an '&' character (ASCII code 38) 
+      // echo $multipartbody;
+      return $multipartbody; 
+  } 
+
+  public static function get_image_mime( $file )
+  {
+   $ext = strtolower(pathinfo( $file , PATHINFO_EXTENSION ));
+   switch( $ext )
+   {
+     case 'jpg':
+     case 'jpeg':
+       $mime = 'image/jpg';
+       break;
+        
+     case 'png';
+       $mime = 'image/png';
+       break;
+        
+     case 'gif';
+     default:
+       $mime = 'image/gif';
+       break;        
+   }
+   return $mime;
   }
 }

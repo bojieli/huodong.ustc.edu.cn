@@ -80,14 +80,15 @@ $(document).ready(function(){
     <div class="right_box lineS_top">
       <h2>粉丝榜</h2>
       <ul class="fans_toplist">
-        <li><span>粉丝总数</span>排行</li>
         <volist id="vo" name="topfollow">
           <php>if($key>2){ $class='no'; }else{ $class='no top'.($key+1); }</php>
           <li>
-            <span class="right">{$vo.count}</span>
             <em class="{$class}">{$key+1}</em>
             <a href="{:U('home/space/index',array('uid'=>$vo['uid']))}"><img src="{$vo.uid|getUserFace}" class="userFace"/></a>
-            <space uid="vo.uid" class="OverH nam ">{uname}</space>
+            <div>
+                <space uid="vo.uid" class="OverH nam ">{uname}</space>
+                <p><span>{$vo.count}</span>粉丝数</span>
+            </div>
           </li>
         </volist>
       </ul>
@@ -98,7 +99,7 @@ $(document).ready(function(){
         {:Addons::hook('home_index_right_advert', array($ts['ad']['right']))}
     <php>} else {</php>
 		<volist name="ts['ad']['right']" id="vo">
-		<div class="ad_right"><div class="ke-post">{$vo.content}</div></div>
+		<div class="ad_right"><div class="ke-post lineS_btm">{$vo.content}</div></div>
 		</volist>
 	<php>}</php>
   </div>
@@ -107,7 +108,7 @@ $(document).ready(function(){
         <php>if($aboutkey){</php>
 		<div class="Hotspot_box">
 			<gt name="mid" value="0">
-			<div class="hotspot_tit"><span><a href="javascript:void(0)" onclick="weibo.quickpublish('#{$aboutkey|str_replace='"','&quot;',###|addslashes}# ')">我也说几句&raquo;</a></span><strong>今日看点:</strong>大家一起聊“<a href="{:U('home/User/topics',array('k'=>$aboutkey))}">{$aboutkey}</a>”吧</div>
+			<div class="hotspot_tit"><span><a href="javascript:void(0)" onclick="weibo.quickpublish('#{$aboutkey|str_replace='"','&quot;',###|addslashes}# ')">我也说几句>></a></span><strong>今日看点:</strong>大家一起聊“<a href="{:U('home/User/topics',array('k'=>$aboutkey))}">{$aboutkey}</a>”吧</div>
 	        </gt>
 			<div class="topic">
 			<div id="topic_user_list">
@@ -171,24 +172,30 @@ $(document).ready(function(){
           	<a href="#" ref="next_slide" class="next_slide"><!--<if condition="$hotUserSlide">&gt;<else />&nbsp;</if>--></a>
             </div>
           </if>
-
+		<!--名人推荐-->
         <if condition="$star_list">
-	        <div>
-          <div class="tab-menu"><ul><span class="right"><a href="{:U('home/Square/star')}" target="_blank">更多&raquo;</a></span><li><a class="feed_item on"  href="javascript:void(0)" ><span>名人推荐</span></a></li></ul></div>
-	          <div id="star_list" class="star_list">
-	            <img src="__THEME__/images/icon_waiting.gif" width="20" style="margin:33px 50% 0 50%;" />
-	          </div>
-	        </div>
+	    <div class="mod-star clearfix">
+          <div class="tab-menu">
+              <ul>
+                  <span class="right"><a href="{:U('home/Square/star')}" target="_blank">更多&raquo;</a></span>
+                  <li><a class="feed_item on"  href="javascript:void(0)" ><span>名人推荐</span></a></li>
+              </ul>
+          </div>
+          <div id="star_list" class="star_list"><img src="__THEME__/images/icon_waiting.gif" width="20" style="margin:33px 50% 0 50%;" /></div>
+	    </div>
         </if>
+		<!--//名人推荐-->
+        
+		<!--大家在说-->
         {:Addons::hook('home_square_index_middle')}
-        <!-- ========== 大家在说 begin ============= -->
-        <div class="tab-menu" id="square_list_tab"><!-- 切换标签 begin  -->
+        <div class="tab-menu" id="square_list_tab">
           <ul>
             <volist name="square_list_menu" id="vo">
               <li><a class="feed_item <if condition="!$key">on</if>" source="{:U('home/square/index_weibo', array('type'=>$key))}"><span>{$vo}</span></a></li>
 			</volist>
           </ul>
         </div>
+		<!--//大家在说-->
         <div id="square_list"><img src="__THEME__/images/icon_waiting.gif" width="20" style="margin:33px 50% 0 50%;" /></div>
         </div>
     </div>

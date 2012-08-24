@@ -66,6 +66,7 @@ class IndexAction extends Action{
 
 	    	$posterData     = $poster->getPoster($id,$this->mid);
 	        if(!$posterData){
+	        	$this->assign('jumpUrl', U('poster/Index/index'));
                 $this->error("这个信息被删除或者不允许查看");
                 exit;
             }
@@ -179,7 +180,7 @@ class IndexAction extends Action{
 	   	   $posterData = $posterDao->getPoster($_GET['id'],$this->mid);
 
 	   	   $posterTypeDao = D('PosterType');
-           $poster = $posterTypeDao->getType(intval($_GET['typeId']));
+           $poster = $posterTypeDao->getType(intval($_GET['typeId']), intval($_GET['id']));
            if(empty($poster)){
                $this->error('参数有误');
            }
@@ -225,6 +226,7 @@ class IndexAction extends Action{
 	        if($_FILES['cover']['size']>0){
 	        	$options['userId']   = $this->mid;
 	        	$options['max_size'] = 2*1024*1024;//2MB
+	        	$options['allow_exts'] = 'jpg,gif,png,jpeg,bmp';
                 $cover  =   X('Xattach')->upload('poster_cover',$options);
                 if($cover['status']){
                 	$map['cover'] = $cover['info'][0]['savepath'].$cover['info'][0]['savename'];
@@ -252,7 +254,7 @@ class IndexAction extends Action{
 	        return mktime( $hour,$minute,$second,$month,$day,$year );
 	    }
 	   public function doAddPoster(){
-	   	$map['title']      = t($_POST['title']);
+	   	$map['title']      = t(h($_POST['title']));
         $map['type']       = intval($_POST['type']);
         $map['pid']        = intval($_POST['pid']);
         $map['content']    = h($_POST['explain']);
@@ -278,9 +280,17 @@ class IndexAction extends Action{
         $map = $this->_extraField($map,$_POST);
         //得到上传的图片
         $option = array();
-        $options['userId'] = $this->mid;
-        $cover  =   X('Xattach')->upload('poster_cover',$options);
-        $map['cover'] = $cover['status']?$cover['info'][0]['savepath'].$cover['info'][0]['savename']:NULL;
+        if($_FILES['cover']['size'] > 0) {
+	        $options['userId'] = $this->mid;
+	        $options['max_size'] = 2*1024*1024;//2MB
+	        $options['allow_exts'] = 'jpg,gif,png,jpeg,bmp';
+	        $cover  =   X('Xattach')->upload('poster_cover',$options);
+            if($cover['status']){
+            	$map['cover'] = $cover['info'][0]['savepath'].$cover['info'][0]['savename'];
+            }else{
+            	$this->error($cover['info']);
+            }
+        }
         //$map['private'] = isset($_POST['friend'])?$_POST['friend']:0;
         $dao = D('Poster');
         $rs = $dao->add($map);

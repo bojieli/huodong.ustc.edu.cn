@@ -1,6 +1,6 @@
 <include file="../Public/_header" />
 <div class="so_main">
-<div class="page_tit">邀请配置</div>
+<div class="page_tit">邀请配置 - 发放邀请码</div>
 <php>if($invite_set=='invitecode'){</php>
     <div class="form2">
  	<form method="post" action="{:U('admin/Global/invitecode')}">
@@ -12,10 +12,10 @@
       </dd>
     </dl>
     <dl class="lineD">
-      <dt>指定用户：</dt>
+      <dt>指定用户UID：</dt>
       <dd>
         <input name="send_type_user" type="text" value="">
-        <p>多个以英文的“,”隔开</p>
+        <p>多个UID以英文的“,”隔开</p>
       </dd>
     </dl>
     <dl>

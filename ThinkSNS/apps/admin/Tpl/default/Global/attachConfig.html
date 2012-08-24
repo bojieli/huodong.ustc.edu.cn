@@ -46,18 +46,6 @@
     	</dd>
     </dl>
     <dl class="lineD">
-    	<dt>水印类型：</dt>
-		<dd>
-        <p><label>
-        	<input name="attach_watermark_type" type="radio" value="txt" <eq name="attach_watermark_type" value="txt">checked</eq>>文本水印
-        </label></p>
-       <p>
-        <label>
-        	<input name="attach_watermark_type" type="radio" value="img" <eq name="attach_watermark_type" value="img">checked</eq>>图片水印
-        </label></p>
-		</dd>
-    </dl>
-    <dl class="lineD">
     	<dt>文本水印内容：</dt>
     	<dd>
 			<textarea name="attach_watermark_txt" cols="40" rows="2">{$attach_watermark_txt}</textarea>
@@ -65,60 +53,10 @@
     	</dd>
     </dl>
     <dl class="lineD">
-    	<dt>文本水印字体：</dt>
-    	<dd>
-			<input type="text" name="attach_watermark_font" value="{$attach_watermark_font}" />
-    		<p>必须指定一个字体，从C:/windows/fonts拷贝一种字体文件（推荐雅黑），可以放在./addons/libs/WaterMark/目录中</p>
-    	</dd>
-    </dl>
-    <dl class="lineD">
     	<dt>文本水印字号：</dt>
     	<dd>
 			<input type="text" name="attach_watermark_fontsize" value="{$attach_watermark_fontsize}" />
     		<p>雅黑字体推荐12号字，其他字号可能会模糊，请多尝试。</p>
-    	</dd>
-    </dl>
-    <dl class="lineD">
-    	<dt>图片水印地址：</dt>
-    	<dd>
-    		<input type="text" name="attach_watermark_img" value="{$attach_watermark_img}" />
-    		<p>只需要设置水印图片文件名即可。默认为：watermark.png<br />水印类型为图片水印时，该设置生效。水印图片位置在./addons/libs/WaterMark/目录中</p>
-    	</dd>
-    </dl>
-    <dl class="lineD">
-    	<dt>水印透明度：</dt>
-    	<dd>
-    		<input name="attach_watermark_pct" type="text" value="{$attach_watermark_pct}" />
-    		<p>设置为0-100之间的数字，0代表完全透明，100代表不透明</p>
-    	</dd>
-    </dl>
-    <dl class="lineD">
-    	<dt>JPEG 水印质量：</dt>
-    	<dd>
-    		<input name="attach_watermark_quality" type="text" value="{$attach_watermark_quality}" />
-    		<p>水印质量设置为0-100之间的数字,决定 jpg 格式图片的质量</p>
-    	</dd>
-    </dl>
-    <dl>
-    	<dt>水印位置：</dt>
-    	<dd>
-    		<table>
-    			<tr>
-    				<td><label><input type="radio" name="attach_watermark_pos" value="1" <eq name="attach_watermark_pos" value="1">checked</eq> /> 顶部居左</label></td>
-    				<td><label><input type="radio" name="attach_watermark_pos" value="2" <eq name="attach_watermark_pos" value="2">checked</eq> /> 顶部居中</label></td>
-    				<td><label><input type="radio" name="attach_watermark_pos" value="3" <eq name="attach_watermark_pos" value="3">checked</eq> /> 顶部居右</label></td>
-    			</tr>
-    			<tr>
-    				<td><label><input type="radio" name="attach_watermark_pos" value="4" <eq name="attach_watermark_pos" value="4">checked</eq> /> 中部居左</label></td>
-    				<td><label><input type="radio" name="attach_watermark_pos" value="5" <eq name="attach_watermark_pos" value="5">checked</eq> /> 中部居中</label></td>
-    				<td><label><input type="radio" name="attach_watermark_pos" value="6" <eq name="attach_watermark_pos" value="6">checked</eq> /> 中部居右</label></td>
-    			</tr>
-    			<tr>
-    				<td><label><input type="radio" name="attach_watermark_pos" value="7" <eq name="attach_watermark_pos" value="7">checked</eq> /> 底部居左</label></td>
-    				<td><label><input type="radio" name="attach_watermark_pos" value="8" <eq name="attach_watermark_pos" value="8">checked</eq> /> 底部居中</label></td>
-    				<td><label><input type="radio" name="attach_watermark_pos" value="9" <eq name="attach_watermark_pos" value="9">checked</eq> /> 底部居右</label></td>
-    			</tr>
-    		</table>
     	</dd>
     </dl>
     <div class="page_btm">

@@ -1,16 +1,21 @@
 <?php
-// 感谢@小四 提供代码支持. (http://www.wbyun.com)
+/**
+ * 说明：路由规则配置文件，开启rewrite后，将U函数声称的地址根据这个规则转换成短地址
+ * 规则：设置的key由APP_NAME/MODULE_NAME/ACTION_NAME组成，参数名用中括号[uid]
+ * 例如：U(‘home/Space/index’,array('uid'=>123,'domain'=>'admin')) 
+ *      路由规则设置成 'home/Space/index' => '@[uid]',
+ *      则最终用户的URL地址会被转换成 http://yourdomain/@123
+ *      路由规则设置成 'home/Space/index' => '@[domain]',
+ *      则最终用户的URL地址会被转换成 http://yourdomain/@admin
+ */
 return array(
-	/**
-	 * 路由的key必须写全称. 比如: 使用'wap/Index/index', 而非'wap'.
-	 */
 	'router' => array(
 		// 基本
 		'wap/Index/index'			=>	'wap',
 		'w3g/Index/index'			=>	'w3g',
 		'admin/Index/index'			=>	'admin',
+		'home/Index/index'			=>	'index',
 		'home/User/index'			=>	'home',
-		'home/Index/index'			=>	'home',
 		'home/User/atme'			=>	'atme',
 		'home/User/collection'		=>	'favorite',
 		'home/User/comments'		=>	'comment',
@@ -45,7 +50,7 @@ return array(
 		'home/Account/verified'		=>	'setting/verified',
 		'home/Account/invite'		=>	'setting/invite',
 		// 个人空间
-		'home/Space/index'			=>	'space/[uid]',
+		'home/Space/index'			=>	'@[uid]',
 		'home/Space/follow'			=>	'space/[uid]/[type]',
 		'home/Space/profile'		=>	'space/[uid]/profile',
 		// 微博详情
@@ -134,5 +139,9 @@ return array(
 		'group/Dir/index'			=>	'app/group/[gid]/file',
 		'group/Dir/upload'			=>	'app/group/[gid]/file/upload',
 		'group/Member/index'		=>	'app/group/[gid]/member',
+		// 游戏
+		'game/Index/gameplay'       =>  'app/game/[gid]',
+		//论坛
+		'forum/Index/index'			=>	'app/forum',
 	)
 );

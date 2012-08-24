@@ -33,12 +33,10 @@ if(file_exists($url)){
 }
 
 //解析参数
-$w = $_GET['w']?$_GET['w']:'100';	//宽度
-$h = $_GET['h']?$_GET['h']:'100';	//高度
-$t = $_GET['t']?$_GET['t']:'c';		//是否切割
-$r = $_GET['r']?'1':'0';			//是否覆盖
-
-
+$w = $_GET['w']?intval($_GET['w']):'100';	//宽度
+$h = $_GET['h']?intval($_GET['h']):'100';	//高度
+$t = $_GET['t']=='f'?'f':'c';		//是否切割
+$r = $_GET['r']?1:0;			//是否覆盖
 
 //目录名hash
 $fileHash	=	md5($url.$w.$h);
@@ -47,6 +45,9 @@ $hashPath	=	substr($fileHash,0,2).'/'.substr($fileHash,2,2).'/';
 //缩图目录
 $thumbDir	=	"./data/thumb/".$hashPath;
 checkDir($thumbDir);
+
+if(!$sourceInfo['type']) 
+    $sourceInfo['type'] == 'jpg';
 
 $tempFile	=	$tempDir.$fileHash.'.'.$sourceInfo['type'];
 $thumbFile	=	$thumbDir.$fileHash."_".$w."_".$h."_".$t.'.'.$sourceInfo['type'];

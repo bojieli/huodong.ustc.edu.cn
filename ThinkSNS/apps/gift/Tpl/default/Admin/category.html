@@ -10,17 +10,18 @@
   <div class="list">
   <table width="100%" border="0" cellspacing="0" cellpadding="0">
   <tr>
-    <th style="width:30px;">
+<!--     <th style="width:30px;">
 		<input type="checkbox" id="checkbox_handle" onclick="checkAll(this)" value="0">
     	<label for="checkbox"></label>
 	</th>
+-->
     <th class="line_l">ID</th>
     <th class="line_l">分类名称</th>
     <th class="line_l">操作</th>
   </tr>
   <volist name="categorys" key="cId" id="cName">
 	  <tr overstyle='on' id="category_{$key}">
-	    <td><input type="checkbox" name="checkbox" id="checkbox2" onclick="checkon(this)" value="{$key}"></td>
+	    <!-- <td><input type="checkbox" name="checkbox" id="checkbox2" onclick="checkon(this)" value="{$key}"></td> -->
 	    <td>{$key}</td>
 	    <td><div style="float:left" id="category_name_{$key}">{$cName}</div></td>
 	    <td>

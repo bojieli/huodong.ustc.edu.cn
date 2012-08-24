@@ -24,7 +24,8 @@ class UserVerifiedAddons extends NormalAddons
         $menu = array(
 					'verifying' 	  => '待认证',
 					'verified'  	  => '已认证',
-					'addVerifiedUser' => '添加认证'
+					'addVerifiedUser' => '添加认证',
+					'setVerifyRuler'  => '设置认证规则'
 				);
         return $menu;
     }
@@ -45,6 +46,7 @@ class UserVerifiedAddons extends NormalAddons
 				  `reason` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
 				  `info` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
 				  `verified` enum('0','1') COLLATE utf8_unicode_ci NOT NULL DEFAULT '0',
+				  `attachment` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
 				  PRIMARY KEY (`id`),
 				  UNIQUE KEY `uid` (`uid`)
 				) ENGINE=MyISAM  DEFAULT CHARSET=utf8 ;";

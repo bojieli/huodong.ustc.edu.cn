@@ -8,12 +8,20 @@ class UserAction extends Action {
     function _initialize() {
         $data ['followTopic'] = D ( 'Follow', 'weibo' )->getTopicList ( $this->mid );
         global $ts;
-
         //SamPeng 2011.12.15重构整个方法
         $this->assign('install_app',$ts['install_apps']);
         $this->assign ( $data );
+        $banner = M('ad')->findAll();
+        foreach ($banner as &$value) {
+            $content = $value['content'];
+            $status = unserialize($content);
+            if($status != false) {
+                $value['content'] = unserialize($content);
+            }
+        }
+        $this->assign('banner',$banner);
+        $count = $banner;
     }
-
     protected function _empty()
     {
         $this->display('addons');
@@ -23,30 +31,31 @@ class UserAction extends Action {
     function index() {
         Session::pause();
         global $ts;
+
         //SamPeng 2011.12.15重构整个方法
         $install_app = $ts['install_apps'];
 
-        $type  = h ( $_GET ['weibo_type'] );
-        $weibo_config = model ( 'Xdata' )->lget ( 'weibo' );
+        $index_type = intval( $_GET ['type'] );  //0=我关注的、1=群组微博、2=正在发生
+        $weibo_type = h( $_GET ['weibo_type'] ); //orignal=原创、0=微博、1=图片微博、2=视频
+
+        //$weibo_config = model ( 'Xdata' )->lget ( 'weibo' );
 
         //判断是动态还是微博,兼容1.6的代码
 
         //if (($show_feed = $weibo_config['openDynamic'] && intval($_COOKIE['feed']))) {
-        //    $data = $this->__getDynamic($type); //显示动态
+        //  $data = $this->__getDynamic($index_type); //显示动态
+        //  $data['show_feed'] = $show_feed;
         //} else {
-            $data = $this->__getWeiboList($install_app,$type); //显示微博列表
+            $data = $this->__getWeiboList($install_app, $index_type, $weibo_type); //显示微博列表
+            $data['type'] = $index_type;
+            $data['weibo_type'] = $weibo_type;
         //}
 
-        //$data['show_feed'] = $show_feed;
-        $data['type']      = $type;
-
-
-       $this->__assignTabSwitch();
-
+        $this->__assignTabSwitch($index_type);
 
         $this->__setAnnouncement();
 
-        if(!empty($_GET['weibo_type'])) {
+        if(!empty($weibo_type)) {
             $this->assign('typeClass',"on");
             $this->assign('view','block');
         }else{
@@ -54,19 +63,15 @@ class UserAction extends Action {
             $this->assign('view','none');
         }
 
-
-
         $this->assign ( $data );
         $this->setTitle (L('my_index'));
         $this->display ();
     }
-	/**
-     *
-     */
-    private function __assignTabSwitch ()
+
+    private function __assignTabSwitch ($index_type)
     {
         //判断当前使用哪一个tab
-        switch (intval($_GET['type'])) {
+        switch ($index_type) {
             case self::INDEX_TYPE_WEIBO:
                 $this->assign('weibo_tab', 'on');
                 break;
@@ -80,13 +85,6 @@ class UserAction extends Action {
                 $this->assign('weibo_tab','on');
         }
     }
-
-
-
-
-
-
-
 
     //提到我的
     public function atme() {
@@ -181,17 +179,28 @@ class UserAction extends Action {
         return trim ( $key );
     }
 
-    private function __checkSearchPopedom() {
+    private function __checkSearchPopedom() {   
+        //游客搜索限制
         if ($this->mid <= 0 && intval ( model ( 'Xdata' )->get ( 'siteopt:site_anonymous_search' ) ) <= 0)
-            redirect ( U ( 'home' ) );
+            redirect ( U ( 'home/User/index' ) );
+
+        //搜索间隔限制,不能频繁使用不相同的关键词去搜索
+        $lock_key = 'search_lock_'.ACTION_NAME.'_'.t($_GET['type']);
+        $max_search_time = intval($GLOBALS['ts']['site']['max_search_time']);
+        if($max_search_time >0 && isset($_SESSION[$lock_key]) && ($_SESSION[$lock_key]+$max_search_time) > time() && intval($_GET['p'])<=1){
+            send_http_header('utf8');
+            $this->error('不要频繁搜索,请'.$max_search_time.'秒后再试!');
+        }else{
+            $_SESSION[$lock_key] = time();
+        }
     }
 
     // 专题页
     public function topics()
     {
-        $this->__checkSearchPopedom ();
+        //$this->__checkSearchPopedom ();
         $data['search_key'] = $this->__getSearchKey ();
-         Session::pause();
+        Session::pause();
         // 专题信息
         if (false == $data['topics'] = D('Topics', 'weibo')->getTopics($data['search_key'], $_GET['id'], $_GET['domain'], 1)) {
             if (null == $data['search_key']) {
@@ -210,7 +219,7 @@ class UserAction extends Action {
                                     ->limit(9)->findAll();
         // 微博列表
         $data['type'] = h ( $_GET ['type'] );
-        $data['list'] = D ( 'Operate', 'weibo' )->doSearchWithTopic ( "#{$data['topics']['name']}#", $data ['type'] );
+        $data['list'] = D ( 'Operate', 'weibo' )->doSearchWithTopic ( "#{$data['topics']['name']}#", $data ['type'], $this->mid);
 //      $data['list'] = D ( 'Operate', 'weibo' )->doSearch ( "#{$data['topics']['name']}#", $data ['type'] );
 //      $data['list']['count'] = D ( 'Operate', 'weibo' )->where("content LIKE '%#{$data['topics']['name']}#%' AND isdel=0")->count();
 
@@ -230,6 +239,7 @@ class UserAction extends Action {
 
     // 查找话题
     public function search() {
+
         $this->__checkSearchPopedom ();
         $data ['search_key'] = $this->__getSearchKey ();
         Session::pause();
@@ -269,6 +279,9 @@ class UserAction extends Action {
     //查找我关注的
     public function searchTips()
     {
+        if ($this->mid <= 0)
+            redirect ( U ( 'home/User/index' ) );
+
         $key = str_replace('_', '\_', h ( $_GET ['key'] ));
         $db_prefix  =  C('DB_PREFIX');
          Session::pause();
@@ -300,7 +313,7 @@ class UserAction extends Action {
 
 	//找人 -  2011-11-28 优化 解决推荐用户中还有已关注用户问题
     function findfriend() {
-         Session::pause();
+        Session::pause();
         $type_array = array ('followers', 'hot', 'understanding', 'newjoin' );
         $data ['type'] = in_array ( $_GET ['type'], $type_array ) ? $_GET ['type'] : 'newjoin';
         $user_model = D ( 'User', 'home' );
@@ -450,13 +463,15 @@ class UserAction extends Action {
 
 
 
-    private function __getWeiboList($install_app,$type)
+    private function __getWeiboList($install_app,$index_type,$weibo_type)
     {
         global $ts;
+        
         // 关注的分组列表
-        $myFollowData = $this->__paramUserFollowGroup($type);
+        $myFollowData = $this->__paramUserFollowGroup($index_type);
         $data  = $myFollowData;
-        $data['indexType']   = $indexType              = intval($_GET['type']);
+        
+        $data['indexType']   = $index_type;
         $temp = $ts['my_group_list'];
         $group_list = array();
         foreach($temp as $value){
@@ -469,7 +484,8 @@ class UserAction extends Action {
         $data['gid']         = intval($_GET['gid']);
 
         $data['hasGroupWeibo']  = $this->__hasGroupWeibo($group_list);
-        if($indexType == self::INDEX_TYPE_WEIBO){
+
+        if($index_type == self::INDEX_TYPE_WEIBO){
             $data['weibo_menu'] = array(
                     ''  => L('all'),
                     'original' => L('original'),
@@ -477,19 +493,19 @@ class UserAction extends Action {
             Addons::hook('home_index_weibo_tab', array(&$data['weibo_menu']));
         }
 
-        switch ($indexType) {
+        switch ($index_type) {
             case self::INDEX_TYPE_WEIBO:
-                $data ['list'] = D ( 'Operate', 'weibo' )->getHomeList ( $this->mid, $type, '', '', $data ['follow_gid'] );
+                $data ['list'] = D('Operate', 'weibo')->getHomeList ( $this->mid, $weibo_type, '', '', $data ['follow_gid'] );
                 break;
             case self::INDEX_TYPE_GROUP:
                 $data ['list'] = D('WeiboOperate','group')->getHomeList($this->mid, $data['gid'], '', '');
                 break;
             case self::INDEX_TYPE_ALL:
                 $order = 'weibo_id DESC';
-                $data['list'] = D('Operate','weibo')->doSearchTopic("",$order,$this->mid);
+                $data['list']  = D('Operate','weibo')->doSearchTopic("",$order,$this->mid);
                 break;
             default:
-                $data ['list'] = D ( 'Operate', 'weibo' )->getHomeList ( $this->mid, $type, '', '', $data ['follow_gid'] );
+                $data ['list'] = D('Operate', 'weibo')->getHomeList ( $this->mid, $weibo_type, '', '', $data ['follow_gid'] );
         }
 
 		if($data['list']['data']){
@@ -499,7 +515,6 @@ class UserAction extends Action {
 			$_since_weibo = end($data ['list'] ['data']);
 			$data['sinceId'] = $_since_weibo['weibo_id'];
 		}
-
         return $data;
     }
 
@@ -567,6 +582,103 @@ class UserAction extends Action {
     private function __shortForGroupTitle($title)
     {
         return (strlen ( $title ) + mb_strlen ( $title, 'UTF8' )) / 2 > 8 ? getShort ( $title, 3 ) . '...' : $title;
+    }
+
+    //查询用户操作 - 用于SearchUserWidgets
+    public function dosearch() {
+        $map['email'] = array('LIKE', '%'.$_REQUEST['q'].'%');
+        $field = 'uid, email, uname';
+        $limit = $_REQUEST['limit'];
+        $list = M('user')->field($field)->where($map)->limit($limit)->findAll();
+        $list = empty($list) ? array() : $list;
+
+        exit(json_encode($list));
+    }
+
+    // 附件审核管理员 审核页面
+    public function auditAttach() {
+        // 获取审核管理员的人数
+        $data = model('Xdata')->get('audit:attach_auditing');
+        $uids = explode(',', $data['attach_auditing_uid']);
+        $uids = array_unique($uids);
+        $uids = array_filter($uids);
+        $count = count($uids);
+
+        $map['status'] = 0;
+        foreach($uids as $key => $value) {
+            if($value == $this->mid) {
+                $map['_string'] = 'id % '.$count.' = '.$key;
+            }
+        }
+
+        $dao = model('Attach');
+        $attaches = $dao->getAttachByMap($map);
+        $extensions = $dao->enumerateExtension();
+        $this->assign($attaches);
+        $this->assign('extensions', $extensions);
+
+        $this->display();
+    }
+   
+    // 审核附件通过操作
+    public function doauditAttach() {
+        $ids = t($_POST['ids']);
+        $ids = explode(',', $ids);
+        $ids = array_filter($ids);
+        $map['id'] = array('IN', $ids);
+        $save['status'] = 1;
+        $res = M('attach')->where($map)->save($save);
+        // 添加附件记录
+        foreach($ids as $value) {
+            $add['attach_id'] = $value;
+            $add['uid'] = $this->mid;
+            $add['type'] = 1;
+            $add['ctime'] = time();
+            M('audit_attach')->add($add);
+        }
+        echo $res;
+    }
+
+    // 审核附件不通过操作
+    public function dounAuditAttach() {
+        $ids = t($_POST['ids']);
+        $ids = explode(',', $ids);
+        $ids = array_filter($ids);
+        $map['id'] = array('IN', $ids);
+        
+
+        // 将图片覆盖为默认图片
+        $attachInfo = M('attach')->where($map)->findAll();
+        $defaultImage = APPS_PATH.'/admin/Tpl/default/Public/unAudit.jpg';
+        $imageArr = array('jpg', 'gif', 'png', 'jpeg', 'bmp');
+        
+        foreach($attachInfo as $value) {
+
+            $savename = $value['savename'];
+            $targetPath = UPLOAD_PATH.'/'.$value['savepath'];
+
+            rename($targetPath.$savename,$targetPath.'old_'.$savename);
+
+            if(in_array($value['extension'], $imageArr)) {
+                @copy($defaultImage, $targetPath.$savename);
+            }
+
+            //插入数据
+            $dmap = array();
+            $dmap['id'] = $value['id']; 
+            M('attach')->where($dmap)->limit(1)->delete();
+            D('attach_back')->add($value);
+        }
+
+        // 添加附件记录
+        foreach($ids as $value) {
+            $add['attach_id'] = $value;
+            $add['uid'] = $this->mid;
+            $add['type'] = 2;
+            $add['ctime'] = time();
+            M('audit_attach')->add($add);
+        }
+        echo 1;
     }
 }
 ?>

@@ -10,18 +10,24 @@ function add_star(){
 	if(uid.length == 0){
 		ui.error('请输入用户ID！');
 	}else{
-		$.post( '__URL__&act=addStar',{uid:uid,gid:gid},function(txt ){
-			if(txt == -2){
+		$.post( '__URL__&act=addStar',{uid:uid,gid:gid},function(txt){
+			ui.box.close();
+			if(txt.code == -2){
 				ui.error('分组不存在！');
-			}else if(txt == -3){
+			}else if(txt.code == -3){
 				ui.error('添加的名人当前分组内已存在！');
-			}else if(txt == 0){
+			}else if(txt.code == 0){
 				ui.error('添加名人失败！');
-			}else{
+			}else if(txt.code == -4) {
+				ui.error('用户UID不存在！');
+			} else if(txt.code == -5) {
+				ui.error('用户UID' + txt.data.join(',') + '不存在！');
+				setInterval("location.reload()",500);
+			} else {
 				ui.success('添加名人成功');
 				setInterval("location.reload()",500);
 			}
-		});
+		}, 'json');
 	}
 }
 </script>

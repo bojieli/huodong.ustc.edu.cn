@@ -128,6 +128,8 @@ class UserGroupModel extends Model {
 		return M('user_group_link')->where($map)->order('user_group_id ASC')->findAll();
 	}
 
+
+
 	/**
 	 * 获取制定用户组内的用户
 	 * 
@@ -256,4 +258,30 @@ class UserGroupModel extends Model {
     	
     	return $html;
     }
+    
+    public function isAdmin($uid) {
+    	return service('SystemPopedom')->hasPopedom($uid, 'admin/Index/index', false);
+    }
+    
+	//获取一个用户的组
+	public function getUserGroups($uid, $showDetail = false) {
+		$uid = intval($uid);
+		if(!$uid) {
+			return false;
+		}
+		$sql = "SELECT l.user_group_id AS gid, g.`name`, g.type FROM `ts_user_group_link` AS l LEFT JOIN `ts_forum_user_group` AS g ON l.user_group_id = g.gid WHERE l.uid = {$uid}";
+		$result = $this->query($sql);
+		if(!$result) {
+			return null;
+		} else {
+			if($showDetail) {
+				return $result;			//输出详细信息
+			} else {
+				foreach($result as $v) {
+					$group[] = $v['gid'];
+				}
+				return $group;			//只输出GID
+			}
+		}
+	}
 }

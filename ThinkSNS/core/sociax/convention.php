@@ -29,7 +29,7 @@ return  array(
     /* 项目设定 */
     'APP_DEBUG'				=> false,		// 是否开启调试模式
     'APP_DOMAIN_DEPLOY'     => false,		// 是否使用独立域名部署项目
-    'APP_PLUGIN_ON'         => false,		// 是否开启插件机制
+    'APP_PLUGIN_ON'         => true,		// 是否开启插件机制
     'APP_FILE_CASE'         => false,		// 是否检查文件的大小写 对Windows平台有效
     'APP_AUTOLOAD_REG'      => true,		// 是否开启SPL_AUTOLOAD_REGISTER
     'APP_AUTOLOAD_PATH'     => 'Think.Util.'.','.ADDON_PATH.'/plugins/',// __autoLoad 机制额外检测路径设置,注意搜索顺序
@@ -43,7 +43,7 @@ return  array(
     'COOKIE_PREFIX'         => 'TS_',		// Cookie前缀 避免冲突
 
     /* 默认设定 */
-    'DEFAULT_APP'           => 'home',			// 默认项目名称，@表示当前项目
+    'DEFAULT_APP'           => 'home',		// 默认项目名称，@表示当前项目
     'DEFAULT_MODULE'        => 'Index',		// 默认模块名称
     'DEFAULT_ACTION'        => 'index',		// 默认操作名称
     'DEFAULT_CHARSET'       => 'utf-8',		// 默认输出编码
@@ -145,7 +145,7 @@ return  array(
     'TAG_EXTEND_PARSE'      => '',   // 指定对普通标签进行扩展定义和解析的函数名称。
 
     /* 表单令牌验证 */
-    'TOKEN_ON'				=> true,		// 开启令牌验证
+    'TOKEN_ON'				=> false,		// 开启令牌验证
     'TOKEN_NAME'			=> '__hash__',	// 令牌验证的表单隐藏字段名称
     'TOKEN_TYPE'			=> 'md5',		// 令牌验证哈希规则
 

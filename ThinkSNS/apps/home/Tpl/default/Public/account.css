@@ -3,9 +3,9 @@
 .iconItemClose{background: url(images/del.gif) no-repeat;height: 12px;width: 12px; display:block;}
 
 /*设置页面*/
-.setItems{background:#fff; margin-top:10px;  float:left; width:100%;_width:95%}
+.setItems{background:#fff; margin-top:10px;  float:left; width:100%;}
 .setFold{background:#E9EDF4 url(images/fold.gif) 95% center no-repeat; padding:8px 15px; border:1px #C0C7D9 solid; cursor:pointer; overflow:hidden}
-.setUnfold{background:#D2DBEA url(images/unfold.gif) 95% center no-repeat; padding:8px 15px; border:1px #C0C7D9 solid; cursor:pointer; overflow:hidden}
+.setUnfold{background:#D2DBEA url(images/unfold.gif) 95% center no-repeat; padding:8px 15px; border:1px #C0C7D9 solid; cursor:pointer; overflow:hidden;_zoom:1}
 .setFold h2{ font-weight: bold; font-size:14px; line-height:25px; display:block}
 .setHover{border:2px #a0ced5 solid; padding:7px 14px}
 .setStep{height:20px}
@@ -14,9 +14,9 @@
 .proBar span{background:url(images/color.gif) repeat-x; display:inline-block; height:8px}
 .proText{color:#333; font-weight:bold; display:inline-block; float:left; padding:0 10px; line-height:20px}
 .setItemsInfo{border:1px #C0C7D9 solid; border-top:0px none; padding:15px; overflow:hidden;_zoom:1}
-.data{overflow:hidden}
+.data{overflow:hidden;_zoom:1}
 .data ul{padding: 0px; overflow:hidden}
-.data ul li{overflow:hidden;*zoom:1; width: 100%; line-height: 24px; padding-top: 5px; padding-bottom: 5px}
+.data ul li{overflow:hidden;width: 100%; line-height: 24px; padding-top: 5px; padding-bottom: 5px;*zoom:1; }
 .data dl{padding: 0px; margin-top: 10px; margin-right: auto; margin-bottom: 5px; margin-left: auto}
 .data dl dt{font-size: 12px; line-height: 20px; font-weight: bold; color: #000000; padding-left: 70px}
 .data dl dd{clear: both; display:table; overflow: hidden; width: 100%; line-height: 20px}

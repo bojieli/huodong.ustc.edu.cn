@@ -9,7 +9,9 @@
 <!-- page_title end -->
 <div class="tab-menu"> 
   <!-- 切换标签 begin  -->
-  <span class="right"><a href="javascript:;" onclick="delgroup({$groupinfo['id']});" class="btn_b">解散群</a></span>
+  <php>$a = M("Group")->where(array('id'=>intval($_GET['gid'])))->getField('uid');if($_SESSION['mid'] ==$a ){</php>
+  	<span class="right"><a href="javascript:;" onclick="delgroup({$groupinfo['id']});" class="btn_b">解散群</a></span>
+  <php>}</php>
   <ul>
     <li><a href="{:U('group/Manage/index',array('gid'=>$groupinfo['id']))}" 
       

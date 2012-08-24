@@ -27,22 +27,6 @@ class PassportService extends Service
 	 */
 	public function isLogged()
 	{
-        //检查禁止登录的UID
-		$audit = model('Xdata')->lget('audit');
-		if($audit['banuid']==1){
-			$banned_uids = $audit['banneduids'];
-			if(!empty($banned_uids)){
-				$banned_uids = explode('|',$banned_uids);
-				$mid = intval($_SESSION['mid']);
-				$admin_uids = explode(',',C('ADMIN_UID'));
-				//登录用户在禁用列表，并且不在默认管理员列表中
-				if($mid>0 && in_array($mid,$banned_uids) && !in_array($mid,$admin_uids)){
-					$this->_error = '该用户已被禁用，禁止登录系统。';
-					return false;
-				}
-			}
-		}
-
 		// 验证本地系统登录
 		if (intval($_SESSION['mid']) > 0)
 			return true;
@@ -64,13 +48,22 @@ class PassportService extends Service
 		if (empty($identifier))
 			return false;
 
-		$identifier_type = is_numeric($identifier) ? 'uid' : 'email';
+		if($this->isValidEmail($identifier)){
+			$identifier_type = 'email';
+		}elseif(is_numeric($identifier) && is_int($identifier)){
+			$identifier_type = 'uid';
+		}else{
+			$identifier_type = 'uname';
+		}
 		$user = D('User', 'home')->getUserByIdentifier($identifier, $identifier_type);
 		if (!$user) {
-			$this->_error = '获取用户信息失败';
+			$this->_error = '帐号不存在或获取信息失败';
 			return false;
 		}else if ($password && md5($password) != $user['password']){
-			$this->_error = '密码错误';
+			$this->_error = '帐号或密码错误';
+			return false;
+		}else if ($this->checkBannedUser($user['uid'])){		
+			$this->_error = '帐号不存在或已被禁用';
 			return false;
 		}else if ($user['is_active']==0){
 			$this->_error = '用户未激活';
@@ -81,7 +74,7 @@ class PassportService extends Service
 	}
 
 	/**
-	 * 使用本地账号登录 (密码为null时不参与验证)
+	 * 使用本地帐号登录 (密码为null时不参与验证)
 	 *
 	 * @param string         $email
 	 * @param string|boolean $password
@@ -160,8 +153,8 @@ class PassportService extends Service
 	/**
 	 * 获取cookie中记录的用户ID
 	 */
-	public function getCookieUid()
-	{
+	public function getCookieUid() {
+
 		static $cookie_uid = null;
 		if (isset($cookie_uid))
 			return $cookie_uid;
@@ -169,14 +162,17 @@ class PassportService extends Service
 		$cookie = t(cookie('LOGGED_USER'));
 		$cookie = explode('.', jiemi($cookie));
 		$cookie_uid = ($cookie[0] !== 'thinksns') ? false : $cookie[1];
+		
+		if($this->checkBannedUser($cookie_uid))
+			return false;
+
 		return $cookie_uid;
 	}
 
 	/**
 	 * 检查是否登录后台
 	 */
-	public function isLoggedAdmin()
-	{
+	public function isLoggedAdmin() {
 		return $_SESSION['ThinkSNSAdmin'] == '1';
 	}
 
@@ -188,8 +184,7 @@ class PassportService extends Service
 	 * @param string $password 未加密的密码,不能为空
 	 * @return boolean
 	 */
-	public function loginAdmin($identifier, $password)
-	{
+	public function loginAdmin($identifier, $password) {
 		if (empty($identifier) || empty($password))
 			return false;
 
@@ -220,7 +215,7 @@ class PassportService extends Service
 	 * @param unknown_type $username
 	 * @param unknown_type $password
 	 */
-	public function ucLogin($username,$password){
+	public function ucLogin($username,$password) {
 		if(isValidEmail($username)){
 			$user = service('Passport')->getLocalUser($username,$password);
 			if(UC_SYNC && $user['uid']){
@@ -324,8 +319,7 @@ class PassportService extends Service
 	 *
 	 * @param int $uid 用户ID
 	 */
-	public function recordLogin($uid)
-	{
+	public function recordLogin($uid) {
 		$data['uid']	= $uid;
 		$data['ip']		= get_client_ip();
 		$data['place']	= convert_ip($data['ip']);
@@ -369,10 +363,37 @@ class PassportService extends Service
 		}
 	}
 
+	//验证用户是否被禁用
+	public function checkBannedUser($uid) {
+		if(!$uid) return false;
+		//检查用户是否存在数据库中
+		$user = D('User')->where('uid='.intval($uid))->find();
+		if(!$user) {
+			$this->_error = '用户不存在或获取信息失败';
+			return true;
+		}
+		//检查禁止登录的UID
+		$audit = model('Xdata')->lget('audit');
+		if($audit['banuid']==1){
+			$banned_uids = $audit['banneduids'];
+			if(!empty($banned_uids)){
+				$banned_uids = explode('|',$banned_uids);
+				$admin_uids = explode(',',C('ADMIN_UID'));
+				//登录用户在禁用列表，并且不在默认管理员列表中
+				if($uid>0 && in_array($uid,$banned_uids) && !in_array($uid,$admin_uids)){
+					$this->_error = '该用户已被禁用，禁止登录系统。';
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
+
 	/* 后台管理相关方法 */
 
 	// 运行服务，系统服务自动运行
-	public function run(){
+	public function run() {
 		return;
 	}
 }

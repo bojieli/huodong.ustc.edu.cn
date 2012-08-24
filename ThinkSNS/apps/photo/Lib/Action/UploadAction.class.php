@@ -48,7 +48,7 @@ class UploadAction extends BaseAction{
 			echo json_encode($info);
 		}else{
 			//上传出错
-			echo "0";
+			echo json_encode($info);
 		}
     }
 	//执行多张图片上传
