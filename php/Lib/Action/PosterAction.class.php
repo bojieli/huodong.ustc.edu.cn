@@ -45,7 +45,7 @@ class PosterAction extends Action {
 	public function ajaxGet() {
 		list($start, $num, $cond, $order) = $this->parseInput();
 		$posters = D('Poster')->getPoster($start, $num, $cond, $order);
-		$elements = array();
+		$elements = [];
 		foreach ($posters as $poster)
 			$elements[] = $this->poster2html($poster);
 

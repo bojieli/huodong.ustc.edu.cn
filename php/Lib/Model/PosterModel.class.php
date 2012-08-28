@@ -3,7 +3,7 @@ D("Attachment");
 
 class PosterModel extends AttachmentModel {
 	public function getPoster($start, $num, $cond = []) {
-		return M('Poster')->where($cond)->limit($start, $num)->select();
+		return M('Act')->where($cond)->limit($start, $num)->cast(__CLASS__)->select();
 	}
 
 	public function id() {
@@ -19,7 +19,11 @@ class PosterModel extends AttachmentModel {
 	}
 
 	public function schoolName() {
-		return D('group')->find($this->gid)->schoolName();
+		return D('group')->cast()->find($this->gid)->schoolName();
+	}
+
+	public function url() {
+		return $this->url;
 	}
 
 	public function updateClick() {
