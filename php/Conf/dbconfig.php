@@ -7,6 +7,6 @@ return array(
     'DB_USER'=>'campus-web',
     'DB_PWD'=>'cc78c1fe',
     'DB_PORT'=>'3306',
-    'DB_PREFIX'=>'ustc_',
+    'DB_PREFIX'=>'ustc_'
 );
 ?>
