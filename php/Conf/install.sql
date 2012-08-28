@@ -35,72 +35,70 @@ SET time_zone = "+00:00";
  * 3. When retrieving data, objects should be used instead of associasive arrays.
  */
 
+DROP DATABASE campus;
 CREATE DATABASE IF NOT EXISTS campus;
 GRANT ALL PRIVILEGES ON campus.* TO 'campus-web'@'localhost' IDENTIFIED BY 'cc78c1fe' WITH GRANT OPTION;
 
 USE campus;
+
+-- BEGIN school info
+CREATE TABLE IF NOT EXISTS ustc_school (
+	`sid` INT(10) NOT NULL AUTO_INCREMENT,
+	`name` VARCHAR(255) NOT NULL,
+	PRIMARY KEY (`sid`),
+	INDEX key_name(`name`)
+);
+-- END school info
 
 -- BEGIN user info
 
 -- Here saves the most frequently accessed data of a user
 CREATE TABLE IF NOT EXISTS ustc_user (
 	`uid` INT(10) NOT NULL AUTO_INCREMENT,
+	`sid` INT(10) NOT NULL, -- school id
 	`realname` VARCHAR(50) NOT NULL,
 	`login_type` TINYINT(1) NOT NULL, -- 0 for local, 1 for Renren.com
 	`email` VARCHAR(100) NOT NULL,
-	`password` CHAR(32) NOT NULL, -- password = md5(md5(input) + salt)
-	`salt` CHAR(10) NOT NULL, -- for password
+	`password` CHAR(32) NOT NULL, -- password = md5(concat(md5(input),salt))
+	`salt` CHAR(10) NOT NULL, -- random salt for password
 	`status` ENUM('active', 'locked', 'inactivated'),
-	`isadmin` BOOL NOT NULL,
-	`sid` INT(10) NOT NULL, -- school id
+	`isonline` BOOL NOT NULL DEFAULT FALSE,
+	`isdeveloper` BOOL NOT NULL DEFAULT FALSE, -- all privileges
+	`isschooladm` BOOL NOT NULL DEFAULT FALSE, -- school admin
 	-- avatar is not saved in database because the filename of the image is `uid`
-	PRIMARY KEY (`uid`),
-	INDEX key_realname(`realname`),
-	INDEX key_sid(`sid`)
-);
-
--- Our website had better not save information with much privacy
-CREATE TABLE IF NOT EXISTS ustc_user_profile (
-	`uid` INT(10) NOT NULL,
-	`student_no` VARCHAR(15) NOT NULL,
-	`gender` TINYINT(1) NOT NULL, -- 0 for girl, 1 for boy
-	`major` INT(4) NOT NULL, -- code for major
-	`grade` INT(4) NOT NULL, -- year of admission
-	`class` INT(4) NOT NULL, -- code for class in the same grade
 	`register_time` INT(10) NOT NULL, -- unix timestamp
-	`last_login_time` INT(10) NOT NULL, -- unix timestamp
+	`last_login_time` INT(10), -- unix timestamp
 	`login_count` INT(10) NOT NULL DEFAULT '0',
-	`hobby` TEXT NOT NULL,
+	`gender` BOOL, -- 0 for girl, 1 for boy
+	`grade` INT(4), -- year of admission
+	`student_no` VARCHAR(15),
+	`dept` VARCHAR(100),
+	`major` VARCHAR(100),
+	`homepage` VARCHAR(100),
+	`notify_email` VARCHAR(100) NOT NULL,
+	`hobby` TEXT,
 	PRIMARY KEY (`uid`),
+	FOREIGN KEY (`sid`) REFERENCES ustc_school(`sid`),
+	INDEX key_realname(`realname`),
 	INDEX key_student_no(`student_no`),
-	INDEX key_major(`major`),
-	INDEX key_grade(`grade`),
-	INDEX key_register_time(`register_time`),
-	INDEX key_last_login_time(`last_login_time`)
+	INDEX key_major(`sid`,`major`),
+	INDEX key_dept(`sid`,`dept`),
+	INDEX key_grade(`sid`,`grade`)
 );
 
 CREATE TABLE IF NOT EXISTS ustc_login_log (
-	`uid` INT(10) NOT NULL,
+	`ip` INT(10) NOT NULL,
 	`time` INT(10) NOT NULL, -- unix timestamp
 	`method` TINYINT(1) NOT NULL DEFAULT '0', -- 0 for local, 1 for Renren
+	`login_name` VARCHAR(255) NOT NULL,
 	`result` ENUM('success', 'failed') NOT NULL,
-	FOREIGN KEY (`uid`) REFERENCES ustc_user(`uid`),
+	INDEX key_ip(`ip`),
 	INDEX key_time(`time`),
-	INDEX key_method(`method`),
-	INDEX key_result(`result`)
+	INDEX key_login_name(`login_name`)
 );
 -- END user info
 
 -- BEGIN group info
-CREATE TABLE IF NOT EXISTS ustc_school (
-	`sid` INT(10) NOT NULL AUTO_INCREMENT,
-	`admin` INT(10) NOT NULL,
-	`name` VARCHAR(255) NOT NULL,
-	PRIMARY KEY (`sid`),
-	FOREIGN KEY (`admin`) REFERENCES ustc_user(`uid`),
-	INDEX key_name(`name`)
-);
-
 CREATE TABLE IF NOT EXISTS ustc_org (
 	`gid` INT(10) NOT NULL AUTO_INCREMENT,
 	`sid` INT(10) NOT NULL,
@@ -149,26 +147,43 @@ CREATE TABLE IF NOT EXISTS ustc_user_project (
 );
 -- END group info
 
+-- BEGIN Attachment module
+CREATE TABLE IF NOT EXISTS ustc_attachment (
+	`attachid` INT(10) NOT NULL AUTO_INCREMENT,
+	`author` INT(10) NOT NULL,
+	`upload_time` INT(10) NOT NULL,
+	`img_height` INT(10) NOT NULL,
+	`img_width` INT(10) NOT NULL,
+	`filename` VARCHAR(255) NOT NULL,
+	`localpath` VARCHAR(255) NOT NULL,
+	PRIMARY KEY (`attachid`),
+	FOREIGN KEY (`author`) REFERENCES ustc_user(`uid`)
+);
+-- END Attachment module
+
 -- BEGIN Poster module
 CREATE TABLE IF NOT EXISTS ustc_act (
 	`aid` INT(10) NOT NULL AUTO_INCREMENT,
 	`gid` INT(10) NOT NULL,
+	`author` INT(10) NOT NULL, -- uid
 	`name` VARCHAR(255) NOT NULL,
-	`publish_time` INT(10), -- unix timestamp
-	`start_time` INT(10), -- unix timestamp
-	`end_time` INT(10), -- unix timestamp
-	`place` VARCHAR(255),
-	`rate` INT(10) NOT NULL DEFAULT '0',
+	`publish_time` INT(10) NOT NULL, -- unix timestamp
+	`start_time` INT(10) NOT NULL, -- unix timestamp
+	`end_time` INT(10) NOT NULL, -- unix timestamp
+	`place` VARCHAR(255) NOT NULL,
+	`rate_total` INT(10) NOT NULL DEFAULT '0',
+	`rate_count` INT(10) NOT NULL DEFAULT '0',
 	`clicks` INT(10) NOT NULL DEFAULT '0',
 	`shared` INT(10) NOT NULL DEFAULT '0',
-	`poster` VARCHAR(255), -- filename of poster image
+	`poster` INT(10) NOT NULL, -- attachment id
 	`description` TEXT,
 	PRIMARY KEY(`aid`),
 	FOREIGN KEY (`gid`) REFERENCES ustc_org(`gid`),
+	FOREIGN KEY (`author`) REFERENCES ustc_user(`uid`),
+	FOREIGN KEY (`poster`) REFERENCES ustc_attachment(`attachid`),
 	INDEX key_starttime(`start_time`),
 	INDEX key_endtime(`end_time`),
-	INDEX key_place(`place`),
-	INDEX key_rate(`rate`)
+	INDEX key_place(`place`)
 );
 
 /* not used
@@ -403,34 +418,6 @@ CREATE TABLE IF NOT EXISTS ustc_audit_place (
 );
 */
 -- END Place Audit module
-
--- BEGIN Attachment module
-CREATE TABLE IF NOT EXISTS ustc_attachment (
-	`attachid` INT(10) NOT NULL AUTO_INCREMENT,
-	`author` INT(10) NOT NULL,
-	`time` INT(10) NOT NULL,
-	`img_height` INT(10) NOT NULL,
-	`img_width` INT(10) NOT NULL,
-	`filename` VARCHAR(255) NOT NULL,
-	`filepath` VARCHAR(255) NOT NULL,
-	PRIMARY KEY (`attachid`),
-	FOREIGN KEY (`author`) REFERENCES ustc_user(`uid`)
-);
-
-/* not used
-CREATE TABLE IF NOT EXISTS ustc_act_attachment (
-	`aid` INT(10) NOT NULL,
-	`attachid` INT(10) NOT NULL,
-	INDEX key_aid(`aid`)
-);
-
-CREATE TABLE IF NOT EXISTS ustc_plan_attachment (
-	`pid` INT(10) NOT NULL,
-	`attachid` INT(10) NOT NULL,
-	INDEX key_pid(`pid`)
-);
-*/
--- END Attachment module
 
 -- BEGIN Email Notify module
 CREATE TABLE IF NOT EXISTS ustc_email_notify (
