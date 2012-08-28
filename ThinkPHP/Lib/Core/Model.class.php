@@ -61,6 +61,8 @@ class Model {
     protected $autoCheckFields   =   true;
     // 是否批处理验证
     protected $patchValidate   =  false;
+    // 需要在select或find查询时以对象形式返回
+    protected $castClass = null;
 
     /**
      +----------------------------------------------------------
@@ -522,6 +524,14 @@ class Model {
     // 删除成功后的回调方法
     protected function _after_delete($data,$options) {}
 
+    public function cast($class = null) {
+    	if (empty($class) || !class_exists($class))
+		$this->castClass = get_class($this);
+	else
+		$this->castClass = $class;
+	return $this;
+    }
+
     /**
      +----------------------------------------------------------
      * 查询数据集
@@ -559,6 +569,9 @@ class Model {
         if(empty($resultSet)) { // 查询结果为空
             return null;
         }
+	if (!empty($this->castClass)) {
+		$resultSet = $this->arr2ObjArr($resultSet, $this->castClass);
+	}
         $this->_after_select($resultSet,$options);
         return $resultSet;
     }
@@ -676,11 +689,32 @@ class Model {
             return null;
         }
         $this->data = $resultSet[0];
+	if (!empty($this->castClass)) {
+		$this->data = $this->arr2Obj($this->data, $this->castClass);
+	}
         $this->_after_find($this->data,$options);
         return $this->data;
     }
     // 查询成功的回调方法
     protected function _after_find(&$result,$options) {}
+
+    protected function arr2Obj($arr, $class = null) {
+    	if (empty($class) || !class_exists($class))
+		$class = get_class($this);
+	$obj = new $class;
+	foreach ($arr as $key => $value) {
+		$obj->$key = $value;
+	}
+	return $obj;
+    }
+
+    protected function arr2ObjArr($arr, $class = null) {
+    	$objarr = [];
+	foreach ($arr as $key => $value) {
+		$objarr[$key] = $this->arr2Obj($value, $class);
+	}
+	return $objarr;
+    }
 
     /**
      +----------------------------------------------------------
