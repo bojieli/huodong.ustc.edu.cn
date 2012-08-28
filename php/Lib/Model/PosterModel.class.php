@@ -11,7 +11,7 @@ class PosterModel extends AttachmentModel {
 	}
 
 	public function getRate() {
-		return $this->rate * 10 + $this->clicks;
+		return $this->rate_total * 10 + $this->clicks;
 	}
 
 	public function humanDate() {
@@ -20,5 +20,22 @@ class PosterModel extends AttachmentModel {
 
 	public function schoolName() {
 		return D('group')->find($this->gid)->schoolName();
+	}
+
+	public function updateClick() {
+		$this->clicks++;
+		$this->save();
+	}
+
+	public function updateRate($rate) {
+		$this->rate_total += $rate;
+		$this->rate_count++;
+		$this->save();
+	}
+
+	public function get_stat() {
+		$stat['total'] = $this->count();
+		$stat['followed'] = $this->where("EXISTS (SELECT * FROM ustc_follow_org AS f WHERE f.uid = '".CURRENT_USER."' AND gid = f.gid)")->count();
+		$stat['newmsg'] = D('Notify')->msgCount();
 	}
 }

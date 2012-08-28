@@ -7,4 +7,8 @@ class NotifyModel extends ViewModel {
 		'plan' => array('status','gid','host_org','assistant_org', '_on'=>'act.pid=plan.pid'),
 		'org' => array('name'=>'org_name','type'=>'org_type', '_on'=>'plan.gid=org.gid')
 	);
+
+	public function msgCount() {
+		return CURRENT_USER;
+	}
 }
