@@ -65,7 +65,6 @@ CREATE TABLE IF NOT EXISTS ustc_user (
 	`isonline` BOOL NOT NULL DEFAULT FALSE,
 	`isdeveloper` BOOL NOT NULL DEFAULT FALSE, -- all privileges
 	`isschooladm` BOOL NOT NULL DEFAULT FALSE, -- school admin
-	-- avatar is not saved in database because the filename of the image is `uid`
 	`register_time` INT(10) NOT NULL, -- unix timestamp
 	`last_login_time` INT(10), -- unix timestamp
 	`login_count` INT(10) NOT NULL DEFAULT '0',
@@ -75,6 +74,7 @@ CREATE TABLE IF NOT EXISTS ustc_user (
 	`dept` VARCHAR(100),
 	`major` VARCHAR(100),
 	`homepage` VARCHAR(100),
+	`avatar` INT(10), -- attach id
 	`notify_email` VARCHAR(100) NOT NULL,
 	`hobby` TEXT,
 	PRIMARY KEY (`uid`),
