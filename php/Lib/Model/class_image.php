@@ -1,10 +1,16 @@
 <?php
-// include/class_image.php 2011-07-24 boj
-// opreations on images
 
-if (!defined('IN_GEWU')) {
-	exit(header('403 Forbidden'));
+/**
+ *      [Discuz!] (C)2001-2099 Comsenz Inc.
+ *      This is NOT a freeware, use is subject to license terms
+ *
+ *      $Id: class_image.php 19369 2010-12-29 04:29:52Z zhengqingpeng $
+ */
+
+if(!defined('IN_DISCUZ')) {
+	exit('Access Denied');
 }
+
 
 class image {
 
@@ -19,27 +25,33 @@ class image {
 	var $errorcode = 0;
 
 	function image() {
+		global $_G;
+		$s = &$_G['setting'];
 		$this->param = array(
-			'imagelib'		=> '',
-			'imageimpath'		=> GEWU_ROOT.'/data/upload',
-			'thumbquality'		=> 100,
-			'watermarkstatus'	=> array(), //unserialize($s['watermarkstatus']),
-			'watermarkminwidth'	=> array(), //unserialize($s['watermarkminwidth']),
-			'watermarkminheight'	=> array(), //unserialize($s['watermarkminheight']),
-			'watermarktype'		=> '',      //$s['watermarktype'],
-			'watermarktext'		=> '',      //$s['watermarktext'],
-			'watermarktrans'	=> array(), //unserialize($s['watermarktrans']),
-			'watermarkquality'	=> array(), //unserialize($s['watermarkquality']),
+			'imagelib'		=> $s['imagelib'],
+			'imageimpath'		=> $s['imageimpath'],
+			'thumbquality'		=> $s['thumbquality'],
+			'watermarkstatus'	=> unserialize($s['watermarkstatus']),
+			'watermarkminwidth'	=> unserialize($s['watermarkminwidth']),
+			'watermarkminheight'	=> unserialize($s['watermarkminheight']),
+			'watermarktype'		=> $s['watermarktype'],
+			'watermarktext'		=> $s['watermarktext'],
+			'watermarktrans'	=> unserialize($s['watermarktrans']),
+			'watermarkquality'	=> unserialize($s['watermarkquality']),
 		);
 	}
 
 
 	function Thumb($source, $target, $thumbwidth, $thumbheight, $thumbtype = 1, $nosuffix = 0) {
+		global $_G;
 		$return = $this->init('thumb', $source, $target, $nosuffix);
 		if($return <= 0) {
 			return $this->returncode($return);
 		}
 
+		if($this->imginfo['animated']) {
+			return $this->returncode(0);
+		}
 		$this->param['thumbwidth'] = $thumbwidth;
 		$this->param['thumbheight'] = $thumbheight;
 		$this->param['thumbtype'] = $thumbtype;
@@ -54,6 +66,7 @@ class image {
 	}
 
 	function Watermark($source, $target = '', $type = 'forum') {
+		global $_G;
 		$return = $this->init('watermask', $source, $target);
 		if($return <= 0) {
 			return $this->returncode($return);
@@ -62,7 +75,7 @@ class image {
 		if(!$this->param['watermarkstatus'][$type] || ($this->param['watermarkminwidth'][$type] && $this->imginfo['width'] <= $this->param['watermarkminwidth'][$type] && $this->param['watermarkminheight'][$type] && $this->imginfo['height'] <= $this->param['watermarkminheight'][$type])) {
 			return $this->returncode(0);
 		}
-		$this->param['watermarkfile'][$type] = GEWU_ROOT.'/static/image/common/'.($this->param['watermarktype'][$type] == 'png' ? 'watermark.png' : 'watermark.gif');
+		$this->param['watermarkfile'][$type] = './static/image/common/'.($this->param['watermarktype'][$type] == 'png' ? 'watermark.png' : 'watermark.gif');
 		if(!is_readable($this->param['watermarkfile'][$type]) || ($this->param['watermarktype'][$type] == 'text' && (!file_exists($this->param['watermarktext']['fontpath'][$type]) || !is_file($this->param['watermarktext']['fontpath'][$type])))) {
 			return $this->returncode(-3);
 		}
@@ -77,6 +90,7 @@ class image {
 	}
 
 	function init($method, $source, $target, $nosuffix = 0) {
+		global $_G;
 
 		$this->errorcode = 0;
 		if(empty($source)) {
@@ -88,18 +102,19 @@ class image {
 				return -2;
 			}
 			$data = dfsockopen($source);
-			$this->tmpfile = $source;
+			$this->tmpfile = $source = tempnam($_G['setting']['attachdir'].'./temp/', 'tmpimg_');
 			file_put_contents($source, $data);
 			if(!$data || $source === FALSE) {
 				return -2;
 			}
 		}
 		if($method == 'thumb') {
-			$target = empty($target) ? (!$nosuffix ? $source.'_thumb' : $source) : $target;
+			$target = empty($target) ? (!$nosuffix ? getimgthumbname($source) : $source) : $_G['setting']['attachdir'].'./'.$target;
 		} elseif($method == 'watermask') {
-			$target = empty($target) ?  $source : $target;
+			$target = empty($target) ?  $source : $_G['setting']['attachdir'].'./'.$target;
 		}
 		$targetpath = dirname($target);
+		dmkdir($targetpath);
 
 		clearstatcache();
 		if(!is_readable($source) || !is_writable($targetpath)) {
@@ -224,6 +239,7 @@ class image {
 	}
 
 	function Thumb_GD() {
+		global $_G;
 
 		if(!function_exists('imagecreatetruecolor') || !function_exists('imagecopyresampled') || !function_exists('imagejpeg') || !function_exists('imagecopymerge')) {
 			return -4;
@@ -280,6 +296,7 @@ class image {
 	}
 
 	function Thumb_IM() {
+		global $_G;
 
 		switch($this->param['thumbtype']) {
 			case 'fixnone':
@@ -326,6 +343,7 @@ class image {
 	}
 
 	function Watermark_GD($type = 'forum') {
+		global $_G;
 
 		if(!function_exists('imagecreatetruecolor')) {
 			return -4;
@@ -444,6 +462,7 @@ class image {
 	}
 
 	function Watermark_IM($type = 'forum') {
+		global $_G;
 
 		switch($this->param['watermarkstatus'][$type]) {
 			case 1:
@@ -508,4 +527,3 @@ class image {
 	}
 
 }
-?>
