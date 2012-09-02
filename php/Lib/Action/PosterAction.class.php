@@ -1,6 +1,7 @@
 <?php
-class PosterAction extends Action {
+class PosterAction extends PublicAction {
 	public function index() {
+		$this->headnav();
 		$this->assign('stat', D('Poster')->get_stat());
 		$this->display();
 	}
@@ -49,12 +50,11 @@ class PosterAction extends Action {
 		foreach ($posters as $poster)
 			$elements[] = $this->poster2html($poster);
 
-                //$obj=["<li class=\"hide\"><div class=\"celldiv\"><img id=\"poster-1\" class=\"haibao\" height=\"354px\" src=\"http://fmn.rrimg.com/fmn061/xiaozhan/20120514/2015/x_large_bbbB_09b000001cee1263.jpg\"><div class=\"detail\"><div class=\"hot\">热度：1235<span class=\"ding\"><a>顶</a></span></div><p>时间：2012年6月30日 下午5点半<br/>地点：西区活动中心一楼</p></div><div class=\"school\">中国科学技术大学</div> </div> </li>     ",
 		echo json_encode($elements);
 	}
 
 	private function poster2html($poster) {
-		return '<li class="hide"><div class="celldiv"><img id="'.$poster->id().'" class="haibao" height="'.$poster->imgHeight().'" src="'.$poster->url().'"><div class="detail"><div class="hot">热度：'.$poster->getRate().'<spam class="ding"><a>顶</a></span></div><p>时间：'.$poster->humanDate().'<br>地点：'.$poster->place.'</p></div><div class="school">'.$poster->schoolName().'</div></div></li>';
+		return '<li class="hide"><div class="celldiv"><img id="'.$poster->id().'" class="haibao" height="'.$poster->imgHeight().'" src="'.$poster->url().'"><div class="detail"><div class="hot">热度：'.$poster->getRate().'<span class="ding"><a>顶</a></span></div><p>时间：'.$poster->humanDate().'<br>地点：'.$poster->place.'</p></div><div class="school">'.$poster->schoolName().'</div></div></li>';
 	}
 
 	public function loadComments() {

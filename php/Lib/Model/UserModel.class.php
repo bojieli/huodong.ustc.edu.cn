@@ -17,7 +17,8 @@ class UserModel extends Model {
 		define('USER_LOCKED', -8);
 		define('USER_NOT_ACTIVATED', -9);
 		
-		define('CURRENT_USER', session('uid'));
+//		define('CURRENT_USER', session('uid'));
+		define('CURRENT_USER', 1);
 	}
 	
 	function login($login_type, $password) {

@@ -1,5 +1,5 @@
 <?php
-class AttachmentModel extends ViewModel {
+class AttachmentModel extends Model {
 	public function saveUpload() {
 	}
 

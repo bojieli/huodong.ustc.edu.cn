@@ -1,10 +1,32 @@
 <?php
-class InfoModel extends ViewModel {
-	public $viewFields = array(
-		'act' => array('aid','pid','name','is_public','act_date','start_time','end_time','apply_place','place_diyname','placeid','rate','poster','description','content'),
-		//'act_tag' => array('tag', '_on'=>'act.aid=act_tag.aid'),
-		'place' => array('name'=>'place_name', '_on'=>'act.placeid=place.placeid'),
-		'plan' => array('status','gid','host_org','assistant_org', '_on'=>'act.pid=plan.pid'),
-		'org' => array('name'=>'org_name','type'=>'org_type', '_on'=>'plan.gid=org.gid')
-	);
+class ClubModel extends Model {
+	public function getClub($start, $num) {
+		return M('Group')->limit("$start,$num")->cast(__CLASS__)->select();
+	}
+
+	public function gid() {
+		return $this->gid;
+	}
+
+	public function name() {
+		return $this->name;
+	}
+
+	public function shortdesc() {
+		return $this->shortdesc;
+	}
+	
+	public function logoUrl() {
+	}
+
+	public function logoHeight() {
+	}
+
+	public function memberCount() {
+		return M('user_group')->where(['gid' => $this->gid])->count();
+	}
+
+	public function schoolName() {
+		return D('Group')->cast()->find($this->gid)->schoolName();
+	}
 }

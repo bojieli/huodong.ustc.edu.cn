@@ -108,15 +108,23 @@ CREATE TABLE IF NOT EXISTS ustc_group (
 	`sid` INT(10) NOT NULL,
 	`owner` INT(10) NOT NULL,
 	`status` ENUM('active', 'locked', 'inactivated') NOT NULL,
+	`register_time` INT(10) NOT NULL, -- unix timestamp
 	`name` VARCHAR(255) NOT NULL,
+	`name_en` VARCHAR(255),
+	`slogan` VARCHAR(255),
+	`qq_group` VARCHAR(255),
+	`contact` VARCHAR(255),
+	`shortdesc` TEXT,
+	`logo` INT(10), -- attach id
+	`description` TEXT,
 	PRIMARY KEY (`gid`),
 	FOREIGN KEY (`sid`) REFERENCES ustc_school(`sid`),
 	FOREIGN KEY (`owner`) REFERENCES ustc_user(`uid`),
 	INDEX key_status(`status`)
 );
 
-INSERT INTO ustc_group SET sid=1, owner=1, status='active', name='Linux用户协会';
-INSERT INTO ustc_group SET sid=1, owner=1, status='locked', name='hahaha';
+INSERT INTO ustc_group SET sid=1, owner=1, status='active', name='Linux用户协会', register_time='10000';
+INSERT INTO ustc_group SET sid=1, owner=1, status='active', name='Joke协会', register_time='10000';
 
 -- Correlation of users and orgs
 CREATE TABLE IF NOT EXISTS ustc_user_group (
