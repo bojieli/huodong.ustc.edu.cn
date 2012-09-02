@@ -130,10 +130,10 @@ INSERT INTO ustc_group SET sid=1, owner=1, status='active', name='Joke协会', r
 CREATE TABLE IF NOT EXISTS ustc_user_group (
 	`uid` INT(10) NOT NULL,
 	`gid` INT(10) NOT NULL,
-	`priv` ENUM('admin', 'manager', 'member') NOT NULL,
+	`priv` ENUM('admin', 'manager', 'member', 'inactive') NOT NULL,
 	`title` VARCHAR(255) NOT NULL,
-	INDEX key_uid(`uid`),
-	INDEX key_gid(`gid`)
+	FOREIGN KEY (`uid`) REFERENCES ustc_user(`uid`),
+	FOREIGN KEY (`gid`) REFERENCES ustc_group(`gid`)
 );
 
 INSERT INTO ustc_user_group SET `uid`=1, gid=1, priv='admin', title='会长';

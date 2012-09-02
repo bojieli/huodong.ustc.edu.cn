@@ -123,7 +123,7 @@ CREATE TABLE IF NOT EXISTS ustc_group (
 CREATE TABLE IF NOT EXISTS ustc_user_group (
 	`uid` INT(10) NOT NULL,
 	`gid` INT(10) NOT NULL,
-	`priv` ENUM('admin', 'manager', 'member') NOT NULL,
+	`priv` ENUM('admin', 'manager', 'member', 'inactive') NOT NULL,
 	`title` VARCHAR(255),
 	INDEX key_uid(`uid`),
 	INDEX key_gid(`gid`)
