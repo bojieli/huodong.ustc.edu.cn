@@ -57,7 +57,7 @@ CREATE TABLE IF NOT EXISTS ustc_user (
 	`uid` INT(10) NOT NULL AUTO_INCREMENT,
 	`sid` INT(10) NOT NULL, -- school id
 	`realname` VARCHAR(50) NOT NULL,
-	`login_type` TINYINT(1) NOT NULL, -- 0 for local, 1 for Renren.com
+	`login_type` TINYINT(1) NOT NULL DEFAULT 0, -- 0 for local, 1 for Renren.com
 	`email` VARCHAR(100) NOT NULL,
 	`password` CHAR(32) NOT NULL, -- password = md5(concat(md5(input),salt))
 	`salt` CHAR(10) NOT NULL, -- random salt for password
@@ -116,7 +116,7 @@ CREATE TABLE IF NOT EXISTS ustc_user_group (
 	`uid` INT(10) NOT NULL,
 	`gid` INT(10) NOT NULL,
 	`priv` ENUM('admin', 'manager', 'member') NOT NULL,
-	`title` VARCHAR(255) NOT NULL,
+	`title` VARCHAR(255),
 	INDEX key_uid(`uid`),
 	INDEX key_gid(`gid`)
 );

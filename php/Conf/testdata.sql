@@ -119,7 +119,7 @@ INSERT INTO ustc_group SET sid=1, owner=1, status='active', name='Linux用户协
 INSERT INTO ustc_group SET sid=1, owner=1, status='locked', name='hahaha';
 
 -- Correlation of users and orgs
-CREATE TABLE IF NOT EXISTS ustc_user_org (
+CREATE TABLE IF NOT EXISTS ustc_user_group (
 	`uid` INT(10) NOT NULL,
 	`gid` INT(10) NOT NULL,
 	`priv` ENUM('admin', 'manager', 'member') NOT NULL,
@@ -128,11 +128,11 @@ CREATE TABLE IF NOT EXISTS ustc_user_org (
 	INDEX key_gid(`gid`)
 );
 
-INSERT INTO ustc_user_org SET `uid`=1, gid=1, priv='admin', title='会长';
-INSERT INTO ustc_user_org SET `uid`=1, gid=2, priv='member', title='成员';
+INSERT INTO ustc_user_group SET `uid`=1, gid=1, priv='admin', title='会长';
+INSERT INTO ustc_user_group SET `uid`=1, gid=2, priv='member', title='成员';
 
 -- If a user is in org, he/she should be in the follow list
-CREATE TABLE IF NOT EXISTS ustc_follow_org (
+CREATE TABLE IF NOT EXISTS ustc_follow_group (
 	`uid` INT(10) NOT NULL,
 	`gid` INT(10) NOT NULL,
 	`start_time` INT(10) NOT NULL, -- unix timestamp
@@ -140,8 +140,8 @@ CREATE TABLE IF NOT EXISTS ustc_follow_org (
 	FOREIGN KEY (`gid`) REFERENCES ustc_group(`gid`)
 );
 
-INSERT INTO ustc_follow_org SET `uid`=1, gid=1, start_time=NOW();
-INSERT INTO ustc_follow_org SET `uid`=1, gid=2, start_time=NOW();
+INSERT INTO ustc_follow_group SET `uid`=1, gid=1, start_time=NOW();
+INSERT INTO ustc_follow_group SET `uid`=1, gid=2, start_time=NOW();
 
 CREATE TABLE IF NOT EXISTS ustc_project (
 	`pid` INT(10) NOT NULL AUTO_INCREMENT,
