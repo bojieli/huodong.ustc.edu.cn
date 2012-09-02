@@ -1,13 +1,5 @@
 <?php
 // common function routines
-D('User')->init();
-class User extends UserModel {
-}
-
-D('Group');
-class Group extends GroupModel {
-}
-
 function random($length) {
 	$s = '';
 	for ($i=0; $i<$length; $i++) {
