@@ -1,0 +1,14 @@
+<include file="Public:bootstrapHeader" />
+<form class="form-horizontal" action="/Poster/update" method="post">
+  <fieldset>
+    <div class="control-group">
+      <label class="control-label"></label>
+      <div class="controls">
+	<h2>修改海报</h2>
+        <input type="hidden" name="aid" value="{$poster.aid}" />
+      </div>
+    </div>
+    <include file="form" />
+ </fieldset>
+</form>
+<include file="Public:bootstrapFooter" />

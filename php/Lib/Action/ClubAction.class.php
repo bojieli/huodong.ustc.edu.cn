@@ -56,6 +56,7 @@ class ClubAction extends PublicAction {
 		$inactive_members = M()->query("SELECT * FROM ustc_user AS u, ustc_user_group AS ug WHERE ug.gid='$gid' AND ug.priv = 'inactive' AND ug.uid = u.uid");
 		$this->assign('inactive', $inactive_members);
 		$this->assign('pageStart', $start);
+		$this->headnav();
 		$this->display();
 	}
 
@@ -149,8 +150,16 @@ class ClubAction extends PublicAction {
 		return M()->result_first("SELECT priv FROM ustc_user_group WHERE `uid`='$uid' AND `gid`='$gid'");
 	}
 	
-	private function inClub($uid, $gid) {
-		return (M('user_group')->where(['uid'=>CURRENT_USER, 'gid'=>$gid])->count()) > 0;
+	public function isAdmin($uid, $gid) {
+		return $this->getPriv($uid,$gid) == 'admin';
+	}
+
+	public function isManager($uid, $gid) {
+		return in_array($this->getPriv($uid,$gid), ['admin','manager']);
+	}
+
+	public function inClub($uid, $gid) {
+		return $this->getPriv($uid, $gid) != NULL && $this->getPriv($uid, $gid) != 'inactive';
 	}
 
 	private function getData($gid, $join = false) {
