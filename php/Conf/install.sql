@@ -68,13 +68,13 @@ CREATE TABLE IF NOT EXISTS ustc_user (
 	`register_time` INT(10) NOT NULL, -- unix timestamp
 	`last_login_time` INT(10), -- unix timestamp
 	`login_count` INT(10) NOT NULL DEFAULT '0',
+	`avatar` INT(10), -- attach id
 	`gender` BOOL, -- 0 for girl, 1 for boy
 	`grade` INT(4), -- year of admission
 	`student_no` VARCHAR(15),
 	`dept` VARCHAR(100),
 	`major` VARCHAR(100),
 	`homepage` VARCHAR(100),
-	`avatar` INT(10), -- attach id
 	`notify_email` VARCHAR(100) NOT NULL,
 	`hobby` TEXT,
 	PRIMARY KEY (`uid`),

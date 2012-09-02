@@ -67,10 +67,10 @@ CREATE TABLE IF NOT EXISTS ustc_user (
 	`isonline` BOOL NOT NULL DEFAULT FALSE,
 	`isdeveloper` BOOL NOT NULL DEFAULT FALSE, -- all privileges
 	`isschooladm` BOOL NOT NULL DEFAULT FALSE, -- school admin
-	-- avatar is not saved in database because the filename of the image is `uid`
 	`register_time` INT(10) NOT NULL, -- unix timestamp
 	`last_login_time` INT(10), -- unix timestamp
 	`login_count` INT(10) NOT NULL DEFAULT '0',
+	`avatar` INT(10), -- attach id
 	`gender` BOOL, -- 0 for girl, 1 for boy
 	`grade` INT(4), -- year of admission
 	`student_no` VARCHAR(15),
