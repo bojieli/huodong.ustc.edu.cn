@@ -11,23 +11,7 @@
 <include file="Public:headnav" />
 
 <div id="stmain">
-	<div class="sttitle2">{$club.school.name}</div>
-	<div class="sttitle">{$club.name}</div>
-    <div class="sttitle3">{$club.name_en}<br/>
-    {$club.slogan}<br/>协会QQ群：{$club.qq_group}<br/>协会联系方式：{$club.contact}</div>
-    <div class="sttitle4">{$club.memberCount}<br/>会长：{$club.admin.realname} （{$club.admin.grade}级 {$club.admin.dept}）
-        <div class="sttitle5">
-	    <if condition="$club['ismember']">
-	    </if>
-	    <a href="/Club/join?gid={$club.gid}">您还未加入，点击申请加入</a>
-	    <a style="margin-left:50px;" href="/Club/manage?gid={$club.gid}">查看及管理会员</a>
-	    <if condition="$club['isadmin']">
-	    <a style="margin-left:20px;" href="/Club/introModify?gid={$club.gid}">修改社团简介</a>
-	    </if>
-	</div>
-     </div>
-     <div style="clear:both; height:1px;"> </div>
-
+<include file="introHeader" />
 	<div class="stcon1">
     	<div class="stcon2">
 	{$club.description}
