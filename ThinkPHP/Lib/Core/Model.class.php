@@ -1212,8 +1212,9 @@ class Model {
      +----------------------------------------------------------
      */
     public function result_first($sql,$parse=false) {
-    	$rs = $this->query($sql,$parse);
-	return $rs[0][0];
+    	$rs = $this->fetch_first($sql,$parse);
+	foreach ($rs as $key => $value)
+		return $value;
     }
 
     /**
