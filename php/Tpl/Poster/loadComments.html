@@ -1,20 +1,38 @@
 <div class="hdmeitou">
-  <span>{$pid} 中国科学技术大学--&gt;第六届创业讲坛</span>
+  <span>{$poster.school}--&gt;{$poster.name}</span>
   <div class="closehb">X</div>
 </div>
   <div class="photocome">
-     <img src="/static/262.jpg" alt="海报主题" title="海报主题" /> 
+     <img src="/static/262.jpg" alt="{$poster.name}" title="{$poster.name}" /> 
   </div>
     <div class="hb_footer">
        <div class="fenxiangl">
-            <span><a href="">喜欢</a>&nbsp;</span>
+<script>
+<!--
+$(".like").live('click', function(event){
+	// div.hot > span.ding, div.hot > span.rate [class:ding id:ding-id]
+	dom = $("#"+event.target.id).parent().children('.rate');
+	if (dom.attr("clicked"))
+		return;
+	dom.attr("clicked", true);
+	dom.html(Number(dom.html()) + 5);
+	$.ajax({
+		url: "Poster/like",
+		data: {aid: event.target.id.substr(5)}
+	});
+});
+-->
+</script>
+	    热度：<span class="rate">{$poster.rate}</span> <span class="like" id="ding-{$poster.aid}">顶</span>
 	    <span class="dymian"><a href="/Poster/singlePage">显示在单独页面</a></span>
        </div>
        <div class="fenxiangr">
  	 <div class="bshare-custom icon-medium-plus"><span class="share1">分享到：</span><a title="分享到新浪微博" class="bshare-sinaminiblog" href="javascript:void(0);"></a><a title="分享到人人网" class="bshare-renren" href="javascript:void(0);"></a><a title="分享到豆瓣" class="bshare-douban" href="javascript:void(0);"></a><a title="分享到腾讯微博" class="bshare-qqmb" href="javascript:void(0);"></a><a title="分享到QQ空间" class="bshare-qzone" href="javascript:void(0);"></a><a title="更多平台" class="bshare-more bshare-more-icon more-style-addthis"></a></div><script type="text/javascript" src="/static/buttonLite.js"></script><script type="text/javascript" src="/static/bshareC0.js"></script>
        </div>
     </div><!--hbfooter-->
-    <div class="hbbeizhu">这里是海报的可以填写的备注<br/>sdafdkla三等奖咖啡了三大开发第三款拉法基抵抗力信息</div>
+    <div class="hbbeizhu">时间：{$poster.humanDate}</div>
+    <div class="hbbeizhu">地点：{$poster.place}</div>
+    <div class="hbbeizhu">{$poster.description}</div>
     
     <div class="post_reply">
           <div class="add_reply">

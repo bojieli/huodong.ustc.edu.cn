@@ -137,7 +137,12 @@ class PosterAction extends PublicAction {
 			exit();
 		$poster['clicks']++;
 		M('Act')->where(['aid'=>$aid])->save($poster);
-		$this->assign('poster', $poster);
+		$poster = D('Poster')->getPosterById($aid);
+		$poster->rate = $poster->getRate();
+		$poster->school = $poster->schoolName();
+		$poster->name = $poster->name();
+		$poster->humanDate = $poster->humanDate();
+		$this->assign('poster', $poster->toArray());
 		$this->assign('comments', M('act_comment')->where(['aid'=>$aid])->select());
 		$this->display();
 	}
@@ -153,8 +158,7 @@ class PosterAction extends PublicAction {
 
 	public function singlePage() {
 		$m = D('Poster');
-		$this->assign('pid', $_GET['pid']);
-		$this->display();
+		$this->loadComments();
 	}
 }
 ?>
