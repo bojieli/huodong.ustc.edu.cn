@@ -111,28 +111,11 @@ class ClubAction extends PublicAction {
 		$gid = $_GET['gid'];
 		$uid = $_GET['uid'];
 		$title = addslashes($_GET['title']);
-		switch ($title) {
-			case '主席':
-			case '副主席':
-			case '社长':
-			case '副社长':
-			case '会长':
-			case '副会长': 
-				$priv='admin';
-				break;
-			case '部长':
-			case '项目组长':
-				$priv='manager';
-				break;
-			case '会员':
-			case '成员':
-				$priv='member';
-				break;
-			case '待审核':
-				$title='inactive';
-				break;
-			default: exit();
+		if (!in_array($_GET['priv'], ['admin', 'manager', 'member', 'inactive'])) {
+			exit();
 		}
+		$priv = $_GET['priv'];
+		
 		if ($this->getMyPriv($gid) == 'admin') {
 			$record['priv'] = $priv;
 			$record['title'] = $title;
