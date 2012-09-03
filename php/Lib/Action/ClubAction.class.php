@@ -71,7 +71,9 @@ class ClubAction extends PublicAction {
 				'priv' => 'member',
 				'title' => '会员'
 			);
-			M('user_group')->add($record);
+			$obj = M('user_group');
+			$obj->create($record);
+			$obj->add();
 		}
 		echo "<script>window.location='/Club/intro?gid=$gid'</script>";
 	}
@@ -108,19 +110,34 @@ class ClubAction extends PublicAction {
 			exit();
 		$gid = $_GET['gid'];
 		$uid = $_GET['uid'];
-		$priv = addslashes($_GET['title']);
-		switch ($priv) {
-			case 'admin': $title='会长';break;
-			case 'manager': $title='部长';break;
-			case 'member': $title='会员';break;
-			case 'inactive': $title='待审核';break;
+		$title = addslashes($_GET['title']);
+		switch ($title) {
+			case '主席':
+			case '副主席':
+			case '社长':
+			case '副社长':
+			case '会长':
+			case '副会长': 
+				$priv='admin';
+				break;
+			case '部长':
+			case '项目组长':
+				$priv='manager';
+				break;
+			case '会员':
+			case '成员':
+				$priv='member';
+				break;
+			case '待审核':
+				$title='inactive';
+				break;
 			default: exit();
 		}
 		if ($this->getMyPriv($gid) == 'admin') {
 			$record['priv'] = $priv;
 			$record['title'] = $title;
 			M('user_group')->where(['uid'=>$uid, 'gid'=>$gid])->save($record);
-}
+		}
 	}
 
 	public function removeMember() {
