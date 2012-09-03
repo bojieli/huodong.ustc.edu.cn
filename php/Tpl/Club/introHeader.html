@@ -21,9 +21,9 @@
 	    	    <a href="/Club/join?gid={$club.gid}">您还未加入，点击申请加入</a>
 	    </switch>
 	    <a style="margin-left:50px;" href="/Club/manage?gid={$club.gid}">查看及管理会员</a>
-	    <if condition="$club['isadmin']">
+	    <notempty name="club.isadmin">
 	    <a style="margin-left:20px;" href="/Club/introModify?gid={$club.gid}">修改社团简介</a>
-	    </if>
+	    </notempty>
 	    <if condition="in_array($club['mypriv'], ['manager','admin'])">
 	    <a style="margin-left:20px;" target="_blank" href="/Poster/add?gid={$club.gid}">发布海报</a>
 	    </if>
