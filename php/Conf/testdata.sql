@@ -10,6 +10,7 @@ INSERT INTO ustc_user SET realname='马甲2', login_type=0, email='boj@mail.ustc
 INSERT INTO ustc_group SET sid=1, owner=1, status='active', name='Linux用户协会', register_time='10000';
 INSERT INTO ustc_group SET sid=1, owner=1, status='active', name='Joke协会', register_time='10000';
 INSERT INTO ustc_group SET sid=1, owner=1, status='active', name='系统测试协会', register_time='10000';
+INSERT INTO ustc_group SET sid=1, owner=1, status='active', name='LUG', register_time='10000';
 
 INSERT INTO ustc_user_group SET `uid`=1, gid=1, priv='admin', title='会长';
 INSERT INTO ustc_user_group SET `uid`=1, gid=2, priv='member', title='会员';

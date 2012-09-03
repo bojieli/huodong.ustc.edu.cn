@@ -125,8 +125,9 @@ CREATE TABLE IF NOT EXISTS ustc_user_group (
 	`gid` INT(10) NOT NULL,
 	`priv` ENUM('admin', 'manager', 'member', 'inactive') NOT NULL,
 	`title` VARCHAR(255),
-	INDEX key_uid(`uid`),
-	INDEX key_gid(`gid`)
+	FOREIGN KEY (`uid`) REFERENCES ustc_user(`uid`),
+	FOREIGN KEY (`gid`) REFERENCES ustc_group(`gid`),
+	UNIQUE KEY key_uid_gid(`uid`,`gid`)
 );
 
 -- If a user is in group, he/she should be in the follow list
