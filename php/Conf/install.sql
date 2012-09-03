@@ -67,7 +67,7 @@ CREATE TABLE IF NOT EXISTS ustc_user (
 	`isschooladm` BOOL NOT NULL DEFAULT FALSE, -- school admin
 	`register_time` INT(10) NOT NULL, -- unix timestamp
 	`last_login_time` INT(10), -- unix timestamp
-	`login_count` INT(10) NOT NULL DEFAULT '0',
+	`login_count` INT(10) NOT NULL DEFAULT 0,
 	`avatar` INT(10), -- attach id
 	`gender` BOOL, -- 0 for girl, 1 for boy
 	`grade` INT(4), -- year of admission
@@ -89,7 +89,7 @@ CREATE TABLE IF NOT EXISTS ustc_user (
 CREATE TABLE IF NOT EXISTS ustc_login_log (
 	`ip` INT(10) NOT NULL,
 	`time` INT(10) NOT NULL, -- unix timestamp
-	`method` TINYINT(1) NOT NULL DEFAULT '0', -- 0 for local, 1 for Renren
+	`method` TINYINT(1) NOT NULL DEFAULT 0, -- 0 for local, 1 for Renren
 	`login_name` VARCHAR(255) NOT NULL,
 	`result` ENUM('success', 'failed') NOT NULL,
 	INDEX key_ip(`ip`),
@@ -179,10 +179,10 @@ CREATE TABLE IF NOT EXISTS ustc_act (
 	`start_time` INT(10) NOT NULL, -- unix timestamp
 	`end_time` INT(10) NOT NULL, -- unix timestamp
 	`place` VARCHAR(255) NOT NULL,
-	`rate_total` INT(10) NOT NULL DEFAULT '0',
-	`rate_count` INT(10) NOT NULL DEFAULT '0',
-	`clicks` INT(10) NOT NULL DEFAULT '0',
-	`shared` INT(10) NOT NULL DEFAULT '0',
+	`likes` INT(10) NOT NULL DEFAULT 0,
+	`clicks` INT(10) NOT NULL DEFAULT 0,
+	`shared` INT(10) NOT NULL DEFAULT 0,
+	`comment_count` INT(10) NOT NULL DEFAULT 0, -- redundant to speed up
 	`poster` INT(10) NOT NULL, -- attachment id
 	`description` TEXT,
 	PRIMARY KEY(`aid`),
@@ -214,12 +214,11 @@ CREATE TABLE IF NOT EXISTS ustc_act_history (
 CREATE TABLE IF NOT EXISTS ustc_act_comment (
 	`cid` INT(10) NOT NULL AUTO_INCREMENT,
 	`aid` INT(10) NOT NULL,
-	`gid` INT(10) NOT NULL, -- redundant
-	`author` INT(10) NOT NULL, -- uid
+	`author` INT(10) NOT NULL,
+	`time` INT(10) NOT NULL,
 	`content` TEXT,
 	PRIMARY KEY (`cid`),
 	FOREIGN KEY (`aid`) REFERENCES ustc_act(`aid`),
-	FOREIGN KEY (`gid`) REFERENCES ustc_group(`gid`),
 	FOREIGN KEY (`author`) REFERENCES ustc_user(`uid`)
 );
 -- END Poster module
