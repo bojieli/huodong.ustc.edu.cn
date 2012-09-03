@@ -11,7 +11,7 @@
 <body>	
 <include file="Public:headnav" />
 
-<if condition="club.isadmin">
+<notempty name="club.isadmin">
 <script>
     function ajaxChangeTitle(uid, priv, title) {
         if (title.length < 1)
@@ -37,11 +37,12 @@
 	});
     }
 </script>		
-</if>
+</notempty>
 
+<notempty name="club.ismanager">
 <?php
 $showPager = function() use($club) {
-	if ($club['mypriv'] == 'admin' || $club['mypriv'] == 'manager')
+	if ($club['ismanager'])
 	if ($club['memberCount'] > 20) {
 ?>
 <div class="pager">
@@ -54,13 +55,16 @@ $showPager = function() use($club) {
 	}
 };
 ?>
+</notempty>
 
 <div id="stmain">
 <include file="introHeader" />
 	<div class="stcon1">
     	<div class="stcylb">会员<span class="stnotice1">（为保护隐私，普通成员仅能看到包括部长及会长在内的前20名成员）</span></div>
         <div class="stcyleft">
+<notempty name="club.ismanager">
 	<?php $showPager(); ?>
+</notempty>
 	    <volist name="members" id="member">
             <div class="stcycell" id="stcy{$member.uid}">
             	<div class="stcycell1"><img src="{$member.avatar}"></div>
@@ -78,7 +82,8 @@ $showPager = function() use($club) {
 		?>
                     <div class="stzhiwu"><img src="/static/images/aa{$member.privlevel}.png" />
 		    <div class="stzhiwumc">{$member.title}</div>
-		    <if condition="club.isadmin">
+		    
+		    <notempty name="club.isadmin">
 	    	    <div class="stzhiwusz">任命为：
                         <select onchange="ajaxChangeTitle({$member.uid}, this.options[this.selectedIndex].getAttribute('priv'), this.options[this.selectedIndex].getAttribute('title'))">
                         <option priv="" title="" selected="selected">-----</option>
@@ -100,7 +105,7 @@ $showPager = function() use($club) {
 			<option priv="inactive" title="待审核">待审核</option>
                 	</select>
                     </div>
-		    </if>
+		    </notempty>
 		    </div>
                     <div class="stcyxx"><span class="<?=$member['gender'] ? 'boy' : 'girl' ?>name">{$member.realname}</span>：<br/>
 		    {$member.dept} {$member.grade}级<br/>
@@ -108,14 +113,18 @@ $showPager = function() use($club) {
                 </div><!--cell2-->
             </div><!--ctcycell-->
 	    </volist>
+<notempty name="club.ismanager">
 	<?php $showPager(); ?>
+</notempty>
         </div><!--stcy left-->
         
         <div class="stcyright">
             <div class="sttttt">待审核会员：</div>
 	    <volist name="inactive" id="member">
-	    <p>{$member.realname} {$member.dept} {$member.grade}级
+	    <p>{$member.realname} {$member.dept} {$member.grade}级 {$club.isadmin}
+	    <notempty name="club.ismanager">
 	    <a href="/Club/joinVerify?gid={$club.gid}&uid={$member.uid}">允许</a> <a href="/Club/joinDeny?gid={$club.gid}&uid={$member.uid}">忽略</a>
+	    </notempty>
 	    </p>
             </volist>
             

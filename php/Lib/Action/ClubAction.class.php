@@ -88,8 +88,8 @@ class ClubAction extends PublicAction {
 				$record['priv'] = 'member';
 				M('user_group')->where(['uid'=>$uid, 'gid'=>$gid])->save($record);
 			}
-			echo "<script>window.location='/Club/manage?gid=$gid'</script>";	
 		}
+		echo "<script>window.location='/Club/manage?gid=$gid'</script>";	
 	}
 
 	public function joinDeny() {
@@ -101,8 +101,8 @@ class ClubAction extends PublicAction {
 			if ($this->getPriv($uid, $gid) == 'inactive') {
 				M('user_group')->where(['uid'=>$uid, 'gid'=>$gid])->delete();
 			}
-			echo "<script>window.location='/Club/manage?gid=$gid'</script>";	
 		}
+		echo "<script>window.location='/Club/manage?gid=$gid'</script>";	
 	}
 
 	public function changeTitle() {
@@ -171,7 +171,6 @@ class ClubAction extends PublicAction {
 		$club['school'] = M('School')->find($club['sid']);
 		
 		$club['admin'] = M('User')->find($club['owner']);
-		$club['isadmin'] = ($club['owner'] == CURRENT_USER);
 		
 		if ($join) {
 			$club['managers'] = M()->query("SELECT * FROM ustc_user AS u, ustc_user_group AS g WHERE g.gid = '$gid' AND g.uid = u.uid AND g.priv = 'manager'");
@@ -188,6 +187,8 @@ class ClubAction extends PublicAction {
 		}
 
 		$club['mypriv'] = M()->result_first("SELECT priv FROM ustc_user_group WHERE `uid`='".CURRENT_USER."' AND gid='$gid'");
+		$club['isadmin'] = ($club['mypriv'] == 'admin');
+		$club['ismanager'] = ($club['mypriv'] == 'admin' || $club['mypriv'] == 'manager');
 		$club['isin'] = !empty($club['mypriv']);
 		$club['memberCount'] = M('user_group')->where(['gid'=>$gid])->count();
 		return $club;
