@@ -20,16 +20,17 @@ class PosterAction extends PublicAction {
 		$gid = is_numeric($_POST['gid']) ? $_POST['gid'] : exit();
 		if (A('Club')->isManager(CURRENT_USER, $gid)) {
 			$poster['gid'] = $gid;
-			$poster['uid'] = CURRENT_USER;
+			$poster['author'] = CURRENT_USER;
 			$poster['publish_time'] = time();
 
 			$fields = ['name','start_time','end_time','place','poster','description'];
-			$poster = array();
 			foreach ($fields as $field) {
 				$poster[$field] = $_POST[$field];
 			}
 
-			M('Act')->add($poster);
+			$obj = M('Act');
+			$obj->create($poster);
+			$obj->add();
 		}
 		echo "<script>window.location='/';</script>";
 	}
@@ -72,9 +73,6 @@ class PosterAction extends PublicAction {
 			M('Act')->where(['aid'=>$aid])->delete();
 		}
 		echo "<script>window.location='/';</script>";
-	}
-
-	public function reply() {
 	}
 
 	private function parseInput() {
@@ -150,6 +148,9 @@ class PosterAction extends PublicAction {
 		unset($comment);
 		$this->assign('comments', $comments);
 		$this->display();
+	}
+
+	public function reply() {
 	}
 
 	public function like() {
