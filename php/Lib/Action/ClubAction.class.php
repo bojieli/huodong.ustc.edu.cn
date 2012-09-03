@@ -66,10 +66,10 @@ class ClubAction extends PublicAction {
 		$gid = $_GET['gid'];
 		if ($this->getMyPriv($gid) == null) {
 			$record = array(
-				'uid' => $uid,
+				'uid' => CURRENT_USER,
 				'gid' => $gid,
-				'priv' => 'member',
-				'title' => '会员'
+				'priv' => 'inactive',
+				'title' => '审核中'
 			);
 			$obj = M('user_group');
 			$obj->create($record);
@@ -222,8 +222,30 @@ class ClubAction extends PublicAction {
 		'<div class="intro">'.$club->shortdesc().'</div>'.
 		'<img id="'.$club->gid().'" class="haibao" height="'.$club->logoHeight().'" src="'.$club->logoUrl().'" />'.
 		'<div class="detail"><div class="hot">注册会员：'.$club->memberCount().'人'.
-		'<span class="shenqing"><a>申请加入</a></span>'.
+		$this->apply2html($club->gid()).
 		'</div></div>'.
 		'<div class="school">'.$club->schoolName().'</div></div></li>';
+	}
+
+	private function apply2html($gid) {
+		$priv = $this->getMyPriv($gid);
+		$str = '<span id="apply-'.$gid.'" class="shenqing ';
+		switch ($priv) {
+			case 'admin':
+			case 'manager':
+			case 'member': $str .= 'isin';break;
+			case 'inactive': $str .= 'applying';break;
+			default: $str .= 'apply';
+		}
+		$str .= '">';
+		switch ($priv) {
+			case 'admin':
+			case 'manager':
+			case 'member': $str .= '已加入';break;
+			case 'inactive': $str .= '申请中';break;
+			default: $str .= '申请加入';
+		}
+		$str .= '</span>';
+		return $str;
 	}
 }
