@@ -49,8 +49,9 @@ class PosterModel extends AttachmentModel {
 	}
 
 	public function get_stat() {
-		$stat['total'] = $this->count();
-		$stat['followed'] = $this->where("EXISTS (SELECT * FROM ustc_follow_org AS f WHERE f.uid = '".CURRENT_USER."' AND gid = f.gid)")->count();
+		$stat['total'] = $this->result_first("SELECT COUNT(*) FROM ustc_act");
+		$stat['followed'] = $this->result_first("SELECT COUNT(*) FROM ustc_act AS a, ustc_user_group AS ug WHERE ug.uid = '".CURRENT_USER."' AND ug.gid = a.gid");
 		$stat['newmsg'] = D('Notify')->msgCount();
+		return $stat;
 	}
 }

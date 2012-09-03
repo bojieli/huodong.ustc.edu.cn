@@ -102,7 +102,7 @@ class PosterAction extends PublicAction {
 			switch ($_GET['order']) {
 			case 'new': $order = 'publish_time'; break;
 			case 'near': $order = 'start_time DESC'; $cond[] = 'start_time > '.time(); break;
-			case 'follow': $cond[] = "EXISTS (SELECT * FROM ustc_follow_org AS f WHERE f.uid = '".CURRENT_USER."' AND gid = f.gid)"; break;
+			case 'follow': $cond[] = "EXISTS (SELECT * FROM ustc_user_group AS ug WHERE ug.uid = '".CURRENT_USER."' AND gid = ug.gid)"; break;
 			}
 		}
 		return [$start, $num, implode(' AND ', $cond), $order];

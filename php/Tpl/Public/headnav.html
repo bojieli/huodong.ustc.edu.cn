@@ -1,9 +1,11 @@
 <!--下面是眉头的代码-->
 <div id="header">
   <div class="head-1160">
-      <div class="logo"><a href="/">大学海报</a></div><div class="nav"><a href="/"><span class="here1">海报墙</span></a></div><div class="nav"><a href="/Club/">大学社团</a></div>
+      <div class="logo"><a href="/"><span>大学海报</span></a></div>
+      <div class="nav"><a href="/"><span <if condition="$here == PosterAction">class="here1"</if>>海报墙</span></a></div>
+      <div class="nav"><a href="/Club/"><span <if condition="$here == ClubAction">class="here1"</if>>大学社团</span></a></div>
       <volist name="clublist" id="_club_">
-      <div class="nav"><a href="/Club/manage?gid={$_club_.gid}">{$_club_.name}</a></div>
+      <div class="nav"><a href="/Club/manage?gid={$_club_.gid}"><span <if condition="$here == 'club'. $_club_['gid']">class="here1"</if>>{$_club_.name}</span></a></div>
       </volist>
       <div class="login1"><span id="login">登陆</span>/<a href="/User/register">注册</a></div>
   </div><!--head-1160-->

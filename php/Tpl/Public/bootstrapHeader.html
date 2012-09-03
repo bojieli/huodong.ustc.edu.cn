@@ -1,9 +1,4 @@
 <!DOCTYPE html>
-<?php
-$baseurl = strstr($_SERVER['REQUEST_URI'], '/Act', true);
-$actbase = $baseurl.'/Act';
-$modname = strstr(substr(strstr($_SERVER['REQUEST_URI'], '/Act'), 5), '/', true);
-?>
 <html lang="en">
   <head>
     <meta charset="utf-8">
@@ -12,7 +7,7 @@ $modname = strstr(substr(strstr($_SERVER['REQUEST_URI'], '/Act'), 5), '/', true)
     <meta name="description" content="让社团的信息发布和内部管理摆脱铅与火，走进光与电">
     <meta name="author" content="boj">
     <!-- Le styles -->
-    <link href="{$baseurl}/bootstrap/css/bootstrap.css" rel="stylesheet">
+    <link href="/bootstrap/css/bootstrap.css" rel="stylesheet">
     <style type="text/css">
       body {
         padding-top: 60px;
@@ -22,13 +17,13 @@ $modname = strstr(substr(strstr($_SERVER['REQUEST_URI'], '/Act'), 5), '/', true)
         padding: 9px 0;
       }
     </style>
-    <link href="{$baseurl}/bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
+    <link href="/bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
     <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
       <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
     <!-- Le fav and touch icons -->
-    <link rel="shortcut icon" href="{$baseurl}/bootstrap/ico/favicon.ico">
+    <link rel="shortcut icon" href="/bootstrap/ico/favicon.ico">
     <link rel="apple-touch-icon-precomposed" sizes="114x114" href="{$baseurl}/bootstrap/ico/apple-touch-icon-114-precomposed.png">
     <link rel="apple-touch-icon-precomposed" sizes="72x72" href="{$baseurl}/bootstrap/ico/apple-touch-icon-72-precomposed.png">
     <link rel="apple-touch-icon-precomposed" href="{$baseurl}/bootstrap/ico/apple-touch-icon-57-precomposed.png">
@@ -45,18 +40,13 @@ $modname = strstr(substr(strstr($_SERVER['REQUEST_URI'], '/Act'), 5), '/', true)
           <a class="brand" href="index">社团管理平台</a>
           <div class="nav-collapse">
             <ul class="nav">
-	      <if condition="$modname eq 'Info'">
-              <li><a href="{$actbase}/">海报墙</a></li>
-	      <li class="active"><a href="{$actbase}/Info/">社团简介</a></li>
+	      <if condition="$here eq 'ClubAction'">
+              <li><a href="/">海报墙</a></li>
+	      <li class="active"><a href="/Club/">社团简介</a></li>
               <else />
-              <li class="active"><a href="{$actbase}/">海报墙</a></li>
-	      <li><a href="{$actbase}/Info/">社团简介</a></li>
+              <li class="active"><a href="/">海报墙</a></li>
+	      <li><a href="/Club/">社团简介</a></li>
 	      </if>
-	      <li class="divider-vertical"></li>
-	      <li><a href="{$actbase}/Club/">格物致知社</a></li>
-	      <li><a href="{$actbase}/Club/">USTC LUG</a></li>
-	      <li><a href="{$actbase}/Club/">创业协会</a></li>
-              <li class="divider-vertical"></li>
             </ul>
 	    <form class="navbar-search pull-left" action="search" method="post">
 	      <input type="text" class="search-query" placeholder="搜索全站" />
@@ -65,11 +55,11 @@ $modname = strstr(substr(strstr($_SERVER['REQUEST_URI'], '/Act'), 5), '/', true)
               <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">Username<b class="caret"></b></a>
                 <ul class="dropdown-menu">
-                  <li><a href="{$actbase}/User/info">个人信息</a></li>
-                  <li><a href="{$actbase}/User/clubs">我的社团</a></li>
-                  <li><a href="{$actbase}/User/notify">我的通知</a></li>
+                  <li><a href="/User/info">个人信息</a></li>
+                  <li><a href="/User/clubs">我的社团</a></li>
+                  <li><a href="/User/notify">我的通知</a></li>
                   <li class="divider"></li>
-                  <li><a href="{$actbase}/User/logout">退出</a></li>
+                  <li><a href="/User/logout">退出</a></li>
                 </ul>
               </li>
             </ul>
