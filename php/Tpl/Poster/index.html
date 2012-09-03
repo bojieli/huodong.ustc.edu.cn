@@ -34,10 +34,10 @@
 		}
 	})();
 	
-	function loadComments(pid) {
+	function loadComments(aid) {
 		$.ajax({
 			url: "Poster/loadComments",
-			data: {pid: pid}
+			data: {aid: aid}
 		}).done(function( html ){
 			$("#outhaibao").html(html);
 		});

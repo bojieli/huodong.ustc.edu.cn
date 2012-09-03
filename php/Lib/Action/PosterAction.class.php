@@ -121,9 +121,9 @@ class PosterAction extends PublicAction {
 	private function poster2html($poster) {
 		return '<li class="hide"><div class="celldiv">'.
 		'<p class="heading" style="text-align:center">['.$poster->clubName().']&nbsp;'.$poster->name().'</p>'.
-		'<img id="'.$poster->id().'" class="haibao" height="'.$poster->imgHeight().'" src="'.$poster->url().'" />'.
-		'<div class="detail"><div class="hot">热度：'.$poster->getRate().
-		'<span class="ding"><a>顶</a></span></div>'.
+		'<img class="haibao" id="poster-'.$poster->id().'" height="'.$poster->imgHeight().'" src="'.$poster->url().'" onclick="loadComments('.$poster->id().')" />'.
+		'<div class="detail"><div class="hot">热度：<span class="rate">'.$poster->getRate().'</span>'.
+		'<span class="ding" id="ding-'.$poster->id().'">顶</span></div>'.
 		'<p>时间：'.$poster->humanDate().'<br>'.
 		'地点：'.$poster->place().'</p></div>'.
 		'<div class="school">'.$poster->schoolName().
@@ -131,9 +131,24 @@ class PosterAction extends PublicAction {
 	}
 
 	public function loadComments() {
-		$m = D('Poster');
-		$this->assign('pid', $_GET['pid']);
+		$aid = is_numeric($_GET['aid']) ? $_GET['aid'] : exit();
+		$poster = M('Act')->find($aid);
+		if (empty($poster))
+			exit();
+		$poster['clicks']++;
+		M('Act')->where(['aid'=>$aid])->save($poster);
+		$this->assign('poster', $poster);
+		$this->assign('comments', M('act_comment')->where(['aid'=>$aid])->select());
 		$this->display();
+	}
+
+	public function like() {
+		$aid = is_numeric($_GET['aid']) ? $_GET['aid'] : exit();
+		$poster = M('Act')->find($aid);
+		if (empty($poster))
+			exit();
+		$poster['likes']++;
+		M('Act')->where(['aid'=>$aid])->save($poster);
 	}
 
 	public function singlePage() {
