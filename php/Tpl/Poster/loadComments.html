@@ -43,88 +43,24 @@ $(".like").live('click', function(event){
             </form>
           </div>
           <div class="huifulist">
-          
-          	<div class="hflistcell">
-              <table border="0" cellspacing="0" cellpadding="0" width="100%">
-              	<tr>
-                	<td width="60" align="center"><img class="hftouxiang" src="images/head1.jpg"></td>
-                    <td valign="top">
-                    	<div class="hfcontent">
-                        	<a href="http://zhan.renren.com/profile/471003259" class="boyname" target="_blank">刘秋水</a>
-                            <span>果断顶起</span> 
-                            <a href="danyemian.html" class="hfpointer">回复</a>                                   
-                        </div>
-                    </td>
-                    <td width="150" align="center" valign="top"><!--<a href="" class="hfpointer">回复</a>--><br/><span class="time11">2012-07-05 15:56</span></td>
-                </tr>
-              </table>
-            </div><!--回复cell-->
-            
+
+            <volist name="comments" id="comment">
             <div class="hflistcell">
               <table border="0" cellspacing="0" cellpadding="0" width="100%">
               	<tr>
-                	<td width="60" align="center" valign="top"><img class="hftouxiang" src="images/head1.jpg"></td>
+                  <td width="60" align="center"><img class="hftouxiang" src="{$comment.author.avatar}"></td>
                     <td valign="top">
                     	<div class="hfcontent">
-                        	<a href="http://zhan.renren.com/profile/471003259" class="girlname" target="_blank">刘秋水</a>
-                            <span>果断顶dfsafdsafdas的萨拉发动机啊时空裂缝据说科大<br/>拉风加<br/>快速度拉法<br/>基肯定是林<br/>凤娇抵抗力的萨拉范德萨卡拉附近的山卡拉分界点是拉法基的卡拉三家分店卢萨卡加分的卡拉斯金分开了起</span>
-                            <a href="danyemian.html" class="hfpointer">回复</a>        
-                        </div>
-                    </td>
-                    <td width="150" align="center" valign="middle"><span class="time11">2012-07-05 15:56</span></td>
-                </tr>
-              </table>
-            </div><!--回复cell-->
-            
-            
-            <div class="hflistcell">
-              <table border="0" cellspacing="0" cellpadding="0" width="100%">
-              	<tr>
-                	<td width="60" align="center"><img class="hftouxiang" src="images/head1.jpg"></td>
-                    <td valign="top">
-                    	<div class="hfcontent">
-                        	<a href="http://zhan.renren.com/profile/471003259" class="boyname" target="_blank">刘秋水</a>
-                            <span>果断顶起</span> 
+                        	<a href="{$comment.author.homepage}" class="<?=$comment['author']['gender'] ? 'boy' : 'girl' ?>name" target="_blank">{$comment.author.realname}</a>
+                            <span>{$comment.content}</span> 
                             <a href="danyemian.html" class="hfpointer">回复</a>                                   
                         </div>
                     </td>
-                    <td width="150" align="center" valign="top"><!--<a href="" class="hfpointer">回复</a>--><br/><span class="time11">2012-07-05 15:56</span></td>
+                    <td width="150" align="center" valign="top"><!--<a href="" class="hfpointer">回复</a>--><br/><span class="time11">{$comment.time|date="Y-m-d H:i:s",###}</span></td>
                 </tr>
               </table>
             </div><!--回复cell-->
-            
-            <div class="hflistcell">
-              <table border="0" cellspacing="0" cellpadding="0" width="100%">
-              	<tr>
-                	<td width="60" align="center"><img class="hftouxiang" src="images/head1.jpg"></td>
-                    <td valign="top">
-                    	<div class="hfcontent">
-                        	<a href="http://zhan.renren.com/profile/471003259" class="girlname" target="_blank">刘秋水</a>
-                            <span>果断顶起</span> 
-                            <a href="danyemian.html" class="hfpointer">回复</a>                                   
-                        </div>
-                    </td>
-                    <td width="150" align="center" valign="top"><!--<a href="" class="hfpointer">回复</a>--><br/><span class="time11">2012-07-05 15:56</span></td>
-                </tr>
-              </table>
-            </div><!--回复cell-->
-            
-            <div class="hflistcell">
-              <table border="0" cellspacing="0" cellpadding="0" width="100%">
-              	<tr>
-                	<td width="60" align="center"><img class="hftouxiang" src="images/head1.jpg"></td>
-                    <td valign="top">
-                    	<div class="hfcontent">
-                        	<a href="http://zhan.renren.com/profile/471003259" class="girlname" target="_blank">刘秋水</a>
-                            <span>果断顶起</span> 
-                            <a href="danyemian.html" class="hfpointer">回复</a>                                   
-                        </div>
-                    </td>
-                    <td width="150" align="center" valign="top"><!--<a href="" class="hfpointer">回复</a>--><br/><span class="time11">2012-07-05 15:56</span></td>
-                </tr>
-              </table>
-            </div><!--回复cell-->
-            
-            
+            </volist>
+
           </div><!--回复list-->
      </div><!--post-reply-->     
