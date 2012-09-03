@@ -141,7 +141,7 @@ class PosterAction extends PublicAction {
 		$poster->name = $poster->name();
 		$poster->humanDate = $poster->humanDate();
 		$this->assign('poster', $poster->toArray());
-		$comments = M('act_comment')->where(['aid'=>$aid])->select();
+		$comments = M('act_comment')->where(['aid'=>$aid])->order("time DESC")->select();
 		foreach ($comments as &$comment) {
 			$comment['author'] = M('user')->find($comment['author']);
 		}
@@ -151,6 +151,24 @@ class PosterAction extends PublicAction {
 	}
 
 	public function reply() {
+		$aid = is_numeric($_POST['aid']) ? $_POST['aid'] : exit();
+		if (CURRENT_USER == 0)
+			die('Sorry, only login users are allowed to post.');
+		$poster = M('Act')->find($aid);
+		if (empty($poster))
+			exit();
+		$poster['comment_count']++;
+		M('Act')->where(['aid'=>$aid])->save($poster);
+		
+		$comment = array(
+			'aid' => $aid,
+			'author' => CURRENT_USER,
+			'time' => time(),
+			'content' => $_POST['content']
+		);
+		$obj = M('act_comment');
+		$obj->create($comment);
+		$obj->add();
 	}
 
 	public function like() {
