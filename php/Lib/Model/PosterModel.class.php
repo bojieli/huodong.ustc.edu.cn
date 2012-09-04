@@ -41,8 +41,12 @@ class PosterModel extends AttachmentModel {
 		return $club['name'];
 	}
 
-	public function url() {
-		return 'http://fmn.rrimg.com/fmn061/xiaozhan/20120514/2015/x_large_bbbB_09b000001cee1263.jpg';
+	public function thumbUrl() {
+		return "/upload/poster/thumb/thumb_".$this->poster;
+	}
+
+	public function posterUrl() {
+		return "/upload/poster/".$this->poster;
 	}
 
 	public function get_stat() {

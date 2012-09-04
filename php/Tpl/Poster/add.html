@@ -1,5 +1,5 @@
 <include file="Public:bootstrapHeader" />
-<form class="form-horizontal" action="/Poster/insert" method="post">
+<form class="form-horizontal" action="/Poster/insert" method="post" enctype="multipart/form-data">
   <fieldset>
     <div class="control-group">
       <label class="control-label"></label>
@@ -8,6 +8,7 @@
         <input type="hidden" name="gid" value="{$gid}" />
       </div>
     </div>
+    <?php $new = true; ?>
     <include file="form" />
  </fieldset>
 </form>

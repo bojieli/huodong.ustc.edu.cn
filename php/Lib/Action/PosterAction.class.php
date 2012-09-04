@@ -18,21 +18,44 @@ class PosterAction extends PublicAction {
 
 	public function insert() {
 		$gid = is_numeric($_POST['gid']) ? $_POST['gid'] : exit();
-		if (A('Club')->isManager(CURRENT_USER, $gid)) {
-			$poster['gid'] = $gid;
-			$poster['author'] = CURRENT_USER;
-			$poster['publish_time'] = time();
 
-			$fields = ['name','start_time','end_time','place','poster','description'];
-			foreach ($fields as $field) {
-				$poster[$field] = $_POST[$field];
-			}
+		if (!(A('Club')->isManager(CURRENT_USER, $gid)))
+			goto out;
+		
+		import("ORG.Net.UploadFile");
+		$upload = new UploadFile();
+		$upload->maxSize = 8 * 1024 * 1024;
+		$upload->allowExts = ['jpg', 'gif', 'png', 'jpeg'];
+		$upload->savePath = './upload/poster/';
+		$upload->saveRule = 'uniqid';
+		
+		import("ORG.Util.Image");
+		$upload->thumb = true;
+		$upload->thumbPath = './upload/poster/thumb/';
+		$upload->thumbMaxWidth = 250;
+		$upload->thumbMaxHeight = 400;
 
-			$obj = M('Act');
-			$obj->create($poster);
-			$obj->add();
+		if (!$upload->upload()) {
+			$this->error($upload->getErrorMsg());
+		} else {
+			$info = $upload->getUploadFileInfo();
 		}
-		echo "<script>window.location='/';</script>";
+		$poster['poster'] = $info[0]["savename"];
+
+		$poster['gid'] = $gid;
+		$poster['author'] = CURRENT_USER;
+		$poster['publish_time'] = time();
+
+		$fields = ['name','start_time','end_time','place','description'];
+		foreach ($fields as $field) {
+			$poster[$field] = $_POST[$field];
+		}
+
+		$obj = M('Act');
+		$obj->create($poster);
+		$obj->add();
+
+	out:	echo "<script>window.location='/';</script>";
 	}
 
 	public function modify() {
@@ -119,7 +142,7 @@ class PosterAction extends PublicAction {
 	private function poster2html($poster) {
 		return '<li class="hide"><div class="celldiv">'.
 		'<p class="heading" style="text-align:center">['.$poster->clubName().']&nbsp;'.$poster->name().'</p>'.
-		'<img class="haibao" id="poster-'.$poster->id().'" height="'.$poster->imgHeight().'" src="'.$poster->url().'" onclick="loadComments('.$poster->id().')" />'.
+		'<img class="haibao" id="poster-'.$poster->id().'" src="'.$poster->thumbUrl().'" onclick="loadComments('.$poster->id().')" />'.
 		'<div class="detail"><div class="hot">热度：<span class="rate">'.$poster->getRate().'</span>'.
 		'<span class="ding" id="ding-'.$poster->id().'">顶</span></div>'.
 		'<p>时间：'.$poster->humanDate().'<br>'.
@@ -140,6 +163,7 @@ class PosterAction extends PublicAction {
 		$poster->school = $poster->schoolName();
 		$poster->name = $poster->name();
 		$poster->humanDate = $poster->humanDate();
+		$poster->poster = $poster->posterUrl();
 		$this->assign('poster', $poster->toArray());
 		$comments = M('act_comment')->where(['aid'=>$aid])->order("time DESC")->select();
 		foreach ($comments as &$comment) {

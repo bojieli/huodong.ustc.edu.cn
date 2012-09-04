@@ -17,6 +17,7 @@ class ClubModel extends Model {
 	}
 	
 	public function logoUrl() {
+		return "/upload/clublogo/".$this->logo;
 	}
 
 	public function logoHeight() {
