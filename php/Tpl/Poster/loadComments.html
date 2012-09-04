@@ -42,21 +42,20 @@ $(".like").live('click', function(event){
     <div class="post_reply">
           <div class="add_reply">
 	  <script>
-	    function reply() {
+	    function reply(aid) {
 	    	$.ajax({
 			type: "POST",
 			url: "/Poster/reply",
-			data: {aid: $('#aid').val(), content: $('#content').val()}
+			data: {aid: aid, content: $('#content-'+aid).val()}
 	    	}).done(function(obj) {
 			window.location.reload();
 		});
 	    }
 	  </script>
             <form id="replyForm" class="clear_fix">
-                <input type="hidden" id="aid" name="aid" value="{$poster.aid}" />
-                <textarea id="content" name="content" autocomplete="none" onclick="if(this.value == '回复。。。') this.value = '';">回复。。。</textarea>
+                <textarea id="content-{$poster.aid}" name="content" autocomplete="none" onclick="if(this.value == '回复。。。') this.value = '';">回复。。。</textarea>
             </form>
-            <button class="reply_submit" onclick="reply();return false;" />回复</button>
+            <button class="reply_submit" onclick="reply({$poster.aid});">回复</button>
           </div>
           <div class="huifulist">
 

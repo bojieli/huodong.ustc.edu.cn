@@ -208,7 +208,7 @@ class PosterAction extends PublicAction {
 			'aid' => $aid,
 			'author' => CURRENT_USER,
 			'time' => time(),
-			'content' => $_POST['content']
+			'content' => nl2br(htmlspecialchars($_POST['content'])),
 		);
 		$obj = M('poster_comment');
 		$obj->create($comment);
