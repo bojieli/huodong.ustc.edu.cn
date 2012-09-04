@@ -61,6 +61,9 @@ class Model {
     protected $patchValidate    =   false;
     // 链操作方法列表
     protected $methods          =   array('table','order','alias','having','group','lock','distinct','auto','filter','validate');
+    
+    // 结果集数组要转换成的类
+    protected $castClass = null;
 
     /**
      * 架构函数
