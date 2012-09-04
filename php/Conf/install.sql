@@ -68,7 +68,6 @@ CREATE TABLE IF NOT EXISTS ustc_user (
 	`register_time` INT(10) NOT NULL, -- unix timestamp
 	`last_login_time` INT(10), -- unix timestamp
 	`login_count` INT(10) NOT NULL DEFAULT 0,
-	`avatar` INT(10), -- attach id
 	`gender` BOOL, -- 0 for girl, 1 for boy
 	`grade` INT(4), -- year of admission
 	`student_no` VARCHAR(15),
@@ -76,6 +75,7 @@ CREATE TABLE IF NOT EXISTS ustc_user (
 	`major` VARCHAR(100),
 	`homepage` VARCHAR(100),
 	`notify_email` VARCHAR(100) NOT NULL,
+	`avatar` VARCHAR(100), -- /upload/avatar/filename
 	`hobby` TEXT,
 	PRIMARY KEY (`uid`),
 	FOREIGN KEY (`sid`) REFERENCES ustc_school(`sid`),
@@ -110,8 +110,8 @@ CREATE TABLE IF NOT EXISTS ustc_group (
 	`slogan` VARCHAR(255),
 	`qq_group` VARCHAR(255),
 	`contact` VARCHAR(255),
+	`logo` VARCHAR(100), -- /upload/logo/filename
 	`shortdesc` TEXT,
-	`logo` INT(10), -- attach id
 	`description` TEXT,
 	PRIMARY KEY (`gid`),
 	FOREIGN KEY (`sid`) REFERENCES ustc_school(`sid`),
@@ -184,7 +184,7 @@ CREATE TABLE IF NOT EXISTS ustc_act (
 	`clicks` INT(10) NOT NULL DEFAULT 0,
 	`shared` INT(10) NOT NULL DEFAULT 0,
 	`comment_count` INT(10) NOT NULL DEFAULT 0, -- redundant to speed up
-	`poster` INT(10) NOT NULL, -- attachment id
+	`poster` VARCHAR(100), -- /upload/poster/filename
 	`description` TEXT,
 	PRIMARY KEY(`aid`),
 	FOREIGN KEY (`gid`) REFERENCES ustc_group(`gid`),
