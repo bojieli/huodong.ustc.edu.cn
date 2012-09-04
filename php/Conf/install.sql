@@ -22,10 +22,10 @@ SET time_zone = "+00:00";
  * 5. All words should be in lower case and separated by an underscore.
  * 6. All primary keys (IDs) should be different. Here are some of them:
 	uid		user
-	gid		group (organization)
+	gid		club (group)
 	sid		school
 	pid		project
-	aid		activity (act)
+	aid		poster (activity)
 	attachid	attachment
  */
 /**
@@ -98,8 +98,8 @@ CREATE TABLE IF NOT EXISTS ustc_login_log (
 );
 -- END user info
 
--- BEGIN group info
-CREATE TABLE IF NOT EXISTS ustc_group (
+-- BEGIN club info
+CREATE TABLE IF NOT EXISTS ustc_club (
 	`gid` INT(10) NOT NULL AUTO_INCREMENT,
 	`sid` INT(10) NOT NULL,
 	`owner` INT(10) NOT NULL,
@@ -126,7 +126,7 @@ CREATE TABLE IF NOT EXISTS ustc_user_group (
 	`priv` ENUM('admin', 'manager', 'member', 'inactive') NOT NULL,
 	`title` VARCHAR(255),
 	FOREIGN KEY (`uid`) REFERENCES ustc_user(`uid`),
-	FOREIGN KEY (`gid`) REFERENCES ustc_group(`gid`),
+	FOREIGN KEY (`gid`) REFERENCES ustc_club(`gid`),
 	UNIQUE KEY key_uid_gid(`uid`,`gid`)
 );
 
@@ -136,7 +136,7 @@ CREATE TABLE IF NOT EXISTS ustc_follow_group (
 	`gid` INT(10) NOT NULL,
 	`start_time` INT(10) NOT NULL, -- unix timestamp
 	FOREIGN KEY (`uid`) REFERENCES ustc_user(`uid`),
-	FOREIGN KEY (`gid`) REFERENCES ustc_group(`gid`)
+	FOREIGN KEY (`gid`) REFERENCES ustc_club(`gid`)
 );
 
 CREATE TABLE IF NOT EXISTS ustc_project (
@@ -144,7 +144,7 @@ CREATE TABLE IF NOT EXISTS ustc_project (
 	`gid` INT(10) NOT NULL,
 	`name` VARCHAR(255),
 	PRIMARY KEY (`pid`),
-	FOREIGN KEY (`gid`) REFERENCES ustc_group(`gid`),
+	FOREIGN KEY (`gid`) REFERENCES ustc_club(`gid`),
 	INDEX key_name(`name`)
 );
 
@@ -173,7 +173,7 @@ CREATE TABLE IF NOT EXISTS ustc_poster (
 	`poster` VARCHAR(100), -- /upload/poster/filename
 	`description` TEXT,
 	PRIMARY KEY(`aid`),
-	FOREIGN KEY (`gid`) REFERENCES ustc_group(`gid`),
+	FOREIGN KEY (`gid`) REFERENCES ustc_club(`gid`),
 	FOREIGN KEY (`author`) REFERENCES ustc_user(`uid`),
 	INDEX key_starttime(`start_time`),
 	INDEX key_endtime(`end_time`),
@@ -218,7 +218,7 @@ CREATE TABLE IF NOT EXISTS ustc_todolist (
 	`status` ENUM('doing', 'complete') NOT NULL,
 	`content` TEXT NOT NULL,
 	PRIMARY KEY (`item`),
-	FOREIGN KEY (`gid`) REFERENCES ustc_group(`gid`),
+	FOREIGN KEY (`gid`) REFERENCES ustc_club(`gid`),
 	FOREIGN KEY (`pid`) REFERENCES ustc_project(`pid`),
 	FOREIGN KEY (`author`) REFERENCES ustc_user(`uid`),
 	INDEX key_status(`status`)
@@ -245,7 +245,7 @@ CREATE TABLE IF NOT EXISTS ustc_share (
 	`upload_time` INT(10) NOT NULL, -- unix timestamp
 	`folder` VARCHAR(100) NOT NULL, -- folder name, null for root
 	PRIMARY KEY (`attachid`),
-	FOREIGN KEY (`gid`) REFERENCES ustc_group(`gid`),
+	FOREIGN KEY (`gid`) REFERENCES ustc_club(`gid`),
 	INDEX key_pid(`pid`),
 	FOREIGN KEY (`author`) REFERENCES ustc_user(`uid`),
 	INDEX key_folder(`folder`)
@@ -375,7 +375,7 @@ CREATE TABLE IF NOT EXISTS ustc_forum (
 	`fid` INT(10) NOT NULL AUTO_INCREMENT,
 	`gid` INT(10) NOT NULL,
 	PRIMARY KEY(`fid`),
-	FOREIGN KEY (`gid`) REFERENCES ustc_group(`gid`)
+	FOREIGN KEY (`gid`) REFERENCES ustc_club(`gid`)
 );
 */
 
@@ -388,7 +388,7 @@ CREATE TABLE IF NOT EXISTS ustc_forum_post (
 	`pid` INT(10) NOT NULL DEFAULT '0', -- if not in any project, pid = 0
 	`content` TEXT,
 	PRIMARY KEY(`fpid`),
-	FOREIGN KEY (`gid`) REFERENCES ustc_group(`gid`),
+	FOREIGN KEY (`gid`) REFERENCES ustc_club(`gid`),
 	INDEX key_parent(`parent`),
 	FOREIGN KEY (`author`) REFERENCES ustc_user(`uid`),
 	INDEX key_pid(`pid`)
@@ -425,7 +425,7 @@ CREATE TABLE IF NOT EXISTS ustc_email_notify (
 	`content` TEXT,
 	FOREIGN KEY (`source`) REFERENCES ustc_user(`uid`),
 	FOREIGN KEY (`target`) REFERENCES ustc_user(`uid`),
-	FOREIGN KEY (`gid`) REFERENCES ustc_group(`gid`),
+	FOREIGN KEY (`gid`) REFERENCES ustc_club(`gid`),
 	INDEX key_time(`time`)
 );
 -- END Email Notify module

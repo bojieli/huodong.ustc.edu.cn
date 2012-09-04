@@ -7,10 +7,10 @@ INSERT INTO ustc_user SET realname='李博杰', login_type=0, email='boj@mail.us
 INSERT INTO ustc_user SET realname='马甲', login_type=0, email='boj@mail.ustc.edu.cn', password=MD5(CONCAT(MD5('123456'),'salt')), salt='salt', status='active', isdeveloper=true, isschooladm=true, sid=1, student_no='PB10000603', gender=true, dept='少年班学院', major='计算机科学与技术', notify_email='bojieli@gmail.com', grade=2010, register_time=NOW(), hobby='', homepage='http://gewu.ustc.edu.cn/';
 INSERT INTO ustc_user SET realname='马甲2', login_type=0, email='boj@mail.ustc.edu.cn', password=MD5(CONCAT(MD5('123456'),'salt')), salt='salt', status='active', isdeveloper=true, isschooladm=true, sid=1, student_no='PB10000603', gender=true, dept='少年班学院', major='计算机科学与技术', notify_email='bojieli@gmail.com', grade=2010, register_time=NOW(), hobby='', homepage='http://gewu.ustc.edu.cn/';
 
-INSERT INTO ustc_group SET sid=1, owner=1, status='active', name='Linux用户协会', register_time='10000';
-INSERT INTO ustc_group SET sid=1, owner=1, status='active', name='Joke协会', register_time='10000';
-INSERT INTO ustc_group SET sid=1, owner=1, status='active', name='系统测试协会', register_time='10000';
-INSERT INTO ustc_group SET sid=1, owner=1, status='active', name='LUG', register_time='10000';
+INSERT INTO ustc_club SET sid=1, owner=1, status='active', name='Linux用户协会', register_time='10000';
+INSERT INTO ustc_club SET sid=1, owner=1, status='active', name='Joke协会', register_time='10000';
+INSERT INTO ustc_club SET sid=1, owner=1, status='active', name='系统测试协会', register_time='10000';
+INSERT INTO ustc_club SET sid=1, owner=1, status='active', name='LUG', register_time='10000';
 
 INSERT INTO ustc_user_group SET `uid`=1, gid=1, priv='admin', title='会长';
 INSERT INTO ustc_user_group SET `uid`=1, gid=2, priv='member', title='会员';
