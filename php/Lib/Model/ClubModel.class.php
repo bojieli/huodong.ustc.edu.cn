@@ -20,6 +20,10 @@ class ClubModel extends Model {
 		return "/upload/clublogo/".$this->logo;
 	}
 
+	public function logoThumbUrl() {
+		return "/upload/clublogo/thumb/thumb_".$this->logo;
+	}
+
 	public function logoHeight() {
 	}
 

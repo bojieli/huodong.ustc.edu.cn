@@ -220,11 +220,20 @@ class ClubAction extends PublicAction {
 		'<div class="celldiv"><a href="/Club/intro?gid='.$club->gid().'">'.
 		'<p class="title">'.$club->name().'</p></a>'.
 		'<div class="intro">'.$club->shortdesc().'</div>'.
-		'<img id="'.$club->gid().'" class="haibao" height="'.$club->logoHeight().'" src="'.$club->logoUrl().'" />'.
+		$this->clubLogoThumbHtml().
 		'<div class="detail"><div class="hot">注册会员：'.$club->memberCount().'人'.
 		$this->apply2html($club->gid()).
 		'</div></div>'.
 		'<div class="school">'.$club->schoolName().'</div></div></li>';
+	}
+
+	private function clubLogoThumbHtml() {
+		if (!empty($club->logo))
+			return '<img id="club-'.$club->gid().
+			'" class="haibao" src="'.
+			$club->logoThumbUrl().
+			'" />';
+		else return '';
 	}
 
 	private function apply2html($gid) {

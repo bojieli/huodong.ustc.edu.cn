@@ -145,8 +145,8 @@ class PosterAction extends PublicAction {
 		'<img class="haibao" id="poster-'.$poster->id().'" src="'.$poster->thumbUrl().'" onclick="loadComments('.$poster->id().')" />'.
 		'<div class="detail"><div class="hot">热度：<span class="rate">'.$poster->getRate().'</span>'.
 		'<span class="ding" id="ding-'.$poster->id().'">顶</span></div>'.
-		'<p>时间：'.$poster->humanDate().'<br>'.
-		'地点：'.$poster->place().'</p></div>'.
+		'<p>时间: '.$poster->humanDate().'<br>'.
+		'地点: '.$poster->place().'</p></div>'.
 		'<div class="school">'.$poster->schoolName().
 		'</div></div></li>';
 	}

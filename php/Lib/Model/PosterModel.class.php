@@ -22,13 +22,13 @@ class PosterModel extends AttachmentModel {
 	}
 
 	public function humanDate() {
-		$str = date("Y-m-d H:i", $this->start_time);
+		$str = date("n月j日 H:i", $this->start_time);
 		$str .= ' ~ ';
 		// if in the same day
 		if (date("Y-m-d", $this->start_time) == date("Y-m-d", $this->end_time))
 			$str .= date("H:i", $this->end_time);
 		else
-			$str .= date("m-d H:i", $this->end_time);
+			$str .= date("n月j日 H:i", $this->end_time);
 		return $str;
 	}
 
