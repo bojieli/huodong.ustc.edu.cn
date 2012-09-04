@@ -17,11 +17,15 @@ class ClubModel extends Model {
 	}
 	
 	public function logoUrl() {
-		return "/upload/clublogo/".$this->logo;
+		if (!empty($this->logo))
+			return "/upload/clublogo/".$this->logo;
+		return '';
 	}
 
 	public function logoThumbUrl() {
-		return "/upload/clublogo/thumb/thumb_".$this->logo;
+		if (!empty($this->logo))
+			return "/upload/clublogo/thumb/thumb_".$this->logo;
+		return '';
 	}
 
 	public function logoHeight() {

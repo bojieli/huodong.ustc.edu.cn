@@ -35,6 +35,25 @@ class ClubAction extends PublicAction {
 		}
 		if (strlen($club['shortdesc']) > 420)
 			$club['shortdesc'] = substr($club['shortdesc'], 0, 420);
+
+		import("ORG.Net.UploadFile");
+		$upload = new UploadFile();
+		$upload->maxSize = 8 * 1024 * 1024;
+		$upload->allowExts = ['jpg', 'gif', 'png', 'jpeg'];
+		$upload->savePath = './upload/clublogo/';
+		$upload->saveRule = 'uniqid';
+		
+		import("ORG.Util.Image");
+		$upload->thumb = true;
+		$upload->thumbPath = './upload/clublogo/thumb/';
+		$upload->thumbMaxWidth = 250;
+		$upload->thumbMaxHeight = 400;
+
+		if ($upload->upload()) {
+			$info = $upload->getUploadFileInfo();
+			$club['logo'] = $info[0]["savename"];
+		}
+
 		M('Group')->where(['gid'=>$gid])->save($club);
 		echo "<script>window.location='/Club/intro?gid=".$gid."'</script>";
 	}
@@ -219,16 +238,16 @@ class ClubAction extends PublicAction {
 		return '<li class="hide">'.
 		'<div class="celldiv"><a href="/Club/intro?gid='.$club->gid().'">'.
 		'<p class="title">'.$club->name().'</p></a>'.
+		$this->clubLogoThumbHtml($club).
 		'<div class="intro">'.$club->shortdesc().'</div>'.
-		$this->clubLogoThumbHtml().
 		'<div class="detail"><div class="hot">注册会员：'.$club->memberCount().'人'.
 		$this->apply2html($club->gid()).
 		'</div></div>'.
 		'<div class="school">'.$club->schoolName().'</div></div></li>';
 	}
 
-	private function clubLogoThumbHtml() {
-		if (!empty($club->logo))
+	private function clubLogoThumbHtml($club) {
+		if ($club->logoThumbUrl() != '')
 			return '<img id="club-'.$club->gid().
 			'" class="haibao" src="'.
 			$club->logoThumbUrl().

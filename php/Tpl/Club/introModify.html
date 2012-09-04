@@ -1,5 +1,5 @@
 <include file="Public:bootstrapHeader" />
-<form class="form-horizontal" action="/Club/introUpdate" method="post">
+<form class="form-horizontal" action="/Club/introUpdate" method="post" enctype="multipart/form-data">
   <fieldset>
     <div class="control-group">
       <label class="control-label"></label>
@@ -44,7 +44,8 @@
     <div class="control-group">
       <label class="control-label" for="logo">LOGO</label>
       <div class="controls">
-        <input type="text" class="input-large" id="logo" name="logo" value="{$club.logo}" />
+        <input type="file" id="logo" name="logo" />
+	<p class="help-block">显示在社团列表中的社团LOGO</p>
       </div>
     </div>
     <div class="control-group">
