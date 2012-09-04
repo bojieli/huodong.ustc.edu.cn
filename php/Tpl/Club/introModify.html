@@ -56,7 +56,10 @@
         <script type="text/javascript" charset="utf-8" src="/static/ueditor/editor_all.js"></script>
 	<link rel="stylesheet" type="text/css" href="/static/ueditor/themes/default/ueditor.css"/>
         <script type="text/plain" id="description" name="description" style="width:800px">
+	  <empty name="club.description">
 	  <p>在此编辑社团的详细介绍。可以上传图片、自由排版哦！</p>
+	  </empty>
+	  {$club.description}
 	</script>
 	<script type="text/javascript">
 	var editor_a = new baidu.editor.ui.Editor();
