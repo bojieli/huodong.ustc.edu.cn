@@ -28,7 +28,10 @@ class ClubModel extends Model {
 		return '';
 	}
 
-	public function logoHeight() {
+	public function logoThumbHeight() {
+		import("ORG.Util.Image");
+		$info = Image::getImageInfo('.'.$this->logoThumbUrl());
+		return $info['height'];
 	}
 
 	public function memberCount() {
@@ -37,7 +40,7 @@ class ClubModel extends Model {
 
 	public function schoolName($gid) {
 		$group = M('Club')->find($gid);
-		$school = M('school')->field('name')->find($group['sid']);
+		$school = M('School')->field('name')->find($group->sid);
 		return $school['name'];
 	}
 }

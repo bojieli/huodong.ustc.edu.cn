@@ -47,6 +47,12 @@ class PosterModel extends Model {
 		return "/upload/poster/thumb/thumb_".$this->poster;
 	}
 
+	public function thumbHeight() {
+		import("ORG.Util.Image");
+		$info = Image::getImageInfo('.'.$this->thumbUrl());
+		return $info['height'];
+	}
+
 	public function posterUrl() {
 		if (empty($this->poster))
 			return '';
