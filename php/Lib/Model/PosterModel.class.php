@@ -1,11 +1,11 @@
 <?php
 class PosterModel extends Model {
 	public function getPoster($start, $num, $cond = []) {
-		return M('Act')->where($cond)->limit("$start,$num")->cast(__CLASS__)->select();
+		return M('Poster')->where($cond)->limit("$start,$num")->cast(__CLASS__)->select();
 	}
 
 	public function getPosterById($aid) {
-		return M('Act')->cast(__CLASS__)->find($aid);
+		return M('Poster')->cast(__CLASS__)->find($aid);
 	}
 
 
@@ -54,8 +54,8 @@ class PosterModel extends Model {
 	}
 
 	public function get_stat() {
-		$stat['total'] = $this->result_first("SELECT COUNT(*) FROM ustc_act");
-		$stat['followed'] = $this->result_first("SELECT COUNT(*) FROM ustc_act AS a, ustc_user_group AS ug WHERE ug.uid = '".CURRENT_USER."' AND ug.gid = a.gid");
+		$stat['total'] = $this->result_first("SELECT COUNT(*) FROM ustc_poster");
+		$stat['followed'] = $this->result_first("SELECT COUNT(*) FROM ustc_poster AS a, ustc_user_group AS ug WHERE ug.uid = '".CURRENT_USER."' AND ug.gid = a.gid");
 		$stat['newmsg'] = D('Notify')->msgCount();
 		return $stat;
 	}

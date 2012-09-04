@@ -156,22 +156,8 @@ CREATE TABLE IF NOT EXISTS ustc_user_project (
 );
 -- END group info
 
--- BEGIN Attachment module
-CREATE TABLE IF NOT EXISTS ustc_attachment (
-	`attachid` INT(10) NOT NULL AUTO_INCREMENT,
-	`author` INT(10) NOT NULL,
-	`upload_time` INT(10) NOT NULL,
-	`img_height` INT(10) NOT NULL,
-	`img_width` INT(10) NOT NULL,
-	`filename` VARCHAR(255) NOT NULL,
-	`localpath` VARCHAR(255) NOT NULL,
-	PRIMARY KEY (`attachid`),
-	FOREIGN KEY (`author`) REFERENCES ustc_user(`uid`)
-);
--- END Attachment module
-
 -- BEGIN Poster module
-CREATE TABLE IF NOT EXISTS ustc_act (
+CREATE TABLE IF NOT EXISTS ustc_poster (
 	`aid` INT(10) NOT NULL AUTO_INCREMENT,
 	`gid` INT(10) NOT NULL,
 	`author` INT(10) NOT NULL, -- uid
@@ -211,14 +197,14 @@ CREATE TABLE IF NOT EXISTS ustc_act_history (
 	`content` TEXT NOT NULL
 );
 */
-CREATE TABLE IF NOT EXISTS ustc_act_comment (
+CREATE TABLE IF NOT EXISTS ustc_poster_comment (
 	`cid` INT(10) NOT NULL AUTO_INCREMENT,
 	`aid` INT(10) NOT NULL,
 	`author` INT(10) NOT NULL,
 	`time` INT(10) NOT NULL,
 	`content` TEXT,
 	PRIMARY KEY (`cid`),
-	FOREIGN KEY (`aid`) REFERENCES ustc_act(`aid`),
+	FOREIGN KEY (`aid`) REFERENCES ustc_poster(`aid`),
 	FOREIGN KEY (`author`) REFERENCES ustc_user(`uid`)
 );
 -- END Poster module

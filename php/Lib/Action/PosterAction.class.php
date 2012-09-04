@@ -51,7 +51,7 @@ class PosterAction extends PublicAction {
 			$poster[$field] = $_POST[$field];
 		}
 
-		$obj = M('Act');
+		$obj = M('Poster');
 		$obj->create($poster);
 		$obj->add();
 
@@ -62,7 +62,7 @@ class PosterAction extends PublicAction {
 		if (!is_numeric($_GET['aid']))
 			exit();
 		$aid = $_GET['aid'];
-		$poster = M('Act')->find($aid);
+		$poster = M('Poster')->find($aid);
 		if (A('Club')->isManager(CURRENT_USER, $poster['gid'])) {
 			$this->assign('poster', $poster);
 			$this->display();
@@ -75,7 +75,7 @@ class PosterAction extends PublicAction {
 		if (!is_numeric($_POST['aid']))
 			exit();
 		$aid = $_POST['aid'];
-		$poster = M('Act')->find($aid);
+		$poster = M('Poster')->find($aid);
 		if (!(A('Club')->isManager(CURRENT_USER, $poster['gid'])))
 			goto out;
 
@@ -101,7 +101,7 @@ class PosterAction extends PublicAction {
 		foreach ($fields as $field) {
 			$poster[$field] = $_POST[$field];
 		}
-		M('Act')->where(['aid'=>$aid])->save($poster);
+		M('Poster')->where(['aid'=>$aid])->save($poster);
 
 	out:	echo "<script>window.location='/';</script>";
 	}
@@ -110,9 +110,9 @@ class PosterAction extends PublicAction {
 		if (!is_numeric($_GET['aid']))
 			exit();
 		$aid = $_GET['aid'];
-		$poster = M('Act')->find($aid);
+		$poster = M('Poster')->find($aid);
 		if (A('Club')->isManager(CURRENT_USER, $poster['gid'])) {
-			M('Act')->where(['aid'=>$aid])->delete();
+			M('Poster')->where(['aid'=>$aid])->delete();
 		}
 		echo "<script>window.location='/';</script>";
 	}
@@ -172,11 +172,11 @@ class PosterAction extends PublicAction {
 
 	public function loadComments() {
 		$aid = is_numeric($_GET['aid']) ? $_GET['aid'] : exit();
-		$poster = M('Act')->find($aid);
+		$poster = M('Poster')->find($aid);
 		if (empty($poster))
 			exit();
 		$poster['clicks']++;
-		M('Act')->where(['aid'=>$aid])->save($poster);
+		M('Poster')->where(['aid'=>$aid])->save($poster);
 		$poster = D('Poster')->getPosterById($aid);
 		$poster->rate = $poster->getRate();
 		$poster->school = $poster->schoolName();
@@ -185,7 +185,7 @@ class PosterAction extends PublicAction {
 		$poster->poster = $poster->posterUrl();
 		$poster->canModify = $poster->canModify();
 		$this->assign('poster', $poster->toArray());
-		$comments = M('act_comment')->where(['aid'=>$aid])->order("time DESC")->select();
+		$comments = M('poster_comment')->where(['aid'=>$aid])->order("time DESC")->select();
 		foreach ($comments as &$comment) {
 			$comment['author'] = M('user')->find($comment['author']);
 		}
@@ -198,11 +198,11 @@ class PosterAction extends PublicAction {
 		$aid = is_numeric($_POST['aid']) ? $_POST['aid'] : exit();
 		if (CURRENT_USER == 0)
 			die('Sorry, only login users are allowed to post.');
-		$poster = M('Act')->find($aid);
+		$poster = M('Poster')->find($aid);
 		if (empty($poster))
 			exit();
 		$poster['comment_count']++;
-		M('Act')->where(['aid'=>$aid])->save($poster);
+		M('Poster')->where(['aid'=>$aid])->save($poster);
 		
 		$comment = array(
 			'aid' => $aid,
@@ -210,18 +210,18 @@ class PosterAction extends PublicAction {
 			'time' => time(),
 			'content' => $_POST['content']
 		);
-		$obj = M('act_comment');
+		$obj = M('poster_comment');
 		$obj->create($comment);
 		$obj->add();
 	}
 
 	public function like() {
 		$aid = is_numeric($_GET['aid']) ? $_GET['aid'] : exit();
-		$poster = M('Act')->find($aid);
+		$poster = M('Poster')->find($aid);
 		if (empty($poster))
 			exit();
 		$poster['likes']++;
-		M('Act')->where(['aid'=>$aid])->save($poster);
+		M('Poster')->where(['aid'=>$aid])->save($poster);
 	}
 
 	public function singlePage() {
