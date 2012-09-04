@@ -28,7 +28,7 @@ class ClubAction extends PublicAction {
 		$club = $this->getData($gid);
 		if (!$club['isadmin'])
 			die("Sorry, only the admin of a club can modify the club info page.");
-		$club = M('Group')->find($gid);
+		$club = M('Club')->find($gid);
 		$fields = ['name_en','slogan','qq_group','contact','shortdesc','logo','description'];
 		foreach ($fields as $field) {
 			$club[$field] = $_POST[$field];
@@ -54,7 +54,7 @@ class ClubAction extends PublicAction {
 			$club['logo'] = $info[0]["savename"];
 		}
 
-		M('Group')->where(['gid'=>$gid])->save($club);
+		M('Club')->where(['gid'=>$gid])->save($club);
 		echo "<script>window.location='/Club/intro?gid=".$gid."'</script>";
 	}
 
@@ -184,7 +184,7 @@ class ClubAction extends PublicAction {
 	private function getData($gid, $join = false) {
 		if (!is_numeric($gid))
 			return null;
-		$club = M('Group')->find($gid);
+		$club = M('Club')->find($gid);
 		if (empty($club))
 			return null;
 		$club['school'] = M('School')->find($club['sid']);

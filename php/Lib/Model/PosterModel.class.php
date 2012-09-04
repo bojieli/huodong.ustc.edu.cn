@@ -33,11 +33,11 @@ class PosterModel extends Model {
 	}
 
 	public function schoolName() {
-		return D('group')->schoolName($this->gid);
+		return D('Club')->schoolName($this->gid);
 	}
 
 	public function clubName() {
-		$club = M('group')->field('name')->find($this->gid);
+		$club = M('Club')->field('name')->find($this->gid);
 		return $club['name'];
 	}
 

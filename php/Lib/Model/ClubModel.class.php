@@ -1,7 +1,7 @@
 <?php
 class ClubModel extends Model {
 	public function getClub($start, $num) {
-		return M('Group')->limit("$start,$num")->cast(__CLASS__)->select();
+		return M('Club')->limit("$start,$num")->cast(__CLASS__)->select();
 	}
 
 	public function gid() {
@@ -35,7 +35,9 @@ class ClubModel extends Model {
 		return M('user_group')->where(['gid' => $this->gid])->count();
 	}
 
-	public function schoolName() {
-		return D('Group')->cast()->find($this->gid)->schoolName();
+	public function schoolName($gid) {
+		$group = M('Club')->find($gid);
+		$school = M('school')->field('name')->find($group['sid']);
+		return $school['name'];
 	}
 }
