@@ -189,7 +189,6 @@ CREATE TABLE IF NOT EXISTS ustc_act (
 	PRIMARY KEY(`aid`),
 	FOREIGN KEY (`gid`) REFERENCES ustc_group(`gid`),
 	FOREIGN KEY (`author`) REFERENCES ustc_user(`uid`),
-	FOREIGN KEY (`poster`) REFERENCES ustc_attachment(`attachid`),
 	INDEX key_starttime(`start_time`),
 	INDEX key_endtime(`end_time`),
 	INDEX key_place(`place`)
