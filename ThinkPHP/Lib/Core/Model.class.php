@@ -63,7 +63,7 @@ class Model {
     protected $methods          =   array('table','order','alias','having','group','lock','distinct','auto','filter','validate');
     
     // 结果集数组要转换成的类
-    protected $castClass = null;
+    protected $castClass	=   null;
 
     /**
      * 架构函数
@@ -521,6 +521,7 @@ class Model {
 
 	if (!empty($this->castClass)) {
 		$resultSet = $this->arr2objArr($resultSet, $this->castClass);
+		$this->castClass = null; // clean for Model instance reuse
 	}
 
         $this->_after_select($resultSet,$options);
@@ -627,6 +628,7 @@ class Model {
 
         if (!empty($this->castClass)) {
                 $this->data = $this->arr2Obj($this->data, $this->castClass);
+		$this->castClass = null; // clean for Model instance reuse
         }
 
         $this->_after_find($this->data,$options);
