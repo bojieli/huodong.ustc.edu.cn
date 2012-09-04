@@ -71,4 +71,8 @@ class PosterModel extends AttachmentModel {
 	public function toArray() {
 		return (array)($this->data);
 	}
+
+	public function canModify() {
+		return A('Club')->isManager(CURRENT_USER, $this->gid);
+	}
 }
