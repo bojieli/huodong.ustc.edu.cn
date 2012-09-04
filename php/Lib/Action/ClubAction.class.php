@@ -29,10 +29,13 @@ class ClubAction extends PublicAction {
 		if (!$club['isadmin'])
 			die("Sorry, only the admin of a club can modify the club info page.");
 		$club = M('Club')->find($gid);
-		$fields = ['name_en','slogan','qq_group','contact','shortdesc','logo','description'];
+		// strip HTML in fields
+		$fields = ['name_en','slogan','qq_group','contact','shortdesc'];
 		foreach ($fields as $field) {
-			$club[$field] = $_POST[$field];
+			$club[$field] = htmlspecialchars($_POST[$field]);
 		}
+		// long desc is allowed to have HTML
+		$club['description'] = $_POST['description'];
 		if (strlen($club['shortdesc']) > 420)
 			$club['shortdesc'] = substr($club['shortdesc'], 0, 420);
 
@@ -129,7 +132,7 @@ class ClubAction extends PublicAction {
 			exit();
 		$gid = $_GET['gid'];
 		$uid = $_GET['uid'];
-		$title = addslashes($_GET['title']);
+		$title = htmlspecialchars($_GET['title']);
 		if (!in_array($_GET['priv'], ['admin', 'manager', 'member', 'inactive'])) {
 			exit();
 		}

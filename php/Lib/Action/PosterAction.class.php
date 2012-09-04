@@ -48,7 +48,7 @@ class PosterAction extends PublicAction {
 
 		$fields = ['name','start_time','end_time','place','description'];
 		foreach ($fields as $field) {
-			$poster[$field] = $_POST[$field];
+			$poster[$field] = htmlspecialchars($_POST[$field]);
 		}
 
 		$obj = M('Poster');
@@ -99,7 +99,7 @@ class PosterAction extends PublicAction {
 
 		$fields = ['name','start_time','end_time','place','description'];
 		foreach ($fields as $field) {
-			$poster[$field] = $_POST[$field];
+			$poster[$field] = htmlspecialchars($_POST[$field]);
 		}
 		M('Poster')->where(['aid'=>$aid])->save($poster);
 
