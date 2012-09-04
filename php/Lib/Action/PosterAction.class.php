@@ -76,15 +76,34 @@ class PosterAction extends PublicAction {
 			exit();
 		$aid = $_POST['aid'];
 		$poster = M('Act')->find($aid);
-		if (A('Club')->isManager(CURRENT_USER, $poster['gid'])) {
-			$fields = ['name','start_time','end_time','place','poster','description'];
-			$poster = array();
-			foreach ($fields as $field) {
-				$poster[$field] = $_POST[$field];
-			}
-			M('Act')->where(['aid'=>$aid])->save($poster);
+		if (!(A('Club')->isManager(CURRENT_USER, $poster['gid'])))
+			goto out;
+
+		import("ORG.Net.UploadFile");
+		$upload = new UploadFile();
+		$upload->maxSize = 8 * 1024 * 1024;
+		$upload->allowExts = ['jpg', 'gif', 'png', 'jpeg'];
+		$upload->savePath = './upload/poster/';
+		$upload->saveRule = 'uniqid';
+		
+		import("ORG.Util.Image");
+		$upload->thumb = true;
+		$upload->thumbPath = './upload/poster/thumb/';
+		$upload->thumbMaxWidth = 250;
+		$upload->thumbMaxHeight = 400;
+
+		if ($upload->upload()) { // reupload poster
+			$info = $upload->getUploadFileInfo();
+			$poster['poster'] = $info[0]["savename"];
 		}
-		echo "<script>window.location='/';</script>";
+
+		$fields = ['name','start_time','end_time','place','description'];
+		foreach ($fields as $field) {
+			$poster[$field] = $_POST[$field];
+		}
+		M('Act')->where(['aid'=>$aid])->save($poster);
+
+	out:	echo "<script>window.location='/';</script>";
 	}
 
 	public function delete() {
@@ -142,7 +161,7 @@ class PosterAction extends PublicAction {
 	private function poster2html($poster) {
 		return '<li class="hide"><div class="celldiv">'.
 		'<p class="heading" style="text-align:center">['.$poster->clubName().']&nbsp;'.$poster->name().'</p>'.
-		'<img class="haibao" id="poster-'.$poster->id().'" src="'.$poster->thumbUrl().'" onclick="loadComments('.$poster->id().')" />'.
+		($poster->thumbUrl() ? '<img class="haibao" id="poster-'.$poster->id().'" src="'.$poster->thumbUrl().'" onclick="loadComments('.$poster->id().')" />' : '').
 		'<div class="detail"><div class="hot">热度：<span class="rate">'.$poster->getRate().'</span>'.
 		'<span class="ding" id="ding-'.$poster->id().'">顶</span></div>'.
 		'<p>时间: '.$poster->humanDate().'<br>'.

@@ -42,10 +42,14 @@ class PosterModel extends AttachmentModel {
 	}
 
 	public function thumbUrl() {
+		if (empty($this->poster))
+			return '';
 		return "/upload/poster/thumb/thumb_".$this->poster;
 	}
 
 	public function posterUrl() {
+		if (empty($this->poster))
+			return '';
 		return "/upload/poster/".$this->poster;
 	}
 
