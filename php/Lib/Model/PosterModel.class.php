@@ -1,5 +1,5 @@
 <?php
-class PosterModel extends AttachmentModel {
+class PosterModel extends Model {
 	public function getPoster($start, $num, $cond = []) {
 		return M('Act')->where($cond)->limit("$start,$num")->cast(__CLASS__)->select();
 	}
