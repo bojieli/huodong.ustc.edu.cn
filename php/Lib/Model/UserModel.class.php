@@ -16,14 +16,148 @@ class UserModel extends Model {
 		define('NOT_HAVE_BEEN_FRIEND', -7);
 		define('USER_LOCKED', -8);
 		define('USER_NOT_ACTIVATED', -9);
-		
-//		define('CURRENT_USER', session('uid'));
-		define('CURRENT_USER', 1);
+		define('CURRENT_USER', session('uid'));
+		global $_G;
+		$_G[timestamp]=time();
+		list ($password, $uid) = explode("\t", $this->authcode(cookie('auth'), 'DECODE'));
+		$_G['uid']=$uid;
+		$_G['realname']=$this->getRealname($uid);
+
+	}
+	function getRealname($uid)
+	{
+		$res= $this->where("uid = $uid")->limit(1)->select();
+		return($res[0][realname]);
+	}
+	function is_loginname_existed($email)
+	{
+		if (M('User')->where("email = '$email'")->count('uid')) {
+			return true;
+		}
+		return false;
 	}
 	
+	public function delsession($uid){
+		$session=M('Session');
+		$session->where('uid='.$uid)->delete();
+	}
+	public function insertsession($arr){
+		global $_G;
+		$session=M('Session');
+		$cond='uid='.$arr[uid]
+			." and email='".$arr[username]
+			." OR lastactivity<".($_G[timestamp]-C('ONLINE_HOLD'));
+		$session->where($cond)->delete();
+		$ip = get_client_ip(); 
+		$data=array(
+			'uid'=>$arr[uid],
+			'email'=>$arr[username],
+			'password'=>$arr[password],
+			'lastactivity'=>$_G[timestamp],
+			'ip'=>$ip
+		);
+		if(empty($data[uid])||empty($data[email])){
+			return;
+		}
+		$session->add($data);
+		//echo $session->getLastSql();
+	}
+	public function getpassport($username,$pw){
+		$uc=M('User');
+		$user=$uc->where("email='".$username."'")->select();
+		if(empty($user)){
+			return -1;
+		}
+		$user=$user[0];
+		$passwordmd5=preg_match('/^\w{32}$/', $pw) ? $pw : md5($pw);
+		if($user['password'] != md5($passwordmd5.$user['salt'])){
+			return -2;
+		}
+		//dump($res);
+		//echo $uc->getLastSql();
+		return array('uid'=>$user[uid],'password'=>$pw,'username'=>$username);
+	}
+	public function getAvatar($uid,$size='middle',$type=''){
+		$info= $this->where("uid=".$uid)->limit(1)->select();
+		$size = in_array($size, array('big', 'middle', 'small')) ? $size : 'middle';
+		if($info[avatar]==0){
+			$avatar='../UCenter/upload/images/noavatar_'.$size.'.gif';
+		}else{
+			$avatar = '../UCenter/upload/data/avatar/'.$this->get_avatar($uid, $size, $type);
+		}
+		return $avatar;
+	}
+	public function getInfo($uid,$field='name'){
+		$res= $this->where("uid = $uid")->limit(1)->select();
+		return($res[0]);
+	}
+	private function get_avatar($uid, $size = 'middle', $type = '') {
+		$size = in_array($size, array('big', 'middle', 'small')) ? $size : 'middle';
+		$uid = abs(intval($uid));
+		$uid = sprintf("%09d", $uid);
+		$dir1 = substr($uid, 0, 3);
+		$dir2 = substr($uid, 3, 2);
+		$dir3 = substr($uid, 5, 2);
+		$typeadd = $type == 'real' ? '_real' : '';
+		return $dir1.'/'.$dir2.'/'.$dir3.'/'.substr($uid, -2).$typeadd."_avatar_$size.jpg";
+	}
+//字符串解密加密
+	public function authcode($string, $operation = 'DECODE', $key = '', $expiry = 0) {
+
+		$ckey_length = 4; // 随机密钥长度 取值 0-32;
+		// 加入随机密钥，可以令密文无任何规律，即便是原文和密钥完全相同，加密结果也会每次不同，增大破解难度。
+		// 取值越大，密文变动规律越大，密文变化 = 16 的 $ckey_length 次方
+		// 当此值为 0 时，则不产生随机密钥
+
+		$key = md5($key ? $key : C('UC_KEY'));
+		$keya = md5(substr($key, 0, 16));
+		$keyb = md5(substr($key, 16, 16));
+		$keyc = $ckey_length ? ($operation == 'DECODE' ? substr($string, 0, $ckey_length) : substr(md5(microtime()), - $ckey_length)) : '';
+
+		$cryptkey = $keya . md5($keya . $keyc);
+		$key_length = strlen($cryptkey);
+
+		$string = $operation == 'DECODE' ? base64_decode(substr($string, $ckey_length)) : sprintf('%010d', $expiry ? $expiry +time() : 0) . substr(md5($string . $keyb), 0, 16) . $string;
+		$string_length = strlen($string);
+
+		$result = '';
+		$box = range(0, 255);
+
+		$rndkey = array ();
+		for ($i = 0; $i <= 255; $i++) {
+			$rndkey[$i] = ord($cryptkey[$i % $key_length]);
+		}
+
+		for ($j = $i = 0; $i < 256; $i++) {
+			$j = ($j + $box[$i] + $rndkey[$i]) % 256;
+			$tmp = $box[$i];
+			$box[$i] = $box[$j];
+			$box[$j] = $tmp;
+		}
+
+		for ($a = $j = $i = 0; $i < $string_length; $i++) {
+			$a = ($a +1) % 256;
+			$j = ($j + $box[$a]) % 256;
+			$tmp = $box[$a];
+			$box[$a] = $box[$j];
+			$box[$j] = $tmp;
+			$result .= chr(ord($string[$i]) ^ ($box[($box[$a] + $box[$j]) % 256]));
+		}
+
+		if ($operation == 'DECODE') {
+			if ((substr($result, 0, 10) == 0 || substr($result, 0, 10) - time() > 0) && substr($result, 10, 16) == substr(md5(substr($result, 26) . $keyb), 0, 16)) {
+				return substr($result, 26);
+			} else {
+				return '';
+			}
+		} else {
+			return $keyc . str_replace('=', '', base64_encode($result));
+		}
+	}
+	/*
 	function login($login_type, $password) {
 		
-		$user = M('user')->where(['email' => $loginname])->find();
+		$user = M('user')->where(array('email' => $loginname))->find();
 		
 		switch ($user['status']) {
 		case 'locked':
@@ -85,8 +219,8 @@ class UserModel extends Model {
 		}
 		return true;
 	}
-	
-	function add($profile) {
+	*/
+	/*function add($profile) {
 	
 		$fields = array('login_name', 'password', 'realname', 'type', 'school', 'grade', 'dept', 'class', 'email');
 		foreach ($fields as $field) {
@@ -106,7 +240,9 @@ class UserModel extends Model {
 		return $this->login($login_name, $password);
 	}
 	
-	// update a user's profile
+	function addUser($data)
+	{
+	}
 	function update($user = CURRENT_USER, $data) {
 		$row = M('user')->find($user);
 
@@ -155,6 +291,6 @@ class UserModel extends Model {
 	
 	function login_count() { // current user
 		return Model()->result_first("SELECT login_count FROM common_user WHERE `uid` = '$user'");
-	}
+	}*/
 }
 ?>
