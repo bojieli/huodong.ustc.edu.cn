@@ -3,22 +3,22 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>注册</title>
-<link href="./static/css1.css" rel="stylesheet" type="text/css" />
-<link href="./static/zhuce.css" rel="stylesheet" type="text/css" />
-<script src="./static/jquery-1.7.1.js" type="text/javascript"></script>
+<link href="/static/css1.css" rel="stylesheet" type="text/css" />
+<link href="/static/zhuce.css" rel="stylesheet" type="text/css" />
+<script src="/static/jquery-1.7.1.js" type="text/javascript"></script>
 </head>
 
 <body>
 <div id="header">
   <div class="head-1160">
-      <div class="logo"><a href="index.html">大学海报</a></div><div id="zc1biaoyu"><a href="">大学社团原来可以这么简单</a></div>
+      <div class="logo"><a href="/">大学海报</a></div><div id="zc1biaoyu"><a href="">大学社团原来可以这么简单</a></div>
   </div><!--head-990-->
 </div><!--header-->
 
 <div id="zc1mainding">
 	<div class="zc1contentrect">
     	<div class="zc1content">
-		 <form id="registerform" name="registerform" action="index.php?m=User&a=addUser" method="post">
+		 <form id="registerform" name="registerform" action="/User/addUser" method="post">
 			<table cellspacing="0" cellpadding="0" border="0" class="zc1table">
                 <tr>
                 	<td align="right" valign="middle" width="150px" height="50px"><em>*</em>学校</td>
@@ -158,7 +158,7 @@ $(function(){
 			$("#checkDept").html('<font color="#FF0000"  size="1">请选择学院</font>');
 		}
 		else {
-			$("#checkDept").html('<img src="./static/check_right.gif">');
+			$("#checkDept").html('<img src="/static/check_right.gif">');
 		}
 	});
 
@@ -167,7 +167,7 @@ $(function(){
 			$("#checkStudent_no").html('<font color="#FF0000"  size="1">请填写学号</font>');
 		}
 		else {
-			$("#checkStudent_no").html('<img src="./static/check_right.gif">');
+			$("#checkStudent_no").html('<img src="/static/check_right.gif">');
 		}
 	});
 
@@ -176,7 +176,7 @@ $(function(){
 			$("#checkRealname").html('<font color="#FF0000"  size="1">请填写真实姓名</font>');
 		}
 		else {
-			$("#checkRealname").html('<img src="./static/check_right.gif">');
+			$("#checkRealname").html('<img src="/static/check_right.gif">');
 		}
 	});
 
@@ -189,7 +189,7 @@ $(function(){
 				function(data){
 					if(data.status==1)
 					{
-						$("#checkMail").html('<img src="./static/check_right.gif">');
+						$("#checkMail").html('<img src="/static/check_right.gif">');
 						
 					}
 					else
@@ -205,7 +205,7 @@ $(function(){
 			$("#checkPassword").html('<font color="#FF0000"  size="1">密码不能为空！</font>');
 			}
 		else {
-			$("#checkPassword").html('<img src="./static/check_right.gif">');
+			$("#checkPassword").html('<img src="/static/check_right.gif">');
 			}
 	});	
 	$('#password2').blur(function(){													
@@ -214,15 +214,15 @@ $(function(){
 		}
 		
 		else{
-			$("#checkPassword2").html('<img src="./static/check_right.gif">');
+			$("#checkPassword2").html('<img src="/static/check_right.gif">');
 		}
 	});	
 	$('#check').blur(function(){
-		$.post("index.php?m=User&a=ajaxCheckCode",{check: $(this).val()},
+		$.post("/User/ajaxCheckCode",{check: $(this).val()},
 				function(data){
 					if(data.status==1)
 					{
-						$("#checkCode").html('<img src="./static/check_right.gif">');
+						$("#checkCode").html('<img src="/static/check_right.gif">');
 						
 					}
 					else
@@ -280,7 +280,7 @@ function submituser(){
 							function(data){
 								if(data.status==1)
 								{
-									$("#checkMail").html('<img src="./static/check_right.gif">');
+									$("#checkMail").html('<img src="/static/check_right.gif">');
 									$('#registerform').get(0).submit();
 												
 								}
