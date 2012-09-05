@@ -17,12 +17,18 @@ class UserModel extends Model {
 		define('USER_LOCKED', -8);
 		define('USER_NOT_ACTIVATED', -9);
 		define('CURRENT_USER', session('uid'));
+		
 		global $_G;
-		$_G[timestamp]=time();
+		$_G['timestamp']=time();
 		list ($password, $uid) = explode("\t", $this->authcode(cookie('auth'), 'DECODE'));
-		$_G['uid']=$uid;
-		$_G['realname']=$this->getRealname($uid);
-
+		if (is_numeric($uid) && $uid >= 1) {
+			$_G['uid'] = $uid;
+			$_G['realname'] = $this->getRealname($uid);
+		} else {
+			$_G['uid'] = 0;
+			$_G['realname'] = '';
+		}
+		define('CURRENT_USER', $_G['uid']);
 	}
 	function getRealname($uid)
 	{
