@@ -1,4 +1,6 @@
 <?php
+$_G = array();
+
 // common function routines
 function random($length) {
 	$s = '';

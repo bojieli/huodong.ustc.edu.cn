@@ -1,8 +1,8 @@
 <?php
-class UserAction extends Action {
+class UserAction extends PublicAction {
 	public function home() {
 		global $_G;
-		$uid = $_GET[uid];
+		$uid = is_numeric($_GET['uid']) ? $_GET['uid'] : CURRENT_USER;
 		$user = D("User");
 		$user_info = $user->getInfo($uid);
 		$this->assign('user_info',$user_info);
@@ -81,7 +81,8 @@ class UserAction extends Action {
 		}
 		$_POST["uid"]=$_G['uid'];
 		$user->save($_POST);
-		$this->success('登出成功');
+		$this->assign('jumpUrl','/User/home');
+		$this->success('修改信息成功');
 
 	}
 	public function changePassword() {
@@ -119,7 +120,7 @@ class UserAction extends Action {
 		}
 		if($User->is_loginname_existed($_POST['email']))
 		{
-			echo "ol";
+			//echo "ol";  ???
 			$this->error("该邮件已注册");
 		}
 		if(empty($_POST[password]))
