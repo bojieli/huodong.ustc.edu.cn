@@ -74,16 +74,25 @@ class UserAction extends PublicAction {
 		if(empty($_G['uid'])) {
 			$this->error('没有登录');
 		}
-		$user = D('User');
 		if(empty($_POST['realname']))
 		{
 			$this->error('真实姓名不能为空');
 		}
-		$_POST["uid"]=$_G['uid'];
-		$user->save($_POST);
+
+		// sanitize input
+		$fields = array('realname', 'gender', 'education', 'dept', 'grade');
+		foreach ($fields as $field)
+			$info[$field] = htmlspecialchars($_POST[$field]);
+		if (preg_match("|[a-zA-Z]+://([a-zA-Z0-9_-]+\.)+[\w-]+(:[0-9]+)?(/.*)?|", $_POST['homepage']))
+			$info['homepage'] = $_POST['homepage'];
+		elseif (preg_match("|([a-zA-Z0-9_-]+\.)+[\w-]+(:[0-9]+)?(/.*)?|", $_POST['homepage']))
+			$info['homepage'] = 'http://'.$_POST['homepage'];
+		$info["uid"] = $_G['uid'];
+		
+		$user = D('User');
+		$user->save($info);
 		$this->assign('jumpUrl','/User/home');
 		$this->success('修改信息成功');
-
 	}
 	public function changePassword() {
 	}
