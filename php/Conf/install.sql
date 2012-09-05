@@ -83,6 +83,7 @@ CREATE TABLE IF NOT EXISTS ustc_user (
 	`education` VARCHAR(10) default NULL,
 	`student_no` VARCHAR(15) default NULL,
 	`dept` VARCHAR(100) default NULL,
+	`telephone` VARCHAR(20) DEFAULT NULL,
 	`major` VARCHAR(100) default NULL,
 	`homepage` VARCHAR(100) default NULL,
 	`notify_email` VARCHAR(100) NOT NULL,
