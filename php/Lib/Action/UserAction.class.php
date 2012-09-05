@@ -48,7 +48,7 @@ class UserAction extends Action {
 			cookie('auth', $user->authcode("$setarr[password]\t$setarr[uid]", 'ENCODE'), 3600);
 			cookie('loginuser', $passport['username'], 3600);
 			//dump($_COOKIE);
-			$this->assign('jumpUrl','index.php?m=User&a=home&uid='.$passport['uid']);
+			$this->assign('jumpUrl','/User/home?uid='.$passport['uid']);
 			$this->success('登陆成功');
 		}
 		else{
@@ -65,7 +65,7 @@ class UserAction extends Action {
 			$user=D('User');
 			$passport=$user->delsession($_G[uid]);//清除session
 			cookie(null);//清空cookie
-			$this->assign('jumpUrl','index.php');
+			$this->assign('jumpUrl','/');
 			$this->success('登出成功');
 		}
 	}
@@ -141,7 +141,8 @@ class UserAction extends Action {
 		$User->create();
 		$User->add();
 
-		echo "<script>window.location='/';</script>";
+		$this->assign('jumpUrl', '/User/do_login');
+		$this->success('注册成功，现在跳转到登录页面……');
 	}
 
 	public function registerRenren() {
