@@ -95,9 +95,10 @@ class UserAction extends Action {
 	}
 	public function addUser() {
 		session_start();
-		$_POST[salt] = substr(uniqid(rand()), -6);
-		dump($_POST[salt]);
+
 		$User = D("User");
+		
+		$_POST[salt] = substr(uniqid(rand()), -6);
 		$_POST['email']=trim($_POST['email'])."@mail.ustc.edu.cn";
 		$_POST['register_time']=time();
 		if(empty($_POST['dept']))
@@ -133,12 +134,14 @@ class UserAction extends Action {
 			$this->error('验证码错误');
 		}
 		$_POST[password] = md5(md5($_POST[password]).$_POST[salt]);
-		
-		$data = $User->create();
-		$User->add();
-		echo $User->getLastSql();
 
+		// currently force USTC
+		$_POST['sid'] = 1;
 		
+		$User->create();
+		$User->add();
+
+		echo "<script>window.location='/';</script>";
 	}
 
 	public function registerRenren() {

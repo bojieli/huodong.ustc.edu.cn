@@ -130,7 +130,7 @@
                 <tr>
                 	<td align="right" valign="middle" width="150px" height="50px"><em>*</em>验证码</td>
                     <td class="zc1tablerect" width="300px" height="50px" valign="middle" align="left">
-					<img id="ajaxCheckImg" src="index.php?m=User&a=ajaxVerify" />
+					<img id="ajaxCheckImg" src="/User/ajaxVerify" />
                     	<div class="zc1school">
                         	<input id="check" type="text" name="check" /><span id="checkCode"></span>
                         </div>                        
@@ -185,7 +185,7 @@ $(function(){
 			$("#checkMail").html('<font color="#FF0000"  size="1">邮箱不能为空</font>');
 		}
 		else {
-			$.post("index.php?m=User&a=ajaxCheckEmail",{email: $(this).val()},
+			$.post("/User/ajaxCheckEmail",{email: $(this).val()},
 				function(data){
 					if(data.status==1)
 					{
@@ -228,7 +228,7 @@ $(function(){
 					else
 					{
 						
-						$("#ajaxCheckImg").attr("src","index.php?m=User&a=ajaxVerify");
+						$("#ajaxCheckImg").attr("src","/User/ajaxVerify");
 						$("#checkCode").html('<font color="#FF0000"  size="1">验证码错误</font>');
 					}
 		},"json");
@@ -265,18 +265,18 @@ function submituser(){
 		$("#checkPassword2").html('<font color="#FF0000"  size="1">密码前后不一致！</font>');
 		return false;
 	}
-	$.post("index.php?m=User&a=ajaxCheckCode",{check: $("#check").val()},
+	$.post("/User/ajaxCheckCode",{check: $("#check").val()},
 				function(data){
 					if(data.status!=1)
 					{	
-						$("#ajaxCheckImg").attr("src","index.php?m=User&a=ajaxVerify");
+						$("#ajaxCheckImg").attr("src","/User/ajaxVerify");
 						$("#checkCode").html('<font color="#FF0000"  size="1">验证码错误</font>');
 						return false;
 					}
 					else
 					{	
 						
-						$.post("index.php?m=User&a=ajaxCheckEmail",{email: $("#email").val()},
+						$.post("/User/ajaxCheckEmail",{email: $("#email").val()},
 							function(data){
 								if(data.status==1)
 								{
