@@ -10,7 +10,7 @@
       <div class="nav"><a href="/Club/manage?gid={$_club_.gid}"><span <if condition="$here == 'club'. $_club_['gid']">class="here1"</if>>{$_club_.name}</span></a></div>
       </volist>
 
-      <div class="login1"><a href="/User/home"><img src="/{$user_info.small_avatar}" /></a><span>
+      <div class="login1"><a href="/User/home"><img id="avatar_small" src="/{$user_info.small_avatar}" /></a><span>
       <if condition="!empty($_G[uid])">欢迎您，{$_G[realname]} |<a href="#" id="logout">退出</a>
       <else />
       <a href="/User/login">登录</a> | <a href="/User/register">注册</a>
