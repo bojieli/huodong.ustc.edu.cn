@@ -1,6 +1,4 @@
 <?php
-// first written 2011-07-10 boj
-
 class UserModel extends Model {
 	
 	function init() {
@@ -41,10 +39,19 @@ class UserModel extends Model {
 		}
 		return false;
 	}
+        function changePassword($pw)
+        {   
+                global $_G;
+                $user=$this->where("uid=".$_G[uid])->select();
+                $password = md5(md5($pw).$user[0][salt]);
+                $cond = array('uid'=>$_G[uid],'password'=>$password);
+                $this->save($cond);
+                return true;
+        }
 	
 	public function delsession($uid){
 		$session=M('Session');
-		$session->where('uid='.$uid)->delete();
+		$session->where(array('uid'=>$uid))->delete();
 	}
 	public function insertsession($arr){
 		global $_G;
@@ -67,9 +74,13 @@ class UserModel extends Model {
 		$session->add($data);
 		//echo $session->getLastSql();
 	}
-	public function getpassport($username,$pw){
-		$uc=M('User');
-		$user=$uc->where("email='".$username."'")->select();
+	public function getpassport($username,$pw,$type='email'){
+		$user = array();
+		if ($type == 'uid')
+			$user = $this->where("uid='".$username."'")->select();
+		else
+			$user = $this->where("email='".$username."'")->select();
+		// echo $this->getLastSql();
 		if(empty($user)){
 			return -1;
 		}
@@ -82,29 +93,55 @@ class UserModel extends Model {
 		//echo $uc->getLastSql();
 		return array('uid'=>$user[uid],'password'=>$pw,'username'=>$username);
 	}
-	public function getAvatar($uid,$size='middle',$type=''){
-		$info= $this->where("uid=".$uid)->limit(1)->select();
-		$size = in_array($size, array('big', 'middle', 'small')) ? $size : 'middle';
-		if($info[avatar]==0){
-			$avatar='../UCenter/upload/images/noavatar_'.$size.'.gif';
-		}else{
-			$avatar = '../UCenter/upload/data/avatar/'.$this->get_avatar($uid, $size, $type);
-		}
-		return $avatar;
-	}
-	public function getInfo($uid,$field='name'){
-		$res= $this->where("uid = $uid")->limit(1)->select();
-		return($res[0]);
-	}
-	private function get_avatar($uid, $size = 'middle', $type = '') {
-		$size = in_array($size, array('big', 'middle', 'small')) ? $size : 'middle';
-		$uid = abs(intval($uid));
-		$uid = sprintf("%09d", $uid);
-		$dir1 = substr($uid, 0, 3);
-		$dir2 = substr($uid, 3, 2);
-		$dir3 = substr($uid, 5, 2);
-		$typeadd = $type == 'real' ? '_real' : '';
-		return $dir1.'/'.$dir2.'/'.$dir3.'/'.substr($uid, -2).$typeadd."_avatar_$size.jpg";
+
+        public function setAvatar($uid,$avatar_name)
+        {
+                $info= $this->where(array('uid',$uid))->limit(1)->select();
+                if(!empty($info[0][avatar]))
+                {
+                        @unlink('./upload/avatar/'.$info[0][avatar]);
+                        @unlink('./upload/avatar/small_'.$info[0][avatar]);
+                        $cond = array('uid'=>$uid,'avatar'=>'');
+                        $this->save($cond);
+                }
+                $info = array('uid'=>$uid,'avatar'=>$avatar_name);
+                $this->save($info);
+        }
+        public function setAvatarName()
+        {
+                global $_G;
+                return md5(time()).$_G[uid];
+        }
+        public function getAvatar($uid,$size=''){
+                $info = $this->find($uid);
+                $size = in_array($size, array('','small')) ? $size : 'small';
+                if(empty($info[avatar])){
+                        if(empty($size))
+                        {
+                                $avatar = C('AVATAR_PATH')."noavatar_big.gif";
+                        }
+                        else
+                        {
+                                $avatar = C('AVATAR_PATH')."noavatar_small.gif";
+                        }
+                }else{
+                        if(empty($size))
+                        {
+                                $avatar = C('AVATAR_PATH').$info[avatar];
+                        }
+                        else
+                        {
+                                $avatar = C('AVATAR_PATH').$size.'_'.$info[avatar];
+                        }
+                }
+                return $avatar;
+        }
+
+	public function getInfo($uid){
+		$user_info = $this->find($uid);
+		$user_info[avatar] = $this->getAvatar($uid);
+		$user_info[small_avatar] = $this->getAvatar($uid, "small");
+		return $user_info;
 	}
 //×Ö·û´®½âÃÜ¼ÓÃÜ
 	public function authcode($string, $operation = 'DECODE', $key = '', $expiry = 0) {
@@ -159,143 +196,5 @@ class UserModel extends Model {
 			return $keyc . str_replace('=', '', base64_encode($result));
 		}
 	}
-	/*
-	function login($login_type, $password) {
-		
-		$user = M('user')->where(array('email' => $loginname))->find();
-		
-		switch ($user['status']) {
-		case 'locked':
-			return USER_LOCKED;
-		case 'inactivated':
-			return USER_NOT_ACTIVATED;
-		case 'active':
-			break;
-		default:
-			die('Internal Error: Unknown user status');
-		}
-		
-		if ($this->login_too_many_times()) {
-			return LOGIN_TOO_MANY_TIMES;
-		}
-		if (empty($user)) {
-			$this->record_login($loginname, false);
-			return LOGIN_NAME_NOT_EXIST;
-		}
-		if (md5(md5($password).$user['salt']) !== $user['password']) {
-			$this->record_login($loginname, false);
-			return PASSWORD_INCORRECT;
-		}
-		// login success
-		$this->record_login($login_name, true);
-		
-		$user['status'] = 1;
-		$user['last_login_time'] = time();
-		$user['last_login_ip'] = get_client_ip();
-		$user['login_count']++;
-		$user->save();
-		
-		session('uid', $user['uid']);
-		
-		return 1;
-	}
-	
-	function login_too_many_times() { // lock this ip for 5 minutes
-		$count = Model()->result_first("SELECT COUNT(*) FROM ustc_login_log WHERE `ip` = '".get_client_ip()."' AND `time` > '".(time() - 300)."' AND `result` = 'failed'");
-		return ($count >= 5);
-	}
-	
-	function record_login($login_name, $result) {
-		if ($result)
-			$result = 'success';
-		else
-			$result = 'failed';
-		Model()->execute("INSERT INTO ustc_login_log (`ip`, `time`, `login_name`, `result`) VALUES ('".get_client_ip()."', '".time()."', '$login_name', '$result')");
-	}
-	
-	function logout($uid = CURRENT_USER) {
-		Model()->execute("UPDATE common_user SET `isonline` = '0' WHERE `uid` = '$uid'");
-		session(null);
-	}
-	
-	function is_loginname_valid($loginname) {
-		if (Model()->result_first("SELECT COUNT(*) FROM common_user WHERE `login_name` = '$loginname'")) {
-			return false;
-		}
-		return true;
-	}
-	*/
-	/*function add($profile) {
-	
-		$fields = array('login_name', 'password', 'realname', 'type', 'school', 'grade', 'dept', 'class', 'email');
-		foreach ($fields as $field) {
-			$$field = $profile[$field];
-		}
-
-		$salt = random(10);
-		$md5_password = md5(md5($password).$salt);
-		
-		$found = Model()->result_first("SELECT COUNT(*) FROM common_user WHERE `login_name` = '$login_name'");
-		if ($found) {
-			return LOGIN_NAME_EXISTS;
-		}
-		
-		Model()->execute("INSERT INTO common_user (`login_name`, `password`, `salt`, `realname`, `type`, `school`, `grade`, `dept`, `class`, `email`) VALUES ('$login_name', '$md5_password', '$salt', '$realname', '$type', '$school', '$grade', '$dept', '$class', '$email')");
-
-		return $this->login($login_name, $password);
-	}
-	
-	function addUser($data)
-	{
-	}
-	function update($user = CURRENT_USER, $data) {
-		$row = M('user')->find($user);
-
-		if (!empty($data['login_name'])) {
-			$current_login_name = $row['login_name'];
-			if ($data['login_name'] != $current_login_name) { // changing login name
-				if (!$this->is_loginname_valid($data['login_name'])) {
-					return LOGIN_NAME_EXISTS;
-				}
-			}
-		}
-		
-		if (!empty($data['password'])) { // reset password
-			$salt = $row['salt'];
-			if (empty($salt)) {
-				return false; // unknown error
-			}
-			$data['password'] = md5(md5($data['password']).$salt);
-		} else {
-			unset($data['password']); // not update
-		}
-		
-		foreach ($row as $key => $value) {
-			if (isset($data[$key]))
-				$row[$key] = $data[$key];
-		}
-		$this->save($row);
-		return 1;
-	}
-	
-	function getrealname($user = CURRENT_USER) {
-		return Model()->result_first("SELECT realname FROM common_user WHERE `uid` = '$user'");
-	}
-	
-	function getloginname($user = CURRENT_USER) {
-		return Model()->result_first("SELECT login_name FROM common_user WHERE `uid` = '$user'");
-	}	
-	
-	function getinfo($user = CURRENT_USER) {
-		return Model()->fetch_first("SELECT * FROM common_user WHERE `uid` = '$user'");
-	}
-	
-	function last_login_time() { // current user
-		return Model()->result_first("SELECT last_login_time FROM common_user WHERE `uid` = '$user'");
-	}
-	
-	function login_count() { // current user
-		return Model()->result_first("SELECT login_count FROM common_user WHERE `uid` = '$user'");
-	}*/
 }
 ?>

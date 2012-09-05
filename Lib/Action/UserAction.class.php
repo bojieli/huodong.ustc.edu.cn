@@ -5,8 +5,10 @@ class UserAction extends PublicAction {
 		$uid = is_numeric($_GET['uid']) ? $_GET['uid'] : CURRENT_USER;
 		$user = D("User");
 		$user_info = $user->getInfo($uid);
-		$this->assign('user_info',$user_info);
-		$this->assign('_G',$_G);
+		if (empty($user_info[uid])) {
+			$this->error("该用户不存在");
+		}
+		$this->assign('avatar_path', C("AVATAR_PATH"));
 		$this->display();
 	}
 	
@@ -94,7 +96,38 @@ class UserAction extends PublicAction {
 		$this->assign('jumpUrl','/User/home');
 		$this->success('修改信息成功');
 	}
-	public function changePassword() {
+
+        public function changePassword() {
+                global $_G;
+                if(empty($_G['uid'])) {
+                        $this->error('没有登录');
+                }   
+                if($_POST[submit]){
+                        $passport=D('User')->getpassport($_G[uid],$_POST[password],'uid');
+                        //dump($passport);
+                        if(!is_array($passport)){
+                                $this->error('原密码错误');
+                        }   
+                        if(empty($_POST[password_new]))
+                        {   
+                                $this->error('新密码不能为空');
+                        }   
+                        if($_POST[password_new2]!=$_POST[password_new])
+                        {   
+                                $this->error('两次密码不一致');
+                        }   
+                        $user=D('User');
+                        $user->changepassword($_POST[password_new]);
+                        $user->delsession($_G[uid]);//清除session
+                        cookie(null);//清空cookie
+                        $this->assign('jumpUrl','/User/login');
+                        $this->success('修改密码成功，请重新登录');
+                }   
+                else
+                {   
+                        $this->assign('_G',$_G);
+                        $this->display();
+                }   
 	}
 
 	public function myClubs() {
@@ -154,6 +187,34 @@ class UserAction extends PublicAction {
 		$this->assign('jumpUrl', '/User/login');
 		$this->success('注册成功，现在跳转到登录页面……');
 	}
+
+        public function avatarUpload(){
+                global $_G;
+                if(empty($_G['uid'])) {
+                        $this->error('没有登录');
+                }
+                import("ORG.Net.UploadFile");
+                $upload = new UploadFile();// 实例化上传类 
+                $upload->maxSize  = 3145728 ;// 设置附件上传大小 
+                $upload->allowExts  = array('jpg', 'gif', 'png', 'jpeg');
+                $upload->savePath =  './upload/avatar/';// 设置附件
+                $upload->saveRule = D("User")->setAvatarName();
+                $upload->thumb = true;
+                $upload->thumbMaxWidth = "200,50";
+                $upload->thumbMaxHeight = "200,50";
+                $upload->thumbRemoveOrigin = true;
+                $upload->thumbPrefix = 'avatar_,small_avatar_';
+
+                if(!$upload->upload()) {// 上传错误 提示错误信息 
+                        $this->error($upload->getErrorMsg());
+                }else{// 上传成功 获上传文件信息 
+                        $info =  $upload->getUploadFileInfo();
+                        $avatar_name = "avatar_".$info[0][savename];
+
+                        D('User')->setAvatar($_G[uid],$avatar_name);
+                        $this->success("$avatar_name");
+                }
+        }
 
 	public function registerRenren() {
 		$this->display();
