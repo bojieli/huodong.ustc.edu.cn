@@ -52,7 +52,17 @@ CREATE TABLE IF NOT EXISTS ustc_school (
 
 -- BEGIN user info
 
--- Here saves the most frequently accessed data of a user
+CREATE TABLE IF NOT EXISTS ustc_session (
+	`uid` INT(10) unsigned NOT NULL,
+	`email` VARCHAR(100) NOT NULL,
+	`password` CHAR(32) NOT NULL,
+	`lastactivity` INT(10) unsigned NOT NULL,
+	`ip` INT(10) unsigned NOT NULL,
+	PRIMARY KEY (`uid`),
+	KEY `key_lastactivity` (`lastactivity`),
+	KEY `key_ip` (`ip`)
+);
+
 CREATE TABLE IF NOT EXISTS ustc_user (
 	`uid` INT(10) NOT NULL AUTO_INCREMENT,
 	`sid` INT(10) NOT NULL, -- school id
@@ -62,20 +72,21 @@ CREATE TABLE IF NOT EXISTS ustc_user (
 	`password` CHAR(32) NOT NULL, -- password = md5(concat(md5(input),salt))
 	`salt` CHAR(10) NOT NULL, -- random salt for password
 	`status` ENUM('active', 'locked', 'inactivated'),
-	`isonline` BOOL NOT NULL DEFAULT FALSE,
-	`isdeveloper` BOOL NOT NULL DEFAULT FALSE, -- all privileges
-	`isschooladm` BOOL NOT NULL DEFAULT FALSE, -- school admin
+	`isonline` tinyint(1) NOT NULL DEFAULT 0,
+	`isdeveloper` tinyint(1) NOT NULL DEFAULT 0, -- all privileges
+	`isschooladm` tinyint(1) NOT NULL DEFAULT 0, -- school admin
 	`register_time` INT(10) NOT NULL, -- unix timestamp
-	`last_login_time` INT(10), -- unix timestamp
+	`last_login_time` INT(10) default NULL, -- unix timestamp
 	`login_count` INT(10) NOT NULL DEFAULT 0,
-	`gender` BOOL, -- 0 for girl, 1 for boy
-	`grade` INT(4), -- year of admission
-	`student_no` VARCHAR(15),
-	`dept` VARCHAR(100),
-	`major` VARCHAR(100),
-	`homepage` VARCHAR(100),
+	`gender` tinyint(1) default NULL, -- 0 for girl, 1 for boy
+	`grade` INT(4) default NULL, -- year of admission
+	`education` VARCHAR(10) default NULL,
+	`student_no` VARCHAR(15) default NULL,
+	`dept` VARCHAR(100) default NULL,
+	`major` VARCHAR(100) default NULL,
+	`homepage` VARCHAR(100) default NULL,
 	`notify_email` VARCHAR(100) NOT NULL,
-	`avatar` VARCHAR(100), -- /upload/avatar/filename
+	`avatar` VARCHAR(100) default NULL, -- /upload/avatar/filename
 	`hobby` TEXT,
 	PRIMARY KEY (`uid`),
 	FOREIGN KEY (`sid`) REFERENCES ustc_school(`sid`),
@@ -115,8 +126,7 @@ CREATE TABLE IF NOT EXISTS ustc_club (
 	`description` TEXT,
 	PRIMARY KEY (`gid`),
 	FOREIGN KEY (`sid`) REFERENCES ustc_school(`sid`),
-	FOREIGN KEY (`owner`) REFERENCES ustc_user(`uid`),
-	INDEX key_status(`status`)
+	FOREIGN KEY (`owner`) REFERENCES ustc_user(`uid`)
 );
 
 -- Correlation of users and groups
