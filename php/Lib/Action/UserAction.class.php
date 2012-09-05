@@ -141,7 +141,7 @@ class UserAction extends Action {
 		$User->create();
 		$User->add();
 
-		$this->assign('jumpUrl', '/User/do_login');
+		$this->assign('jumpUrl', '/User/login');
 		$this->success('注册成功，现在跳转到登录页面……');
 	}
 

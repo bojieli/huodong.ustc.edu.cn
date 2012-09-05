@@ -16,7 +16,6 @@ class UserModel extends Model {
 		define('NOT_HAVE_BEEN_FRIEND', -7);
 		define('USER_LOCKED', -8);
 		define('USER_NOT_ACTIVATED', -9);
-		define('CURRENT_USER', session('uid'));
 		
 		global $_G;
 		$_G['timestamp']=time();
@@ -50,9 +49,9 @@ class UserModel extends Model {
 	public function insertsession($arr){
 		global $_G;
 		$session=M('Session');
-		$cond='uid='.$arr[uid]
-			." and email='".$arr[username]
-			." OR lastactivity<".($_G[timestamp]-C('ONLINE_HOLD'));
+		$cond="uid='".addslashes($arr[uid])
+			."' AND email='".addslashes($arr[username])
+			."' OR lastactivity<".($_G[timestamp]-C('ONLINE_HOLD'));
 		$session->where($cond)->delete();
 		$ip = get_client_ip(); 
 		$data=array(
