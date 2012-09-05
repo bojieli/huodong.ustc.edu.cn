@@ -4,9 +4,16 @@
       <div class="logo"><a href="/"><span>大学海报</span></a></div>
       <div class="nav"><a href="/"><span <if condition="$here == PosterAction">class="here1"</if>>海报墙</span></a></div>
       <div class="nav"><a href="/Club/"><span <if condition="$here == ClubAction">class="here1"</if>>所有社团</span></a></div>
+
       <volist name="clublist" id="_club_">
       <div class="nav"><a href="/Club/manage?gid={$_club_.gid}"><span <if condition="$here == 'club'. $_club_['gid']">class="here1"</if>>{$_club_.name}</span></a></div>
       </volist>
-      <div class="login1"><span id="login">登陆</span>/<a href="/User/register">注册</a></div>
+
+      <div class="login1"><a href="/User/home"><img src="images/0.jpg" /></a><span>
+      <if condition="!empty($_G[uid])">欢迎您，{$_G[realname]} |<a href="#" id="logout">退出</a>
+      <else />
+      <a href="/User/login">登录</a> | <a href="/User/register">注册</a>
+      </if>
+      </span></div>
   </div><!--head-1160-->
 </div><!--header-->
