@@ -61,6 +61,53 @@ class ClubAction extends PublicAction {
 		echo "<script>window.location='/Club/intro?gid=".$gid."'</script>";
 	}
 
+	public function introAdd() {
+		$this->display();
+	}
+
+	public function introInsert() {
+		$user = D('User')->getInfo(CURRENT_USER);
+		if (!$user['isdeveloper'])
+			$this->error("没有权限！");
+
+		$fields = ['name','owner','name_en','slogan','qq_group','contact','shortdesc'];
+		foreach ($fields as $field) {
+			$club[$field] = htmlspecialchars($_POST[$field]);
+		}
+		if (empty($club['name']))
+			$this->error("必须有社团名称");
+		if (strlen($club['shortdesc']) > 420)
+			$club['shortdesc'] = substr($club['shortdesc'], 0, 420);
+
+		import("ORG.Net.UploadFile");
+		$upload = new UploadFile();
+		$upload->maxSize = 8 * 1024 * 1024;
+		$upload->allowExts = ['jpg', 'gif', 'png', 'jpeg'];
+		$upload->savePath = './upload/clublogo/';
+		$upload->saveRule = 'uniqid';
+		
+		import("ORG.Util.Image");
+		$upload->thumb = true;
+		$upload->thumbPath = './upload/clublogo/thumb/';
+		$upload->thumbMaxWidth = 250;
+		$upload->thumbMaxHeight = 400;
+
+		if ($upload->upload()) {
+			$info = $upload->getUploadFileInfo();
+			$club['logo'] = $info[0]["savename"];
+		}
+
+		$club['sid'] = 1; // force USTC
+		if (!is_numeric($club['owner']))
+			$club['owner'] = 1;
+
+		$model = M('Club');
+		$model->create($club);
+		$model->add();
+		
+		$this->success("添加成功！");
+	}
+
 	public function manage() {
 		if (!is_numeric($_GET['gid']))
 			exit();
