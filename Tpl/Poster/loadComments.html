@@ -63,7 +63,7 @@ $(".like").live('click', function(event){
             <div class="hflistcell">
               <table border="0" cellspacing="0" cellpadding="0" width="100%">
               	<tr>
-                  <td width="60" align="center"><img class="hftouxiang" src="{$comment.author.avatar}"></td>
+                  <td width="60" align="center"><img class="hftouxiang" src="/{$comment.author.small_avatar}"></td>
                     <td valign="top">
                     	<div class="hfcontent">
                         	<a href="{$comment.author.homepage}" class="<?=$comment['author']['gender'] ? 'boy' : 'girl' ?>name" target="_blank">{$comment.author.realname}</a>

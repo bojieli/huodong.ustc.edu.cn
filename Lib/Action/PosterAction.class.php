@@ -187,7 +187,7 @@ class PosterAction extends PublicAction {
 		$this->assign('poster', $poster->toArray());
 		$comments = M('poster_comment')->where(['aid'=>$aid])->order("time DESC")->select();
 		foreach ($comments as &$comment) {
-			$comment['author'] = M('user')->find($comment['author']);
+			$comment['author'] = D('User')->getInfo($comment['author']);
 		}
 		unset($comment);
 		$this->assign('comments', $comments);
