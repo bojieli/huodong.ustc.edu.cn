@@ -146,6 +146,13 @@ class ClubAction extends PublicAction {
 			$num = 20;
 		}
 		$members = M()->query("SELECT * FROM ustc_user AS u, ustc_user_group AS ug WHERE ug.gid='$gid' AND ug.uid = u.uid ORDER BY ug.priv LIMIT $start,$num");
+		foreach ($members as &$member) {
+			if (empty($member['avatar']))
+				$member['avatar'] = C('AVATAR_PATH')."noavatar_big.gif";
+			else
+				$member['avatar'] = C('AVATAR_PATH').$member['avatar'];
+		}
+		unset($member);
 		$this->assign('members', $members);
 		$inactive_members = M()->query("SELECT * FROM ustc_user AS u, ustc_user_group AS ug WHERE ug.gid='$gid' AND ug.priv = 'inactive' AND ug.uid = u.uid");
 		$this->assign('inactive', $inactive_members);
