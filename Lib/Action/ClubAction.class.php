@@ -61,6 +61,29 @@ class ClubAction extends PublicAction {
 		echo "<script>window.location='/Club/intro?gid=".$gid."'</script>";
 	}
 
+	public function addOwner() {
+		$this->display();
+	}
+
+	public function addOwnerSubmit() {
+		$user = D('User')->getInfo(CURRENT_USER);
+		if (!$user['isdeveloper'])
+			$this->error("没有权限！");
+
+		$club['owner'] = $_POST['owner'];
+		M('Club')->where(array('gid'=>$_POST['gid']))->save($club);
+
+		$record['gid'] = $_POST['gid'];
+		$record['uid'] = $_POST['owner'];
+		$record['priv'] = 'admin';
+		$record['title'] = '会长';
+		$row = M('user_group');
+		$row->create($record);
+		$row->add();
+
+		$this->success("添加成功！");
+	}
+
 	public function introAdd() {
 		$this->display();
 	}
