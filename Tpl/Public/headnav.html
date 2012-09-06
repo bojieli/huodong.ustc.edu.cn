@@ -13,7 +13,7 @@
       <div class="login1">
       <if condition="!empty($_G[uid])">
       <a href="/User/home"><img id="avatar_small" src="/{$user_info.small_avatar}" /></a>
-      <span>欢迎您，{$_G[realname]} | <a href="#" id="logout">退出</a></span>
+      <span><a href="/User/home">欢迎您，{$_G[realname]}</a> | <a href="#" id="logout">退出</a></span>
       <else />
       <span><a href="/User/login">登录</a> | <a href="/User/register">注册</a></span>
       </if>
