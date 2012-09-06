@@ -184,6 +184,7 @@ class PosterAction extends PublicAction {
 		$poster->humanDate = $poster->humanDate();
 		$poster->poster = $poster->posterUrl();
 		$poster->canModify = $poster->canModify();
+		$poster->clubName = $poster->clubName();
 		$this->assign('poster', $poster->toArray());
 		$comments = M('poster_comment')->where(['aid'=>$aid])->order("time DESC")->select();
 		foreach ($comments as &$comment) {
