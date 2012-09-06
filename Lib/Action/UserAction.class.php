@@ -9,6 +9,8 @@ class UserAction extends PublicAction {
 			$this->error("该用户不存在");
 		}
 		$this->assign('avatar_path', C("AVATAR_PATH"));
+		$this->assign('clubs', D('User')->getClubs($_GET['uid']));
+		$this->assign('applies', D('User')->getApplies($_GET['uid']));
 		$this->display();
 	}
 	

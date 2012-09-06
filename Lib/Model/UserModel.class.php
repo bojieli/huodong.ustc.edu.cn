@@ -48,6 +48,21 @@ class UserModel extends Model {
                 $this->save($cond);
                 return true;
         }
+
+	public function getClubs($uid) {
+		return $this->__getClub($uid, false);
+	}
+
+	public function getApplies($uid) {
+		return $this->__getClub($uid, true);
+	}
+
+	private function __getClub($uid, $allow_inactive) {
+		if (!is_numeric($uid))
+			return null;
+		$clubs = M()->query("SELECT ug.uid, ug.gid, ug.title, g.name FROM ustc_user_group AS ug, ustc_club AS g WHERE ug.uid = '$uid' AND ug.gid = g.gid AND ug.priv" .($allow_inactive ? '=' : '!='). "'inactive'");
+		return $clubs;
+	}
 	
 	public function delsession($uid){
 		$session=M('Session');
