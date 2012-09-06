@@ -35,7 +35,15 @@ class UserAction extends PublicAction {
 			if(!is_array($passport)){
 				$this->error('登录失败，请检查用户名和密码');
 			}
-			
+
+			$info = D('User')->getInfo($passport['uid']);
+			if ($info['status'] == 'locked')
+				$this->error("您的帐号已被锁定，请联系管理员解锁");
+			else if ($info['status'] == 'inactive')
+				$this->error("您还没有激活，请首先点击邮件中的链接激活");
+			else if ($info['status'] != 'active')
+				$this->error("账户状态发生未知错误，请联系管理员");
+
 			global $_G;
 			
 			$_G[timestamp]=empty($_G[timestamp])? time():$_G[timestamp];
@@ -141,9 +149,15 @@ class UserAction extends PublicAction {
 
 		$User = D("User");
 		
-		$_POST[salt] = substr(uniqid(rand()), -6);
+		if(empty($_POST[email]))
+		{
+			$this->error("邮箱不能为空");
+		}
+		if (!preg_match("/[a-zA-Z0-9+_-]+/", $_POST['email'])) {
+			$this->error("请输入有效的邮箱地址");
+		}
 		$_POST['email']=trim($_POST['email'])."@mail.ustc.edu.cn";
-		$_POST['register_time']=time();
+
 		if(empty($_POST['dept']))
 		{
 			$this->error("学院不能为空");
@@ -156,13 +170,8 @@ class UserAction extends PublicAction {
 		{
 			$this->error("真实姓名不能为空");
 		}
-		if(empty($_POST[email]))
-		{
-			$this->error("邮箱不能为空");
-		}
 		if($User->is_loginname_existed($_POST['email']))
 		{
-			//echo "ol";  ???
 			$this->error("该邮件已注册");
 		}
 		if(empty($_POST[password]))
@@ -176,16 +185,57 @@ class UserAction extends PublicAction {
 		if($_SESSION['verify'] != md5($_POST['check'])) {
 			$this->error('验证码错误');
 		}
-		$_POST[password] = md5(md5($_POST[password]).$_POST[salt]);
 
-		// currently force USTC
-		$_POST['sid'] = 1;
+		$_POST['sid'] = 1; // currently force USTC
+		$_POST['register_time']=time();
+		$_POST['status'] = 'inactive'; // need email activate
+
+		$_POST['salt'] = substr(uniqid(rand()), -6);
+		$_POST['password'] = md5(md5($_POST[password]).$_POST[salt]);
 		
 		$User->create();
 		$User->add();
 
-		$this->assign('jumpUrl', '/User/login');
-		$this->success('注册成功，现在跳转到登录页面……');
+		$info = $User->where(array('email'=>$_POST['email']))->find();
+		if (empty($info) || !is_numeric($info['uid'])) {
+			$this->error('未知错误，请重新注册');
+		}
+
+		$this->sendVerifyEmail($info);
+
+                $this->assign('jumpUrl','/User/login');
+		$this->success('注册成功，已经向 '.$_POST['email'].' 发送一封激活信，请点击激活信中的链接以完成注册过程。');
+	}
+
+	private function sendVerifyEmail($info) {
+		SendMail($info['email'], "欢迎注册社团活动信息平台",
+			$info['realname']."你好:\n\n".
+			"请点击下面的链接激活您在社团活动信息平台的帐号（如果下面的地址不能点击，请将其复制到浏览器地址栏中）:\n\n".
+			"http://huodong.ustc.edu.cn/User/registerVerify?uid=".$info['uid']."&token=".md5($info['email'].$info['salt'].$info['register_time'])."\n\n".
+			$info['email'].$info['salt'].$info['register_time'].
+			"社团活动信息平台 http://huodong.ustc.edu.cn/"
+			);
+	}
+
+	public function registerVerify() {
+		if (!is_numeric($_GET['uid']))
+			$this->error("您所激活的用户不存在，请重新注册");
+		$info = D('User')->getInfo($_GET['uid']);
+		if (empty($info))
+			$this->error("您所激活的用户不存在，请重新注册");
+		if (md5($info['email'].$info['salt'].$info['register_time']) !== trim($_GET['token']))
+			$this->error("激活链接无效，请将激活信中的链接准确复制到浏览器地址栏中，重试一次");
+		if ($info['status'] == 'active')
+			$this->error("您已经激活，不需要再次激活了 :)");
+		if ($info['status'] == 'locked')
+			$this->error("您的帐号已被锁定，请联系管理员解锁");
+		if ($info['status'] == 'inactive') {
+			$record['status'] = 'active';
+			M('User')->where(['uid' => $_GET['uid']])->save($record);
+		}
+
+                $this->assign('jumpUrl','/User/login');
+                $this->success('帐号激活成功，现在跳转到登录页面……');
 	}
 
         public function avatarUpload(){
@@ -216,29 +266,6 @@ class UserAction extends PublicAction {
                 }
         }
 
-	public function registerRenren() {
-		$this->display();
-	}
-
-	public function registerLocal() {
-		$this->display();
-	}
-
-	public function registerEmail() {
-		$this->display();
-	}
-
-	public function registerInfo() {
-		$this->display();
-	}
-
-	public function registerAvatar() {
-		$this->display();
-	}
-
-	public function notify() {
-		// call NotifyAction
-	}
 	public function createCode()
 	{
 		session_start();

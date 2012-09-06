@@ -48,6 +48,8 @@ CREATE TABLE IF NOT EXISTS ustc_school (
 	PRIMARY KEY (`sid`),
 	INDEX key_name(`name`)
 );
+
+INSERT INTO ustc_school SET `name`='中国科学技术大学';
 -- END school info
 
 -- BEGIN user info
@@ -71,7 +73,7 @@ CREATE TABLE IF NOT EXISTS ustc_user (
 	`email` VARCHAR(100) NOT NULL,
 	`password` CHAR(32) NOT NULL, -- password = md5(concat(md5(input),salt))
 	`salt` CHAR(10) NOT NULL, -- random salt for password
-	`status` ENUM('active', 'locked', 'inactivated'),
+	`status` ENUM('active', 'locked', 'inactive') NOT NULL,
 	`isonline` tinyint(1) NOT NULL DEFAULT 0,
 	`isdeveloper` tinyint(1) NOT NULL DEFAULT 0, -- all privileges
 	`isschooladm` tinyint(1) NOT NULL DEFAULT 0, -- school admin

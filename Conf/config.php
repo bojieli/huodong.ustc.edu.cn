@@ -9,5 +9,11 @@ $newconfig = array(
 	'SHOW_PAGE_TRACE' => false,
 	'AVATAR_PATH' => 'upload/avatar/'
 );
-return array_merge($config, $newconfig);
+$mailconfig = array(
+	'MAIL_ADDRESS' => 'huodong@ustc.edu.cn',
+	'MAIL_SMTP' => '202.38.64.8',
+	'MAIL_LOGINNAME' => 'huodong@ustc.edu.cn',
+	'MAIL_PASSWORD' => 'hzbjlsjr0906'
+);
+return array_merge($config, $newconfig, $mailconfig);
 ?>
