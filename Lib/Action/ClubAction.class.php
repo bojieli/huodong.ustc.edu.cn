@@ -73,6 +73,8 @@ class ClubAction extends PublicAction {
 		$club['owner'] = $_POST['owner'];
 		M('Club')->where(array('gid'=>$_POST['gid']))->save($club);
 
+		M('user_group')->where(array('gid'=>$_POST['gid'], 'uid'=>$_POST['owner']))->delete();
+		
 		$record['gid'] = $_POST['gid'];
 		$record['uid'] = $_POST['owner'];
 		$record['priv'] = 'admin';
