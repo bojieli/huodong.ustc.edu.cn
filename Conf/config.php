@@ -7,7 +7,9 @@ $newconfig = array(
 	'SESSION_AUTO_START' => true,
 	'APP_AUTOLOAD_PATH' => '@.TagLib,@.ORG',
 	'SHOW_PAGE_TRACE' => false,
-	'AVATAR_PATH' => 'upload/avatar/'
+	'AVATAR_PATH' => 'upload/avatar/',
+	'COOKIE_PREFIX' => 'hd_',
+	'COOKIE_EXPIRE' => 1800
 );
 $mailconfig = array(
 	'MAIL_ADDRESS' => 'huodong@ustc.edu.cn',

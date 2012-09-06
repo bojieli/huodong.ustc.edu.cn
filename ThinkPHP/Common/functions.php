@@ -602,7 +602,7 @@ function cookie($name, $value='', $option=null) {
         if (!empty($prefix)) {// 如果前缀为空字符串将不作处理直接返回
             foreach ($_COOKIE as $key => $val) {
                 if (0 === stripos($key, $prefix)) {
-                    setcookie($key, '', time() - 3600, $config['path'], $config['domain']);
+                    setcookie($key, '', -3600, $config['path'], $config['domain']);
                     unset($_COOKIE[$key]);
                 }
             }
