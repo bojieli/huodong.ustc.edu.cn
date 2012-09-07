@@ -1,7 +1,14 @@
 	<div class="sttitle2">{$club.school.name}</div>
 	<div class="sttitle">{$club.name}</div>
-    <div class="sttitle3">{$club.name_en}<br/>
-    {$club.slogan}<br/>协会QQ群：{$club.qq_group}<br/>协会联系方式：{$club.contact}</div>
+    <div class="sttitle3">
+    <p>{$club.name_en}
+    <p>{$club.slogan}
+    <p>QQ群/论坛：{$club.qq_group}
+    <p>社团主页：{$club.homepage}
+    <p>公共邮箱：{$club.contact}
+    <p>成立日期：{$club.found_date}
+    <p>指导老师：{$club.teacher}
+    </div>
     <div class="sttitle4">网上注册会员：{$club.memberCount} 人<br/>会长：{$club.admin.realname} （{$club.admin.grade}级 {$club.admin.dept}）
         <div class="sttitle5">
 	    <switch name="club.mypriv">
