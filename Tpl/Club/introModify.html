@@ -12,21 +12,21 @@
     <div class="control-group">
       <label class="control-label" for="name_en">英文名称</label>
       <div class="controls">
-        <input type="text" class="input-large" id="name_en" name="name_en" value="{$club.name_en}" onKeyUp="if(this.value=='') $(this).parent().parent().addClass('error'); else $(this).parent().parent().removeClass('error');">
+        <input type="text" class="input-xlarge" id="name_en" name="name_en" value="{$club.name_en}" onKeyUp="if(this.value=='') $(this).parent().parent().addClass('error'); else $(this).parent().parent().removeClass('error');">
       </div>
     </div>
     
     <div class="control-group">
       <label class="control-label" for="slogan">口号</label>
       <div class="controls">
-        <input type="text" class="input-large" id="slogan" name="slogan" value="{$club.slogan}" onKeyUp="if(this.value=='') $(this).parent().parent().addClass('error'); else $(this).parent().parent().removeClass('error');">
+        <input type="text" class="input-xlarge" id="slogan" name="slogan" value="{$club.slogan}" onKeyUp="if(this.value=='') $(this).parent().parent().addClass('error'); else $(this).parent().parent().removeClass('error');">
       </div>
     </div>
     
     <div class="control-group">
       <label class="control-label" for="qq_group">QQ群</label>
       <div class="controls">
-        <input type="text" class="input-large" id="qq_group" name="qq_group" value="{$club.qq_group}">
+        <input type="text" class="input-xlarge" id="qq_group" name="qq_group" value="{$club.qq_group}">
         <p class="help-block">如果没有QQ群，请输入社团论坛或其他社团内部交流方式。此项可以留空。</p>
       </div>
     </div>
@@ -34,7 +34,7 @@
     <div class="control-group">
       <label class="control-label" for="contact">联系方式</label>
       <div class="controls">
-        <input type="text" class="input-large" id="contact" name="contact" value="{$club.contact}" onKeyUp="if(this.value=='') $(this).parent().parent().addClass('error'); else $(this).parent().parent().removeClass('error');">
+        <input type="text" class="input-xlarge" id="contact" name="contact" value="{$club.contact}" onKeyUp="if(this.value=='') $(this).parent().parent().addClass('error'); else $(this).parent().parent().removeClass('error');">
 	<p class="help-block">社团负责人的联系方式，建议填写邮箱。</p>
       </div>
     </div>
@@ -42,7 +42,7 @@
     <div class="control-group">
       <label class="control-label" for="shortdesc">简短介绍</label>
       <div class="controls">
-        <textarea class="input-large" id="shortdesc" name="shortdesc" rows="5" onKeyUp="if(this.value=='' || this.value.length > 140) $(this).parent().parent().addClass('error'); else $(this).parent().parent().removeClass('error');">{$club.shortdesc}</textarea>
+        <textarea class="input-xlarge" id="shortdesc" name="shortdesc" rows="5" onKeyUp="if(this.value=='' || this.value.length > 140) $(this).parent().parent().addClass('error'); else $(this).parent().parent().removeClass('error');">{$club.shortdesc}</textarea>
 	<p class="help-block">显示在“大学社团”瀑布流的简短介绍，不超过140字</p>
       </div>
     </div>
