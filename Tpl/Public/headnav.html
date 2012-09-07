@@ -6,10 +6,6 @@
       <div class="nav"><a href="/"><span <if condition="$here == PosterAction">class="here1"</if>>海报墙</span></a></div>
       <div class="nav"><a href="/Club/"><span <if condition="$here == ClubAction">class="here1"</if>>所有社团</span></a></div>
 
-      <volist name="clublist" id="_club_">
-      <div class="nav"><a href="/Club/manage?gid={$_club_.gid}"><span <if condition="$here == 'club'. $_club_['gid']">class="here1"</if>>{$_club_.name}</span></a></div>
-      </volist>
-
       <div class="login1">
       <if condition="!empty($_G[uid])">
       <span><a href="/User/home"><img id="avatar_small" src="/{$user_info.small_avatar}" /></a>
