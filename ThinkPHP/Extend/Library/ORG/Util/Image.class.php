@@ -218,11 +218,39 @@ class Image {
                 imagecopyresampled($thumbImg, $srcImg, 0, 0, 0, 0, $width, $height, $srcWidth, $srcHeight);
             else
                 imagecopyresized($thumbImg, $srcImg, 0, 0, 0, 0, $width, $height, $srcWidth, $srcHeight);
+	
             if ('gif' == $type || 'png' == $type) {
-                //imagealphablending($thumbImg, false);//取消默认的混色模式
+		$trnprt_indx = imagecolortransparent($srcImg);
+
+          	// If we have a specific transparent color
+          	if ($trnprt_indx >= 0) {
+          	    // Get the original image's transparent color's RGB values
+          	    $trnprt_color    = imagecolorsforindex($srcImg, $trnprt_indx);
+          	    // Allocate the same color in the new image resource
+          	    $trnprt_indx    = imagecolorallocate($thumbImg, $trnprt_color['red'], $trnprt_color['green'], $trnprt_color['blue']);
+          	    // Completely fill the background of the new image with allocated color.
+          	    imagefill($thumbImg, 0, 0, $trnprt_indx);
+          	    // Set the background color for new image to transparent
+          	    imagecolortransparent($thumbImg, $trnprt_indx);
+          	}
+          	// Always make a transparent background color for PNGs that don't have one allocated already
+          	elseif ('png' == $type) {
+          	    // Turn off transparency blending (temporarily)
+          	    imagealphablending($thumbImg, false);
+          	    // Create a new transparent color for image
+          	    $color = imagecolorallocatealpha($thumbImg, 0, 0, 0, 127);
+          	    // Completely fill the background of the new image with allocated color.
+          	    imagefill($thumbImg, 0, 0, $color);
+          	    // Restore transparency blending
+          	    imagesavealpha($thumbImg, true);
+          	}
+
+		/* ThinkPHP original
+		//imagealphablending($thumbImg, false);//取消默认的混色模式
                 //imagesavealpha($thumbImg,true);//设定保存完整的 alpha 通道信息
                 $background_color = imagecolorallocate($thumbImg, 0, 255, 0);  //  指派一个绿色
                 imagecolortransparent($thumbImg, $background_color);  //  设置为透明色，若注释掉该行则输出绿色的图
+		*/
             }
 
             // 对jpeg图形设置隔行扫描
