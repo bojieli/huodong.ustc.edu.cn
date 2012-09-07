@@ -188,6 +188,7 @@ class ClubAction extends PublicAction {
 		if (in_array($this->getMyPriv($gid), ['admin','manager'])) {
 			if ($this->getPriv($uid, $gid) == 'inactive') {
 				$record['priv'] = 'member';
+				$record['title'] = '会员';
 				M('user_group')->where(['uid'=>$uid, 'gid'=>$gid])->save($record);
 			}
 		}
