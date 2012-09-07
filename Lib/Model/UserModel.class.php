@@ -166,7 +166,25 @@ class UserModel extends Model {
 
 	public function isSchoolAdmin($uid) {
 		$info = $this->field(array('isdeveloper', 'isschooladm'))->find($uid);
-		return !empty($info) && ($info['isdeveloper'] || $info['isschooladm']);
+		if (empty($info))
+			return false;
+		if ($info['isdeveloper'])
+			return true;
+		if ($info['isschooladm']) { // is it in the same school?
+			$user = M('User')->field('sid')->find($uid);
+			if (isset($_GET['gid']))
+				$club = M('Club')->field('sid')->find($_GET['gid']);
+			else if (isset($_GET['aid'])) {
+				$poster = M('Poster')->field('gid')->find($_GET['aid']);
+				$club = M('Club')->field('sid')->find($poster['gid']);
+			}
+			else // cannot determine what school
+				return false;
+
+			if ($user['sid'] == $club['sid'])
+				return true;
+		}
+		return false;
 	}
 
 //×Ö·û´®½âÃÜ¼ÓÃÜ

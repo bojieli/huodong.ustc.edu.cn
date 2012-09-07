@@ -246,6 +246,8 @@ class ClubAction extends PublicAction {
 	}
 
 	private function getPriv($uid, $gid) {
+		if (D('User')->isSchoolAdmin($uid))
+			return true;
 		return M()->result_first("SELECT priv FROM ustc_user_group WHERE `uid`='$uid' AND `gid`='$gid'");
 	}
 	
