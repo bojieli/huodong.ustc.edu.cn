@@ -158,6 +158,17 @@ class UserModel extends Model {
 		$user_info[small_avatar] = $this->getAvatar($uid, "small");
 		return $user_info;
 	}
+
+	public function isDeveloper($uid) {
+		$info = $this->field('isdeveloper')->find($uid);
+		return !empty($info) && $info['isdeveloper'];
+	}
+
+	public function isSchoolAdmin($uid) {
+		$info = $this->field(array('isdeveloper', 'isschooladm'))->find($uid);
+		return !empty($info) && ($info['isdeveloper'] || $info['isschooladm']);
+	}
+
 //×Ö·û´®½âÃÜ¼ÓÃÜ
 	public function authcode($string, $operation = 'DECODE', $key = '', $expiry = 0) {
 
