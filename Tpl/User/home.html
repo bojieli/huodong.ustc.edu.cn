@@ -199,7 +199,9 @@ $(function(){
         	<div class="tttt">已加入社团</div>
             <table border="0" cellpadding="0" cellspacing="0" style="margin-top:10px;">
 	    <empty name="clubs">
+	      <if condition="$user_info['uid'] == CURRENT_USER">
 	        <tr align="left" class="bbbhh"><td class="ssttt"><a href="/Club/">你还没有加入任何社团，赶快申请吧！</a></td></tr>
+	      </if>
 	    </empty>
 	    <volist name="clubs" id="club">
             	<tr align="left" valign="middle"  class="bbbhh">
@@ -207,6 +209,8 @@ $(function(){
                 </tr>
 	    </volist>
             </table>
+
+	    <if condition="$user_info['uid'] == CURRENT_USER">
             <div style="width:350px; height:80px;"> &nbsp;</div>
             <div class="tttt">社团加入申请</div>
             <table border="0" cellpadding="0" cellspacing="0" style="margin-top:10px;">
@@ -219,6 +223,7 @@ $(function(){
                 </tr>
 	    </volist>
             </table>
+	    </if>
             
 
         </div><!--societies-->

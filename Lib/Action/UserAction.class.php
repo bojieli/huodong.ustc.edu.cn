@@ -5,12 +5,13 @@ class UserAction extends PublicAction {
 		$uid = is_numeric($_GET['uid']) ? $_GET['uid'] : CURRENT_USER;
 		$user = D("User");
 		$user_info = $user->getInfo($uid);
-		if (empty($user_info[uid])) {
+		if (empty($user_info['uid'])) {
 			$this->error("该用户不存在");
 		}
+		$this->assign('user_info', $user_info);
 		$this->assign('avatar_path', C("AVATAR_PATH"));
-		$this->assign('clubs', D('User')->getClubs($_GET['uid']));
-		$this->assign('applies', D('User')->getApplies($_GET['uid']));
+		$this->assign('clubs', D('User')->getClubs($uid));
+		$this->assign('applies', D('User')->getApplies($uid));
 		$this->display();
 	}
 	
