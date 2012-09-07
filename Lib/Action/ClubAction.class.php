@@ -30,7 +30,7 @@ class ClubAction extends PublicAction {
 			die("Sorry, only the admin of a club can modify the club info page.");
 		$club = M('Club')->find($gid);
 		// strip HTML in fields
-		$fields = ['name_en','slogan','qq_group','contact','shortdesc'];
+		$fields = ['name_en','slogan','found_date','teacher','qq_group','contact','homepage','shortdesc'];
 		foreach ($fields as $field) {
 			$club[$field] = htmlspecialchars($_POST[$field]);
 		}
@@ -58,7 +58,9 @@ class ClubAction extends PublicAction {
 		}
 
 		M('Club')->where(['gid'=>$gid])->save($club);
-		echo "<script>window.location='/Club/intro?gid=".$gid."'</script>";
+
+		$this->assign('jumpUrl','/Club/intro?gid='.$gid);
+		$this->success("修改成功！");
 	}
 
 	public function addOwner() {
@@ -93,7 +95,7 @@ class ClubAction extends PublicAction {
 		if (!(D('User')->isSchoolAdmin(CURRENT_USER)))
 			$this->error("没有权限！");
 
-		$fields = ['name','owner','name_en','slogan','qq_group','contact','shortdesc'];
+		$fields = ['name','owner','name_en','slogan','found_date','teacher','qq_group','contact','homepage','shortdesc'];
 		foreach ($fields as $field) {
 			$club[$field] = htmlspecialchars($_POST[$field]);
 		}
@@ -101,6 +103,7 @@ class ClubAction extends PublicAction {
 			$this->error("必须有社团名称");
 		if (strlen($club['shortdesc']) > 420)
 			$club['shortdesc'] = substr($club['shortdesc'], 0, 420);
+		$club['description'] = $_POST['description'];
 
 		import("ORG.Net.UploadFile");
 		$upload = new UploadFile();

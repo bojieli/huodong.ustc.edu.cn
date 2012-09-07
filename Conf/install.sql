@@ -124,6 +124,9 @@ CREATE TABLE IF NOT EXISTS ustc_club (
 	`slogan` VARCHAR(255),
 	`qq_group` VARCHAR(255),
 	`contact` VARCHAR(255),
+	`homepage` VARCHAR(255),
+	`found_date` VARCHAR(255),
+	`teacher` VARCHAR(255),
 	`logo` VARCHAR(100), -- /upload/logo/filename
 	`shortdesc` TEXT,
 	`description` TEXT,
