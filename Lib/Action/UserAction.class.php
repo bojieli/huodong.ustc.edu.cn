@@ -211,12 +211,12 @@ class UserAction extends PublicAction {
 	}
 
 	private function sendVerifyEmail($info) {
-		SendMail($info['email'], "欢迎注册社团活动信息平台",
+		SendMail($info['email'], "欢迎注册大学海报平台",
 			$info['realname']."你好:\n\n".
-			"请点击下面的链接激活您在社团活动信息平台的帐号（如果下面的地址不能点击，请将其复制到浏览器地址栏中）:\n\n".
-			"http://huodong.ustc.edu.cn/User/registerVerify?uid=".$info['uid']."&token=".md5($info['email'].$info['salt'].$info['register_time'])."\n\n".
+			"请点击下面的链接激活您在大学海报平台的帐号（如果下面的地址不能点击，请将其复制到浏览器地址栏中）:\n\n".
+			"http://".$_SERVER['HTTP_HOST']."/User/registerVerify?uid=".$info['uid']."&token=".md5($info['email'].$info['salt'].$info['register_time'])."\n\n".
 			$info['email'].$info['salt'].$info['register_time'].
-			"社团活动信息平台 http://huodong.ustc.edu.cn/"
+			"大学海报平台 http://".$_SERVER['HTTP_HOST']
 			);
 	}
 
