@@ -20,14 +20,14 @@ class ClubAction extends PublicAction {
 		if ($club['isadmin'])
 			$this->display();
 		else
-			die("Sorry, only the admin of a club can modify the club info page.");
+			$this->error("抱歉，只有社团管理员才能修改社团简介");
 	}
 
 	public function introUpdate() {
 		$gid = $_POST['gid'];
 		$club = $this->getData($gid);
 		if (!$club['isadmin'])
-			die("Sorry, only the admin of a club can modify the club info page.");
+			$this->error("抱歉，只有社团管理员才能修改社团简介");
 		$club = M('Club')->find($gid);
 		// strip HTML in fields
 		$fields = ['name_en','slogan','found_date','teacher','qq_group','contact','homepage','shortdesc'];
@@ -135,9 +135,7 @@ class ClubAction extends PublicAction {
 	}
 
 	public function manage() {
-		if (!is_numeric($_GET['gid']))
-			exit();
-		$gid = $_GET['gid'];
+		$gid = $this->getInputGid();
 		$start = isset($_GET['start']) && is_numeric($_GET['start']) ? $_GET['start'] : 0;
 		$num = isset($_GET['num']) && is_numeric($_GET['num']) ? $_GET['num'] : 20;
 		$club = $this->getData($gid);
@@ -163,9 +161,7 @@ class ClubAction extends PublicAction {
 	}
 
 	public function join() {
-		if (!is_numeric($_GET['gid']))
-			exit();
-		$gid = $_GET['gid'];
+		$gid = $this->getInputGid();
 		if ($this->getMyPriv($gid) == null) {
 			$record = array(
 				'uid' => CURRENT_USER,
@@ -177,14 +173,12 @@ class ClubAction extends PublicAction {
 			$obj->create($record);
 			$obj->add();
 		}
-		echo "<script>window.location='/Club/intro?gid=$gid'</script>";
+		$this->assign('jumpUrl', "/Club/intro?gid=$gid");
+		$this->success("您的加入申请已经提交");
 	}
 
 	public function joinVerify() {
-		if (!is_numeric($_GET['gid']) || !is_numeric($_GET['uid']))
-			exit();
-		$gid = $_GET['gid'];
-		$uid = $_GET['uid'];
+		list($gid, $uid) = $this->getInputGidUid();
 		if (in_array($this->getMyPriv($gid), ['admin','manager'])) {
 			if ($this->getPriv($uid, $gid) == 'inactive') {
 				$record['priv'] = 'member';
@@ -192,27 +186,37 @@ class ClubAction extends PublicAction {
 				M('user_group')->where(['uid'=>$uid, 'gid'=>$gid])->save($record);
 			}
 		}
-		echo "<script>window.location='/Club/manage?gid=$gid'</script>";	
+		$this->assign('jumpUrl', "/Club/manage?gid=$gid");
+		$this->success("已经通过此加入申请");
 	}
 
 	public function joinDeny() {
-		if (!is_numeric($_GET['gid']) || !is_numeric($_GET['uid']))
-			exit();
-		$gid = $_GET['gid'];
-		$uid = $_GET['uid'];
+		list($gid, $uid) = $this->getInputGidUid();
 		if (in_array($this->getMyPriv($gid), ['admin','manager'])) {
 			if ($this->getPriv($uid, $gid) == 'inactive') {
 				M('user_group')->where(['uid'=>$uid, 'gid'=>$gid])->delete();
 			}
 		}
-		echo "<script>window.location='/Club/manage?gid=$gid'</script>";	
+		$this->assign('jumpUrl', "/Club/manage?gid=$gid");
+		$this->success("已经忽略此加入申请");
+	}
+
+	private function getInputGidUid() {
+		if (!is_numeric($_GET['gid']))
+			$this->error("您所查找的社团不存在");
+		if (!is_numeric($_GET['uid']))
+			$this->error("要验证的用户不存在");
+		return array($_GET['gid'], $_GET['uid']);
+	}
+
+	private function getInputGid() {
+		if (!is_numeric($_GET['gid']))
+			$this->error("您所查找的社团不存在");
+		return $_GET['gid'];
 	}
 
 	public function changeTitle() {
-		if (!is_numeric($_GET['gid']) || !is_numeric($_GET['uid']))
-			exit();
-		$gid = $_GET['gid'];
-		$uid = $_GET['uid'];
+		list($gid, $uid) = $this->getInputGidUid();
 		$title = htmlspecialchars($_GET['title']);
 		if (!in_array($_GET['priv'], ['admin', 'manager', 'member', 'inactive'])) {
 			exit();
@@ -227,22 +231,18 @@ class ClubAction extends PublicAction {
 	}
 
 	public function removeMember() {
-		if (!is_numeric($_GET['gid']) || !is_numeric($_GET['uid']))
-			exit();
-		$gid = $_GET['gid'];
-		$uid = $_GET['uid'];
+		list($gid, $uid) = $this->getInputGidUid();
 		if ($this->getMyPriv($gid) == 'admin') {
 			M('user_group')->where(['uid'=>$uid, 'gid'=>$gid])->delete();
 		}
 	}
 
 	public function quit() {
-		if (!is_numeric($_GET['gid']))
-			exit();
-		$gid = $_GET['gid'];
+		$gid = $this->getInputGid();
 		if ($this->getMyPriv($gid) == 'member')
 			M('user_group')->where(['uid'=>CURRENT_USER, 'gid'=>$gid])->delete();
-		echo "<script>window.location='/Club/intro?gid=$gid'</script>";
+		$this->assign('jumpUrl', "/Club/intro?gid=$gid");
+		$this->success("登出成功！");
 	}
 
 	private function getMyPriv($gid) {
