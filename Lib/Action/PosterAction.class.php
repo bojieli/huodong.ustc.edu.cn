@@ -7,21 +7,24 @@ class PosterAction extends PublicAction {
 	}
 
 	public function add() {
-		$gid = is_numeric($_GET['gid']) ? $_GET['gid'] : exit();
+		$gid = $this->getInputGid();
 		if (A('Club')->isManager(CURRENT_USER, $gid)) {
 			$this->assign('gid', $gid);
 			$this->display();
 		} else {
-			die("Only manager and admin can upload posters");
+			$this->assign('jumpUrl', "/");
+			$this->error("抱歉，只有会长和部长级别的会员才能发布海报");
 		}
 	}
 
 	public function insert() {
-		$gid = is_numeric($_POST['gid']) ? $_POST['gid'] : exit();
+		$gid = $this->getInputGid();
 
-		if (!(A('Club')->isManager(CURRENT_USER, $gid)))
-			goto out;
-		
+		if (!(A('Club')->isManager(CURRENT_USER, $gid))) {
+			$this->assign('jumpUrl', "/");
+			$this->error("抱歉，只有会长和部长级别的会员才能发布海报");
+		}
+
 		import("ORG.Net.UploadFile");
 		$upload = new UploadFile();
 		$upload->maxSize = 8 * 1024 * 1024;
@@ -55,29 +58,29 @@ class PosterAction extends PublicAction {
 		$obj->create($poster);
 		$obj->add();
 
-	out:	echo "<script>window.location='/';</script>";
+		$this->assign('jumpUrl', "/");
+		$this->success("海报发布成功！");
 	}
 
 	public function modify() {
-		if (!is_numeric($_GET['aid']))
-			exit();
-		$aid = $_GET['aid'];
-		$poster = M('Poster')->find($aid);
+		$aid = $this->getInputAid();
+		$poster = $this->getPoster($aid);
 		if (A('Club')->isManager(CURRENT_USER, $poster['gid'])) {
 			$this->assign('poster', $poster);
 			$this->display();
 		} else {
-			die("Only manager and admin can modify posters");
+			$this->assign('jumpUrl', "/");
+			$this->error("抱歉，只有会长和部长级别的会员才能修改海报");
 		}
 	}
 
 	public function update() {
-		if (!is_numeric($_POST['aid']))
-			exit();
-		$aid = $_POST['aid'];
-		$poster = M('Poster')->find($aid);
-		if (!(A('Club')->isManager(CURRENT_USER, $poster['gid'])))
-			goto out;
+		$aid = $this->getInputAid();
+		$poster = $this->getPoster($aid);
+		if (!(A('Club')->isManager(CURRENT_USER, $poster['gid']))) {
+			$this->assign('jumpUrl', "/");
+			$this->error("抱歉，只有会长和部长级别的会员才能修改海报");
+		}
 
 		import("ORG.Net.UploadFile");
 		$upload = new UploadFile();
@@ -103,18 +106,21 @@ class PosterAction extends PublicAction {
 		}
 		M('Poster')->where(['aid'=>$aid])->save($poster);
 
-	out:	echo "<script>window.location='/';</script>";
+		$this->assign('jumpUrl', "/Poster/singlePage?aid=$aid");
+		$this->success("海报修改成功！");
 	}
 
 	public function delete() {
-		if (!is_numeric($_GET['aid']))
-			exit();
-		$aid = $_GET['aid'];
-		$poster = M('Poster')->find($aid);
+		$aid = $this->getInputAid();
+		$poster = $this->getPoster($aid);
 		if (A('Club')->isManager(CURRENT_USER, $poster['gid'])) {
 			M('Poster')->where(['aid'=>$aid])->delete();
+			$this->assign('jumpUrl', "/");
+			$this->success("海报删除成功！");
+		} else {
+			$this->assign('jumpUrl', "/");
+			$this->error("抱歉，只有会长和部长级别的会员才能删除海报");
 		}
-		echo "<script>window.location='/';</script>";
 	}
 
 	private function parseInput() {
@@ -171,10 +177,7 @@ class PosterAction extends PublicAction {
 	}
 
 	public function loadComments() {
-		$aid = is_numeric($_GET['aid']) ? $_GET['aid'] : exit();
-		$poster = M('Poster')->find($aid);
-		if (empty($poster))
-			exit();
+		$aid = $this->getInputAid();
 		$poster['clicks']++;
 		M('Poster')->where(['aid'=>$aid])->save($poster);
 		$poster = D('Poster')->getPosterById($aid);
@@ -196,12 +199,12 @@ class PosterAction extends PublicAction {
 	}
 
 	public function reply() {
-		$aid = is_numeric($_POST['aid']) ? $_POST['aid'] : exit();
-		if (CURRENT_USER == 0)
-			die('Sorry, only login users are allowed to post.');
-		$poster = M('Poster')->find($aid);
-		if (empty($poster))
-			exit();
+		$aid = $this->getInputAid();
+		if (CURRENT_USER == 0) {
+			$this->assign('jumpUrl', "/User/login");
+			$this->error("抱歉，您需要登录后才能评论。现在跳转到登录页面……");
+		}
+		$poster = $this->getPoster($aid);
 		$poster['comment_count']++;
 		M('Poster')->where(['aid'=>$aid])->save($poster);
 		
@@ -217,10 +220,8 @@ class PosterAction extends PublicAction {
 	}
 
 	public function like() {
-		$aid = is_numeric($_GET['aid']) ? $_GET['aid'] : exit();
-		$poster = M('Poster')->find($aid);
-		if (empty($poster))
-			exit();
+		$aid = $this->getInputAid();
+		$poster = $this->getPoster($aid);
 		$poster['likes']++;
 		M('Poster')->where(['aid'=>$aid])->save($poster);
 	}
@@ -228,6 +229,27 @@ class PosterAction extends PublicAction {
 	public function singlePage() {
 		$m = D('Poster');
 		$this->loadComments();
+	}
+
+	private function getInputGid() {
+		if (!is_numeric($_GET['gid'])) {
+			$this->error("您所查找的社团不存在");
+		}
+		return $_GET['gid'];
+	}
+
+	private function getInputUid() {
+		if (!is_numeric($_GET['uid'])) {
+			$this->error("您所查找的用户不存在");
+		}
+		return $_GET['uid'];
+	}
+
+	private function getPoster($aid) {
+		$poster = M('Poster')->find($aid);
+		if (empty($poster))
+			$this->error("您所查找的海报不存在");
+		return $poster;
 	}
 }
 ?>
