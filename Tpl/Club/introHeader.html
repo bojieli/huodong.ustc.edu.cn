@@ -1,13 +1,21 @@
 	<div class="sttitle2">{$club.school.name}</div>
 	<div class="sttitle">{$club.name}</div>
     <div class="sttitle3">
+    <nonempty name="club.name_en">
     <p>{$club.name_en}
+    </nonempty>
+    <nonempty name="club.slogan">
     <p>{$club.slogan}
-    <p>QQ群/论坛：{$club.qq_group}
+    </nonempty>
+    <nonempty name="club.qq_group">
+    <p>QQ群：{$club.qq_group}
+    </nonempty>
+    <nonempty name="club.homepage">
     <p>社团主页：{$club.homepage}
-    <p>公共邮箱：{$club.contact}
-    <p>成立日期：{$club.found_date}
-    <p>指导老师：{$club.teacher}
+    </nonempty>
+    <nonempty name="club.contact">
+    <p>社团联系方式：{$club.contact}
+    </nonempty>
     </div>
     <div class="sttitle4">网上注册会员：{$club.memberCount} 人<br/>会长：{$club.admin.realname} （{$club.admin.grade}级 {$club.admin.dept}）
         <div class="sttitle5">
