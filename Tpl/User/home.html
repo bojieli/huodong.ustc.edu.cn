@@ -201,6 +201,8 @@ $(function(){
 	    <empty name="clubs">
 	      <if condition="$user_info['uid'] == CURRENT_USER">
 	        <tr align="left" class="bbbhh"><td class="ssttt"><a href="/Club/">你还没有加入任何社团，赶快申请吧！</a></td></tr>
+	      <else />
+	        <tr align="left" class="bbbhh"><td class="ssttt">TA还没有加入任何社团</td></tr>
 	      </if>
 	    </empty>
 	    <volist name="clubs" id="club">
