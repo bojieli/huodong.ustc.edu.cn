@@ -33,7 +33,7 @@ class PosterAction extends PublicAction {
 		$upload->thumb = true;
 		$upload->thumbPath = './upload/poster/thumb/';
 		$upload->thumbMaxWidth = 250;
-		$upload->thumbMaxHeight = 400;
+		$upload->thumbMaxHeight = 1000;
 
 		if (!$upload->upload()) {
 			$this->error($upload->getErrorMsg());
@@ -90,7 +90,7 @@ class PosterAction extends PublicAction {
 		$upload->thumb = true;
 		$upload->thumbPath = './upload/poster/thumb/';
 		$upload->thumbMaxWidth = 250;
-		$upload->thumbMaxHeight = 400;
+		$upload->thumbMaxHeight = 1000;
 
 		if ($upload->upload()) { // reupload poster
 			$info = $upload->getUploadFileInfo();

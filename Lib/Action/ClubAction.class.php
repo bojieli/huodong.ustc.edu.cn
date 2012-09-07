@@ -50,7 +50,7 @@ class ClubAction extends PublicAction {
 		$upload->thumb = true;
 		$upload->thumbPath = './upload/clublogo/thumb/';
 		$upload->thumbMaxWidth = 250;
-		$upload->thumbMaxHeight = 400;
+		$upload->thumbMaxHeight = 1000;
 
 		if ($upload->upload()) {
 			$info = $upload->getUploadFileInfo();
@@ -116,7 +116,7 @@ class ClubAction extends PublicAction {
 		$upload->thumb = true;
 		$upload->thumbPath = './upload/clublogo/thumb/';
 		$upload->thumbMaxWidth = 250;
-		$upload->thumbMaxHeight = 400;
+		$upload->thumbMaxHeight = 1000;
 
 		if ($upload->upload()) {
 			$info = $upload->getUploadFileInfo();
