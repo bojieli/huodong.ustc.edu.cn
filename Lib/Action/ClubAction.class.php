@@ -178,34 +178,39 @@ class ClubAction extends PublicAction {
 	}
 
 	public function joinVerify() {
+		$this->assign('jumpUrl', "/Club/manage?gid=$gid");
 		list($gid, $uid) = $this->getInputGidUid();
 		if ($this->isManager($gid)) {
-			if ($this->getPriv($uid, $gid) == 'inactive') {
+			if ($this->getPriv($gid, $uid) == 'inactive') {
 				$record['priv'] = 'member';
 				$record['title'] = '会员';
 				M('user_group')->where(['uid'=>$uid, 'gid'=>$gid])->save($record);
-			}
-		}
-		$this->assign('jumpUrl', "/Club/manage?gid=$gid");
-		$this->success("已经通过此加入申请");
+				$this->success("已经通过此加入申请");
+			} else
+				$this->error("此用户不处于待审核状态");
+		} else
+			$this->error("只有会长和部长才有权限审核会员");
 	}
 
 	public function joinDeny() {
+		$this->assign('jumpUrl', "/Club/manage?gid=$gid");
 		list($gid, $uid) = $this->getInputGidUid();
 		if ($this->isManager($gid)) {
-			if ($this->getPriv($uid, $gid) == 'inactive') {
+			if ($this->getPriv($gid, $uid) == 'inactive') {
 				M('user_group')->where(['uid'=>$uid, 'gid'=>$gid])->delete();
-			}
-		}
-		$this->assign('jumpUrl', "/Club/manage?gid=$gid");
-		$this->success("已经忽略此加入申请");
+				$this->success("已经忽略此加入申请");
+			} else
+				$this->error("此用户不处于待审核状态");
+		} else
+			$this->error("只有会长和部长才有权限审核会员");
 	}
 
+	// should be only called in ajax
 	public function changeTitle() {
 		list($gid, $uid) = $this->getInputGidUid();
 		$title = htmlspecialchars($_GET['title']);
 		if (!in_array($_GET['priv'], ['admin', 'manager', 'member', 'inactive'])) {
-			exit();
+			die("Invalid privilege");
 		}
 		$priv = $_GET['priv'];
 		
@@ -213,14 +218,18 @@ class ClubAction extends PublicAction {
 			$record['priv'] = $priv;
 			$record['title'] = $title;
 			M('user_group')->where(['uid'=>$uid, 'gid'=>$gid])->save($record);
-		}
+			die("OK");
+		} else
+			die("Not enough privilege");
 	}
 
 	public function removeMember() {
 		list($gid, $uid) = $this->getInputGidUid();
 		if ($this->isAdmin($gid)) {
 			M('user_group')->where(['uid'=>$uid, 'gid'=>$gid])->delete();
-		}
+			die("OK");
+		} else
+			die("Not enough privilege");
 	}
 
 	public function quit() {
@@ -236,15 +245,15 @@ class ClubAction extends PublicAction {
 	}
 
 	public function isAdmin($gid, $uid = CURRENT_USER) {
-		return D('User')->isSchoolAdmin($uid) || $this->getPriv($uid,$gid) == 'admin';
+		return D('User')->isSchoolAdmin($uid) || $this->getPriv($gid,$uid) == 'admin';
 	}
 
 	public function isManager($gid, $uid = CURRENT_USER) {
-		return D('User')->isSchoolAdmin($uid) || in_array($this->getPriv($uid,$gid), ['admin','manager']);
+		return D('User')->isSchoolAdmin($uid) || in_array($this->getPriv($gid,$uid), ['admin','manager']);
 	}
 
 	public function inClub($gid, $uid = CURRENT_USER) {
-		return $this->getPriv($uid, $gid) != NULL && $this->getPriv($uid, $gid) != 'inactive';
+		return $this->getPriv($gid, $uid) != NULL && $this->getPriv($gid, $uid) != 'inactive';
 	}
 
 	private function getData($gid, $join = false) {
