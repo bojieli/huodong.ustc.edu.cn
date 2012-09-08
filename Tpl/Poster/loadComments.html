@@ -2,7 +2,9 @@
 
 <div class="hdmeitou">
   <span>{$poster.school}--&gt;{$poster.name}</span>
+  <empty name="singlePage">
   <div class="closehb">X</div>
+  </empty>
 </div>
   <div class="photocome">
      <img src="{$poster.poster}" alt="{$poster.name}" title="{$poster.name}" /> 
@@ -19,7 +21,7 @@ $(".like").live('click', function(event){
 	dom.attr("clicked", true);
 	dom.html(Number(dom.html()) + 5);
 	$.ajax({
-		url: "Poster/like",
+		url: "/Poster/like",
 		data: {aid: event.target.id.substr(5)}
 	});
 });
