@@ -27,7 +27,7 @@ class PosterAction extends PublicAction {
 
 		import("ORG.Net.UploadFile");
 		$upload = new UploadFile();
-		$upload->maxSize = 8 * 1024 * 1024;
+		$upload->maxSize = 2 * 1024 * 1024;
 		$upload->allowExts = ['jpg', 'gif', 'png', 'jpeg'];
 		$upload->savePath = './upload/poster/';
 		$upload->saveRule = 'uniqid';
@@ -84,7 +84,7 @@ class PosterAction extends PublicAction {
 
 		import("ORG.Net.UploadFile");
 		$upload = new UploadFile();
-		$upload->maxSize = 8 * 1024 * 1024;
+		$upload->maxSize = 2 * 1024 * 1024;
 		$upload->allowExts = ['jpg', 'gif', 'png', 'jpeg'];
 		$upload->savePath = './upload/poster/';
 		$upload->saveRule = 'uniqid';
