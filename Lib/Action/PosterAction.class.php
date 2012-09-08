@@ -197,6 +197,10 @@ class PosterAction extends PublicAction {
 		'</div></div></li>';
 	}
 
+	public function reloadComments() {
+		$this->loadComments();
+	}
+
 	public function loadComments() {
 		$aid = $this->getInputAid();
 		$poster['clicks']++;

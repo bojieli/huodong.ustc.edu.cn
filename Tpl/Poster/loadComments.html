@@ -49,12 +49,22 @@ $(".like").live('click', function(event){
           <div class="add_reply">
 	  <if condition="CURRENT_USER != 0">
 	  <script>
+	    function reload(aid) {
+	    	$.ajax({
+			type: "GET",
+			url: "/Poster/reloadComments",
+			data: {aid: aid}
+		}).done(function(obj) {
+			$('#huifulist').html(obj);
+		});
+	    }
 	    function reply(aid) {
 	    	$.ajax({
 			type: "POST",
 			url: "/Poster/reply",
 			data: {aid: aid, content: $('#content-'+aid).val()}
 	    	}).done(function(obj) {
+			reload(aid);			
 		});
 	    }
 	    function gotoReply(aid, msg) {
@@ -88,7 +98,7 @@ $(".like").live('click', function(event){
 	  <p class="hferror">请 <a href="/User/login">登录</a> 或 <a href="/User/register">注册</a> 后才能回复</p>
 	  </if>
 	  </div>
-          <div class="huifulist">
+          <div class="huifulist" id="huifulist">
 
             <volist name="comments" id="comment">
             <div class="hflistcell">
