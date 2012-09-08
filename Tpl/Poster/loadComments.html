@@ -42,6 +42,7 @@ $(".like").live('click', function(event){
 
     <div class="post_reply">
           <div class="add_reply">
+	  <if condition="CURRENT_USER != 0">
 	  <script>
 	    function reply(aid) {
 	    	$.ajax({
@@ -57,7 +58,10 @@ $(".like").live('click', function(event){
                 <textarea id="content-{$poster.aid}" name="content" autocomplete="none" onclick="if(this.value == '回复。。。') this.value = '';">回复。。。</textarea>
             </form>
             <button class="reply_submit" onclick="reply({$poster.aid});">回复</button>
-          </div>
+          <else />
+	  <p class="dymian">请 <a href="/User/login">登录</a> 或 <a href="/User/register">注册</a> 后才能回复</p>
+	  </if>
+	  </div>
           <div class="huifulist">
 
             <volist name="comments" id="comment">
