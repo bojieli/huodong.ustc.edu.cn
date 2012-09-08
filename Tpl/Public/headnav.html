@@ -5,6 +5,9 @@
       <div class="logo"><a href="/"><span>大学海报</span></a></div>
       <div class="nav"><a href="/"><span <if condition="$here == PosterAction">class="here1"</if>>海报墙</span></a></div>
       <div class="nav"><a href="/Club/"><span <if condition="$here == ClubAction">class="here1"</if>>大学社团</span></a></div>
+      <if condition="!empty($_G[uid])">
+      <div class="nav"><a href="/User/home"><span <if condition="$here == UserAction">class="here1"</if>>管理我的社团</span></a></div>
+      </if>
 
       <div class="login1">
       <if condition="!empty($_G[uid])">
