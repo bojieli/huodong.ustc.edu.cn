@@ -55,7 +55,6 @@ $(".like").live('click', function(event){
 			url: "/Poster/reply",
 			data: {aid: aid, content: $('#content-'+aid).val()}
 	    	}).done(function(obj) {
-			window.location.reload();
 		});
 	    }
 	    function gotoReply(aid, msg) {
