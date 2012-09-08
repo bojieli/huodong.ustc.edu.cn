@@ -166,7 +166,6 @@ class PosterAction extends PublicAction {
 
 	private function poster2html($poster) {
 		return '<li class="hide"><div class="celldiv">'.
-		'<p class="heading" style="text-align:center">['.$poster->clubName().']&nbsp;'.$poster->name().'</p>'.
 		($poster->thumbUrl() ? '<img class="haibao" height="'.$poster->thumbHeight().'" id="poster-'.$poster->id().'" src="'.$poster->thumbUrl().'" onclick="loadComments('.$poster->id().')" />' : '').
 		'<div class="detail"><div class="hot">热度：<span class="rate">'.$poster->getRate().'</span>'.
 		'<span class="ding" id="ding-'.$poster->id().'">顶</span></div>'.
