@@ -245,6 +245,13 @@ class PosterAction extends PublicAction {
 		return $_GET['uid'];
 	}
 
+	private function getInputAid() {
+		if (!is_numeric($_GET['aid'])) {
+			$this->error("您所查找的海报不存在");
+		}
+		return $_GET['aid'];
+	}
+
 	private function getPoster($aid) {
 		$poster = M('Poster')->find($aid);
 		if (empty($poster))
