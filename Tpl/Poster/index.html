@@ -36,7 +36,7 @@
 	
 	function loadComments(aid) {
 		$.ajax({
-			url: "Poster/loadComments",
+			url: "/Poster/loadComments",
 			data: {aid: aid}
 		}).done(function( html ){
 			$("#outhaibao").html(html);
