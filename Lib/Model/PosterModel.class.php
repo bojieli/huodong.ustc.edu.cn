@@ -22,7 +22,7 @@ class PosterModel extends Model {
 	}
 
 	public function humanDate() {
-		$str = date("n月j日 H:i", $this->start_time);
+		$str = date("n月j日H:i", $this->start_time);
 		$str .= ' - ';
 		// if in the same day
 		if (date("Y-m-d", $this->start_time) == date("Y-m-d", $this->end_time))
