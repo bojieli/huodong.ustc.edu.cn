@@ -316,7 +316,7 @@ class ClubAction extends PublicAction {
 		if ($club->logoThumbUrl() != '')
 			return '<a href="/Club/intro?gid='.$club->gid().'">'.
 			'<img id="club-'.$club->gid().'" '.
-			'class="haibao" '.
+			'class="clublogo" '.
 			'height="'.$club->logoThumbHeight().'" '.
 			'src="'.$club->logoThumbUrl().' "'.
 			'/></a>';
