@@ -175,6 +175,10 @@ class UserAction extends PublicAction {
 		{
 			$this->error("真实姓名不能为空");
 		}
+		if (empty($_POST[education]))
+		{
+			$this->error("学历不能为空");
+		}
 		if($User->is_loginname_existed($_POST['email']))
 		{
 			$this->error("该邮件已注册");
