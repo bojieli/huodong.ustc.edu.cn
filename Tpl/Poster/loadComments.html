@@ -1,4 +1,4 @@
-<script src="/static/jquery-1.6.4.min.js" type="text/javascript"></script>
+<script src="/static/jquery-1.7.1.js" type="text/javascript"></script>
 
 <div class="hdmeitou">
   <span>{$poster.school}--&gt;{$poster.name}</span>
@@ -73,7 +73,7 @@ $(".like").live('click', function(event){
                     	<div class="hfcontent">
                         	<a href="{$comment.author.homepage}" class="<?=$comment['author']['gender'] ? 'boy' : 'girl' ?>name" target="_blank">{$comment.author.realname}</a>
                             <span>{$comment.content}</span> 
-                            <a class="hfpointer" onclick="$('#content').val('回复{$comment.author.realname}: ');">回复</a>                                   
+                            <a class="hfpointer" onclick="$('#content-'+{$poster.aid}).val('回复{$comment.author.realname}: ');">回复</a>                                   
                         </div>
                     </td>
                     <td width="150" align="center" valign="top"><!--<a href="" class="hfpointer">回复</a>--><br/><span class="time11">{$comment.time|date="Y-m-d H:i:s",###}</span></td>
