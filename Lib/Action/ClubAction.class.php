@@ -283,7 +283,7 @@ class ClubAction extends PublicAction {
 		$club['mypriv'] = M()->result_first("SELECT priv FROM ustc_user_group WHERE `uid`='".CURRENT_USER."' AND gid='$gid'");
 		$club['isadmin'] = ($club['mypriv'] == 'admin' || D('User')->isSchoolAdmin(CURRENT_USER));
 		$club['ismanager'] = ($club['isadmin'] || $club['mypriv'] == 'manager');
-		$club['isin'] = !empty($club['mypriv']);
+		$club['isin'] = in_array($club['mypriv'], ['admin','manager','member']);
 		$club['memberCount'] = M('user_group')->where(['gid'=>$gid])->count();
 		return $club;
 	}
