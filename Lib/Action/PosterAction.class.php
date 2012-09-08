@@ -39,7 +39,7 @@ class PosterAction extends PublicAction {
 		$upload->thumbMaxHeight = 1000;
 
 		if (!$upload->upload()) {
-			$this->error($upload->getErrorMsg());
+			$this->error("您必须上传海报图片。请注意图片格式和最大图片大小的限制。");
 		} else {
 			$info = $upload->getUploadFileInfo();
 		}
