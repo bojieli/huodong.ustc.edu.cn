@@ -212,7 +212,8 @@ class UserAction extends PublicAction {
 
 		$this->sendVerifyEmail($info);
 
-                $this->assign('jumpUrl','/User/login');
+                $this->assign('jumpUrl', '/User/login');
+		$this->assign('waitSecond', 60);
 		$this->success('注册成功，已经向 '.$_POST['email'].' 发送一封激活信，请点击激活信中的链接以完成注册过程。');
 	}
 
