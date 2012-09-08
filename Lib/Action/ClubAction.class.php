@@ -178,8 +178,8 @@ class ClubAction extends PublicAction {
 	}
 
 	public function joinVerify() {
-		$this->assign('jumpUrl', "/Club/manage?gid=$gid");
 		list($gid, $uid) = $this->getInputGidUid();
+		$this->assign('jumpUrl', "/Club/manage?gid=$gid");
 		if ($this->isManager($gid)) {
 			if ($this->getPriv($gid, $uid) == 'inactive') {
 				$record['priv'] = 'member';
@@ -193,8 +193,8 @@ class ClubAction extends PublicAction {
 	}
 
 	public function joinDeny() {
-		$this->assign('jumpUrl', "/Club/manage?gid=$gid");
 		list($gid, $uid) = $this->getInputGidUid();
+		$this->assign('jumpUrl', "/Club/manage?gid=$gid");
 		if ($this->isManager($gid)) {
 			if ($this->getPriv($gid, $uid) == 'inactive') {
 				M('user_group')->where(['uid'=>$uid, 'gid'=>$gid])->delete();
