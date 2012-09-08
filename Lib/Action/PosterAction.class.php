@@ -10,6 +10,10 @@ class PosterAction extends PublicAction {
 		$gid = $this->getInputGid();
 		if (A('Club')->isManager($gid)) {
 			$this->assign('gid', $gid);
+			// init timestamp
+			// round to 5 minutes
+			$poster['start_time'] = $poster['end_time'] = floor(time() / 300) * 300;
+			$this->assign('poster', $poster);
 			$this->display();
 		} else {
 			$this->assign('jumpUrl', "/");
@@ -49,10 +53,14 @@ class PosterAction extends PublicAction {
 		$poster['author'] = CURRENT_USER;
 		$poster['publish_time'] = time();
 
-		$fields = ['name','start_time','end_time','place','description'];
+		$fields = ['name','place','description'];
 		foreach ($fields as $field) {
 			$poster[$field] = htmlspecialchars($_POST[$field]);
 		}
+		$poster['start_time'] = $this->parseTime($_POST['start_date'], $_POST['start_hour'], $_POST['start_minute']);
+		$poster['end_time'] = $this->parseTime($_POST['end_date'], $_POST['end_hour'], $_POST['end_minute']);
+		if ($poster['start_time'] >= $poster['end_time'])
+			$this->error("开始时间必须早于结束时间，请返回检查");
 
 		$obj = M('Poster');
 		$obj->create($poster);
@@ -100,14 +108,28 @@ class PosterAction extends PublicAction {
 			$poster['poster'] = $info[0]["savename"];
 		}
 
-		$fields = ['name','start_time','end_time','place','description'];
+		$fields = ['name','place','description'];
 		foreach ($fields as $field) {
 			$poster[$field] = htmlspecialchars($_POST[$field]);
 		}
+
+		$poster['start_time'] = $this->parseTime($_POST['start_date'], $_POST['start_hour'], $_POST['start_minute']);
+		$poster['end_time'] = $this->parseTime($_POST['end_date'], $_POST['end_hour'], $_POST['end_minute']);
+		if ($poster['start_time'] >= $poster['end_time'])
+			$this->error("开始时间必须早于结束时间，请返回检查");
+
 		M('Poster')->where(['aid'=>$aid])->save($poster);
 
 		$this->assign('jumpUrl', "/Poster/singlePage?aid=$aid");
 		$this->success("海报修改成功！");
+	}
+
+	private function parseTime($date, $hour = 0, $minute = 0, $second = 0) {
+		$dates = explode('-', $date);
+		$year = $dates[0];
+		$month = $dates[1];
+		$day = $dates[2];
+		return mktime($hour, $minute, $second, $month, $day, $year);
 	}
 
 	public function delete() {

@@ -7,13 +7,44 @@
     <div class="control-group">
       <label class="control-label" for="start_time">开始时间</label>
       <div class="controls">
-        <input type="text" class="input-large" id="start_time" name="start_time" value="{$poster.start_time}" onKeyUp="if(this.value=='') $(this).parent().parent().addClass('error'); else $(this).parent().parent().removeClass('error');">
+        <script src="/static/bootstrap-datepicker.js"></script>
+	<link href="/static/datepicker.css" rel="stylesheet" />
+        <script>
+	$(function(){
+		$('.datepicker').datepicker({format: 'yyyy-mm-dd'});
+	});
+	</script>
+        <div class="input-append date" data-date="{$poster.start_time|date='Y-m-d',###}" data-date-format="yyyy-mm-dd">
+          <input class="datepicker input-small" id="start_date" name="start_date" type="text" value="{$poster.start_time|date='Y-m-d',###}" />
+        </div>
+	<select name="start_hour" class="span1">
+	<?php for ($hour = 0; $hour < 24; $hour++) { ?>
+	  <option value="{$hour}" <if condition="$hour == date('H',$poster['start_time'])">selected="selected"</if>>{$hour}点</option>
+	<?php } ?>
+	</select>
+	<select name="start_minute" class="span1">
+	<?php for ($minute = 0; $minute < 60; $minute+=5) { ?>
+	  <option value="{$minute}" <if condition="$minute == date('i',$poster['start_time'])">selected="selected"</if>>{$minute}分</option>
+	<?php } ?>
+	</select>
       </div>
     </div>
     <div class="control-group">
       <label class="control-label" for="end_time">结束时间</label>
       <div class="controls">
-        <input type="text" class="input-large" id="end_time" name="end_time" value="{$poster.end_time}" onKeyUp="if(this.value=='') $(this).parent().parent().addClass('error'); else $(this).parent().parent().removeClass('error');">
+        <div class="input-append date" data-date="{$poster.end_time|date='Y-m-d',###}" data-date-format="yyyy-mm-dd">
+          <input class="datepicker input-small" id="end_date" name="end_date" type="text" value="{$poster.end_time|date='Y-m-d',###}" />
+        </div>
+	<select name="end_hour" class="span1">
+	<?php for ($hour = 0; $hour < 24; $hour++) { ?>
+	  <option value="{$hour}" <if condition="$hour == date('H',$poster['end_time'])">selected="selected"</if>>{$hour}点</option>
+	<?php } ?>
+	</select>
+	<select name="end_minute" class="span1">
+	<?php for ($minute = 0; $minute < 60; $minute+=5) { ?>
+	  <option value="{$minute}" <if condition="$minute == date('i',$poster['end_time'])">selected="selected"</if>>{$minute}分</option>
+	<?php } ?>
+	</select>
       </div>
     </div>
     <div class="control-group">
