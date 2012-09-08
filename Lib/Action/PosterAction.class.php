@@ -232,24 +232,24 @@ class PosterAction extends PublicAction {
 	}
 
 	private function getInputGid() {
-		if (!is_numeric($_GET['gid'])) {
+		if (!is_numeric($_REQUEST['gid'])) {
 			$this->error("您所查找的社团不存在");
 		}
-		return $_GET['gid'];
+		return $_REQUEST['gid'];
 	}
 
 	private function getInputUid() {
-		if (!is_numeric($_GET['uid'])) {
+		if (!is_numeric($_REQUEST['uid'])) {
 			$this->error("您所查找的用户不存在");
 		}
-		return $_GET['uid'];
+		return $_REQUEST['uid'];
 	}
 
 	private function getInputAid() {
-		if (!is_numeric($_GET['aid'])) {
+		if (!is_numeric($_REQUEST['aid'])) {
 			$this->error("您所查找的海报不存在");
 		}
-		return $_GET['aid'];
+		return $_REQUEST['aid'];
 	}
 
 	private function getPoster($aid) {

@@ -201,20 +201,6 @@ class ClubAction extends PublicAction {
 		$this->success("已经忽略此加入申请");
 	}
 
-	private function getInputGidUid() {
-		if (!is_numeric($_GET['gid']))
-			$this->error("您所查找的社团不存在");
-		if (!is_numeric($_GET['uid']))
-			$this->error("要验证的用户不存在");
-		return array($_GET['gid'], $_GET['uid']);
-	}
-
-	private function getInputGid() {
-		if (!is_numeric($_GET['gid']))
-			$this->error("您所查找的社团不存在");
-		return $_GET['gid'];
-	}
-
 	public function changeTitle() {
 		list($gid, $uid) = $this->getInputGidUid();
 		$title = htmlspecialchars($_GET['title']);
@@ -363,5 +349,19 @@ class ClubAction extends PublicAction {
 		}
 		$str .= '</span>';
 		return $str;
+	}
+
+	private function getInputGidUid() {
+		if (!is_numeric($_REQUEST['gid']))
+			$this->error("您所查找的社团不存在");
+		if (!is_numeric($_REQUEST['uid']))
+			$this->error("要验证的用户不存在");
+		return array($_REQUEST['gid'], $_REQUEST['uid']);
+	}
+
+	private function getInputGid() {
+		if (!is_numeric($_REQUEST['gid']))
+			$this->error("您所查找的社团不存在");
+		return $_REQUEST['gid'];
 	}
 }
