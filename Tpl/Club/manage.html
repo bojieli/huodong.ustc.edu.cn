@@ -105,6 +105,13 @@ $showPager = function() use($club) {
                 	</select>
                     </div>
 		    </notempty>
+
+		    <notempty name="club.isSchoolAdmin">
+		    <div class="stsetowner">
+		    <a href="/Club/addOwnerSubmit?gid={$club.gid}&owner={$member.uid}">设为会长</a>
+		    </div>
+		    </notempty>
+
 		    </div>
                     <div class="stcyxx"><span class="<?=$member['gender'] ? 'boy' : 'girl' ?>name">{$member.realname}</span>：<br/>
 		    {$member.dept} {$member.grade}级 {$member.education}<br/>

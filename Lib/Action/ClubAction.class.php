@@ -71,20 +71,20 @@ class ClubAction extends PublicAction {
 		if (!(D('User')->isSchoolAdmin(CURRENT_USER)))
 			$this->error("没有权限！");
 
-		$club['owner'] = $_POST['owner'];
-		M('Club')->where(array('gid'=>$_POST['gid']))->save($club);
+		$club['owner'] = $_REQUEST['owner'];
+		M('Club')->where(array('gid'=>$_REQUEST['gid']))->save($club);
 
-		M('user_group')->where(array('gid'=>$_POST['gid'], 'uid'=>$_POST['owner']))->delete();
+		M('user_group')->where(array('gid'=>$_REQUEST['gid'], 'uid'=>$_REQUEST['owner']))->delete();
 		
-		$record['gid'] = $_POST['gid'];
-		$record['uid'] = $_POST['owner'];
+		$record['gid'] = $_REQUEST['gid'];
+		$record['uid'] = $_REQUEST['owner'];
 		$record['priv'] = 'admin';
 		$record['title'] = '会长';
 		$row = M('user_group');
 		$row->create($record);
 		$row->add();
 
-		$this->success("添加成功！");
+		$this->success("设置会长成功！");
 	}
 
 	public function introAdd() {
@@ -285,7 +285,8 @@ class ClubAction extends PublicAction {
 		}
 
 		$club['mypriv'] = M()->result_first("SELECT priv FROM ustc_user_group WHERE `uid`='".CURRENT_USER."' AND gid='$gid'");
-		$club['isadmin'] = ($club['mypriv'] == 'admin' || D('User')->isSchoolAdmin(CURRENT_USER));
+		$club['isSchoolAdmin'] = D('User')->isSchoolAdmin(CURRENT_USER);
+		$club['isadmin'] = ($club['isSchoolAdmin'] || $club['mypriv'] == 'admin');
 		$club['ismanager'] = ($club['isadmin'] || $club['mypriv'] == 'manager');
 		$club['isin'] = in_array($club['mypriv'], ['admin','manager','member']);
 		$club['memberCount'] = M('user_group')->where(['gid'=>$gid])->count();
