@@ -161,6 +161,9 @@ class ClubAction extends PublicAction {
 	}
 
 	public function join() {
+		if (CURRENT_USER == 0) {
+			$this->error("您需要注册或登录后才能加入社团");
+		}
 		$gid = $this->getInputGid();
 		if ($this->getPriv($gid) == null) {
 			$record = array(
@@ -172,9 +175,10 @@ class ClubAction extends PublicAction {
 			$obj = M('user_group');
 			$obj->create($record);
 			$obj->add();
-		}
-		$this->assign('jumpUrl', "/Club/intro?gid=$gid");
-		$this->success("您的加入申请已经提交");
+			$this->assign('jumpUrl', "/Club/intro?gid=$gid");
+			$this->success("您的加入申请已经提交");
+		} else
+			$this->error("您已经是这个社团的成员了，请勿重复提交申请");
 	}
 
 	public function joinVerify() {
