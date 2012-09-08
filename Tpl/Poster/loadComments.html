@@ -27,9 +27,10 @@ $(".like").live('click', function(event){
 </script>
 	    热度：<span class="rate">{$poster.rate}</span> <span class="like" id="ding-{$poster.aid}">顶</span>
 	    <span class="dymian"><a target="_blank" href="/Club/intro?gid={$poster.gid}">查看 {$poster.clubName} 的简介</a></span>
-	    <span class="dymian"><a target="_blank" href="/Poster/singlePage?aid={$poster.aid}">在新窗口内打开</a></span>
+	    <span class="dymian"><a target="_blank" href="/Poster/singlePage?aid={$poster.aid}">在单独页面内打开</a></span>
 	    <if condition="$poster['canModify'] == true">
-	    <span class="dymian"><a href="/Poster/modify?aid={$poster.aid}">修改此海报</a></span>
+	    <span class="dymian"><a href="/Poster/modify?aid={$poster.aid}">修改海报</a></span>
+	    <span class="dymian"><a href="/Poster/delete?aid={$poster.aid}" onclick="return confirm('被删除的海报是不可恢复的。您真的要删除此海报吗？');">删除海报</a></span>
             </if>
        </div>
        <div class="fenxiangr" id="fenxiangr">

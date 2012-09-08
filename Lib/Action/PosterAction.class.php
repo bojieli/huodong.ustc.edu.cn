@@ -136,6 +136,7 @@ class PosterAction extends PublicAction {
 		$aid = $this->getInputAid();
 		$poster = $this->getPoster($aid);
 		if (A('Club')->isManager($poster['gid'])) {
+			M('poster_comment')->where(['aid'=>$aid])->delete();
 			M('Poster')->where(['aid'=>$aid])->delete();
 			$this->assign('jumpUrl', "/");
 			$this->success("海报删除成功！");
