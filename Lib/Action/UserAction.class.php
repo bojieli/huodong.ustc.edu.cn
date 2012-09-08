@@ -62,7 +62,11 @@ class UserAction extends PublicAction {
 			cookie('auth', $user->authcode("$setarr[password]\t$setarr[uid]", 'ENCODE'), 3600);
 			cookie('loginuser', $passport['username'], 3600);
 			//dump($_COOKIE);
-			$this->assign('jumpUrl','/User/home?uid='.$passport['uid']);
+
+			if (!empty($_POST['referer']))
+				$this->assign('jumpUrl', $_POST['referer']);
+			else
+				$this->assign('jumpUrl','/User/home?uid='.$passport['uid']);
 			$this->success('登陆成功');
 		}
 		else{
