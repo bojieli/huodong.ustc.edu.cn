@@ -9,7 +9,7 @@ $newconfig = array(
 	'SHOW_PAGE_TRACE' => false,
 	'AVATAR_PATH' => 'upload/avatar/',
 	'COOKIE_PREFIX' => 'hd_',
-	'COOKIE_EXPIRE' => 1800
+	'COOKIE_EXPIRE' => 3600
 );
 $mailconfig = array(
 	'MAIL_ADDRESS' => 'huodong@ustc.edu.cn',
