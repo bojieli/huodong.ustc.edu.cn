@@ -107,8 +107,21 @@ $showPager = function() use($club) {
 		    </notempty>
 		    </div>
                     <div class="stcyxx"><span class="<?=$member['gender'] ? 'boy' : 'girl' ?>name">{$member.realname}</span>：<br/>
-		    {$member.dept} {$member.grade}级<br/>
-		    QQ: {$member.qq} Email: {$member.email}</div>
+		    {$member.dept} {$member.grade}级 {$member.education}<br/>
+
+		    <if condition="$member[priv] == 'admin' || ($member[priv] == 'manager' && $club[isin]) || $club[ismanager]">
+			    <notempty name="member.qq">
+			    QQ: {$member.qq}
+			    </notempty>
+			    <notempty name="member.telephone">
+			    电话: {$member.telephone}
+			    </notempty>
+			    <notempty name="member.email">
+			    Email: {$member.email}
+			    </notempty>
+		    </if>
+		    
+		    </div>
                 </div><!--cell2-->
             </div><!--ctcycell-->
 	    </volist>
