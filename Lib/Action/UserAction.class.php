@@ -142,9 +142,6 @@ class UserAction extends PublicAction {
                 }   
 	}
 
-	public function myClubs() {
-	}
-
 	public function register() {
 		$this->display();
 	}

@@ -140,7 +140,7 @@ class ClubAction extends PublicAction {
 		$num = isset($_GET['num']) && is_numeric($_GET['num']) ? $_GET['num'] : 20;
 		$club = $this->getData($gid);
 		$this->assign('club', $club);
-		if (!in_array($this->getMyPriv($gid), ['admin','manager'])) {
+		if (!$this->isManager($gid)) {
 			$start = 0;
 			$num = 20;
 		}
@@ -162,7 +162,7 @@ class ClubAction extends PublicAction {
 
 	public function join() {
 		$gid = $this->getInputGid();
-		if ($this->getMyPriv($gid) == null) {
+		if ($this->getPriv($gid) == null) {
 			$record = array(
 				'uid' => CURRENT_USER,
 				'gid' => $gid,
@@ -179,7 +179,7 @@ class ClubAction extends PublicAction {
 
 	public function joinVerify() {
 		list($gid, $uid) = $this->getInputGidUid();
-		if (in_array($this->getMyPriv($gid), ['admin','manager'])) {
+		if ($this->isManager($gid)) {
 			if ($this->getPriv($uid, $gid) == 'inactive') {
 				$record['priv'] = 'member';
 				$record['title'] = '会员';
@@ -192,7 +192,7 @@ class ClubAction extends PublicAction {
 
 	public function joinDeny() {
 		list($gid, $uid) = $this->getInputGidUid();
-		if (in_array($this->getMyPriv($gid), ['admin','manager'])) {
+		if ($this->isManager($gid)) {
 			if ($this->getPriv($uid, $gid) == 'inactive') {
 				M('user_group')->where(['uid'=>$uid, 'gid'=>$gid])->delete();
 			}
@@ -209,7 +209,7 @@ class ClubAction extends PublicAction {
 		}
 		$priv = $_GET['priv'];
 		
-		if ($this->getMyPriv($gid) == 'admin') {
+		if ($this->isAdmin($gid)) {
 			$record['priv'] = $priv;
 			$record['title'] = $title;
 			M('user_group')->where(['uid'=>$uid, 'gid'=>$gid])->save($record);
@@ -218,38 +218,32 @@ class ClubAction extends PublicAction {
 
 	public function removeMember() {
 		list($gid, $uid) = $this->getInputGidUid();
-		if ($this->getMyPriv($gid) == 'admin') {
+		if ($this->isAdmin($gid)) {
 			M('user_group')->where(['uid'=>$uid, 'gid'=>$gid])->delete();
 		}
 	}
 
 	public function quit() {
 		$gid = $this->getInputGid();
-		if ($this->getMyPriv($gid) == 'member')
+		if ($this->getPriv($gid) == 'member')
 			M('user_group')->where(['uid'=>CURRENT_USER, 'gid'=>$gid])->delete();
 		$this->assign('jumpUrl', "/Club/intro?gid=$gid");
-		$this->success("登出成功！");
+		$this->success("退出社团成功！");
 	}
 
-	private function getMyPriv($gid) {
-		return $this->getPriv(CURRENT_USER, $gid);
-	}
-
-	private function getPriv($uid, $gid) {
-		if (D('User')->isSchoolAdmin($uid))
-			return true;
+	private function getPriv($gid, $uid = CURRENT_USER) {
 		return M()->result_first("SELECT priv FROM ustc_user_group WHERE `uid`='$uid' AND `gid`='$gid'");
 	}
-	
-	public function isAdmin($uid, $gid) {
-		return $this->getPriv($uid,$gid) == 'admin';
+
+	public function isAdmin($gid, $uid = CURRENT_USER) {
+		return D('User')->isSchoolAdmin($uid) || $this->getPriv($uid,$gid) == 'admin';
 	}
 
-	public function isManager($uid, $gid) {
-		return in_array($this->getPriv($uid,$gid), ['admin','manager']);
+	public function isManager($gid, $uid = CURRENT_USER) {
+		return D('User')->isSchoolAdmin($uid) || in_array($this->getPriv($uid,$gid), ['admin','manager']);
 	}
 
-	public function inClub($uid, $gid) {
+	public function inClub($gid, $uid = CURRENT_USER) {
 		return $this->getPriv($uid, $gid) != NULL && $this->getPriv($uid, $gid) != 'inactive';
 	}
 
@@ -330,7 +324,7 @@ class ClubAction extends PublicAction {
 	}
 
 	private function apply2html($gid) {
-		$priv = $this->getMyPriv($gid);
+		$priv = $this->getPriv($gid);
 		$str = '<span id="apply-'.$gid.'" class="shenqing ';
 		switch ($priv) {
 			case 'admin':

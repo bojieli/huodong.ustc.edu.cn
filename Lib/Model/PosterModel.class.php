@@ -79,6 +79,6 @@ class PosterModel extends Model {
 	}
 
 	public function canModify() {
-		return A('Club')->isManager(CURRENT_USER, $this->gid);
+		return A('Club')->isManager($this->gid);
 	}
 }

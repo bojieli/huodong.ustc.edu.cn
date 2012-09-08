@@ -8,7 +8,7 @@ class PosterAction extends PublicAction {
 
 	public function add() {
 		$gid = $this->getInputGid();
-		if (A('Club')->isManager(CURRENT_USER, $gid)) {
+		if (A('Club')->isManager($gid)) {
 			$this->assign('gid', $gid);
 			$this->display();
 		} else {
@@ -20,7 +20,7 @@ class PosterAction extends PublicAction {
 	public function insert() {
 		$gid = $this->getInputGid();
 
-		if (!(A('Club')->isManager(CURRENT_USER, $gid))) {
+		if (!(A('Club')->isManager($gid))) {
 			$this->assign('jumpUrl', "/");
 			$this->error("抱歉，只有会长和部长级别的会员才能发布海报");
 		}
@@ -65,7 +65,7 @@ class PosterAction extends PublicAction {
 	public function modify() {
 		$aid = $this->getInputAid();
 		$poster = $this->getPoster($aid);
-		if (A('Club')->isManager(CURRENT_USER, $poster['gid'])) {
+		if (A('Club')->isManager($poster['gid'])) {
 			$this->assign('poster', $poster);
 			$this->display();
 		} else {
@@ -77,7 +77,7 @@ class PosterAction extends PublicAction {
 	public function update() {
 		$aid = $this->getInputAid();
 		$poster = $this->getPoster($aid);
-		if (!(A('Club')->isManager(CURRENT_USER, $poster['gid']))) {
+		if (!(A('Club')->isManager($poster['gid']))) {
 			$this->assign('jumpUrl', "/");
 			$this->error("抱歉，只有会长和部长级别的会员才能修改海报");
 		}
@@ -113,7 +113,7 @@ class PosterAction extends PublicAction {
 	public function delete() {
 		$aid = $this->getInputAid();
 		$poster = $this->getPoster($aid);
-		if (A('Club')->isManager(CURRENT_USER, $poster['gid'])) {
+		if (A('Club')->isManager($poster['gid'])) {
 			M('Poster')->where(['aid'=>$aid])->delete();
 			$this->assign('jumpUrl', "/");
 			$this->success("海报删除成功！");
