@@ -53,11 +53,33 @@ $(".like").live('click', function(event){
 			window.location.reload();
 		});
 	    }
+	    function gotoReply(aid, msg) {
+	    	$('#content-'+aid).val(msg);
+		setFocus(document.getElementById('content-'+aid));
+	    }
+	    
+	    function myFocus(sel, start, end) {
+	      if (sel.setSelectionRange) {
+	       sel.focus();
+	       sel.setSelectionRange(start,end);
+	      }
+	      else if (sel.createTextRange) {
+	        var range = sel.createTextRange();
+	        range.collapse(true);
+	        range.moveEnd('character', end);
+	        range.moveStart('character', start);
+	        range.select();
+	      }
+	    }
+	    function setFocus (sel) {
+	      length=sel.value.length;
+	      myFocus(sel, length, length);
+	    }
 	  </script>
-            <form id="replyForm" class="clear_fix">
-                <textarea id="content-{$poster.aid}" name="content" autocomplete="none" onclick="if(this.value == '回复。。。') this.value = '';">回复。。。</textarea>
-            </form>
-            <button class="reply_submit" onclick="reply({$poster.aid});">回复</button>
+          <form id="replyForm" class="clear_fix">
+              <textarea id="content-{$poster.aid}" name="content" autocomplete="none" onclick="if(this.value == '回复。。。') this.value = '';">回复。。。</textarea>
+          </form>
+          <button class="reply_submit" onclick="reply({$poster.aid});">回复</button>
           <else />
 	  <p class="dymian">请 <a href="/User/login">登录</a> 或 <a href="/User/register">注册</a> 后才能回复</p>
 	  </if>
@@ -73,7 +95,7 @@ $(".like").live('click', function(event){
                     	<div class="hfcontent">
                         	<a href="{$comment.author.homepage}" class="<?=$comment['author']['gender'] ? 'boy' : 'girl' ?>name" target="_blank">{$comment.author.realname}</a>
                             <span>{$comment.content}</span> 
-                            <a class="hfpointer" onclick="$('#content-'+{$poster.aid}).val('回复{$comment.author.realname}: ');">回复</a>                                   
+                            <a class="hfpointer" onclick="gotoReply({$poster.aid}, '回复{$comment.author.realname}: ');">回复</a>                                   
                         </div>
                     </td>
                     <td width="150" align="center" valign="top"><!--<a href="" class="hfpointer">回复</a>--><br/><span class="time11">{$comment.time|date="Y-m-d H:i:s",###}</span></td>
