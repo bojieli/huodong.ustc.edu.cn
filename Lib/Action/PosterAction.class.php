@@ -201,25 +201,7 @@ class PosterAction extends PublicAction {
 	}
 
 	public function loadComments() {
-		$aid = $this->getInputAid();
-		$poster['clicks']++;
-		M('Poster')->where(['aid'=>$aid])->save($poster);
-		$poster = D('Poster')->getPosterById($aid);
-		$poster->rate = $poster->getRate();
-		$poster->school = $poster->schoolName();
-		$poster->name = $poster->name();
-		$poster->humanDate = $poster->humanDate();
-		$poster->poster = $poster->posterUrl();
-		$poster->canModify = $poster->canModify();
-		$poster->clubName = $poster->clubName();
-		$this->assign('poster', $poster->toArray());
-		$comments = M('poster_comment')->where(['aid'=>$aid])->order("time DESC")->select();
-		foreach ($comments as &$comment) {
-			$comment['author'] = D('User')->getInfo($comment['author']);
-		}
-		unset($comment);
-		$this->assign('comments', $comments);
-		$this->display();
+		$this->singlePage();
 	}
 
 	public function reply() {
@@ -259,7 +241,9 @@ class PosterAction extends PublicAction {
 		$poster->school = $poster->schoolName();
 		$poster->name = $poster->name();
 		$poster->humanDate = $poster->humanDate();
-		$poster->poster = $poster->posterUrl();
+		$poster->thumbPoster = $poster->thumbUrl();
+		$poster->largePoster = $poster->thumbUrl(true);
+		$poster->origPoster = $poster->origPosterUrl();
 		$poster->canModify = $poster->canModify();
 		$poster->clubName = $poster->clubName();
 		$this->assign('poster', $poster->toArray());

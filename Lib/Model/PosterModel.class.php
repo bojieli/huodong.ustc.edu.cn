@@ -41,19 +41,24 @@ class PosterModel extends Model {
 		return $club['name'];
 	}
 
-	public function thumbUrl() {
+	public function thumbUrl($large = false) {
 		if (empty($this->poster))
 			return '';
+		if ($large) {
+			$url = "/upload/poster/thumb/large_".$this->poster;
+			if (file_exists('.'.$url))
+				return $url;
+		}
 		return "/upload/poster/thumb/thumb_".$this->poster;
 	}
 
-	public function thumbHeight() {
+	public function thumbHeight($large = false) {
 		import("ORG.Util.Image");
-		$info = Image::getImageInfo('.'.$this->thumbUrl());
+		$info = Image::getImageInfo('.'.$this->thumbUrl($large));
 		return $info['height'];
 	}
 
-	public function posterUrl() {
+	public function origPosterUrl() {
 		if (empty($this->poster))
 			return '';
 		return "/upload/poster/".$this->poster;
