@@ -5,7 +5,7 @@ class ClubModel extends Model {
 	}
 
 	public function addMember($gid, $uid) {
-		if (!is_numeric($gid) || !is_numeric($uid))
+		if (!is_numeric($gid) || !is_numeric($uid) || $gid <= 0 || $uid <= 0)
 			return;
 		$record['priv'] = 'member';
 		$record['title'] = '会员';
@@ -15,7 +15,7 @@ class ClubModel extends Model {
 	}
 
 	public function removeMember($gid, $uid) {
-		if (!is_numeric($gid) || !is_numeric($uid))
+		if (!is_numeric($gid) || !is_numeric($uid) || $gid <= 0 || $uid <= 0)
 			return;
 		M('user_group')->where(['uid'=>$uid, 'gid'=>$gid])->delete();
 		M()->execute("UPDATE ustc_club SET member_count = member_count - 1 WHERE `gid` = '$gid'");
