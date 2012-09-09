@@ -14,7 +14,7 @@
     <p>社团联系方式：{$club.contact}
     </notempty>
     </div>
-    <div class="sttitle4">网上注册会员：{$club.memberCount} 人<br/>会长：{$club.admin.realname} （{$club.admin.grade}级 {$club.admin.dept}）
+    <div class="sttitle4">网上注册会员：{$club.memberCount} 人<br/>会长：{$club.admin.realname} （{$club.admin.dept} {$club.admin.grade}级 {$club.admin.education}）
         <div class="sttitle5">
 	    <switch name="club.mypriv">
 		<case value="inactive">
@@ -30,7 +30,7 @@
 		    欢迎您，会员 <a href="/Club/quit?gid={$club.gid}" onclick="return confirm('您真的要退出社团吗？');">点此退出社团</a>
 		</case>
 		<default />
-		  <if condition="constant(CURRENT_USER) == 0">
+		  <if condition="$_G['uid'] == 0">
 		    您需要 <a href="/User/login">登录</a> 或 <a href="/User/register">注册</a> 才能加入社团
 		  <else />
 	    	    <a href="/Club/join?gid={$club.gid}">您还未加入，点击申请加入</a>
