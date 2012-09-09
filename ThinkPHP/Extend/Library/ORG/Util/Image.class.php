@@ -99,16 +99,23 @@ class Image {
         //生成混合图像
         imagecopymerge($sImage, $wImage, $posX, $posY, 0, 0, $wInfo['width'], $wInfo['height'], $alpha);
 
-        //输出图像
-        $ImageFun = 'Image' . $sInfo['type'];
         //如果没有给出保存文件名，默认为原图像名
         if (!$savename) {
             $savename = $source;
             @unlink($source);
         }
+
         //保存图像
-        $ImageFun($sImage, $savename);
-        imagedestroy($sImage);
+	// add parameters to ensure best quality
+        $ImageFun = 'Image' . $sInfo['type'];
+	switch ($sInfo['type']) {
+		case 'jpeg': imagejpeg($sImage, $savename, 100);
+		case 'png': imagepng($sImage, $savename, 0);
+		case 'gif': imagegif($sImage, $savename);
+		default: $ImageFun($sImage, $savename);
+	}
+        
+	imagedestroy($sImage);
     }
 
     function showImg($imgFile, $text='', $x='10', $y='10', $alpha='50') {
