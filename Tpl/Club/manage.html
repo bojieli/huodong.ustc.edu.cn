@@ -117,6 +117,9 @@ $showPager = function() use($club) {
 		    {$member.dept} {$member.grade}级 {$member.education}<br/>
 
 		    <if condition="$member[priv] == 'admin' || ($member[priv] == 'manager' && $club[isin]) || $club[ismanager]">
+		            <notempty name="member.student_no">
+			    学号: {$member.student_no}
+			    </notempty>
 			    <notempty name="member.qq">
 			    QQ: {$member.qq}
 			    </notempty>
