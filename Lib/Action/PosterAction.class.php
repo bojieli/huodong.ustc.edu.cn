@@ -30,25 +30,11 @@ class PosterAction extends PublicAction {
 			$this->error("抱歉，只有会长和部长级别的会员才能发布海报");
 		}
 
-		import("ORG.Net.UploadFile");
-		$upload = new UploadFile();
-		$upload->maxSize = 2 * 1024 * 1024;
-		$upload->allowExts = ['jpg', 'gif', 'png', 'jpeg'];
-		$upload->savePath = './upload/poster/';
-		$upload->saveRule = 'uniqid';
-		
-		import("ORG.Util.Image");
-		$upload->thumb = true;
-		$upload->thumbPath = './upload/poster/thumb/';
-		$upload->thumbMaxWidth = 250;
-		$upload->thumbMaxHeight = 1000;
-
-		if (!$upload->upload()) {
+		$image = $this->uploadPoster();
+		if (!$image) {
 			$this->error("您必须上传海报图片。请注意图片格式和最大图片大小的限制。");
-		} else {
-			$info = $upload->getUploadFileInfo();
 		}
-		$poster['poster'] = $info[0]["savename"];
+		$poster['poster'] = $image;
 
 		$poster['gid'] = $gid;
 		$poster['author'] = CURRENT_USER;
@@ -93,28 +79,14 @@ class PosterAction extends PublicAction {
 			$this->error("抱歉，只有会长和部长级别的会员才能修改海报");
 		}
 
-		import("ORG.Net.UploadFile");
-		$upload = new UploadFile();
-		$upload->maxSize = 2 * 1024 * 1024;
-		$upload->allowExts = ['jpg', 'gif', 'png', 'jpeg'];
-		$upload->savePath = './upload/poster/';
-		$upload->saveRule = 'uniqid';
-		
-		import("ORG.Util.Image");
-		$upload->thumb = true;
-		$upload->thumbPath = './upload/poster/thumb/';
-		$upload->thumbMaxWidth = 250;
-		$upload->thumbMaxHeight = 1000;
-
-		if ($upload->upload()) { // reupload poster
-			$info = $upload->getUploadFileInfo();
-			$poster['poster'] = $info[0]["savename"];
-		}
-
 		$fields = ['name','place','description'];
 		foreach ($fields as $field) {
 			$poster[$field] = htmlspecialchars($_POST[$field]);
 		}
+
+		$image = $this->uploadPoster();
+		if ($image)
+			$poster['poster'] = $image;
 
 		$poster['start_time'] = $this->parseTime($_POST['start_date'], $_POST['start_hour'], $_POST['start_minute']);
 		$poster['end_time'] = $this->parseTime($_POST['end_date'], $_POST['end_hour'], $_POST['end_minute']);
@@ -125,6 +97,28 @@ class PosterAction extends PublicAction {
 
 		$this->assign('jumpUrl', "/Poster/singlePage?aid=$aid");
 		$this->success("海报修改成功！");
+	}
+
+	private function uploadPoster() {
+		import("ORG.Net.UploadFile");
+		$upload = new UploadFile();
+		$upload->maxSize = 8 * 1024 * 1024;
+		$upload->allowExts = ['jpg', 'gif', 'png', 'jpeg'];
+		$upload->savePath = './upload/poster/';
+		$upload->saveRule = 'uniqid';
+		
+		import("ORG.Util.Image");
+		$upload->thumb = true;
+		$upload->thumbPath = './upload/poster/thumb/';
+		$upload->thumbMaxWidth = '250,800';
+		$upload->thumbMaxHeight = '1000,3200';
+		$upload->thumbPrefix = 'thumb_,large_';
+
+		if ($upload->upload()) {
+			$info = $upload->getUploadFileInfo();
+			return $info[0]["savename"];
+		}
+		return null;
 	}
 
 	private function parseTime($date, $hour = 0, $minute = 0, $second = 0) {
