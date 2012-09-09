@@ -96,6 +96,19 @@
                     </td>
                 </tr>
 		<tr>
+                	<td align="right" valign="middle" width="150px" height="50px"><em>*</em>入学年份</td>
+                    <td class="zc1tablerect" width="300px" height="50px" valign="middle" align="left">
+                    	<div class="zc1school">
+                        	<select name="grade" id="grade">
+					<option value="2012" selected="selected">2012</option>
+				<?php for ($year = 2011; $year >= 1977; $year--) { ?>
+					<option value="{$year}">{$year}</option>
+				<?php } ?>
+				</select>
+                        </div>                        
+                    </td>
+                </tr>
+		<tr>
                 	<td align="right" valign="middle" width="150px" height="50px"><em>*</em>学历</td>
                     <td class="zc1tablerect" width="300px" height="50px" valign="middle" align="left">
                     	<div class="zc1school">
