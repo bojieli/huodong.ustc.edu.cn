@@ -253,7 +253,6 @@ class PosterAction extends PublicAction {
 		}
 		unset($comment);
 		$this->assign('comments', $comments);
-		dump("ok");
 		$this->display();
 	}
 

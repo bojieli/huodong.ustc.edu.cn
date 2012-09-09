@@ -25,7 +25,7 @@ $(".like").live('click', function(event){
 });
 -->
 </script>
-	    热度1111111111：<span class="rate">{$poster.rate}</span> <span class="like" id="ding-{$poster.aid}">顶</span>
+	    热度：<span class="rate">{$poster.rate}</span> <span class="like" id="ding-{$poster.aid}">顶</span>
 	    <span class="dymian"><a target="_blank" href="/Club/intro?gid={$poster.gid}">查看 {$poster.clubName} 的简介</a></span>
 	    <span class="dymian"><a target="_blank" href="/Poster/singlePage?aid={$poster.aid}">在新窗口内打开</a></span>
 	    <if condition="$poster['canModify'] == true">
