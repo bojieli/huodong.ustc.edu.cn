@@ -128,6 +128,10 @@ CREATE TABLE IF NOT EXISTS ustc_club (
 	`found_date` VARCHAR(255),
 	`teacher` VARCHAR(255),
 	`logo` VARCHAR(100), -- /upload/logo/filename
+	`total_rate` INT(10) NOT NULL DEFAULT 0,
+	`clicks` INT(10) NOT NULL DEFAULT 0,
+	`member_count` INT(10) NOT NULL DEFAULT 0, -- redundant
+	`poster_count` INT(10) NOT NULL DEFAULT 0, -- redundant
 	`shortdesc` TEXT,
 	`description` TEXT,
 	PRIMARY KEY (`gid`),

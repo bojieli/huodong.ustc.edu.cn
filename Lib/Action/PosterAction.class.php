@@ -66,6 +66,8 @@ class PosterAction extends PublicAction {
 		$obj->create($poster);
 		$obj->add();
 
+		D('Club')->incPosterCount($gid);
+
 		$this->assign('jumpUrl', "/");
 		$this->success("海报发布成功！");
 	}
@@ -138,6 +140,7 @@ class PosterAction extends PublicAction {
 		if (A('Club')->isManager($poster['gid'])) {
 			M('poster_comment')->where(['aid'=>$aid])->delete();
 			M('Poster')->where(['aid'=>$aid])->delete();
+			D('Club')->decPosterCount($poster['gid']);
 			$this->assign('jumpUrl', "/");
 			$this->success("海报删除成功！");
 		} else {

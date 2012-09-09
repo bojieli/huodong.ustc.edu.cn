@@ -8,6 +8,7 @@ class ClubAction extends PublicAction {
 
 	public function intro() {
 		$this->headnav();
+		D('Club')->updateClicks($_GET['gid']);
 		$club = $this->getData($_GET['gid']);
 		$this->assign('club', $club);
 		$this->display();
@@ -186,9 +187,7 @@ class ClubAction extends PublicAction {
 		$this->assign('jumpUrl', "/Club/manage?gid=$gid");
 		if ($this->isManager($gid)) {
 			if ($this->getPriv($gid, $uid) == 'inactive') {
-				$record['priv'] = 'member';
-				$record['title'] = '会员';
-				M('user_group')->where(['uid'=>$uid, 'gid'=>$gid])->save($record);
+				D('Club')->addMember($gid, $uid);
 				$this->success("已经通过此加入申请");
 			} else
 				$this->error("此用户不处于待审核状态");
@@ -230,7 +229,7 @@ class ClubAction extends PublicAction {
 	public function removeMember() {
 		list($gid, $uid) = $this->getInputGidUid();
 		if ($this->isAdmin($gid)) {
-			M('user_group')->where(['uid'=>$uid, 'gid'=>$gid])->delete();
+			D('Club')->removeMember($gid, $uid);
 			die("OK");
 		} else
 			die("Not enough privilege");
@@ -238,8 +237,9 @@ class ClubAction extends PublicAction {
 
 	public function quit() {
 		$gid = $this->getInputGid();
-		if ($this->getPriv($gid) == 'member')
-			M('user_group')->where(['uid'=>CURRENT_USER, 'gid'=>$gid])->delete();
+		if ($this->getPriv($gid) == 'member') {
+			D('Club')->removeMember($gid, CURRENT_USER);
+		}
 		$this->assign('jumpUrl', "/Club/intro?gid=$gid");
 		$this->success("退出社团成功！");
 	}
@@ -289,7 +289,8 @@ class ClubAction extends PublicAction {
 		$club['isadmin'] = ($club['isSchoolAdmin'] || $club['mypriv'] == 'admin');
 		$club['ismanager'] = ($club['isadmin'] || $club['mypriv'] == 'manager');
 		$club['isin'] = in_array($club['mypriv'], ['admin','manager','member']);
-		$club['memberCount'] = M('user_group')->where(['gid'=>$gid])->count();
+		$club['memberCount'] = $club['member_count'];
+		$club['posterCount'] = $club['poster_count'];
 		return $club;
 	}
 
