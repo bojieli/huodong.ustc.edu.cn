@@ -61,6 +61,7 @@ class PosterModel extends Model {
 
 	public function get_stat() {
 		$stat['total'] = $this->result_first("SELECT COUNT(*) FROM ustc_poster");
+		$stat['incoming'] = $this->result_first("SELECT COUNT(*) FROM ustc_poster WHERE start_time > ".time());
 		$stat['followed'] = $this->result_first("SELECT COUNT(*) FROM ustc_poster AS a, ustc_user_group AS ug WHERE ug.uid = '".CURRENT_USER."' AND ug.gid = a.gid");
 		$stat['newmsg'] = 0;
 		return $stat;

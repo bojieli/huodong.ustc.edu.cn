@@ -3,6 +3,7 @@ class PosterAction extends PublicAction {
 	public function index() {
 		$this->headnav();
 		$this->assign('stat', D('Poster')->get_stat());
+		$this->assign('order', empty($_GET['order']) ? 'new' : $_GET['order']);
 		$this->display();
 	}
 
