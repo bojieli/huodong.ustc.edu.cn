@@ -340,12 +340,15 @@ class ClubAction extends PublicAction {
 
 	private function apply2html($gid) {
 		$priv = $this->getPriv($gid);
+		if (CURRENT_USER == 0) // not login
+			$priv = 'notlogin';
 		$str = '<span id="apply-'.$gid.'" class="shenqing ';
 		switch ($priv) {
 			case 'admin':
 			case 'manager':
 			case 'member': $str .= 'isin';break;
 			case 'inactive': $str .= 'applying';break;
+			case 'notlogin': $str .= 'apply-notlogin';break;
 			default: $str .= 'apply';
 		}
 		$str .= '">';
