@@ -110,8 +110,8 @@ class PosterAction extends PublicAction {
 		import("ORG.Util.Image");
 		$upload->thumb = true;
 		$upload->thumbPath = './upload/poster/thumb/';
-		$upload->thumbMaxWidth = '250,800';
-		$upload->thumbMaxHeight = '1000,3200';
+		$upload->thumbMaxWidth = '500,800';
+		$upload->thumbMaxHeight = '2000,3200';
 		$upload->thumbPrefix = 'thumb_,large_';
 
 		if ($upload->upload()) {
