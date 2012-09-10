@@ -63,7 +63,8 @@ class UserAction extends PublicAction {
 			cookie('loginuser', $passport['username'], 3600);
 			//dump($_COOKIE);
 
-			if (!empty($_POST['referer']))
+			// registerVerify should not jump back
+			if (!empty($_POST['referer']) && !strstr($_POST['referer'], '/User/registerVerify'))
 				$this->assign('jumpUrl', $_POST['referer']);
 			else
 				$this->assign('jumpUrl','/User/home?uid='.$passport['uid']);
