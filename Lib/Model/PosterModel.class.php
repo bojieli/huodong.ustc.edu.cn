@@ -60,9 +60,9 @@ class PosterModel extends Model {
 			if ($info['width'] <= 250)
 				return $info['height'];
 			else if ($info['width'] <= 500)
-				return floor($info['height'] * 250 / $info['width']);
+				return ceil($info['height'] * 250 / $info['width']);
 			else
-				return floor($info['height'] / 2);
+				return ceil($info['height'] / 2);
 		}
 		else
 			return $info['height'];
