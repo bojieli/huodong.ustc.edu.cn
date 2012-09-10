@@ -55,12 +55,9 @@ class PosterModel extends Model {
 	public function thumbHeight($large = false) {
 		import("ORG.Util.Image");
 		$info = Image::getImageInfo('.'.$this->thumbUrl($large));
-		if (!$large) {
-			$height = floor($info['height'] / 2); // width 250 => width 500
-			if ($height % 2 == 1)
-				$height++; // make it even
-			return $height;
-		} else
+		if (!$large)
+			return floor($info['height'] / 2); // width 250 => width 500
+		else
 			return $info['height'];
 	}
 

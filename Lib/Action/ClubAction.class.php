@@ -40,23 +40,9 @@ class ClubAction extends PublicAction {
 		if (strlen($club['shortdesc']) > 420)
 			$club['shortdesc'] = substr($club['shortdesc'], 0, 420);
 
-		import("ORG.Net.UploadFile");
-		$upload = new UploadFile();
-		$upload->maxSize = 2 * 1024 * 1024;
-		$upload->allowExts = ['jpg', 'gif', 'png', 'jpeg'];
-		$upload->savePath = './upload/clublogo/';
-		$upload->saveRule = 'uniqid';
-		
-		import("ORG.Util.Image");
-		$upload->thumb = true;
-		$upload->thumbPath = './upload/clublogo/thumb/';
-		$upload->thumbMaxWidth = 250;
-		$upload->thumbMaxHeight = 1000;
-
-		if ($upload->upload()) {
-			$info = $upload->getUploadFileInfo();
-			$club['logo'] = $info[0]["savename"];
-		}
+		$logo = $this->uploadLogo();
+		if (!empty($logo))
+			$club['logo'] = $logo;
 
 		M('Club')->where(['gid'=>$gid])->save($club);
 
@@ -106,23 +92,7 @@ class ClubAction extends PublicAction {
 			$club['shortdesc'] = substr($club['shortdesc'], 0, 420);
 		$club['description'] = $_POST['description'];
 
-		import("ORG.Net.UploadFile");
-		$upload = new UploadFile();
-		$upload->maxSize = 2 * 1024 * 1024;
-		$upload->allowExts = ['jpg', 'gif', 'png', 'jpeg'];
-		$upload->savePath = './upload/clublogo/';
-		$upload->saveRule = 'uniqid';
-		
-		import("ORG.Util.Image");
-		$upload->thumb = true;
-		$upload->thumbPath = './upload/clublogo/thumb/';
-		$upload->thumbMaxWidth = 250;
-		$upload->thumbMaxHeight = 1000;
-
-		if ($upload->upload()) {
-			$info = $upload->getUploadFileInfo();
-			$club['logo'] = $info[0]["savename"];
-		}
+		$club['logo'] = $this->uploadLogo();
 
 		$club['sid'] = 1; // force USTC
 		if (!is_numeric($club['owner']))
@@ -133,6 +103,27 @@ class ClubAction extends PublicAction {
 		$model->add();
 		
 		$this->success("添加成功！");
+	}
+
+	private function uploadLogo() {
+		import("ORG.Net.UploadFile");
+		$upload = new UploadFile();
+		$upload->maxSize = 2 * 1024 * 1024;
+		$upload->allowExts = ['jpg', 'gif', 'png', 'jpeg'];
+		$upload->savePath = './upload/clublogo/';
+		$upload->saveRule = 'uniqid';
+		
+		import("ORG.Util.Image");
+		$upload->thumb = true;
+		$upload->thumbPath = './upload/clublogo/thumb/';
+		$upload->thumbMaxWidth = 500; // twice width
+		$upload->thumbMaxHeight = 2000;
+
+		if ($upload->upload()) {
+			$info = $upload->getUploadFileInfo();
+			return $info[0]["savename"];
+		}
+		return null;
 	}
 
 	public function manage() {

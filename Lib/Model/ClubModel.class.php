@@ -76,7 +76,7 @@ class ClubModel extends Model {
 	public function logoThumbHeight() {
 		import("ORG.Util.Image");
 		$info = Image::getImageInfo('.'.$this->logoThumbUrl());
-		return $info['height'];
+		return floor($info['height'] / 2); // width 250 => width 500
 	}
 
 	public function memberCount() {
