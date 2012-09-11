@@ -15,6 +15,7 @@ $(function(){
                                 var img_src = "/upload/avatar/"+info.info;
 								alert(img_src);
                                 $("#avatar").attr("src",img_src);
+								alert($("#avatar").attr("src"));
                         }
                         else
                         {
@@ -58,7 +59,7 @@ $(function(){
 		<form  method="post" action="/User/avatarUpload" enctype="multipart/form-data" id="uploadForm" >
             <input type="file" name="avatar" id="avatar"><input type="submit" value="保存">
         </form>
-		<img src="" id="avatar" />
+		<img src="demo_files/pool.jpg" id="avatar" />
 
 		<!-- This is the form that our event handler fills -->
 		<form action="crop.php" method="post" onsubmit="return checkCoords();">
