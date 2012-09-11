@@ -126,6 +126,40 @@ class ClubAction extends PublicAction {
 		return null;
 	}
 
+	public function sendEmail() {
+		$this->display();
+	}
+
+	public function sendEmailSubmit() {
+		$gid = $this->getInputGid();
+		if (!$this->isManager($gid)) {
+			$this->error("只有会长和部长才有权限群发邮件。");
+		}
+		$members = M()->query("SELECT u.email FROM ustc_user AS u, ustc_user_group AS g WHERE g.gid = '$gid' AND g.uid = u.uid AND g.priv != 'inactive'");
+		$emails = array();
+		foreach ($members as $member)
+			$emails[] = $member['email'];
+		if (empty($emails))
+			$this->error("您的社团还没有成员 :)");
+		
+		if (!($title = $_POST['title']))
+			$this->error("必须填写邮件标题");
+		if (strlen($title) > 200)
+			$this->error("邮件标题过长!");
+		if (strlen($title) < 5)
+			$this->error("邮件标题过短!");
+		if (!($message = $_POST['message']))
+			$this->error("必须填写邮件内容");
+		if (strlen($title) > 10000)
+			$this->error("邮件内容过长!");
+		if (strlen($title) < 10)
+			$this->error("邮件内容过短!");
+		sendMail($emails, $title, $message, true);
+
+		$this->assign('jumpUrl', '/Club/manage?gid='.$gid);
+		$this->success("成功发送邮件给 ". count($emails) ." 人");
+	}
+
 	public function manage() {
 		$gid = $this->getInputGid();
 		$start = isset($_GET['start']) && is_numeric($_GET['start']) ? $_GET['start'] : 0;

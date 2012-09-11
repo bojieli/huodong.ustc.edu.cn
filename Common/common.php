@@ -17,7 +17,7 @@ function random($length) {
 	return $s;
 }
 
-function SendMail($address, $title, $message) {
+function SendMail($address, $title, $message, $html = false) {
 
     vendor('PHPMailer.class#PHPMailer');
 
@@ -57,6 +57,11 @@ function SendMail($address, $title, $message) {
     // 设置用户名和密码。
     $mail->Username=C('MAIL_LOGINNAME');
     $mail->Password=C('MAIL_PASSWORD');
+
+    if ($html)
+    	$mail->ContentType = 'text/html';
+    else
+    	$mail->ContentType = 'text/plain';
 
     // 发送邮件。
     return($mail->Send());
