@@ -170,6 +170,7 @@ class PosterAction extends PublicAction {
 			case 'new': $order = 'publish_time DESC'; break;
 			case 'near': $order = 'start_time'; $cond[] = "end_time > '".time()."'"; break;
 			case 'follow': $cond[] = "EXISTS (SELECT * FROM ustc_user_group AS ug WHERE ug.uid = '".CURRENT_USER."' AND gid = ug.gid)"; break;
+			case 'hot': $order = 'rate_total DESC'; $cond[] = "end_time > '".time()."'"; break;
 			}
 		}
 		return [$start, $num, implode(' AND ', $cond), $order];
@@ -210,9 +211,7 @@ class PosterAction extends PublicAction {
 			$this->assign('jumpUrl', "/User/login");
 			$this->error("抱歉，您需要登录后才能评论。现在跳转到登录页面……");
 		}
-		$poster = $this->getPoster($aid);
-		$poster['comment_count']++;
-		M('Poster')->where(['aid'=>$aid])->save($poster);
+		D('Poster')->addCommentCount($aid);
 		
 		$comment = array(
 			'aid' => $aid,
@@ -227,15 +226,12 @@ class PosterAction extends PublicAction {
 
 	public function like() {
 		$aid = $this->getInputAid();
-		$poster = $this->getPoster($aid);
-		$poster['likes']++;
-		M('Poster')->where(['aid'=>$aid])->save($poster);
+		D('Poster')->addLike($aid);
 	}
 
 	public function singlePage() {
 		$aid = $this->getInputAid();
-		$poster['clicks']++;
-		M('Poster')->where(['aid'=>$aid])->save($poster);
+		D('Poster')->addClick($aid);
 		$poster = D('Poster')->getPosterById($aid);
 		$poster->rate = $poster->getRate();
 		$poster->school = $poster->schoolName();

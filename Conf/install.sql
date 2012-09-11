@@ -186,6 +186,7 @@ CREATE TABLE IF NOT EXISTS ustc_poster (
 	`start_time` INT(10) NOT NULL, -- unix timestamp
 	`end_time` INT(10) NOT NULL, -- unix timestamp
 	`place` VARCHAR(255) NOT NULL,
+	`rate_total` INT(10) NOT NULL DEFAULT 0,
 	`likes` INT(10) NOT NULL DEFAULT 0,
 	`clicks` INT(10) NOT NULL DEFAULT 0,
 	`shared` INT(10) NOT NULL DEFAULT 0,

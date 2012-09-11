@@ -82,12 +82,40 @@ class PosterModel extends Model {
 		return $stat;
 	}
 
-	public function getRate() {
-		return $this->calcRate($this->clicks, $this->likes, $this->comment_count);
+	public function getRate($aid = null) {
+		if (empty($aid))
+			return $this->rate_total;
+		else {
+			$poster = $this->field('rate_total')->find($aid);
+			return $poster['rate_total'];
+		}
 	}
 
-	public function calcRate($clicks, $likes, $comment_count) {
-		return $likes * 5 + $clicks + $comment_count * 10;
+	public function addCommentCount($aid) {
+		if (!is_numeric($aid))
+			return;
+		M()->execute("UPDATE ustc_poster SET comment_count = comment_count+1 WHERE `aid`='$aid'");
+		$this->updateRate($aid, 10);
+	}
+
+	public function addLike($aid) {
+		if (!is_numeric($aid))
+			return;
+		M()->execute("UPDATE ustc_poster SET likes = likes+1 WHERE `aid`='$aid'");
+		$this->updateRate($aid, 5);
+	}
+
+	public function addClick($aid) {
+		if (!is_numeric($aid))
+			return;
+		M()->execute("UPDATE ustc_poster SET clicks = clicks+1 WHERE `aid`='$aid'");
+		$this->updateRate($aid, 1);
+	}
+
+	private function updateRate($aid, $delta) {
+		if (!is_numeric($aid) || !is_numeric($delta))
+			return;
+		M()->execute("UPDATE ustc_poster SET rate_total = rate_total + ($delta) WHERE `aid`='$aid'");
 	}
 
 	public function toArray() {
