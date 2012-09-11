@@ -1,7 +1,7 @@
 <?php
 class PosterModel extends Model {
-	public function getPoster($start, $num, $cond = []) {
-		return M('Poster')->where($cond)->limit("$start,$num")->cast(__CLASS__)->select();
+	public function getPoster($start, $num, $cond = [], $order = '') {
+		return M('Poster')->where($cond)->order($order)->limit("$start,$num")->cast(__CLASS__)->select();
 	}
 
 	public function getPosterById($aid) {
