@@ -12,7 +12,7 @@ $(function(){
                         var info = eval('(' + data.responseText + ')');
                         if(info.status=='1')
                         {
-                                var img_src = "/upload/avatar"+info.info;
+                                var img_src = "/upload/avatar/"+info.info;
 								alert(img_src);
                                 $("#avatar").attr("src",img_src);
                         }
