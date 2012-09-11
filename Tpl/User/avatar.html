@@ -12,10 +12,8 @@ $(function(){
                         var info = eval('(' + data.responseText + ')');
                         if(info.status=='1')
                         {
-                                var img_src = "/{$avatar_path}"+info.info;
-                                var img_src_small = "/{$avatar_path}small_"+info.info;
+                                var img_src = "/upload/avatar"+info.info;
                                 $("#avatar").attr("src",img_src);
-                                $("#avatar_small").attr("src",img_src_small);
                         }
                         else
                         {
