@@ -338,5 +338,6 @@ class UserAction extends PublicAction {
 	public function avatar()
 	{
 		echo "kkwang";
+		$this->display();
 	}
 }
