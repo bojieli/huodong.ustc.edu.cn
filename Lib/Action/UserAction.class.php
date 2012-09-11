@@ -335,4 +335,8 @@ class UserAction extends PublicAction {
 		else
 		$this->error("邮箱错误",1);
 	}
+	public function avatar()
+	{
+		echo "kkwang";
+	}
 }
