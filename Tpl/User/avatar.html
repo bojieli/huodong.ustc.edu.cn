@@ -16,6 +16,12 @@ $(function(){
 								alert(img_src);
                                 $("#avatar2").attr("src",img_src);
 								alert($("#avatar2").attr("src"));
+								$('#avatar2').Jcrop({
+									aspectRatio: 1,
+									onSelect: updateCoords
+								});
+
+			});
                         }
                         else
                         {
@@ -23,12 +29,7 @@ $(function(){
                         }
                 }
      });
-			$('#avatar2').Jcrop({
-					aspectRatio: 1,
-					onSelect: updateCoords
-				});
-
-			});
+			
 
 			function updateCoords(c)
 			{
