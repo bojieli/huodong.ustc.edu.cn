@@ -23,7 +23,7 @@ $(function(){
                         }
                 }
      });
-			$('#cropbox').Jcrop({
+			$('#avatar').Jcrop({
 					aspectRatio: 1,
 					onSelect: updateCoords
 				});
@@ -57,7 +57,7 @@ $(function(){
 
 		<h1>Jcrop - Crop Behavior</h1>
 		<form  method="post" action="/User/avatarUpload" enctype="multipart/form-data" id="uploadForm" >
-            <input type="file" name="avatar" ><input type="submit" value="保存">
+            <input type="file" name="avatar"><input type="submit" value="保存">
         </form>
 		<img id="avatar" src="demo_files/pool.jpg"/>
 
