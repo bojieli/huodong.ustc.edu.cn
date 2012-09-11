@@ -2,11 +2,27 @@
 <head>
 <script src="/static/jquery.js" type="text/javascript"></script>
 <script src="/static/jquery.form.js" type="text/javascript"></script>
-<script src="../js/jquery.Jcrop.js"></script>
-<link rel="stylesheet" href="../css/jquery.Jcrop.css" type="text/css" />
-<link rel="stylesheet" href="demo_files/demos.css" type="text/css" />
+<script src="/static/jquery.Jcrop.js"></script>
+<link href="/static/css1.css" type="text/css" rel="stylesheet" />
+
 <script language="Javascript">
 $(function(){
+	$('#uploadForm').ajaxForm({
+                complete: function(data) {
+                        var info = eval('(' + data.responseText + ')');
+                        if(info.status=='1')
+                        {
+                                var img_src = "/{$avatar_path}"+info.info;
+                                var img_src_small = "/{$avatar_path}small_"+info.info;
+                                $("#avatar").attr("src",img_src);
+                                $("#avatar_small").attr("src",img_src_small);
+                        }
+                        else
+                        {
+                                alert(info.info);
+                        }
+                }
+     });
 			$('#cropbox').Jcrop({
 					aspectRatio: 1,
 					onSelect: updateCoords
