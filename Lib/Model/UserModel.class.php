@@ -208,9 +208,7 @@ class UserModel extends Model {
 
 	public function thumb($image, $thumbname, $type='',$x,$y,$w,$h, $maxWidth=200, $maxHeight=50, $interlace=true) {
         // 获取原图信息
-		echo "ok";
         $info = $this->getImageInfo($image);
-		print_r($info);
         if ($info !== false) {
             $type = empty($type) ? $info['type'] : $type;
             $type = strtolower($type);
