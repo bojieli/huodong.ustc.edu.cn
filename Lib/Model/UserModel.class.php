@@ -190,6 +190,7 @@ class UserModel extends Model {
 	public function getImageInfo($img) {
 		echo "ok1";
         $imageInfo = getimagesize($img);
+		print_r($imageInfo);
 		echo "ok1";
         if ($imageInfo !== false) {
             $imageType = strtolower(substr(image_type_to_extension($imageInfo[2]), 1));
