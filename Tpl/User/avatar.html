@@ -19,6 +19,18 @@ $(function(){
                                 $("#avatar2").attr("src",img_src);
 								$("#preview").attr("src",img_src);
 								$("#preview2").attr("src",img_src);
+								 $('#preview').css({
+									width: Math.round(200/50 * boundx) + 'px',
+									height: Math.round(200/50 * boundy) + 'px',
+									marginLeft: '-' + Math.round(200/50 * 0) + 'px',
+									marginTop: '-' + Math.round(200/50 * 0) + 'px'
+								  });
+								  $('#preview2').css({
+									width: Math.round(50/50 * boundx) + 'px',
+									height: Math.round(50/50 * boundy) + 'px',
+									marginLeft: '-' + Math.round(50/50 * 0) + 'px',
+									marginTop: '-' + Math.round(50/50 * 0) + 'px'
+								  });
 								//alert($("#avatar2").attr("src"));
 								
 								$('#avatar2').Jcrop({
