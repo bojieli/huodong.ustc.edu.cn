@@ -8,6 +8,7 @@
 
 <script language="Javascript">
 $(function(){
+	var jcrop_api, boundx, boundy;
 	$('#uploadForm').ajaxForm({
                 complete: function(data) {
                         var info = eval('(' + data.responseText + ')');
@@ -18,7 +19,7 @@ $(function(){
                                 $("#avatar2").attr("src",img_src);
 								$("#preview").attr("src",img_src);
 								//alert($("#avatar2").attr("src"));
-								var jcrop_api, boundx, boundy;
+								
 								$('#avatar2').Jcrop({
 									aspectRatio: 1,
 									onChange: updateCoords,
