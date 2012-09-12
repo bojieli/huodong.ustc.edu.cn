@@ -14,13 +14,25 @@ $(function(){
                         if(info.status=='1')
                         {
                                 var img_src = "/upload/avatar/"+info.info;
-								alert(img_src);
+								//alert(img_src);
                                 $("#avatar2").attr("src",img_src);
-								alert($("#avatar2").attr("src"));
+								$("#preview").attr("src",img_src);
+								//alert($("#avatar2").attr("src"));
+								var jcrop_api, boundx, boundy;
 								$('#avatar2').Jcrop({
 									aspectRatio: 1,
+									onChange: updateCoords,
 									onSelect: updateCoords
-								});
+								},
+								function(){
+									// Use the API to get the real image size
+									var bounds = this.getBounds();
+									boundx = bounds[0];
+									boundy = bounds[1];
+									// Store the API in the jcrop_api variable
+									jcrop_api = this;
+								  }
+								);
                         }
                         else
                         {
@@ -38,6 +50,18 @@ $(function(){
 				$('#y').val(c.y);
 				$('#w').val(c.w);
 				$('#h').val(c.h);
+				if (parseInt(c.w) > 0)
+				{
+				  var rx = 100 / c.w;
+				  var ry = 100 / c.h;
+
+				  $('#preview').css({
+					width: Math.round(rx * boundx) + 'px',
+					height: Math.round(ry * boundy) + 'px',
+					marginLeft: '-' + Math.round(rx * c.x) + 'px',
+					marginTop: '-' + Math.round(ry * c.y) + 'px'
+				  });
+				}
 			};
 
 			function checkCoords()
@@ -62,7 +86,9 @@ $(function(){
             <input type="file" name="avatar"><input type="submit" value="保存">
         </form>
 		<img id="avatar2" src="demo_files/pool.jpg"/>
-
+		<div style="width:200px;height:200px;overflow:hidden;">
+            <img src="demo_files/pool.jpg" id="preview" alt="Preview" class="jcrop-preview" />
+        </div>
 		<!-- This is the form that our event handler fills -->
 		<form action="crop.php" method="post" onsubmit="return checkCoords();">
 			<input type="hidden" id="x" name="x" />
