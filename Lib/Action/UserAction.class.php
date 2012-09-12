@@ -276,7 +276,33 @@ class UserAction extends PublicAction {
                         $this->success("$avatar_name");
                 }
         }
+		public function avatarUpload2(){
+                global $_G;
+                if(empty($_G['uid'])) {
+                        $this->error('没有登录');
+                }
+                import("ORG.Net.UploadFile");
+                $upload = new UploadFile();// 实例化上传类 
+                $upload->maxSize  = 3145728 ;// 设置附件上传大小 
+                $upload->allowExts  = array('jpg', 'gif', 'png', 'jpeg');
+                $upload->savePath =  './upload/avatar/';// 设置附件
+                $upload->saveRule = D("User")->setAvatarName();
+                $upload->thumb = false;
+                //$upload->thumbMaxWidth = "200,50";
+               // $upload->thumbMaxHeight = "200,50";
+               // $upload->thumbRemoveOrigin = true;
+                //$upload->thumbPrefix = 'avatar_,small_avatar_';
 
+                if(!$upload->upload()) {// 上传错误 提示错误信息 
+                        $this->error($upload->getErrorMsg());
+                }else{// 上传成功 获上传文件信息 
+                        $info =  $upload->getUploadFileInfo();
+                        $avatar_name = "avatar_".$info[0][savename];
+
+                        D('User')->setAvatar($_G[uid],$avatar_name);
+                        $this->success("$avatar_name");
+                }
+        }
 	public function createCode()
 	{
 		session_start();
