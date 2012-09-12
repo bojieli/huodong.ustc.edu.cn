@@ -188,10 +188,8 @@ class UserModel extends Model {
 	}
 
 	public function getImageInfo($img) {
-		echo "ok1";
+
         $imageInfo = getimagesize($img);
-		print_r($imageInfo);
-		echo "ok1";
         if ($imageInfo !== false) {
             $imageType = strtolower(substr(image_type_to_extension($imageInfo[2]), 1));
             $imageSize = filesize($img);
@@ -226,9 +224,9 @@ class UserModel extends Model {
 
             //¥¥Ω®Àı¬‘Õº
             if ($type != 'gif' && function_exists('imagecreatetruecolor'))
-                $thumbImg = imagecreatetruecolor($width, $height);
+                $thumbImg = imagecreatetruecolor($maxWidth, $maxHeight);
             else
-                $thumbImg = imagecreate($width, $height);
+                $thumbImg = imagecreate($maxWidth, $maxHeight);
 
             // ∏¥÷∆Õº∆¨
             if (function_exists("ImageCopyResampled"))
