@@ -20,14 +20,12 @@ $(function(){
 								$("#preview").attr("src",img_src);
 								$("#preview2").attr("src",img_src);
 								 $('#preview').css({
-									width: Math.round(50) + 'px',
-									height: Math.round(50) + 'px',
+									width: Math.round(200*8) + 'px',
+									height: Math.round(200*8) + 'px',
 									marginLeft: '-' + Math.round(0) + 'px',
 									marginTop: '-' + Math.round(0) + 'px'
 								  });
 								  $('#preview2').css({
-									width: Math.round(50) + 'px',
-									height: Math.round(50) + 'px',
 									marginLeft: '-' + Math.round(0) + 'px',
 									marginTop: '-' + Math.round(0) + 'px'
 								  });
@@ -65,8 +63,6 @@ $(function(){
 				{
 				  var rx = 200 / c.w;
 				  var ry = 200 / c.h;
-				 alert(rx);
-				 alert(boundx);
 				  $('#preview').css({
 					width: Math.round(rx * boundx) + 'px',
 					height: Math.round(ry * boundy) + 'px',
