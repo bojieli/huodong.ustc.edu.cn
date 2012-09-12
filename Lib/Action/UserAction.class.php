@@ -303,6 +303,16 @@ class UserAction extends PublicAction {
                         $this->success("$avatar_name");
                 }
         }
+	public function createAvatar()
+	{
+		global $_G;
+		$x = $_POST['x'];
+		$y = $_POST['y'];
+		$w = $_POST['w'];
+		$h = $_POST['h'];
+		$image = D('User')->getAvatar($_G[uid]);
+		D('User')->thumb($image,$image,'',$x,$y,$w,$h,200,200,true);
+	}
 	public function createCode()
 	{
 		session_start();
