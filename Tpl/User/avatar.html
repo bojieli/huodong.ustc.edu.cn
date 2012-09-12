@@ -18,6 +18,7 @@ $(function(){
 								//alert(img_src);
                                 $("#avatar2").attr("src",img_src);
 								$("#preview").attr("src",img_src);
+								$("#preview2").attr("src",img_src);
 								//alert($("#avatar2").attr("src"));
 								
 								$('#avatar2').Jcrop({
@@ -58,6 +59,12 @@ $(function(){
 					marginLeft: '-' + Math.round(rx * c.x) + 'px',
 					marginTop: '-' + Math.round(ry * c.y) + 'px'
 				  });
+				  $('#preview2').css({
+					width: Math.round(rx/4 * boundx) + 'px',
+					height: Math.round(ry/4 * boundy) + 'px',
+					marginLeft: '-' + Math.round(rx/4 * c.x) + 'px',
+					marginTop: '-' + Math.round(ry/4 * c.y) + 'px'
+				  });
 				}
 			};
 
@@ -90,6 +97,12 @@ $(function(){
 		<img id="avatar2" src="demo_files/pool.jpg"/>
 		<div style="width:200px;height:200px;overflow:hidden;">
             <img src="demo_files/pool.jpg" id="preview" alt="Preview" class="jcrop-preview" />
+        </div>
+		<div style="width:200px;height:200px;overflow:hidden;">
+            <img src="demo_files/pool.jpg" id="preview" alt="Preview" class="jcrop-preview" />
+        </div>
+		<div style="width:50px;height:50px;overflow:hidden;">
+            <img src="demo_files/pool.jpg" id="preview2" alt="Preview" class="jcrop-preview" />
         </div>
 		<!-- This is the form that our event handler fills -->
 		<form action="crop.php" method="post" onsubmit="return checkCoords();">
