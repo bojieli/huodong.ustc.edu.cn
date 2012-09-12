@@ -288,17 +288,17 @@ class UserAction extends PublicAction {
                 $upload->savePath =  './upload/avatar/';// 设置附件
                 $upload->saveRule = D("User")->setAvatarName();
                 $upload->thumb = false;
-                //$upload->thumbMaxWidth = "200,50";
-               // $upload->thumbMaxHeight = "200,50";
-               // $upload->thumbRemoveOrigin = true;
-                //$upload->thumbPrefix = 'avatar_,small_avatar_';
+                $upload->thumbMaxWidth = "200";
+                $upload->thumbMaxHeight = "200";
+                $upload->thumbRemoveOrigin = true;
+                $upload->thumbPrefix = 'avatar_';
 
                 if(!$upload->upload()) {// 上传错误 提示错误信息 
                         $this->error($upload->getErrorMsg());
                 }else{// 上传成功 获上传文件信息 
                         $info =  $upload->getUploadFileInfo();
-                        //$avatar_name = "avatar_".$info[0][savename];
-						$avatar_name = $info[0][savename];
+                        $avatar_name = "avatar_".$info[0][savename];
+						//$avatar_name = $info[0][savename];
                         D('User')->setAvatar($_G[uid],$avatar_name);
                         $this->success("$avatar_name");
                 }
