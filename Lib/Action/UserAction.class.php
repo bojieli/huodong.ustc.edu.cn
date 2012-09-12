@@ -310,7 +310,7 @@ class UserAction extends PublicAction {
 		$y = $_POST['y'];
 		$w = $_POST['w'];
 		$h = $_POST['h'];
-		$image = "/".D('User')->getAvatar($_G[uid]);
+		$image = D('User')->getAvatar($_G[uid]);
 		dump($image);
 		dump(getimagesize($image));
 		echo D('User')->thumb($image,$image,'',$x,$y,$w,$h,200,200,true);
