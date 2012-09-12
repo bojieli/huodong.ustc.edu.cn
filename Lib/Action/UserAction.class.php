@@ -297,8 +297,8 @@ class UserAction extends PublicAction {
                         $this->error($upload->getErrorMsg());
                 }else{// 上传成功 获上传文件信息 
                         $info =  $upload->getUploadFileInfo();
-                        $avatar_name = "avatar_".$info[0][savename];
-
+                        //$avatar_name = "avatar_".$info[0][savename];
+						$avatar_name = $info[0][savename];
                         D('User')->setAvatar($_G[uid],$avatar_name);
                         $this->success("$avatar_name");
                 }
