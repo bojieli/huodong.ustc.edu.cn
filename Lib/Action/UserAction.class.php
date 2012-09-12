@@ -288,8 +288,8 @@ class UserAction extends PublicAction {
                 $upload->savePath =  './upload/avatar/';// 设置附件
                 $upload->saveRule = D("User")->setAvatarName();
                 $upload->thumb = false;
-                $upload->thumbMaxWidth = "200";
-                $upload->thumbMaxHeight = "200";
+                $upload->thumbMaxWidth = "400";
+                $upload->thumbMaxHeight = "400";
                 $upload->thumbRemoveOrigin = true;
                 $upload->thumbPrefix = 'avatar_';
 
