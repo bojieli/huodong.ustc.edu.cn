@@ -151,7 +151,31 @@ class UserModel extends Model {
                 }
                 return $avatar;
         }
-
+	public function getAvatarName($uid,$size='')
+	{
+				$info = $this->find($uid);
+                $size = in_array($size, array('','big','small')) ? $size : 'small';
+                if(empty($info[avatar])){
+                        if(empty($size))
+                        {
+                                $avatar = "noavatar_big.gif";
+                        }
+                        else
+                        {
+                                $avatar = "noavatar_small.gif";
+                        }
+                }else{
+                        if(empty($size))
+                        {
+                                $avatar = $info[avatar];
+                        }
+                        else
+                        {
+                                $avatar = $size.'_'.$info[avatar];
+                        }
+                }
+                return $avatar;
+	}
 	public function getInfo($uid){
 		$user_info = $this->find($uid);
 		$user_info[avatar] = $this->getAvatar($uid);
