@@ -317,7 +317,7 @@ class UserAction extends PublicAction {
 		$image_small = C('AVATAR_PATH').'small_'.$image;
 		$image = C('AVATAR_PATH').$image;
 		D('User')->thumb($image,$image_big,'',$x,$y,$w,$h,200,200,true);
-		D('User')->thumb($image,$image_small,'',$x,$y,$w,$h,50,50,true);
+		D('User')->thumb($image,$image_small,'',$x,$y,$w,$h,100,100,true);
 	}
 	public function createCode()
 	{
