@@ -315,7 +315,7 @@ class UserAction extends PublicAction {
 		$image_big = C('AVATAR_PATH').'big_'.$image;
 		dump($image_big);
 		$image_small = C('AVATAR_PATH').'small_'.$image;
-		dump($image_small);
+		$image = C('AVATAR_PATH').$image;
 		D('User')->thumb($image,$image_big,'',$x,$y,$w,$h,200,200,true);
 		D('User')->thumb($image,$image_small,'',$x,$y,$w,$h,50,50,true);
 	}
