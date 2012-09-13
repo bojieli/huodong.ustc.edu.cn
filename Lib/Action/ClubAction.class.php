@@ -172,10 +172,11 @@ class ClubAction extends PublicAction {
 		}
 		$members = M()->query("SELECT * FROM ustc_user AS u, ustc_user_group AS ug WHERE ug.gid='$gid' AND ug.uid = u.uid ORDER BY ug.priv LIMIT $start,$num");
 		foreach ($members as &$member) {
-			if (empty($member['avatar']))
+			$member['avatar'] = D('user')->getAvatar($member[uid],'small');
+			/*if (empty($member['avatar']))
 				$member['avatar'] = C('AVATAR_PATH')."noavatar_big.gif";
 			else
-				$member['avatar'] = C('AVATAR_PATH').$member['avatar'];
+				$member['avatar'] = C('AVATAR_PATH').$member['avatar'];*/
 		}
 		unset($member);
 		$this->assign('members', $members);
