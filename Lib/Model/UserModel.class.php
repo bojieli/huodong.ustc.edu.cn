@@ -116,6 +116,7 @@ class UserModel extends Model {
                 {
                         @unlink('./upload/avatar/'.$info[0][avatar]);
                         @unlink('./upload/avatar/small_'.$info[0][avatar]);
+						@unlink('./upload/avatar/big_'.$info[0][avatar]);
                         $cond = array('uid'=>$uid,'avatar'=>'');
                         $this->save($cond);
                 }
@@ -129,7 +130,7 @@ class UserModel extends Model {
         }
         public function getAvatar($uid,$size=''){
                 $info = $this->find($uid);
-                $size = in_array($size, array('','small')) ? $size : 'small';
+                $size = in_array($size, array('','big','small')) ? $size : 'small';
                 if(empty($info[avatar])){
                         if(empty($size))
                         {
@@ -146,7 +147,12 @@ class UserModel extends Model {
                         }
                         else
                         {
-                                $avatar = C('AVATAR_PATH').$size.'_'.$info[avatar];
+								$avatar = C('AVATAR_PATH').$size.'_'.$info[avatar];
+								if(!file_exists($avatar))
+								{
+									$avatar = C('AVATAR_PATH').'_'.$info[avatar];
+								}
+	
                         }
                 }
                 return $avatar;
