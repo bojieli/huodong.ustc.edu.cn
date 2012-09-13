@@ -148,7 +148,7 @@ class UserModel extends Model {
                         else
                         {
 								$avatar = C('AVATAR_PATH').$size.'_'.$info[avatar];
-								if(!file_exists($avatar))
+								if(!file_exists("/".$avatar))
 								{
 									$avatar = C('AVATAR_PATH').'_'.$info[avatar];
 								}
