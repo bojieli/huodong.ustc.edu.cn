@@ -109,10 +109,10 @@ class Image {
 	// add parameters to ensure best quality
         $ImageFun = 'Image' . $sInfo['type'];
 	switch ($sInfo['type']) {
-		case 'jpeg': imagejpeg($sImage, $savename, 100);
-		case 'png': imagepng($sImage, $savename, 0);
-		case 'gif': imagegif($sImage, $savename);
-		default: $ImageFun($sImage, $savename);
+		case 'jpeg': imagejpeg($sImage, $savename, 100); break;
+		case 'png': imagepng($sImage, $savename, 0); break;
+		case 'gif': imagegif($sImage, $savename); break;
+		default: $ImageFun($sImage, $savename); break;
 	}
         
 	imagedestroy($sImage);
@@ -266,7 +266,13 @@ class Image {
 
             // 生成图片
             $imageFun = 'image' . ($type == 'jpg' ? 'jpeg' : $type);
-            $imageFun($thumbImg, $thumbname);
+	    switch ($type) {
+		case 'jpeg': imagejpeg($thumbImg, $thumbname, 100); break;
+		case 'png': imagepng($thumbImg, $thumbname, 0); break;
+		case 'gif': imagegif($thumbImg, $thumbname); break;
+		default: $ImageFun($thumbImg, $thumbname); break;
+	    }
+
             imagedestroy($thumbImg);
             imagedestroy($srcImg);
             return $thumbname;
