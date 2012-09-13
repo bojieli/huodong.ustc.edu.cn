@@ -310,9 +310,11 @@ class UserAction extends PublicAction {
 		$y = $_POST['y'];
 		$w = $_POST['w'];
 		$h = $_POST['h'];
-		$image = D('User')->getAvatar($_G[uid]);
-		dump(getimagesize($image));
-		echo D('User')->thumb($image,$image,'',$x,$y,$w,$h,200,200,true);
+		$image = D('User')->getAvatarName($_G[uid]);
+		$image_big = C('AVATAR_PATH').'big_'.$image;
+		$image_small = C('AVATAR_PATH').'small_'.$image;
+		D('User')->thumb($image,$image_big,'',$x,$y,$w,$h,200,200,true);
+		D('User')->thumb($image,$image_small,'',$x,$y,$w,$h,50,50,true);
 	}
 	public function createCode()
 	{
