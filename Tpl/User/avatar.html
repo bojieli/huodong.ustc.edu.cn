@@ -131,9 +131,9 @@ $(function(){
                 <td class="avartar-midtd" align="center">&nbsp;</td>
                 <td  class="avartar-righttd" align="left" valign="top">
 					<div style="width:200px;height:200px;overflow:hidden;">
-                	<img width="200px" height="200px" id="preview" class="jcrop-preview" src="/{$user_info.big_avatar}" /></div> <br/>200 X 200 头像预览<br/><br/>
+                	<img  id="preview" class="jcrop-preview" src="/{$user_info.big_avatar}" /></div> <br/>200 X 200 头像预览<br/><br/>
 					<div style="width:50px;height:50px;overflow:hidden;">
-                    <img width="50px" height="50px" id="preview2" class="jcrop-preview" src="/{$user_info.big_avatar}" /></div> <br/>50 X 50 头像预览<br/><br/><br/><br/>
+                    <img id="preview2" class="jcrop-preview" src="/{$user_info.big_avatar}" /></div> <br/>50 X 50 头像预览<br/><br/><br/><br/>
                     <!--<div class="avartar-store">保 存</div>-->
 					<form action="/User/createAvatar" method="post" onsubmit="return checkCoords();">
 						<input type="hidden" id="x" name="x" />
