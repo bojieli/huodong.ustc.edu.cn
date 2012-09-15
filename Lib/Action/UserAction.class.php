@@ -379,6 +379,12 @@ class UserAction extends PublicAction {
 	}
 	public function avatar()
 	{
+		global $_G;
+		$user = D("User");
+		$user_info = $user->getInfo($_G[uid]);
+		if (empty($user_info['uid'])) {
+			$this->error("该用户不存在");
+		}
 		$this->assign('user_info', $user_info);
 		$this->assign('avatar_path', C("AVATAR_PATH"));
 		$this->display();
