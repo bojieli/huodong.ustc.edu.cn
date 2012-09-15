@@ -379,7 +379,8 @@ class UserAction extends PublicAction {
 	}
 	public function avatar()
 	{
-		echo "kkwang";
+		$this->assign('user_info', $user_info);
+		$this->assign('avatar_path', C("AVATAR_PATH"));
 		$this->display();
 	}
 }
