@@ -24,21 +24,10 @@ $(function(){
                                 $("#avatar").attr("src",img_src);
 								$("#preview").attr("src",img_src);
 								$("#preview2").attr("src",img_src);
-								 $('#preview').css({
-									width: Math.round(200*8) + 'px',
-									height: Math.round(200*8) + 'px',
-									marginLeft: '-' + Math.round(0) + 'px',
-									marginTop: '-' + Math.round(0) + 'px'
-								  });
-								  $('#preview2').css({
-									marginLeft: '-' + Math.round(0) + 'px',
-									marginTop: '-' + Math.round(0) + 'px'
-								  });
 								//alert($("#avatar").attr("src"));
 								
 								$('#avatar').Jcrop({
 									aspectRatio: 1,
-									setSelect: [ 0, 0, 50, 50 ],
 									onChange: updateCoords,
 									onSelect: updateCoords
 								},
