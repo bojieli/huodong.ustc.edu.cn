@@ -108,7 +108,18 @@ class UserModel extends Model {
 		//echo $uc->getLastSql();
 		return array('uid'=>$user[uid],'password'=>$pw,'username'=>$username);
 	}
-
+		public function setAvatarTmp($uid,$avatar_name)
+		{
+			$info= $this->where(array('uid',$uid))->limit(1)->select();
+            if(!empty($info[0][avatar_tmp]))
+             {
+				@unlink('./upload/avatar/'.$info[0][avatar_tmp]);
+				$cond = array('uid'=>$uid,'avatar_tmp'=>'');
+				$this->save($cond);
+             }
+             $info = array('uid'=>$uid,'avatar_tmp'=>$avatar_name);
+             $this->save($info);
+		}
         public function setAvatar($uid,$avatar_name)
         {
                 $info= $this->where(array('uid',$uid))->limit(1)->select();
@@ -157,30 +168,10 @@ class UserModel extends Model {
                 }
                 return $avatar;
         }
-	public function getAvatarName($uid,$size='')
+	public function getAvatarTmpName($uid,$size='')
 	{
 				$info = $this->find($uid);
-                $size = in_array($size, array('','big','small')) ? $size : 'small';
-                if(empty($info[avatar])){
-                        if(empty($size))
-                        {
-                                $avatar = "noavatar_big.gif";
-                        }
-                        else
-                        {
-                                $avatar = "noavatar_small.gif";
-                        }
-                }else{
-                        if(empty($size))
-                        {
-                                $avatar = $info[avatar];
-                        }
-                        else
-                        {
-                                $avatar = $size.'_'.$info[avatar];
-                        }
-                }
-                return $avatar;
+                return $info[avatar_tmp];
 	}
 	public function getInfo($uid){
 		$user_info = $this->find($uid);
