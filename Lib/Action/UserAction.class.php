@@ -299,7 +299,7 @@ class UserAction extends PublicAction {
                         $info =  $upload->getUploadFileInfo();
                         $avatar_name = "avatar_".$info[0][savename];
 						//$avatar_name = $info[0][savename];
-                        D('User')->setAvatar($_G[uid],$avatar_name);
+                        D('User')->setAvatarTmp($_G[uid],$avatar_name);
                         $this->success("$avatar_name");
                 }
         }
@@ -310,14 +310,19 @@ class UserAction extends PublicAction {
 		$y = $_POST['y'];
 		$w = $_POST['w'];
 		$h = $_POST['h'];
-		$image = D('User')->getAvatarName($_G[uid]);
-		dump($image);
+		$image = D('User')->getAvatarTmpName($_G[uid]);
+		if(empty($image))
+		{
+			$this->assign('jumpUrl','/User/home?uid='.$_G['uid']);
+			$this->success('修改头像失败');
+		}
 		$image_big = C('AVATAR_PATH').'big_'.$image;
-		dump($image_big);
+
 		$image_small = C('AVATAR_PATH').'small_'.$image;
-		$image = C('AVATAR_PATH').$image;
-		D('User')->thumb($image,$image_big,'',$x,$y,$w,$h,200,200,true);
-		D('User')->thumb($image,$image_small,'',$x,$y,$w,$h,100,100,true);
+		$image_orig = C('AVATAR_PATH').$image;
+		D('User')->thumb($image_orig,$image_big,'',$x,$y,$w,$h,200,200,true);
+		D('User')->thumb($image_orig,$image_small,'',$x,$y,$w,$h,100,100,true);
+		D('User')->setAvatar($_G[uid],$image);
 	}
 	public function createCode()
 	{
