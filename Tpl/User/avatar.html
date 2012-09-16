@@ -124,7 +124,7 @@ $(function(){
                 	点击 更换 上传新头像<br/><br/>               	
                     <!--<div class="avartar-store" style="margin:0;">更 换</div>-->
 					<form  method="post" action="/User/avatarUpload2" enctype="multipart/form-data" id="uploadForm" >
-						<input type="file" name="avatar"><input type="submit" value="保存">
+						<input class="avartar-store" type="file" name="avatar" value="浏览"><input class="avartar-store" type="submit" value="确定">
 					</form>
 					<span style="color:#CCC;">支持jpg、jpeg、png 等格式</span>
                     
@@ -154,7 +154,7 @@ $(function(){
 						<input type="hidden" id="y" name="y" />
 						<input type="hidden" id="w" name="w" />
 						<input type="hidden" id="h" name="h" />
-						<input type="submit" value="Crop Image" />
+						<input class="avartar-store" type="submit" value="保存" />
 					</form>
                 </td>
             </tr>
