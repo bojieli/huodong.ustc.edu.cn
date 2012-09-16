@@ -24,26 +24,21 @@ $(function(){
                                 $("#avatar").attr("src",img_src);
 								$("#preview").attr("src",img_src);
 								$("#preview2").attr("src",img_src);
-								var bounds = this.getBounds();
-									boundx = bounds[0];
-									boundy = bounds[1];
-								 if (parseInt(c.w) > 0)
-								{
+
 								  var rx = 200 / c.w;
 								  var ry = 200 / c.h;
 								  $('#preview').css({
-									width: Math.round(rx * boundx) + 'px',
-									height: Math.round(ry * boundy) + 'px',
-									marginLeft: '-' + Math.round(rx * c.x) + 'px',
-									marginTop: '-' + Math.round(ry * c.y) + 'px'
+									//width: Math.round(100*4) + 'px',
+									//height: Math.round(100) + 'px',
+									marginLeft: '-' + Math.round(0) + 'px',
+									marginTop: '-' + Math.round(0) + 'px'
 								  });
 								  $('#preview2').css({
-									width: Math.round(rx/4 * boundx) + 'px',
-									height: Math.round(ry/4 * boundy) + 'px',
-									marginLeft: '-' + Math.round(rx/4 * c.x) + 'px',
-									marginTop: '-' + Math.round(ry/4 * c.y) + 'px'
+									width: Math.round(200) + 'px',
+									height: Math.round(200) + 'px',
+									marginLeft: '-' + Math.round(0) + 'px',
+									marginTop: '-' + Math.round(0) + 'px'
 								  });
-								}
 								//alert($("#avatar").attr("src"));
 								
 								$('#avatar').Jcrop({
