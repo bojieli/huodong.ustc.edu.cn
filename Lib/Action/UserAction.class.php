@@ -311,10 +311,10 @@ class UserAction extends PublicAction {
 		$w = $_POST['w'];
 		$h = $_POST['h'];
 		$image = D('User')->getAvatarTmpName($_G[uid]);
+		$this->assign('jumpUrl','/User/home?uid='.$_G['uid']);
 		if(empty($image))
 		{
-			$this->assign('jumpUrl','/User/home?uid='.$_G['uid']);
-			$this->success('修改头像失败');
+			$this->error('修改头像失败');
 		}
 		$image_big = C('AVATAR_PATH').'big_'.$image;
 
@@ -323,6 +323,7 @@ class UserAction extends PublicAction {
 		D('User')->thumb($image_orig,$image_big,'',$x,$y,$w,$h,200,200,true);
 		D('User')->thumb($image_orig,$image_small,'',$x,$y,$w,$h,100,100,true);
 		D('User')->setAvatar($_G[uid],$image);
+		$this->success('修改头像成功');
 	}
 	public function createCode()
 	{
