@@ -124,9 +124,13 @@ $(function(){
                 	点击 更换 上传新头像<br/><br/>               	
                     <!--<div class="avartar-store" style="margin:0;">更 换</div>-->
 					<form  method="post" action="/User/avatarUpload2" enctype="multipart/form-data" id="uploadForm">
-						<input type="file" name="avatar" value="浏览"><input class="avartar-store" style="margin-left:5px;" type="submit" value="确定">
+						<span class="avartar-store" style="overflow:hidden;margin-left:0px; position:absolute; width:100px; z-index:10;">
+						<input type="file" style=" position:absolute; z-index:100;margin-left:-270px;font-size:90px;opacity:0;filter:alpha(opacity=0); margin-top:-5px;" name="avatar"  size="1">
+						上传图片				
+						</span><br/><br/><span style="color:#CCC;">支持jpg、jpeg、png 等格式</span><br/><br/>
+						<input class="avartar-store" style="margin-left:0px;position:absolute; z-index:200;"  type="submit" value="确定">
 					</form>
-					<span style="color:#CCC;">支持jpg、jpeg、png 等格式</span>
+					
                     
                     
                 </td>
