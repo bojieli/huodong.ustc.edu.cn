@@ -65,9 +65,59 @@ $(function(){
 		target:     '#divToUpdate',
 		dataType:	'json',
 		url:        '/User/avatarUpload2',
-		success: function() {
-			alert("ok");
-		} };
+		success:	showResponse};
+	function showResponse(responseText, statusText, xhr, $form) {
+			
+			alert(responseText);
+			alert(statusText);
+			alert(xhr);
+			var data;
+			var info = eval('(' + data.responseText + ')');
+                        if(info.status=='1')
+                        {
+								$('#orig_avatar_box').hide();
+								$('#new_avatar_box').show();
+                                var img_src = "/upload/avatar/"+info.info;
+								//alert(img_src);
+                                $("#avatar").attr("src",img_src);
+								$("#preview").attr("src",img_src);
+								$("#preview2").attr("src",img_src);
+
+								  $('#preview').css({
+									width: Math.round(800) + 'px',
+									height: Math.round(800) + 'px',
+									marginLeft: '-' + Math.round(0) + 'px',
+									marginTop: '-' + Math.round(0) + 'px'
+								  });
+								  $('#preview2').css({
+									width: Math.round(200) + 'px',
+									height: Math.round(200) + 'px',
+									marginLeft: '-' + Math.round(0) + 'px',
+									marginTop: '-' + Math.round(0) + 'px'
+								  });
+								//alert($("#avatar").attr("src"));
+								
+								$('#avatar').Jcrop({
+									aspectRatio: 1,
+									setSelect: [ 0, 0, 100, 100 ],
+									onChange: updateCoords,
+									onSelect: updateCoords
+								},
+								function(){
+									// Use the API to get the real image size
+									var bounds = this.getBounds();
+									boundx = bounds[0];
+									boundy = bounds[1];
+									// Store the API in the jcrop_api variable
+									jcrop_api = this;
+								  }
+								);
+                        }
+                        else
+                        {
+                                alert(info.info);
+                        }
+	} 
 	 function updateCoords(c)
 			{
 				$('#x').val(c.x);
@@ -93,8 +143,11 @@ $(function(){
 				}
 			};
 
-            $("#avatar_file").change(function(){                      
-                     $("#uploadForm").ajaxForm(options);
+            $("#avatar_file").change(function(){
+				$('#uploadForm').submit(function() { 
+				$(this).ajaxSubmit(options); 
+				return false; 
+			 }); 
             });  
 
 });
