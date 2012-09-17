@@ -67,19 +67,11 @@ $(function(){
 		url:        '/User/avatarUpload2',
 		success:	showResponse};
 	function showResponse(responseText, statusText, xhr, $form) {
-			
-			//alert(responseText);
-			//alert(statusText);
-			alert(xhr);
-			var data;
-			//var info = eval('(' + responseText + ')');
-			alert(responseText.info);
-
                         if(statusText=='success')
                         {
 								$('#orig_avatar_box').hide();
 								$('#new_avatar_box').show();
-                                var img_src = "/upload/avatar/"+info.info;
+                                var img_src = "/upload/avatar/"+responseText.info;
 								//alert(img_src);
                                 $("#avatar").attr("src",img_src);
 								$("#preview").attr("src",img_src);
@@ -117,7 +109,7 @@ $(function(){
                         }
                         else
                         {
-                                alert(info.info);
+                                alert(responseText.info);
                         }
 	} 
 	 function updateCoords(c)
