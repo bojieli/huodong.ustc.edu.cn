@@ -300,8 +300,7 @@ class UserAction extends PublicAction {
                         $avatar_name = "avatar_".$info[0][savename];
 						//$avatar_name = $info[0][savename];
                         D('User')->setAvatarTmp($_G[uid],$avatar_name);
-						echo "ik";
-                        $this->success("$avatar_name");
+                        //$this->success("$avatar_name");
                 }
         }
 	public function createAvatar()
