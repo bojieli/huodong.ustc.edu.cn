@@ -68,11 +68,13 @@ $(function(){
 		success:	showResponse};
 	function showResponse(responseText, statusText, xhr, $form) {
 			
-			alert(responseText);
-			alert(statusText);
+			//alert(responseText);
+			//alert(statusText);
 			alert(xhr);
 			var data;
-			var info = eval('(' + data.responseText + ')');
+			var info = eval('(' + responseText + ')');
+			alert(info);
+
                         if(statusText=='success')
                         {
 								$('#orig_avatar_box').hide();
