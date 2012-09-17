@@ -294,17 +294,22 @@ class UserAction extends PublicAction {
                 $upload->thumbPrefix = 'avatar_';
 
                 if(!$upload->upload()) {// 上传错误 提示错误信息 
-                        $this->error($upload->getErrorMsg());
+						$info = array (
+							"status" => 0,
+							"info" => $upload->getErrorMsg()
+						);
+						echo json_encode($info);
+                        //$this->error($upload->getErrorMsg());
                 }else{// 上传成功 获上传文件信息 
                         $info =  $upload->getUploadFileInfo();
                         $avatar_name = "avatar_".$info[0][savename];
 						//$avatar_name = $info[0][savename];
                         D('User')->setAvatarTmp($_G[uid],$avatar_name);
-						$fruits = array (
+						$info = array (
 							"status" => 1,
 							"info" => $avatar_name
 						);
-						echo json_encode($fruits);
+						echo json_encode($info);
 
                         //$this->success("$avatar_name");
                 }
