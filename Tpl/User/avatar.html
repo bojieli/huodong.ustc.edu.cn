@@ -26,7 +26,6 @@ $(function(){
 		type:		'POST',
 		uploadProgress: function(event, position, total, percentComplete) {
         var percentVal = percentComplete + '%';
-		alert(percentVal);
         bar.width(percentVal)
         percent.html(percentVal);
 		},
