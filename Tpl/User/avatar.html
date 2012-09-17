@@ -31,6 +31,7 @@ $(function(){
 		},
 		success:	showResponse};
 	function showResponse(responseText, statusText, xhr, $form) {
+						alert(responseText);
                         if(responseText.status=='1')
                         {		
 								$('#orig_avatar_box').hide();
