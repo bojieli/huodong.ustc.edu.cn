@@ -23,6 +23,7 @@ $(function(){
 	var optiones = {
 		dataType:	'json',
 		url:        '/User/avatarUpload2',
+		type:		'POST',
 		uploadProgress: function(event, position, total, percentComplete) {
         var percentVal = percentComplete + '%';
         bar.width(percentVal)
