@@ -300,6 +300,12 @@ class UserAction extends PublicAction {
                         $avatar_name = "avatar_".$info[0][savename];
 						//$avatar_name = $info[0][savename];
                         D('User')->setAvatarTmp($_G[uid],$avatar_name);
+						$fruits = array (
+							"status" => 1,
+							"info" => $avatar_name
+						);
+						echo json_encode($fruits);
+
                         //$this->success("$avatar_name");
                 }
         }
