@@ -24,7 +24,7 @@ $(function(){
 		dataType:	'json',
 		url:        '/User/avatarUpload2',
 		success:	showResponse};
-	function showResponse(responseText, statusText, xhr, $form) {
+	function showResponse(responseText, statusText, xhr) {
                         if(responseText.status=='1')
                         {
 								$('#orig_avatar_box').hide();
