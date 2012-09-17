@@ -65,8 +65,9 @@ $(function(){
 		target:     '#divToUpdate',
 		dataType:	'json',
 		url:        '/User/avatarUpload2',
-		success: function(data) {
+		success: function() {
 			alert("ok");
+			var data;
 			var info = eval('(' + data.responseText + ')');
                         if(info.status=='1')
                         {
