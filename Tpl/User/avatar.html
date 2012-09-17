@@ -16,6 +16,7 @@
 <script language="Javascript">
 $(function(){
 	$('#new_avatar_box').hide();
+	$('.progress').hide();
 	var jcrop_api, boundx, boundy;
 	var bar = $('.bar');
 	var percent = $('.percent');
@@ -24,7 +25,7 @@ $(function(){
 		dataType:	'json',
 		url:        '/User/avatarUpload2',
 		uploadProgress: function(event, position, total, percentComplete) {
-        var percentVal = percentComplete + '%';
+        var percentVal = 上传进度 + '%';
         bar.width(percentVal)
         percent.html(percentVal);
 		},
@@ -104,6 +105,7 @@ $(function(){
 				return false; 
 			});
             $("#avatar_file").change(function(){
+				$('.progress').show();
 				$("#uploadForm").submit(); 
             });  
 
