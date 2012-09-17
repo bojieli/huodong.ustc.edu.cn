@@ -23,8 +23,13 @@ $(function(){
 	var optiones = {
 		dataType:	'json',
 		url:        '/User/avatarUpload2',
+		uploadProgress: function(event, position, total, percentComplete) {
+        var percentVal = percentComplete + '%';
+        bar.width(percentVal)
+        percent.html(percentVal);
+		},
 		success:	showResponse};
-	function showResponse(responseText, statusText, xhr) {
+	function showResponse(responseText, statusText, xhr, $form) {
                         if(responseText.status=='1')
                         {
 								$('#orig_avatar_box').hide();
@@ -96,7 +101,7 @@ $(function(){
 			};
 
 			handle = $.browser.msie ? 'propertychange' : 'change';
-			alert(handle);
+			 $('#uploadForm').ajaxForm(optiones); 
 			 $('#uploadForm').submit(function() {
 				$(this).ajaxSubmit(optiones); 
 				return false; 
@@ -150,7 +155,7 @@ $(function(){
 							<div class="bar"></div >
 							<div class="percent">0%</div >
 						</div>
-						<!--<input class="avartar-store" style="margin-left:0px;position:absolute; z-index:200;"  type="submit" value="确定">-->
+						<input class="avartar-store" style="margin-left:0px;position:absolute; z-index:200;"  type="submit" value="确定">
 					</form>
 					
                     
