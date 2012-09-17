@@ -24,8 +24,10 @@ $(function(){
 		dataType:	'json',
 		url:        '/User/avatarUpload2',
 		type:		'POST',
-		uploadProgress: function() {
-       alert(ok);
+		uploadProgress: function(event, position, total, percentComplete) {
+        var percentVal = percentComplete + '%';
+        bar.width(percentVal)
+        percent.html(percentVal);
 		},
 		success:	showResponse};
 	function showResponse(responseText, statusText, xhr, $form) {
