@@ -8,14 +8,26 @@
 <link href="/static/css1.css" type="text/css" rel="stylesheet" />
 <link rel="stylesheet" href="/static/jquery.Jcrop.css" type="text/css" />
 <title>信息设置</title>
+<style>
+.progress { position:relative; width:400px; border: 1px solid #ddd; padding: 1px; border-radius: 3px; }
+.bar { background-color: #B4F5B4; width:0%; height:20px; border-radius: 3px; }
+.percent { position:absolute; display:inline-block; top:3px; left:48%; }
+</style>
 <script language="Javascript">
 $(function(){
 	$('#new_avatar_box').hide();
 	var jcrop_api, boundx, boundy;
+	var bar = $('.bar');
+	var percent = $('.percent');
 	var options = {
 		target:     '#divToUpdate',
 		dataType:	'json',
 		url:        '/User/avatarUpload2',
+		uploadProgress: function(event, position, total, percentComplete) {
+        var percentVal = percentComplete + '%';
+        bar.width(percentVal)
+        percent.html(percentVal);
+		},
 		success:	showResponse};
 	function showResponse(responseText, statusText, xhr, $form) {
                         if(responseText.status=='1')
@@ -130,6 +142,10 @@ $(function(){
 						<input type="file" id="avatar_file" style=" position:absolute; z-index:100;margin-left:-270px;font-size:90px;opacity:0;filter:alpha(opacity=0); margin-top:-5px;" name="avatar"  size="1">
 						更改头像				
 						</span><br/><br/><span style="color:#CCC;">支持jpg、jpeg、png 等格式</span><br/><br/>
+						<div class="progress">
+							<div class="bar"></div >
+							<div class="percent">0%</div >
+						</div>
 						<!--<input class="avartar-store" style="margin-left:0px;position:absolute; z-index:200;"  type="submit" value="确定">-->
 					</form>
 					
