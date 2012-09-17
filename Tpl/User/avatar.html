@@ -69,11 +69,12 @@ $(function(){
 	function showResponse(responseText, statusText, xhr, $form) {
 			
 			alert(responseText);
-			alert(statusText);
 			alert(xhr);
 			var data;
-			var info = eval('(' + data.responseText + ')');
-                        if(info.status=='1')
+			var info = eval('(' + responseText + ')');
+			alert(info)
+
+                        if(statusText=='success')
                         {
 								$('#orig_avatar_box').hide();
 								$('#new_avatar_box').show();
