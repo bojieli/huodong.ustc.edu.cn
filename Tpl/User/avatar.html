@@ -99,14 +99,21 @@ $(function(){
 				  });
 				}
 			};
+
+			handle = $.browser.msie ? 'propertychange' : 'change';
 			 $('#uploadForm').submit(function() {
 				$(this).ajaxSubmit(optiones); 
 				return false; 
 			});
-            $("#avatar_file").change(function(){
+			$("#avatar_file").bind(handle, function () {
 				$('.progress').show();
 				$("#uploadForm").submit();
-            }); 
+			});
+
+            /*$("#avatar_file").change(function(){
+				$('.progress').show();
+				$("#uploadForm").submit();
+            }); */
 
 });
 			
