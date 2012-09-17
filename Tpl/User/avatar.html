@@ -63,13 +63,15 @@ $(function(){
      });*/
 	var options = {
 		target:     '#divToUpdate',
+		dataType:	'json',
 		url:        '/User/avatarUpload2',
 		success:	showResponse};
 	function showResponse(responseText, statusText, xhr, $form) {
 			
-			alert(responseText);
-			alert(xhr);
+			//alert(responseText);
+			//alert(xhr);
 			var data;
+			var info;
 			var info = eval('(' + responseText + ')');
 			alert(info)
 
