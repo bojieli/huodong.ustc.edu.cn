@@ -24,14 +24,19 @@ $(function(){
 		target:     '#divToUpdate',
 		dataType:	'json',
 		url:        '/User/avatarUpload2',
+		uploadProgress: function(event, position, total, percentComplete) {
+        var percentVal = percentComplete + '%';
+        bar.width(percentVal)
+        percent.html(percentVal);
+		},
 		success:	showResponse};
 	function showResponse(responseText, statusText, xhr, $form) {
                         if(responseText.status=='1')
-                        {
+                        {		
 								$('#orig_avatar_box').hide();
 								$('#new_avatar_box').show();
                                 var img_src = "/upload/avatar/"+responseText.info;
-								//alert(img_src);
+								alert(img_src);
                                 $("#avatar").attr("src",img_src);
 								$("#preview").attr("src",img_src);
 								$("#preview2").attr("src",img_src);
