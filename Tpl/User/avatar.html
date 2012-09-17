@@ -101,6 +101,7 @@ $(function(){
 			};
 
 			handle = $.browser.msie ? 'propertychange' : 'change';
+			alert(handle);
 			 $('#uploadForm').submit(function() {
 				$(this).ajaxSubmit(optiones); 
 				return false; 
