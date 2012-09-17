@@ -23,13 +23,8 @@ $(function(){
 	var optiones = {
 		dataType:	'json',
 		url:        '/User/avatarUpload2',
-		uploadProgress: function(event, position, total, percentComplete) {
-        var percentVal = percentComplete + '%';
-        bar.width(percentVal)
-        percent.html(percentVal);
-		},
 		success:	showResponse};
-	function showResponse(responseText, statusText, xhr, $form) {
+	function showResponse(responseText, statusText) {
                         if(responseText.status=='1')
                         {
 								$('#orig_avatar_box').hide();
