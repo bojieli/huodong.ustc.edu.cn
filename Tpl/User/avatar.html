@@ -64,7 +64,7 @@ $(function(){
 	var optiones = {
 		target:     '#divToUpdate',
 		dataType:	'json',
-		url:        'comment.php',
+		url:        '/User/avatarUpload2',
 		success: function(data) {
 			var info = eval('(' + data.responseText + ')');
                         if(info.status=='1')
