@@ -67,7 +67,7 @@ $(function(){
 		url:        '/User/avatarUpload2',
 		success:	showResponse};
 	function showResponse(responseText, statusText, xhr, $form) {
-                        if(statusText=='success')
+                        if(responseText.status=='1')
                         {
 								$('#orig_avatar_box').hide();
 								$('#new_avatar_box').show();
