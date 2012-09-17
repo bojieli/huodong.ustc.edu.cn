@@ -289,7 +289,7 @@ class UserAction extends PublicAction {
                 $upload->saveRule = D("User")->setAvatarName();
                 $upload->thumb = true;
                 $upload->thumbMaxWidth = "400";
-                $upload->thumbMaxHeight = "400";
+                $upload->thumbMaxHeight = "1000";
                 $upload->thumbRemoveOrigin = true;
                 $upload->thumbPrefix = 'avatar_';
 
