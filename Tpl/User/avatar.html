@@ -12,55 +12,6 @@
 $(function(){
 	$('#new_avatar_box').hide();
 	var jcrop_api, boundx, boundy;
-	/*$('#uploadForm').ajaxForm({
-                complete: function(data) {
-                        var info = eval('(' + data.responseText + ')');
-                        if(info.status=='1')
-                        {
-								$('#orig_avatar_box').hide();
-								$('#new_avatar_box').show();
-                                var img_src = "/upload/avatar/"+info.info;
-								//alert(img_src);
-                                $("#avatar").attr("src",img_src);
-								$("#preview").attr("src",img_src);
-								$("#preview2").attr("src",img_src);
-
-								  $('#preview').css({
-									width: Math.round(800) + 'px',
-									height: Math.round(800) + 'px',
-									marginLeft: '-' + Math.round(0) + 'px',
-									marginTop: '-' + Math.round(0) + 'px'
-								  });
-								  $('#preview2').css({
-									width: Math.round(200) + 'px',
-									height: Math.round(200) + 'px',
-									marginLeft: '-' + Math.round(0) + 'px',
-									marginTop: '-' + Math.round(0) + 'px'
-								  });
-								//alert($("#avatar").attr("src"));
-								
-								$('#avatar').Jcrop({
-									aspectRatio: 1,
-									setSelect: [ 0, 0, 100, 100 ],
-									onChange: updateCoords,
-									onSelect: updateCoords
-								},
-								function(){
-									// Use the API to get the real image size
-									var bounds = this.getBounds();
-									boundx = bounds[0];
-									boundy = bounds[1];
-									// Store the API in the jcrop_api variable
-									jcrop_api = this;
-								  }
-								);
-                        }
-                        else
-                        {
-                                alert(info.info);
-                        }
-                }
-     });*/
 	var options = {
 		target:     '#divToUpdate',
 		dataType:	'json',
@@ -194,7 +145,7 @@ $(function(){
     
  <!--点击上传之后，显示修改头像-->       
     <div id ="new_avatar_box" class="avartar-contentbox">
-    	<p>调整虚线框截取满意的头像--或者--<a href="">重新上传</a></p>
+    	<p>调整虚线框截取满意的头像--或者--<a href="/User/avatar">重新上传</a></p>
         <table border="0" cellpadding="0" cellspacing="0" style="margin-top:15px;">
         	<tr>
             	<td align="center" valign="top" class="avartar-lefttd"> <img id="avatar"  width="400px" src="/{$user_info.big_avatar}"  /></td>
