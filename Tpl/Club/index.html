@@ -45,12 +45,12 @@
 
 	$(document).ready(function(){
 		$("ul li").setwaterfall();
-		loadmore(8);
+		loadmore(10);
 		$(window).scroll(function () {
 			var clienth = document.documentElement.clientHeight;
 			var scrollh = document.documentElement.scrollHeight;
 			var scrollt = document.documentElement.scrollTop + document.body.scrollTop;
-			if (clienth + scrollt + 200 > scrollh) {
+			if ((clienth + scrollt + 10 > lowestcollheight) || (clienth + scrollt + 250 > scrollh) > scrollh) {
 				loadmore(4);
 			}
 		});
