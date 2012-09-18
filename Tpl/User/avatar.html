@@ -33,6 +33,7 @@ $(function(){
 	function showResponse(responseText, statusText, xhr, $form) {
                         if(responseText.status=='1')
                         {
+								alert("ok");
 								$('#orig_avatar_box').hide();
 								$('#new_avatar_box').show();
                                 var img_src = "/upload/avatar/"+responseText.info;
