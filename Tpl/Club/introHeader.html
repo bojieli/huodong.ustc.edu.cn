@@ -33,7 +33,7 @@
 		  <if condition="$_G['uid'] == 0">
 		    <a href="/User/register" style="color:#F00;">注册</a> 或 <a href="/User/login" style="color:#F00;">登录</a> 后才能加入社团
 		  <else />
-	    	    <a href="/Club/join?gid={$club.gid}" style="color:#F00;“>您还未加入，点击申请加入</a>
+	    	    <a href="/Club/join?gid={$club.gid}" style="color:#F00;">您还未加入，点击申请加入</a>
 		  </if>
 	    </switch>
 	    <a style="margin-left:50px;" href="/Club/manage?gid={$club.gid}">查看及管理会员</a>
