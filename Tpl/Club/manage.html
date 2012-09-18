@@ -148,11 +148,34 @@ $showPager = function() use($club) {
         </div><!--stcy left-->
         
         <div class="stcyright">
+        <notempty name="club.ismanager">
+        	<table cellpadding="0" cellspacing="0" border="0">
+            	<tr>
+                	<td align="left"><a target="_blank" href="/Club/sendEmail?gid={$club.gid}">群邮件</a></td>
+                    <td align="left"><a href="" style="color:#CCC;">群短信</a></td>
+                </tr>
+                <tr>
+                	<td align="left"><a>会员列表</a></td>
+                    <td align="left"><a>通讯录</a></td>
+                </tr>
+                <tr>
+                	<td align="left"><a>导出为excel会员表</a></td>
+                    <td align="left"><a>导出为飞信群联系方</a></td>
+                </tr>
+                <tr>
+                	<td align="left"><a>导出为群邮件地址</a></td>
+                    <td align="left"><a>导出为邮件联系人</a></td>
+                </tr>
+            </table>
+            
+            
+         </notempty>   
+        
             <div class="sttttt">待审核会员：</div>
 	    <volist name="inactive" id="member">
 	    <p>{$member.realname} {$member.dept} {$member.grade}级 {$club.isadmin}
 	    <notempty name="club.ismanager">
-	    <a href="/Club/joinVerify?gid={$club.gid}&uid={$member.uid}">允许</a> <a href="/Club/joinDeny?gid={$club.gid}&uid={$member.uid}">忽略</a>
+	    <a href="/Club/joinVerify?gid={$club.gid}&uid={$member.uid}" class="stfjdel">允许</a> / <a href="/Club/joinDeny?gid={$club.gid}&uid={$member.uid}" class="stfjdel">忽略</a>
 	    </notempty>
 	    </p>
             </volist>
