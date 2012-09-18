@@ -249,7 +249,7 @@ class UserAction extends PublicAction {
                 $this->success('帐号激活成功，现在跳转到登录页面……');
 	}
 
-        public function avatarUpload(){
+       /* public function avatarUpload(){
                 global $_G;
                 if(empty($_G['uid'])) {
                         $this->error('没有登录');
@@ -275,8 +275,8 @@ class UserAction extends PublicAction {
                         D('User')->setAvatar($_G[uid],$avatar_name);
                         $this->success("$avatar_name");
                 }
-        }
-		public function avatarUpload2(){
+        }*/
+		public function avatarUpload(){
                 global $_G;
                 if(empty($_G['uid'])) {
                         $this->error('没有登录');

@@ -28,26 +28,6 @@ $(function(){
 		},"json");
 	});
 
-        $("#avatar_div").hide();
-        $("#edit_avatar").click(function(){
-                $("#avatar_div").show();
-        });
-        $('#uploadForm').ajaxForm({
-                complete: function(data) {
-                        var info = eval('(' + data.responseText + ')');
-                        if(info.status=='1')
-                        {
-                                var img_src = "/{$avatar_path}"+info.info;
-                                var img_src_small = "/{$avatar_path}small_"+info.info;
-                                $("#avatar").attr("src",img_src);
-                                $("#avatar_small").attr("src",img_src_small);
-                        }
-                        else
-                        {
-                                alert(info.info);
-                        }
-                }
-        });
 });
 </script>
 </head>
@@ -62,13 +42,8 @@ $(function(){
                 	<td width="220" align="center" valign="top">
 			   <img class="stglimagesize" id="avatar" src="/{$user_info.big_avatar}" />
                            <if condition="!empty($user_info['uid']) && $user_info['uid'] == CURRENT_USER">
-			   <br/><a class="stgleximage" id="edit_avatar" href="#">更改头像</a>                        
+			   <br/><a class="stgleximage" id="edit_avatar" href="/User/avatar">更改头像</a>                        
 			   </if>
-                          <div id="avatar_div">
-                               <form  method="post" action="/User/avatarUpload" enctype="multipart/form-data" id="uploadForm" >
-                               <input type="file" name="avatar"><input type="submit" value="保存">
-                               </form>
-                          </div>
                     </td>                    
                     <td>
 						<div id="info1">
