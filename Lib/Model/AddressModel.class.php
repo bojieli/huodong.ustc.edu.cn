@@ -4,7 +4,7 @@ class AddressModel extends Model {
 	public function createAddress($gid,$sid)
 	{
 		$cond=array('gid'=>$gid,'sid'=>$sid);
-		$members = M('User_group')->field('uid')->where($cond)->order('priv desc')->select();
+		$members = M('User_group')->field('uid')->where($cond)->order('priv asc')->select();
 		echo M('User_group')->getLastSql();
 		$members_info = array();
 		dump($members);
