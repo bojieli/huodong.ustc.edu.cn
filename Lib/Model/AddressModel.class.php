@@ -1,5 +1,6 @@
 <?php
 class AddressModel extends Model {
+	protected $tableName = 'user_group';
 	public function createAddress($gid,$sid)
 	{
 		$cond=array('gid'=>$gid,'sid'=>$sid);
