@@ -33,7 +33,6 @@ $(function(){
 	function showResponse(responseText, statusText, xhr, $form) {
                         if(responseText.status=='1')
                         {
-								alert("ok");
 								$('#orig_avatar_box').hide();
 								$('#new_avatar_box').show();
                                 var img_src = "/upload/avatar/"+responseText.info;
@@ -102,13 +101,14 @@ $(function(){
 				  });
 				}
 			};
-
+			alert("ok");
 			handle = $.browser.msie ? 'propertychange' : 'change';
 			 //$('#uploadForm').ajaxForm(optiones); 
 			$('#uploadForm').submit(function() {
 				$(this).ajaxSubmit(optiones); 
 				return false; 
 			});
+			alert("ok");
 			$("#avatar_file").bind(handle, function () {
 				if(!$.browser.msie)
 				{	
