@@ -402,21 +402,24 @@ class ClubAction extends PublicAction {
 			$this->error("您所查找的社团不存在");
 		return $_REQUEST['gid'];
 	}
-	public function test()
+	public function createAddress()
 	{
-		$gid = 2;
+		$gid = $this->getInputGid();
 		$sid = 1;
+		if ($this->isManager($gid)) {
+			$this->error("您没有权限");
+		}
 		$address = D('Address');
 		$members = $address->createAddress($gid,$sid);
-		$filename="/download/grade_gather.csv";
+		$filename="download/address".$gid.".csv";
 		$file=fopen($filename,"w");
-		fwrite($file,"姓名,学号,职务,学历,入学年级,email,手机,主页");
 		if($file){
-			fwrite($file,"姓名,学号,职务,学历,入学年级,email,手机,主页");
+			fwrite($file,iconv( "UTF-8", "gbk" ,"姓名,学号,职务,学历,入学年级,email,手机,主页"));
 			fwrite($file,"\r\n");
 			foreach($members as $key => $value)
 			{
-				fwrite($file,"$value[realname],$value[student_no],$value[title],$value[grade],$value[grade],$value[email],$value[telephone],$value[homepage]");
+				$content = iconv( "UTF-8", "gbk" , "$value[realname],$value[student_no],$value[title],$value[education],$value[grade],$value[email],$value[telephone],$value[homepage]");
+				fwrite($file,"$content");
 				fwrite($file, " \r\n");
 			}
 		}
