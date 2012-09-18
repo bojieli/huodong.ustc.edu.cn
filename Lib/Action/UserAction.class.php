@@ -284,7 +284,7 @@ class UserAction extends PublicAction {
                 import("ORG.Net.UploadFile");
                 $upload = new UploadFile();// 实例化上传类 
                 $upload->maxSize  = 3145728 ;// 设置附件上传大小 
-                $upload->allowExts  = array('jpg', 'gif', 'png', 'jpeg','bmp');
+                $upload->allowExts  = array('jpg', 'gif', 'png', 'jpeg');
                 $upload->savePath =  './upload/avatar/';// 设置附件
                 $upload->saveRule = D("User")->setAvatarName();
                 $upload->thumb = true;
