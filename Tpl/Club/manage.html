@@ -124,17 +124,17 @@ $showPager = function() use($club) {
 		    <if condition="$member[priv] == 'admin' || ($member[priv] == 'manager' && $club[isin]) || $club[ismanager]">
 		         <notempty name="club.ismanager">
 		            <notempty name="member.student_no">
-			    <strong>学号:</strong> {$member.student_no}
+			    <span style="color:#CCC;">学号:</span> {$member.student_no}
 			    </notempty>
 			 </notempty>
 			    <notempty name="member.qq">
-			    <strong>QQ:</strong> {$member.qq}
+			    <span style="color:#CCC;"> QQ:</span> {$member.qq}
 			    </notempty>
 			    <notempty name="member.telephone">
-			    <strong>电话:</strong> {$member.telephone}
+			    <span style="color:#CCC;"> 电话:</span> {$member.telephone}
 			    </notempty>
 			    <notempty name="member.email">
-			    <strong>Email:</strong> {$member.email}
+			    <span style="color:#CCC;"> Email:</span> {$member.email}
 			    </notempty>
 		    </if>
 		    
