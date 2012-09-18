@@ -408,7 +408,8 @@ class ClubAction extends PublicAction {
 		$sid = 1;
 		$address = D('Address');
 		$members = $address->createAddress($gid,$sid);
-		$file=fopen("/download/grade_gather.csv","w");
+		$filename="/download/grade_gather.csv";
+		$file=fopen($filename,"w");
 		if($file){
 			fwrite($file,"姓名,学号,职务,学历,入学年级,email,手机,主页");
 			fwrite($file,"\r\n");
@@ -422,8 +423,8 @@ class ClubAction extends PublicAction {
 		header("Cache-Control:must-revalidate,post-check=0,pre-check=0");  
 		header("Content-Description:File Transfer");  
 		header ("Content-type: application/octet-stream"); //定义数据类型
-		header ("Content-Length: " . filesize ($file));  
-		header("Content-Disposition: attachment; filename=".basename($file)); 
-		readfile($file);
+		header ("Content-Length: " . filesize ($filename));  
+		header("Content-Disposition: attachment; filename=".basename($filename)); 
+		readfile($filename);
 	}
 }
