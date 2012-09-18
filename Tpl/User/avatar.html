@@ -110,7 +110,7 @@ $(function(){
 			});
 			alert("ok");
 			$("#loading").html('图片上传中<img src="/static/images/loading.gif" />');
-			$("#avatar_file").bind(handle, function () {
+			$("#avatar_file").bind('change', function () {
 				if(!$.browser.msie)
 				{	
 					$('.progress').show();
