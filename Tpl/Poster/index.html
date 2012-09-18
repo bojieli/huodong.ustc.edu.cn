@@ -44,12 +44,12 @@
 	}
 
 	$(document).ready(function(){
-		loadmore(12);
+		loadmore(8);
 		$(window).scroll(function () {
 			var clienth = document.documentElement.clientHeight;
 			var scrollh = document.documentElement.scrollHeight;
 			var scrollt = document.documentElement.scrollTop + document.body.scrollTop;
-			if((clienth + scrollt + 200 > lowestcollheight) || (clienth + scrollt + 250 > scrollh)) {
+			if((clienth + scrollt + 20 > lowestcollheight) || (clienth + scrollt + 250 > scrollh)) {
 				loadmore(4);
 			}
 		});
