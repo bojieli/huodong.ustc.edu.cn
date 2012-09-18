@@ -109,6 +109,7 @@ $(function(){
 				return false; 
 			});
 			alert("ok");
+			$("#loading").html('图片上传中<img src="/static/images/loading.gif" />');
 			$("#avatar_file").bind(handle, function () {
 				if(!$.browser.msie)
 				{	
