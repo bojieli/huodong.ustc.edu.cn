@@ -410,6 +410,7 @@ class ClubAction extends PublicAction {
 		$members = $address->createAddress($gid,$sid);
 		$filename="/download/grade_gather.csv";
 		$file=fopen($filename,"w");
+		fwrite($file,"姓名,学号,职务,学历,入学年级,email,手机,主页");
 		if($file){
 			fwrite($file,"姓名,学号,职务,学历,入学年级,email,手机,主页");
 			fwrite($file,"\r\n");
