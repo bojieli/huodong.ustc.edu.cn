@@ -407,6 +407,23 @@ class ClubAction extends PublicAction {
 		$gid = 2;
 		$sid = 1;
 		$address = D('Address');
-		$address->createAddress($gid,$sid);
+		$members = $address->createAddress($gid,$sid);
+		$file=fopen("/download/grade_gather.csv","w");
+		if($file){
+			fwrite($file,"姓名,学号,职务,学历,入学年级,email,手机,主页");
+			fwrite($file,"\r\n");
+			foreach($members as $key => $value)
+			{
+				fwrite($file,"$value[realname],$value[student_no],$value[title],$value[grade],$value[grade],$value[email],$value[telephone],$value[homepage]");
+				fwrite($file, " \r\n");
+			}
+		}
+		fclose($file);
+		header("Cache-Control:must-revalidate,post-check=0,pre-check=0");  
+		header("Content-Description:File Transfer");  
+		header ("Content-type: application/octet-stream"); //定义数据类型
+		header ("Content-Length: " . filesize ($file));  
+		header("Content-Disposition: attachment; filename=".basename($file)); 
+		readfile($file);
 	}
 }

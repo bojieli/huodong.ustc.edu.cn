@@ -5,16 +5,14 @@ class AddressModel extends Model {
 	{
 		$cond=array('gid'=>$gid,'sid'=>$sid);
 		$members = M('User_group')->field('uid,title')->where($cond)->order('priv asc')->select();
-		echo M('User_group')->getLastSql();
 		$members_info = array();
-		dump($members);
 		foreach($members as $m_id)
 		{
 			 $info = $this->addressInfo($m_id[uid]);
 			 $info['title'] = $m_id[title];
 			 $members_info[] = $info;
 		}
-		dump($members_info);
+		return $members_info;
 	}
 	public function addressInfo($uid)
 	{
