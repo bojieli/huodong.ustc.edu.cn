@@ -406,9 +406,7 @@ class ClubAction extends PublicAction {
 	{
 		$gid = $this->getInputGid();
 		$sid = 1;
-		if ($this->isManager($gid)) {
-			$this->error("您没有权限");
-		}
+		
 		$address = D('Address');
 		$members = $address->createAddress($gid,$sid);
 		$filename="download/address".$gid.".csv";
