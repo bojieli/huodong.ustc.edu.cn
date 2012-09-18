@@ -10,7 +10,7 @@ class AddressModel extends Model {
 		dump($members);
 		foreach($members as $m_id)
 		{
-			 $info = $this->addressInfo($m_id);
+			 $info = $this->addressInfo($m_id[uid]);
 			 $members_info = $info;
 		}
 		dump($members_info);
