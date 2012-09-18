@@ -49,7 +49,7 @@
 			var clienth = document.documentElement.clientHeight;
 			var scrollh = document.documentElement.scrollHeight;
 			var scrollt = document.documentElement.scrollTop + document.body.scrollTop;
-			if (clienth + scrollt + 400 > scrollh) {
+			while(clienth + scrollt + 400 > scrollh) {
 				loadmore(4);
 			}
 		});
