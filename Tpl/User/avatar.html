@@ -101,14 +101,13 @@ $(function(){
 				  });
 				}
 			};
-			alert("ok");
-			handle = $.browser.msie ? 'propertychange' : 'change';
+
 			 //$('#uploadForm').ajaxForm(optiones); 
 			$('#uploadForm').submit(function() {
 				$(this).ajaxSubmit(optiones); 
 				return false; 
 			});
-			alert("ok");
+
 			$("#loading").html('图片上传中<img src="/static/images/loading.gif" />');
 			$("#avatar_file").bind('change', function () {
 				if(!$.browser.msie)
