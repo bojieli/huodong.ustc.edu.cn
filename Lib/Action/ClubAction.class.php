@@ -402,4 +402,11 @@ class ClubAction extends PublicAction {
 			$this->error("您所查找的社团不存在");
 		return $_REQUEST['gid'];
 	}
+	public function test()
+	{
+		$gid = 2;
+		$sid = 1;
+		$address = D('Address');
+		$address->createAddress($gid,$sid);
+	}
 }
