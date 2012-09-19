@@ -404,6 +404,12 @@ class ClubAction extends PublicAction {
 	}
 	public function address()
 	{
+		global $_G;
+		if(empty($_G[uid]))
+		{
+			$this->assign('jumpUrl','/User/login');
+			$this->error("您尚未登录");
+		}
 		$gid = $this->getInputGid();
 		$sid = 1;
 		if(!$this->isManager($gid)) {
