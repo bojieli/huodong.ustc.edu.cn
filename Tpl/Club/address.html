@@ -11,28 +11,9 @@
 <body>	
 <include file="Public:headnav" />
 
-<notempty name="club.ismanager">
-<?php
-$showPager = function() use($club) {
-	if ($club['ismanager'])
-	if ($club['memberCount'] > 20) {
-?>
-<div class="pager">
-<?php	$num = floor(($club['memberCount'] + 19) / 20);
-	for ($page=1; $page<=$num; $page++) { ?>
-<a href="/Club/manage?gid=<?=$club['gid']?>&start=<?=($page-1)*20?>"><?=$page?></a>
-<?php	} ?>
-</div>
-<?php
-	}
-};
-?>
-</notempty>
-
 <div id="stmain">
-<include file="introHeaderin" />
 	<div class="stcon1">
-    	<div class="stcylb">通讯录</div>
+    	<div class="stcylb">{$club.name}-通讯录</div>
 	</div>
 	<table>
 	<tr>
