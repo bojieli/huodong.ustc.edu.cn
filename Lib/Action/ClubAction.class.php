@@ -409,7 +409,7 @@ class ClubAction extends PublicAction {
 		
 		$address = D('Address');
 		$members = $address->createAddress($gid,$sid);
-		$filename="address".$gid.".csv";
+		$filename="./download/address".$gid.".csv";
 		$file=fopen($filename,"w");
 		if($file){
 			fwrite($file,iconv( "UTF-8", "gbk" ,"姓名,学号,职务,学历,入学年级,email,手机,主页"));
