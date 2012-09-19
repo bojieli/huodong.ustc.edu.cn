@@ -175,6 +175,7 @@ class UserModel extends Model {
 	}
 	public function getInfo($uid){
 		$user_info = $this->find($uid);
+		$user_info[student_no] = strtoupper($user_info[student_no]);
 		$user_info[avatar] = $this->getAvatar($uid);
 		$user_info[small_avatar] = $this->getAvatar($uid, "small");
 		$user_info[big_avatar] = $this->getAvatar($uid, "big");
