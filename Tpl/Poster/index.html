@@ -53,13 +53,13 @@
 				loadmore(4);
 			}			
 		});
-		$(".ding").live('hover', function() { 
-			function () {
-				$(this).addClass("dinghover");
-			}, 
-			function () {
-				$(this).removeClass("dinghover");
-			}
+		$(".ding").live({
+		mouseenter:function(){
+			$(this).addClass("dinghover");
+		},
+		mouseleave:function(){
+			$(this).removeClass("dinghover");
+		}
 		});
 		
 	});
