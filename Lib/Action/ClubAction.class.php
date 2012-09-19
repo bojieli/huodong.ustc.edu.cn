@@ -402,6 +402,18 @@ class ClubAction extends PublicAction {
 			$this->error("您所查找的社团不存在");
 		return $_REQUEST['gid'];
 	}
+	public function address()
+	{
+		$gid = $this->getInputGid();
+		$sid = 1;
+		if(!$this->isManager($gid)) {
+			$this->error("只有会长和部长才有权限查看通讯录");
+		}
+		$address = D('Address');
+		$members = $address->createAddress($gid,$sid);
+		$this->assign("members", $members);
+		$this->display();
+	}
 	public function createAddress()
 	{
 		$gid = $this->getInputGid();
