@@ -51,11 +51,21 @@
 			var scrollt = document.documentElement.scrollTop + document.body.scrollTop;
 			if((clienth + scrollt + 20 > lowestcollheight) || (clienth + scrollt + 250 > scrollh)) {
 				loadmore(4);
-			}
+			}			
 		});
+		$(".ding").live({
+		mouseenter:function(){
+			$(this).addClass("dinghover");
+		},
+		mouseleave:function(){
+			$(this).removeClass("dinghover");
+		}
+		});
+		
 	});
 -->
 	</script>
+
 </head>
 
 <body>
@@ -67,18 +77,7 @@ window.onresize=function(){
 }
 //-->
 </script>
-<script type="text/javascript">
-<!--
-$(document).ready(function(){
-		$(".ding").hover(function(){
-				$(this).addClass("dinghover");
-						 },
-				function(){$(this).removeClass("dinghover");}
-				);
-});
 
-//-->
-</script>
 
 
 <include file="Public:headnav" />
