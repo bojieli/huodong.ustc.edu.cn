@@ -412,11 +412,14 @@ class ClubAction extends PublicAction {
 		}
 		$gid = $this->getInputGid();
 		$sid = 1;
+		$club = $this->getData($gid);
+		dump($club);
 		if(!$this->isManager($gid)) {
 			$this->error("只有会长和部长才有权限查看通讯录");
 		}
 		$address = D('Address');
 		$members = $address->createAddress($gid,$sid);
+		$this->assign("club", $club);
 		$this->assign("members", $members);
 		$this->display();
 	}
