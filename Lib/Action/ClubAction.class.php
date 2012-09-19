@@ -413,7 +413,6 @@ class ClubAction extends PublicAction {
 		$gid = $this->getInputGid();
 		$sid = 1;
 		$club = $this->getData($gid);
-		dump($club);
 		if(!$this->isManager($gid)) {
 			$this->error("只有会长和部长才有权限查看通讯录");
 		}
