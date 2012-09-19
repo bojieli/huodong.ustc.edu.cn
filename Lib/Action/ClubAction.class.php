@@ -440,11 +440,11 @@ class ClubAction extends PublicAction {
 		$filename="./upload/address_fetion".$gid.".csv";
 		$file=fopen($filename,"w");
 		if($file){
-			fwrite($file,iconv( "UTF-8", "gbk" ,"姓名,手机,电子邮件"));
+			fwrite($file,iconv( "UTF-8", "gbk" ,"MobileNo,Name"));
 			fwrite($file,"\r\n");
 			foreach($members as $key => $value)
 			{
-				$content = iconv( "UTF-8", "gbk" , "$value[realname],$value[telephone],$value[email]");
+				$content = iconv( "UTF-8", "gbk" , "$value[telephone],$value[realname]");
 				fwrite($file,"$content");
 				fwrite($file, " \r\n");
 			}
