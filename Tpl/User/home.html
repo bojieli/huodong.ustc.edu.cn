@@ -68,9 +68,14 @@ $(function(){
                              <tr>
                            		<td align="left" colspan="2">入学年份：{$user_info.grade}</td>
                              </tr>
-                             <tr>
-                           		<td align="left" colspan="2">&nbsp;</td>
+							 <if condition="!empty($user_info['uid']) && $user_info['uid'] == CURRENT_USER">
+							 <tr>
+                           		<td align="left" colspan="2">手机：{$user_info.telephone}</td>
                              </tr>
+                             <tr>
+                           		<td align="left" colspan="2">QQ：{$user_info.qq}</td>
+                             </tr>
+							 </if>
                              <tr>
                            		<td align="left" colspan="2">个人主页： <a class="lianjie11" href="{$user_info.homepage}">{$user_info.homepage}</a></td>
                              </tr>
