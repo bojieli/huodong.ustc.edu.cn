@@ -424,9 +424,17 @@ class ClubAction extends PublicAction {
 	}
 	public function createAddress()
 	{
+		global $_G;
 		$gid = $this->getInputGid();
 		$sid = 1;
-		
+		if(empty($_G[uid]))
+		{
+			$this->assign('jumpUrl','/User/login');
+			$this->error("您尚未登录");
+		}
+		if(!$this->isManager($gid)) {
+			$this->error("只有会长和部长才有权限查看通讯录");
+		}
 		$address = D('Address');
 		$members = $address->createAddress($gid,$sid);
 		$filename="./upload/address".$gid.".csv";
