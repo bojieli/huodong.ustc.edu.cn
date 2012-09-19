@@ -438,14 +438,14 @@ class ClubAction extends PublicAction {
 		}
 		$address = D('Address');
 		$members = $address->createAddress($gid,$sid);
-		$email = '';
+		$email_all = '';
 		dump($members);
 		foreach($members as $key => $value)
 		{
 			$email.='"'.$value[realname].'"<'.$value[email].'>, ';
 		}
 		$this->assign("club", $club);
-		$this->assign("email", $email);
+		$this->assign("email", $email_all);
 		$this->display();
 	}
 	public function createAddressFetion()
