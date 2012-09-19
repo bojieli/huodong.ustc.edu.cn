@@ -422,6 +422,31 @@ class ClubAction extends PublicAction {
 		$this->assign("members", $members);
 		$this->display();
 	}
+	public function emailAddress()
+	{
+		global $_G;
+		if(empty($_G[uid]))
+		{
+			$this->assign('jumpUrl','/User/login');
+			$this->error("您尚未登录");
+		}
+		$gid = $this->getInputGid();
+		$sid = 1;
+		$club = $this->getData($gid);
+		if(!$this->isManager($gid)) {
+			$this->error("只有会长和部长才有权限查看通讯录");
+		}
+		$address = D('Address');
+		$members = $address->createAddress($gid,$sid);
+		$email = '';
+		foreach($members as $key => $value)
+		{
+			$email.='"'.$value[realname].'"<'.$value[email].'>, ';
+		}
+		$this->assign("club", $club);
+		$this->assign("email", $email);
+		$this->display();
+	}
 	public function createAddressFetion()
 	{
 		global $_G;
