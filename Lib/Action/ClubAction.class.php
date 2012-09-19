@@ -505,7 +505,6 @@ class ClubAction extends PublicAction {
 			fwrite($file,"\r\n");
 			foreach($members as $key => $value)
 			{
-				$value[student_no]=strtoupper($value[student_no]);
 				$content = iconv( "UTF-8", "gbk" , "$club[name],$value[realname],$value[email],$value[telephone]");
 				fwrite($file,"$content");
 				fwrite($file, " \r\n");
