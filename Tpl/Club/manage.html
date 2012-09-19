@@ -119,7 +119,11 @@ $showPager = function() use($club) {
 
 		    </div>
                     <div class="stcyxx"><span class="<?=$member['gender'] ? 'boy' : 'girl' ?>name">{$member.realname}</span>：<br/>
-		    {$member.dept} {$member.grade}级 {$member.education}<br/>
+		    {$member.dept} {$member.grade}级 {$member.education} <notempty name="club.ismanager">
+		            <notempty name="member.student_no">
+			    学号: <span style="color:#999">{$member.student_no}</span>
+			    </notempty>
+			 </notempty><br/>
 
 		    <if condition="$member[priv] == 'admin' || ($member[priv] == 'manager' && $club[isin]) || $club[ismanager]">
 		         <notempty name="club.ismanager">
