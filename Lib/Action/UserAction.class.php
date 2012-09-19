@@ -199,7 +199,7 @@ class UserAction extends PublicAction {
 		if($_SESSION['verify'] != md5($_POST['check'])) {
 			$this->error('验证码错误');
 		}
-
+		$_POST[student_no] = strtoupper($_POST[student_no]);
 		$_POST['sid'] = 1; // currently force USTC
 		$_POST['register_time']=time();
 		$_POST['status'] = 'inactive'; // need email activate
