@@ -190,7 +190,7 @@ class PosterAction extends PublicAction {
 		return '<li class="hide"><div class="celldiv">'.
 		($poster->thumbUrl() ? '<img class="haibao" height="'.$poster->thumbHeight().'" id="poster-'.$poster->id().'" src="'.$poster->thumbUrl().'" onclick="loadComments('.$poster->id().')" />' : '').
 		'<div class="detail"><div class="hot">'.
-		'<span class="ding" id="ding-'.$poster->id().'"><span class="iconding"></span>'.$poster->getRate().'</span></div>'.
+		'<span class="ding" id="ding-'.$poster->id().'"><span class="iconding"></span><span class="rate">'.$poster->getRate().'</span></span></div>'.
 		
 /*		热度：<span class="rate">'.$poster->getRate().'</span>'.
 		'<span class="ding" id="ding-'.$poster->id().'">顶</span></div>'.
