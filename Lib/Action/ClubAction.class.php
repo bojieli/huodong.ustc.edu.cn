@@ -457,7 +457,42 @@ class ClubAction extends PublicAction {
 		header("Content-Disposition: attachment; filename=".basename($filename)); 
 		readfile($filename);
 	}
-
+	public function createAddressEmailUSTC()
+	{
+		global $_G;
+		$gid = $this->getInputGid();
+		$sid = 1;
+		if(empty($_G[uid]))
+		{
+			$this->assign('jumpUrl','/User/login');
+			$this->error("您尚未登录");
+		}
+		if(!$this->isManager($gid)) {
+			$this->error("只有会长和部长才有权限查看通讯录");
+		}
+		$club = $this->getData($gid);
+		$address = D('Address');
+		$members = $address->createAddress($gid,$sid);
+		$filename="./upload/address_email_ustc".$gid.".csv";
+		$file=fopen($filename,"w");
+		if($file){
+			fwrite($file,iconv( "UTF-8", "gbk" ,"联系组,姓名,Email,手机"));
+			fwrite($file,"\r\n");
+			foreach($members as $key => $value)
+			{
+				$content = iconv( "UTF-8", "gbk" , "$club[name],$value[realname],$value[email],$value[telephone]");
+				fwrite($file,"$content");
+				fwrite($file, " \r\n");
+			}
+		}
+		fclose($file);
+		header("Cache-Control:must-revalidate,post-check=0,pre-check=0");  
+		header("Content-Description:File Transfer");  
+		header ("Content-type: application/octet-stream"); //定义数据类型
+		header ("Content-Length: " . filesize ($filename));  
+		header("Content-Disposition: attachment; filename=".basename($filename)); 
+		readfile($filename);
+	}
 	public function createAddress()
 	{
 		global $_G;
