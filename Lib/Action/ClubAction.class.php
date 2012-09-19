@@ -442,7 +442,7 @@ class ClubAction extends PublicAction {
 		dump($members);
 		foreach($members as $key => $value)
 		{
-			$email_all.='"'.$value[realname].'"'.$value[email].', ';
+			$email_all.='"'.$value[realname].'"'.htmlspecialchars('<').$value[email].htmlspecialchars('>').', ';
 		}
 		$this->assign("club", $club);
 		$this->assign("email", $email_all);
