@@ -106,6 +106,10 @@ class UserAction extends PublicAction {
 			$info['homepage'] = $_POST['homepage'];
 		elseif (preg_match("|([a-zA-Z0-9_-]+\.)+[\w-]+(:[0-9]+)?(/.*)?|", $_POST['homepage']))
 			$info['homepage'] = 'http://'.$_POST['homepage'];
+		elseif(empty($_POST['homepage']))
+		{
+			$info['homepage']='';
+		}
 		$info["uid"] = $_G['uid'];
 		
 		$user = D('User');
