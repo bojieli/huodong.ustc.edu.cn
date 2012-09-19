@@ -439,7 +439,6 @@ class ClubAction extends PublicAction {
 		$address = D('Address');
 		$members = $address->createAddress($gid,$sid);
 		$email_all = '';
-		dump($members);
 		foreach($members as $key => $value)
 		{
 			$email_all.='"'.$value[realname].'"'.htmlspecialchars('<').$value[email].htmlspecialchars('>').', ';
