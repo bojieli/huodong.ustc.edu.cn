@@ -95,8 +95,9 @@ class ClubAction extends PublicAction {
 		$club['logo'] = $this->uploadLogo();
 
 		$club['sid'] = 1; // force USTC
-		if (!is_numeric($club['owner']))
-			$club['owner'] = 1;
+
+		if (!is_numeric($club['owner']) || $club['owner'] <= 0) // key constraint
+			unset($club['owner']);
 
 		$model = M('Club');
 		$model->create($club);
@@ -294,8 +295,10 @@ class ClubAction extends PublicAction {
 			return null;
 		$club['school'] = M('School')->find($club['sid']);
 		
-		$club['admin'] = M('User')->find($club['owner']);
-		
+		if ($club['owner'] != NULL) {
+			$club['admin'] = M('User')->find($club['owner']);
+		}
+
 		if ($join) {
 			$club['managers'] = M()->query("SELECT * FROM ustc_user AS u, ustc_user_group AS g WHERE g.gid = '$gid' AND g.uid = u.uid AND g.priv = 'manager'");
 			$club['managerUids'] = [];
