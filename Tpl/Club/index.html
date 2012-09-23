@@ -84,7 +84,7 @@
 		];
 		alert($('input.autocomplete').attr('ajaxurl'));
 		$('input.autocomplete').autocomplete({
-		source: availableTags,
+		source: '/Club/ajaxAutocomplete',
 		select: function( event, ui ) {
 				
 			}
