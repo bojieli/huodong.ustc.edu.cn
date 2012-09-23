@@ -83,7 +83,7 @@
 			"Scheme"
 		];
 		$('input.autocomplete').autocomplete({
-				source: availableTags,
+				source: $(this).attr('ajaxurl'),
 				select: function (e,ui) {
 					$(this).val(ui.item.value).parents('form:eq(0)').find(':submit').trigger('click');
 				}
