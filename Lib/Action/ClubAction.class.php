@@ -81,14 +81,14 @@ class ClubAction extends PublicAction {
 	public function ajaxAutocomplete()
 	{
 
-		$condition_info['name']  =array('like',"%".$_GET['keyword']."%");
+		$condition_info['name']  =array('like',"%".$_GET['term']."%");
 		$res = M('Club')->field('name')->where($condition_info)->limit(10)->select();
 		if($res){$count=count($res);}
 		else $count = 0;
 		echo '[';
 		foreach($res as $key => $val)
 		{
-			echo "\"$val['name']\"";
+			echo "\"$val[name]\"";
 			if($i++<$count-1)
 			{
 				echo ",";
