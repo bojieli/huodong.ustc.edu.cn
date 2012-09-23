@@ -4,8 +4,20 @@
     <div class="">
       <label class="control-label" for="name"></label>
       <div class="controls">
-        <h2>添加社团</h2>
+        <h2>添加学生组织</h2>
 	<p></p>
+      </div>
+    </div>
+    <div class="control-group">
+      <label class="control-label" for="type">组织类型</label>
+      <div class="controls">
+        <select name="type" id="type">
+	  <option value="club" selected="selected">学生社团</option>
+	  <option value="studentUnion">学生会</option>
+	  <option value="gradUnion">研究生会</option>
+	  <option value="youngComm">团委直属</option>
+	  <option value="group">兴趣小组</option>
+	</select>
       </div>
     </div>
     <div class="control-group">
@@ -15,7 +27,7 @@
       </div>
     </div>
     <div class="control-group">
-      <label class="control-label" for="name">会长ID</label>
+      <label class="control-label" for="owner">会长ID</label>
       <div class="controls">
         <input type="text" class="input-xlarge" id="owner" name="owner" value="{$club.owner}" onKeyUp="if(this.value=='') $(this).parent().parent().addClass('error'); else $(this).parent().parent().removeClass('error');">
       </div>

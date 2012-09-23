@@ -1,9 +1,9 @@
 <div class="cont">
-    	<div class="kuang"><a href=""><div class="topbutton here2">热度排序</div></a><div class="topnum">78</div></div>
-    	<div class="kuang"><a href=""><div class="topbutton ">研究生会</div></a><div class="topnum">78</div></div>
-    	<div class="kuang"><a href=""><div class="topbutton">学生会</div></a><div class="topnum">{$stat.incoming}</div></div>
-    	<div class="kuang"><a href=""><div class="topbutton">学生社团</div></a><div class="topnum">{$stat.followed}</div></div>
-        <div class="kuang" style="width:60px;"><a href=""><div class="topbutton">其它</div></a><div class="topnum">{$stat.followed}</div></div>
+    	<div class="kuang"><a href="/Club/index"><div class="topbutton here2">热度排序</div></a><div class="topnum">{$clubstat.total}</div></div>
+    	<div class="kuang"><a href="/Club/index?filter=club"><div class="topbutton">学生社团</div></a><div class="topnum">{$clubstat.club}</div></div>
+    	<div class="kuang"><a href="/Club/index?filter=gradUnion"><div class="topbutton ">研究生会</div></a><div class="topnum">{$clubstat.gradUnion}</div></div>
+    	<div class="kuang"><a href="/Club/index?filter=studentUnion"><div class="topbutton">学生会</div></a><div class="topnum">{$clubstat.studentUnion}</div></div>
+        <div class="kuang" style="width:60px;"><a href="/Club/index?filter=other"><div class="topbutton">其它</div></a><div class="topnum">{$clubstat.other}</div></div>
     	<div class="kuang" style="width:230px;">
         	<input type="text" value="即将推出此功能" class="searchcss_out" onfocus="this.className='searchcss_on'" onblur="this.className='searchcss_out'">
             <div class="searchbutton" style="float:left;">搜索</div>

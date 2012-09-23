@@ -2,7 +2,8 @@
 class ClubAction extends PublicAction {
 	public function index() {
 		$this->headnav();
-		$this->assign('stat', D('Poster')->get_stat());
+		$this->assign('clubstat', D('Club')->get_stat());
+		$this->assign('filter', isset($_GET['filter']) ? $_GET['filter'] : 'all');
 		$this->display();
 	}
 
@@ -82,7 +83,7 @@ class ClubAction extends PublicAction {
 		if (!(D('User')->isSchoolAdmin(CURRENT_USER)))
 			$this->error("没有权限！");
 
-		$fields = ['name','owner','name_en','slogan','found_date','teacher','qq_group','contact','homepage','shortdesc'];
+		$fields = ['type','name','owner','name_en','slogan','found_date','teacher','qq_group','contact','homepage','shortdesc'];
 		foreach ($fields as $field) {
 			$club[$field] = htmlspecialchars($_POST[$field]);
 		}
@@ -330,8 +331,8 @@ class ClubAction extends PublicAction {
 	}
 
 	public function ajaxGet() {
-		list($start, $num) = $this->parseInput();
-		$clubs = D('Club')->getClub($start, $num);
+		list($start, $num, $filter) = $this->parseInput();
+		$clubs = D('Club')->getClub($start, $num, $filter);
 		$elements = [];
 		foreach ($clubs as $club)
 			$elements[] = $this->club2html($club);
@@ -341,7 +342,8 @@ class ClubAction extends PublicAction {
 	private function parseInput() {
 		$start = isset($_GET['start']) && is_numeric($_GET['start']) ? $_GET['start'] : 0;
 		$num = isset($_GET['num']) && is_numeric($_GET['num']) ? $_GET['num'] : 0;
-		return array($start, $num);
+		$filter = isset($_GET['filter']) ? $_GET['filter'] : '';
+		return array($start, $num, $filter);
 	}
 
 	private function club2html($club) {

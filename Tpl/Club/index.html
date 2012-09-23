@@ -19,7 +19,7 @@
 				ajaxLock = true;
 				$.getJSON(
 					"/Club/ajaxGet",
-					{start: posterCounter, num: loadnum}
+					{start: posterCounter, num: loadnum, filter: "<?=$filter?>"}
 				).done(function( obj ){
 					if (obj.length == 0)
 						noMore = true;

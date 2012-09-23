@@ -1,7 +1,14 @@
 <?php
 class ClubModel extends Model {
-	public function getClub($start, $num) {
-		return M('Club')->order("total_rate DESC")->limit("$start,$num")->cast(__CLASS__)->select();
+	public function getClub($start, $num, $filter) {
+		if (empty($filter) || $filter == 'all')
+			$filterSql = '';
+		else if ($filter == 'other')
+		//	$filterSql = array('type', array('NOT IN', "'club','studentUnion','gradUnion'"));
+			$filterSql = "`type` NOT IN ('club','studentUnion','gradUnion')";
+		else
+			$filterSql = array('type' => $filter);
+		return M('Club')->where($filterSql)->order("total_rate DESC")->limit("$start,$num")->cast(__CLASS__)->select();
 	}
 
 	public function addMember($gid, $uid) {
@@ -93,5 +100,14 @@ class ClubModel extends Model {
 		$group = M('Club')->find($gid);
 		$school = M('School')->field('name')->find($group->sid);
 		return $school['name'];
+	}
+
+	public function get_stat() {
+		$stat['total'] = $this->result_first("SELECT COUNT(*) FROM ustc_club");
+		$stat['club'] = $this->result_first("SELECT COUNT(*) FROM ustc_club WHERE `type`='club'");
+		$stat['gradUnion'] = $this->result_first("SELECT COUNT(*) FROM ustc_club WHERE `type`='gradUnion'");
+		$stat['studentUnion'] = $this->result_first("SELECT COUNT(*) FROM ustc_club WHERE `type`='studentUnion'");
+		$stat['other'] = $stat['total'] - $stat['club'] - $stat['gradUnion'] - $stat['studentUnion'];
+		return $stat;
 	}
 }
