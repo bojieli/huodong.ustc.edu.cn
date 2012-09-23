@@ -227,8 +227,22 @@ class UserAction extends PublicAction {
 			$info['realname']."你好:\n\n".
 			"请点击下面的链接激活您在校园活动平台的帐号（如果下面的地址不能点击，请将其复制到浏览器地址栏中）:\n\n".
 			"http://".$_SERVER['HTTP_HOST']."/User/registerVerify?uid=".$info['uid']."&token=".md5($info['email'].$info['salt'].$info['register_time'])."\n\n".
-			$info['email'].$info['salt'].$info['register_time'].
 			"校园活动平台 http://".$_SERVER['HTTP_HOST']
+			);
+	}
+
+	private function sendJoinClubEmail($realname, $gid, $clubname, $status) {
+		SendMail($info['email'],
+			$status ? "您已成功加入 $clubname" : "$clubname 拒绝了您的加入请求",
+			$info['realname']."你好:\n\n".
+			($status ? 
+				"您加入 $clubname 的申请已经审核通过。":
+				"抱歉，您加入 $clubname 的申请被拒绝。请联系社团负责人以询问原因。"
+			).
+			"点击下面链接可以查看".$clubname."的成员列表\n\n".
+			"http://".$_SERVER['HTTP_POST']."/Club/manage?gid=$gid".
+			"校园活动平台 http://".$_SERVER['HTTP_HOST']
+			
 			);
 	}
 
@@ -280,7 +294,7 @@ class UserAction extends PublicAction {
                         $this->success("$avatar_name");
                 }
         }*/
-		public function avatarUpload(){
+	public function avatarUpload(){
                 global $_G;
                 if(empty($_G['uid'])) {
                         $this->error('没有登录');
