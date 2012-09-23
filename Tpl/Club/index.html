@@ -84,7 +84,11 @@
 		];
 		alert($('input.autocomplete').attr('ajaxurl'));
 		$('input.autocomplete').autocomplete({
-		source: availableTags}
+		source: availableTags,
+		select: function( event, ui ) {
+				
+			}
+		}
 		);
 	});
 -->
