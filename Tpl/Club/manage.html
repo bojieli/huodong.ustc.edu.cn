@@ -84,7 +84,7 @@ $showPager = function() use($club) {
 		    <div class="stzhiwumc">{$member.title}</div>
 		    
 		    <notempty name="club.isadmin">
-	    	    <div class="stzhiwusz">任命为：
+	    	    <div class="stzhiwusz">设置权限：
                         <select onchange="ajaxChangeTitle({$member.uid}, this.options[this.selectedIndex].getAttribute('priv'), this.options[this.selectedIndex].getAttribute('title'))">
                         <option priv="" title="" selected="selected">------</option>
             
@@ -94,9 +94,10 @@ $showPager = function() use($club) {
             <option priv="admin" title="队长" style="color:#F00;">队长</option>
 			
                         <option priv="" title="">------</option>
-                        <option priv="manager" title="副会长" style="color:#F93">副会长</option>
-						<option priv="manager" title="副社长" style="color:#F93">副社长</option>
-						<option priv="manager" title="副主席" style="color:#F93">副主席</option>
+                        <option priv="manager" title="副会长" style="color:#F0F">副会长</option>
+						<option priv="manager" title="副社长" style="color:#F0F">副社长</option>
+						<option priv="manager" title="副主席" style="color:#F0F">副主席</option>
+                        <option priv="" title="">------</option>
                         <option priv="manager" title="部长" style="color:#F93">部长</option>
                         <option priv="manager" title="副部长" style="color:#F93">副部长</option>
                         <option priv="manager" title="项目组长" style="color:#F93">项目组长</option>
