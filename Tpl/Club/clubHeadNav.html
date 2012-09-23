@@ -5,7 +5,7 @@
     	<div class="kuang"><a href="/Club/index?filter=studentUnion"><div class="topbutton <if condition="$filter == 'studentUnion'">here2</if>">学生会</div></a><div class="topnum">{$clubstat.studentUnion}</div></div>
         <div class="kuang" style="width:60px;"><a href="/Club/index?filter=other"><div class="topbutton <if condition="$filter == 'other'">here2</if>"">其它</div></a><div class="topnum">{$clubstat.other}</div></div>
     	<div class="kuang" style="width:230px;">
-		<form method='get' action="/Club/ajaxAutocomplete.php">
+		<form method='get' action="/Club/ajaxAutocomplete">
         	<input type="text" name="keyword" class="searchcss_out ui-autocomplete-input autocomplete" onfocus="this.className='searchcss_on ui-autocomplete-input autocomplete'" onblur="this.className='searchcss_out ui-autocomplete-input autocomplete'" autocomplete="off" ajaxurl="/Club/ajaxAutocomplete.php" role="textbox" aria-autocomplete="list" aria-haspopup="true">
             <input type='submit' class="searchbutton" style="float:left;" value='搜索'/>
 		</form>
