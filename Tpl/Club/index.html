@@ -3,9 +3,11 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>大学海报</title>
+<link href="/static/jquery-ui-1.8.23.custom.css" rel="stylesheet" type="text/css" />
 <link href="/static/css1.css" rel="stylesheet" type="text/css" />
 <script src="/static/jquery.js" type="text/javascript"></script>
 <script src="/static/setwaterfall.js" type="text/javascript"></script>
+<script src="/static/jquery-ui-1.8.23.custom.min.js" type="text/javascript"></script>
 <script src="/static/jsjq1.js" type="text/javascript"></script>
 <!--下面是对滚动和加载的处理-->
 <script>
@@ -53,6 +55,14 @@
 			if ((clienth + scrollt + 10 > lowestcollheight) || (clienth + scrollt + 250 > scrollh) > scrollh) {
 				loadmore(4);
 			}
+		});
+	$(function(){
+	$('input.autocomplete').autocomplete({
+				source: $(this).attr('ajaxUrl'),
+				select: function (e,ui) {
+					$(this).val(ui.item.value).parents('form:eq(0)').find(':submit').trigger('click');
+				}
+			});
 		});
 	});
 -->
