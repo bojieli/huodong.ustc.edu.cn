@@ -83,7 +83,9 @@
 			"Scheme"
 		];
 		alert($('input.autocomplete').attr('ajaxurl'));
-		$('input.autocomplete').autocomplete(availableTags);
+		$('input.autocomplete').autocomplete({
+		source: availableTags}
+		);
 	});
 -->
 	</script>
