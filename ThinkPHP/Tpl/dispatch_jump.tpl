@@ -14,18 +14,18 @@ body{ background: #fff; font-family: '微软雅黑'; color: #333; font-size: 16p
 .system-message .detail{ font-size: 12px; line-height: 20px; margin-top: 12px; display:none}
 </style>
 </head>
-<body>
+<body style="text-align:center; padding:50px;">
 <div class="system-message">
 <present name="message">
-<h1>:)</h1>
+<h1 style="color:#0F0">^_^</h1>
 <p class="success"><?php echo($message); ?></p>
 <else/>
-<h1>:(</h1>
+<h1 style="color:#F00">%>_<%</h1>
 <p class="error"><?php echo($error); ?></p>
 </present>
 <p class="detail"></p>
 <p class="jump">
-页面自动 <a id="href" href="<?php echo($jumpUrl); ?>">跳转</a> 等待时间： <b id="wait"><?php echo($waitSecond); ?></b>
+页面自动 <a id="href" href="<?php echo($jumpUrl); ?>" style="color:#F0F; font-size:20px;"> 跳转 </a> 等待时间： <b id="wait" style="color:#63F;"><?php echo($waitSecond); ?></b>
 </p>
 </div>
 <script type="text/javascript">
