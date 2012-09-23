@@ -56,13 +56,14 @@
 				loadmore(4);
 			}
 		});
-	$('input.autocomplete').autocomplete({
+	});
+	$(function(){
+		$('input.autocomplete').autocomplete({
 				source: $(this).attr('ajaxUrl'),
 				select: function (e,ui) {
 					$(this).val(ui.item.value).parents('form:eq(0)').find(':submit').trigger('click');
 				}
 		});
-
 	});
 -->
 	</script>
