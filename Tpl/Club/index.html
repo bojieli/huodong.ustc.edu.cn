@@ -59,7 +59,7 @@
 	});
 	$(function(){
 		$('input.autocomplete').autocomplete({
-		source: '/Club/ajaxAutocomplete',
+		source: $('input.autocomplete').attr('ajaxurl'),
 		select: function( event, ui ) {
 				
 			}
