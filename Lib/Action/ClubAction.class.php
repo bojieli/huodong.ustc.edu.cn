@@ -88,7 +88,7 @@ class ClubAction extends PublicAction {
 		echo '[';
 		foreach($res as $key => $val)
 		{
-			echo "\"$val['name']\"";
+			echo "\"$val[name]\"";
 			if($i++<$count-1)
 			{
 				echo ",";
