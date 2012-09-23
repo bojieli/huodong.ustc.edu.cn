@@ -78,7 +78,24 @@ class ClubAction extends PublicAction {
 	public function introAdd() {
 		$this->display();
 	}
+	public function ajaxAutocomplete()
+	{
 
+		$condition_info['name']  =array('like',"%".$_GET['keyword']."%");
+		$res = M('Club')->field('name')->where($condition_info)->limit(10)->select();
+		if($res){$count=count($res);}
+		else $count = 0;
+		echo '[';
+		foreach($res as $key => $val)
+		{
+			echo "\"$val[name]\"";
+			if($i++<$count-1)
+			{
+				echo ",";
+			}
+		}
+		echo ']';
+	}
 	public function introInsert() {
 		if (!(D('User')->isSchoolAdmin(CURRENT_USER)))
 			$this->error("没有权限！");
