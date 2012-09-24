@@ -24,7 +24,8 @@ var  nomoreflag = 0;
 					"/Poster/ajaxGet",
 					{start: posterCounter, num: loadnum, order: '<?=$order?>'}
 				).done(function( obj ){
-					loadflag = 0;		
+					loadflag = 0;
+					alert('999');
 					if (obj.length == 0){
 						noMore = true;
 						nomoreflag = 1;
