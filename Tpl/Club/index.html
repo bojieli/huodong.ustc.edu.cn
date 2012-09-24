@@ -61,7 +61,7 @@
 			var scrollh = document.documentElement.scrollHeight;
 			var scrollt = document.documentElement.scrollTop + document.body.scrollTop;
 			if ((clienth + scrollt + 10 > lowestcollheight) || (clienth + scrollt + 250 > scrollh) > scrollh) {
-				loadmore(4).done(cycleload());
+				loadmore(4);
 			}
 		
 		};
