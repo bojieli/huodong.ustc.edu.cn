@@ -24,10 +24,8 @@ var  loadflag = 2;
 				$.getJSON(
 					"/Club/ajaxGet",
 					{start: posterCounter, num: loadnum, filter: "<?=$filter?>"}
-				).done(function( obj ){
-					
-					loadflag = 0;
-					alert('sdf '+ loadflag);
+				).done(function( obj ){					
+					loadflag = 0;					
 					if (obj.length == 0)
 						noMore = true;
 					posterCounter += obj.length;
@@ -55,7 +53,12 @@ var  loadflag = 2;
 		loadmore(2);
 		cycleload();
 		$(window).scroll(function () {
-			cycleload();
+			var clienth = document.documentElement.clientHeight;
+			var scrollh = document.documentElement.scrollHeight;
+			var scrollt = document.documentElement.scrollTop + document.body.scrollTop;
+			if ((clienth + scrollt + 10 > lowestcollheight) || (clienth + scrollt + 250 > scrollh) > scrollh) {
+				if( loadflag==0	) loadmore(4);
+			};
 			
 		});
 	});
