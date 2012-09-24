@@ -76,7 +76,7 @@ var  nomoreflag = 0;
 				$("#haibao-onloading").css('display','block');
 				$("#haibao-onloading").animate({opacity:1},200);
 				};
-			if( loadflag == 0 ){ $("#haibao-onloading").css('display','none');}
+			if( loadflag == 0 || nomoreflag == 1){ $("#haibao-onloading").css('display','none');}
 			if( nomoreflag == 1 ) $("#haibao-onmoreloading").css('display','block');
 			setTimeout("cycleload()",50);		
 		};
@@ -167,7 +167,7 @@ window.onresize=function(){
   <ul style="min-height: 600px; ">
   </ul>
 			
-<div id="haibao-onmoreloading">已经到底了</div>			
+<div id="haibao-onmoreloading">已经到底了 ^_^ </div>			
 </div><!--content-->  
 </div><!--main-->
 <div id="selectm"></div>
