@@ -12,6 +12,7 @@
 <!--下面是对滚动和加载的处理-->
 <script>
 <!--
+
 	var loadmore = (function() {
 		var posterCounter = 0;
 		var ajaxLock = false;
@@ -23,6 +24,7 @@
 					"/Club/ajaxGet",
 					{start: posterCounter, num: loadnum, filter: "<?=$filter?>"}
 				).done(function( obj ){
+				
 					if (obj.length == 0)
 						noMore = true;
 					posterCounter += obj.length;
@@ -47,15 +49,21 @@
 
 	$(document).ready(function(){		
 		loadmore(10);
+		cycleload();
 		$(window).scroll(function () {
+			cycleload();
+			
+		});
+	});
+	function cycleload(){
 			var clienth = document.documentElement.clientHeight;
 			var scrollh = document.documentElement.scrollHeight;
 			var scrollt = document.documentElement.scrollTop + document.body.scrollTop;
 			if ((clienth + scrollt + 10 > lowestcollheight) || (clienth + scrollt + 250 > scrollh) > scrollh) {
-				loadmore(4);
+				loadmore(4).done(cycleload());
 			}
-		});
-	});
+		
+		};
 	$(function(){
 		$('input.autocomplete').autocomplete({
 		source: $('input.autocomplete').attr('ajaxurl'),
