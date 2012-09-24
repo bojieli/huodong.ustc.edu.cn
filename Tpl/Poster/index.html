@@ -24,8 +24,7 @@ var  nomoreflag = 0;
 					"/Poster/ajaxGet",
 					{start: posterCounter, num: loadnum, order: '<?=$order?>'}
 				).done(function( obj ){
-					loadflag = 0;
-					alert('999');
+					loadflag = 0;					
 					if (obj.length == 0){
 						noMore = true;
 						nomoreflag = 1;
@@ -63,8 +62,6 @@ var  nomoreflag = 0;
 		});
 		
 		
-		
-		
 		$(".ding").live({
 		mouseenter:function(){
 			$(this).addClass("dinghover");
@@ -72,9 +69,10 @@ var  nomoreflag = 0;
 		mouseleave:function(){
 			$(this).removeClass("dinghover");
 		}
-		});
-		
-		function cycleload(){		
+		});		
+	});
+	
+	function cycleload(){		
 			var clienth = document.documentElement.clientHeight;
 			var scrollh = document.documentElement.scrollHeight;
 			var scrollt = document.documentElement.scrollTop + document.body.scrollTop;
@@ -89,8 +87,6 @@ var  nomoreflag = 0;
 			if( nomoreflag == 1 ) $("#haibao-onmoreloading").css('display','block');
 			setTimeout("cycleload()",100);		
 		};
-		
-	});
 -->
 	</script>
 
