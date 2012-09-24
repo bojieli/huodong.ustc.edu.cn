@@ -59,7 +59,19 @@ var  nomoreflag = 0;
 			var scrollt = document.documentElement.scrollTop + document.body.scrollTop;
 			if((clienth + scrollt + 20 > lowestcollheight) || (clienth + scrollt + 250 > scrollh)) {
 				if( loadflag==0	) loadmore(4);
-			}			
+			};			
+		});
+		
+		
+		
+		
+		$(".ding").live({
+		mouseenter:function(){
+			$(this).addClass("dinghover");
+		},
+		mouseleave:function(){
+			$(this).removeClass("dinghover");
+		}
 		});
 		
 		function cycleload(){		
@@ -77,16 +89,6 @@ var  nomoreflag = 0;
 			if( nomoreflag == 1 ) $("#haibao-onmoreloading").css('display','block');
 			setTimeout("cycleload()",100);		
 		};
-		
-		
-		$(".ding").live({
-		mouseenter:function(){
-			$(this).addClass("dinghover");
-		},
-		mouseleave:function(){
-			$(this).removeClass("dinghover");
-		}
-		});
 		
 	});
 -->
