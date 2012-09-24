@@ -72,13 +72,15 @@ var  nomoreflag = 0;
 		});		
 	});
 	
-	function cycleload(){		
+	function cycleload(){
+		if( loadflag==0	){
 			var clienth = document.documentElement.clientHeight;
 			var scrollh = document.documentElement.scrollHeight;
 			var scrollt = document.documentElement.scrollTop + document.body.scrollTop;
 			if ((clienth + scrollt + 10 > lowestcollheight) || (clienth + scrollt + 250 > scrollh) > scrollh) {
-				if( loadflag==0	) loadmore(2);
+				 loadmore(2);
 			};
+		};
 			if( loadflag == 1 ){
 				$("#haibao-onloading").css('display','block');
 				$("#haibao-onloading").animate({opacity:1},200);
