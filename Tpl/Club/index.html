@@ -70,10 +70,10 @@ var  loadflag = 2;
 				if( loadflag==0	) loadmore(4);
 			};
 			
-				setTimeout("cycleload()",1000);
-				
-		
+			setTimeout("cycleload()",200);		
 		};
+		
+		
 	$(function(){
 		$('input.autocomplete').autocomplete({
 		source: $('input.autocomplete').attr('ajaxurl'),
