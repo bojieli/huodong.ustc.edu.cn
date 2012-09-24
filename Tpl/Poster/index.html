@@ -25,9 +25,9 @@
 						noMore = true;
 					posterCounter += obj.length;
 					var html = obj.join("");
-					$("ul").append(html);
+					$("#content ul").append(html);
 					$(".hide").animate({opacity:1},1000); 
-					$("ul li").setwaterfall();
+					$("#content ul li").setwaterfall();
 					ajaxLock = false;
 				});
 			}
