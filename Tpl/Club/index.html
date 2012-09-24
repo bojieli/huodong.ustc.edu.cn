@@ -12,7 +12,7 @@
 <!--下面是对滚动和加载的处理-->
 <script>
 <!--
-var loadflag=0;
+var loadflag=1;
 	var loadmore = (function() {
 		var posterCounter = 0;
 		var ajaxLock = false;
@@ -50,7 +50,7 @@ var loadflag=0;
 	}
 
 	$(document).ready(function(){		
-		loadmore(10);
+		loadmore(2);
 		cycleload();
 		$(window).scroll(function () {
 			cycleload();
