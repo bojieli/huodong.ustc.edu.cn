@@ -72,7 +72,10 @@ var  nomoreflag = 0;
 			if ((clienth + scrollt + 10 > lowestcollheight) || (clienth + scrollt + 250 > scrollh) > scrollh) {
 				if( loadflag==0	) loadmore(2);
 			};
-			if( loadflag == 1 ) {$("#haibao-onloading").show();$("#haibao-onloading").animate({opacity:1},200); };
+			if( loadflag == 1 ){
+				$("#haibao-onloading").show();
+				$("#haibao-onloading").animate({opacity:1},200);
+				};
 	/*		if( loadflag == 0 || nomoreflag == 1) $("#haibao-onloading").hide(200); */
 			setTimeout("cycleload()",50);		
 		};
