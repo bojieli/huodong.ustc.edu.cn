@@ -12,20 +12,22 @@
 <!--下面是对滚动和加载的处理-->
 <script>
 <!--
- loadflag = 2;
+var  loadflag = 2;
 	var loadmore = (function() {
 		var posterCounter = 0;
 		var ajaxLock = false;
 		var noMore = false;
 		return function(loadnum) {
-			    loadflag=1;
+			    loadflag = 1;
 			if (!ajaxLock && !noMore) {
 				ajaxLock = true;
 				$.getJSON(
 					"/Club/ajaxGet",
 					{start: posterCounter, num: loadnum, filter: "<?=$filter?>"}
 				).done(function( obj ){
-								
+					
+					loadflag = 0;
+					alert('sdf '+ loadflag);
 					if (obj.length == 0)
 						noMore = true;
 					posterCounter += obj.length;
@@ -33,7 +35,7 @@
 					$("#content ul").append(html);
 					$(".hide").animate({opacity:1},1000); 
 					$("#content ul li").setwaterfall();
-					loadflag=0;	
+					
 					ajaxLock = false;
 				});
 			}
