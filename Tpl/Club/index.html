@@ -64,13 +64,11 @@ var  loadflag = 2;
 			var scrollh = document.documentElement.scrollHeight;
 			var scrollt = document.documentElement.scrollTop + document.body.scrollTop;
 			if ((clienth + scrollt + 10 > lowestcollheight) || (clienth + scrollt + 250 > scrollh) > scrollh) {
-				loadmore(4);
+				if( loadflag==0	) loadmore(4);
 			};
-			alert(loadflag);
-			if( loadflag==0	){
-				alert("timeout");
+			
 				setTimeout("cycleload()",1000);
-				};
+				
 		
 		};
 	$(function(){
