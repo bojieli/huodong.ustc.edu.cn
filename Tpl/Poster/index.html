@@ -10,19 +10,25 @@
 <!--下面是对滚动和加载的处理-->
 <script>
 <!--
+var  loadflag = 2;
+var  nomoreflag = 0;
 	var loadmore = (function() {
 		var posterCounter = 0;
 		var ajaxLock = false;
 		var noMore = false;
 		return function(loadnum) {
+			 loadflag = 1;
 			if (!ajaxLock && !noMore) {
 				ajaxLock = true;
 				$.getJSON(
 					"/Poster/ajaxGet",
 					{start: posterCounter, num: loadnum, order: '<?=$order?>'}
 				).done(function( obj ){
-					if (obj.length == 0)
+					loadflag = 0;		
+					if (obj.length == 0){
 						noMore = true;
+						nomoreflag = 1;
+					}
 					posterCounter += obj.length;
 					var html = obj.join("");
 					$("#content ul").append(html);
@@ -45,14 +51,33 @@
 
 	$(document).ready(function(){
 		loadmore(8);
+		cycleload();
 		$(window).scroll(function () {
 			var clienth = document.documentElement.clientHeight;
 			var scrollh = document.documentElement.scrollHeight;
 			var scrollt = document.documentElement.scrollTop + document.body.scrollTop;
 			if((clienth + scrollt + 20 > lowestcollheight) || (clienth + scrollt + 250 > scrollh)) {
-				loadmore(4);
+				if( loadflag==0	) loadmore(4);
 			}			
 		});
+		
+		function cycleload(){		
+			var clienth = document.documentElement.clientHeight;
+			var scrollh = document.documentElement.scrollHeight;
+			var scrollt = document.documentElement.scrollTop + document.body.scrollTop;
+			if ((clienth + scrollt + 10 > lowestcollheight) || (clienth + scrollt + 250 > scrollh) > scrollh) {
+				if( loadflag==0	) loadmore(2);
+			};
+			if( loadflag == 1 ){
+				$("#haibao-onloading").css('display','block');
+				$("#haibao-onloading").animate({opacity:1},200);
+				};
+			if( loadflag == 0 || nomoreflag == 1){ $("#haibao-onloading").css('display','none');}
+			if( nomoreflag == 1 ) $("#haibao-onmoreloading").css('display','block');
+			setTimeout("cycleload()",100);		
+		};
+		
+		
 		$(".ding").live({
 		mouseenter:function(){
 			$(this).addClass("dinghover");
@@ -159,11 +184,12 @@ window.onresize=function(){
    
   </ul>
 			
-			
+<div id="haibao-onmoreloading">已经到底了 ^_^ </div>				
 </div><!--content-->  
 </div><!--main-->
 <div id="selectm"></div>
 <div id="backbg"></div>
+<div id="haibao-onloading"></div>
 <div id="outlogdiv"></div>
 <div id="slcdetail"><div class="sdcon">筛选规则：<br/><hr/><br/>
 	<p class="selectedsx">所有大学</p><p class="pp">选择省</p><p class="pp">选择市</p><p class="pp">选大学</p><br/>
