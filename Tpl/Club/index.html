@@ -13,6 +13,7 @@
 <script>
 <!--
 var  loadflag = 2;
+var  nomoreflag = 0;
 	var loadmore = (function() {
 		var posterCounter = 0;
 		var ajaxLock = false;
@@ -26,8 +27,10 @@ var  loadflag = 2;
 					{start: posterCounter, num: loadnum, filter: "<?=$filter?>"}
 				).done(function( obj ){					
 					loadflag = 0;					
-					if (obj.length == 0)
+					if (obj.length == 0){
 						noMore = true;
+						nomoreflag = 1;
+					}
 					posterCounter += obj.length;
 					var html = obj.join("");
 					$("#content ul").append(html);
@@ -69,8 +72,9 @@ var  loadflag = 2;
 			if ((clienth + scrollt + 10 > lowestcollheight) || (clienth + scrollt + 250 > scrollh) > scrollh) {
 				if( loadflag==0	) loadmore(2);
 			};
-			
-			setTimeout("cycleload()",200);		
+			if( loadflag == 1) $("#haibao-onloading").show(200);
+			if( loadflag == 1) $("#haibao-onloading").hide(200);
+			setTimeout("cycleload()",50);		
 		};
 		
 		
@@ -164,6 +168,7 @@ window.onresize=function(){
 </div><!--main-->
 <div id="selectm"></div>
 <div id="backbg"></div>
+<div id="haibao-onloading"></div>
 <div id="outlogdiv"></div>
 <div id="slcdetail"><div class="sdcon">筛选规则：<br/><hr/><br/>
 	<p class="selectedsx">所有大学</p><p class="pp">选择省</p><p class="pp">选择市</p><p class="pp">选大学</p><br/>
@@ -173,5 +178,6 @@ window.onresize=function(){
 
 <div id="outhaibao">
 </div><!--outhaibao-->
+
 </body>
 </html>
