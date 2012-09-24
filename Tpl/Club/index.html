@@ -63,8 +63,10 @@ var loadflag=1;
 			var scrollt = document.documentElement.scrollTop + document.body.scrollTop;
 			if ((clienth + scrollt + 10 > lowestcollheight) || (clienth + scrollt + 250 > scrollh) > scrollh) {
 				loadmore(4);
-			}
+			};
+			alert(loadflag);
 			if( loadflag==0	){
+				alert("timeout");
 				setTimeout("cycleload()",1000);
 				};
 		
