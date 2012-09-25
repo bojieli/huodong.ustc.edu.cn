@@ -432,6 +432,9 @@ class ClubAction extends PublicAction {
 		{
 			$this->error("搜索关键词不能为空");
 		}
+		$this->assign('clubstat', D('Club')->get_stat());
+		$this->assign('filter', isset($_GET['filter']) ? $_GET['filter'] : 'all');
+		$this->display();
 	}
 	public function address()
 	{
