@@ -6,7 +6,7 @@ class ClubAction extends PublicAction {
 		$condition = '';
 		if(!empty($keyword))
 		{
-			$condition = " where name like '%$keyword%' ";
+			$condition = " name like '%$keyword%' ";
 		}
 		$this->assign('keyword', $keyword);
 		$this->assign('clubstat', D('Club')->get_stat($condition));
