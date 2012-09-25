@@ -82,7 +82,7 @@ class ClubAction extends PublicAction {
 	{
 
 		$condition_info['name']  =array('like',"%".$_GET['term']."%");
-		$res = M('Club')->field('name')->where($condition_info)->limit(10)->select();
+		$res = M('Club')->field('name')->where($condition_info)->order("total_rate DESC")->limit(10)->select();
 		if($res){$count=count($res);}
 		else $count = 0;
 		echo '[';
@@ -348,8 +348,8 @@ class ClubAction extends PublicAction {
 	}
 
 	public function ajaxGet() {
-		list($start, $num, $filter) = $this->parseInput();
-		$clubs = D('Club')->getClub($start, $num, $filter);
+		list($start, $num, $filter,$keyword) = $this->parseInput();
+		$clubs = D('Club')->getClub($start, $num, $filter,$keyword);
 		$elements = [];
 		foreach ($clubs as $club)
 			$elements[] = $this->club2html($club);
@@ -360,7 +360,8 @@ class ClubAction extends PublicAction {
 		$start = isset($_GET['start']) && is_numeric($_GET['start']) ? $_GET['start'] : 0;
 		$num = isset($_GET['num']) && is_numeric($_GET['num']) ? $_GET['num'] : 0;
 		$filter = isset($_GET['filter']) ? $_GET['filter'] : '';
-		return array($start, $num, $filter);
+		$keyword = isset($_GET['keyword']) ? $_GET['keyword'] : '';
+		return array($start, $num, $filter, $keyword);
 	}
 
 	private function club2html($club) {
