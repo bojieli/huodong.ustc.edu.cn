@@ -1,13 +1,21 @@
 <?php
 class ClubModel extends Model {
-	public function getClub($start, $num, $filter) {
+	public function getClub($start, $num, $filter, $keyword) {
 		if (empty($filter) || $filter == 'all')
 			$filterSql = '';
 		else if ($filter == 'other')
 		//	$filterSql = array('type', array('NOT IN', "'club','studentUnion','gradUnion'"));
 			$filterSql = "`type` NOT IN ('club','studentUnion','gradUnion')";
 		else
-			$filterSql = array('type' => $filter);
+			$filterSql = "`type` = '$filter'";//array('type' => $filter);
+		if(!empty($keyword)&&!empty(filterSql))
+		{
+			$filterSql .= " and name like '%$keyword%'";
+		}
+		elseif(!empty($keyword))
+		{
+			$filterSql = " name like '%$keyword%'";
+		}
 		return M('Club')->where($filterSql)->order("total_rate DESC")->limit("$start,$num")->cast(__CLASS__)->select();
 	}
 
