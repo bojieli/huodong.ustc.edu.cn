@@ -1,9 +1,9 @@
 <div class="cont">
     	<div class="kuang"><a href="/Club/index"><div class="topbutton <if condition="$filter == 'all'">here2</if>">热度排序</div></a><div class="topnum">{$clubstat.total}</div></div>
-    	<div class="kuang"><a href="/Club/index?filter=club"><div class="topbutton <if condition="$filter == 'club'">here2</if>">学生社团</div></a><div class="topnum">{$clubstat.club}</div></div>
-    	<div class="kuang"><a href="/Club/index?filter=gradUnion"><div class="topbutton <if condition="$filter == 'gradUnion'">here2</if>">研究生会</div></a><div class="topnum">{$clubstat.gradUnion}</div></div>
-    	<div class="kuang"><a href="/Club/index?filter=studentUnion"><div class="topbutton <if condition="$filter == 'studentUnion'">here2</if>">学生会</div></a><div class="topnum">{$clubstat.studentUnion}</div></div>
-        <div class="kuang" style="width:60px;"><a href="/Club/index?filter=other"><div class="topbutton <if condition="$filter == 'other'">here2</if>"">其它</div></a><div class="topnum">{$clubstat.other}</div></div>
+    	<div class="kuang"><a href="/Club/index?filter=club<if condition="$keyword != ''">&keyword=$keyword</if>"><div class="topbutton <if condition="$filter == 'club'">here2</if>">学生社团</div></a><div class="topnum">{$clubstat.club}</div></div>
+    	<div class="kuang"><a href="/Club/index?filter=gradUnion<if condition="$keyword != ''">&keyword=$keyword</if>"><div class="topbutton <if condition="$filter == 'gradUnion'">here2</if>">研究生会</div></a><div class="topnum">{$clubstat.gradUnion}</div></div>
+    	<div class="kuang"><a href="/Club/index?filter=studentUnion<if condition="$keyword != ''">&keyword=$keyword</if>"><div class="topbutton <if condition="$filter == 'studentUnion'">here2</if>">学生会</div></a><div class="topnum">{$clubstat.studentUnion}</div></div>
+        <div class="kuang" style="width:60px;"><a href="/Club/index?filter=other<if condition="$keyword != ''">&keyword=$keyword</if>"><div class="topbutton <if condition="$filter == 'other'">here2</if>"">其它</div></a><div class="topnum">{$clubstat.other}</div></div>
     	<div class="kuang" style="width:230px;">
 		<form method='get' action="/Club/index">
         	<input type="text" name="keyword" class="searchcss_out ui-autocomplete-input autocomplete"  autocomplete="off" ajaxurl="/Club/ajaxAutocomplete" onfocus="this.className='searchcss_on ui-autocomplete-input autocomplete'" onblur="this.className='searchcss_out ui-autocomplete-input autocomplete'">
