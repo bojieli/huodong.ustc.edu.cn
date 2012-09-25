@@ -113,12 +113,13 @@ class ClubModel extends Model {
 	public function get_stat($condition='') {
 		if(empty($condition))
 		{
-			$condition = " where 1 ";
+			$condition1 = " where 1 ";
+			$condition2= " and ".$condition;
 		}
-		$stat['total'] = $this->result_first("SELECT COUNT(*) FROM ustc_club".$condition);
-		$stat['club'] = $this->result_first("SELECT COUNT(*) FROM ustc_club WHERE `type`='club'".$condition);
-		$stat['gradUnion'] = $this->result_first("SELECT COUNT(*) FROM ustc_club WHERE `type`='gradUnion'".$condition);
-		$stat['studentUnion'] = $this->result_first("SELECT COUNT(*) FROM ustc_club WHERE `type`='studentUnion'".$condition);
+		$stat['total'] = $this->result_first("SELECT COUNT(*) FROM ustc_club".$condition1);
+		$stat['club'] = $this->result_first("SELECT COUNT(*) FROM ustc_club WHERE `type`='club' ".$condition2);
+		$stat['gradUnion'] = $this->result_first("SELECT COUNT(*) FROM ustc_club WHERE `type`='gradUnion'".$condition2);
+		$stat['studentUnion'] = $this->result_first("SELECT COUNT(*) FROM ustc_club WHERE `type`='studentUnion'".$condition2);
 		$stat['other'] = $stat['total'] - $stat['club'] - $stat['gradUnion'] - $stat['studentUnion'];
 		return $stat;
 	}
