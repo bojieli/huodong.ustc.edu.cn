@@ -8,7 +8,7 @@ class ClubModel extends Model {
 			$filterSql = "`type` NOT IN ('club','studentUnion','gradUnion')";
 		else
 			$filterSql = "`type` = '$filter'";//array('type' => $filter);
-		if(!empty($keyword)&&!empty(filterSql))
+		if(!empty($keyword)&&!empty($filterSql))
 		{
 			$filterSql .= " and name like '%$keyword%'";
 		}
