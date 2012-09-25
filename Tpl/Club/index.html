@@ -24,7 +24,7 @@ var  nomoreflag = 0;
 				ajaxLock = true;
 				$.getJSON(
 					"/Club/ajaxGet",
-					{start: posterCounter, num: loadnum, filter: "<?=$filter?>"}
+					{start: posterCounter, num: loadnum, filter: "<?=$filter?>", keyword: "<?=$keyword?>"}
 				).done(function( obj ){					
 					loadflag = 0;					
 					if (obj.length == 0){
