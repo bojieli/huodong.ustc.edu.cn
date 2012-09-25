@@ -118,7 +118,7 @@ class ClubModel extends Model {
 		}
 		else
 		{
-			$condition1 = "";
+			$condition1 = " where ".$condition;
 			$condition2= " and ".$condition;
 		}
 		$stat['total'] = $this->result_first("SELECT COUNT(*) FROM ustc_club".$condition1);
