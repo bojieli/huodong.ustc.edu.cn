@@ -110,11 +110,15 @@ class ClubModel extends Model {
 		return $school['name'];
 	}
 
-	public function get_stat() {
-		$stat['total'] = $this->result_first("SELECT COUNT(*) FROM ustc_club");
-		$stat['club'] = $this->result_first("SELECT COUNT(*) FROM ustc_club WHERE `type`='club'");
-		$stat['gradUnion'] = $this->result_first("SELECT COUNT(*) FROM ustc_club WHERE `type`='gradUnion'");
-		$stat['studentUnion'] = $this->result_first("SELECT COUNT(*) FROM ustc_club WHERE `type`='studentUnion'");
+	public function get_stat($condition='') {
+		if(empty($condition))
+		{
+			$condition = " where 1 ";
+		}
+		$stat['total'] = $this->result_first("SELECT COUNT(*) FROM ustc_club".$condition);
+		$stat['club'] = $this->result_first("SELECT COUNT(*) FROM ustc_club WHERE `type`='club'".$condition);
+		$stat['gradUnion'] = $this->result_first("SELECT COUNT(*) FROM ustc_club WHERE `type`='gradUnion'".$condition);
+		$stat['studentUnion'] = $this->result_first("SELECT COUNT(*) FROM ustc_club WHERE `type`='studentUnion'".$condition);
 		$stat['other'] = $stat['total'] - $stat['club'] - $stat['gradUnion'] - $stat['studentUnion'];
 		return $stat;
 	}
