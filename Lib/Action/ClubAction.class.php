@@ -2,7 +2,14 @@
 class ClubAction extends PublicAction {
 	public function index() {
 		$this->headnav();
-		$this->assign('clubstat', D('Club')->get_stat());
+		$keyword = isset($_GET['keyword']) ? $_GET['keyword'] : '';
+		$condition = '';
+		if(!empty($keyword))
+		{
+			$condition = " where name like '%$keyword%' ";
+		}
+		$this->assign('keyword', $keyword);
+		$this->assign('clubstat', D('Club')->get_stat($condition));
 		$this->assign('filter', isset($_GET['filter']) ? $_GET['filter'] : 'all');
 		$this->display();
 	}
