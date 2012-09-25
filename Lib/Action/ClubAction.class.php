@@ -424,6 +424,14 @@ class ClubAction extends PublicAction {
 			$this->error("您所查找的社团不存在");
 		return $_REQUEST['gid'];
 	}
+	public function search()
+	{
+		$keyword = $_REQUEST['keyword'];
+		if(empty($keyword))
+		{
+			$this->error("搜索关键词不能为空");
+		}
+	}
 	public function address()
 	{
 		global $_G;
