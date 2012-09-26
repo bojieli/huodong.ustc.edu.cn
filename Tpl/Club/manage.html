@@ -41,7 +41,7 @@
 
 <notempty name="club.ismanager">
 <?php
-$showPager = function() use($club) {
+$showPager = function() use($club,$pageNow) {
 	if ($club['ismanager'])
 	if ($club['memberCount'] > 20) {
 ?>
