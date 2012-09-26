@@ -22,7 +22,7 @@ var  nomoreflag = 0;
 				ajaxLock = true;
 				$.getJSON(
 					"/Poster/ajaxGet",
-					{start: posterCounter, num: loadnum, order: '<?=$order?>'}
+					{start: posterCounter, num: loadnum, order: '<?=$order?>', keyword: "<?=$keyword?>"}
 				).done(function( obj ){
 					loadflag = 0;					
 					if (obj.length == 0){
