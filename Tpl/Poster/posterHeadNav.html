@@ -1,8 +1,8 @@
     <div class="cont">
-    	<div class="kuang"><a href="/Poster/index?order=new"><div class="topbutton <if condition="$order == 'new'">here2</if>">最新发布</div></a><div class="topnum">{$stat.total}</div></div>
-    	<div class="kuang"><a href="/Poster/index?order=near"><div class="topbutton <if condition="$order == 'near'">here2</if>">最近举行</div></a><div class="topnum">{$stat.incoming}</div></div>
-    	<div class="kuang"><a href="/Poster/index?order=hot"><div class="topbutton <if condition="$order == 'hot'">here2</if>">最热海报</div></a><div class="topnum">{$stat.incoming}</div></div>
-    	<div class="kuang"><a href="/Poster/index?order=follow"><div class="topbutton <if condition="$order == 'follow'">here2</if>">我社团的</div></a><div class="topnum">{$stat.followed}</div></div>
+    	<div class="kuang"><a href="/Poster/index?order=new<if condition="$keyword != ''">&keyword={$keyword}</if>"><div class="topbutton <if condition="$order == 'new'">here2</if>">最新发布</div></a><div class="topnum">{$stat.total}</div></div>
+    	<div class="kuang"><a href="/Poster/index?order=near<if condition="$keyword != ''">&keyword={$keyword}</if>"><div class="topbutton <if condition="$order == 'near'">here2</if>">最近举行</div></a><div class="topnum">{$stat.incoming}</div></div>
+    	<div class="kuang"><a href="/Poster/index?order=hot<if condition="$keyword != ''">&keyword={$keyword}</if>"><div class="topbutton <if condition="$order == 'hot'">here2</if>">最热海报</div></a><div class="topnum">{$stat.incoming}</div></div>
+    	<div class="kuang"><a href="/Poster/index?order=follow<if condition="$keyword != ''">&keyword={$keyword}</if>"><div class="topbutton <if condition="$order == 'follow'">here2</if>">我社团的</div></a><div class="topnum">{$stat.followed}</div></div>
     	<!--<div class="kuang"><a href="/Notify"><div class="topbutton">最新消息</div></a><div class="topnum">{$stat.newmsg}</div></div>-->
 		<form method='get' action="/Poster/index">
         <div class="kuang" style="width:230px;">
