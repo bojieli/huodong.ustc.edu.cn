@@ -83,7 +83,7 @@ class PosterModel extends Model {
 		else
 		{
 			$condition1 = " where ".$condition;
-			$condition2= " and ".$condition;
+			$condition2= " and (".$condition.")";
 		}
 		$stat['total'] = $this->result_first("SELECT COUNT(*) FROM ustc_poster".$condition1);
 		$stat['incoming'] = $this->result_first("SELECT COUNT(*) FROM ustc_poster WHERE end_time > '".time()."'".$condition2);
