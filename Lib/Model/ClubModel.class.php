@@ -1,13 +1,21 @@
 <?php
 class ClubModel extends Model {
-	public function getClub($start, $num, $filter) {
+	public function getClub($start, $num, $filter, $keyword) {
 		if (empty($filter) || $filter == 'all')
 			$filterSql = '';
 		else if ($filter == 'other')
 		//	$filterSql = array('type', array('NOT IN', "'club','studentUnion','gradUnion'"));
 			$filterSql = "`type` NOT IN ('club','studentUnion','gradUnion')";
 		else
-			$filterSql = array('type' => $filter);
+			$filterSql = "`type` = '$filter'";//array('type' => $filter);
+		if(!empty($keyword)&&!empty($filterSql))
+		{
+			$filterSql .= " and name like '%$keyword%'";
+		}
+		elseif(!empty($keyword))
+		{
+			$filterSql = " name like '%$keyword%'";
+		}
 		return M('Club')->where($filterSql)->order("total_rate DESC")->limit("$start,$num")->cast(__CLASS__)->select();
 	}
 
@@ -102,11 +110,21 @@ class ClubModel extends Model {
 		return $school['name'];
 	}
 
-	public function get_stat() {
-		$stat['total'] = $this->result_first("SELECT COUNT(*) FROM ustc_club");
-		$stat['club'] = $this->result_first("SELECT COUNT(*) FROM ustc_club WHERE `type`='club'");
-		$stat['gradUnion'] = $this->result_first("SELECT COUNT(*) FROM ustc_club WHERE `type`='gradUnion'");
-		$stat['studentUnion'] = $this->result_first("SELECT COUNT(*) FROM ustc_club WHERE `type`='studentUnion'");
+	public function get_stat($condition='') {
+		if(empty($condition))
+		{
+			$condition1 = "";
+			$condition2= "";
+		}
+		else
+		{
+			$condition1 = " where ".$condition;
+			$condition2= " and ".$condition;
+		}
+		$stat['total'] = $this->result_first("SELECT COUNT(*) FROM ustc_club".$condition1);
+		$stat['club'] = $this->result_first("SELECT COUNT(*) FROM ustc_club WHERE `type`='club' ".$condition2);
+		$stat['gradUnion'] = $this->result_first("SELECT COUNT(*) FROM ustc_club WHERE `type`='gradUnion'".$condition2);
+		$stat['studentUnion'] = $this->result_first("SELECT COUNT(*) FROM ustc_club WHERE `type`='studentUnion'".$condition2);
 		$stat['other'] = $stat['total'] - $stat['club'] - $stat['gradUnion'] - $stat['studentUnion'];
 		return $stat;
 	}

@@ -2,7 +2,14 @@
 class ClubAction extends PublicAction {
 	public function index() {
 		$this->headnav();
-		$this->assign('clubstat', D('Club')->get_stat());
+		$keyword = isset($_GET['keyword']) ? $_GET['keyword'] : '';
+		$condition = '';
+		if(!empty($keyword))
+		{
+			$condition = " name like '%$keyword%' ";
+		}
+		$this->assign('keyword', $keyword);
+		$this->assign('clubstat', D('Club')->get_stat($condition));
 		$this->assign('filter', isset($_GET['filter']) ? $_GET['filter'] : 'all');
 		$this->display();
 	}
@@ -82,7 +89,7 @@ class ClubAction extends PublicAction {
 	{
 
 		$condition_info['name']  =array('like',"%".$_GET['term']."%");
-		$res = M('Club')->field('name')->where($condition_info)->limit(10)->select();
+		$res = M('Club')->field('name')->where($condition_info)->order("total_rate DESC")->limit(10)->select();
 		if($res){$count=count($res);}
 		else $count = 0;
 		echo '[';
@@ -233,6 +240,7 @@ class ClubAction extends PublicAction {
 		if ($this->isManager($gid)) {
 			if ($this->getPriv($gid, $uid) == 'inactive') {
 				D('Club')->addMember($gid, $uid);
+				$this->sendJoinClubEmail($uid, $gid, true);
 				$this->success("已经通过此加入申请");
 			} else
 				$this->error("此用户不处于待审核状态");
@@ -246,7 +254,8 @@ class ClubAction extends PublicAction {
 		if ($this->isManager($gid)) {
 			if ($this->getPriv($gid, $uid) == 'inactive') {
 				M('user_group')->where(['uid'=>$uid, 'gid'=>$gid])->delete();
-				$this->success("已经忽略此加入申请");
+				$this->sendJoinClubEmail($uid, $gid, false);
+				$this->success("已经拒绝此加入申请");
 			} else
 				$this->error("此用户不处于待审核状态");
 		} else
@@ -348,8 +357,8 @@ class ClubAction extends PublicAction {
 	}
 
 	public function ajaxGet() {
-		list($start, $num, $filter) = $this->parseInput();
-		$clubs = D('Club')->getClub($start, $num, $filter);
+		list($start, $num, $filter,$keyword) = $this->parseInput();
+		$clubs = D('Club')->getClub($start, $num, $filter,$keyword);
 		$elements = [];
 		foreach ($clubs as $club)
 			$elements[] = $this->club2html($club);
@@ -360,7 +369,8 @@ class ClubAction extends PublicAction {
 		$start = isset($_GET['start']) && is_numeric($_GET['start']) ? $_GET['start'] : 0;
 		$num = isset($_GET['num']) && is_numeric($_GET['num']) ? $_GET['num'] : 0;
 		$filter = isset($_GET['filter']) ? $_GET['filter'] : '';
-		return array($start, $num, $filter);
+		$keyword = isset($_GET['keyword']) ? $_GET['keyword'] : '';
+		return array($start, $num, $filter, $keyword);
 	}
 
 	private function club2html($club) {
@@ -423,6 +433,18 @@ class ClubAction extends PublicAction {
 		if (!is_numeric($_REQUEST['gid']))
 			$this->error("您所查找的社团不存在");
 		return $_REQUEST['gid'];
+	}
+	public function search()
+	{
+		$keyword = $_REQUEST['keyword'];
+		if(empty($keyword))
+		{
+			$this->error("搜索关键词不能为空");
+		}
+		$this->assign('keyword', $keyword);
+		$this->assign('clubstat', D('Club')->get_stat());
+		$this->assign('filter', isset($_GET['filter']) ? $_GET['filter'] : 'all');
+		$this->display();
 	}
 	public function address()
 	{
@@ -575,5 +597,60 @@ class ClubAction extends PublicAction {
 		header ("Content-Length: " . filesize ($filename));  
 		header("Content-Disposition: attachment; filename=".basename($filename)); 
 		readfile($filename);
+	}
+
+	private function sendJoinClubEmail($uid, $gid, $status) {
+		$user = M('user')->field(array('email', 'realname'))->find($uid);
+		extract($user);
+		$club = M('club')->field(array('name AS clubname', 'member_count'))->find($gid);
+		extract($club);
+		SendMail($email,
+			$status ? "您已成功加入".$clubname : $clubname."拒绝了您的加入请求",
+			$realname."你好:\n\n".
+			($status ? 
+				"您加入 $clubname 的申请已经审核通过。欢迎第 $member_count 位会员！":
+				"抱歉，您加入 $clubname 的申请被拒绝。请联系社团负责人以询问原因。"
+			).
+			"\n\n点击下面链接可以查看 $clubname 的会员列表\n".
+			"http://".$_SERVER['HTTP_HOST']."/Club/manage?gid=$gid\n\n".
+			"校园活动平台 http://".$_SERVER['HTTP_HOST']
+			);
+	}
+
+    public function sendNewMemberEmail() {
+        if ($_GET['token'] != 'campusATustc')
+            die();
+		$groups = array();
+		$members = M()->query("SELECT * FROM ustc_user AS u, ustc_user_group AS g WHERE g.uid = u.uid AND g.priv = 'inactive'");
+		foreach ($members as $member) {
+			$groups[$member['gid']][] = $member;
+		}
+		foreach ($groups as $gid => $group) {
+			$this->__sendNewMemberEmail($gid, $group);
+		}
+	}
+
+	private function __sendNewMemberEmail($gid, $members) {
+		$group = M('club')->field(array('name AS clubname', 'owner'))->find($gid);
+		extract($group);
+        if (empty($owner))
+            return;
+		$owner = M('user')->field(array('realname', 'email'))->find($owner);
+        extract($owner);
+		$title = $clubname.'有'.count($members).'位新成员等待审核';
+		foreach ($members as $member) {
+			$content .= $member['realname'].' '.$member['dept'].' '.$member['grade'].'级'.$member['education']."\n";
+		}
+		$header =
+			$realname."你好:\n\n".
+			$title."。\n\n";
+		$footer =
+			"\n请点击下面链接以查看会员列表并审核新会员:\n".
+			"http://".$_SERVER['HTTP_HOST']."/Club/manage?gid=$gid\n\n".
+			"校园活动平台 http://".$_SERVER['HTTP_HOST'];
+		echo "To: ".$email."\n";
+        echo "Title: ".$title."\n";
+        echo $header.$content.$footer."\n\n";
+        SendMail($email, $title, $header.$content.$footer);
 	}
 }

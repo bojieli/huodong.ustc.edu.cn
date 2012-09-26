@@ -231,21 +231,6 @@ class UserAction extends PublicAction {
 			);
 	}
 
-	private function sendJoinClubEmail($realname, $gid, $clubname, $status) {
-		SendMail($info['email'],
-			$status ? "您已成功加入 $clubname" : "$clubname 拒绝了您的加入请求",
-			$info['realname']."你好:\n\n".
-			($status ? 
-				"您加入 $clubname 的申请已经审核通过。":
-				"抱歉，您加入 $clubname 的申请被拒绝。请联系社团负责人以询问原因。"
-			).
-			"点击下面链接可以查看".$clubname."的成员列表\n\n".
-			"http://".$_SERVER['HTTP_POST']."/Club/manage?gid=$gid".
-			"校园活动平台 http://".$_SERVER['HTTP_HOST']
-			
-			);
-	}
-
 	public function registerVerify() {
 		if (!is_numeric($_GET['uid']))
 			$this->error("您所激活的用户不存在，请重新注册");
