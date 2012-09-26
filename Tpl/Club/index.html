@@ -85,8 +85,8 @@ var  nomoreflag = 0;
 	$(function(){
 		$('input.autocomplete').autocomplete({
 		source: $('input.autocomplete').attr('ajaxurl'),
-		select: function( event, ui ) {
-				
+		select: function (e,ui) {
+					$(this).val(ui.item.value).parents('form:eq(0)').find(':submit').trigger('click');
 			}
 		}
 		);
