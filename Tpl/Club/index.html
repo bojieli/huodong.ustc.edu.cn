@@ -56,29 +56,32 @@ var  nomoreflag = 0;
 		loadmore(8);
 		cycleload();
 		$(window).scroll(function () {
+								    if( loadflag==0	){
 			var clienth = document.documentElement.clientHeight;
 			var scrollh = document.documentElement.scrollHeight;
 			var scrollt = document.documentElement.scrollTop + document.body.scrollTop;
 			if ((clienth + scrollt + 10 > lowestcollheight) || (clienth + scrollt + 250 > scrollh) > scrollh) {
-				if( loadflag==0	) loadmore(4);
+				 loadmore(4);
 			};
-			
+									}
 		});
 	});
-	function cycleload(){		
+	function cycleload(){
+		if( loadflag==0	){
 			var clienth = document.documentElement.clientHeight;
 			var scrollh = document.documentElement.scrollHeight;
 			var scrollt = document.documentElement.scrollTop + document.body.scrollTop;
 			if ((clienth + scrollt + 10 > lowestcollheight) || (clienth + scrollt + 250 > scrollh) > scrollh) {
-				if( loadflag==0	) loadmore(2);
+				 loadmore(2);
 			};
+		};
 			if( loadflag == 1 ){
 				$("#haibao-onloading").css('display','block');
 				$("#haibao-onloading").animate({opacity:1},200);
 				};
 			if( loadflag == 0 || nomoreflag == 1){ $("#haibao-onloading").css('display','none');}
 			if( nomoreflag == 1 ) $("#haibao-onmoreloading").css('display','block');
-			setTimeout("cycleload()",50);		
+			setTimeout("cycleload()",100);		
 		};
 		
 		
