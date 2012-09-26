@@ -8,6 +8,7 @@ class PosterAction extends PublicAction {
 		{
 			$condition = " name like '%$keyword%' ";
 		}
+		$this->assign('keyword', $keyword);
 		$this->assign('stat', D('Poster')->get_stat($condition));
 		$this->assign('order', empty($_GET['order']) ? 'new' : $_GET['order']);
 		$this->display();
