@@ -43,7 +43,7 @@ function SendMail($address, $title, $message, $html = false) {
     $mail->From=C('MAIL_ADDRESS');
 
     // 设置发件人名字
-    $mail->FromName='社团活动信息平台';
+    $mail->FromName='校园活动平台';
 
     // 设置邮件标题
     $mail->Subject=$title;

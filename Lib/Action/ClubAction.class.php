@@ -240,6 +240,7 @@ class ClubAction extends PublicAction {
 		if ($this->isManager($gid)) {
 			if ($this->getPriv($gid, $uid) == 'inactive') {
 				D('Club')->addMember($gid, $uid);
+				$this->sendJoinClubEmail($uid, $gid, true);
 				$this->success("已经通过此加入申请");
 			} else
 				$this->error("此用户不处于待审核状态");
@@ -253,7 +254,8 @@ class ClubAction extends PublicAction {
 		if ($this->isManager($gid)) {
 			if ($this->getPriv($gid, $uid) == 'inactive') {
 				M('user_group')->where(['uid'=>$uid, 'gid'=>$gid])->delete();
-				$this->success("已经忽略此加入申请");
+				$this->sendJoinClubEmail($uid, $gid, false);
+				$this->success("已经拒绝此加入申请");
 			} else
 				$this->error("此用户不处于待审核状态");
 		} else
@@ -595,5 +597,23 @@ class ClubAction extends PublicAction {
 		header ("Content-Length: " . filesize ($filename));  
 		header("Content-Disposition: attachment; filename=".basename($filename)); 
 		readfile($filename);
+	}
+
+	private function sendJoinClubEmail($uid, $gid, $status) {
+		$user = M('user')->field(array('email', 'realname'))->find($uid);
+		extract($user);
+		$club = M('club')->field(array('name AS clubname', 'member_count'))->find($gid);
+		extract($club);
+		SendMail($email,
+			$status ? "您已成功加入".$clubname : $clubname."拒绝了您的加入请求",
+			$realname."你好:\n\n".
+			($status ? 
+				"您加入 $clubname 的申请已经审核通过。欢迎第 $member_count 位会员！":
+				"抱歉，您加入 $clubname 的申请被拒绝。请联系社团负责人以询问原因。"
+			).
+			"\n\n点击下面链接可以查看 $clubname 的会员列表\n".
+			"http://".$_SERVER['HTTP_HOST']."/Club/manage?gid=$gid\n\n".
+			"校园活动平台 http://".$_SERVER['HTTP_HOST']
+			);
 	}
 }
