@@ -41,7 +41,7 @@
 
 <notempty name="club.ismanager">
 <?php
-$showPager = function() use($club) {
+$showPager = function() use($club,$pageNow) {
 	if ($club['ismanager'])
 	if ($club['memberCount'] > 20) {
 ?>
@@ -51,7 +51,7 @@ $showPager = function() use($club) {
  <td style="color:#DDDDDD;" width="46">page</td>
 <?php	$num = floor(($club['memberCount'] + 19) / 20);
 	for ($page=1; $page<=$num; $page++) { ?>
-<td width="20" align="center"><a href="/Club/manage?gid=<?=$club['gid']?>&start=<?=($page-1)*20?>"><?=$page?></a></td>
+<td width="20" align="center"><if condition="$page eq $pageNow"><span class="nowpage"><?=$page?></span><else /><a href="/Club/manage?gid=<?=$club['gid']?>&page=<?=$page?>"><?=$page?></a></if></td>
 <?php	} ?>
  <td style="color:#DDDDDD;" width="46">page</td>
  </tr>
@@ -62,7 +62,6 @@ $showPager = function() use($club) {
 };
 ?>
 </notempty>
-
 <div id="stmain">
 <include file="introHeaderin" />
 	<div class="stcon1">
