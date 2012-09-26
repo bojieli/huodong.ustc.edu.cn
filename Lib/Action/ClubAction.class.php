@@ -188,8 +188,10 @@ class ClubAction extends PublicAction {
 
 	public function manage() {
 		$gid = $this->getInputGid();
-		$start = isset($_GET['start']) && is_numeric($_GET['start']) ? $_GET['start'] : 0;
+		$page = isset($_GET['page']) && is_numeric($_GET['page']) ? $_GET['page'] : 1;
+		//$start = isset($_GET['start']) && is_numeric($_GET['start']) ? $_GET['start'] : 0;
 		$num = isset($_GET['num']) && is_numeric($_GET['num']) ? $_GET['num'] : 20;
+		$start = ($page-1)*$num;
 		$club = $this->getData($gid);
 		$this->assign('club', $club);
 		if (!$this->isManager($gid)) {
@@ -209,6 +211,7 @@ class ClubAction extends PublicAction {
 		$inactive_members = M()->query("SELECT * FROM ustc_user AS u, ustc_user_group AS ug WHERE ug.gid='$gid' AND ug.priv = 'inactive' AND ug.uid = u.uid");
 		$this->assign('inactive', $inactive_members);
 		$this->assign('pageStart', $start);
+		$this->assign('pageNow', $page);
 		$this->headnav();
 		$this->display();
 	}
