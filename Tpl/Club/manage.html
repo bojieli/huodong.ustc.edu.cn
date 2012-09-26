@@ -45,11 +45,11 @@ $showPager = function() use($club) {
 	if ($club['ismanager'])
 	if ($club['memberCount'] > 20) {
 ?>
-<div class="pager">
+<div class="pager">page &nbsp;&nbsp;
 <?php	$num = floor(($club['memberCount'] + 19) / 20);
 	for ($page=1; $page<=$num; $page++) { ?>
 <a href="/Club/manage?gid=<?=$club['gid']?>&start=<?=($page-1)*20?>"><?=$page?></a>
-<?php	} ?>
+<?php	} ?>&nbsp;&nbsp;page
 </div>
 <?php
 	}
