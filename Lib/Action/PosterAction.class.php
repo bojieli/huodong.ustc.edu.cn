@@ -183,7 +183,7 @@ class PosterAction extends PublicAction {
 		$keyword = isset($_GET['keyword']) ? $_GET['keyword'] : '';
 		if(!empty($keyword))
 		{
-			$cond[] = "(name like '$keyword' or place like '$keyword' or description like '$keyword')";
+			$cond[] = "(name like '%$keyword%' or place like '%$keyword%' or description like '%$keyword%')";
 		}
 		return [$start, $num, implode(' AND ', $cond), $order];
 	}
