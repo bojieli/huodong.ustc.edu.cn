@@ -6,8 +6,9 @@ class PosterAction extends PublicAction {
 		$condition = '';
 		if(!empty($keyword))
 		{
-			$condition = " name like '%$keyword%' ";
+			$condition = " name like '%$keyword%' or place like '%$keyword%' or description like '%$keyword%' ";
 		}
+		$this->assign('keyword', $keyword);
 		$this->assign('stat', D('Poster')->get_stat($condition));
 		$this->assign('order', empty($_GET['order']) ? 'new' : $_GET['order']);
 		$this->display();
@@ -182,7 +183,7 @@ class PosterAction extends PublicAction {
 		$keyword = isset($_GET['keyword']) ? $_GET['keyword'] : '';
 		if(!empty($keyword))
 		{
-			$cond[] = "(name like '$keyword' or place like '$keyword' or description like '$keyword')";
+			$cond[] = "(name like '%$keyword%' or place like '%$keyword%' or description like '%$keyword%')";
 		}
 		return [$start, $num, implode(' AND ', $cond), $order];
 	}
