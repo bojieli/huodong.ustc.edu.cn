@@ -51,7 +51,7 @@ $showPager = function() use($club) {
  <td style="color:#DDDDDD;" width="46">page</td>
 <?php	$num = floor(($club['memberCount'] + 19) / 20);
 	for ($page=1; $page<=$num; $page++) { ?>
-<td width="20" align="center"><a href="/Club/manage?gid=<?=$club['gid']?>&start=<?=($page-1)*20?>"><?=$page?></a></td>
+<td width="20" align="center"><if condition="$page != $pageNow"><a href="/Club/manage?gid=<?=$club['gid']?>&page=<?=$page?>"><?=$page?></a><else /><span><?=$page?></span></if></td>
 <?php	} ?>
  <td style="color:#DDDDDD;" width="46">page</td>
  </tr>
