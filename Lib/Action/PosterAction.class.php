@@ -6,7 +6,7 @@ class PosterAction extends PublicAction {
 		$condition = '';
 		if(!empty($keyword))
 		{
-			$condition = " name like '%$keyword%' ";
+			$condition = " name like '%$keyword%' or place like '%$keyword%' or description like '%$keyword%' ";
 		}
 		$this->assign('keyword', $keyword);
 		$this->assign('stat', D('Poster')->get_stat($condition));
