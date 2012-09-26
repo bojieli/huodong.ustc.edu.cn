@@ -83,7 +83,7 @@ var  nomoreflag = 0;
 		
 		
 	$(function(){
-		$('input.autocomplete').autocomplete({
+		$('input.autocomplete').focus().autocomplete({
 		source: $('input.autocomplete').attr('ajaxurl'),
 		select: function( event, ui ) {
 				
