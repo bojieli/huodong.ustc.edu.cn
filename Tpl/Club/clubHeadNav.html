@@ -11,7 +11,7 @@
         <div class="kuang" style="width:60px;"><a href="/Club/index?filter=other<if condition="$keyword != ''">&keyword={$keyword}</if>"><div class="topbutton <if condition="$filter == 'other'">here2</if>">其它</div></a><div class="topnum">{$clubstat.other}</div></div>
     	<div class="kuang" style="width:230px;">
 		<form method='get' action="/Club/index">
-        	<input type="text" name="keyword" class="searchcss_out ui-autocomplete-input autocomplete"  autocomplete="off" ajaxurl="/Club/ajaxAutocomplete" onfocus="this.className='searchcss_on ui-autocomplete-input autocomplete'" onblur="this.className='searchcss_out ui-autocomplete-input autocomplete'">
+        	<input type="text" name="keyword" class="searchcss_out ui-autocomplete-input autocomplete"  autocomplete="off" ajaxurl="/Club/ajaxAutocomplete" onfocus="this.className='searchcss_on ui-autocomplete-input autocomplete'" onblur="this.className='searchcss_out ui-autocomplete-input autocomplete'" value="{$keyword}">
             <input type='submit' class="searchbutton" style="float:left;" value='搜索'/>
 		</form>
         </div>
