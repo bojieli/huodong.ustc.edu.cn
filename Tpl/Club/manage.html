@@ -172,14 +172,14 @@ $showPager = function() use($club) {
          </notempty>   
         <br/>
         <br/>
-            <div class="sttttt">待审核会员：</div>
+        <div class="sttttt">待审核会员：</div>
 	    <volist name="inactive" id="member">
-	    <p>{$member.realname} {$member.dept} {$member.grade}级 <?=$member.gender ? '男':'女' ?>
-	    <notempty name="club.ismanager">
-	    <a href="/Club/joinVerify?gid={$club.gid}&uid={$member.uid}" class="stfjdel1">允许</a> / <a href="/Club/joinDeny?gid={$club.gid}&uid={$member.uid}" class="stfjdel1">拒绝</a>
-	    </notempty>
-	    </p>
-            </volist>
+	        <p><span class="<?=$member['gender'] ? 'boy':'girl'?>name">{$member.realname}</span> {$member.dept} {$member.grade}级{$member.education}
+	        <notempty name="club.ismanager">
+	        <a href="/Club/joinVerify?gid={$club.gid}&uid={$member.uid}" class="stfjdel1">允许</a> / <a href="/Club/joinDeny?gid={$club.gid}&uid={$member.uid}" class="stfjdel1">拒绝</a>
+	        </notempty>
+	        </p>
+        </volist>
             
         </div><!--ctcy right-->
         

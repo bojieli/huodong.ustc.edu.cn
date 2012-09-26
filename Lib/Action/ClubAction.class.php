@@ -616,4 +616,41 @@ class ClubAction extends PublicAction {
 			"校园活动平台 http://".$_SERVER['HTTP_HOST']
 			);
 	}
+
+    public function sendNewMemberEmail() {
+        if ($_GET['token'] != 'campusATustc')
+            die();
+		$groups = array();
+		$members = M()->query("SELECT * FROM ustc_user AS u, ustc_user_group AS g WHERE g.uid = u.uid AND g.priv = 'inactive'");
+		foreach ($members as $member) {
+			$groups[$member['gid']][] = $member;
+		}
+		foreach ($groups as $gid => $group) {
+			$this->__sendNewMemberEmail($gid, $group);
+		}
+	}
+
+	private function __sendNewMemberEmail($gid, $members) {
+		$group = M('club')->field(array('name AS clubname', 'owner'))->find($gid);
+		extract($group);
+        if (empty($owner))
+            return;
+		$owner = M('user')->field(array('realname', 'email'))->find($owner);
+        extract($owner);
+		$title = $clubname.'有'.count($members).'位新成员等待审核';
+		foreach ($members as $member) {
+			$content .= $member['realname'].' '.$member['dept'].' '.$member['grade'].'级'.$member['education']."\n";
+		}
+		$header =
+			$realname."你好:\n\n".
+			$title."。\n\n";
+		$footer =
+			"\n请点击下面链接以查看会员列表并审核新会员:\n".
+			"http://".$_SERVER['HTTP_HOST']."/Club/manage?gid=$gid\n\n".
+			"校园活动平台 http://".$_SERVER['HTTP_HOST'];
+		echo "To: ".$email."\n";
+        echo "Title: ".$title."\n";
+        echo $header.$content.$footer."\n\n";
+        SendMail($email, $title, $header.$content.$footer);
+	}
 }
