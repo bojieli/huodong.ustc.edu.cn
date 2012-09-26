@@ -255,7 +255,7 @@ class ClubAction extends PublicAction {
 			if ($this->getPriv($gid, $uid) == 'inactive') {
 				M('user_group')->where(['uid'=>$uid, 'gid'=>$gid])->delete();
 				$this->sendJoinClubEmail($uid, $gid, false);
-				$this->success("已经忽略此加入申请");
+				$this->success("已经拒绝此加入申请");
 			} else
 				$this->error("此用户不处于待审核状态");
 		} else
