@@ -2,7 +2,13 @@
 class PosterAction extends PublicAction {
 	public function index() {
 		$this->headnav();
-		$this->assign('stat', D('Poster')->get_stat());
+		$keyword = isset($_GET['keyword']) ? $_GET['keyword'] : '';
+		$condition = '';
+		if(!empty($keyword))
+		{
+			$condition = " name like '%$keyword%' ";
+		}
+		$this->assign('stat', D('Poster')->get_stat($condition));
 		$this->assign('order', empty($_GET['order']) ? 'new' : $_GET['order']);
 		$this->display();
 	}
@@ -172,6 +178,11 @@ class PosterAction extends PublicAction {
 			case 'follow': $cond[] = "EXISTS (SELECT * FROM ustc_user_group AS ug WHERE ug.uid = '".CURRENT_USER."' AND gid = ug.gid)"; break;
 			case 'hot': $order = 'rate_total DESC'; $cond[] = "end_time > '".time()."'"; break;
 			}
+		}
+		$keyword = isset($_GET['keyword']) ? $_GET['keyword'] : '';
+		if(!empty($keyword))
+		{
+			$cond[] = "(name like '$keyword' or place like '$keyword' or description like '$keyword')";
 		}
 		return [$start, $num, implode(' AND ', $cond), $order];
 	}
