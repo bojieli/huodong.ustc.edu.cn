@@ -300,7 +300,7 @@ class ClubAction extends PublicAction {
 		{
 			$num = M('User_group')->result_first("SELECT count(*) FROM ustc_user_group where gid = $value[gid] and sid = 1 and priv !='inactive'");
 			$record['member_count'] = $num;
-			M('user_group')->where(['gid'=>$value[gid]])->save($record);
+			M('Club')->where(['gid'=>$value[gid]])->save($record);
 		}
 	}
 
