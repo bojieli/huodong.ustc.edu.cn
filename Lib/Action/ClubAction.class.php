@@ -280,11 +280,11 @@ class ClubAction extends PublicAction {
 			$record['title'] = $title;
 			$record['sid'] = 1;
 			$priv_pre = M('User_group')->result_first("SELECT priv FROM ustc_user_group where uid = $uid and gid = $gid and sid = 1");
-			if($priv_pre!='inactive'&&$priv=='inactive')
+			if(($priv_pre!='inactive')&&($priv=='inactive'))
 			{
 				M('user_group')->where(['gid'=>$gid, 'sid'=>1])->setDec('member_count'); // 会员数减1 
 			}
-			if($priv_pre=='inactive'&&$priv!='inactive')
+			if(($priv_pre=='inactive')&&($priv!='inactive'))
 			{
 				M('user_group')->where(['gid'=>$gid, 'sid'=>1])->setInc('member_count'); // 会员数加1 
 			}
