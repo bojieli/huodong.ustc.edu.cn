@@ -268,8 +268,9 @@ class ClubAction extends PublicAction {
 
 	// should be only called in ajax
 	public function changeTitle() {
-		$priv_pre = M('User_group')->result_first("SELECT priv FROM ustc_user_group where uid = $uid and gid = $gid and sid = 1");
+		$priv_pre = M('User_group')->result_first("SELECT priv FROM ustc_user_group where uid = 1 and gid = 1 and sid = 1");
 		echo M('User_group')->getLastSql();
+		dump($priv_pre);
 		die;
 		list($gid, $uid) = $this->getInputGidUid();
 		$title = htmlspecialchars($_GET['title']);
