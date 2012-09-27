@@ -268,8 +268,8 @@ class ClubAction extends PublicAction {
 
 	// should be only called in ajax
 	public function changeTitle() {
-		M('user_group')->where(['gid'=>1, 'sid'=>1])->setDec('member_count'); 
-		echo M('user_group')->getLastSql();
+		M('Club')->where(['gid'=>1, 'sid'=>1])->setDec('member_count'); 
+		echo M('Club')->getLastSql();
 
 		die;
 		list($gid, $uid) = $this->getInputGidUid();
