@@ -5,55 +5,78 @@
 <link href="/static/css1.css" type="text/css" rel="stylesheet" />
 <script src="/static/jquery.js" type="text/javascript"></script>
 <link href="/static/shetuanxianshi.css" type="text/css" rel="stylesheet" />
-<title>社团成员管理</title>
+<title>社团成员通讯录</title>
+<style>
+.table-addresslist{
+	margin:15px auto;
+	border:#FFF double 4px;
+	background-color:#9C9;
+	font-family:Microsoft Yahei, "Times New Roman", Times, serif;
+	}
+.table-addresslist td{
+	background-color:#FFF;
+	height:25px;
+	font-size:16px;
+	padding:0 4px;
+	}
+.table-addresslist .row2{
+	background-color:#f5f5f5;	
+	}
+.table-addresslist .td1{
+	background-color:#ccf;
+	height:30px;
+	font-size:20px;
+	text-align:center;	
+	}
+</style>
 </head>
 
 <body>	
 <include file="Public:headnav" />
 
-<div id="stmain">
+<div id="stmain" style="width:auto;">
 	<div class="stcon1">
     	<div class="stcylb">{$club.name}-通讯录</div>
 	</div>
-	<table>
-	<tr>
-		<td width="80">姓名
-		</td>
-		<td width="120">学号
-		</td>
-		<td width="50">职务
-		</td>
-		<td width="50">学历
-		</td>
-		<td width="80">入学年级
-		</td>
-		<td width="200">email
-		</td>
-		<td width="100">手机
-		</td>
-		<td>主页
-		</td>
+	<table class="table-addresslist" border="0"  cellpadding="0" cellspacing="1"  >
+	<tr >
+    	<td class="td1" width="40">序</td>	
+        <td class="td1" width="50" align="center">职务</td>	
+		<td class="td1" width="80" align="center">姓名</td>        
+		<td class="td1" width="110" align="right">学号</td>
+        <td class="td1" width="70" align="center">入学年</td>		
+		<td class="td1" width="50" align="center">学历</td>
+        <td class="td1" width="100" align="right">手机</td>
+        <td class="td1" width="100" align="right">QQ</td>
+		<td class="td1" width="200" align="right">Email</td>		
+		<td class="td1">主页地址</td>
 	</tr>
 	<volist name="members" id="member">
 	<tr>
-		<td>{$member.realname}
-		</td>
-		<td>{$member.student_no}
-		</td>
-		<td>{$member.title}
-		</td>
-		<td>{$member.education}
-		</td>
-		<td>{$member.grade}
-		</td>
-		<td>{$member.email}
-		</td>
-		<td>{$member.telephone}
-		</td>
-		<td>{$member.homepage}
-		</td>
+        <td align="center">0</td>
+        <td align="center">{$member.title}</td>
+		<td align="center">{$member.realname}</td>
+		<td align="right">{$member.student_no}</td>
+		<td align="center">{$member.grade}</td>
+		<td align="center">{$member.education}</td>
+		<td align="right">{$member.telephone}</td>
+		<td align="right">{$member.qq}</td>
+        <td align="right">{$member.email}</td>
+		<td align="left"><a target="_blank" style="color:#00F; font-size:14px" href="{$member.homepage}">{$member.homepage}</a></td>
 	</tr>
 	</volist>
+    <tr >
+    	<td class="row2" width="40">序</td>	
+        <td class="row2" width="50" align="center">职务</td>	
+		<td class="row2" width="80" align="center">姓名</td>        
+		<td class="row2" width="110" align="right">学号</td>
+        <td class="row2" width="70" align="center">入学年</td>		
+		<td class="row2" width="50" align="center">学历</td>
+        <td class="row2" width="100" align="right">手机</td>
+        <td class="row2" width="100" align="right">QQ</td>
+		<td class="row2" width="200" align="right">Email</td>		
+		<td class="row2">主页地址</td>
+	</tr>
 	</table>
 </div>
 
