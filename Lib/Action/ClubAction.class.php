@@ -609,7 +609,7 @@ class ClubAction extends PublicAction {
 			foreach($members as $key => $value)
 			{
 				$value[student_no]=strtoupper($value[student_no]);
-				$content = iconv( "UTF-8", "gbk" , "$value[realname],$value[student_no],$value[title],$value[education],$value[grade],$value[email],$value[telephone],$value[QQ],$value[homepage]");
+				$content = iconv( "UTF-8", "gbk" , "$value[realname],$value[student_no],$value[title],$value[education],$value[grade],$value[email],$value[telephone],$value[qq],$value[homepage]");
 				fwrite($file,"$content");
 				fwrite($file, " \r\n");
 			}
