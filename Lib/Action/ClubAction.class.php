@@ -225,6 +225,7 @@ class ClubAction extends PublicAction {
 			$record = array(
 				'uid' => CURRENT_USER,
 				'gid' => $gid,
+				'sid' => 1,
 				'priv' => 'inactive',
 				'title' => '审核中'
 			);
@@ -277,6 +278,7 @@ class ClubAction extends PublicAction {
 		if ($this->isAdmin($gid)) {
 			$record['priv'] = $priv;
 			$record['title'] = $title;
+			$record['sid'] = 1;
 			M('user_group')->where(['uid'=>$uid, 'gid'=>$gid])->save($record);
 			die("OK");
 		} else
