@@ -604,12 +604,12 @@ class ClubAction extends PublicAction {
 		$filename="./upload/address".$gid.".csv";
 		$file=fopen($filename,"w");
 		if($file){
-			fwrite($file,iconv( "UTF-8", "gbk" ,"姓名,学号,职务,学历,入学年级,email,手机,主页"));
+			fwrite($file,iconv( "UTF-8", "gbk" ,"姓名,学号,职务,学历,入学年级,email,手机,QQ,主页"));
 			fwrite($file,"\r\n");
 			foreach($members as $key => $value)
 			{
 				$value[student_no]=strtoupper($value[student_no]);
-				$content = iconv( "UTF-8", "gbk" , "$value[realname],$value[student_no],$value[title],$value[education],$value[grade],$value[email],$value[telephone],$value[homepage]");
+				$content = iconv( "UTF-8", "gbk" , "$value[realname],$value[student_no],$value[title],$value[education],$value[grade],$value[email],$value[telephone],$value[QQ],$value[homepage]");
 				fwrite($file,"$content");
 				fwrite($file, " \r\n");
 			}
