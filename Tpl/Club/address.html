@@ -51,9 +51,9 @@
 		<td class="td1" width="200" align="right">Email</td>		
 		<td class="td1">主页地址</td>
 	</tr>
-	<volist name="members" id="member">
+	<volist name="members" id="member" key="kid">
 	<tr>
-        <td align="center">0</td>
+        <td align="center">{$kid}</td>
         <td align="center">{$member.title}</td>
 		<td align="center">{$member.realname}</td>
 		<td align="right">{$member.student_no}</td>
