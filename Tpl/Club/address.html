@@ -17,6 +17,7 @@
 	background-color:#FFF;
 	height:25px;
 	font-size:16px;
+	padding:auto 4px;
 	}
 .table-addresslist .td1{
 	background-color:#3FC;
@@ -36,29 +37,29 @@
 	</div>
 	<table class="table-addresslist" border="0"  cellpadding="0" cellspacing="1"  >
 	<tr >
-    	<td class="td1" width="20">序</td>	
-        <td class="td1" width="50">职务</td>	
-		<td class="td1" width="80">姓名</td>        
-		<td class="td1" width="120">学号</td>
-        <td class="td1" width="80">入学年级</td>		
-		<td class="td1" width="50">学历</td>
-        <td class="td1" width="100">手机</td>
-        <td class="td1" width="100">QQ</td>
-		<td class="td1" width="200">Email</td>		
+    	<td class="td1" width="40">序</td>	
+        <td class="td1" width="50" align="center">职务</td>	
+		<td class="td1" width="80" align="center">姓名</td>        
+		<td class="td1" width="120" align="right">学号</td>
+        <td class="td1" width="80" align="center">入学年级</td>		
+		<td class="td1" width="50" align="center">学历</td>
+        <td class="td1" width="100" align="right">手机</td>
+        <td class="td1" width="100" align="right">QQ</td>
+		<td class="td1" width="200" align="right">Email</td>		
 		<td class="td1">主页地址</td>
 	</tr>
 	<volist name="members" id="member">
 	<tr>
-        <td>18</td>
-        <td>{$member.title}</td>
-		<td>{$member.realname}</td>
-		<td>{$member.student_no}</td>
-		<td>{$member.grade}</td>
-		<td>{$member.education}</td>
-		<td>{$member.telephone}</td>
-		<td>{$member.qq}</td>
-        <td>{$member.email}</td>
-		<td>{$member.homepage}</td>
+        <td align="center">18</td>
+        <td align="center">{$member.title}</td>
+		<td align="center">{$member.realname}</td>
+		<td align="right">{$member.student_no}</td>
+		<td align="center">{$member.grade}</td>
+		<td align="center">{$member.education}</td>
+		<td align="right">{$member.telephone}</td>
+		<td align="right">{$member.qq}</td>
+        <td align="right">{$member.email}</td>
+		<td align="left">{$member.homepage}</td>
 	</tr>
 	</volist>
 	</table>
