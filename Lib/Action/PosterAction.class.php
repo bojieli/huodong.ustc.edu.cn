@@ -9,8 +9,7 @@ class PosterAction extends PublicAction {
 			$condition = " name like '%$keyword%' or place like '%$keyword%' or description like '%$keyword%' ";
 		}
 		$this->assign('keyword', $keyword);
-		//$this->assign('stat', D('Poster')->get_stat($condition));
-		$this->assign('stat', D('Poster')->get_stat());
+		$this->assign('stat', D('Poster')->get_stat($condition));
 		$this->assign('order', empty($_GET['order']) ? 'new' : $_GET['order']);
 		$this->display();
 	}
