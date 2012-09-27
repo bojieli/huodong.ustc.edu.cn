@@ -131,7 +131,7 @@ $showPager = function() use($club,$pageNow) {
 			    </notempty>
 			 </notempty><br/>
 
-		    <if condition="$member[priv] == 'admin' || ($member[priv] == 'manager' && $club[isin]) || $club[ismanager]">
+		    <if condition="($member[priv] == 'admin' && $club[isin]) || ($member[priv] == 'manager' && $club[isin]) || $club[ismanager]">
 			    <notempty name="member.qq">
 			    QQ:  <span style="color:#999">{$member.qq}</span>
 			    </notempty>
