@@ -18,6 +18,7 @@
 	height:25px;
 	font-size:16px;
 	padding:0 4px;
+	word-break:keep-all;
 	}
 .table-addresslist .row2{
 	background-color:#f5f5f5;	
@@ -26,7 +27,8 @@
 	background-color:#ccf;
 	height:30px;
 	font-size:20px;
-	text-align:center;	
+	text-align:center;
+	word-break:keep-all;
 	}
 </style>
 </head>
@@ -57,8 +59,8 @@
 	<tr>
         <td align="center">{$kid}</td>
         <td align="center">{$member.title}</td>
-		<td align="center" class="<?=$member['gender'] ? 'boy' : 'girl' ?>name">{$member.realname}</td>
-        <td align="center"><?=$member['gender'] ? 'boy' : 'girl' ?></td>
+		<td align="center" class="<if condition="$member[gender] eq 1">boy<else />girl</if>">{$member.realname}</td>
+        <td align="center"><if condition="$member[gender] eq 1">男<else />女</if></td>
 		<td align="right">{$member.student_no}</td>
 		<td align="center">{$member.grade}</td>
 		<td align="center">{$member.education}</td>
