@@ -59,7 +59,7 @@
 	<tr>
         <td align="center">{$kid}</td>
         <td align="center">{$member.title}</td>
-		<td align="center" class="<if condition="$member[gender] eq 1">boy<else />girl</if>">{$member.realname}</td>
+		<td align="center" class="<if condition="$member[gender] eq 1">boyname<else />girlname</if>">{$member.realname}</td>
         <td align="center"><if condition="$member[gender] eq 1">男<else />女</if></td>
 		<td align="right">{$member.student_no}</td>
 		<td align="center">{$member.grade}</td>
@@ -74,8 +74,8 @@
 	<tr>
         <td class="row2" align="center">{$kid}</td>
         <td class="row2" align="center">{$member.title}</td>
-		<td class="row2 <?=$member['gender'] ? 'boy' : 'girl' ?>name" align="center">{$member.realname}</td>
-        <td class="row2" align="center"><?=$member['gender'] ? 'boy' : 'girl' ?></td>
+		<td class="row2 <if condition="$member[gender] eq 1">boyname<else />girlname</if>" align="center">{$member.realname}</td>
+        <td class="row2" align="center"><if condition="$member[gender] eq 1">男<else />女</if></td>
 		<td class="row2" align="right">{$member.student_no}</td>
 		<td class="row2" align="center">{$member.grade}</td>
 		<td class="row2" align="center">{$member.education}</td>
