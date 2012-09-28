@@ -42,7 +42,8 @@
 	<tr >
     	<td class="td1" width="40">序</td>	
         <td class="td1" width="50" align="center">职务</td>	
-		<td class="td1" width="80" align="center">姓名</td>        
+		<td class="td1" width="80" align="center">姓名</td>
+        <td class="td1" width="50" align="center">性别</td>        
 		<td class="td1" width="110" align="right">学号</td>
         <td class="td1" width="70" align="center">入学年</td>		
 		<td class="td1" width="50" align="center">学历</td>
@@ -57,6 +58,7 @@
         <td align="center">{$kid}</td>
         <td align="center">{$member.title}</td>
 		<td align="center">{$member.realname}</td>
+        <td align="center">{$member['gender'] ? '男' : '女' ?>}</td>
 		<td align="right">{$member.student_no}</td>
 		<td align="center">{$member.grade}</td>
 		<td align="center">{$member.education}</td>
@@ -71,6 +73,7 @@
         <td class="row2" align="center">{$kid}</td>
         <td class="row2" align="center">{$member.title}</td>
 		<td class="row2" align="center">{$member.realname}</td>
+        <td class="row2" align="center">{$member['gender'] ? '男' : '女' ?>}</td>
 		<td class="row2" align="right">{$member.student_no}</td>
 		<td class="row2" align="center">{$member.grade}</td>
 		<td class="row2" align="center">{$member.education}</td>
