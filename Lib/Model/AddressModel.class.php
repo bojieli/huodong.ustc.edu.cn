@@ -16,7 +16,7 @@ class AddressModel extends Model {
 	}
 	public function addressInfo($uid)
 	{
-		$info = M('User')->field('uid,sid,realname,email,grade,education,student_no,telephone,qq,homepage,avatar')->find($uid);
+		$info = M('User')->field('uid,sid,realname,gender,email,grade,education,student_no,telephone,qq,homepage,avatar')->find($uid);
 		$info[student_no] = strtoupper($info[student_no]);
 		return $info;
 	}
