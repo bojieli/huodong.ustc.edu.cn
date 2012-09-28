@@ -57,7 +57,7 @@
 	<tr>
         <td align="center">{$kid}</td>
         <td align="center">{$member.title}</td>
-		<td align="center">{$member.realname}</td>
+		<td align="center" class="<?=$member['gender'] ? 'boy' : 'girl' ?>name">{$member.realname}</td>
         <td align="center"><?=$member['gender'] ? 'boy' : 'girl' ?></td>
 		<td align="right">{$member.student_no}</td>
 		<td align="center">{$member.grade}</td>
@@ -72,7 +72,7 @@
 	<tr>
         <td class="row2" align="center">{$kid}</td>
         <td class="row2" align="center">{$member.title}</td>
-		<td class="row2" align="center">{$member.realname}</td>
+		<td class="row2 <?=$member['gender'] ? 'boy' : 'girl' ?>name" align="center">{$member.realname}</td>
         <td class="row2" align="center"><?=$member['gender'] ? 'boy' : 'girl' ?></td>
 		<td class="row2" align="right">{$member.student_no}</td>
 		<td class="row2" align="center">{$member.grade}</td>
