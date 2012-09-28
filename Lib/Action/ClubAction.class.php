@@ -614,7 +614,6 @@ class ClubAction extends PublicAction {
 		}
 		$address = D('Address');
 		$members = $address->createAddress($gid,$sid);
-		$members['gender']=$members['gender']?'男':'女';
 		$filename="./upload/address".$gid.".csv";
 		$file=fopen($filename,"w");
 		if($file){
@@ -622,6 +621,7 @@ class ClubAction extends PublicAction {
 			fwrite($file,"\r\n");
 			foreach($members as $key => $value)
 			{
+				$value['gender']=$value['gender']?'男':'女';
 				$value[student_no]=strtoupper($value[student_no]);
 				$content = iconv( "UTF-8", "gbk" , "$value[realname],$value[student_no],$value[gender],$value[title],$value[education],$value[grade],$value[email],$value[telephone],$value[qq],$value[homepage]");
 				fwrite($file,"$content");
