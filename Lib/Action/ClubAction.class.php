@@ -68,6 +68,17 @@ class ClubAction extends PublicAction {
 
 		$club['owner'] = $_REQUEST['owner'];
 		M('Club')->where(array('gid'=>$_REQUEST['gid']))->save($club);
+		$uid = $_REQUEST['owner'];
+		$gid = $_REQUEST['gid'];
+		$priv_pre = M('User_group')->result_first("SELECT priv FROM ustc_user_group where uid = $uid and gid = $gid and sid = 1");
+		if(($priv_pre!='inactive')&&($priv=='inactive'))
+		{
+			M('Club')->where(['gid'=>$gid, 'sid'=>1])->setDec('member_count'); // 会员数减1 
+		}
+		if(($priv_pre=='inactive')&&($priv!='inactive'))
+		{
+			M('Club')->where(['gid'=>$gid, 'sid'=>1])->setInc('member_count'); // 会员数加1 
+		}
 
 		M('user_group')->where(array('gid'=>$_REQUEST['gid'], 'uid'=>$_REQUEST['owner'],'sid'=>1))->delete();
 		
