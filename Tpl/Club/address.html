@@ -51,9 +51,10 @@
 		<td class="td1" width="200" align="right">Email</td>		
 		<td class="td1">主页地址</td>
 	</tr>
-	<volist name="members" id="member">
+	<volist name="members" id="member" key="kid"  mod="2">
+	<eq name="mod" value="1">
 	<tr>
-        <td align="center">0</td>
+        <td align="center">{$kid}</td>
         <td align="center">{$member.title}</td>
 		<td align="center">{$member.realname}</td>
 		<td align="right">{$member.student_no}</td>
@@ -64,19 +65,22 @@
         <td align="right">{$member.email}</td>
 		<td align="left"><a target="_blank" style="color:#00F; font-size:14px" href="{$member.homepage}">{$member.homepage}</a></td>
 	</tr>
-	</volist>
-    <tr >
-    	<td class="row2" width="40">序</td>	
-        <td class="row2" width="50" align="center">职务</td>	
-		<td class="row2" width="80" align="center">姓名</td>        
-		<td class="row2" width="110" align="right">学号</td>
-        <td class="row2" width="70" align="center">入学年</td>		
-		<td class="row2" width="50" align="center">学历</td>
-        <td class="row2" width="100" align="right">手机</td>
-        <td class="row2" width="100" align="right">QQ</td>
-		<td class="row2" width="200" align="right">Email</td>		
-		<td class="row2">主页地址</td>
+	</eq> 
+	<eq name="mod" value="0">
+	<tr>
+        <td class="row2" align="center">{$kid}</td>
+        <td class="row2" align="center">{$member.title}</td>
+		<td class="row2" align="center">{$member.realname}</td>
+		<td class="row2" align="right">{$member.student_no}</td>
+		<td class="row2" align="center">{$member.grade}</td>
+		<td class="row2" align="center">{$member.education}</td>
+		<td class="row2" align="right">{$member.telephone}</td>
+		<td class="row2" align="right">{$member.qq}</td>
+        <td class="row2" align="right">{$member.email}</td>
+		<td class="row2" align="left"><a target="_blank" style="color:#00F; font-size:14px" href="{$member.homepage}">{$member.homepage}</a></td>
 	</tr>
+	</eq> 
+	</volist>
 	</table>
 </div>
 

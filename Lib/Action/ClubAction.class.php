@@ -279,10 +279,29 @@ class ClubAction extends PublicAction {
 			$record['priv'] = $priv;
 			$record['title'] = $title;
 			$record['sid'] = 1;
+			$priv_pre = M('User_group')->result_first("SELECT priv FROM ustc_user_group where uid = $uid and gid = $gid and sid = 1");
+			if(($priv_pre!='inactive')&&($priv=='inactive'))
+			{
+				M('Club')->where(['gid'=>$gid, 'sid'=>1])->setDec('member_count'); // 会员数减1 
+			}
+			if(($priv_pre=='inactive')&&($priv!='inactive'))
+			{
+				M('Club')->where(['gid'=>$gid, 'sid'=>1])->setInc('member_count'); // 会员数加1 
+			}
 			M('user_group')->where(['uid'=>$uid, 'gid'=>$gid])->save($record);
 			die("OK");
 		} else
 			die("Not enough privilege");
+	}
+	public function test()
+	{
+		$clubs = M('Club')->where("1")->select();
+		foreach($clubs as $value)
+		{
+			$num = M('User_group')->result_first("SELECT count(*) FROM ustc_user_group where gid = $value[gid] and sid = 1 and priv !='inactive'");
+			$record['member_count'] = $num;
+			M('Club')->where(['gid'=>$value[gid]])->save($record);
+		}
 	}
 
 	public function removeMember() {
@@ -585,12 +604,12 @@ class ClubAction extends PublicAction {
 		$filename="./upload/address".$gid.".csv";
 		$file=fopen($filename,"w");
 		if($file){
-			fwrite($file,iconv( "UTF-8", "gbk" ,"姓名,学号,职务,学历,入学年级,email,手机,主页"));
+			fwrite($file,iconv( "UTF-8", "gbk" ,"姓名,学号,职务,学历,入学年级,email,手机,QQ,主页"));
 			fwrite($file,"\r\n");
 			foreach($members as $key => $value)
 			{
 				$value[student_no]=strtoupper($value[student_no]);
-				$content = iconv( "UTF-8", "gbk" , "$value[realname],$value[student_no],$value[title],$value[education],$value[grade],$value[email],$value[telephone],$value[homepage]");
+				$content = iconv( "UTF-8", "gbk" , "$value[realname],$value[student_no],$value[title],$value[education],$value[grade],$value[email],$value[telephone],$value[qq],$value[homepage]");
 				fwrite($file,"$content");
 				fwrite($file, " \r\n");
 			}
