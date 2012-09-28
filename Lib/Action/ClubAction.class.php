@@ -69,7 +69,7 @@ class ClubAction extends PublicAction {
 		$club['owner'] = $_REQUEST['owner'];
 		M('Club')->where(array('gid'=>$_REQUEST['gid']))->save($club);
 
-		//M('user_group')->where(array('gid'=>$_REQUEST['gid'], 'uid'=>$_REQUEST['owner']))->delete();
+		M('user_group')->where(array('gid'=>$_REQUEST['gid'], 'uid'=>$_REQUEST['owner'],'sid'=>1))->delete();
 		
 		$record['gid'] = $_REQUEST['gid'];
 		$record['uid'] = $_REQUEST['owner'];
@@ -77,7 +77,7 @@ class ClubAction extends PublicAction {
 		$record['priv'] = 'admin';
 		$record['title'] = '会长';
 		$row = M('user_group');
-		$row->save($record);
+		$row->create($record);
 		$row->add();
 
 		$this->success("设置会长成功！");
