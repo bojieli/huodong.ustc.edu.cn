@@ -70,6 +70,7 @@ class ClubAction extends PublicAction {
 		M('Club')->where(array('gid'=>$_REQUEST['gid']))->save($club);
 		$uid = $_REQUEST['owner'];
 		$gid = $_REQUEST['gid'];
+		$priv = 'admin';
 		$priv_pre = M('User_group')->result_first("SELECT priv FROM ustc_user_group where uid = $uid and gid = $gid and sid = 1");
 		if(($priv_pre!='inactive')&&($priv=='inactive'))
 		{
