@@ -614,15 +614,16 @@ class ClubAction extends PublicAction {
 		}
 		$address = D('Address');
 		$members = $address->createAddress($gid,$sid);
+		$members['gender']=$members['gender']?'男':'女';
 		$filename="./upload/address".$gid.".csv";
 		$file=fopen($filename,"w");
 		if($file){
-			fwrite($file,iconv( "UTF-8", "gbk" ,"姓名,学号,职务,学历,入学年级,email,手机,QQ,主页"));
+			fwrite($file,iconv( "UTF-8", "gbk" ,"姓名,学号,性别,职务,学历,入学年级,email,手机,QQ,主页"));
 			fwrite($file,"\r\n");
 			foreach($members as $key => $value)
 			{
 				$value[student_no]=strtoupper($value[student_no]);
-				$content = iconv( "UTF-8", "gbk" , "$value[realname],$value[student_no],$value[title],$value[education],$value[grade],$value[email],$value[telephone],$value[qq],$value[homepage]");
+				$content = iconv( "UTF-8", "gbk" , "$value[realname],$value[student_no],$value[gender],$value[title],$value[education],$value[grade],$value[email],$value[telephone],$value[qq],$value[homepage]");
 				fwrite($file,"$content");
 				fwrite($file, " \r\n");
 			}
