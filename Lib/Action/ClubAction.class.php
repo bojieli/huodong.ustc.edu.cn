@@ -308,6 +308,18 @@ class ClubAction extends PublicAction {
 		} else
 			die("Not enough privilege");
 	}
+	public function changeTitleText() {
+		list($gid, $uid) = $this->getInputGidUid();
+		$title = htmlspecialchars($_POST['title']);
+		
+		if ($this->isAdmin($gid)) {
+			$record['title'] = $title;
+			$record['sid'] = 1;
+			M('user_group')->where(['uid'=>$uid, 'gid'=>$gid])->save($record);
+			$this->success('修改title成功');
+		} else
+			$this->error('修改title失败');
+	} 
 	public function test()
 	{
 		/*$clubs = M('Club')->where("1")->select();
