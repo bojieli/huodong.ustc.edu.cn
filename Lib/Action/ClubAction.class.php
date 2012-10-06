@@ -26,7 +26,7 @@ class ClubAction extends PublicAction {
 		$club = $this->getData($_GET['gid']);
 		$this->assign('club', $club);
 
-		if ($club['isadmin'])
+		if ($club['isadmins'])
 			$this->display();
 		else
 			$this->error("抱歉，只有社团管理员才能修改社团简介");
@@ -35,7 +35,7 @@ class ClubAction extends PublicAction {
 	public function introUpdate() {
 		$gid = $_POST['gid'];
 		$club = $this->getData($gid);
-		if (!$club['isadmin'])
+		if (!$club['isadmins'])
 			$this->error("抱歉，只有社团管理员才能修改社团简介");
 		$club = M('Club')->find($gid);
 		// strip HTML in fields
@@ -347,12 +347,17 @@ class ClubAction extends PublicAction {
 		return M()->result_first("SELECT priv FROM ustc_user_group WHERE `uid`='$uid' AND `gid`='$gid'");
 	}
 
+	private function getPrivValue($gid,$uid = CURRENT_USER)
+	{
+		return M()->result_first("SELECT up.priv_value FROM ustc_user_group As ug, ustc_priv As up WHERE ug.priv = up.priv_name AND ug.uid='$uid' AND ug.gid='$gid'");
+	}
+
 	public function isAdmin($gid, $uid = CURRENT_USER) {
 		return D('User')->isSchoolAdmin($uid) || $this->getPriv($gid,$uid) == 'admin';
 	}
 
 	public function isManager($gid, $uid = CURRENT_USER) {
-		return D('User')->isSchoolAdmin($uid) || in_array($this->getPriv($gid,$uid), ['admin','manager']);
+		return D('User')->isSchoolAdmin($uid) || $this->getPrivValue($gid,$uid)>1;
 	}
 
 	public function inClub($gid, $uid = CURRENT_USER) {
@@ -385,13 +390,22 @@ class ClubAction extends PublicAction {
 			}
 		}
 
-		$club['mypriv'] = M()->result_first("SELECT priv FROM ustc_user_group WHERE `uid`='".CURRENT_USER."' AND gid='$gid'");
+		$mypriv = M()->query("SELECT up.priv_value, up.priv_name, ug.title FROM ustc_user_group As ug, ustc_priv As up WHERE ug.priv = up.priv_name AND ug.uid='".CURRENT_USER."' AND ug.gid='$gid'");
+		foreach($mypriv as $v)
+		{
+			$club['mypriv'] = $v['priv_name'];
+			$club['mypriv_value'] = $v['priv_value'];
+			$club['title'] = $v['title'];
+		}
+		
 		$club['isSchoolAdmin'] = D('User')->isSchoolAdmin(CURRENT_USER);
-		$club['isadmin'] = ($club['isSchoolAdmin'] || $club['mypriv'] == 'admin');
-		$club['ismanager'] = ($club['isadmin'] || $club['mypriv'] == 'manager');
-		$club['isin'] = in_array($club['mypriv'], ['admin','manager','member']);
+		$club['isadmin'] = ($club['isSchoolAdmin'] || $club['mypriv'] == 'admin');//主席
+		$club['isadmins'] = ($club['isadmin'] || $club['mypriv'] == 'vice-admin');//副主席以上
+		$club['ismanager'] = ($club['isadmins'] || $club['mypriv_value'] > 1 );//项目负责人以上
+		$club['isin'] = $club['mypriv_value'] > 0;//会员
 		$club['memberCount'] = $club['member_count'];
 		$club['posterCount'] = $club['poster_count'];
+		//dump($club);
 		return $club;
 	}
 

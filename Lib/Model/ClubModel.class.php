@@ -28,17 +28,7 @@ class ClubModel extends Model {
 		M()->execute("UPDATE ustc_club SET member_count = member_count + 1 WHERE `gid` = '$gid'");
 		$this->updateRate($gid, 20);
 	}
-	public function privCompare($a, $b)
-    {    
-        $priv = array('admin','vice-admin','manager','vice-manager','team-leader','member','inactive');
-
-        return (array_search($a['priv'], $arr2) < array_search($b['priv'], $arr2)) ? -1 : 1;
-    }  
-	public function sortMemberByPriv($members)
-	{
-		usort($members, array($this, "privCompare"));
-		return $members;
-	}
+	
 	public function removeMember($gid, $uid) {
 		if (!is_numeric($gid) || !is_numeric($uid) || $gid <= 0 || $uid <= 0)
 			return;
@@ -111,7 +101,7 @@ class ClubModel extends Model {
 	}
 
 	public function memberCount() {
-		return M('user_group')->where(['gid' => $this->gid])->count();
+		return $this->member_count;//M('user_group')->where(['gid' => $this->gid])->count();
 	}
 
 	public function schoolName($gid) {
