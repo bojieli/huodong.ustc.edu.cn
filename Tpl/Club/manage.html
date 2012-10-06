@@ -25,10 +25,12 @@
 			function() {
 			switch(priv) {
 			case 'admin': return 1;
-			case 'manager': return 2;
-			case 'member': return 3;
-			case 'inactive': return 4;
-			default: return 4;
+			case 'vice-admin': return 2;
+			case 'manager': return 3;
+			case 'vice-manager': return 3;
+			case 'team-leader': return 3;
+			case 'member': return 4;
+			default: return 5;
 			}
 			}()
 			+".png"
