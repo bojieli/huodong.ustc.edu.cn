@@ -211,7 +211,8 @@ class ClubAction extends PublicAction {
 			$start = 0;
 			$num = 20;
 		}
-		$members = M()->query("SELECT * FROM ustc_user AS u, ustc_user_group AS ug WHERE ug.gid='$gid' AND ug.uid = u.uid ORDER BY ug.priv LIMIT $start,$num");
+
+		$members = M()->query("SELECT * FROM (ustc_user INNER JOIN ustc_user_group ON ustc_user.uid = ustc_user_group.uid) INNER JOIN ustc_priv ON ustc_user_group.priv = ustc_priv.priv_name WHERE ustc_user_group.gid='$gid' ORDER BY ustc_priv.priv_value desc LIMIT $start,$num");
 		foreach ($members as &$member) {
 			$member['avatar'] = D('user')->getAvatar($member[uid],'small');
 			/*if (empty($member['avatar']))
@@ -220,6 +221,7 @@ class ClubAction extends PublicAction {
 				$member['avatar'] = C('AVATAR_PATH').$member['avatar'];*/
 		}
 		unset($member);
+		//$members = D('Club')->sortMemberByPriv($members);
 		$this->assign('members', $members);
 		$inactive_members = M()->query("SELECT * FROM ustc_user AS u, ustc_user_group AS ug WHERE ug.gid='$gid' AND ug.priv = 'inactive' AND ug.uid = u.uid");
 		$this->assign('inactive', $inactive_members);
@@ -283,7 +285,7 @@ class ClubAction extends PublicAction {
 	public function changeTitle() {
 		list($gid, $uid) = $this->getInputGidUid();
 		$title = htmlspecialchars($_GET['title']);
-		if (!in_array($_GET['priv'], ['admin', 'manager', 'member', 'inactive'])) {
+		if (!in_array($_GET['priv'], ['admin','vice-admin','manager', 'vice-manager', 'team-leader', 'member', 'inactive'])) {
 			die("Invalid privilege");
 		}
 		$priv = $_GET['priv'];
@@ -308,13 +310,19 @@ class ClubAction extends PublicAction {
 	}
 	public function test()
 	{
-		$clubs = M('Club')->where("1")->select();
+		/*$clubs = M('Club')->where("1")->select();
 		foreach($clubs as $value)
 		{
 			$num = M('User_group')->result_first("SELECT count(*) FROM ustc_user_group where gid = $value[gid] and sid = 1 and priv !='inactive'");
 			$record['member_count'] = $num;
 			M('Club')->where(['gid'=>$value[gid]])->save($record);
-		}
+		}*/
+		M('Club')->query("update ustc_user_group set priv = 'vice-admin' where title = '副主席'");
+		M('Club')->query("update ustc_user_group set priv = 'vice-admin' where title = '副会长'");
+		M('Club')->query("update ustc_user_group set priv = 'vice-admin' where title = '副社长'");
+		M('Club')->query("update ustc_user_group set priv = 'vice-manager' where title = '副部长'");
+		M('Club')->query("update ustc_user_group set priv = 'team-leader' where title = '活动负责人'");
+		M('Club')->query("update ustc_user_group set priv = 'team-leader' where title = '项目组长'");
 	}
 
 	public function removeMember() {
