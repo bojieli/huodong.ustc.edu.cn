@@ -122,10 +122,9 @@ $showPager = function() use($club,$pageNow) {
 		?>
                     <div class="stzhiwu"><img src="/static/images/aa{$member.privlevel}.png" />
 		    <div class="stzhiwumc ajax_title_now">{$member.title}</div>
-			<a class="title_set" href="javascript:void(0);">个性职称</a>
-		    <div class="stzhiwumc ajax_title"><input id="{$member.uid}" class="ajax_title_text" value="{$member.title}"/></div>
-
 		    <notempty name="club.isadmin">
+				<a class="title_set" href="javascript:void(0);">个性职称</a>
+				<div class="stzhiwumc ajax_title"><input id="{$member.uid}" class="ajax_title_text" value="{$member.title}"/></div>
 	    	    <div class="stzhiwusz">设置权限：
                         <select onchange="ajaxChangeTitle({$member.uid}, this.options[this.selectedIndex].getAttribute('priv'), this.options[this.selectedIndex].getAttribute('title'))">
                         <option priv="" title="" selected="selected">------</option>
