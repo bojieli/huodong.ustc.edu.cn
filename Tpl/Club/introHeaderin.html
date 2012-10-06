@@ -20,24 +20,22 @@
 		<case value="inactive">
 		    <span style="color:#999">您的申请正审核中……</span>
 		</case>
-		<case value="admin">
-		    欢迎您，会长
-		</case>
-		<case value="manager">
-		    欢迎您，部长
-		</case>
 		<case value="member">
 		    欢迎您，会员 <a href="/Club/quit?gid={$club.gid}" onclick="return confirm('您真的要退出社团吗？');"> <span style="color:#36F">&nbsp;&nbsp;点此退出社团</span></a>
 		</case>
 		<default />
+		<if condition="$club[ismanager]">
+		    欢迎您，{$club.title}
+		<else />
 		  <if condition="$_G['uid'] == 0">
 		    <a href="/User/register" style="color:#F00;">注册</a> 或 <a href="/User/login" style="color:#F00;">登录</a> 后才能加入社团
 		  <else />
 	    	    <a href="/Club/join?gid={$club.gid}" style="color:#F00;">您还未加入，点击申请加入</a>
 		  </if>
+		</if>
 	    </switch>
 	    
-	    <notempty name="club.isadmin">
+	    <notempty name="club.isadmins">
 	    <a style="margin-left:20px;" href="/Club/introModify?gid={$club.gid}">修改社团简介</a>
 	    </notempty>
 	    <notempty name="club.ismanager">
