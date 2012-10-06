@@ -42,7 +42,7 @@
     <div class="control-group">
       <label class="control-label" for="shortdesc">简短介绍</label>
       <div class="controls">
-        <textarea class="input-xlarge" id="shortdesc" name="shortdesc" rows="5" style="height:100px" onKeyUp="if(this.value=='' || this.value.length > 140) $(this).parent().parent().addClass('error'); else $(this).parent().parent().removeClass('error');">{$club.shortdesc}</textarea>
+        <textarea class="input-xlarge" id="shortdesc" name="shortdesc" rows="5" style="height:100px; width:600px;" onKeyUp="if(this.value=='' || this.value.length > 140) $(this).parent().parent().addClass('error'); else $(this).parent().parent().removeClass('error');">{$club.shortdesc}</textarea>
 	<p class="help-block">显示在“大学社团”瀑布流的简短介绍，不超过140字</p>
       </div>
     </div>
@@ -51,17 +51,17 @@
       <label class="control-label" for="logo">LOGO</label>
       <div class="controls">
         <input type="file" id="logo" name="logo" />
-	<p class="help-block">显示在“大学社团”瀑布流的社团LOGO。如果不需要更换LOGO，请留空</p>
+	<p class="help-block" style="color:#F00">显示在“学生团体”页面的，简介部分的社团LOGO。如果不需要更换LOGO，请留空</p>
 	<p class="help-block">图片大小不大于<span style="color:red">2MB</span>（如果超过请用软件缩放），支持的文件格式：jpg、jpeg、png、gif</p>
       </div>
     </div>
-    
+   
+    <link rel="stylesheet" type="text/css" href="/static/ueditor/themes/default/ueditor.css"/>
     <div class="control-group">
-      <label class="control-label" for="description">
+      <label class="control-label" for="description"> </label>
       <div class="controls">
         <script type="text/javascript" charset="utf-8" src="/static/ueditor/editor_config.js"></script>
-        <script type="text/javascript" charset="utf-8" src="/static/ueditor/editor_all.js"></script>
-	<link rel="stylesheet" type="text/css" href="/static/ueditor/themes/default/ueditor.css"/>
+        <script type="text/javascript" charset="utf-8" src="/static/ueditor/editor_all.js"></script>	
         <script type="text/plain" id="description" name="description" style="width:850px;text-align:left;">
 	  <empty name="club.description">
 	  <p>在此编辑社团的详细介绍。可以上传图片、自由排版哦！</p>
