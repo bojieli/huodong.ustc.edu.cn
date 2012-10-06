@@ -38,6 +38,36 @@
 		dom.children('.stzhiwumc').html(title);
 	});
     }
+	$(function(){
+		$(".ajax_title").hide();
+		$(".title_set").live('click',function(){
+			var text = $(this).html();
+			if(text=='个性职称')
+			{
+				$(this).parents('div:eq(0)').find(".ajax_title_now").hide();
+				$(this).parents('div:eq(0)').find(".ajax_title").show();
+				$(this).html("保存");
+			}
+			if(text=='保存')
+			{
+				$(this).parents('div:eq(0)').find(".ajax_title_now").show();
+				$(this).parents('div:eq(0)').find(".ajax_title").hide();
+				var title_div = $(this).parents('div:eq(0)').find(".ajax_title_now");
+				var data = $(this).parents('div:eq(0)').find(".ajax_title_text").val();
+				var uid = $(this).parents('div:eq(0)').find(".ajax_title_text").attr('id');
+				$.post('/Club/changeTitleText', {uid: uid, gid: <?=$club['gid']?>, 'title': data }, function (res) {
+					if(res.status==0) {
+						alert(res.info);
+					}
+					else
+					{
+						title_div.html(data);
+					}
+				},'json');
+				$(this).html("个性职称");
+			}
+		});
+	});
 </script>		
 </notempty>
 
@@ -91,8 +121,10 @@ $showPager = function() use($club,$pageNow) {
 		$member['privlevel'] = $priv2num($member['priv']);
 		?>
                     <div class="stzhiwu"><img src="/static/images/aa{$member.privlevel}.png" />
-		    <div class="stzhiwumc">{$member.title}</div>
-		    
+		    <div class="stzhiwumc ajax_title_now">{$member.title}</div>
+			<a class="title_set" href="javascript:void(0);">个性职称</a>
+		    <div class="stzhiwumc ajax_title"><input id="{$member.uid}" class="ajax_title_text" value="{$member.title}"/></div>
+
 		    <notempty name="club.isadmin">
 	    	    <div class="stzhiwusz">设置权限：
                         <select onchange="ajaxChangeTitle({$member.uid}, this.options[this.selectedIndex].getAttribute('priv'), this.options[this.selectedIndex].getAttribute('title'))">
