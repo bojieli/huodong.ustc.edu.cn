@@ -68,6 +68,7 @@ class UserAction extends PublicAction {
 				$this->assign('jumpUrl', $_POST['referer']);
 			else
 				$this->assign('jumpUrl','/User/home?uid='.$passport['uid']);
+			D(User)->loginLog($passport['uid']);
 			$this->success('登陆成功');
 		}
 		else{
