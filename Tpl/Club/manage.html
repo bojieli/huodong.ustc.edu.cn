@@ -46,7 +46,8 @@
 			{
 				$(this).parents('div:eq(0)').find(".ajax_title_now").hide();
 				$(this).parents('div:eq(0)').find(".ajax_title").show();
-				$(this).html("保存");
+				$(this).html("保存   ");
+				$(this).css({ opacity: 0.8 }); 
 			}
 			if(text=='保存')
 			{
@@ -65,6 +66,7 @@
 					}
 				},'json');
 				$(this).html("个性职称");
+				$(this).css({ opacity: 0.1 });
 			}
 		});
 	});
