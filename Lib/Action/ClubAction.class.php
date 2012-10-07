@@ -1,16 +1,60 @@
 <?php
 class ClubAction extends PublicAction {
 	public function index() {
+		global $_G;
 		$this->headnav();
 		$keyword = isset($_GET['keyword']) ? $_GET['keyword'] : '';
+		$sid = isset($_GET['sid']) ? $_GET['sid'] : $_G['sid'];
+		$filter = isset($_GET['filter']) ? $_GET['filter'] : 'all';
 		$condition = '';
+		$url = '';
+
+		if(!empty($filter))
+		{
+			if(empty($url))
+			{
+				$url .= "filter=$filter";
+			}
+			else
+			{
+				$url .="&filter=$filter";
+			}
+		}
 		if(!empty($keyword))
 		{
-			$condition = " name like '%$keyword%' ";
+			$condition .= " name like '%$keyword%' ";
+			$url .= "&keyword=$keyword";
 		}
+		if(!empty($sid))
+		{
+			if(empty($condition))
+			{
+				$condition .= " sid = $sid ";
+			}
+			else
+			{
+				$condition .= " AND sid = $sid ";
+			}
+		}
+		
+		
+		$url = '/Club/index?'.$url;
+		$schools = M('School')->select();
+		$num = count($schools);
+		for($i=0;$i<$num;$i++)
+		{
+			$school_id = $schools[$i]['sid'];
+			$schools[$i]['url']=$url."&sid=$school_id";
+		}
+		
+		$schools = json_encode($schools);
+
+		$this->assign('schools', $schools);
+
 		$this->assign('keyword', $keyword);
+		$this->assign('sid', $sid);
 		$this->assign('clubstat', D('Club')->get_stat($condition));
-		$this->assign('filter', isset($_GET['filter']) ? $_GET['filter'] : 'all');
+		$this->assign('filter', $filter);
 		$this->display();
 	}
 
@@ -63,6 +107,9 @@ class ClubAction extends PublicAction {
 	}
 
 	public function addOwnerSubmit() {
+		$uid = $_REQUEST['owner'];
+		$gid = $_REQUEST['gid'];
+		$sid = $_REQUEST['sid'];
 		if (!(D('User')->isSchoolAdmin(CURRENT_USER)))
 			$this->error("没有权限！");
 
@@ -96,6 +143,33 @@ class ClubAction extends PublicAction {
 	}
 
 	public function introAdd() {
+		if (CURRENT_USER == 0) {
+			$this->error("您需要先登录");
+		}
+		
+		global $_G;
+		$school = M('User')->field('sid')->find($_G[uid]);
+		$school_id = $school['sid'];
+		
+		if (!(D('User')->isSchoolAdmin(CURRENT_USER,$school_id)))
+		{
+			$this->error("您没有权限");
+		}
+		
+		if(D('User')->isDeveloper(CURRENT_USER))
+		{
+			$schools = M('School')->select();
+		}
+		else
+		{
+			$schools = M('School')->where("sid = $school_id")->select();
+		}
+		
+		$schools = json_encode($schools);
+
+		$this->assign('schools', $schools);
+		$this->assign('school_id', $school_id);
+
 		$this->display();
 	}
 	public function ajaxAutocomplete()
@@ -120,7 +194,7 @@ class ClubAction extends PublicAction {
 		if (!(D('User')->isSchoolAdmin(CURRENT_USER)))
 			$this->error("没有权限！");
 
-		$fields = ['type','name','owner','name_en','slogan','found_date','teacher','qq_group','contact','homepage','shortdesc'];
+		$fields = ['sid','type','name','owner','name_en','slogan','found_date','teacher','qq_group','contact','homepage','shortdesc'];
 		foreach ($fields as $field) {
 			$club[$field] = htmlspecialchars($_POST[$field]);
 		}
@@ -131,8 +205,6 @@ class ClubAction extends PublicAction {
 		$club['description'] = $_POST['description'];
 
 		$club['logo'] = $this->uploadLogo();
-
-		$club['sid'] = 1; // force USTC
 
 		if (!is_numeric($club['owner']) || $club['owner'] <= 0) // key constraint
 			unset($club['owner']);
@@ -428,8 +500,8 @@ class ClubAction extends PublicAction {
 	}
 
 	public function ajaxGet() {
-		list($start, $num, $filter,$keyword) = $this->parseInput();
-		$clubs = D('Club')->getClub($start, $num, $filter,$keyword);
+		list($start, $num, $filter,$keyword,$sid) = $this->parseInput();
+		$clubs = D('Club')->getClub($start, $num, $filter,$keyword,$sid);
 		$elements = [];
 		foreach ($clubs as $club)
 			$elements[] = $this->club2html($club);
@@ -441,7 +513,8 @@ class ClubAction extends PublicAction {
 		$num = isset($_GET['num']) && is_numeric($_GET['num']) ? $_GET['num'] : 0;
 		$filter = isset($_GET['filter']) ? $_GET['filter'] : '';
 		$keyword = isset($_GET['keyword']) ? $_GET['keyword'] : '';
-		return array($start, $num, $filter, $keyword);
+		$sid = isset($_GET['sid']) ? $_GET['sid'] : 0;
+		return array($start, $num, $filter, $keyword,$sid);
 	}
 
 	private function club2html($club) {
