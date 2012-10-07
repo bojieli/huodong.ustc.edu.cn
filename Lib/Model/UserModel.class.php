@@ -27,6 +27,15 @@ class UserModel extends Model {
 		}
 		define('CURRENT_USER', $_G['uid']);
 	}
+	function loginLog($uid)
+	{
+		$log = array();
+		$log['uid'] = $uid;
+		$log['ip'] = get_client_ip();
+		$log['time'] = time();
+		
+		M('Login_log')->add($log);
+	}
 	function getRealname($uid)
 	{
 		$res= $this->where("uid = $uid")->limit(1)->select();
