@@ -8,6 +8,28 @@
 	<p></p>
       </div>
     </div>
+	<div class="control-group">
+      <label class="control-label" for="type">学校</label>
+      <div class="controls" id="school_div">
+      </div>
+	  <script>
+		var school_all= '{$schools}';
+		eval('option_array='+school_all);
+		
+		var selObj = document.createElement("select");
+		selObj.name = "sid";
+		var box = document.getElementById('school_div');
+		box.appendChild(selObj);
+		var i=0;
+		//alert(value);
+		for(var p in option_array)
+		{
+			selObj.options[i] = new Option(option_array[p]['name'], option_array[p]['sid']);
+			//alert(option_array[p]);
+			i=i+1;
+		}
+	</script>
+    </div>
     <div class="control-group">
       <label class="control-label" for="type">组织类型</label>
       <div class="controls">
