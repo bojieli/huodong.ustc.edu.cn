@@ -15,7 +15,11 @@ class UserAction extends PublicAction {
 		$this->headnav();
 		$this->display();
 	}
-	
+	public function test()
+	{
+		echo get_client_ip();
+		die;
+	}
 	public function login()
 	{
 		$this->display();
