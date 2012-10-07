@@ -125,7 +125,7 @@ $showPager = function() use($club,$pageNow) {
 		    <div class="stzhiwumc ajax_title_now">{$member.title}</div>
 		  <notempty name="club.isadmin">
           	<div class="stzhiwumc ajax_title">
-            	<input id="{$member.uid}" class="ajax_title_text" value="{$member.title}"/>
+            	<input id="{$member.uid}" class="ajax_title_text putin_out" value="{$member.title}" onfocus="this.className='ajax_title_text putin_on'" onblur="this.className='ajax_title_text putin_out'"/>
             </div>
 			<a class="title_set" href="javascript:void(0);">个性职称</a>
 			
