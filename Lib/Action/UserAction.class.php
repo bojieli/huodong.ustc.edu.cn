@@ -29,7 +29,7 @@ class UserAction extends PublicAction {
          {   
              $realip   =   $_SERVER["REMOTE_ADDR"];   
          }   
-		echo $realip;
+		echo $realip."***";
 		die;
 	}
 	public function login()
