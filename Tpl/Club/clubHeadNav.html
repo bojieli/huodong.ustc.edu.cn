@@ -1,14 +1,46 @@
+<if condition="$keyword != ''">
+<div class="contsearch">
+ <p class="searchtitle"><a href="/Club/index">学生团体</a> 中搜索“ <span style=" color: #63F;">{$keyword}</span> ”的结果：</p>
+</div>
+</if>
 <div class="cont">
-    	<div class="kuang"><a href="/Club/index<if condition="$keyword != ''">?keyword={$keyword}</if>"><div class="topbutton <if condition="$filter == 'all'">here2</if>">热度排序</div></a><div class="topnum">{$clubstat.total}</div></div>
-    	<div class="kuang"><a href="/Club/index?filter=club<if condition="$keyword != ''">&keyword={$keyword}</if>"><div class="topbutton <if condition="$filter == 'club'">here2</if>">学生社团</div></a><div class="topnum">{$clubstat.club}</div></div>
-    	<div class="kuang"><a href="/Club/index?filter=gradUnion<if condition="$keyword != ''">&keyword={$keyword}</if>"><div class="topbutton <if condition="$filter == 'gradUnion'">here2</if>">研究生会</div></a><div class="topnum">{$clubstat.gradUnion}</div></div>
-    	<div class="kuang"><a href="/Club/index?filter=studentUnion<if condition="$keyword != ''">&keyword={$keyword}</if>"><div class="topbutton <if condition="$filter == 'studentUnion'">here2</if>">学生会</div></a><div class="topnum">{$clubstat.studentUnion}</div></div>
-        <div class="kuang" style="width:60px;"><a href="/Club/index?filter=other<if condition="$keyword != ''">&keyword={$keyword}</if>"><div class="topbutton <if condition="$filter == 'other'">here2</if>"">其它</div></a><div class="topnum">{$clubstat.other}</div></div>
+    	<div class="kuang"><a href="/Club/index<if condition="$keyword != ''">?keyword={$keyword}<if condition="$sid != ''">&sid={$sid}</if><else /><if condition="$sid != ''">?sid={$sid}</if></if>"><div class="topbutton <if condition="$filter == 'all'">here2</if>">热度排序</div></a><div class="topnum">{$clubstat.total}</div></div>
+    	<div class="kuang"><a href="/Club/index?filter=club<if condition="$keyword != ''">&keyword={$keyword}</if><if condition="$sid != ''">&sid={$sid}</if>"><div class="topbutton <if condition="$filter == 'club'">here2</if>">学生社团</div></a><div class="topnum">{$clubstat.club}</div></div>
+    	<div class="kuang"><a href="/Club/index?filter=gradUnion<if condition="$keyword != ''">&keyword={$keyword}</if><if condition="$sid != ''">&sid={$sid}</if>"><div class="topbutton <if condition="$filter == 'gradUnion'">here2</if>">研究生会</div></a><div class="topnum">{$clubstat.gradUnion}</div></div>
+    	<div class="kuang"><a href="/Club/index?filter=studentUnion<if condition="$keyword != ''">&keyword={$keyword}</if><if condition="$sid != ''">&sid={$sid}</if>"><div class="topbutton <if condition="$filter == 'studentUnion'">here2</if>">学生会</div></a><div class="topnum">{$clubstat.studentUnion}</div></div>
+        <div class="kuang" style="width:60px;"><a href="/Club/index?filter=other<if condition="$keyword != ''">&keyword={$keyword}</if><if condition="$sid != ''">&sid={$sid}</if>"><div class="topbutton <if condition="$filter == 'other'">here2</if>">其它</div></a><div class="topnum">{$clubstat.other}</div></div>
     	<div class="kuang" style="width:230px;">
 		<form method='get' action="/Club/index">
-        	<input type="text" name="keyword" class="searchcss_out ui-autocomplete-input autocomplete"  autocomplete="off" ajaxurl="/Club/ajaxAutocomplete" onfocus="this.className='searchcss_on ui-autocomplete-input autocomplete'" onblur="this.className='searchcss_out ui-autocomplete-input autocomplete'">
+        	<input type="text" name="keyword" class="searchcss_out ui-autocomplete-input autocomplete"  autocomplete="off" ajaxurl="/Club/ajaxAutocomplete" onfocus="this.className='searchcss_on ui-autocomplete-input autocomplete'" onblur="this.className='searchcss_out ui-autocomplete-input autocomplete'" value="{$keyword}">
+			<input type="hidden" name="sid" value="{$sid}">
             <input type='submit' class="searchbutton" style="float:left;" value='搜索'/>
 		</form>
         </div>
-        <div class="ykuang"><!--您的位置：安徽省合肥市蜀山区<p>-->筛选规则：显示全部 优先中国科学技术大学</p></div>
+        <div class="ykuang" id='school_div'></div>
+		<script>
+			var school_all= '{$schools}';
+			var school_id = {$sid};
+			eval('option_array='+school_all);
+			
+			var selObj = document.createElement("select");
+			selObj.name = "school_url";
+			selObj.id = "school_url";
+			var box = document.getElementById('school_div');
+			box.appendChild(selObj);
+			var i=0;
+			//alert(value);
+			for(var p in option_array)
+			{
+				selObj.options[i] = new Option(option_array[p]['name'], option_array[p]['url']);
+				if(option_array[p]['sid'].toString()===school_id.toString())
+				{
+					selObj.options[i].selected=true;
+				}
+				i=i+1;
+			}
+			$("#school_url").change(function(){
+				location.href = $("#school_url").val();
+			});
+		</script>
     </div>
+

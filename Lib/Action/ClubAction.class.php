@@ -1,16 +1,60 @@
 <?php
 class ClubAction extends PublicAction {
 	public function index() {
+		global $_G;
 		$this->headnav();
 		$keyword = isset($_GET['keyword']) ? $_GET['keyword'] : '';
+		$sid = isset($_GET['sid']) ? $_GET['sid'] : $_G['sid'];
+		$filter = isset($_GET['filter']) ? $_GET['filter'] : 'all';
 		$condition = '';
+		$url = '';
+
+		if(!empty($filter))
+		{
+			if(empty($url))
+			{
+				$url .= "filter=$filter";
+			}
+			else
+			{
+				$url .="&filter=$filter";
+			}
+		}
 		if(!empty($keyword))
 		{
-			$condition = " name like '%$keyword%' ";
+			$condition .= " name like '%$keyword%' ";
+			$url .= "&keyword=$keyword";
 		}
+		if(!empty($sid))
+		{
+			if(empty($condition))
+			{
+				$condition .= " sid = $sid ";
+			}
+			else
+			{
+				$condition .= " AND sid = $sid ";
+			}
+		}
+		
+		
+		$url = '/Club/index?'.$url;
+		$schools = M('School')->select();
+		$num = count($schools);
+		for($i=0;$i<$num;$i++)
+		{
+			$school_id = $schools[$i]['sid'];
+			$schools[$i]['url']=$url."&sid=$school_id";
+		}
+		
+		$schools = json_encode($schools);
+
+		$this->assign('schools', $schools);
+
 		$this->assign('keyword', $keyword);
+		$this->assign('sid', $sid);
 		$this->assign('clubstat', D('Club')->get_stat($condition));
-		$this->assign('filter', isset($_GET['filter']) ? $_GET['filter'] : 'all');
+		$this->assign('filter', $filter);
 		$this->display();
 	}
 
@@ -26,7 +70,7 @@ class ClubAction extends PublicAction {
 		$club = $this->getData($_GET['gid']);
 		$this->assign('club', $club);
 
-		if ($club['isadmin'])
+		if ($club['isadmins'])
 			$this->display();
 		else
 			$this->error("抱歉，只有社团管理员才能修改社团简介");
@@ -35,7 +79,7 @@ class ClubAction extends PublicAction {
 	public function introUpdate() {
 		$gid = $_POST['gid'];
 		$club = $this->getData($gid);
-		if (!$club['isadmin'])
+		if (!$club['isadmins'])
 			$this->error("抱歉，只有社团管理员才能修改社团简介");
 		$club = M('Club')->find($gid);
 		// strip HTML in fields
@@ -63,16 +107,32 @@ class ClubAction extends PublicAction {
 	}
 
 	public function addOwnerSubmit() {
+		$uid = $_REQUEST['owner'];
+		$gid = $_REQUEST['gid'];
+		$sid = $_REQUEST['sid'];
 		if (!(D('User')->isSchoolAdmin(CURRENT_USER)))
 			$this->error("没有权限！");
 
 		$club['owner'] = $_REQUEST['owner'];
 		M('Club')->where(array('gid'=>$_REQUEST['gid']))->save($club);
+		$uid = $_REQUEST['owner'];
+		$gid = $_REQUEST['gid'];
+		$priv = 'admin';
+		$priv_pre = M('User_group')->result_first("SELECT priv FROM ustc_user_group where uid = $uid and gid = $gid and sid = 1");
+		if(($priv_pre!='inactive')&&($priv=='inactive'))
+		{
+			M('Club')->where(['gid'=>$gid, 'sid'=>1])->setDec('member_count'); // 会员数减1 
+		}
+		if(($priv_pre=='inactive')&&($priv!='inactive'))
+		{
+			M('Club')->where(['gid'=>$gid, 'sid'=>1])->setInc('member_count'); // 会员数加1 
+		}
 
-		M('user_group')->where(array('gid'=>$_REQUEST['gid'], 'uid'=>$_REQUEST['owner']))->delete();
+		M('user_group')->where(array('gid'=>$_REQUEST['gid'], 'uid'=>$_REQUEST['owner'],'sid'=>1))->delete();
 		
 		$record['gid'] = $_REQUEST['gid'];
 		$record['uid'] = $_REQUEST['owner'];
+		$record['sid'] = 1;
 		$record['priv'] = 'admin';
 		$record['title'] = '会长';
 		$row = M('user_group');
@@ -83,6 +143,33 @@ class ClubAction extends PublicAction {
 	}
 
 	public function introAdd() {
+		if (CURRENT_USER == 0) {
+			$this->error("您需要先登录");
+		}
+		
+		global $_G;
+		$school = M('User')->field('sid')->find($_G[uid]);
+		$school_id = $school['sid'];
+		
+		if (!(D('User')->isSchoolAdmin(CURRENT_USER,$school_id)))
+		{
+			$this->error("您没有权限");
+		}
+		
+		if(D('User')->isDeveloper(CURRENT_USER))
+		{
+			$schools = M('School')->select();
+		}
+		else
+		{
+			$schools = M('School')->where("sid = $school_id")->select();
+		}
+		
+		$schools = json_encode($schools);
+
+		$this->assign('schools', $schools);
+		$this->assign('school_id', $school_id);
+
 		$this->display();
 	}
 	public function ajaxAutocomplete()
@@ -107,7 +194,7 @@ class ClubAction extends PublicAction {
 		if (!(D('User')->isSchoolAdmin(CURRENT_USER)))
 			$this->error("没有权限！");
 
-		$fields = ['type','name','owner','name_en','slogan','found_date','teacher','qq_group','contact','homepage','shortdesc'];
+		$fields = ['sid','type','name','owner','name_en','slogan','found_date','teacher','qq_group','contact','homepage','shortdesc'];
 		foreach ($fields as $field) {
 			$club[$field] = htmlspecialchars($_POST[$field]);
 		}
@@ -118,8 +205,6 @@ class ClubAction extends PublicAction {
 		$club['description'] = $_POST['description'];
 
 		$club['logo'] = $this->uploadLogo();
-
-		$club['sid'] = 1; // force USTC
 
 		if (!is_numeric($club['owner']) || $club['owner'] <= 0) // key constraint
 			unset($club['owner']);
@@ -188,15 +273,18 @@ class ClubAction extends PublicAction {
 
 	public function manage() {
 		$gid = $this->getInputGid();
-		$start = isset($_GET['start']) && is_numeric($_GET['start']) ? $_GET['start'] : 0;
+		$page = isset($_GET['page']) && is_numeric($_GET['page']) ? $_GET['page'] : 1;
+		//$start = isset($_GET['start']) && is_numeric($_GET['start']) ? $_GET['start'] : 0;
 		$num = isset($_GET['num']) && is_numeric($_GET['num']) ? $_GET['num'] : 20;
+		$start = ($page-1)*$num;
 		$club = $this->getData($gid);
 		$this->assign('club', $club);
 		if (!$this->isManager($gid)) {
 			$start = 0;
 			$num = 20;
 		}
-		$members = M()->query("SELECT * FROM ustc_user AS u, ustc_user_group AS ug WHERE ug.gid='$gid' AND ug.uid = u.uid ORDER BY ug.priv LIMIT $start,$num");
+
+		$members = M()->query("SELECT * FROM (ustc_user INNER JOIN ustc_user_group ON ustc_user.uid = ustc_user_group.uid) INNER JOIN ustc_priv ON ustc_user_group.priv = ustc_priv.priv_name WHERE ustc_user_group.gid='$gid' ORDER BY ustc_priv.priv_value desc LIMIT $start,$num");
 		foreach ($members as &$member) {
 			$member['avatar'] = D('user')->getAvatar($member[uid],'small');
 			/*if (empty($member['avatar']))
@@ -205,10 +293,12 @@ class ClubAction extends PublicAction {
 				$member['avatar'] = C('AVATAR_PATH').$member['avatar'];*/
 		}
 		unset($member);
+		//$members = D('Club')->sortMemberByPriv($members);
 		$this->assign('members', $members);
 		$inactive_members = M()->query("SELECT * FROM ustc_user AS u, ustc_user_group AS ug WHERE ug.gid='$gid' AND ug.priv = 'inactive' AND ug.uid = u.uid");
 		$this->assign('inactive', $inactive_members);
 		$this->assign('pageStart', $start);
+		$this->assign('pageNow', $page);
 		$this->headnav();
 		$this->display();
 	}
@@ -222,6 +312,7 @@ class ClubAction extends PublicAction {
 			$record = array(
 				'uid' => CURRENT_USER,
 				'gid' => $gid,
+				'sid' => 1,
 				'priv' => 'inactive',
 				'title' => '审核中'
 			);
@@ -266,7 +357,7 @@ class ClubAction extends PublicAction {
 	public function changeTitle() {
 		list($gid, $uid) = $this->getInputGidUid();
 		$title = htmlspecialchars($_GET['title']);
-		if (!in_array($_GET['priv'], ['admin', 'manager', 'member', 'inactive'])) {
+		if (!in_array($_GET['priv'], ['admin','vice-admin','manager', 'vice-manager', 'team-leader', 'member', 'inactive'])) {
 			die("Invalid privilege");
 		}
 		$priv = $_GET['priv'];
@@ -274,10 +365,48 @@ class ClubAction extends PublicAction {
 		if ($this->isAdmin($gid)) {
 			$record['priv'] = $priv;
 			$record['title'] = $title;
+			$record['sid'] = 1;
+			$priv_pre = M('User_group')->result_first("SELECT priv FROM ustc_user_group where uid = $uid and gid = $gid and sid = 1");
+			if(($priv_pre!='inactive')&&($priv=='inactive'))
+			{
+				M('Club')->where(['gid'=>$gid, 'sid'=>1])->setDec('member_count'); // 会员数减1 
+			}
+			if(($priv_pre=='inactive')&&($priv!='inactive'))
+			{
+				M('Club')->where(['gid'=>$gid, 'sid'=>1])->setInc('member_count'); // 会员数加1 
+			}
 			M('user_group')->where(['uid'=>$uid, 'gid'=>$gid])->save($record);
 			die("OK");
 		} else
 			die("Not enough privilege");
+	}
+	public function changeTitleText() {
+		list($gid, $uid) = $this->getInputGidUid();
+		$title = htmlspecialchars($_POST['title']);
+		
+		if ($this->isAdmin($gid)) {
+			$record['title'] = $title;
+			$record['sid'] = 1;
+			M('user_group')->where(['uid'=>$uid, 'gid'=>$gid])->save($record);
+			$this->success('修改title成功');
+		} else
+			$this->error('修改title失败');
+	} 
+	public function test()
+	{
+		/*$clubs = M('Club')->where("1")->select();
+		foreach($clubs as $value)
+		{
+			$num = M('User_group')->result_first("SELECT count(*) FROM ustc_user_group where gid = $value[gid] and sid = 1 and priv !='inactive'");
+			$record['member_count'] = $num;
+			M('Club')->where(['gid'=>$value[gid]])->save($record);
+		}*/
+		M('Club')->query("update ustc_user_group set priv = 'vice-admin' where title = '副主席'");
+		M('Club')->query("update ustc_user_group set priv = 'vice-admin' where title = '副会长'");
+		M('Club')->query("update ustc_user_group set priv = 'vice-admin' where title = '副社长'");
+		M('Club')->query("update ustc_user_group set priv = 'vice-manager' where title = '副部长'");
+		M('Club')->query("update ustc_user_group set priv = 'team-leader' where title = '活动负责人'");
+		M('Club')->query("update ustc_user_group set priv = 'team-leader' where title = '项目组长'");
 	}
 
 	public function removeMember() {
@@ -302,12 +431,17 @@ class ClubAction extends PublicAction {
 		return M()->result_first("SELECT priv FROM ustc_user_group WHERE `uid`='$uid' AND `gid`='$gid'");
 	}
 
+	private function getPrivValue($gid,$uid = CURRENT_USER)
+	{
+		return M()->result_first("SELECT up.priv_value FROM ustc_user_group As ug, ustc_priv As up WHERE ug.priv = up.priv_name AND ug.uid='$uid' AND ug.gid='$gid'");
+	}
+
 	public function isAdmin($gid, $uid = CURRENT_USER) {
 		return D('User')->isSchoolAdmin($uid) || $this->getPriv($gid,$uid) == 'admin';
 	}
 
 	public function isManager($gid, $uid = CURRENT_USER) {
-		return D('User')->isSchoolAdmin($uid) || in_array($this->getPriv($gid,$uid), ['admin','manager']);
+		return D('User')->isSchoolAdmin($uid) || $this->getPrivValue($gid,$uid)>1;
 	}
 
 	public function inClub($gid, $uid = CURRENT_USER) {
@@ -340,13 +474,22 @@ class ClubAction extends PublicAction {
 			}
 		}
 
-		$club['mypriv'] = M()->result_first("SELECT priv FROM ustc_user_group WHERE `uid`='".CURRENT_USER."' AND gid='$gid'");
+		$mypriv = M()->query("SELECT up.priv_value, up.priv_name, ug.title FROM ustc_user_group As ug, ustc_priv As up WHERE ug.priv = up.priv_name AND ug.uid='".CURRENT_USER."' AND ug.gid='$gid'");
+		foreach($mypriv as $v)
+		{
+			$club['mypriv'] = $v['priv_name'];
+			$club['mypriv_value'] = $v['priv_value'];
+			$club['title'] = $v['title'];
+		}
+		
 		$club['isSchoolAdmin'] = D('User')->isSchoolAdmin(CURRENT_USER);
-		$club['isadmin'] = ($club['isSchoolAdmin'] || $club['mypriv'] == 'admin');
-		$club['ismanager'] = ($club['isadmin'] || $club['mypriv'] == 'manager');
-		$club['isin'] = in_array($club['mypriv'], ['admin','manager','member']);
+		$club['isadmin'] = ($club['isSchoolAdmin'] || $club['mypriv'] == 'admin');//主席
+		$club['isadmins'] = ($club['isadmin'] || $club['mypriv'] == 'vice-admin');//副主席以上
+		$club['ismanager'] = ($club['isadmins'] || $club['mypriv_value'] > 1 );//项目负责人以上
+		$club['isin'] = $club['mypriv_value'] > 0;//会员
 		$club['memberCount'] = $club['member_count'];
 		$club['posterCount'] = $club['poster_count'];
+		//dump($club);
 		return $club;
 	}
 
@@ -357,8 +500,8 @@ class ClubAction extends PublicAction {
 	}
 
 	public function ajaxGet() {
-		list($start, $num, $filter,$keyword) = $this->parseInput();
-		$clubs = D('Club')->getClub($start, $num, $filter,$keyword);
+		list($start, $num, $filter,$keyword,$sid) = $this->parseInput();
+		$clubs = D('Club')->getClub($start, $num, $filter,$keyword,$sid);
 		$elements = [];
 		foreach ($clubs as $club)
 			$elements[] = $this->club2html($club);
@@ -370,7 +513,8 @@ class ClubAction extends PublicAction {
 		$num = isset($_GET['num']) && is_numeric($_GET['num']) ? $_GET['num'] : 0;
 		$filter = isset($_GET['filter']) ? $_GET['filter'] : '';
 		$keyword = isset($_GET['keyword']) ? $_GET['keyword'] : '';
-		return array($start, $num, $filter, $keyword);
+		$sid = isset($_GET['sid']) ? $_GET['sid'] : 0;
+		return array($start, $num, $filter, $keyword,$sid);
 	}
 
 	private function club2html($club) {
@@ -580,12 +724,13 @@ class ClubAction extends PublicAction {
 		$filename="./upload/address".$gid.".csv";
 		$file=fopen($filename,"w");
 		if($file){
-			fwrite($file,iconv( "UTF-8", "gbk" ,"姓名,学号,职务,学历,入学年级,email,手机,主页"));
+			fwrite($file,iconv( "UTF-8", "gbk" ,"姓名,学号,性别,职务,学历,入学年级,email,手机,QQ,主页"));
 			fwrite($file,"\r\n");
 			foreach($members as $key => $value)
 			{
+				$value['gender']=$value['gender']?'男':'女';
 				$value[student_no]=strtoupper($value[student_no]);
-				$content = iconv( "UTF-8", "gbk" , "$value[realname],$value[student_no],$value[title],$value[education],$value[grade],$value[email],$value[telephone],$value[homepage]");
+				$content = iconv( "UTF-8", "gbk" , "$value[realname],$value[student_no],$value[gender],$value[title],$value[education],$value[grade],$value[email],$value[telephone],$value[qq],$value[homepage]");
 				fwrite($file,"$content");
 				fwrite($file, " \r\n");
 			}

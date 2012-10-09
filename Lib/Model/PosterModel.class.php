@@ -74,10 +74,20 @@ class PosterModel extends Model {
 		return "/upload/poster/".$this->poster;
 	}
 
-	public function get_stat() {
-		$stat['total'] = $this->result_first("SELECT COUNT(*) FROM ustc_poster");
-		$stat['incoming'] = $this->result_first("SELECT COUNT(*) FROM ustc_poster WHERE end_time > '".time()."'");
-		$stat['followed'] = $this->result_first("SELECT COUNT(*) FROM ustc_poster AS a, ustc_user_group AS ug WHERE ug.uid = '".CURRENT_USER."' AND ug.gid = a.gid");
+	public function get_stat($condition='') {
+		if(empty($condition))
+		{
+			$condition1 = "";
+			$condition2= "";
+		}
+		else
+		{
+			$condition1 = " where ".$condition;
+			$condition2= " and (".$condition.")";
+		}
+		$stat['total'] = $this->result_first("SELECT COUNT(*) FROM ustc_poster".$condition1);
+		$stat['incoming'] = $this->result_first("SELECT COUNT(*) FROM ustc_poster WHERE end_time > '".time()."'".$condition2);
+		$stat['followed'] = $this->result_first("SELECT COUNT(*) FROM ustc_poster AS a, ustc_user_group AS ug WHERE ug.uid = '".CURRENT_USER."' AND ug.gid = a.gid".$condition2);
 		$stat['newmsg'] = 0;
 		return $stat;
 	}

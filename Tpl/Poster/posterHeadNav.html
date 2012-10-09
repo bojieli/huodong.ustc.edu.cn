@@ -1,12 +1,19 @@
-    <div class="cont">
-    	<div class="kuang"><a href="/Poster/index?order=new"><div class="topbutton <if condition="$order == 'new'">here2</if>">最新发布</div></a><div class="topnum">{$stat.total}</div></div>
-    	<div class="kuang"><a href="/Poster/index?order=near"><div class="topbutton <if condition="$order == 'near'">here2</if>">最近举行</div></a><div class="topnum">{$stat.incoming}</div></div>
-    	<div class="kuang"><a href="/Poster/index?order=hot"><div class="topbutton <if condition="$order == 'hot'">here2</if>">最热海报</div></a><div class="topnum">{$stat.incoming}</div></div>
-    	<div class="kuang"><a href="/Poster/index?order=follow"><div class="topbutton <if condition="$order == 'follow'">here2</if>">我社团的</div></a><div class="topnum">{$stat.followed}</div></div>
+<if condition="$keyword != ''">
+<div class="contsearch">
+ <p class="searchtitle"><a href="/Poster/index">海报墙</a> 中搜索“ <span style=" color: #63F;">{$keyword}</span> ”的结果：</p>
+</div>
+</if>
+	<div class="cont">
+    	<div class="kuang"><a href="/Poster/index?order=new<if condition="$keyword != ''">&keyword={$keyword}</if>"><div class="topbutton <if condition="$order == 'new'">here2</if>">最新发布</div></a><div class="topnum">{$stat.total}</div></div>
+    	<div class="kuang"><a href="/Poster/index?order=near<if condition="$keyword != ''">&keyword={$keyword}</if>"><div class="topbutton <if condition="$order == 'near'">here2</if>">最近举行</div></a><div class="topnum">{$stat.incoming}</div></div>
+    	<div class="kuang"><a href="/Poster/index?order=hot<if condition="$keyword != ''">&keyword={$keyword}</if>"><div class="topbutton <if condition="$order == 'hot'">here2</if>">最热海报</div></a><div class="topnum">{$stat.incoming}</div></div>
+    	<div class="kuang"><a href="/Poster/index?order=follow<if condition="$keyword != ''">&keyword={$keyword}</if>"><div class="topbutton <if condition="$order == 'follow'">here2</if>">我社团的</div></a><div class="topnum">{$stat.followed}</div></div>
     	<!--<div class="kuang"><a href="/Notify"><div class="topbutton">最新消息</div></a><div class="topnum">{$stat.newmsg}</div></div>-->
+		<form method='get' action="/Poster/index">
         <div class="kuang" style="width:230px;">
-        	<input type="text" value="即将推出此功能" class="searchcss_out" onfocus="this.className='searchcss_on'" onblur="this.className='searchcss_out'">
-            <div class="searchbutton" style="float:left;">搜索</div>
+        	<input type="text" name="keyword" class="searchcss_out" onfocus="this.className='searchcss_on'" onblur="this.className='searchcss_out'" value="{$keyword}">
+            <input type='submit' class="searchbutton" style="float:left;" value='搜索'/>
         </div>
+		</form>
         <div class="ykuang"><!--您的位置：安徽省合肥市蜀山区<p>-->筛选规则：显示全部 优先中国科学技术大学</p></div>
     </div>

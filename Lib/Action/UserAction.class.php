@@ -15,7 +15,23 @@ class UserAction extends PublicAction {
 		$this->headnav();
 		$this->display();
 	}
-	
+	public function test()
+	{
+		 if(isset($_SERVER["HTTP_X_FORWARDED_FOR"]))     
+         {
+			 $realip   =   $_SERVER["HTTP_X_FORWARDED_FOR"];   
+         }   
+         elseif(isset($_SERVER["HTTP_CLIENT_IP"]))     
+         {   
+             $realip   =   $_SERVER["HTTP_CLIENT_IP"];   
+         }   
+         else     
+         {   
+             $realip   =   $_SERVER["REMOTE_ADDR"];   
+         }   
+		echo $realip."***";
+		die;
+	}
 	public function login()
 	{
 		$this->display();
@@ -68,6 +84,7 @@ class UserAction extends PublicAction {
 				$this->assign('jumpUrl', $_POST['referer']);
 			else
 				$this->assign('jumpUrl','/User/home?uid='.$passport['uid']);
+			D(User)->loginLog($passport['uid']);
 			$this->success('登陆成功');
 		}
 		else{

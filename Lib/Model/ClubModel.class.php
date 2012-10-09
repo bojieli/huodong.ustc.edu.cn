@@ -1,6 +1,6 @@
 <?php
 class ClubModel extends Model {
-	public function getClub($start, $num, $filter, $keyword) {
+	public function getClub($start, $num, $filter, $keyword,$sid) {
 		if (empty($filter) || $filter == 'all')
 			$filterSql = '';
 		else if ($filter == 'other')
@@ -16,6 +16,14 @@ class ClubModel extends Model {
 		{
 			$filterSql = " name like '%$keyword%'";
 		}
+		if(!empty($sid)&&!empty($filterSql))
+		{
+			$filterSql .= " and sid = $sid ";
+		}
+		elseif(!empty($sid))
+		{
+			$filterSql .= " sid = $sid ";
+		}
 		return M('Club')->where($filterSql)->order("total_rate DESC")->limit("$start,$num")->cast(__CLASS__)->select();
 	}
 
@@ -28,7 +36,7 @@ class ClubModel extends Model {
 		M()->execute("UPDATE ustc_club SET member_count = member_count + 1 WHERE `gid` = '$gid'");
 		$this->updateRate($gid, 20);
 	}
-
+	
 	public function removeMember($gid, $uid) {
 		if (!is_numeric($gid) || !is_numeric($uid) || $gid <= 0 || $uid <= 0)
 			return;
@@ -101,7 +109,7 @@ class ClubModel extends Model {
 	}
 
 	public function memberCount() {
-		return M('user_group')->where(['gid' => $this->gid])->count();
+		return $this->member_count;//M('user_group')->where(['gid' => $this->gid])->count();
 	}
 
 	public function schoolName($gid) {

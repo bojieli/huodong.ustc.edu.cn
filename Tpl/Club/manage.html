@@ -25,10 +25,12 @@
 			function() {
 			switch(priv) {
 			case 'admin': return 1;
-			case 'manager': return 2;
-			case 'member': return 3;
-			case 'inactive': return 4;
-			default: return 4;
+			case 'vice-admin': return 2;
+			case 'manager': return 3;
+			case 'vice-manager': return 3;
+			case 'team-leader': return 3;
+			case 'member': return 4;
+			default: return 5;
 			}
 			}()
 			+".png"
@@ -36,31 +38,68 @@
 		dom.children('.stzhiwumc').html(title);
 	});
     }
+	$(function(){
+		$(".ajax_title").hide();
+		$(".title_set").live('click',function(){
+			var text = $(this).html();
+			if(text=='个性职称')
+			{
+				$(this).parents('div:eq(0)').find(".ajax_title_now").hide();
+				$(this).parents('div:eq(0)').find(".ajax_title").show();
+				$(this).html("保存");
+				$(this).css({ opacity: 1 }); 
+			}
+			if(text=='保存')
+			{
+				$(this).parents('div:eq(0)').find(".ajax_title_now").show();
+				$(this).parents('div:eq(0)').find(".ajax_title").hide();
+				var title_div = $(this).parents('div:eq(0)').find(".ajax_title_now");
+				var data = $(this).parents('div:eq(0)').find(".ajax_title_text").val();
+				var uid = $(this).parents('div:eq(0)').find(".ajax_title_text").attr('id');
+				$.post('/Club/changeTitleText', {uid: uid, gid: <?=$club['gid']?>, 'title': data }, function (res) {
+					if(res.status==0) {
+						alert(res.info);
+					}
+					else
+					{
+						title_div.html(data);
+					}
+				},'json');
+				$(this).html("个性职称");
+				$(this).css({ opacity: 0.1 });
+			}
+		});
+	});
 </script>		
 </notempty>
 
 <notempty name="club.ismanager">
 <?php
-$showPager = function() use($club) {
+$showPager = function() use($club,$pageNow) {
 	if ($club['ismanager'])
 	if ($club['memberCount'] > 20) {
 ?>
 <div class="pager">
+ <table border="0" cellpadding="0" cellspacing="0" align="center" style="margin:0 auto;">
+ <tr>
+ <td style="color:#DDDDDD;" width="46">page</td>
 <?php	$num = floor(($club['memberCount'] + 19) / 20);
 	for ($page=1; $page<=$num; $page++) { ?>
-<a href="/Club/manage?gid=<?=$club['gid']?>&start=<?=($page-1)*20?>"><?=$page?></a>
+<td width="20" align="center"><if condition="$page eq $pageNow"><span class="nowpage"><?=$page?></span><else /><a href="/Club/manage?gid=<?=$club['gid']?>&page=<?=$page?>"><?=$page?></a></if></td>
 <?php	} ?>
+ <td style="color:#DDDDDD;" width="46">page</td>
+ </tr>
+ </table>
 </div>
 <?php
 	}
 };
 ?>
 </notempty>
-
 <div id="stmain">
 <include file="introHeaderin" />
 	<div class="stcon1">
-    	<div class="stcylb">会员<span class="stnotice1">（为保护隐私，普通成员无法看到除了社团管理者之外的会员的联系方式）</span></div>
+    	<div class="stcylb">会员<span class="stnotice1">（为保护隐私，普通成员无法看到除了社团管理者之外的会员的联系方式。非会员最多只能看到协会的20个会员）</span></div>
         <div class="stcyleft">
 <notempty name="club.ismanager">
 	<?php $showPager(); ?>
@@ -73,35 +112,43 @@ $showPager = function() use($club) {
 		$priv2num = function($priv) {
 			switch ($priv) {
 			case 'admin': return 1;
-			case 'manager': return 2;
-			case 'member': return 3;
-			default: return 4;
+			case 'vice-admin': return 2;
+			case 'manager': return 3;
+			case 'vice-manager': return 3;
+			case 'team-leader': return 3;
+			case 'member': return 4;
+			default: return 5;
 			}
 		};
 		$member['privlevel'] = $priv2num($member['priv']);
 		?>
-                    <div class="stzhiwu"><img src="/static/images/aa{$member.privlevel}.png" />
-		    <div class="stzhiwumc">{$member.title}</div>
-		    
-		    <notempty name="club.isadmin">
-	    	    <div class="stzhiwusz">设置权限：
+        <div class="stzhiwu">
+          	<img src="/static/images/aa{$member.privlevel}.png" />
+		    <div class="stzhiwumc ajax_title_now">{$member.title}</div>
+		  <notempty name="club.isadmin">
+          	<div class="stzhiwumc ajax_title">
+            	<input id="{$member.uid}" class="ajax_title_text putin_out" value="{$member.title}" onfocus="this.className='ajax_title_text putin_on'" onblur="this.className='ajax_title_text putin_out'"/>
+            </div>
+			<a class="title_set" href="javascript:void(0);">个性职称</a>
+			
+	    	<div class="stzhiwusz">设置权限：
                         <select onchange="ajaxChangeTitle({$member.uid}, this.options[this.selectedIndex].getAttribute('priv'), this.options[this.selectedIndex].getAttribute('title'))">
                         <option priv="" title="" selected="selected">------</option>
-            
+ <!--           
 			<option priv="admin" title="会长" style="color:#F00;">会长</option>
 			<option priv="admin" title="社长" style="color:#F00;">社长</option>
 			<option priv="admin" title="主席" style="color:#F00;">主席</option>
             <option priv="admin" title="队长" style="color:#F00;">队长</option>
 			
                         <option priv="" title="">------</option>
-                        <option priv="manager" title="副会长" style="color:#F0F">副会长</option>
-						<option priv="manager" title="副社长" style="color:#F0F">副社长</option>
-						<option priv="manager" title="副主席" style="color:#F0F">副主席</option>
+-->                        <option priv="vice-admin" title="副会长" style="color:#F0F">副会长</option>
+						<option priv="vice-admin" title="副社长" style="color:#F0F">副社长</option>
+						<option priv="vice-admin" title="副主席" style="color:#F0F">副主席</option>
                         <option priv="" title="">------</option>
                         <option priv="manager" title="部长" style="color:#F93">部长</option>
-                        <option priv="manager" title="副部长" style="color:#F93">副部长</option>
-                        <option priv="manager" title="项目组长" style="color:#F93">项目组长</option>
-                        <option priv="manager" title="活动负责人" style="color:#F93">活动负责人</option>
+                        <option priv="vice-manager" title="副部长" style="color:#F93">副部长</option>
+                        <option priv="team-leader" title="项目组长" style="color:#F93">项目组长</option>
+                        <option priv="team-leader" title="活动负责人" style="color:#F93">活动负责人</option>
                         
                         <option priv="" title="" >------</option>
                         <option priv="member" title="会员" style="color:#09F;">普通会员</option>
@@ -126,7 +173,7 @@ $showPager = function() use($club) {
 			    </notempty>
 			 </notempty><br/>
 
-		    <if condition="$member[priv] == 'admin' || ($member[priv] == 'manager' && $club[isin]) || $club[ismanager]">
+		    <if condition="($member[priv] == 'admin' && $club[isin]) || ($member[priv] == 'manager' && $club[isin]) || $club[ismanager]">
 			    <notempty name="member.qq">
 			    QQ:  <span style="color:#999">{$member.qq}</span>
 			    </notempty>
@@ -156,8 +203,8 @@ $showPager = function() use($club) {
                     <td align="left"><a href="" style="color:#CCC;">群短信</a></td>
                 </tr>
                 <tr>
-                	<td align="left"><a  style="color:#088;">会员列表</a></td>
                     <td align="left"><a href="/Club/address?gid={$club.gid}" target='_blank' style="color:#088;">通讯录</a></td>
+					<td align="left"> </td>
                 </tr>
                 <tr>
                 	<td align="left"><a href="/Club/createAddress?gid={$club.gid}" style="color:#088;">导出为excel会员表</a></td>
