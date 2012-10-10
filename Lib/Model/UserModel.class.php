@@ -21,9 +21,11 @@ class UserModel extends Model {
 		if (is_numeric($uid) && $uid >= 1) {
 			$_G['uid'] = $uid;
 			$_G['realname'] = $this->getRealname($uid);
+			$_G['sid'] = $this->getSid($uid);
 		} else {
 			$_G['uid'] = 0;
 			$_G['realname'] = '';
+			$_G['sid'] = 0;
 		}
 		define('CURRENT_USER', $_G['uid']);
 	}
@@ -39,7 +41,12 @@ class UserModel extends Model {
 	function getRealname($uid)
 	{
 		$res= $this->where("uid = $uid")->limit(1)->select();
-		return($res[0][realname]);
+		return($res[0]['realname']);
+	}
+	function getSid($uid)
+	{
+		$res= $this->where("uid = $uid")->limit(1)->select();
+		return($res[0]['sid']);
 	}
 	function is_loginname_existed($email)
 	{
@@ -196,18 +203,25 @@ class UserModel extends Model {
 		return !empty($info) && $info['isdeveloper'];
 	}
 
-	public function isSchoolAdmin($uid) {
+	public function isSchoolAdmin($uid,$s_id) {
 		$info = $this->field(array('isdeveloper', 'isschooladm'))->find($uid);
+		$sid = isset($_REQUEST['sid'])?$_REQUEST['sid']:$s_id;
+		$gid = $_REQUEST['gid'];
+		$aid = $_REQUEST['aid'];
 		if (empty($info))
 			return false;
 		if ($info['isdeveloper'])
 			return true;
 		if ($info['isschooladm']) { // is it in the same school?
 			$user = M('User')->field('sid')->find($uid);
-			if (isset($_GET['gid']))
-				$club = M('Club')->field('sid')->find($_GET['gid']);
-			else if (isset($_GET['aid'])) {
-				$poster = M('Poster')->field('gid')->find($_GET['aid']);
+			if(isset($sid))
+			{
+				$club['sid']=$sid;
+			}
+			else if(isset($gid))
+				$club = M('Club')->field('sid')->find($gid);
+			else if (isset($aid)) {
+				$poster = M('Poster')->field('gid')->find($aid);
 				$club = M('Club')->field('sid')->find($poster['gid']);
 			}
 			else // cannot determine what school

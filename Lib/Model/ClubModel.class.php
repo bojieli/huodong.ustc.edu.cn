@@ -1,6 +1,6 @@
 <?php
 class ClubModel extends Model {
-	public function getClub($start, $num, $filter, $keyword) {
+	public function getClub($start, $num, $filter, $keyword,$sid) {
 		if (empty($filter) || $filter == 'all')
 			$filterSql = '';
 		else if ($filter == 'other')
@@ -15,6 +15,14 @@ class ClubModel extends Model {
 		elseif(!empty($keyword))
 		{
 			$filterSql = " name like '%$keyword%'";
+		}
+		if(!empty($sid)&&!empty($filterSql))
+		{
+			$filterSql .= " and sid = $sid ";
+		}
+		elseif(!empty($sid))
+		{
+			$filterSql .= " sid = $sid ";
 		}
 		return M('Club')->where($filterSql)->order("total_rate DESC")->limit("$start,$num")->cast(__CLASS__)->select();
 	}
