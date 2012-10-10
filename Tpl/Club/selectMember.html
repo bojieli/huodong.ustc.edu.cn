@@ -1,0 +1,180 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>选择成员</title>
+<link href="css1.css" rel="stylesheet" type="text/css" />
+
+
+
+</head>
+
+<body>
+<include file="Public:headnav" />
+
+
+<div id="mainding">
+
+
+
+<!--以下为筛选代码以及js代码-->
+<SCRIPT LANGUAGE="JavaScript"> 
+<!-- Begin 
+sortitems = 1;  // Automatically sort items within lists? (1 or 0) 
+
+ function move(fbox,tbox) { 
+  for(var i=0; i<fbox.options.length; i++) { 
+    if(fbox.options[i].selected && fbox.options[i].value != ""){ 
+    	var no = new Option(); 
+    	no.value = fbox.options[i].value; 
+    	no.text = fbox.options[i].text; 
+    	tbox.options[tbox.options.length] = no; 
+    	fbox.options[i].value = ""; 
+    	fbox.options[i].text = ""; 
+    };
+  };
+  BumpUp(fbox); 
+  if (sortitems) SortD(tbox); 
+ };
+function moveall(fbox,tbox){ 
+  for(var i=0; i<fbox.options.length; i++){ 
+    if(fbox.options[i].value != ""){ 
+    	var no = new Option(); 
+    	no.value = fbox.options[i].value; 
+    	no.text = fbox.options[i].text; 
+    	tbox.options[tbox.options.length] = no; 
+    	fbox.options[i].value = ""; 
+    	fbox.options[i].text = ""; 
+       }; 
+  }; 
+ BumpUp(fbox); 
+ if (sortitems) SortD(tbox); 
+ };
+function BumpUp(box){ 
+  for(var i=0; i<box.options.length; i++){ 
+    if(box.options[i].value == ""){ 
+       for(var j=i; j<box.options.length-1; j++){ 
+       	 box.options[j].value = box.options[j+1].value; 
+       	 box.options[j].text = box.options[j+1].text; 
+       };
+       var ln = i; 
+       break; 
+    }; 
+  }; 
+  if(ln < box.options.length)  { 
+  	box.options.length -= 1; 
+  	BumpUp(box); 
+  }; 
+}; 
+
+function SortD(box){ 
+ var temp_opts = new Array(); 
+ var temp = new Object(); 
+ for(var i=0; i<box.options.length; i++)  { 
+   temp_opts[i] = box.options[i]; 
+ } 
+
+ for(var x=0; x<temp_opts.length-1; x++)  { 
+   for(var y=(x+1); y<temp_opts.length; y++)  { 
+     if(temp_opts[x].text > temp_opts[y].text)  { 
+     	temp = temp_opts[x].text; 
+    	temp_opts[x].text = temp_opts[y].text; 
+     	temp_opts[y].text = temp; 
+     	temp = temp_opts[x].value; 
+     	temp_opts[x].value = temp_opts[y].value; 
+     	temp_opts[y].value = temp; 
+     };
+   };
+ };
+
+ for(var i=0; i<box.options.length; i++)  { 
+ 	box.options[i].value = temp_opts[i].value; 
+ 	box.options[i].text = temp_opts[i].text; 
+  };
+};   
+// End --> 
+</script> 
+<!--筛选列表的css样式表-->
+<style type="text/css">
+.mem-select{	
+	width:250px;
+	font-size:16px;	
+	padding:5px;
+	font-family:Microsoft Yahei, "Times New Roman", Times, serif;
+	line-height:20px;
+	vertical-align:middle;	
+	}
+.msel-button{
+	font-size:20px;
+	font-weight:bold;
+	color:#333;
+	height:30px;	
+	line-height:24px;
+	vertical-align:middle;
+	width:56px;
+	text-align:center;
+	}
+
+</style>
+
+<!--下面是选择的form代码-->
+<form ACTION="" METHOD="POST"> 
+<table border="0" cellpadding="0" cellspacing="0">
+ <tr  height="26px" valign="middle">
+ 	<td style=" font-family:microsoft Yahei;" align="center">待选列表</td>
+    <td></td>
+    <td style="color:#690; font-family:microsoft Yahei;" align="center">已选列表</td>
+ </tr> 
+ <tr>
+	<td><select multiple size="20" name="list1"  class="mem-select dxhb-blur" onfocus="this.className='mem-select dxhb-focus'" onblur="this.className='mem-select dxhb-blur'"> 
+		  <option value="11">沈佳宜 -- PB12013100</option> 
+		  <option value="12">沈雪宜 -- PB12013100</option> 
+		  <option value="13">方清雪 -- PB12013100</option>
+          <option value="11">沈佳宜 -- PB12013100</option> 
+		  <option value="12">沈雪宜 -- PB12013100</option> 
+		  <option value="13">方清雪 -- PB12013100</option>
+          <option value="11">沈佳宜 -- PB12013100</option> 
+		  <option value="12">沈雪宜 -- PB12013100</option> 
+		  <option value="13">方清雪 -- PB12013100</option>
+          <option value="13">方清雪 -- PB12013100</option>
+          <option value="11">沈佳宜 -- PB12013100</option> 
+		  <option value="12">沈雪宜 -- PB12013100</option> 
+		  <option value="13">方清雪 -- PB12013100</option>
+          <option value="11">沈佳宜 -- PB12013100</option> 
+		  <option value="12">沈雪宜 -- PB12013100</option> 
+		  <option value="13">方清雪 -- PB12013100</option>  
+		</select>
+    </td> 
+	<td width="100" align="center" valign="top"> <br/><br/><br/>
+		<input class="dxhb-button msel-button" type="button" value=">" onclick="move(this.form.list1,this.form.list2)" name="B1">
+        <br/><br/>  
+		<input class="dxhb-button msel-button" type="button" value="<" onclick="move(this.form.list2,this.form.list1)" name="B2">
+        <br/><br/> <br/> <br/> 
+		<input class="dxhb-button msel-button" type="button" value=">>" onclick="moveall(this.form.list1,this.form.list2)" name="B3">
+        <br/> <br/> 
+		<input class="dxhb-button msel-button" type="button" value="<<" onclick="moveall(this.form.list2,this.form.list1)" name="B4"> 
+   </td> 
+   <td><select multiple size="20" name="list2"   class="mem-select dxhb-blur" onfocus="this.className='mem-select dxhb-focus'" onblur="this.className='mem-select dxhb-blur'" style="color:#690;"> 
+		  <option value="21"> item 2.1 </option> 
+		  <option value="22"> item 2.2 </option> 
+	  	  <option value="23"> item 2.3 </option>
+          <option value="45"> 王国维 </option> 
+          <option value="46"> 易建飞 </option> 
+          <option value="13"> 叶秋 - 13 - 21212121212</option>
+          <option value="15"> 王国维 - 15 - 123132123 </option> 
+          <option value="17"> 易建飞 - 17 - 156456 </option> 
+          <option value="20"> 叶秋 - 20 - 12132123 </option>   
+		</select>
+   </td>
+</tr> 
+</table> 
+</form> 
+
+
+<!--以上为筛选代码以及js代码-->
+
+
+
+</div><!--main ding-->
+</body>
+</html>
