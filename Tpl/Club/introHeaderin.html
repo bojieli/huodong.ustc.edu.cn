@@ -24,7 +24,7 @@
 		    欢迎您，会员 <a href="/Club/quit?gid={$club.gid}" onclick="return confirm('您真的要退出社团吗？');"> <span style="color:#36F">&nbsp;&nbsp;点此退出社团</span></a>
 		</case>
 		<default />
-		<if condition="$club[ismanager]">
+		<if condition="($club[ismanager]) and ($club['isin'])">
 		    欢迎您，{$club.title}
 		<else />
 		  <if condition="$_G['uid'] == 0">
