@@ -109,7 +109,6 @@ class ClubAction extends PublicAction {
 	public function addOwnerSubmit() {
 		$uid = $_REQUEST['owner'];
 		$gid = $_REQUEST['gid'];
-		$sid = $_REQUEST['sid'];
 		if (!(D('User')->isSchoolAdmin(CURRENT_USER)))
 			$this->error("没有权限！");
 
@@ -118,21 +117,21 @@ class ClubAction extends PublicAction {
 		$uid = $_REQUEST['owner'];
 		$gid = $_REQUEST['gid'];
 		$priv = 'admin';
-		$priv_pre = M('User_group')->result_first("SELECT priv FROM ustc_user_group where uid = $uid and gid = $gid and sid = 1");
+		$priv_pre = M('User_group')->result_first("SELECT priv FROM ustc_user_group where uid = $uid and gid = $gid");
 		if(($priv_pre!='inactive')&&($priv=='inactive'))
 		{
-			M('Club')->where(['gid'=>$gid, 'sid'=>1])->setDec('member_count'); // 会员数减1 
+			M('Club')->where(['gid'=>$gid])->setDec('member_count'); // 会员数减1 
 		}
 		if(($priv_pre=='inactive')&&($priv!='inactive'))
 		{
-			M('Club')->where(['gid'=>$gid, 'sid'=>1])->setInc('member_count'); // 会员数加1 
+			M('Club')->where(['gid'=>$gid])->setInc('member_count'); // 会员数加1 
 		}
 
-		M('user_group')->where(array('gid'=>$_REQUEST['gid'], 'uid'=>$_REQUEST['owner'],'sid'=>1))->delete();
+		M('user_group')->where(array('gid'=>$_REQUEST['gid'], 'uid'=>$_REQUEST['owner']))->delete();
 		
 		$record['gid'] = $_REQUEST['gid'];
 		$record['uid'] = $_REQUEST['owner'];
-		$record['sid'] = 1;
+		$record['sid'] = M('Club')->result_first("SELECT sid FROM ustc_club where gid = $gid");
 		$record['priv'] = 'admin';
 		$record['title'] = '会长';
 		$row = M('user_group');
@@ -308,11 +307,12 @@ class ClubAction extends PublicAction {
 			$this->error("您需要注册或登录后才能加入社团");
 		}
 		$gid = $this->getInputGid();
+		$sid = M('Club')->result_first("SELECT sid FROM ustc_club where gid = $gid");
 		if ($this->getPriv($gid) == null) {
 			$record = array(
 				'uid' => CURRENT_USER,
 				'gid' => $gid,
-				'sid' => 1,
+				'sid' => $sid,
 				'priv' => 'inactive',
 				'title' => '审核中'
 			);
@@ -365,16 +365,16 @@ class ClubAction extends PublicAction {
 		if ($this->isAdmin($gid)) {
 			$record['priv'] = $priv;
 			$record['title'] = $title;
-			$record['sid'] = 1;
-			$priv_pre = M('User_group')->result_first("SELECT priv FROM ustc_user_group where uid = $uid and gid = $gid and sid = 1");
+			$priv_pre = M('User_group')->result_first("SELECT priv FROM ustc_user_group where uid = $uid and gid = $gid");
 			if(($priv_pre!='inactive')&&($priv=='inactive'))
 			{
-				M('Club')->where(['gid'=>$gid, 'sid'=>1])->setDec('member_count'); // 会员数减1 
+				M('Club')->where(['gid'=>$gid])->setDec('member_count'); // 会员数减1 
 			}
 			if(($priv_pre=='inactive')&&($priv!='inactive'))
 			{
-				M('Club')->where(['gid'=>$gid, 'sid'=>1])->setInc('member_count'); // 会员数加1 
+				M('Club')->where(['gid'=>$gid])->setInc('member_count'); // 会员数加1 
 			}
+			$record['sid'] = M('Club')->result_first("SELECT sid FROM ustc_club where gid = $gid");
 			M('user_group')->where(['uid'=>$uid, 'gid'=>$gid])->save($record);
 			die("OK");
 		} else
@@ -386,7 +386,7 @@ class ClubAction extends PublicAction {
 		
 		if ($this->isAdmin($gid)) {
 			$record['title'] = $title;
-			$record['sid'] = 1;
+			$record['sid'] = M('Club')->result_first("SELECT sid FROM ustc_club where gid = $gid");
 			M('user_group')->where(['uid'=>$uid, 'gid'=>$gid])->save($record);
 			$this->success('修改title成功');
 		} else
@@ -599,13 +599,12 @@ class ClubAction extends PublicAction {
 			$this->error("您尚未登录");
 		}
 		$gid = $this->getInputGid();
-		$sid = 1;
 		$club = $this->getData($gid);
 		if(!$this->isManager($gid)) {
 			$this->error("只有会长和部长才有权限查看通讯录");
 		}
 		$address = D('Address');
-		$members = $address->createAddress($gid,$sid);
+		$members = $address->createAddress($gid);
 		$this->assign("club", $club);
 		$this->assign("members", $members);
 		$this->display();
@@ -619,13 +618,12 @@ class ClubAction extends PublicAction {
 			$this->error("您尚未登录");
 		}
 		$gid = $this->getInputGid();
-		$sid = 1;
 		$club = $this->getData($gid);
 		if(!$this->isManager($gid)) {
 			$this->error("只有会长和部长才有权限查看通讯录");
 		}
 		$address = D('Address');
-		$members = $address->createAddress($gid,$sid);
+		$members = $address->createAddress($gid);
 		$email_all = '';
 		foreach($members as $key => $value)
 		{
@@ -639,7 +637,6 @@ class ClubAction extends PublicAction {
 	{
 		global $_G;
 		$gid = $this->getInputGid();
-		$sid = 1;
 		if(empty($_G[uid]))
 		{
 			$this->assign('jumpUrl','/User/login');
@@ -649,7 +646,7 @@ class ClubAction extends PublicAction {
 			$this->error("只有会长和部长才有权限查看通讯录");
 		}
 		$address = D('Address');
-		$members = $address->createAddress($gid,$sid);
+		$members = $address->createAddress($gid);
 		$filename="./upload/address_fetion".$gid.".csv";
 		$file=fopen($filename,"w");
 		if($file){
@@ -674,7 +671,6 @@ class ClubAction extends PublicAction {
 	{
 		global $_G;
 		$gid = $this->getInputGid();
-		$sid = 1;
 		if(empty($_G[uid]))
 		{
 			$this->assign('jumpUrl','/User/login');
@@ -685,7 +681,7 @@ class ClubAction extends PublicAction {
 		}
 		$club = $this->getData($gid);
 		$address = D('Address');
-		$members = $address->createAddress($gid,$sid);
+		$members = $address->createAddress($gid);
 		$filename="./upload/address_email_ustc".$gid.".csv";
 		$file=fopen($filename,"w");
 		if($file){
@@ -710,7 +706,6 @@ class ClubAction extends PublicAction {
 	{
 		global $_G;
 		$gid = $this->getInputGid();
-		$sid = 1;
 		if(empty($_G[uid]))
 		{
 			$this->assign('jumpUrl','/User/login');
@@ -720,7 +715,7 @@ class ClubAction extends PublicAction {
 			$this->error("只有会长和部长才有权限查看通讯录");
 		}
 		$address = D('Address');
-		$members = $address->createAddress($gid,$sid);
+		$members = $address->createAddress($gid);
 		$filename="./upload/address".$gid.".csv";
 		$file=fopen($filename,"w");
 		if($file){

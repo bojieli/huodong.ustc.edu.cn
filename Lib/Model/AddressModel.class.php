@@ -1,10 +1,9 @@
 <?php
 class AddressModel extends Model {
 	protected $tableName = 'user_group';
-	public function createAddress($gid,$sid)
+	public function createAddress($gid)
 	{
-		//$cond=array('gid'=>$gid,'sid'=>$sid);
-		$members = M()->query("SELECT * FROM (ustc_user INNER JOIN ustc_user_group ON ustc_user.uid = ustc_user_group.uid) INNER JOIN ustc_priv ON ustc_user_group.priv = ustc_priv.priv_name WHERE ustc_user_group.gid='$gid' AND ustc_user_group.sid = '$sid' ORDER BY ustc_priv.priv_value desc");
+		$members = M()->query("SELECT * FROM (ustc_user INNER JOIN ustc_user_group ON ustc_user.uid = ustc_user_group.uid) INNER JOIN ustc_priv ON ustc_user_group.priv = ustc_priv.priv_name WHERE ustc_user_group.gid='$gid' ORDER BY ustc_priv.priv_value desc");
 		//M('User_group')->field('uid,title')->where($cond)->order('priv asc')->select();
 		$members_info = array();
 		foreach($members as $m_id)
