@@ -114,7 +114,7 @@ class ClubModel extends Model {
 
 	public function schoolName($gid) {
 		$group = M('Club')->find($gid);
-		$school = M('School')->field('name')->find($group->sid);
+		$school = M('School')->field('name')->find($group['sid']);
 		return $school['name'];
 	}
 

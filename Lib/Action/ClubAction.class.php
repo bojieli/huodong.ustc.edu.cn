@@ -46,7 +46,12 @@ class ClubAction extends PublicAction {
 			$school_id = $schools[$i]['sid'];
 			$schools[$i]['url']=$url."&sid=$school_id";
 		}
-		
+		$school_all[] = array(
+			'sid' => 0,
+			'url' => $url."&sid=0",
+			'name' => '全部学校'
+			);
+		$schools =  array_merge($school_all,$schools);
 		$schools = json_encode($schools);
 
 		$this->assign('schools', $schools);
