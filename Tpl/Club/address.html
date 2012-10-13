@@ -21,9 +21,13 @@
 	word-break:keep-all;
 	white-space:nowrap;
 }
-.table-addresslist .row2{
+.table-addresslist .row1 td{
+	background-color:#FFF;	
+	}
+.table-addresslist .row2 td{
 	background-color:#f5f5f5;	
 	}
+
 .table-addresslist .td1{
 	background-color:#ccf;
 	height:30px;
@@ -36,17 +40,6 @@
 	cursor:pointer;
 	background-color:#FF9;
 	
-	}
-
-/*js 代码中用的css 标题行，奇偶行样式*/
-.table-addresslist .jsrow0{
-    background-color:#ccf;
-}
-.table-addresslist .jsrow1{
-	background-color:#FFF;	
-	}
-.table-addresslist .jsrow2{
-	background-color:#f5f5f5;	
 	}
 
 </style>
@@ -128,7 +121,7 @@ sorttable = {
 			var _headrow = table.tHead.rows[0].cells;					
 			for (var i=0; i<_headrow.length; i++) {
 				if (columnId==i && !_headrow[i].className.match(/\bsorttable_nosort\b/)) {
-					//触发click事件
+					
 					if(stIsIE){	_headrow[i].fireEvent("onclick");}
 					else{
 					   var evt = document.createEvent('MouseEvents');
@@ -141,7 +134,7 @@ sorttable = {
 		}	
       }
 	  
-	  //处理表头浮动
+	  /////处理表头浮动
       if (table.className.search(/\bscrolltable\b/) != -1) {
         sorttable.makeScrolltable(table);		
       }	  
@@ -291,7 +284,7 @@ sorttable = {
 			rows = table.tBodies[0].rows;
 			for (var j=0; j<rows.length; j++) {
 			   var sn=j % (arr.length);
-			   rows[j].getElementByTag("td").className=arr[sn];
+			   rows[j].className=arr[sn];
 			}
 		}
 	}
@@ -712,7 +705,7 @@ window.onscroll = onScroll;
 	<div class="stcon1">
     	<div class="stcylb">{$club.name}-通讯录</div>
 	</div>
-	<table class="table-addresslist sortable" rowclass="jsrow0,jsrow1,jsrow2"  border="0"  cellpadding="0" cellspacing="1"  >
+	<table class="table-addresslist sortable" rowclass="row1,row2"  border="0"  cellpadding="0" cellspacing="1"  >
 	<tr >
     	<td class="td1" width="40">序</td>	
         <td class="td1" width="50" align="center">职务</td>	
@@ -743,18 +736,18 @@ window.onscroll = onScroll;
 	</tr>
 	</eq> 
 	<eq name="mod" value="0">
-	<tr>
-        <td class="row2" align="center">{$kid}</td>
-        <td class="row2" align="center">{$member.title}</td>
-		<td class="row2 <if condition="$member[gender] eq 1">boyname<else />girlname</if>" align="center">{$member.realname}</td>
-        <td class="row2" align="center"><if condition="$member[gender] eq 1">男<else />女</if></td>
-		<td class="row2" align="right">{$member.student_no}</td>
-		<td class="row2" align="center">{$member.grade}</td>
-		<td class="row2" align="center">{$member.education}</td>
-		<td class="row2" align="right">{$member.telephone}</td>
-		<td class="row2" align="right">{$member.qq}</td>
-        <td class="row2" align="right">{$member.email}</td>
-		<td class="row2" align="left"><a target="_blank" style="color:#00F; font-size:14px" href="{$member.homepage}">{$member.homepage}</a></td>
+	<tr class="row2">
+        <td  align="center">{$kid}</td>
+        <td  align="center">{$member.title}</td>
+		<td  <if condition="$member[gender] eq 1">boyname<else />girlname</if>" align="center">{$member.realname}</td>
+        <td  align="center"><if condition="$member[gender] eq 1">男<else />女</if></td>
+		<td  align="right">{$member.student_no}</td>
+		<td  align="center">{$member.grade}</td>
+		<td  align="center">{$member.education}</td>
+		<td  align="right">{$member.telephone}</td>
+		<td  align="right">{$member.qq}</td>
+        <td  align="right">{$member.email}</td>
+		<td  align="left"><a target="_blank" style="color:#00F; font-size:14px" href="{$member.homepage}">{$member.homepage}</a></td>
 	</tr>
 	</eq> 
 	</volist>
