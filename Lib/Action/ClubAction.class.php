@@ -55,7 +55,6 @@ class ClubAction extends PublicAction {
 		$schools = json_encode($schools);
 
 		$this->assign('schools', $schools);
-
 		$this->assign('keyword', $keyword);
 		$this->assign('sid', $sid);
 		$this->assign('clubstat', D('Club')->get_stat($condition));

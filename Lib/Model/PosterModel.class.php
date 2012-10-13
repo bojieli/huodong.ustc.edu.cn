@@ -87,7 +87,15 @@ class PosterModel extends Model {
 		}
 		$stat['total'] = $this->result_first("SELECT COUNT(*) FROM ustc_poster".$condition1);
 		$stat['incoming'] = $this->result_first("SELECT COUNT(*) FROM ustc_poster WHERE end_time > '".time()."'".$condition2);
-		$stat['followed'] = $this->result_first("SELECT COUNT(*) FROM ustc_poster AS a, ustc_user_group AS ug WHERE ug.uid = '".CURRENT_USER."' AND ug.gid = a.gid".$condition2);
+		$gid_result = M('User_group')->query("SELECT DISTINCT gid FROM ustc_user_group where uid = '".CURRENT_USER."'");
+		$gid_condition = "(";
+		foreach($gid_result as $v)
+		{
+			$gid_condition .=$v['gid'].",";
+		}
+		$gid_condition .= "-1)";
+		$stat['followed'] = $this->result_first("SELECT COUNT(*) FROM ustc_poster WHERE gid IN $gid_condition ".$condition2);
+		//$stat['followed'] = $this->result_first("SELECT COUNT(*) FROM ustc_poster AS a, ustc_user_group AS ug WHERE ug.uid = '".CURRENT_USER."' AND ug.gid = a.gid".$condition2);
 		$stat['newmsg'] = 0;
 		return $stat;
 	}

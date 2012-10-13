@@ -1,13 +1,60 @@
 <?php
 class PosterAction extends PublicAction {
 	public function index() {
+		global $_G;
 		$this->headnav();
 		$keyword = isset($_GET['keyword']) ? $_GET['keyword'] : '';
+		$sid = isset($_GET['sid']) ? $_GET['sid'] : $_G['sid'];
 		$condition = '';
+		$url = '';
 		if(!empty($keyword))
 		{
-			$condition = " name like '%$keyword%' or place like '%$keyword%' or description like '%$keyword%' ";
+			$condition = " (name like '%$keyword%' or place like '%$keyword%' or description like '%$keyword%') ";
+			if(empty($url))
+			{
+				$url .= "keyword=$keyword";
+			}
+			else
+			{
+				$url .="&keyword=$keyword";
+			}
 		}
+		if(!empty($sid))
+		{
+			if(empty($condition))
+			{
+				$condition .= " sid = $sid ";
+			}
+			else
+			{
+				$condition .= " AND sid = $sid ";
+			}
+		}
+		
+		$schools = M('School')->select();
+		$num = count($schools);
+		for($i=0;$i<$num;$i++)
+		{
+			$school_id = $schools[$i]['sid'];
+			if(empty($url))
+			{
+				$schools[$i]['url']="/Poster/index?sid=$school_id";
+			}
+			else
+			{
+				$schools[$i]['url']='/Poster/index?'.$url."&sid=$school_id";
+			}
+			
+		}
+		$school_all[] = array(
+			'sid' => 0,
+			'url' => empty($url)?'/Poster/index?sid=0':'/Poster/index?'.$url."&sid=0",
+			'name' => '全部学校'
+			);
+		$schools =  array_merge($school_all,$schools);
+		$schools = json_encode($schools);
+		$this->assign('schools', $schools);
+		$this->assign('sid', $sid);
 		$this->assign('keyword', $keyword);
 		$this->assign('stat', D('Poster')->get_stat($condition));
 		$this->assign('order', empty($_GET['order']) ? 'new' : $_GET['order']);
@@ -55,7 +102,7 @@ class PosterAction extends PublicAction {
 		$poster['end_time'] = $this->parseTime($_POST['end_date'], $_POST['end_hour'], $_POST['end_minute']);
 		if ($poster['start_time'] >= $poster['end_time'])
 			$this->error("开始时间必须早于结束时间，请返回检查");
-
+		$poster['sid'] = M('Club')->result_first("SELECT sid FROM ustc_club where gid = $gid");
 		$obj = M('Poster');
 		$obj->create($poster);
 		$obj->add();
@@ -176,7 +223,16 @@ class PosterAction extends PublicAction {
 			switch ($_GET['order']) {
 			case 'new': $order = 'publish_time DESC'; break;
 			case 'near': $order = 'end_time asc'; $cond[] = "end_time > '".time()."'"; break;
-			case 'follow': $cond[] = "EXISTS (SELECT * FROM ustc_user_group AS ug WHERE ug.uid = '".CURRENT_USER."' AND gid = ug.gid)"; break;
+			case 'follow': 
+				$gid_result = M('User_group')->query("SELECT DISTINCT gid FROM ustc_user_group where uid = '".CURRENT_USER."'");
+				$gid_condition = "(";
+				foreach($gid_result as $v)
+				{
+					$gid_condition .=$v['gid'].",";
+				}
+				$gid_condition .= "-1)";
+				$cond[] = "gid IN $gid_condition";$order = 'publish_time DESC'; break;
+				//$cond[] = "EXISTS (SELECT * FROM ustc_user_group AS ug WHERE ug.uid = '".CURRENT_USER."' AND gid = ug.gid)"; break;
 			case 'hot': $order = 'rate_total DESC'; $cond[] = "end_time > '".time()."'"; break;
 			}
 		}
@@ -184,6 +240,11 @@ class PosterAction extends PublicAction {
 		if(!empty($keyword))
 		{
 			$cond[] = "(name like '%$keyword%' or place like '%$keyword%' or description like '%$keyword%')";
+		}
+		$sid = isset($_GET['sid']) ? $_GET['sid'] : '';
+		if(!empty($sid))
+		{
+			$cond[] = "(sid = $sid)";
 		}
 		return [$start, $num, implode(' AND ', $cond), $order];
 	}
