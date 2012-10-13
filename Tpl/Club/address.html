@@ -47,48 +47,6 @@
 </style>
 <script type="text/javascript">
 //<!--
-/*
-  SortTable
-  version 2
-  7th April 2007
-  Stuart Langridge, http://www.kryogenix.org/code/browser/sorttable/
- 
-  Instructions:
-  Download this file
-  Add <script src="sorttable.js"></script> to your HTML
-  Add class="sortable" to any table you'd like to make sortable
-  Click on the headers to sort
-  
-  Thanks to many, many people for contributions and suggestions.
-  Licenced as X11: http://www.kryogenix.org/code/browser/licence.html
-  This basically means: do what you want with it.
-  
-  用法：将要排序的表格添加CSS，如<table class="sortable">
-  对于不需要排序的列，在表头所在行的该列，添加CSS，如<td class="sorttable_nosort"></td>  
-
-  ======================================================================================
-
-  Update:
-  version 2.1
-  9th Mar 2009
-  Hopesoft , http://www.51ajax.com/blog/
-  hopesoft@msn.com
-    
-  说明: 
-  1.增加中文排序
-  2.增加指定各行使用不同css样式功能(比如奇偶行背景色不一致)
-    用法：在要表头浮动的表格上添加属性，如<table class="sortable" rowclass="bg1,bg2,bg3"> 
-  3.增加表头浮动功能(支持同一个页面有多个表格，比如不同Tab标签下的各个表格)
-    用法：在要表头浮动的表格上添加CSS，如<table class="sortable scrolltable">
-    另外最好指定“表头”和“数据行”的各列的列宽，如
-        <tr><td class='w1'>姓名</td><td class='w2'>年龄</td></tr>
-        <tr><td class='w1'>张三</td><td class='w2'>21</td></tr>
-    以避免在FireFox下表头浮动时表头各列与数据各列不对齐
-  4.增加页面载入后自动排序
-    用法：在表格上添加属性autosortcol，对应要自动排序的列号，注意是从0开始       
-	如<table class="sortable" autosortcol="3">，则表示当页面载入成功后，会自动对第4行进行排序
-*/
-
 var stIsIE = /*@cc_on!@*/false;
 
 sorttable = {
