@@ -291,7 +291,7 @@ sorttable = {
 			rows = table.tBodies[0].rows;
 			for (var j=0; j<rows.length; j++) {
 			   var sn=j % (arr.length);
-			   rows[j].className=arr[sn];
+			   rows[j].getElementByTag("td").className=arr[sn];
 			}
 		}
 	}
