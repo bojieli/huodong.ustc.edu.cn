@@ -700,7 +700,7 @@ window.onscroll = onScroll;
 	<tr class="row2">
         <td  align="center">{$kid}</td>
         <td  align="center">{$member.title}</td>
-		<td  <if condition="$member[gender] eq 1">boyname<else />girlname</if>" align="center">{$member.realname}</td>
+		<td  align="center" class="<if condition="$member[gender] eq 1">boyname<else />girlname</if>">{$member.realname}</td>
         <td  align="center"><if condition="$member[gender] eq 1">男<else />女</if></td>
 		<td  align="right">{$member.student_no}</td>
 		<td  align="center">{$member.grade}</td>
