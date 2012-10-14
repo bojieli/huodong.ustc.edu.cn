@@ -131,16 +131,23 @@ class ClubAction extends PublicAction {
 		M('Club')->where(array('gid'=>$_REQUEST['gid']))->save($club);
 		$priv = 'admin';
 		$priv_pre = M('User_group')->result_first("SELECT priv FROM ustc_user_group where uid = $uid and gid = $gid");
-		if(($priv_pre!='inactive')&&($priv=='inactive'))
+		if($priv_pre)
 		{
-			M('Club')->where(['gid'=>$gid])->setDec('member_count'); // 会员数减1 
+			if(($priv_pre!='inactive')&&($priv=='inactive'))
+			{
+				M('Club')->where(['gid'=>$gid])->setDec('member_count'); // 会员数减1 
+			}
+			if(($priv_pre=='inactive')&&($priv!='inactive'))
+			{
+				M('Club')->where(['gid'=>$gid])->setInc('member_count'); // 会员数加1 
+			}
+			M('user_group')->where(array('gid'=>$_REQUEST['gid'], 'uid'=>$_REQUEST['owner']))->delete();
 		}
-		if(($priv_pre=='inactive')&&($priv!='inactive'))
+		else
 		{
 			M('Club')->where(['gid'=>$gid])->setInc('member_count'); // 会员数加1 
 		}
-
-		M('user_group')->where(array('gid'=>$_REQUEST['gid'], 'uid'=>$_REQUEST['owner']))->delete();
+		
 		
 		$record['gid'] = $_REQUEST['gid'];
 		$record['uid'] = $_REQUEST['owner'];
