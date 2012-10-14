@@ -17,8 +17,10 @@
     <div class="sttitle4">网上注册会员：{$club.memberCount} 人<br/>
     <if condition="$club[admin][uid] != 0">
     会长：{$club.admin.realname} ({$club.admin.dept} {$club.admin.grade}级 {$club.admin.education})
-    <else />
-    尚未设置会长，<a style="text-decoration:underline; color:#F00;" href="/static/help/contactus.html">请会长联系我们</a>！
+    <elseif condition="!$club['apply']" />
+    <div id="js-apply">尚未设置会长，<a style="text-decoration:underline; color:#F00;" href="/static/help/contactus.html">请会长联系我们!</a>或者<a class="<if condition="$_G['uid'] == 0">js-not-login<else />js-login</if>" style="text-decoration:underline; color:#F00;" href="javascript:void(0)">点此申请成为该社团会长</a></div>
+	<else />
+	<span style ="color:red">您申请成为该团体会长，审核中……</span>
     </if>
         <div class="sttitle5">
 	    <switch name="club.mypriv">
@@ -50,3 +52,21 @@
 	</div>
      </div>
      <div style="clear:both; height:1px;"> </div>
+	<script>
+	$(".js-not-login").click(function(){
+		alert("您尚未登录，请先登录");
+	});
+	$(".js-login").click(function(){
+		var gid = {$club.gid};
+		$.post("/Club/ajaxApply",{'gid': gid },function(res){
+			if (res.status == 1) {
+				alert('申请成功，等待审核');
+				$("#js-apply").html("<span style =\"color:red\">您申请成为该团体会长，审核中……</span>");
+			}
+			else{
+				alert(res.info);
+				$("#js-apply").html("<span style =\"color:red\">您申请成为该团体会长，审核中……</span>");
+			}
+		},'json');
+	});
+	</script>
