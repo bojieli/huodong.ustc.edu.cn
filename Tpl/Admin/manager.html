@@ -1,0 +1,93 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script src="/static/jquery.js" type="text/javascript"></script>
+<link href="/static/css1.css" type="text/css" rel="stylesheet" />
+<link href="/static/supermanage.css" type="text/css" rel="stylesheet" />
+<link href="/static/shetuanguanli.css" type="text/css" rel="stylesheet" />
+<script src="/static/jquery.form.js" type="text/javascript"></script>
+<title>管理我的社团</title>
+</head>
+
+<body>
+<include file="Public:headnav" />
+
+    <div id="smain">    	
+                <div class="onepanel">
+                    <div class="declarerect">
+                        <div class="declaretitle">{$user_info.school}，学生管理团体总部</div>
+                        <div class="declareright"><p>拥有以下权利：</p></div>
+                        <div class="declarelist">
+                            <p>1、批准该校所有社团账号申请是否通过的权利；</p>
+                            <p>2、批准该校所有社团负责人更换的权利；</p>
+                            <p>3、导出该校所有社团负责人联系方式的权利；</p>
+                            <p>4、向该校所有团社负责人群发邮件通知的权利；</p>
+                            <p>5、向该校所有社团成员群发邮件通知的权利；</p>
+                            <p>6、申请取消社团网上账号的权利；</p>
+                        </div>
+                        <div class="declareright">
+                            <p>包含但不限于以下责任：</p>
+                        </div>
+                        <div class="declarelist">
+                            <p>1、该校出现虚假社团被审核通过所造成的问题；</p>
+                            <p>2、该校出现虚假社团负责人被审核通过所造成的问题；</p>
+                            <p>3、接受和处理本校学生社团出现的各种举报信息；</p>
+                        </div>
+                    </div><!--declarerect-->
+                    <div class="gray_b_line"></div>
+                    <div class="messagerect">
+                        <div class="appfoundrect">
+                            <a href="stchengli.html"><div class="appchangetext">社团成立申请<span class="num1234">36</span></div></a>
+                        </div>
+                        <div class="appchangerect">
+                            <a href="genghuan.html"><div class="appchangetext">社团更换负责人申请<span class="num1234">20</span></div></a>
+                        </div>
+                        <div class="appnoticerect">
+                            <a href="tzyxx.html"><div class="appchangetext">通知消息<span class="num1234">17</span></div></a>
+                        </div>
+                    </div><!--messagerect-->
+                    <div class="existrect">
+                        <div class="existnamerect">
+                            <div class="existnametext">{$user_info.school}已有社团</div>
+                        </div>
+                        <div class="existcontentrect">
+                            <table width="780px" border="0" align="center" cellpadding="2" cellspacing="0" bordercolor="#F00">
+                                <tr style="background-color:#CCC;" class="existheadrect">
+                                    <th  align="center" class="existdiv">编号</th>
+                                    <th align="center" class="existlabel" >类别</th>
+                                    <th align="center" class="existsocname">社团名称</th>
+                                    <th align="center" class="existcharge" >社团负责人</th>
+                                    <th align="center" class="existdegree" >学号</th>
+                                    <th align="center" class="existmember" >会员数</th>
+                                    <th align="center" class="existacti" >活动数</th>
+                                </tr>
+								<volist name="clubs" id="club" key="kid">
+                                <tr class=" existlistrect">
+                                    <td align="center" class="existdiv">{$kid}</td>
+                                    <td align="center" class="existlabel" >{$club.type}</td>
+                                    <td align="center" class="existsocname"><a href="/Club/intro?gid={$club.gid}" target="_blank">{$club.name}</a></td>
+                                    <td align="center" class="existcharge" ><a href="/User/home?uid={$club['admin']['uid']}" target="_blank">{$club['admin']['realname']}</a></td>
+                                    <td align="center" class="existdegree" >{$club['admin']['student_no']}</td>
+                                    <td align="center" class="existmember" >{$club.member_count}</td>
+                                    <td align="center" class="existacti" >{$club.poster_count}</td>
+                                </tr>
+								</volist>
+                             </table>
+                        </div> 
+                    </div><!--existrect-->
+                </div><!--onepanel-->
+
+                <div id="logrect">
+                    <div class="logname">处理日志</div>
+                    <div class="logcontentrect">
+                        <div class="logcontextlistodd"><span class="logtime">2012年7月10日</span> 批准申请成立三将发送了卡掉了</div>
+                        <div class="logcontextlistodd"><span class="logtime">2012年6月8日</span> 实现了网上萨拉分开打算看</div>
+                        <div class="logcontextlistodd"><span class="logtime">2011年12月10日</span> 发布了网上全校消息“我爱东方太阳升，太阳山上好个人，哇哈哈哈哈哈”</div>
+                        <div class="logcontextlistodd"><span class="logtime">2011年12月10日</span> 发布了网上全校消息"我爱东方太阳升，太阳山上好个人，哇哈哈哈哈哈"</div>
+                    </div>
+                </div>
+        
+    </div><!--main-->
+</body>
+</html>
