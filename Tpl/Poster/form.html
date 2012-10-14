@@ -54,16 +54,30 @@
       </div>
     </div>
     <div class="control-group">
-      <label class="control-label" for="description">活动介绍</label>
+      <label class="control-label" for="description" style="width:600px;">活动介绍</label>
       <div class="controls">
         <textarea class="input-xlarge" id="description" name="description" rows="5" style="height:100px">{$poster.description}</textarea>
 	<p class="help-block">显示在海报大图页面的活动介绍</p>
       </div>
     </div>
     <div class="control-group">
-      <label class="control-label" for="poster">上传海报</label>
+      <label class="control-label" for="poster" >上传海报</label>
+      
+<style type="text/css">
+.controls .file-box{ position:relative;width:340px} 
+.controls .txt{ height:22px; border:1px solid #cdcdcd; width:180px;} 
+.controls .btn{ background-color:#FFF; border:1px solid #CDCDCD;height:24px; width:70px;} 
+.controls .file{ position:absolute; top:0; right:80px; height:24px; filter:alpha(opacity:0);opacity: 0;width:260px } 
+</style>      
       <div class="controls">
-        <input type="file" id="poster" name="poster" />
+      	<div class="file-box">             
+             <input type='text' name='textfield' id='textfield' class='txt' /> 
+             <input type='button' class='btn' value='浏览...' /> 
+             <input type="file" name="poster" class="file" id="poster" size="36" onchange="document.getElementById('textfield').value=this.value" /> 
+
+
+</div> 
+<!-->        <input type="file" id="poster" name="poster" value="选择海报"/>    <-->
 	<empty name="new">
 	<p class="help-block">如果需要重新上传海报，请在此重新上传，否则请留空</p>
 	</empty>
