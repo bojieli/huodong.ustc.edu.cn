@@ -136,4 +136,34 @@ class ClubModel extends Model {
 		$stat['other'] = $stat['total'] - $stat['club'] - $stat['gradUnion'] - $stat['studentUnion'];
 		return $stat;
 	}
+
+	public function getSidByGid($gid)
+	{
+		return M('Club')->result_first("select sid from ustc_club where gid = $gid");
+	}
+	public function getClubAdminApply($condition)
+	{
+		$applies = array();
+		$applies_tmp = M('Club_apply')->where($condition)->order('ishandled asc,time desc')->select();
+		foreach($applies_tmp as $apply){
+			$apply['applier'] = D('User')->getInfo($apply['uid']);
+			$apply['club'] = M('Club')->find($apply['gid']);
+			$applies[] = $apply;
+		}
+		return $applies;
+	}
+	public function getClubsByCondition($condition)
+	{
+		$clubs = array();
+		$clubs_tmp = M('Club')->where($condition)->select();
+		foreach($clubs_tmp as $club)
+		{
+			if ($club['owner'] != NULL) {
+				$club['admin'] = M('User')->find($club['owner']);
+			}
+			$club['school'] = M('School')->find($club['sid']);
+			$clubs[] = $club;
+		}
+		return $clubs;
+	}
 }

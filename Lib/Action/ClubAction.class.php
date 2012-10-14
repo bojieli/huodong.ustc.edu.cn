@@ -64,8 +64,19 @@ class ClubAction extends PublicAction {
 
 	public function intro() {
 		$this->headnav();
+		$gid = $_GET['gid'];
 		D('Club')->updateClicks($_GET['gid']);
 		$club = $this->getData($_GET['gid']);
+		
+		if(M('Club_apply')->where(array('uid'=>CURRENT_USER,'gid'=>$gid))->select())
+		{
+			$club['apply']=true;
+		}
+		else
+		{
+			$club['apply']=false;
+		}
+		
 		$this->assign('club', $club);
 		$this->display();
 	}
@@ -118,8 +129,6 @@ class ClubAction extends PublicAction {
 
 		$club['owner'] = $_REQUEST['owner'];
 		M('Club')->where(array('gid'=>$_REQUEST['gid']))->save($club);
-		$uid = $_REQUEST['owner'];
-		$gid = $_REQUEST['gid'];
 		$priv = 'admin';
 		$priv_pre = M('User_group')->result_first("SELECT priv FROM ustc_user_group where uid = $uid and gid = $gid");
 		if(($priv_pre!='inactive')&&($priv=='inactive'))
@@ -142,7 +151,18 @@ class ClubAction extends PublicAction {
 		$row->create($record);
 		$row->add();
 
+		M('Club_apply')->where(array('uid'=>$uid,'gid'=>$gid,'ishandled'=>0))->save(array('ishandled'=>1));
+
 		$this->success("设置会长成功！");
+	}
+	
+	public function refuseOwnerSubmit(){
+		$uid = $_REQUEST['owner'];
+		$gid = $_REQUEST['gid'];
+		if (!(D('User')->isSchoolAdmin(CURRENT_USER)))
+			$this->error("没有权限！");
+		M('Club_apply')->where(array('uid'=>$uid,'gid'=>$gid,'ishandled'=>0))->save(array('ishandled'=>1));
+		$this->success("拒绝其成为会长成功！");
 	}
 
 	public function introAdd() {
@@ -512,6 +532,34 @@ class ClubAction extends PublicAction {
 		echo json_encode($elements);
 	}
 
+	public function ajaxApply()
+	{
+		if (CURRENT_USER == 0)
+		{
+			$this->error('您尚未登录，请先登录');
+		}
+		$gid = $_POST['gid'];
+		$sid = D('Club')->getSidByGid($gid);
+		$time = time();
+		$data = array(
+			'uid'=>CURRENT_USER,
+			'gid'=>$gid,
+			'sid'=>$sid,
+			'time'=>$time
+			);
+		if(M('Club_apply')->where(array('uid'=>CURRENT_USER,'gid'=>$gid,'ishandled'=>0))->select())
+		{
+			//$error = array('status'=>0,'info'=>'您已经申请过');
+			//echo json_encode($error);
+			$this->error('您已经申请过');
+		}
+		else
+		{
+			M('Club_apply')->data($data)->add();
+			$this->success('申请成长，等待审核');
+		}
+	}
+	
 	private function parseInput() {
 		$start = isset($_GET['start']) && is_numeric($_GET['start']) ? $_GET['start'] : 0;
 		$num = isset($_GET['num']) && is_numeric($_GET['num']) ? $_GET['num'] : 0;

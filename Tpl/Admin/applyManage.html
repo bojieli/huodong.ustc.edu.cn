@@ -1,0 +1,76 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script src="/static/jquery.js" type="text/javascript"></script>
+<link href="/static/css1.css" type="text/css" rel="stylesheet" />
+<link href="/static/genghuan.css" type="text/css" rel="stylesheet" />
+<link href="/static/shetuanguanli.css" type="text/css" rel="stylesheet" />
+<script src="/static/jquery.form.js" type="text/javascript"></script>
+<title>负责人审核</title>
+</head>
+<script>
+function ajax_pass(uid, gid){
+		$.post("/Club/addOwnerSubmit/",{'owner': uid,'gid': gid },function(res){
+			if(res.status==1){
+				alert(res.info);
+				$("#handle_div").html("<span>已通过</span>");
+			}
+			else
+			{
+				alert(res.info);
+			}
+		},'json');
+}
+function ajax_refuse(uid, gid){
+		$.post("/Club/refuseOwnerSubmit/",{'owner': uid,'gid': gid },function(res){
+			if(res.status==1){
+				alert(res.info);
+				$("#handle_div").html("<span>已拒绝</span>");
+			}
+			else
+			{
+				alert(res.info);
+			}
+		},'json');
+}
+</script>
+<body>
+<include file="Public:headnav" />
+    
+    <div id="ghmain">
+    	<div id="ghmiddle">
+            <div id="ghsubject">
+                    {$user_info.school}学生团体总部——<span style="font-size:20px">社团负责人审核</span>
+            </div><!--sqsubject-->
+			<volist name="applies" id="apply" >
+              <div class="ghpending">
+                <div class="ghinforect">
+                    	<table cellspacing="0" cellpadding="0" border="0" height="100">
+                        	<tr>
+                        		<td  width="130" valign="middle" align="center" class="ghspaceimage">
+                                	<a href="/Club/intro?gid={$apply['club']['gid']}" target="_blank">{$apply['club']['name']}</a>
+                                </td>
+                                <td  width="170" valign="top" align="center">
+                               		 申请会长<br/><a href="/User/home?uid={$apply['applier']['uid']}" target="_blank"><img class="ghtoum" src="/{$apply['applier']['small_avatar']}" /></a><br/><span class="girlname">{$apply['applier']['realname']}</span>
+                                </td>
+                                <td  width="300" valign="top" align="left" class="ghspaceimage" >新会长个人信息：<br/>电话：{$apply['applier']['telephone']}<br/>学号：{$apply['applier']['student_no']}<br/>邮箱：{$apply['applier']['email']}
+                                </td>    
+                                <td align="center" valign="middle">
+								<if condition="$apply['ishandled']">
+								<p>已处理</p>
+								<else />
+								<div id="handle_div">
+								<a href="javascript:void(0);" onclick="ajax_pass({$apply['applier']['uid']},{$apply['club']['gid']})">通过</a> | <a href="javascript:void(0);" onclick="ajax_refuse({$apply['applier']['uid']},{$apply['club']['gid']})">拒绝</a>
+								</div>
+								</if>
+                                </td>               
+                        	</tr>                        	
+                        </table>
+                </div>     
+            </div><!--sqpending-->
+		   </volist>
+        </div><!--sqmiddle-->	
+    </div><!--main-->
+</body>
+</html>
