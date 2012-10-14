@@ -134,14 +134,7 @@ $showPager = function() use($club,$pageNow) {
 	    	<div class="stzhiwusz">设置权限：
                         <select onchange="ajaxChangeTitle({$member.uid}, this.options[this.selectedIndex].getAttribute('priv'), this.options[this.selectedIndex].getAttribute('title'))">
                         <option priv="" title="" selected="selected">------</option>
- <!--           
-			<option priv="admin" title="会长" style="color:#F00;">会长</option>
-			<option priv="admin" title="社长" style="color:#F00;">社长</option>
-			<option priv="admin" title="主席" style="color:#F00;">主席</option>
-            <option priv="admin" title="队长" style="color:#F00;">队长</option>
-			
-                        <option priv="" title="">------</option>
--->                        <option priv="vice-admin" title="副会长" style="color:#F0F">副会长</option>
+                         <option priv="vice-admin" title="副会长" style="color:#F0F">副会长</option>
 						<option priv="vice-admin" title="副社长" style="color:#F0F">副社长</option>
 						<option priv="vice-admin" title="副主席" style="color:#F0F">副主席</option>
                         <option priv="" title="">------</option>
