@@ -8,24 +8,15 @@ class UserAction extends PublicAction {
 		if (empty($user_info['uid'])) {
 			$this->error("该用户不存在");
 		}
-		if(!$user_info['isschooladm'])
-		{
-			$this->assign('user_info', $user_info);
-			$this->assign('avatar_path', C("AVATAR_PATH"));
-			$this->assign('clubs', D('User')->getClubs($uid));
-			$this->assign('applies', D('User')->getApplies($uid));
-			$this->headnav();
-			$this->display();
-		}
-		else
-		{
-			$this->assign('user_info', $user_info);
-			$this->assign('avatar_path', C("AVATAR_PATH"));
-			$this->assign('clubs', D('User')->getClubs($uid));
-			$this->assign('applies', D('User')->getApplies($uid));
-			$this->headnav();
-			$this->display('manager');
-		}
+
+		$this->assign('user_info', $user_info);
+		$this->assign('avatar_path', C("AVATAR_PATH"));
+		$this->assign('clubs', D('User')->getClubs($uid));
+		$this->assign('applies', D('User')->getApplies($uid));
+		$this->headnav();
+		$this->display();
+
+
 	}
 	public function test()
 	{

@@ -38,6 +38,16 @@ class UserModel extends Model {
 		
 		M('Login_log')->add($log);
 	}
+	function checkLogin()
+	{
+		global $_G;
+		if(empty($_G['uid'])) {
+			return false;
+		}
+		else{
+			return true;//ÒÑµÇÂ¼
+		}
+	}
 	function getRealname($uid)
 	{
 		$res= $this->where("uid = $uid")->limit(1)->select();
