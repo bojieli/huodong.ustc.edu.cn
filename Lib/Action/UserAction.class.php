@@ -5,7 +5,16 @@ class UserAction extends PublicAction {
 		$uid = is_numeric($_GET['uid']) ? $_GET['uid'] : CURRENT_USER;
 		$user = D("User");
 		$user_info = $user->getInfo($uid);
+		
+		if (empty($_G['uid'])) {
+			$this->assign('jumpUrl', '/User/login');
+			$this->assign('waitSecond', 1);
+			$this->error("您尚未登录请先登录");
+		}
+
 		if (empty($user_info['uid'])) {
+			$this->assign('jumpUrl', '/User/home');
+			$this->assign('waitSecond', 1);
 			$this->error("该用户不存在");
 		}
 
@@ -119,7 +128,7 @@ class UserAction extends PublicAction {
 		}
 
 		// sanitize input
-		$fields = array('realname', 'gender', 'education', 'dept', 'grade','qq','telephone');
+		$fields = array('realname', 'gender', 'education','student_no', 'dept', 'grade','qq','telephone');
 		foreach ($fields as $field)
 			$info[$field] = htmlspecialchars($_POST[$field]);
 		if (preg_match("|[a-zA-Z]+://([a-zA-Z0-9_-]+\.)+[\w-]+(:[0-9]+)?(/.*)?|", $_POST['homepage']))

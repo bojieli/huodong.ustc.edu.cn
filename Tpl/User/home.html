@@ -70,21 +70,25 @@ $(function(){
                              </tr>
 							 <if condition="!empty($user_info['uid']) && $user_info['uid'] == CURRENT_USER">
 							 <tr>
+                           		<td align="left" colspan="2">学号：{$user_info.student_no}</td>
+                             </tr>
+							 <tr>
                            		<td align="left" colspan="2">手机：{$user_info.telephone}</td>
                              </tr>
                              <tr>
                            		<td align="left" colspan="2">QQ：{$user_info.qq}</td>
                              </tr>
+							 <tr>
+                           		<td align="left" colspan="2">注册邮箱： {$user_info.email}</td>
+                             </tr>
 							 </if>
                              <tr>
                            		<td align="left" colspan="2">个人主页： <a class="lianjie11" href="{$user_info.homepage}">{$user_info.homepage}</a></td>
                              </tr>
-                             <tr>
-                           		<td align="left" colspan="2">注册邮箱： {$user_info.email}</td>
-                             </tr>
-			     <tr>
+                             
+							<tr>
 			                <td align="right" colspan="2"><a href="/static/help/yjnotice.html" style="color:#F00">免费短信通知新邮件方法,不落下一条消息！</a></td>
-			     </tr>
+							</tr>
                          </table>
 						 </div>
 						 <div id="info2">
@@ -130,6 +134,9 @@ $(function(){
 							  <option <if condition="$user_info.dept eq '合肥微尺度物质科学国家实验室（筹）'">selected</if> value="合肥微尺度物质科学国家实验室（筹）">合肥微尺度物质科学国家实验室（筹）</option>
 							  <option <if condition="$user_info.education eq '火灾科学国家重点实验室'">selected</if> value="火灾科学国家重点实验室">火灾科学国家重点实验室</option>
 							</select></td>
+                             </tr>
+							 <tr>
+                           		<td align="left" colspan="2">学号：<input type="text" id="student_no" name="student_no" size='16' value="{$user_info.student_no}" /></td>
                              </tr>
                              <tr>
                            		<td align="left" colspan="2">入学年份：<select name="grade" id="grade">
