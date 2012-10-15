@@ -46,7 +46,7 @@
 		 <form id="registerform" name="registerform" action="/User/addUser" method="post">
 			<table cellspacing="0" cellpadding="0" border="0" class="zc1table">
                 <tr>
-                	<td align="right" valign="middle" width="150px" height="55px"><em>*</em>学校</td>
+                	<td align="right" valign="middle" width="150px" height="58px"><em>*</em>学校</td>
                     <td class="zc1tablerect" width="300px"  valign="middle" align="left">
                     	<div class="zc1school">
                         	<!--
@@ -59,7 +59,7 @@
                     </td>
                 </tr>
                 <tr>
-                	<td align="right" valign="middle" width="150px" height="55px"><em>*</em>性别</td>
+                	<td align="right" valign="middle" width="150px" height="58px"><em>*</em>性别</td>
                     <td class="zc1tablerect" width="300px"  valign="middle" align="left">
                     	<div class="zc1school">
                         	<input type="radio" name="gender" checked value="1" />男
@@ -70,11 +70,11 @@
                     </td>
                 </tr>
                 <tr>
-                	<td align="right" valign="middle" width="150px" height="55px"><em>*</em>学院</td>
+                	<td align="right" valign="middle" width="150px" height="58px"><em>*</em>学院</td>
                     <td class="zc1tablerect" width="300px" valign="middle" align="left">
                     	<div class="zc1fakesel">
                         	<strong>
-							<select name="dept" id="dept">
+							<select name="dept" id="dept" class="regist-input-box">
 							  <option value ="0">请选择学院</option>
 							  <option value ="少年班学院">少年班学院</option>
 							  <option value ="数学科学学院">数学科学学院</option>
@@ -105,7 +105,7 @@
                     </td>
                 </tr>
                 <tr>
-                	<td align="right" valign="middle" width="150px" height="55px"><em>*</em>学号</td>
+                	<td align="right" valign="middle" width="150px" height="58px"><em>*</em>学号</td>
                     <td class="zc1tablerect" width="300px"  valign="middle" align="left">
                     	<div class="zc1school">
                         	<input type="text" name="student_no" id="student_no" size='20' class="regist-input-box dxhb-blur" onfocus="this.className='dxhb-focus regist-input-box'" onblur="this.className='dxhb-blur regist-input-box'"/><span id="checkStudent_no"></span>
@@ -113,7 +113,7 @@
                     </td>
                 </tr>
 		<tr>
-                	<td align="right" valign="middle" width="150px" height="55px"><em>*</em>真实姓名</td>
+                	<td align="right" valign="middle" width="150px" height="58px"><em>*</em>真实姓名</td>
                     <td class="zc1tablerect" width="300px"  valign="middle" align="left">
                     	<div class="zc1school">
                         	<input type="text" name="realname" id="realname" size='20' class="regist-input-box dxhb-blur" onfocus="this.className='dxhb-focus regist-input-box'" onblur="this.className='dxhb-blur regist-input-box'"/><span id="checkRealname"></span>
@@ -121,10 +121,10 @@
                     </td>
                 </tr>
 		<tr>
-                	<td align="right" valign="middle" width="150px" height="55px"><em>*</em>入学年份</td>
+                	<td align="right" valign="middle" width="150px" height="58px"><em>*</em>入学年份</td>
                     <td class="zc1tablerect" width="300px"  valign="middle" align="left">
                     	<div class="zc1school">
-                        	<select name="grade" id="grade">
+                        	<select name="grade" id="grade" class="regist-input-box">
 					<option value="2012" selected="selected">2012</option>
 				<?php for ($year = 2011; $year >= 1977; $year--) { ?>
 					<option value="{$year}">{$year}</option>
@@ -134,10 +134,10 @@
                     </td>
                 </tr>
 		<tr>
-                	<td align="right" valign="middle" width="150px" height="55px"><em>*</em>学历</td>
+                	<td align="right" valign="middle" width="150px" height="58px"><em>*</em>学历</td>
                     <td class="zc1tablerect" width="300px"  valign="middle" align="left">
                     	<div class="zc1school">
-                        	<select name="education" id="education">
+                        	<select name="education" id="education" class="regist-input-box">
 					<option value="本科" selected="selected">本科</option>
 					<option value="硕士">硕士</option>
 					<option value="博士">博士</option>
@@ -146,7 +146,7 @@
                     </td>
                 </tr>
                 <tr>
-                	<td align="right" valign="middle" width="150px" height="55px"><em></em>电话</td>
+                	<td align="right" valign="middle" width="150px" height="58px"><em></em>电话</td>
                     <td class="zc1tablerect" width="300px"  valign="middle" align="left">
                     	<div class="zc1school">
                         	<input type="text" id = "telephone" name="telephone" size='20' class="regist-input-box dxhb-blur" onfocus="this.className='dxhb-focus regist-input-box'" onblur="this.className='dxhb-blur regist-input-box'"/><span id="checkTelephone"></span>
@@ -154,7 +154,7 @@
                     </td>
                 </tr>
                 <tr>
-                	<td align="right" valign="middle" width="150px" height="55px"><em>*</em>注册邮箱</td>
+                	<td align="right" valign="middle" width="150px" height="58px"><em>*</em>注册邮箱</td>
                     <td class="zc1tablerect" width="300px"  valign="middle" align="left">
                     	<div class="zc1school">
                         	<input type="text" id="email" name="email" size='10' class="regist-input-box dxhb-blur" onfocus="this.className='dxhb-focus regist-input-box'" onblur="this.className='dxhb-blur regist-input-box'"/>@mail.ustc.edu.cn <br><span id="checkMail"></span>
@@ -162,7 +162,7 @@
                     </td>
                 </tr>
 				<tr>
-                	<td align="right" valign="middle" width="150px" height="55px"><em>*</em>密码</td>
+                	<td align="right" valign="middle" width="150px" height="58px"><em>*</em>密码</td>
                     <td class="zc1tablerect" width="300px"  valign="middle" align="left">
                     	<div class="zc1school">
                         	<input type="password" id="password" name="password" size='20' class="regist-input-box dxhb-blur" onfocus="this.className='dxhb-focus regist-input-box'" onblur="this.className='dxhb-blur regist-input-box'"/><span id="checkPassword"></span>
@@ -170,7 +170,7 @@
                     </td>
                 </tr>
 				<tr>
-                	<td align="right" valign="middle" width="150px" height="55px"><em>*</em>再次输入密码</td>
+                	<td align="right" valign="middle" width="150px" height="58px"><em>*</em>再次输入密码</td>
                     <td class="zc1tablerect" width="300px"  valign="middle" align="left">
                     	<div class="zc1school">
                         	<input type="password" id="password2" name="password2" size='20' class="regist-input-box dxhb-blur" onfocus="this.className='dxhb-focus regist-input-box'" onblur="this.className='dxhb-blur regist-input-box'"/><span id="checkPassword2"></span>
@@ -178,7 +178,7 @@
                     </td>
                 </tr>
                 <tr>
-                	<td align="right" valign="middle" width="150px" height="55px"><em>*</em>验证码</td>
+                	<td align="right" valign="middle" width="150px" height="58px"><em>*</em>验证码</td>
                     <td class="zc1tablerect" width="300px"  valign="middle" align="left">
 					<img id="ajaxCheckImg" src="/User/ajaxVerify" />
                     	<div class="zc1school">
@@ -189,7 +189,7 @@
                 <tr>
                     <td class="zc1tablerect" valign="middle" align="left">
                     </td>
-                	<td align="left" valign="middle" style="height:70px;"><a href="#" onclick="submituser();return false;" style="padding:5px 10px;border:2px solid #CCC;font-size:18px;font-weight:bold;background-color:#0382A8;color:white;" class="regist-input-button">现在注册</a></td>
+                	<td align="left" valign="middle" style="height:70px;"><a href="#" onclick="submituser();return false;" style="padding:5px 10px;" class="regist-input-button">现在注册</a></td>
                 </tr>
             </table>
 		</form>
