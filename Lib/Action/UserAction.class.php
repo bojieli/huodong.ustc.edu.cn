@@ -128,7 +128,7 @@ class UserAction extends PublicAction {
 		}
 
 		// sanitize input
-		$fields = array('realname', 'gender', 'education', 'dept', 'grade','qq','telephone');
+		$fields = array('realname', 'gender', 'education','student_no', 'dept', 'grade','qq','telephone');
 		foreach ($fields as $field)
 			$info[$field] = htmlspecialchars($_POST[$field]);
 		if (preg_match("|[a-zA-Z]+://([a-zA-Z0-9_-]+\.)+[\w-]+(:[0-9]+)?(/.*)?|", $_POST['homepage']))
