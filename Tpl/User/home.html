@@ -92,7 +92,7 @@ $(function(){
                     	<table width="520"  border="0" cellpadding="0" cellspacing="0"  class="detailtext11" >
 			   <tr>
 			   <td>
-				   <a href="/User/changePassword" class="stglmodify">修改密码</a>
+				   <a href="/User/changePassword" class="stglmodify" style="color:#F0F">修改密码</a>
 			   </td>
                            <tr >
                            		<td align="left" width="440" >姓名： <span class="girlname" style="margin-right:20px;"><input type="text" id="realname" name="realname" size='10' value="{$user_info.realname}" /></span><span style="margin-right:20px">性别：<input type="radio" name="gender" <if condition="$user_info.gender eq 1">checked</if> value="1" />男
@@ -149,16 +149,16 @@ $(function(){
 							</select></td>
                              </tr>
 							 <tr>
-                           		<td align="left" colspan="2">手机：<input type="text" id="telephone" name="telephone" size='10' value="{$user_info.telephone}" /></td>
+                           		<td align="left" colspan="2">手机：<input type="text" id="telephone" name="telephone" size='12' value="{$user_info.telephone}" /></td>
                              </tr>
                              <tr>
-                           		<td align="left" colspan="2">QQ：<input type="text" id="qq" name="qq" size='10' value="{$user_info.qq}" /></td>
+                           		<td align="left" colspan="2">QQ：<input type="text" id="qq" name="qq" size='15' value="{$user_info.qq}" /></td>
                              </tr>
                              <tr>
                            		<td align="left" colspan="2">&nbsp;</td>
                              </tr>
                              <tr>
-                           		<td align="left" colspan="2">个人主页： <input type="text" id="homepage" name="homepage" size='40' value="{$user_info.homepage}" /></td>
+                           		<td align="left" colspan="2">个人主页： <input type="text" id="homepage" name="homepage" size='50' value="{$user_info.homepage}" /></td>
                              </tr>
                          </table>
 						 </form>
