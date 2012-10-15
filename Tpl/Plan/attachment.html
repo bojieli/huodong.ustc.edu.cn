@@ -1,7 +1,0 @@
-<table class="table table-striped">
-<tr><th>上传者</th><th>上传时间</th><td>文件名</th><th>操作</th></tr>
-<volist name="plan.attachment" id="attachment" key="k">
-<tr><td>{$attachment.uid}</td><td>{$attachment.time}</td><td><a href="../Attach/download/{$attachment.filepath}">{$attachment.filename}</a></td><td><a href="#" class="btn">删除</a></td></tr>
-</volist>
-</table>
-<p><a href="#" class="btn">上传附件</a></p>

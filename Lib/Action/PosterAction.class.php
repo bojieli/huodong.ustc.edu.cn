@@ -3,8 +3,8 @@ class PosterAction extends PublicAction {
 	public function index() {
 		global $_G;
 		$this->headnav();
-		$keyword = isset($_GET['keyword']) ? $_GET['keyword'] : '';
-		$sid = isset($_GET['sid']) ? $_GET['sid'] : $_G['sid'];
+		$keyword = isset($_GET['keyword']) ? addslashes($_GET['keyword']) : '';
+		$sid = isset($_GET['sid']) ? addslashes($_GET['sid']) : $_G['sid'];
 		$condition = '';
 		$url = '';
 		if(!empty($keyword))
@@ -12,22 +12,22 @@ class PosterAction extends PublicAction {
 			$condition = " (name like '%$keyword%' or place like '%$keyword%' or description like '%$keyword%') ";
 			if(empty($url))
 			{
-				$url .= "keyword=$keyword";
+				$url .= "keyword='$keyword'";
 			}
 			else
 			{
-				$url .="&keyword=$keyword";
+				$url .="&keyword='$keyword'";
 			}
 		}
 		if(!empty($sid))
 		{
 			if(empty($condition))
 			{
-				$condition .= " sid = $sid ";
+				$condition .= " sid = '$sid' ";
 			}
 			else
 			{
-				$condition .= " AND sid = $sid ";
+				$condition .= " AND sid = '$sid' ";
 			}
 		}
 		

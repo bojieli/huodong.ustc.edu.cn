@@ -19,7 +19,9 @@ class AdminAction extends PublicAction {
 		$sid = $user_info['sid'];
 		$condition = array('sid'=>$sid);
 		$clubs  = D('Club')->getClubsByCondition($condition);
+		$apply_num = D('Club_apply')->where(array('sid'=>$sid,'ishandled'=>0))->count();
 		$this->assign('clubs', $clubs);
+		$this->assign('apply_num',$apply_num);
 		$this->display('manager');
 
 	}
