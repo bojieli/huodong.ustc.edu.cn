@@ -19,8 +19,7 @@
 	  border-radius:4px;
   }
 .regist-input-button{
-	 font-family:Microsoft Yahei, "Times New Roman", Times, serif;	
-	 margin-left:2px;	  
+	 font-family:Microsoft Yahei, "Times New Roman", Times, serif;		 	  
 	  font-size:16px;	  
 	  width:60px;
 	  height:30px;
@@ -123,7 +122,7 @@
                 	<td align="right" valign="middle" width="150px" height="58px"><em>*</em>入学年份</td>
                     <td class="zc1tablerect" width="300px"  valign="middle" align="left">
                     	<div class="zc1school">
-                        	<select name="grade" id="grade" class="regist-input-box" style=" border-radius:4px 0px 0px 4px; padding-right:0px;">
+                        	<select name="grade" id="grade" class="regist-input-box" style=" border:1px solid #CCC; border-radius:4px 0px 0px 4px; padding-right:0px;">
 					<option value="2012" selected="selected">2012</option>
 				<?php for ($year = 2011; $year >= 1977; $year--) { ?>
 					<option value="{$year}">{$year}</option>
@@ -136,7 +135,7 @@
                 	<td align="right" valign="middle" width="150px" height="58px"><em>*</em>学历</td>
                     <td class="zc1tablerect" width="300px"  valign="middle" align="left">
                     	<div class="zc1school">
-                        	<select name="education" id="education" class="regist-input-box" style=" border-radius:4px 0px 0px 4px; padding-right:0px;">
+                        	<select name="education" id="education" class="regist-input-box" style="border:1px solid #CCC; border-radius:4px 0px 0px 4px; padding-right:0px;">
 					<option value="本科" selected="selected">本科</option>
 					<option value="硕士">硕士</option>
 					<option value="博士">博士</option>
@@ -188,7 +187,7 @@
                 <tr>
                     <td class="zc1tablerect" valign="middle" align="left">
                     </td>
-                	<td align="left" valign="middle" style="height:70px;"><a href="#" onclick="submituser();return false;" style="padding:5px 10px;" class="regist-input-button dxhb-button">现在注册</a></td>
+                	<td align="left" valign="middle" style="height:70px;"><a href="#" onclick="submituser();return false;" style="padding:5px 10px;" class="regist-input-button dxhb-button" style="background-color:#06F">现在注册</a></td>
                 </tr>
             </table>
 		</form>
