@@ -5,7 +5,16 @@ class UserAction extends PublicAction {
 		$uid = is_numeric($_GET['uid']) ? $_GET['uid'] : CURRENT_USER;
 		$user = D("User");
 		$user_info = $user->getInfo($uid);
+		
+		if (empty($_G['uid'])) {
+			$this->assign('jumpUrl', '/User/login');
+			$this->assign('waitSecond', 1);
+			$this->error("您尚未登录请先登录");
+		}
+
 		if (empty($user_info['uid'])) {
+			$this->assign('jumpUrl', '/User/home');
+			$this->assign('waitSecond', 1);
 			$this->error("该用户不存在");
 		}
 
