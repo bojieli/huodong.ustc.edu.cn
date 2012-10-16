@@ -55,7 +55,6 @@ class SmsModel extends Model {
 		$re=M('user')->field('telephone')->where(array('uid'=>$uid))->find();
 		return $re['telephone'];
 	}
-}
 public function smsLog($msg,$uid,$tid,$status)
 {
 	$data=array(
