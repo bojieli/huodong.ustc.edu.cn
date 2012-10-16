@@ -166,4 +166,31 @@ class ClubModel extends Model {
 		}
 		return $clubs;
 	}
+	private function getPrivValue($gid,$uid = CURRENT_USER)
+	{
+		return M()->result_first("SELECT up.priv_value FROM ustc_user_group As ug, ustc_priv As up WHERE ug.priv = up.priv_name AND ug.uid='$uid' AND ug.gid='$gid'");
+	}
+	public function isManager($gid, $uid = CURRENT_USER) {
+		return $this->isSchoolAdmin($uid,$gid) || $this->getPrivValue($gid,$uid)>1;
+	}
+	public function isSchoolAdmin($uid,$gid) {
+		$info = M('User')->field(array('isdeveloper', 'isschooladm'))->find($uid);
+		if (empty($info))
+			return false;
+		if ($info['isdeveloper'])
+			return true;
+		if ($info['isschooladm']) { // is it in the same school?
+			$user = M('User')->field('sid')->find($uid);
+			if(isset($gid))
+				$club = M('Club')->field('sid')->find($gid);
+			else // cannot determine what school
+				return false;
+
+
+			if ($user['sid'] == $club['sid'])
+				return true;
+		}
+		return false;
+	}
+	
 }

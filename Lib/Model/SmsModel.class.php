@@ -60,5 +60,10 @@ class SmsModel extends Model {
 		$re=M('user')->field('realname')->where(array('uid'=>$uid))->find();
 		return $re['realname'];
 	}
+	public function getMember($gid)
+	{
+		$members = M()->query("SELECT * FROM (ustc_user INNER JOIN ustc_user_group ON ustc_user.uid = ustc_user_group.uid) INNER JOIN ustc_priv ON ustc_user_group.priv = ustc_priv.priv_name WHERE ustc_user_group.gid='$gid' ORDER BY ustc_priv.priv_value desc");
+		return $members;
+	}
 }
 ?>
