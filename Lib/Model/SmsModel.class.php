@@ -55,9 +55,6 @@ class SmsModel extends Model {
 		$re=M('user')->field('telephone')->where(array('uid'=>$uid))->find();
 		return $re['telephone'];
 	}
-	$client->wsMessageClose($messageId);
-	//$re=$client->wsSendSms($msg,$mobile);
-	return array('done'=>$i,'failed'=>$j);
 }
 public function smsLog($msg,$uid,$tid,$status)
 {
