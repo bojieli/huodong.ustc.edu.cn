@@ -55,26 +55,10 @@ class SmsModel extends Model {
 		$re=M('user')->field('telephone')->where(array('uid'=>$uid))->find();
 		return $re['telephone'];
 	}
-public function smsLog($msg,$uid,$tid,$status)
-{
-	$data=array(
-		'uid'   =>$uid,
-		'msg'   =>$msg,
-		'tid'=>$tid,
-		'time'  =>time(),
-		'status'=>$status?$status:'done'
-	);
-	M('sms')->data($data)->add();
-}
-public function getUserMobile($uid)
-{
-	$re=M('user')->field('telephone')->where(array('uid'=>$uid))->find();
-	return $re['telephone'];
-}
-public function getUserName($uid)
-{
-	$re=M('user')->field('realname')->where(array('uid'=>$uid))->find();
-	return $re['realname'];
-}
+	public function getUserName($uid)
+	{
+		$re=M('user')->field('realname')->where(array('uid'=>$uid))->find();
+		return $re['realname'];
+	}
 }
 ?>
