@@ -29,7 +29,11 @@ class UserAction extends PublicAction {
 	}
 	public function test()
 	{
-		 if(isset($_SERVER["HTTP_X_FORWARDED_FOR"]))     
+         if(isset($_SERVER["HTTP_X_REAL_IP"]))
+         {
+			 $realip   =   $_SERVER["HTTP_X_REAL_IP"];   
+         }
+         elseif(isset($_SERVER["HTTP_X_FORWARDED_FOR"]))     
          {
 			 $realip   =   $_SERVER["HTTP_X_FORWARDED_FOR"];   
          }   

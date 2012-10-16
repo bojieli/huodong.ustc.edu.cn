@@ -661,7 +661,9 @@ function get_client_ip($type = 0) {
 	$type       =  $type ? 1 : 0;
     static $ip  =   NULL;
     if ($ip !== NULL) return $ip[$type];
-    if (isset($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+    if (isset($_SERVER['HTTP_X_REAL_IP'])) {
+        $ip     =   $_SERVER['HTTP_X_REAL_IP'];
+    }elseif (isset($_SERVER['HTTP_X_FORWARDED_FOR'])) {
         $arr    =   explode(',', $_SERVER['HTTP_X_FORWARDED_FOR']);
         $pos    =   array_search('unknown',$arr);
         if(false !== $pos) unset($arr[$pos]);
