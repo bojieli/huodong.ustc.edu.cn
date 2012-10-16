@@ -54,6 +54,10 @@ public function getUserMobile($uid)
 	$re=M('user')->field('telephone')->where(array('uid'=>$uid))->find();
 	return $re['telephone'];
 }
-
+public function getUserName($uid)
+{
+	$re=M('user')->field('realname')->where(array('uid'=>$uid))->find();
+	return $re['realname'];
+}
 }
 ?>
