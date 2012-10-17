@@ -55,7 +55,7 @@ class SmsAction extends PublicAction {
 			$Model = D('Sms');
 			foreach($to_all as $row =>$value)
 			{
-				$name.=$Model->getUserName($value).';';	
+				$name[]=$Model->getUserName($value);	
 			}
 			$this->assign('to_tmp',$to_tmp);
 			$this->assign('tid_name',$name);

@@ -1,15 +1,66 @@
-﻿<!DOCTYPE HTML>
-<html lang="en-US">
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-	<meta charset="UTF-8">
-	<title></title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>选择成员</title>
+<link href="/static/css1.css" type="text/css" rel="stylesheet" />
+<script type="text/javascript">
+function subm(){ 
+for(var i=0;i<document.sms.list2.length;i++){ 
+	document.sms.tid.value+=document.sms.list2.options[i].value; 
+	if(i!=(document.sms.list2.length-1))
+	{ 
+	document.sms.tid.value+=';'; 
+	}
+} 
+return true;
+</script>
 </head>
+
 <body>
-<form action="/Sms/sent" method="post">
-	<p>发短信给: {$tid_name}</p>
-	<p>内容: <input type="text" name="s" /></p>
-	<input type="hidden" name="tid" value="{$to_tmp}"/>
-	<input type="submit" value="Submit" />
-</form>
+<include file="Public:headnav" />
+<div id="mainding" style="">
+	<form name="sms1" class="sms_form" style="margin:auto;padding-top:50px;width:500px;" action="/Sms/sent" method="post" onSubmit= "return subm()">
+		<p><div class="sent_sms" style="font-weight:bold;">发短信给: </div>
+		<div class="tid_name" style="line-height:150%;">
+		<volist name="tid_name" id="vo">
+		<span class="tid_{$key}" style="font-size:12px;background-color:#D0D1D6;border-radius:2px;-webkit-box-shadow:3px 3px 3px rgba(125,125,125,0.5);-moz-box-shadow:3px 3px 3px rgba(125,125,125,0.5);box-shadow:3px 3px 3px rgba(125,125,125,0.5);margin:5px;word-wrap:break-word;white-space:normal; display:inline-block;">{$vo}</span>
+		</volist>
+		</div>
+		</p>
+		<p><div style="font-weight:bold;">内容:</div> 
+		<ol id="edit" contenteditable="true" style="border:1px solid #CCC;">
+         <li style="list-style:none;"></li>
+        </ol>
+		<input type="hidden" name="s"/>
+		</p>
+		<input type="hidden" name="tid" value="{$to_tmp}"/>
+		<input type="submit" value="发送" style="float:right"/>
+	</form>
+	<script type="text/javascript">
+		var edit = document.getElementById("edit");
+		var textarea;
+		if(window.localStorage){
+			edit.onblur = function(){
+				localStorage.setItem("tododata", this.innerHTML);
+				textarea=this.innerHTML;
+			};
+			if(localStorage.getItem("tododata")){
+				edit.innerHTML = localStorage.getItem("tododata");	
+			}
+		}
+	function delHtmlTag(str){  
+        return str.replace(/<[^>]+>/g,"");//去掉所有的html标记  
+    }  
+	function subm(){
+	 document.sms1.s.value= delHtmlTag(document.getElementById("edit").innerHTML);
+	 if(document.sms1.s.value)
+	 return true;
+	 else
+	 return false;
+	}
+	 
+	</script>
+</div>
 </body>
 </html>
