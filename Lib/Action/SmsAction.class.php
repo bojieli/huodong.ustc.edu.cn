@@ -45,7 +45,7 @@ class SmsAction extends PublicAction {
 		   //dump($msg);
 		   //dump($mobiles);
 		   $re=$Model->sentSms($msg,$mobiles);
-		   $this->success('成功发送给'.$re['done'].'人/n'.$re['failed'].'条发送失败。');
+		   $this->success('成功发送给'.$re['done'].'人\n'.$re['failed'].'条发送失败。');
 		}
 		public function tid()
 		{
