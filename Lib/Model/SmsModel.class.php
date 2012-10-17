@@ -21,6 +21,7 @@ class SmsModel extends Model {
 		$tids.=$tid1.';';
 		}
 		$pid=$this->sms_md5($msg,$uid,$tids);
+		$failed_user = "";
 		foreach($mobiles as  $tid => $mobile)
 		{
 			
@@ -35,6 +36,7 @@ class SmsModel extends Model {
 			else
 			{
 				$j++;
+				$failed_user.=D('User')->getRealname($tid)." ";
 				$status='failed';
 				$this->smsLog($uid,$tid,$pid,$status);
 			}
@@ -42,7 +44,7 @@ class SmsModel extends Model {
 		
 		$client->wsMessageClose($messageId);
 		//$re=$client->wsSendSms($msg,$mobile);
-		return array('done'=>$i,'failed'=>$j);
+		return array('done'=>$i,'failed'=>$j,'info'=>$failed_user);
 	}
 	public function smsLog($uid,$tid,$pid,$status)
 	{
@@ -83,7 +85,7 @@ class SmsModel extends Model {
 	}
 	public function getMember($gid)
 	{
-		$members = M()->query("SELECT * FROM (ustc_user INNER JOIN ustc_user_group ON ustc_user.uid = ustc_user_group.uid) INNER JOIN ustc_priv ON ustc_user_group.priv = ustc_priv.priv_name WHERE ustc_user_group.gid='$gid' ORDER BY ustc_priv.priv_value desc");
+		$members = M()->query("SELECT ustc_user.uid,realname,telephone,title,priv FROM (ustc_user INNER JOIN ustc_user_group ON ustc_user.uid = ustc_user_group.uid) INNER JOIN ustc_priv ON ustc_user_group.priv = ustc_priv.priv_name WHERE ustc_user_group.gid='$gid' ORDER BY ustc_priv.priv_value desc");
 		return $members;
 	}
 }

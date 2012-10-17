@@ -192,5 +192,17 @@ class ClubModel extends Model {
 		}
 		return false;
 	}
+	public function getInfo($gid) {
+		if (!is_numeric($gid))
+			return null;
+		$club = M('Club')->find($gid);
+		if (empty($club))
+			return null;
+		$club['school'] = M('School')->find($club['sid']);
+		$club['memberCount'] = $club['member_count'];
+		$club['posterCount'] = $club['poster_count'];
+		//dump($club);
+		return $club;
+	}
 	
 }
