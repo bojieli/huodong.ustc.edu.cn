@@ -19,7 +19,7 @@ class SmsModel extends Model {
 		//return 0;
 		foreach($mobiles as  $tid => $mobile)
 		{
-			$tids.=$tid.' ';
+			$tids.=$tid.';';
 			$client->wsMessageAddReceiver($messageId,'mobile',$mobile,'sms',$messagePriority=1,$sendTime=null);
 			$re=$client->wsMessageSend($messageId);
 			if($re)
