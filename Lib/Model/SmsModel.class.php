@@ -53,12 +53,13 @@ class SmsModel extends Model {
 	}
 	public function sms_md5($msg,$uid,$tids)
 	{
+		$md5=$uid.'+'.$tids.'+'.$msg;
 		$data=array(
 			'uid'   =>$uid,
 			'msg'   =>$msg,
 			'tids'	=>$tids,
 			'time'  =>time(),
-			'md5'=>md5($uid.$tids.$msg)
+			'md5'=>$md5;
 		);
 		M('sms_md5')->data($data)->add();
 	}
