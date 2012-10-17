@@ -17,35 +17,40 @@ class SmsModel extends Model {
 		$j=0;
 		//dump($mobiles);
 		//return 0;
+		foreach($mobiles as  $tid1 => $mobile1){
+		$tids.=$tid1.';';
+		}
+		$pid=$this->sms_md5($msg,$uid,$tids);
 		foreach($mobiles as  $tid => $mobile)
 		{
-			$tids.=$tid.';';
+			
 			$client->wsMessageAddReceiver($messageId,'mobile',$mobile,'sms',$messagePriority=1,$sendTime=null);
 			$re=$client->wsMessageSend($messageId);
 			if($re)
 			{
 				$i++;
 				$status='done';
-				$this->smsLog($msg,$uid,$tid,$status);
+				$this->smsLog($msg,$uid,$tid,$pid,$status);
 			}
 			else
 			{
 				$j++;
 				$status='failed';
-				$this->smsLog($msg,$uid,$tid,$status);
+				$this->smsLog($msg,$uid,$tid,$pid,$status);
 			}
 		}
-		$this->sms_md5($msg,$uid,$tids);
+		
 		$client->wsMessageClose($messageId);
 		//$re=$client->wsSendSms($msg,$mobile);
 		return array('done'=>$i,'failed'=>$j);
 	}
-	public function smsLog($msg,$uid,$tid,$status)
+	public function smsLog($msg,$uid,$tid,$pid,$status)
 	{
 		$data=array(
 			'uid'   =>$uid,
 			'msg'   =>$msg,
 			'tid'	=>$tid,
+			'pid'   =>$pid,
 			'time'  =>time(),
 			'status'=>$status?$status:'done'
 		);
@@ -64,6 +69,8 @@ class SmsModel extends Model {
 			'md5'=>$md5
 		);
 		M('sms_md5')->data($data)->add();
+		$re=M('sms_md5')->field('pid')->where(array('md5'=>$md5))->find();
+		return $re['pid'];
 	}
 	public function getUserMobile($uid)
 	{
