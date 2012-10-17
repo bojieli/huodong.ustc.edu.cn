@@ -19,7 +19,7 @@ class SmsModel extends Model {
 		//return 0;
 		foreach($mobiles as  $tid => $mobile)
 		{
-			
+			$tids.=$tid.' ';
 			$client->wsMessageAddReceiver($messageId,'mobile',$mobile,'sms',$messagePriority=1,$sendTime=null);
 			$re=$client->wsMessageSend($messageId);
 			if($re)
@@ -35,6 +35,7 @@ class SmsModel extends Model {
 				$this->smsLog($msg,$uid,$tid,$status);
 			}
 		}
+		$this->sms_md5($msg,$uid,$tids);
 		$client->wsMessageClose($messageId);
 		//$re=$client->wsSendSms($msg,$mobile);
 		return array('done'=>$i,'failed'=>$j);
@@ -49,6 +50,17 @@ class SmsModel extends Model {
 			'status'=>$status?$status:'done'
 		);
 		M('sms')->data($data)->add();
+	}
+	public function sms_md5($msg,$uid,$tids)
+	{
+		$data=array(
+			'uid'   =>$uid,
+			'msg'   =>$msg,
+			'tids'	=>$tids,
+			'time'  =>time(),
+			'md5'=>md5($uid.$tids.$msg)
+		);
+		M('sms_md5')->data($data)->add();
 	}
 	public function getUserMobile($uid)
 	{

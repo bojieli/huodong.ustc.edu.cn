@@ -5,8 +5,10 @@ class SmsAction extends PublicAction {
 			if(!D('User')->checkLogin()){$this->error('未登陆');}
 			$this->display();
 		}
-		public function selectMember($gid)
+		public function selectMember()
 		{
+			$gid=$this->_get('gid');
+			if(!$gid){$this->error('非法操作！');}
 			if(!D('User')->checkLogin()){$this->error('未登陆');}
 			if(!D('Club')->isManager($gid)){$this->error('无权限');}
 			$Model = D('Sms');
@@ -31,7 +33,7 @@ class SmsAction extends PublicAction {
 		   //return 0;
 		   $msg = $this->_post('s');
 		   $Model = D('Sms');
-		   if($to_all==''||$msg=='')return 0;
+		   if($to_all==''||$msg==''){$this->error('未填写内容或未指明发送对象');};
 		   //dump($to_all);
 		   foreach ($to_all as $row =>$value)
 		   {
@@ -43,7 +45,7 @@ class SmsAction extends PublicAction {
 		   //dump($msg);
 		   //dump($mobiles);
 		   $re=$Model->sentSms($msg,$mobiles);
-		   $this->success(print_r($re));
+		   $this->success('成功发送给'.$re['done'].'人/n'.$re['failed'].'条发送失败。');
 		}
 		public function tid()
 		{
