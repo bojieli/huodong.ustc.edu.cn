@@ -53,7 +53,9 @@ class SmsModel extends Model {
 	}
 	public function sms_md5($msg,$uid,$tids)
 	{
-		$md5=md5($uid."\t".$tids."\t".$msg);
+		
+		$md5=md5($uid."\t".trim($tids)."\t".trim($msg));
+		echo $md5;
 		$data=array(
 			'uid'   =>$uid,
 			'msg'   =>$msg,
