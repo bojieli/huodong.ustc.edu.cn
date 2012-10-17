@@ -30,13 +30,13 @@ class SmsModel extends Model {
 			{
 				$i++;
 				$status='done';
-				$this->smsLog($msg,$uid,$tid,$pid,$status);
+				$this->smsLog($uid,$tid,$pid,$status);
 			}
 			else
 			{
 				$j++;
 				$status='failed';
-				$this->smsLog($msg,$uid,$tid,$pid,$status);
+				$this->smsLog($uid,$tid,$pid,$status);
 			}
 		}
 		
@@ -44,11 +44,10 @@ class SmsModel extends Model {
 		//$re=$client->wsSendSms($msg,$mobile);
 		return array('done'=>$i,'failed'=>$j);
 	}
-	public function smsLog($msg,$uid,$tid,$pid,$status)
+	public function smsLog($uid,$tid,$pid,$status)
 	{
 		$data=array(
 			'uid'   =>$uid,
-			'msg'   =>$msg,
 			'tid'	=>$tid,
 			'pid'   =>$pid,
 			'time'  =>time(),
