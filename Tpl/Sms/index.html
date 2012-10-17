@@ -6,7 +6,7 @@
 </head>
 <body>
 <form action="/Sms/sent" method="post">
-	<p>发短信给: <input type="text" name="tid" value="{$tid_name}"/></p>
+	<p>发短信给: {$tid_name}</p>
 	<p>内容: <input type="text" name="s" /></p>
 	<input type="hidden" name="tid" value="{$to_tmp}"/>
 	<input type="submit" value="Submit" />
