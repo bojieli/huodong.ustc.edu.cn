@@ -59,7 +59,7 @@ class SmsModel extends Model {
 			'msg'   =>$msg,
 			'tids'	=>$tids,
 			'time'  =>time(),
-			'md5'=>$md5;
+			'md5'=>$md5
 		);
 		M('sms_md5')->data($data)->add();
 	}
