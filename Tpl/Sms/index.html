@@ -300,8 +300,11 @@ function Mselchoose(tbox,flag,num,item_id1,item_id2){
     <tr>
         <td width="90" align="right" valign="top" style="padding-top:10px;">短信内容：</td>
         <td colspan="2"  align="left" valign="top">
-            <textarea id="edit" name="s" class="mss-input-text" onfocus="this.className='dxhb-focus mss-input-text'" onblur="this.className='dxhb-blur mss-input-text'" style="float:left"></textarea><span style=" color:#F00;"><br/>&nbsp;&nbsp;&nbsp;写满两行文字的长度<br/>&nbsp;&nbsp;&nbsp;约为一条短信 ！</span>
-        </td>
+            <textarea id="edit" name="s" class="mss-input-text" onfocus="this.className='dxhb-focus mss-input-text'" onblur="this.className='dxhb-blur mss-input-text'" style="float:left" maxlength="200" onkeydown='countChar("edit","counter");' onkeyup='countChar("edit","counter");'></textarea><span style=" color:#F00;"><br/>&nbsp;&nbsp;&nbsp;写满两行文字的长度<br/>&nbsp;&nbsp;&nbsp;约为一条短信 ！</span>
+			<span style="position:absolute;left:580px;top:240px;color:#8E8E90">
+			还可输入<span id="counter" style="color:#000">200</span>字
+			</span>
+		</td>
     </tr>
     <tr>
        <td> </td>
@@ -324,7 +327,11 @@ var edit = document.getElementById("edit");
 				edit.value = localStorage.getItem("msg");	
 			}
 		}
-</script>
+function countChar(textareaName,spanName)
+{  
+ document.getElementById(spanName).innerHTML = 200 - document.getElementById(textareaName).value.length;
+} 
+</script> 
 </div><!--main ding-->
 
 <div id="backbg"></div>
