@@ -374,7 +374,6 @@ function sendSms()
 	$.post($(form).attr('action'), $(form).serialize(), function (data) {
 		if (data.status == 1) {
 			alert(data.info);
-			$(".mss-input-text").val('');
 			$("#tid").val('');
 			$(".mss-input-1text").html('');
 		} else if(data.status==0) {
