@@ -268,20 +268,62 @@ class ClubAction extends PublicAction {
 	}
 
 	public function sendEmail() {
+		if(!D('User')->checkLogin()){$this->assign('jumpUrl', '/User/login');$this->error('您尚未登陆');}
+		if(!D('Club')->isManager($gid)){$this->error('只有会长和部长才有权限群发邮件。');}
+		$gid = $_GET['gid'];
+		if(!$gid){$this->error('非法操作！');}
+		$re=D('Sms')->getMember($gid);
+		$members = array();
+		foreach($re as $row => $value)
+		{
+			if($value['priv']!='member')
+				$value['info']=$value['realname'].'('.$value['title'].')'.'-'.$value['email'];
+			else
+				$value['info']=$value['realname'].'-'.$value['email'];
+			$members[] = $value;
+		}
+
+		$club = D('Club')->getInfo($gid);
+		$this->assign('club',$club);
+		$this->assign('members',$members);
+		//dump($club);
 		$this->display();
 	}
 
 	public function sendEmailSubmit() {
 		$gid = $this->getInputGid();
-		if (!$this->isManager($gid)) {
-			$this->error("只有会长和部长才有权限群发邮件。");
+		if(!D('User')->checkLogin())
+		{
+			$this->assign('jumpUrl', '/User/login');
+			$this->error('您尚未登陆');
 		}
-		$members = M()->query("SELECT u.email FROM ustc_user AS u, ustc_user_group AS g WHERE g.gid = '$gid' AND g.uid = u.uid AND g.priv != 'inactive'");
+		if(!D('Club')->isManager($gid)){$this->error('只有会长和部长才有权限群发邮件。');}
+		$tid = $_POST['tid'];
 		$emails = array();
-		foreach ($members as $member)
-			$emails[] = $member['email'];
+		if(trim($tid)=="all")
+		{
+			$members = M()->query("SELECT u.email FROM ustc_user AS u, ustc_user_group AS g WHERE g.gid = '$gid' AND g.uid = u.uid AND g.priv != 'inactive'");
+			foreach ($members as $member)
+				$emails[] = $member['email'];
+		}
+		elseif(!empty($tid))
+		{
+			$tid=explode(";",$tid);
+			$tid_all = "(";
+			foreach($tid as $value)
+			{
+				if($value)
+				{
+					$tid_all .= $value.",";
+				}
+			}
+			$tid_all = substr($tid_all,0,strlen($tid_all)-1).")";
+			$members = M()->query("SELECT email FROM ustc_user  WHERE uid in $tid_all");
+			foreach ($members as $member)
+				$emails[] = $member['email'];
+		}
 		if (empty($emails))
-			$this->error("您的社团还没有成员 :)");
+			$this->error("您没有选择成员 :)");
 		
 		if (!($title = $_POST['title']))
 			$this->error("必须填写邮件标题");
@@ -291,9 +333,9 @@ class ClubAction extends PublicAction {
 			$this->error("邮件标题过短!");
 		if (!($message = $_POST['message']))
 			$this->error("必须填写邮件内容");
-		if (strlen($title) > 10000)
+		if (strlen($message) > 10000)
 			$this->error("邮件内容过长!");
-		if (strlen($title) < 10)
+		if (strlen($message) < 10)
 			$this->error("邮件内容过短!");
 		sendMail($emails, $title, $message, true);
 
