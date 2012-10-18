@@ -354,6 +354,7 @@ $(function(){
 		}
 		else {
 			$("#checkDept").html('<img src="/static/check_right.gif">');
+			$("#tj_err_total").html('');
 		}
 	});
 
@@ -362,6 +363,7 @@ $(function(){
 			$("#checkStudent_no").html('<font color="#FF0000"  size="1">请填写学号</font>');
 		}
 		else {
+			$("#tj_err_total").html('');
 			$("#checkStudent_no").html('<img src="/static/check_right.gif">');
 		}
 	});
@@ -371,6 +373,7 @@ $(function(){
 			$("#checkRealname").html('<font color="#FF0000"  size="1">请填写真实姓名</font>');
 		}
 		else {
+			$("#tj_err_total").html('');
 			$("#checkRealname").html('<img src="/static/check_right.gif">');
 		}
 	});
@@ -380,6 +383,7 @@ $(function(){
 			$("#checkMail").html('<font color="#FF0000"  size="1">邮箱不能为空</font>');
 		}
 		else {
+			$("#tj_err_total").html('');
 			$.post("/User/ajaxCheckEmail",{email: $(this).val()},
 				function(data){
 					if(data.status==1)
@@ -400,6 +404,7 @@ $(function(){
 			$("#checkPassword").html('<font color="#FF0000"  size="1">密码不能为空！</font>');
 			}
 		else {
+			$("#tj_err_total").html('');
 			$("#checkPassword").html('<img src="/static/check_right.gif">');
 			}
 	});	
@@ -409,6 +414,7 @@ $(function(){
 		}
 		
 		else{
+			$("#tj_err_total").html('');
 			$("#checkPassword2").html('<img src="/static/check_right.gif">');
 		}
 	});	
