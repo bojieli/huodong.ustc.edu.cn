@@ -1,0 +1,502 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>大学海报 - 注册</title>
+<link href="/static/css1.css" rel="stylesheet" type="text/css" />
+<link href="/static/zhuce.css" rel="stylesheet" type="text/css" />
+<script src="/static/jquery.js" type="text/javascript"></script>
+
+<style type="text/css">
+.regist-input-box{
+	  font-family:Microsoft Yahei, "Times New Roman", Times, serif;		  	  
+	  font-size:16px;	  
+	  outline:none;
+	  height:28px;
+	  line-height:24px;
+	  vertical-align:middle;
+	  padding:0px 5px;
+	  border-radius:4px;
+  }
+.regist-input-button{
+	 font-family:Microsoft Yahei, "Times New Roman", Times, serif;		 	  
+	  font-size:16px;	  
+	  width:60px;
+	  height:30px;
+	  line-height:24px;
+	  vertical-align:middle;
+	  padding:0px 3px;
+	  background:#06F;
+	  border-radius:6px;
+	  font-weight:bold;
+	  color:#FFF;
+	 }
+.regist-input-button:hover{
+	color:#666;
+	background:#FF3;
+}
+.regist-slide-table{
+	margin:10px auto;
+	
+	}
+.regist-slide-table-left, .regist-slide-table-right{
+	width:170px;	
+	}
+.regist-slide-table-left{
+	
+	}
+.regist-slide-table-mid{
+	width:660px;
+	overflow:hidden;
+	text-align:center;
+	}
+#regist-slide-pre , #regist-slide-next{
+	width:150px;
+	height:55px;
+	background: url(/static/images/PreNext.png) no-repeat 0 0;
+	}
+#regist-slide-next{
+	background: url(/static/images/PreNext.png) no-repeat 0px -56px;
+	}
+#regist-slide-pre:hover, #regist-slide-next:hover{	
+	cursor:pointer;			
+	}
+#regist-move-table{
+	width:1980px;	
+	}
+.regist-move-table-td{
+	width:660px;	
+	}
+em{
+	color:#F00;
+	}
+</style>
+
+
+<script type="text/javascript">
+CouldNext = 1 ; //1 : could move next ,0 could not  move next,
+CouldPre = 1 ; //1 : could move next ,0 could not  move pre,
+var movPos = 1; //  the num of the step , the position of the move now
+var minStep = 30 ; //minStep: the smallest length move in 1/50 second
+var jj       //
+var objx  //objx: the obj of the item need to be moved 
+var nowMarginLeft1   //nowMarginLeft :the margin-left value of the obj now
+var direc1	//direc : the direction of the moving step, 1 ringht , 0 left
+	
+	
+function moveidx(idx , nums , len , direc ,CouldMov){
+	//idx : the id of the item need to be moved 
+ 	//nums: the total number of the moving steps
+	//len : the length of the moving step
+	//direc : the direction of the moving step, 1 ringht , 0 left
+	//CouldMov : the flag to control if it could move, 1:could , 0:couldnot	
+	
+	if(CouldMov==0) return;
+	if(nums < 2) return;
+    var x=document.getElementById(idx);
+	var nowMarginLeft = (1-movPos)*len;
+	//the num should moved in one step
+	jj = parseInt(len/minStep);	
+	//move  left
+	if(direc == 0 ){ 
+	     if(movPos < 2) { //move at the first step movPos=1
+			 document.getElementById("regist-slide-pre").style.display="none";
+			 return;
+			 }
+	     if( movPos == 2 ){ //move at the secong step
+		     document.getElementById("regist-slide-pre").style.display="none";
+			 }
+		   movPos = movPos-1;
+		  document.getElementById("regist-slide-next").style.display="block";	  
+	}
+	else{ 
+	     if(movPos == nums) { //move at the first step movPos=1
+			 document.getElementById("regist-slide-next").style.display="none";
+			 return;
+			 }
+	     
+	     if( movPos == nums-1 ){ //move at the secong step
+		     document.getElementById("regist-slide-next").style.display="none";
+			 }
+		movPos = movPos + 1;		
+		document.getElementById("regist-slide-pre").style.display="block";	
+	}	
+	objx = x ;
+	nowMarginLeft1 = nowMarginLeft ;
+	direc1 = direc ;
+	mmove();		 
+	
+}
+//move function	
+function mmove(){
+	//objx: the obj of the item need to be moved 	
+	//direc1 : the direction of the moving step, 1 ringht , 0 left
+	//nowMarginLeft1 :the margin-left value of the obj now
+	//minStep: the smallest length move in 1/50 second	
+	if(direc1 == 0){
+		 nowMarginLeft1 = nowMarginLeft1 + minStep ;		 
+		}
+	else{
+		nowMarginLeft1 = nowMarginLeft1 - minStep ;	
+		}
+	objx.style.marginLeft=nowMarginLeft1 +"px" ;
+	jj = jj-1;	
+	if( jj > 0 ) setTimeout("mmove()",20);
+//  if( jj > 0 )  mmove(objx , nowMarginLeft , direc);
+}
+</script>
+</head>
+
+<body>
+<div id="header">
+  <div class="head-1160">
+      <div class="logo"><a href="/">大学海报</a></div><div id="zc1biaoyu"><a href="">大学社团原来可以这么简单</a></div>
+  </div><!--head-990-->
+</div><!--header-->
+
+<div id="zc1mainding">
+<table border="0" cellpadding="0" cellspacing="5" class="regist-slide-table" >
+<tr>
+<td class="regist-slide-table-left" valign="middle" align="center"><div id="regist-slide-pre" onclick="moveidx('regist-move-table',3,660,0,CouldPre)" style="display:none"></div></td>
+<td class="regist-slide-table-mid" align="center" valign="top">
+<form id="registerform" name="registerform" action="/User/addUser" method="post">
+<div class="regist-slide-table-mid">
+
+<table id="regist-move-table">
+<tr>
+<td class="regist-move-table-td" align="center" valign="middle">
+ <div class="zc1content" style="margin-left:-50px;">	
+                <table cellspacing="0" cellpadding="0" border="0" class="zc1table">
+                	 <tr>
+                		 <td align="right" valign="middle" width="150px" height="58px"><em style="color:#F00">* </em>学校</td>
+                    	 <td class="zc1tablerect" width="300px"  valign="middle" align="left">
+                    		<div class="zc1school">
+                        	<!--
+                        	<strong>
+                            	<input type="text" autocomplete="off" name="" width=230px />
+                            </strong>
+                            -->
+                            中国科学技术大学
+                             </div>                        
+                          </td>
+                       </tr>
+                  </table>               
+              </div>
+</td>
+                
+<td class="regist-move-table-td" align="center" valign="middle">
+ <div class="zc1content" style="margin-left:-50px;">		 
+			<table cellspacing="0" cellpadding="0" border="0" class="zc1table">
+                <tr>
+                	<td align="right" valign="middle" width="150px" height="58px"><em>* </em>学院</td>
+                    <td class="zc1tablerect" width="300px" valign="middle" align="left">
+                    	<div class="zc1fakesel">
+                        	<strong>
+							<select name="dept" id="dept"  style="border:1px solid #CCC; border-radius:4px 0px 0px 4px; padding-right:0px; height:28px; margin-top:4px;">
+							  <option value ="0">请选择学院</option>
+							  <option value ="少年班学院">少年班学院</option>
+							  <option value ="数学科学学院">数学科学学院</option>
+							  <option value="物理学院">物理学院</option>
+							  <option value="化学与材料科学学院">化学与材料科学学院</option>
+							  <option value="生命科学学院">生命科学学院</option>
+							  <option value="工程科学学院">工程科学学院</option>
+							  <option value="信息科学技术学院">信息科学技术学院</option>
+							  <option value="计算机科学与技术学院">计算机科学与技术学院</option>
+							  <option value="地球和空间科学学院">地球和空间科学学院</option>
+							  <option value="管理学院">管理学院</option>
+							  <option value="公共事务学院">公共事务学院</option>
+							  <option value="人文与社会科学学院">人文与社会科学学院</option>
+							  <option value="核科学技术学院">核科学技术学院</option>
+							  <option value="软件学院">软件学院</option>
+							  <option value="继续教育学院">继续教育学院</option>
+							  <option value="网络教育学院">网络教育学院</option>
+							  <option value="苏州研究院">苏州研究院</option>
+							  <option value="上海研究院">上海研究院</option>
+							  <option value="国家同步辐射实验室">国家同步辐射实验室</option>
+							  <option value="合肥微尺度物质科学国家实验室（筹）">合肥微尺度物质科学国家实验室（筹）</option>
+							  <option value="火灾科学国家重点实验室">火灾科学国家重点实验室</option>
+							</select>
+                            </strong>
+							<br>
+							<span id="checkDept"></span>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                	<td align="right" valign="middle" width="150px" height="58px"><em>* </em>学号</td>
+                    <td class="zc1tablerect" width="300px"  valign="middle" align="left">
+                    	<div class="zc1school">
+                        	<input type="text" name="student_no" id="student_no" size='20' class="regist-input-box dxhb-blur" onfocus="this.className='dxhb-focus regist-input-box'" onblur="this.className='dxhb-blur regist-input-box'"/><span id="checkStudent_no"></span>
+                        </div>                        
+                    </td>
+                </tr>
+                <tr>
+                	<td align="right" valign="middle" width="150px" height="58px"><em>* </em>性别</td>
+                    <td class="zc1tablerect" width="300px"  valign="middle" align="left">
+                    	<div class="zc1school">
+                        	<input type="radio" name="gender" checked value="1" />男
+							<input type="radio" name="gender"value="0" />女
+                        </div>                        
+                    </td>
+                </tr>
+		        <tr>
+                  	<td align="right" valign="middle" width="150px" height="58px"><em>* </em>真实姓名</td>
+                    <td class="zc1tablerect" width="300px"  valign="middle" align="left">
+                    	<div class="zc1school">
+                        	<input type="text" name="realname" id="realname" size='20' class="regist-input-box dxhb-blur" onfocus="this.className='dxhb-focus regist-input-box'" onblur="this.className='dxhb-blur regist-input-box'"/><span id="checkRealname"></span>
+                        </div>                        
+                    </td>
+                </tr>
+		<tr>
+                	<td align="right" valign="middle" width="150px" height="58px"><em>* </em>入学年份</td>
+                    <td class="zc1tablerect" width="300px"  valign="middle" align="left">
+                    	<div class="zc1school">
+                        	<select name="grade" id="grade" class="regist-input-box" style=" border:1px solid #CCC; border-radius:4px 0px 0px 4px; padding-right:0px;">
+					<option value="2012" selected="selected">2012</option>
+				<?php for ($year = 2011; $year >= 1977; $year--) { ?>
+					<option value="{$year}">{$year}</option>
+				<?php } ?>
+				</select>
+                        </div>                        
+                    </td>
+                </tr>
+		<tr>
+                	<td align="right" valign="middle" width="150px" height="58px"><em>* </em>学历</td>
+                    <td class="zc1tablerect" width="300px"  valign="middle" align="left">
+                    	<div class="zc1school">
+                        	<select name="education" id="education" class="regist-input-box" style="border:1px solid #CCC; border-radius:4px 0px 0px 4px; padding-right:0px;">
+					<option value="本科" selected="selected">本科</option>
+					<option value="硕士">硕士</option>
+					<option value="博士">博士</option>
+				</select>
+                        </div>                        
+                    </td>
+                </tr>
+                <tr>
+                	<td align="right" valign="middle" width="150px" height="58px"><em> </em>电话</td>
+                    <td class="zc1tablerect" width="300px"  valign="middle" align="left">
+                    	<div class="zc1school">
+                        	<input type="text" id = "telephone" name="telephone" size='20' class="regist-input-box dxhb-blur" onfocus="this.className='dxhb-focus regist-input-box'" onblur="this.className='dxhb-blur regist-input-box'"/><span id="checkTelephone"></span>
+                        </div>                        
+                    </td>
+                </tr>
+                
+</table>
+</div>                
+</td>
+                
+<td class="regist-move-table-td" align="center" valign="middle">
+ <div class="zc1content" style="margin-left:-50px;">		 
+			<table cellspacing="0" cellpadding="0" border="0" class="zc1table">                
+                <tr>
+                	<td align="right" valign="middle" width="150px" height="58px"><em>* </em>注册邮箱</td>
+                    <td class="zc1tablerect" width="300px"  valign="middle" align="left">
+                    	<div class="zc1school">
+                        	<input type="text" id="email" name="email" size='10' class="regist-input-box dxhb-blur" onfocus="this.className='dxhb-focus regist-input-box'" onblur="this.className='dxhb-blur regist-input-box'"/>@mail.ustc.edu.cn <br><span id="checkMail"></span>
+                        </div>                        
+                    </td>
+                </tr>
+				<tr>
+                	<td align="right" valign="middle" width="150px" height="58px"><em>* </em>密码</td>
+                    <td class="zc1tablerect" width="300px"  valign="middle" align="left">
+                    	<div class="zc1school">
+                        	<input type="password" id="password" name="password" size='20' class="regist-input-box dxhb-blur" onfocus="this.className='dxhb-focus regist-input-box'" onblur="this.className='dxhb-blur regist-input-box'"/><span id="checkPassword"></span>
+                        </div>                        
+                    </td>
+                </tr>
+				<tr>
+                	<td align="right" valign="middle" width="150px" height="58px"><em>* </em>再次输入密码</td>
+                    <td class="zc1tablerect" width="300px"  valign="middle" align="left">
+                    	<div class="zc1school">
+                        	<input type="password" id="password2" name="password2" size='20' class="regist-input-box dxhb-blur" onfocus="this.className='dxhb-focus regist-input-box'" onblur="this.className='dxhb-blur regist-input-box'"/><span id="checkPassword2"></span>
+                        </div>                        
+                    </td>
+                </tr>
+                <tr>
+                	<td align="right" valign="middle" width="150px" height="58px"><em>* </em>验证码</td>
+                    <td class="zc1tablerect" width="300px"  valign="middle" align="left">
+					<img id="ajaxCheckImg" src="/User/ajaxVerify" />
+                    	<div class="zc1school">
+                        	<input id="check" type="text" name="check" class="regist-input-box dxhb-blur" onfocus="this.className='dxhb-focus regist-input-box'" onblur="this.className='dxhb-blur regist-input-box'"/><span id="checkCode"></span>
+                        </div>                        
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="zc1tablerect" valign="middle" align="left">
+                    </td>
+                	<td align="center" valign="middle" style="height:70px;"><a href="#" onclick="submituser();return false;" style="padding:5px 10px;" class="regist-input-button dxhb-button">现在注册</a><br/><br/><span id="tj_err_total"></span></td>
+                </tr>
+</table>
+</div>               
+ </td>
+</tr>    
+</table>
+</div>
+</form>
+</td>
+<td class="regist-slide-table-right" valign="middle" align="center"><div id="regist-slide-next" onclick="moveidx('regist-move-table',3,660,1,CouldNext)"></div></td>    
+</tr>    
+</table>
+
+
+
+	<div class="zc1contentrect" style="padding-top:20px;">
+    	
+	</div>
+</div>
+<script>
+$(function(){
+
+	$('#dept').blur(function(){												
+		if($.trim($(this).val())=="0"){
+			$("#checkDept").html('<font color="#FF0000"  size="1">请选择学院</font>');
+		}
+		else {
+			$("#checkDept").html('<img src="/static/check_right.gif">');
+		}
+	});
+
+	$('#student_no').blur(function(){												
+		if($.trim($(this).val())==""){
+			$("#checkStudent_no").html('<font color="#FF0000"  size="1">请填写学号</font>');
+		}
+		else {
+			$("#checkStudent_no").html('<img src="/static/check_right.gif">');
+		}
+	});
+
+	$('#realname').blur(function(){												
+		if($.trim($(this).val())==""){
+			$("#checkRealname").html('<font color="#FF0000"  size="1">请填写真实姓名</font>');
+		}
+		else {
+			$("#checkRealname").html('<img src="/static/check_right.gif">');
+		}
+	});
+
+	$('#email').blur(function(){												
+		if($.trim($(this).val())==""){
+			$("#checkMail").html('<font color="#FF0000"  size="1">邮箱不能为空</font>');
+		}
+		else {
+			$.post("/User/ajaxCheckEmail",{email: $(this).val()},
+				function(data){
+					if(data.status==1)
+					{
+						$("#checkMail").html('<img src="/static/check_right.gif">');
+						
+					}
+					else
+					{
+						$("#checkMail").html('<font color="#FF0000"  size="1">'+data.info+'</font>');
+					}
+			},"json");
+			
+		}
+	});	
+	$('#password').blur(function(){												
+		if($(this).val()==""){
+			$("#checkPassword").html('<font color="#FF0000"  size="1">密码不能为空！</font>');
+			}
+		else {
+			$("#checkPassword").html('<img src="/static/check_right.gif">');
+			}
+	});	
+	$('#password2').blur(function(){													
+		if($(this).val()!=$('#password').val()){
+			$("#checkPassword2").html('<font color="#FF0000"  size="1">密码前后不一致！</font>');
+		}
+		
+		else{
+			$("#checkPassword2").html('<img src="/static/check_right.gif">');
+		}
+	});	
+	$('#check').blur(function(){
+		$.post("/User/ajaxCheckCode",{check: $(this).val()},
+				function(data){
+					if(data.status==1)
+					{
+						$("#checkCode").html('<img src="/static/check_right.gif">');
+						
+					}
+					else
+					{
+						
+						$("#ajaxCheckImg").attr("src","/User/ajaxVerify");
+						$("#checkCode").html('<font color="#FF0000"  size="1">验证码错误</font>');
+					}
+		},"json");
+	});	
+});
+
+function submituser(){
+	if($.trim($('#dept').val())==0)
+	{
+		$("#checkDept").html('<font color="#FF0000"  size="1">请选择学院</font>');
+		$("#tj_err_total").html('<font color="#FF0000"  size="1">请于前面页面中 选择学院</font>');
+		return false;
+	}
+	if($.trim($('#student_no').val())=="")
+	{
+		$("#checkStudent_no").html('<font color="#FF0000"  size="1">请填写学号</font>');
+		 $("#tj_err_total").html('<font color="#FF0000"  size="1">请于前面页面 填写学号</font>');
+		return false;
+	}
+	if($.trim($('#realname').val())=="")
+	{
+		$("#checkRealname").html('<font color="#FF0000"  size="1">请填写真实姓名</font>');
+		 $("#tj_err_total").html('<font color="#FF0000"  size="1">请于前面页面 填写真实姓名</font>');
+		return false;
+	}
+	if($.trim($('#email').val())=="")
+	{
+		$("#checkMail").html('<font color="#FF0000"  size="1">邮箱不能为空</font>');
+		return false;
+	}
+	if($('#password').val()=="")
+	{
+		$("#checkPassword").html('<font color="#FF0000"  size="1">密码不能为空！</font>');
+		return false;
+	}
+	if($('#password2').val()!=$('#password').val()){
+		$("#checkPassword2").html('<font color="#FF0000"  size="1">密码前后不一致！</font>');
+		return false;
+	}
+	$.post("/User/ajaxCheckCode",{check: $("#check").val()},
+				function(data){
+					if(data.status!=1)
+					{	
+						$("#ajaxCheckImg").attr("src","/User/ajaxVerify");
+						$("#checkCode").html('<font color="#FF0000"  size="1">验证码错误</font>');
+						return false;
+					}
+					else
+					{	
+						
+						$.post("/User/ajaxCheckEmail",{email: $("#email").val()},
+							function(data){
+								if(data.status==1)
+								{
+									$("#checkMail").html('<img src="/static/check_right.gif">');
+									$('#registerform').get(0).submit();
+												
+								}
+								else
+								{
+									$("#checkMail").html('<font color="#FF0000"  size="1">'+data.info+'</font>');
+									return false;
+								}
+						},"json");
+						
+					}
+		},"json");
+
+	
+	
+	
+}
+</script>
+
+</body>
+</html>
