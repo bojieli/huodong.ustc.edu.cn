@@ -300,7 +300,7 @@ function Mselchoose(tbox,flag,num,item_id1,item_id2){
     <tr>
         <td width="90" align="right" valign="top" style="padding-top:10px;">短信内容：</td>
         <td colspan="2"  align="left" valign="top">
-            <textarea name="s" class="mss-input-text" onfocus="this.className='dxhb-focus mss-input-text'" onblur="this.className='dxhb-blur mss-input-text'" style="float:left"></textarea><span style=" color:#F00;"><br/>&nbsp;&nbsp;&nbsp;写满两行文字的长度<br/>&nbsp;&nbsp;&nbsp;约为一条短信 ！</span>
+            <textarea id="edit" name="s" class="mss-input-text" onfocus="this.className='dxhb-focus mss-input-text'" onblur="this.className='dxhb-blur mss-input-text'" style="float:left"></textarea><span style=" color:#F00;"><br/>&nbsp;&nbsp;&nbsp;写满两行文字的长度<br/>&nbsp;&nbsp;&nbsp;约为一条短信 ！</span>
         </td>
     </tr>
     <tr>
@@ -313,7 +313,18 @@ function Mselchoose(tbox,flag,num,item_id1,item_id2){
 	
 	
 </form>
-
+<script type="text/javascript">
+var edit = document.getElementById("edit");
+		if(window.localStorage){
+			edit.onblur = function(){
+				localStorage.setItem("msg", this.value);
+				textarea=this.value;
+			};
+			if(localStorage.getItem("msg")){
+				edit.value = localStorage.getItem("msg");	
+			}
+		}
+</script>
 </div><!--main ding-->
 
 <div id="backbg"></div>
