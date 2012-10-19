@@ -14,7 +14,7 @@ class MsgAction extends Action {
 public function show() {
 	$model = D('Msg');
 	  global $_G;
-	  if(empty($_G['uid'])){$this->error('δ��½');}
+	  if(empty($_G['uid'])){$this->error('未登陆');}
 	$show=$model->showMsg();
 	$this->assign('my', $show);
 	//dump($show);
@@ -26,7 +26,7 @@ public function show() {
    $model = D('Msg');
    global $_G;
    $_G['timestamp']=time();
-   if(empty($_G['uid'])){$this->error('δ��½');}
+   if(empty($_G['uid'])){$this->error('未登陆');}
    $msg=$this->_post('s')?$this->_post('s'):$this->_get('s');
    $sub=$this->_post('sub')?$this->_post('sub'):$this->_get('sub');
    $to_uid=$this->_post('t')?$this->_post('t'):$this->_get('t');
@@ -35,5 +35,5 @@ public function show() {
    $re=$model->sentMsg($_G['timestamp'],$msg,$to_uid,$sub);
     $this->success('yeah!!!');
 	}
- }
+ }//
  ?>

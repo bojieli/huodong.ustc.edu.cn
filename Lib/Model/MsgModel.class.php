@@ -1,5 +1,6 @@
 <?php
-class MsgModel extends Model {	
+class MsgModel extends Model {
+	
 	function init() {
 		 define('SUCCESS', 1);
 		 define('FAILED', 0);
@@ -34,5 +35,5 @@ class MsgModel extends Model {
 		$this->data($data)->add();      
         }
  
-}
+}//
 ?>
