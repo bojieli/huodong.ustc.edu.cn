@@ -1,6 +1,6 @@
 <?php
 class SmsModel extends Model {
-	public function sentSms($msg,$mobiles)
+	public function sentSms($msg,$mobiles,$gid)
 	{
 		global $_G;
 		$uid= $_G['uid'];
@@ -20,7 +20,7 @@ class SmsModel extends Model {
 		foreach($mobiles as  $tid1 => $mobile1){
 		$tids.=$tid1.';';
 		}
-		$pid=$this->sms_md5($msg,$uid,$tids);
+		$pid=$this->sms_md5($msg,$uid,$tids,$gid);
 		$failed_user = "";
 		foreach($mobiles as  $tid => $mobile)
 		{
@@ -31,14 +31,14 @@ class SmsModel extends Model {
 			{
 				$i++;
 				$status='done';
-				$this->smsLog($uid,$tid,$pid,$status);
+				$this->smsLog($uid,$tid,$pid,$gid,$status);
 			}
 			else
 			{
 				$j++;
 				$failed_user.=D('User')->getRealname($tid)." ";
 				$status='failed';
-				$this->smsLog($uid,$tid,$pid,$status);
+				$this->smsLog($uid,$tid,$pid,$gid,$status);
 			}
 		}
 		
@@ -46,26 +46,28 @@ class SmsModel extends Model {
 		//$re=$client->wsSendSms($msg,$mobile);
 		return array('done'=>$i,'failed'=>$j,'info'=>$failed_user);
 	}
-	public function smsLog($uid,$tid,$pid,$status)
+	public function smsLog($uid,$tid,$pid,$gid,$status)
 	{
 		$data=array(
 			'uid'   =>$uid,
 			'tid'	=>$tid,
 			'pid'   =>$pid,
+			'gid'   =>$gid,
 			'time'  =>time(),
 			'status'=>$status?$status:'done'
 		);
 		M('sms')->data($data)->add();
 	}
-	public function sms_md5($msg,$uid,$tids)
+	public function sms_md5($msg,$uid,$tids,$gid)
 	{
 		
-		$md5=md5($uid."\t".trim($tids)."\t".trim($msg));
+		$md5=md5($uid."\t".trim($tids)."\t".trim($gid)."\t".trim($msg));
 		//echo $md5;
 		$data=array(
 			'uid'   =>$uid,
 			'msg'   =>$msg,
 			'tids'	=>$tids,
+			'gid'	=>$gid,
 			'time'  =>time(),
 			'md5'=>$md5
 		);
@@ -104,12 +106,17 @@ class SmsModel extends Model {
 	}
 	public function updateTime()
 	{
-		$time=time();
-		$tmp=array(1,0,6,5,4,3,2);
+		$uw=C('update_week');
+		$tmp[1]=array(0,6,5,4,3,2,1);
+		$tmp[2]=array(1,0,6,5,4,3,2);
+		$tmp[3]=array(2,1,0,6,5,4,3);
+		$tmp[4]=array(3,2,1,0,6,5,4);
+		$tmp[5]=array(4,3,2,1,0,6,5);
+		$tmp[6]=array(5,4,3,2,1,0,6);
+		$tmp[0]=array(6,5,4,3,2,1,0);
 		$date=getdate();
-		$next_time=mktime(0,1,2,$date['mday'],$date['mon'], $date['year'])+24*3600*$tmp[$data['wday']];
-		$last_time=$next_time-7*24*3600;
-		return $last_time;
+		$last_time=mktime(23,59,59)+24*3600*$tmp[$uw][$date['wday']]-24*3600*7;
+	    return $last_time;
 	}
 	public function reSmsNum($gid)
 	{
@@ -119,10 +126,7 @@ class SmsModel extends Model {
 	public function smsNum($gid)
 	{
 		$re=M('club')->field('member_count')->where(array('gid'=>$gid))->find();
-		if($re['member_count']>10)
-		return $re['member_count']*2;
-		else 
-		return 20;
+		return $re['member_count']*2+20;
 	}
 	public function getSmsNum($gid)
 	{
@@ -138,5 +142,11 @@ class SmsModel extends Model {
 	  $data=array('sms_num'=>$this->getSmsNum($gid)-$de);
 	  return M('club')->where(array('gid'=>$gid))->data($data)->save();
 	}
+	public function canSent($gid,$n)
+	{
+		if($this->getSmsNum($gid)-$n<0)return 0;
+		else 
+		return 1;
+	} 
 }
 ?>
