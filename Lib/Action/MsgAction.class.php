@@ -14,8 +14,7 @@ class MsgAction extends Action {
 public function show() {
 	$model = D('Msg');
 	  global $_G;
-	  if(empty($_G))
-	  return 0;
+	  if(empty($_G['uid'])){$this->error('Î´µÇÂ½');}
 	$show=$model->showMsg();
 	$this->assign('my', $show);
 	//dump($show);
@@ -26,10 +25,8 @@ public function show() {
 	public function create(){
    $model = D('Msg');
    global $_G;
-   $_G['uid'];
    $_G['timestamp']=time();
-   if(empty($_G))	
-   return 0;
+   if(empty($_G['uid'])){$this->error('Î´µÇÂ½');}
    $msg=$this->_post('s')?$this->_post('s'):$this->_get('s');
    $sub=$this->_post('sub')?$this->_post('sub'):$this->_get('sub');
    $to_uid=$this->_post('t')?$this->_post('t'):$this->_get('t');
