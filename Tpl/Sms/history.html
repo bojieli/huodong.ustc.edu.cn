@@ -1,0 +1,20 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>{$club_name}-短信历史记录</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="/static/css1.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<include file="Public:headnav" />
+<div id="main_content" style="width:400px;margin:20px auto;">
+<volist name="history" id="vo">
+	<div class="all_content" style="">
+		<span class="realname">{$vo['realname']}:</span>
+		<span class="msg" style="background-color:#eee;margin-left:20px">{$vo['msg']}</span>
+		<span class="time" style="float:right;color:#8E8E90;font-size:10px">----{$vo['humanDate']}</span>
+	</div>
+</volist>
+</div>
+</body>
+<html>
