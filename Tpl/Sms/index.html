@@ -120,7 +120,81 @@ function Mselchoose(tbox,flag,num,item_id1,item_id2){
 		SortD(tbox,flag);		
 	}
 	// End --> 
-</script> 
+</script>
+<script type="text/javascript">
+//<!--
+$(document).ready(function(){
+/*弹出短信选择框*/
+$("#msn_sel_mem").click(function(){	 
+	$("#msn_selmem_box").show(300);
+	$("#backbg").show(10);	
+	})
+
+$("#giveup_sel").click(function(){	 
+	$("#msn_selmem_box").hide(300);
+	$("#backbg").hide(300);	
+	})
+$("#msn_selmem_tjsx").live('click',function(){
+	$("#msn_selmem_box").hide(300);
+	$("#backbg").hide(300);
+	$(".mss-input-1text").html('');
+	var mobiles = '';
+    $("#members_select option").each(function() {
+		var values = $(this).val().split("-");
+		i =0;
+		if(values[1].toString()=='')
+		{
+			$(".mss-input-1text").append("<span style='color:red' title='无手机号'>"+values[0]+"</span>   ");
+		}
+		else
+		{
+			$(".mss-input-1text").append("<span  title='"+values[1]+"'>"+values[0]+"</span>   ");
+			mobiles +=values[2]+";"
+			i++;
+		}
+     });
+	 $("#tid_num").val(i);
+	 $("#tid").val(mobiles);
+	 
+	})
+});
+function sendSms()
+{
+	var form = $("#SmsSend");
+	$.post($(form).attr('action'), $(form).serialize(), function (data) {
+		if($("#sms_num").text()<$("#tid_num").val())
+		{alert('剩余短信条数不足');return false;}
+		if (data.status == 1) {
+			alert(data.info[0]);
+			$("#tid").val('');
+			$("#sms_num").text(data.info[1]);
+			$(".mss-input-1text").html('');
+		} else if(data.status==0 ) {
+			alert('发送信息失败：' + data.info[0]);
+		}
+	}, 'json');
+    return false;
+}
+//-->
+</script>
+
+<script type="text/javascript">
+var edit = document.getElementById("edit");
+		if(window.localStorage){
+			edit.onblur = function(){
+				localStorage.setItem("msg", this.value);
+				textarea=this.value;
+			};
+			if(localStorage.getItem("msg")){
+				edit.value = localStorage.getItem("msg");	
+			}
+		}
+function countChar(textareaName,spanName)
+{  
+ document.getElementById(spanName).innerHTML = 200 - document.getElementById(textareaName).value.length;
+} 
+</script>     
+ 
 <!--筛选列表的css样式表-->
 <style type="text/css">
 .mem-select{	
@@ -318,81 +392,10 @@ function Mselchoose(tbox,flag,num,item_id1,item_id2){
 	
 	
 </form>
-<script type="text/javascript">
-var edit = document.getElementById("edit");
-		if(window.localStorage){
-			edit.onblur = function(){
-				localStorage.setItem("msg", this.value);
-				textarea=this.value;
-			};
-			if(localStorage.getItem("msg")){
-				edit.value = localStorage.getItem("msg");	
-			}
-		}
-function countChar(textareaName,spanName)
-{  
- document.getElementById(spanName).innerHTML = 200 - document.getElementById(textareaName).value.length;
-} 
-</script> 
+
 </div><!--main ding-->
 
 <div id="backbg"></div>
-<script type="text/javascript">
-//<!--
-$(document).ready(function(){
-/*弹出短信选择框*/
-$("#msn_sel_mem").click(function(){	 
-	$("#msn_selmem_box").show(300);
-	$("#backbg").show(10);	
-	})
-
-$("#giveup_sel").click(function(){	 
-	$("#msn_selmem_box").hide(300);
-	$("#backbg").hide(300);	
-	})
-$("#msn_selmem_tjsx").live('click',function(){
-	$("#msn_selmem_box").hide(300);
-	$("#backbg").hide(300);
-	$(".mss-input-1text").html('');
-	var mobiles = '';
-    $("#members_select option").each(function() {
-		var values = $(this).val().split("-");
-		i =0;
-		if(values[1].toString()=='')
-		{
-			$(".mss-input-1text").append("<span style='color:red' title='无手机号'>"+values[0]+"</span>   ");
-		}
-		else
-		{
-			$(".mss-input-1text").append("<span  title='"+values[1]+"'>"+values[0]+"</span>   ");
-			mobiles +=values[2]+";"
-			i++;
-		}
-     });
-	 $("#tid_num").val(i);
-	 $("#tid").val(mobiles);
-	 
-	})
-});
-function sendSms()
-{
-	var form = $("#SmsSend");
-	$.post($(form).attr('action'), $(form).serialize(), function (data) {
-		if($("#sms_num").text()<$("#tid_num").val())
-		{alert('剩余短信条数不足');return false;}
-		if (data.status == 1) {
-			alert(data.info[0]);
-			$("#tid").val('');
-			$("#sms_num").text(data.info[1]);
-			$(".mss-input-1text").html('');
-		} else if(data.status==0 ) {
-			alert('发送信息失败：' + data.info[0]);
-		}
-	}, 'json');
-    return false;
-}
-//-->
-</script>    
 
 </body>
 </html>
