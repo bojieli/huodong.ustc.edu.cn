@@ -6,8 +6,18 @@ class SmsAction extends PublicAction {
 			if(!$gid){$this->error('非法操作！');}
 			if(!D('User')->checkLogin()){$this->error('未登陆');}
 			if(!D('Club')->isManager($gid)){$this->error('无权限');}
-			$club = D('Club')->getInfo($gid);
 			$Model = D('Sms');
+			$tip=$Model->getSmsTip($gid);
+			if($Model->getUpdateTime($gid)==$Model->updateTime($gid))
+			{
+				if(!$tip)$Model->reSmsNum($gid);
+			}
+			else
+			{
+				$Model->changeUpdateTime($gid);
+				$Model->reSmsNum($gid);
+			}
+			$club = D('Club')->getInfo($gid);
 			$re=$Model->getMember($gid);
 			$members = array();
 			foreach($re as $row => $value)
@@ -65,6 +75,7 @@ class SmsAction extends PublicAction {
 		   //dump($msg);
 		   //dump($mobiles);
 		   $re=$Model->sentSms($msg,$mobiles);
+		   $Model->deSmsNum($gid,$re['done']);
 		   $info = '成功发送给'.$re['done'].'人'.'----'.$re['failed'].'条发送失败。';
 		   if($re['failed'])
 		   {

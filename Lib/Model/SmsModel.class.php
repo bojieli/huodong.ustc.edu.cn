@@ -85,8 +85,58 @@ class SmsModel extends Model {
 	}
 	public function getMember($gid)
 	{
-		$members = M()->query("SELECT ustc_user.uid,email,realname,telephone,title,priv FROM (ustc_user INNER JOIN ustc_user_group ON ustc_user.uid = ustc_user_group.uid) INNER JOIN ustc_priv ON ustc_user_group.priv = ustc_priv.priv_name WHERE ustc_user_group.gid='$gid' ORDER BY ustc_priv.priv_value desc");
+		$members = M()->query("SELECT ustc_user.uid,realname,telephone,title,priv FROM (ustc_user INNER JOIN ustc_user_group ON ustc_user.uid = ustc_user_group.uid) INNER JOIN ustc_priv ON ustc_user_group.priv = ustc_priv.priv_name WHERE ustc_user_group.gid='$gid' ORDER BY ustc_priv.priv_value desc");
 		return $members;
+	}
+	
+	public function getUpdateTime($gid)
+	{
+		$re=M('club')->field('sms_time')->where(array('gid'=>$gid))->find();
+		if($re)
+		return $re['sms_time'];
+		else
+		return 0;
+	}
+	public function changeUpdateTime($gid)
+	{
+		$data=array('sms_time'=>$this->updateTime(),'sms_tip'=>0);
+		return M('club')->where(array('gid'=>$gid))->data($data)->save();
+	}
+	public function updateTime()
+	{
+		$time=time();
+		$tmp=array(1,0,6,5,4,3,2);
+		$date=getdate();
+		$next_time=mktime(0,1,2,$date['mday'],$date['mon'], $date['year'])+24*3600*$tmp[$data['wday']];
+		$last_time=$next_time-7*24*3600;
+		return $last_time;
+	}
+	public function reSmsNum($gid)
+	{
+		$data=array('sms_num'=>$this->smsNum($gid),'sms_tip'=>1);
+		return M('club')->where(array('gid'=>$gid))->data($data)->save();
+	}
+	public function smsNum($gid)
+	{
+		$re=M('club')->field('member_count')->where(array('gid'=>$gid))->find();
+		if($re['member_count']>10)
+		return $re['member_count']*2;
+		else 
+		return 20;
+	}
+	public function getSmsNum($gid)
+	{
+		$re=M('club')->field('sms_num')->where(array('gid'=>$gid))->find();
+		return $re['sms_num'];
+	}
+	public function getSmsTip($gid){
+		$re=M('club')->field('sms_tip')->where(array('gid'=>$gid))->find();
+		return $re['sms_tip'];
+	}
+	public function deSmsNum($gid,$de)
+	{
+	  $data=array('sms_num'=>$this->getSmsNum($gid)-$de);
+	  return M('club')->where(array('gid'=>$gid))->data($data)->save();
 	}
 }
 ?>
