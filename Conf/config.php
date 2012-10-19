@@ -17,5 +17,8 @@ $mailconfig = array(
 	'MAIL_LOGINNAME' => 'huodong@ustc.edu.cn',
 	'MAIL_PASSWORD' => 'hzbjlsjr0906'
 );
-return array_merge($config, $newconfig, $mailconfig);
+$smsconfig = array(
+	'update_week' => 1
+	);
+return array_merge($config, $newconfig, $mailconfig,$smsconfig);
 ?>
