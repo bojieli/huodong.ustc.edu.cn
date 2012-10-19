@@ -1,30 +1,56 @@
 <?php
 class MsgModel extends Model {
 	
-	function init() {
-		 define('SUCCESS', 1);
-		 define('FAILED', 0);
-		 global $_G;
-		 $_G['timestamp']=time();
-		}
-		 function showMsg()
+		 public function showMsgFromMe()
         {   
             global $_G;
-            
-			$con['uid']=$_G[uid];
-            $con['to_uid']=$_G[uid];
-            $con['_logic']='OR';
-			$my_msg=$this->where($con)->select();
-			//$from_me=$this->where("uid=".$_G[uid])->select();
-			//$to_me=$this->where("to_uid=".$_G[uid])->select();
-		    return $my_msg;
+			$con['uid']=$_G['uid'];
+			$tids=$this->field('to_uid')->where($con)->group('to_uid')->select();
+			foreach($tids as $row => $val)
+			{
+				$msg[$val['to_uid']]=$this->showMsgFt($val['to_uid']);
+			}
+			//dump($msg);
+			return array($msg,$tids);
+			//echo 1233;
+			//return $msg;
         }
-        function sentMsg($time,$msg,$to_uid,$sub){
+		
+		
+		
+		
+		
+		
+		
+		
+		public function showMsgToMe()
+        {   
+            global $_G;
+			$con['to_uid']=$_G['uid'];
+			$uids=$this->field('uid')->where($con)->group('uid')->select();
+			foreach($uids as $row => $val)
+			{
+				$msg[$val['uid']]=$this->showMsgFt($val['uid']);
+			}
+			return $msg;
+        }
+        public function showMsgFt($to_uid)
+		{
+			global $_G;
+			$uid = $_G['uid'];
+			//$con['uid']=$_G['uid'];
+           // $con['to_uid']=$to_uid;
+            //$con['_logic']='AND';
+			
+			//dump($con);
+			return $this->where('(uid='.$uid.'&&to_uid='.$to_uid.')||(uid='.$to_uid.'&&to_uid='.$uid.')')->select();
+		}
+		public function sentMsg($time,$msg,$to_uid,$sub){
         global $_G;
         $ip=get_client_ip();
         $data=array(
 			'uid'=>$_G['uid'],
-			'time'=>$_G['timestamp'],
+			'time'=>$time,
 			'msg'=>$msg,
 			'sub'=>$sub?$sub:'blank',
 			'to_uid'=>$to_uid?$to_uid:0,

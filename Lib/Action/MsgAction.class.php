@@ -1,31 +1,24 @@
 <?php
-class MsgAction extends Action {
+class MsgAction extends PublicAction {
 
-	public function index() {
+	public function index(){
 		global $_G;
-		D('Msg')->init();
-		//dump(D('User')->getInfo(CURRENT_USER));
-		$this->assign('user_info', D('User')->getInfo(CURRENT_USER));
-		$this->assign('_G', $_G);
 		$this->show();
+		$this->display();
 	}
 
 public function show() {
 	$model = D('Msg');
-	  global $_G;
-	  if(empty($_G['uid'])){$this->error('未登陆');}
-	$show=$model->showMsg();
-	$this->assign('my', $show);
-	//dump($show);
-	//$this->assign('from_me', $show[0]);
-	//$this->assign('to_me', $show[1]);
-	$this->display();
+	$show=$model->showMsgFromMe();
+	//dump($show[0]);
+	$this->assign('info',$show[0]);
+	$this->assign('tid',$show[1]);
 	}
 	public function create(){
    $model = D('Msg');
    global $_G;
    $_G['timestamp']=time();
-   if(empty($_G['uid'])){$this->error('未登陆');}
+   //if(empty($_G['uid'])){$this->error('未登陆');}
    $msg=$this->_post('s')?$this->_post('s'):$this->_get('s');
    $sub=$this->_post('sub')?$this->_post('sub'):$this->_get('sub');
    $to_uid=$this->_post('t')?$this->_post('t'):$this->_get('t');

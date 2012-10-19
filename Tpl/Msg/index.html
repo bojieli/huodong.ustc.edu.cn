@@ -46,12 +46,7 @@ getwindowH();
 </script>
 
 <!--下面是眉头的代码-->
-<div id="header">
-  <div class="head-1160">
-      <div class="logo"><a href="index.html">大学海报</a></div><div class="nav"><a href="haibao.html">海报墙</a></div><div class="nav"><a href="shetuan.html">大学社团</a></div><div class="nav"><a href="guanli.html">管理我的社团</a></div>
-      	<div  class="login1"><a href="tzyxx.html"><img src="/static/images/0.jpg" /></a><span >欢迎您，沈佳宜</span>|<a href="tzyxx.html">退出</a></div>
-  </div><!--head-990-->
-</div><!--header-->
+<include file="Public:headnav" />
 
 <!--为居中显示的大容器-->
 <div id="darongqi" style="margin:0 auto; width:1000px; border:0;"> 
@@ -272,7 +267,7 @@ document.getElementById("xinxixq").style.height=hhh-270+"px";
    <div id="duihua11" style="display: block; "><!--对话详情框-->
       <table width="665" cellpadding="0" cellspacing="0" border="0" align="left" style="margin:0px 0px 0px 10px;">
          <tbody>
-		 <volist name="my" id="vo">
+		 <volist name="info[1]" id="vo">
 		 <neq name="vo.uid" value="$_G['uid']">
 		 <tr>
 			 <td>
