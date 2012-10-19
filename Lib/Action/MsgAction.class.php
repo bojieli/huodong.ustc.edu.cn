@@ -3,7 +3,6 @@ class MsgAction extends Action {
 
 	public function index() {
 		global $_G;
-		$_G['uid'];
 		D('Msg')->init();
 		//dump(D('User')->getInfo(CURRENT_USER));
 		$this->assign('user_info', D('User')->getInfo(CURRENT_USER));
