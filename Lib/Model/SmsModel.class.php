@@ -4,13 +4,20 @@ class SmsModel extends Model {
 	{
 		global $_G;
 		$uid= $_G['uid'];
+		//dump($msg);
+		//$msg=iconv('UTF-8','GBK',$msg);
+		//print_r($msg);
+		//echo mb_strlen($msg);
+		//die;
 		$url="http://umess.ustc.edu.cn/uMessApi.php?wsdl";//接口地址
-		$client=new SoapClient($url);
-		//远程调用
+		$client=new SoapClient($url,array('encoding'=>'UTF-8'));
 		//dump($client);
+		//die;
+		//远程调用
 		$client->wsClientSetCharset('UTF-8');
 		$client->wsCsLogin('huodong','hzbjlsjr2012');
 		$messageId=$client->wsCreateMessage($messageTitle='',$msg,$messageFromAddress="",$messageFromName="",$messageContentFormat="plaintext");
+		//die;
 		if ($messageId == 'soap_fault')
 			return 'soap_fault';
 		$i=0;

@@ -177,24 +177,6 @@ function sendSms()
 }
 //-->
 </script>
-
-<script type="text/javascript">
-var edit = document.getElementById("edit");
-		if(window.localStorage){
-			edit.onblur = function(){
-				localStorage.setItem("msg", this.value);
-				textarea=this.value;
-			};
-			if(localStorage.getItem("msg")){
-				edit.value = localStorage.getItem("msg");	
-			}
-		}
-function countChar(textareaName,spanName)
-{  
- document.getElementById(spanName).innerHTML = 200 - document.getElementById(textareaName).value.length;
-} 
-</script>     
- 
 <!--筛选列表的css样式表-->
 <style type="text/css">
 .mem-select{	
@@ -360,7 +342,9 @@ function countChar(textareaName,spanName)
   <table border="0" cellpadding="0" cellspacing="0">
   	<tr height="40px">
         <td width="90" align="right" valign="top" style="padding-top:3px;">发短信给：</td>
-        <td width="120" align="left" valign="top"><div id="msn_sel_mem" class="dxhb-button mss-button" >选择会员</div></td>
+        <td width="120" align="left" valign="top">
+		<div id="msn_sel_mem" class="dxhb-button mss-button" >选择会员</div>
+		</td>
         <td width="660" align="left" valign="top">
 			<div class='mss-input-1text'>
 			</div>
@@ -372,23 +356,77 @@ function countChar(textareaName,spanName)
     <tr>
         <td width="90" align="right" valign="top" style="padding-top:10px;">短信内容：</td>
         <td colspan="2"  align="left" valign="top">
-            <textarea id="edit" name="s" class="mss-input-text" onfocus="this.className='dxhb-focus mss-input-text'" onblur="this.className='dxhb-blur mss-input-text'" style="float:left" maxlength="200" onkeydown='countChar("edit","counter");' onkeyup='countChar("edit","counter");'></textarea><span style=" color:#F00;"><br/>&nbsp;&nbsp;&nbsp;写满两行文字的长度<br/>&nbsp;&nbsp;&nbsp;约为一条短信 ！</span>
-			<span style="position:absolute;left:580px;top:240px;color:#8E8E90">
-			还可输入<span id="counter" style="color:#000">200</span>字
-			</span>
-			<span style="position:absolute;left:100px;top:240px;color:#8E8E90">
-			还剩<span id="sms_num" style="color:#000">{$sms_num}</span>条短信
-			</span>
+            <div class="inputarea" style="position:relative;">
+				<textarea id="edit" name="s" title="写满两行文字的长度约为一条短信 ！" class="mss-input-text" onfocus="this.className='dxhb-focus mss-input-text'" onblur="this.className='dxhb-blur mss-input-text'" style="float:left" ></textarea>
+				<!--span style=" color:#F00;"><br/>&nbsp;&nbsp;&nbsp;写满两行文字的长度<br/>&nbsp;&nbsp;&nbsp;约为一条短信 ！</span-->
+				<span class="history">
+				<a href="/Sms/history?gid={$club.gid}" title="{$club['name']}" style="float:right">全部短信记录</a>
+				</span>
+				<span style="position:absolute;left:500px;top:135px;color:#8E8E90">
+				还可输入<span id="counter" style="color:#000">200</span>字
+				</span>
+				<span style="position:absolute;left:20px;top:135px;color:#8E8E90">
+				还剩<span id="sms_num" style="color:#000">{$sms_num}</span>条短信
+				</span>
+			</div>
 		</td>
     </tr>
     <tr>
        <td> </td>
        <td colspan="2" align="left" valign="middle" style="height:70px;">
-       		<input type="submit" value="发 送" onclick="sendSms();return false;" class="dxhb-button mss-button" style="margin-left:528px;"/>
+       		<input type="submit" value="发 送" onclick="" class="dxhb-button mss-button" style="margin-left:528px;"/>
        </td>
     </tr>
   </table>
-	
+<script type="text/javascript">
+var edit = document.getElementById("edit");
+		if(window.localStorage){
+			edit.onblur = function(){
+				localStorage.setItem("msg", this.value);
+				textarea=this.value;
+			};
+			if(localStorage.getItem("msg")){
+				edit.value = localStorage.getItem("msg");	
+			}
+		}
+function mbStringLength(s) {
+        var totalLength = 0;
+        var i;
+        var charCode;
+        for (i = 0; i < s.length; i++) {
+          charCode = s.charCodeAt(i);
+          if (charCode < 0x007f) {
+            totalLength = totalLength + 1;
+          } else if ((0x0080 <= charCode) && (charCode <= 0x07ff)) {
+            totalLength += 2;
+          } else if ((0x0800 <= charCode) && (charCode <= 0xffff)) {
+            totalLength += 3;
+          }
+        }
+        //alert(totalLength);
+        return totalLength;
+      } 
+function tmp(){    
+		var area=$("#edit");
+		var max = 200;
+		$('#counter').text(200-mbStringLength(area.val()));
+		var limit=$('#counter').text();
+		if(max>0){ 
+            if(limit<0){ 
+				 area.val(area.val().substr(0,66));    //截断textarea的文本重新赋值             
+            } 
+        } 
+}
+setInterval("tmp()",0);
+/*function countChar(textareaName,spanName)
+{  
+  document.getElementById(spanName).innerHTML = 200 - mbStringLength(document.getElementById(textareaName).value);
+	onkeydown='countChar("edit","counter");' onkeyup='countChar("edit","counter");'
+}  660*/
+</script>
+<script type="text/javascript">
+//
+</script>
 	
 </form>
 

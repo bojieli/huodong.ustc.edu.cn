@@ -62,6 +62,11 @@ class SmsAction extends PublicAction {
 		   $to_tmp = trim($this->_post('tid'));
            $to_all=explode(";",$to_tmp);
 		   $msg = $this->_post('s');
+		   //echo $msg;
+		   //$msg = iconv('UTF-8','GB2312//IGNORE',$msg);
+		   //echo $msg;
+		   //echo 123;
+		   //return 0;
 		   $Model = D('Sms');
 		   if($to_all==''||$msg==''){$this->error('未填写内容或未指明发送对象');};
 		   $i=0;
