@@ -81,11 +81,15 @@ class SmsAction extends PublicAction {
 		   if(!$Model->canSent($gid,$i)){$this->error('剩余短信条数不足');}
 		   $re=$Model->sentSms($msg,$mobiles,$gid);
 		   $Model->deSmsNum($gid,$re['done']);
-		   $info[0] = '成功发送给'.$re['done'].'人'.'----'.$re['failed'].'条发送失败。';
-		   if($re['failed'])
+		   if($to_all==''){$info[0]="未指明发送对象";}
+		   else
 		   {
-				$info[0].="发送失败的为：".$re['info'];
-		   }
+			   $info[0] = '成功发送给'.$re['done'].'人'.'----'.$re['failed'].'条发送失败。';
+			   if($re['failed'])
+			   {
+					$info[0].="发送失败的为：".$re['info'];
+			   }
+			}
 		   $info[1]=$Model->getSmsNum($gid);
 		   $this->success($info);
 		}
