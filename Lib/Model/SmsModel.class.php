@@ -79,7 +79,7 @@ class SmsModel extends Model {
 			'md5'=>$md5
 		);
 		M('sms_md5')->data($data)->add();
-		$re=M('sms_md5')->field('pid')->where(array('md5'=>$md5))->find();
+		$re=M('sms_md5')->field('pid')->where(array('md5'=>$md5))->order('time DESC')->select();
 		return $re['pid'];
 	}
 	public function getUserMobile($uid)
