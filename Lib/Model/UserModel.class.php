@@ -45,7 +45,7 @@ class UserModel extends Model {
 			return false;
 		}
 		else{
-			return true;//ÒÑµÇÂ¼
+			return true;//å·²ç™»å½•
 		}
 	}
 	function getRealname($uid)
@@ -205,6 +205,7 @@ class UserModel extends Model {
 		{
 			$user_info['school'] = M('School')->result_first("select name from ustc_school where sid = ".$user_info['sid']);
 		}
+		$user_info['sex']=$user_info['gender']==1?'ç”·':'å¥³';
 		$user_info['student_no'] = strtoupper($user_info[student_no]);
 		$user_info['avatar'] = $this->getAvatar($uid);
 		$user_info['small_avatar'] = $this->getAvatar($uid, "small");
@@ -267,7 +268,7 @@ class UserModel extends Model {
     }
 
 	public function thumb($image, $thumbname, $type='',$x,$y,$w,$h, $maxWidth=200, $maxHeight=50, $interlace=true) {
-        // »ñÈ¡Ô­Í¼ĞÅÏ¢
+        // è·å–åŸå›¾ä¿¡æ¯
         $info = $this->getImageInfo($image);
         if ($info !== false) {
             $type = empty($type) ? $info['type'] : $type;
@@ -276,17 +277,17 @@ class UserModel extends Model {
             unset($info);
         
 
-            // ÔØÈëÔ­Í¼
+            // è½½å…¥åŸå›¾
             $createFun = 'ImageCreateFrom' . ($type == 'jpg' ? 'jpeg' : $type);
             $srcImg = $createFun($image);
 
-            //´´½¨ËõÂÔÍ¼
+            //åˆ›å»ºç¼©ç•¥å›¾
             if ($type != 'gif' && function_exists('imagecreatetruecolor'))
                 $thumbImg = imagecreatetruecolor($maxWidth, $maxHeight);
             else
                 $thumbImg = imagecreate($maxWidth, $maxHeight);
 
-            // ¸´ÖÆÍ¼Æ¬
+            // å¤åˆ¶å›¾ç‰‡
             if (function_exists("ImageCopyResampled"))
                 imagecopyresampled($thumbImg, $srcImg, 0, 0, $x, $y, $maxWidth, $maxHeight, $w, $h);
             else
@@ -319,18 +320,18 @@ class UserModel extends Model {
           	}
 
 		/* ThinkPHP original
-		//imagealphablending($thumbImg, false);//È¡ÏûÄ¬ÈÏµÄ»ìÉ«Ä£Ê½
-                //imagesavealpha($thumbImg,true);//Éè¶¨±£´æÍêÕûµÄ alpha Í¨µÀĞÅÏ¢
-                $background_color = imagecolorallocate($thumbImg, 0, 255, 0);  //  Ö¸ÅÉÒ»¸öÂÌÉ«
-                imagecolortransparent($thumbImg, $background_color);  //  ÉèÖÃÎªÍ¸Ã÷É«£¬Èô×¢ÊÍµô¸ÃĞĞÔòÊä³öÂÌÉ«µÄÍ¼
+		//imagealphablending($thumbImg, false);//å–æ¶ˆé»˜è®¤çš„æ··è‰²æ¨¡å¼
+                //imagesavealpha($thumbImg,true);//è®¾å®šä¿å­˜å®Œæ•´çš„ alpha é€šé“ä¿¡æ¯
+                $background_color = imagecolorallocate($thumbImg, 0, 255, 0);  //  æŒ‡æ´¾ä¸€ä¸ªç»¿è‰²
+                imagecolortransparent($thumbImg, $background_color);  //  è®¾ç½®ä¸ºé€æ˜è‰²ï¼Œè‹¥æ³¨é‡Šæ‰è¯¥è¡Œåˆ™è¾“å‡ºç»¿è‰²çš„å›¾
 		*/
             }
 
-            // ¶ÔjpegÍ¼ĞÎÉèÖÃ¸ôĞĞÉ¨Ãè
+            // å¯¹jpegå›¾å½¢è®¾ç½®éš”è¡Œæ‰«æ
             if ('jpg' == $type || 'jpeg' == $type)
                 imageinterlace($thumbImg, $interlace);
 
-            // Éú³ÉÍ¼Æ¬
+            // ç”Ÿæˆå›¾ç‰‡
             $imageFun = 'image' . ($type == 'jpg' ? 'jpeg' : $type);
             $imageFun($thumbImg, $thumbname);
             imagedestroy($thumbImg);
@@ -340,13 +341,13 @@ class UserModel extends Model {
         return false;
     }
 
-//×Ö·û´®½âÃÜ¼ÓÃÜ
+//å­—ç¬¦ä¸²è§£å¯†åŠ å¯†
 	public function authcode($string, $operation = 'DECODE', $key = '', $expiry = 0) {
 
-		$ckey_length = 4; // Ëæ»úÃÜÔ¿³¤¶È È¡Öµ 0-32;
-		// ¼ÓÈëËæ»úÃÜÔ¿£¬¿ÉÒÔÁîÃÜÎÄÎŞÈÎºÎ¹æÂÉ£¬¼´±ãÊÇÔ­ÎÄºÍÃÜÔ¿ÍêÈ«ÏàÍ¬£¬¼ÓÃÜ½á¹ûÒ²»áÃ¿´Î²»Í¬£¬Ôö´óÆÆ½âÄÑ¶È¡£
-		// È¡ÖµÔ½´ó£¬ÃÜÎÄ±ä¶¯¹æÂÉÔ½´ó£¬ÃÜÎÄ±ä»¯ = 16 µÄ $ckey_length ´Î·½
-		// µ±´ËÖµÎª 0 Ê±£¬Ôò²»²úÉúËæ»úÃÜÔ¿
+		$ckey_length = 4; // éšæœºå¯†é’¥é•¿åº¦ å–å€¼ 0-32;
+		// åŠ å…¥éšæœºå¯†é’¥ï¼Œå¯ä»¥ä»¤å¯†æ–‡æ— ä»»ä½•è§„å¾‹ï¼Œå³ä¾¿æ˜¯åŸæ–‡å’Œå¯†é’¥å®Œå…¨ç›¸åŒï¼ŒåŠ å¯†ç»“æœä¹Ÿä¼šæ¯æ¬¡ä¸åŒï¼Œå¢å¤§ç ´è§£éš¾åº¦ã€‚
+		// å–å€¼è¶Šå¤§ï¼Œå¯†æ–‡å˜åŠ¨è§„å¾‹è¶Šå¤§ï¼Œå¯†æ–‡å˜åŒ– = 16 çš„ $ckey_length æ¬¡æ–¹
+		// å½“æ­¤å€¼ä¸º 0 æ—¶ï¼Œåˆ™ä¸äº§ç”Ÿéšæœºå¯†é’¥
 
 		$key = md5($key ? $key : C('UC_KEY'));
 		$keya = md5(substr($key, 0, 16));
