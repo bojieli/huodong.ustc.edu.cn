@@ -2,19 +2,22 @@
 <!--以下为筛选代码以及js代码-->
 <script type="text/javascript"> 
 <!-- Begin 
-sortitems = 1;  // Automatically sort items within lists? (1 or 0) 
-sort_flagL = 1; //left col.1 or 0 ; 1 stand for "sort by text", 0 stand for "sort by value" 
-sort_flagR = 1; //right col 1 or 0 ; 1 stand for "sort by text", 0 stand for "sort by value" 
+sortitems = 0;  // Automatically sort items within lists? (1 or 0) 
+sort_flagL = 0; //left col.1 or 0 ; 1 stand for "sort by text", 0 stand for "sort by clubindex" 
+sort_flagR = 0; //right col 1 or 0 ; 1 stand for "sort by text", 0 stand for "sort by clubindex" 
 
  function move(fbox,tbox,flag) { 
   for(var i=0; i<fbox.options.length; i++) { 
     if(fbox.options[i].selected && fbox.options[i].value != ""){ 
     	var no = new Option(); 
     	no.value = fbox.options[i].value; 
-    	no.text = fbox.options[i].text; 
+    	no.text = fbox.options[i].text;
+		no.clubindex = fbox.options[i].clubindex; 
     	tbox.options[tbox.options.length] = no; 
     	fbox.options[i].value = ""; 
-    	fbox.options[i].text = ""; 
+    	fbox.options[i].text = "";
+		fbox.options[i].clubindex = "";
+		fbox.options[i].selected = false ;
     };
   };
   BumpUp(fbox); 
@@ -25,10 +28,13 @@ function moveall(fbox,tbox,flag){
     if(fbox.options[i].value != ""){ 
     	var no = new Option(); 
     	no.value = fbox.options[i].value; 
-    	no.text = fbox.options[i].text; 
+    	no.text = fbox.options[i].text;
+		no.clubindex = fbox.options[i].clubindex; 
     	tbox.options[tbox.options.length] = no; 
     	fbox.options[i].value = ""; 
-    	fbox.options[i].text = ""; 
+    	fbox.options[i].text = "";
+		fbox.options[i].clubindex = "";
+		fbox.options[i].selected = false ;
        }; 
   }; 
  BumpUp(fbox); 
@@ -39,7 +45,8 @@ function BumpUp(box){
     if(box.options[i].value == ""){ 
        for(var j=i; j<box.options.length-1; j++){ 
        	 box.options[j].value = box.options[j+1].value; 
-       	 box.options[j].text = box.options[j+1].text; 
+       	 box.options[j].text = box.options[j+1].text;
+		 box.options[j].clubindex = box.options[j+1].clubindex; 
        };
        var ln = i; 
        break; 
@@ -63,10 +70,19 @@ if(flag){
      if(temp_opts[x].text > temp_opts[y].text)  { 
      	temp = temp_opts[x].text; 
     	temp_opts[x].text = temp_opts[y].text; 
-     	temp_opts[y].text = temp; 
+     	temp_opts[y].text = temp;
+		
      	temp = temp_opts[x].value; 
      	temp_opts[x].value = temp_opts[y].value; 
-     	temp_opts[y].value = temp; 
+     	temp_opts[y].value = temp;
+		
+		temp = temp_opts[x].clubindex; 
+     	temp_opts[x].clubindex = temp_opts[y].clubindex; 
+     	temp_opts[y].clubindex = temp; 
+		
+		temp = temp_opts[x].selected; 
+     	temp_opts[x].selected = temp_opts[y].selected; 
+     	temp_opts[y].selected = temp; 
 		     };
    };
  };
@@ -74,20 +90,28 @@ if(flag){
 else{
    for(var x=0; x<temp_opts.length-1; x++)  { 
    for(var y=(x+1); y<temp_opts.length; y++)  {	   
-     if(temp_opts[x].value > temp_opts[y].value)  { 
+     if(temp_opts[x].clubindex > temp_opts[y].clubindex)  { 
      	temp = temp_opts[x].text; 
     	temp_opts[x].text = temp_opts[y].text; 
      	temp_opts[y].text = temp; 
      	temp = temp_opts[x].value; 
      	temp_opts[x].value = temp_opts[y].value; 
-     	temp_opts[y].value = temp; 
+     	temp_opts[y].value = temp;
+		temp = temp_opts[x].clubindex; 
+     	temp_opts[x].clubindex = temp_opts[y].clubindex; 
+     	temp_opts[y].clubindex = temp;		
+		temp = temp_opts[x].selected; 
+     	temp_opts[x].selected = temp_opts[y].selected; 
+     	temp_opts[y].selected = temp; 
 		     };
    };
  };
 	}
  for(var i=0; i<box.options.length; i++)  { 
  	box.options[i].value = temp_opts[i].value; 
- 	box.options[i].text = temp_opts[i].text; 
+ 	box.options[i].text = temp_opts[i].text;
+	box.options[i].clubindex = temp_opts[i].clubindex;
+	box.options[i].selected = temp_opts[i].selected; 
   };
 };
 function MselAuto(fbox,flag1,tbox,flag2){
@@ -230,22 +254,22 @@ function Mselchoose(tbox,flag,num,item_id1,item_id2){
  </tr> 
   <tr  height="30px" valign="middle">
  	<td style="border:1px solid #CCC;" align="center">
-    	<input id="msel_Lxh" class="dxhb-button msel-button-sort" style=" width:120px;" type="button" value="序号排序" onclick="Mselchoose(this.form.list1,sort_flagL,0,'msel_Lxh','msel_Lmc')" >
-		<input id="msel_Lmc" class="dxhb-button msel-button-sort" style=" width:120px;  background:#fafafa;" type="button" value="名称排序" onclick="Mselchoose(this.form.list1,sort_flagL,1,'msel_Lmc','msel_Lxh')" >
+    	<input id="msel_Lxh" class="dxhb-button msel-button-sort" style=" width:120px; background:#fafafa;" type="button" value="序号排序" onclick="Mselchoose(this.form.list1,sort_flagL,0,'msel_Lxh','msel_Lmc')" >
+		<input id="msel_Lmc" class="dxhb-button msel-button-sort" style=" width:120px;  " type="button" value="名称排序" onclick="Mselchoose(this.form.list1,sort_flagL,1,'msel_Lmc','msel_Lxh')" >
     </td>
     <td style="border:1px solid #CCC; border-left:0 solid #FFF; border-right:0 solid #FFF;" align="center">
-    	<input id="msel_auto" class="dxhb-button msel-button-sort" style=" width:96px; background:#fafafa;" type="button" value="自动排序" onclick="MselAuto(this.form.list1,sort_flagL,this.form.list2,sort_flagR)" >
+    	<input id="msel_auto" class="dxhb-button msel-button-sort" style=" width:96px;" type="button" value="自动排序" onclick="MselAuto(this.form.list1,sort_flagL,this.form.list2,sort_flagR)" >
     </td>
     <td style="border:1px solid #CCC;" align="center">
-    	<input id="msel_Rxh" class="dxhb-button msel-button-sort" style=" width:120px; " type="button" value="序号排序" onclick="Mselchoose(this.form.list2,sort_flagR,0,'msel_Rxh','msel_Rmc')" >
-        <input id="msel_Rmc" class="dxhb-button msel-button-sort" style=" width:120px;  background:#fafafa;" type="button" value="名称排序" onclick="Mselchoose(this.form.list2,sort_flagR,1,'msel_Rmc','msel_Rxh')" >
+    	<input id="msel_Rxh" class="dxhb-button msel-button-sort" style=" width:120px; background:#fafafa;" type="button" value="序号排序" onclick="Mselchoose(this.form.list2,sort_flagR,0,'msel_Rxh','msel_Rmc')" >
+        <input id="msel_Rmc" class="dxhb-button msel-button-sort" style=" width:120px;  " type="button" value="名称排序" onclick="Mselchoose(this.form.list2,sort_flagR,1,'msel_Rmc','msel_Rxh')" >
     </td>
  </tr>
   
  <tr>
 	<td><select multiple size="20" name="list1" class="mem-select dxhb-blur" onfocus="this.className='mem-select dxhb-focus'" onblur="this.className='mem-select dxhb-blur'"> 
 		  <volist name="members" id="vo" key="index">
-		  <option index="{$index}" value="{$vo['realname']}-{$vo['email']}-{$vo['uid']}">{$vo['info']}</option>
+		  <option clubindex="{$index}" value="{$vo['realname']}-{$vo['email']}-{$vo['uid']}">{$vo['info']}</option>
 			</volist> 
 		</select>
     </td> 
