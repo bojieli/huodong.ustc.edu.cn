@@ -299,7 +299,7 @@ function Mselchoose(tbox,flag,num,item_id1,item_id2){
  <tr>
 	<td><select multiple size="20" name="list1" class="mem-select dxhb-blur" onfocus="this.className='mem-select dxhb-focus'" onblur="this.className='mem-select dxhb-blur'"> 
 		  <volist name="members" id="vo" key="index">
-		  <option clubindex="{$index}" value="{$vo['realname']}-{$vo['email']}-{$vo['uid']}">{$vo['realname']}-{$vo['email']}-{$vo['uid']}</option>
+		  <option clubindex="{$index}" value="{$vo['realname']}-{$vo['email']}-{$vo['uid']}">{$vo['info']}</option>
           
           
 			</volist> 
@@ -348,9 +348,9 @@ function Mselchoose(tbox,flag,num,item_id1,item_id2){
 	<input type="hidden" name="tid" id="tid" value="all"/>
     <input type="hidden" id="gid" name="gid" value="{$_GET.gid}" />
    <div class="control-group">
-      <label class="control-label"  for="title" style="width:850px">邮件标题</label>
+      <label class="control-label"  for="title" >邮件标题</label>
       <div class="controls">
-        <input type="text" class="input-xlarge" id="title" name="title" onKeyUp="if(this.value=='') $(this).parent().parent().addClass('error'); else $(this).parent().parent().removeClass('error');">
+        <input  type="text" class="input-xlarge" id="title" name="title" onKeyUp="if(this.value=='') $(this).parent().parent().addClass('error'); else $(this).parent().parent().removeClass('error');"  style="width:850px">
       </div>
     </div>
    <div class="control-group">
