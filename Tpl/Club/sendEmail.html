@@ -265,6 +265,13 @@ function Mselchoose(tbox,flag,num,item_id1,item_id2){
 	background:#fafafa;
 	display:none;
 	}
+.NameWithBg{
+	background:#9C3;
+	-moz-border-radius: 8px;
+	-webkit-border-radius: 8px;
+	border-radius:8px;
+	margin:auto 5px;
+	}
 </style>
  <div id="msn_selmem_box">
 <!--下面是选择的form代码-->
@@ -292,7 +299,9 @@ function Mselchoose(tbox,flag,num,item_id1,item_id2){
  <tr>
 	<td><select multiple size="20" name="list1" class="mem-select dxhb-blur" onfocus="this.className='mem-select dxhb-focus'" onblur="this.className='mem-select dxhb-blur'"> 
 		  <volist name="members" id="vo" key="index">
-		  <option clubindex="{$index}" value="{$vo['realname']}-{$vo['email']}-{$vo['uid']}">{$vo['info']}</option>
+		  <option clubindex="{$index}" value="{$vo['realname']}-{$vo['email']}-{$vo['uid']}">{$vo['realname']}-{$vo['email']}-{$vo['uid']}</option>
+          
+          
 			</volist> 
 		</select>
     </td> 
@@ -332,14 +341,14 @@ function Mselchoose(tbox,flag,num,item_id1,item_id2){
 	  <div id="msn_sel_mem" class="dxhb-button mss-button" >选择会员</div>
 	  <div id="msn_sel_all" class="dxhb-button mss-button" >全部会员</div>
 		  <div class='mss-input-1text'>
-			<span  title='不包括待审核会员'>全部会员</span>
+			<span  title='不包括待审核会员'>全部会员 (不含待审核会员)</span>
 		  </div>
       </div>
     </div>
 	<input type="hidden" name="tid" id="tid" value="all"/>
     <input type="hidden" id="gid" name="gid" value="{$_GET.gid}" />
    <div class="control-group">
-      <label class="control-label"  for="title">邮件标题</label>
+      <label class="control-label"  for="title" style="width:850px">邮件标题</label>
       <div class="controls">
         <input type="text" class="input-xlarge" id="title" name="title" onKeyUp="if(this.value=='') $(this).parent().parent().addClass('error'); else $(this).parent().parent().removeClass('error');">
       </div>
@@ -351,7 +360,7 @@ function Mselchoose(tbox,flag,num,item_id1,item_id2){
         <script type="text/javascript" charset="utf-8" src="/static/ueditor/editor_all.js"></script>
 	<link rel="stylesheet" type="text/css" href="/static/ueditor/themes/default/ueditor.css"/>
         <script type="text/plain" id="message" name="message" style="width:850px;text-align:left;">
-	&nbsp;
+	
 	</script>
 	<script type="text/javascript">
 	var editor_a = new baidu.editor.ui.Editor();
@@ -394,7 +403,7 @@ $("#msn_selmem_tjsx").live('click',function(){
 		}
 		else
 		{
-			$(".mss-input-1text").append("<span  title='"+values[1]+"'>"+values[0]+"</span>   ");
+			$(".mss-input-1text").append("<span class="NameWithBg"  title='"+values[1]+"'>"+values[0]+"</span>   ");
 		}
 		mobiles +=values[2]+";"
      });
@@ -404,7 +413,7 @@ $("#msn_selmem_tjsx").live('click',function(){
 $("#msn_sel_all").click(function(){
 	$("#tid").val('all');
 	$(".mss-input-1text").html('');
-	$(".mss-input-1text").append("<span  title='不包括待审核会员'>全部会员</span>   ");
+	$(".mss-input-1text").append("<span  title='不包括待审核会员'>选择全部会员（不包括待审核会员，若需待审核会员请于-选择会员-中选择）</span>   ");
 });
 function sendSms()
 {
