@@ -192,6 +192,10 @@ class ClubModel extends Model {
 		}
 		return false;
 	}
+	public function isMember($uid,$gid)
+	{
+		return $this->getPrivValue($gid,$uid)>=1;
+	}
 	public function getInfo($gid) {
 		if (!is_numeric($gid))
 			return null;
