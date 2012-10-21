@@ -9,19 +9,26 @@
 <!--以下为筛选代码以及js代码-->
 <script type="text/javascript"> 
 <!-- Begin 
-sortitems = 1;  // Automatically sort items within lists? (1 or 0) 
-sort_flagL = 1; //left col.1 or 0 ; 1 stand for "sort by text", 0 stand for "sort by value" 
-sort_flagR = 1; //right col 1 or 0 ; 1 stand for "sort by text", 0 stand for "sort by value" 
+sortitems = 0;  // Automatically sort items within lists? (1 or 0) 
+sort_flagL = 0; //left col.1 or 0 ; 1 stand for "sort by text", 0 stand for "sort by clubindex" 
+sort_flagR = 0; //right col 1 or 0 ; 1 stand for "sort by text", 0 stand for "sort by clubindex" 
 
  function move(fbox,tbox,flag) { 
+ 
   for(var i=0; i<fbox.options.length; i++) { 
     if(fbox.options[i].selected && fbox.options[i].value != ""){ 
-    	var no = new Option(); 
+    	var no = new Option();
+		var z
     	no.value = fbox.options[i].value; 
-    	no.text = fbox.options[i].text; 
-    	tbox.options[tbox.options.length] = no; 
+    	no.text = fbox.options[i].text;		
+		z = fbox.options[i].getAttribute("clubindex");
+		no.setAttribute("clubindex",z);
+		no.selected = fbox.options[i].selected;
+    	tbox.options[tbox.options.length] = no;
     	fbox.options[i].value = ""; 
-    	fbox.options[i].text = ""; 
+    	fbox.options[i].text = "";
+		fbox.options[i].setAttribute("clubindex","");
+		fbox.options[i].selected = false ;
     };
   };
   BumpUp(fbox); 
@@ -32,10 +39,15 @@ function moveall(fbox,tbox,flag){
     if(fbox.options[i].value != ""){ 
     	var no = new Option(); 
     	no.value = fbox.options[i].value; 
-    	no.text = fbox.options[i].text; 
+    	no.text = fbox.options[i].text;
+		var z
+		z = fbox.options[i].getAttribute("clubindex");
+		no.setAttribute("clubindex",z)		
     	tbox.options[tbox.options.length] = no; 
     	fbox.options[i].value = ""; 
-    	fbox.options[i].text = ""; 
+    	fbox.options[i].text = "";
+		fbox.options[i].setAttribute("clubindex","");
+		fbox.options[i].selected = false ;
        }; 
   }; 
  BumpUp(fbox); 
@@ -46,7 +58,11 @@ function BumpUp(box){
     if(box.options[i].value == ""){ 
        for(var j=i; j<box.options.length-1; j++){ 
        	 box.options[j].value = box.options[j+1].value; 
-       	 box.options[j].text = box.options[j+1].text; 
+       	 box.options[j].text = box.options[j+1].text;
+		var z
+		z = box.options[j+1].getAttribute("clubindex");
+		box.options[j].setAttribute("clubindex",z)		 
+		
        };
        var ln = i; 
        break; 
@@ -61,6 +77,8 @@ function BumpUp(box){
 function SortD(box,flag){ 
  var temp_opts = new Array(); 
  var temp = new Object(); 
+ var z
+ var z1
  for(var i=0; i<box.options.length; i++)  { 
    temp_opts[i] = box.options[i]; 
  } 
@@ -70,43 +88,72 @@ if(flag){
      if(temp_opts[x].text > temp_opts[y].text)  { 
      	temp = temp_opts[x].text; 
     	temp_opts[x].text = temp_opts[y].text; 
-     	temp_opts[y].text = temp; 
+     	temp_opts[y].text = temp;
+		
      	temp = temp_opts[x].value; 
      	temp_opts[x].value = temp_opts[y].value; 
-     	temp_opts[y].value = temp; 
+     	temp_opts[y].value = temp;
+		
+		
+			
+		z = temp_opts[x].getAttribute("clubindex");
+		z1 = temp_opts[y].getAttribute("clubindex");		
+     	temp_opts[x].setAttribute("clubindex",z1);	
+     	temp_opts[y].setAttribute("clubindex",z);	 
+		
+		temp = temp_opts[x].selected; 
+     	temp_opts[x].selected = temp_opts[y].selected; 
+     	temp_opts[y].selected = temp; 
 		     };
    };
  };
 } //sort by test
 else{
    for(var x=0; x<temp_opts.length-1; x++)  { 
-   for(var y=(x+1); y<temp_opts.length; y++)  {	   
-     if(temp_opts[x].value > temp_opts[y].value)  { 
+   for(var y=(x+1); y<temp_opts.length; y++)  {
+	   var rrx = parseInt(temp_opts[x].getAttribute("clubindex"));
+	   var rry = parseInt(temp_opts[y].getAttribute("clubindex"));
+     if(rrx > rry)  { 
      	temp = temp_opts[x].text; 
     	temp_opts[x].text = temp_opts[y].text; 
      	temp_opts[y].text = temp; 
      	temp = temp_opts[x].value; 
      	temp_opts[x].value = temp_opts[y].value; 
-     	temp_opts[y].value = temp; 
+     	temp_opts[y].value = temp;
+		
+		temp = temp_opts[x].getAttribute("clubindex");
+		z = temp_opts[y].getAttribute("clubindex");
+		temp_opts[x].setAttribute("clubindex",z);	
+     	temp_opts[y].setAttribute("clubindex",temp);	
+     		
+		temp = temp_opts[x].selected; 
+     	temp_opts[x].selected = temp_opts[y].selected; 
+     	temp_opts[y].selected = temp; 
 		     };
    };
  };
 	}
  for(var i=0; i<box.options.length; i++)  { 
  	box.options[i].value = temp_opts[i].value; 
- 	box.options[i].text = temp_opts[i].text; 
+ 	box.options[i].text = temp_opts[i].text;
+	z = temp_opts[i].getAttribute("clubindex");
+	
+	box.options[i].setAttribute("clubindex",z);
+	box.options[i].selected = temp_opts[i].selected; 
+//	alert("box: "+ z + " temp: " + z+ "boxselect: " + box.options[i].selected + "  " + box.options[i].text);
   };
 };
 function MselAuto(fbox,flag1,tbox,flag2){
 	if(sortitems){
 		sortitems = 0 ;		
-		document.getElementById("msel_auto").style.backgroundColor='#fafafa';		
+		document.getElementById("msel_auto").style.backgroundColor='#f0f0f0';		
 		}
 	 else{
 		sortitems = 1 ;
 		SortD(fbox,flag1);
 		SortD(tbox,flag2);
-		document.getElementById("msel_auto").style.backgroundColor='#f0f0f0';
+		document.getElementById("msel_auto").style.backgroundColor='#fafafa';
+		
 		 }
 	};
 function Mselchoose(tbox,flag,num,item_id1,item_id2){
@@ -120,7 +167,8 @@ function Mselchoose(tbox,flag,num,item_id1,item_id2){
 		SortD(tbox,flag);		
 	}
 	// End --> 
-</script>
+</script>  
+
 <script type="text/javascript">
 //<!--
 $(document).ready(function(){
@@ -134,6 +182,11 @@ $("#giveup_sel").click(function(){
 	$("#msn_selmem_box").hide(300);
 	$("#backbg").hide(300);	
 	})
+$("#backbg").click(function(){	 
+	$("#msn_selmem_box").hide(300);
+	$("#backbg").hide(300);	
+	})
+
 $("#msn_selmem_tjsx").live('click',function(){
 	$("#msn_selmem_box").hide(300);
 	$("#backbg").hide(300);
@@ -281,6 +334,18 @@ function sendSms()
 	background:#fafafa;
 	display:none;
 	}
+.NameWithBg{
+	background:#E9E9E9;
+	border:solid #CCC;
+	border-width:0 1px 1px 0;
+	-moz-border-radius: 9px;
+	-webkit-border-radius: 9px;
+	border-radius:9px;
+	margin:2px 1px;
+	padding: 0px 10px;
+	white-space: nowrap;
+	display: inline-block;
+	}
 </style>
 </head>
 
@@ -299,15 +364,15 @@ function sendSms()
  </tr> 
   <tr  height="30px" valign="middle">
  	<td style="border:1px solid #CCC;" align="center">
-    	<input id="msel_Lxh" class="dxhb-button msel-button-sort" style=" width:120px;" type="button" value="序号排序" onclick="Mselchoose(this.form.list1,sort_flagL,0,'msel_Lxh','msel_Lmc')" >
-		<input id="msel_Lmc" class="dxhb-button msel-button-sort" style=" width:120px;  background:#fafafa;" type="button" value="名称排序" onclick="Mselchoose(this.form.list1,sort_flagL,1,'msel_Lmc','msel_Lxh')" >
+    	<input id="msel_Lxh" class="dxhb-button msel-button-sort" style=" width:120px; background:#fafafa;" type="button" value="序号排序" onclick="Mselchoose(this.form.list1,sort_flagL,0,'msel_Lxh','msel_Lmc')" >
+		<input id="msel_Lmc" class="dxhb-button msel-button-sort" style=" width:120px;  " type="button" value="名称排序" onclick="Mselchoose(this.form.list1,sort_flagL,1,'msel_Lmc','msel_Lxh')" >
     </td>
     <td style="border:1px solid #CCC; border-left:0 solid #FFF; border-right:0 solid #FFF;" align="center">
-    	<input id="msel_auto" class="dxhb-button msel-button-sort" style=" width:96px; background:#fafafa;" type="button" value="自动排序" onclick="MselAuto(this.form.list1,sort_flagL,this.form.list2,sort_flagR)" >
+    	<input id="msel_auto" class="dxhb-button msel-button-sort" style=" width:96px; " type="button" value="自动排序" onclick="MselAuto(this.form.list1,sort_flagL,this.form.list2,sort_flagR)" >
     </td>
     <td style="border:1px solid #CCC;" align="center">
-    	<input id="msel_Rxh" class="dxhb-button msel-button-sort" style=" width:120px; " type="button" value="序号排序" onclick="Mselchoose(this.form.list2,sort_flagR,0,'msel_Rxh','msel_Rmc')" >
-        <input id="msel_Rmc" class="dxhb-button msel-button-sort" style=" width:120px;  background:#fafafa;" type="button" value="名称排序" onclick="Mselchoose(this.form.list2,sort_flagR,1,'msel_Rmc','msel_Rxh')" >
+    	<input id="msel_Rxh" class="dxhb-button msel-button-sort" style=" width:120px; background:#fafafa;" type="button" value="序号排序" onclick="Mselchoose(this.form.list2,sort_flagR,0,'msel_Rxh','msel_Rmc')" >
+        <input id="msel_Rmc" class="dxhb-button msel-button-sort" style=" width:120px;  " type="button" value="名称排序" onclick="Mselchoose(this.form.list2,sort_flagR,1,'msel_Rmc','msel_Rxh')" >
     </td>
  </tr>
   
@@ -360,13 +425,13 @@ function sendSms()
 				<textarea id="edit" name="s" title="写满两行文字的长度约为一条短信 ！" class="mss-input-text" onfocus="this.className='dxhb-focus mss-input-text'" onblur="this.className='dxhb-blur mss-input-text'" style="float:left" ></textarea>
 				<!--span style=" color:#F00;"><br/>&nbsp;&nbsp;&nbsp;写满两行文字的长度<br/>&nbsp;&nbsp;&nbsp;约为一条短信 ！</span-->
 				<span class="history">
-				<a href="/Sms/history?gid={$club.gid}" title="{$club['name']}" style="float:right">全部短信记录</a>
+				<a href="/Sms/history?gid={$club.gid}" title="{$club['name']}" style="float:right; color:#06C;">全部短信记录</a>
 				</span>
 				<span style="position:absolute;left:490px;top:135px;color:#8E8E90">
-				还可输入<span id="counter" style="color:#000">200</span>字
+				还可输入<span id="counter" style="color:#F00">200</span>字
 				</span>
 				<span style="position:absolute;left:20px;top:135px;color:#8E8E90">
-				还剩<span id="sms_num" style="color:#000">{$sms_num}</span>条短信
+				还剩<span id="sms_num" style="color:#F00">{$sms_num}</span>条短信
 				</span>
 			</div>
 		</td>
