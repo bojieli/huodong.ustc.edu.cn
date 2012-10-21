@@ -161,7 +161,10 @@ class SmsModel extends Model {
 			'pid'=>$pid,
 			'gid'=>$gid
 		);
-		return D('Sms_md5')->where(array($con))->count();
+		return D('Sms_md5')->where('pid='.$pid.' and gid = '.$gid)->count();
+	}
+	public function getSmsNumForAll($gid){
+	   return M('Sms_md5')->where(array('gid'=>$gid))->count();
 	}
 }
 ?>

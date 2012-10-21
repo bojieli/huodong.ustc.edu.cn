@@ -129,9 +129,10 @@ class SmsAction extends PublicAction {
 			}
 			$club = D('Club')->getInfo($gid);
 			$club_name=$club['name'];
-			$school_name=$club['shool']['name'];
+			$school_name=$club['school']['name'];
 			$this->assign('club_name',$club_name);
 			$this->assign('school_name',$school_name);
+			$this->assign('allSmsNum',D('Sms')->getSmsNumForAll($gid));
 			$this->assign('history',$re);
 			//dump($re);
 			$this->display();
