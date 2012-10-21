@@ -216,8 +216,9 @@ $("#msn_selmem_tjsx").live('click',function(){
 
 //发送控制
 $("#confirm-alert").click(function(){
+	alert("asdf");
 	$("#backbg,#alertbox,#alert-cont-box").slideUp(300);								   
-	});
+});
 function sendSms()
 {
 	$("#backbg").css("display","block");
@@ -229,12 +230,12 @@ function sendSms()
 	
 	var form = $("#SmsSend");
 	$.post($(form).attr('action'), $(form).serialize(), function (data) {
-		if($("#sms_num").text()<$("#tid_num").val())
+/*		if($("#sms_num").text()<$("#tid_num").val())
 		{   
 		 //  alert('剩余短信条数不足');
 		   $("#sendMssage-result").html("<span style='color:green; font-size:20px; '>发送失败：<br/></span><span style='margin-left:40px; line-height:24px;'>剩余短信条数不足！</span>" );
 	       return false;
-		   }
+		   } */
 		if (data.status == 1) {
 	//		alert(data.info[0]);
 			$("#tid").val('');
