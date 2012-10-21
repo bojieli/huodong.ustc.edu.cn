@@ -467,10 +467,10 @@ function sendSms(){
 			$("#title").val('');
 			$("#tid").val('');
 			$(".mss-input-1text").html('');
-			$("#sendEmail-result").html("<span style='color:green; font-size:20px;'>发送成功：<br/></span>"+ data.info );
+			$("#sendEmail-result").html("<span style='color:green; font-size:20px;margin-left:40px; margin-bottom:5px;'>发送成功：<br/></span><span style='margin-left:40px; margin-bottom:5px;'>"+ data.info +"</span>" );
 		} else if(data.status==0) {
 	//		alert('发送信息失败：' + data.info);
-	        $("#sendEmail-result").html("<span style='color:red;font-size:20px;'>发送失败：<br/></span>"+ data.info );
+	        $("#sendEmail-result").html("<span style='color:red;font-size:20px; margin-left:40px; margin-bottom:5px;'>发送失败：<br/></span><span style='margin-left:40px; margin-bottom:5px;'>"+ data.info +"</span>");
 		}
 		$("#alert-cont-box").slideDown(100);	
 	}, 'json');
