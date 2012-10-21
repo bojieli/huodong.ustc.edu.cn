@@ -83,19 +83,18 @@ class SmsAction extends PublicAction {
 		     $info[0]="未填写内容或未指明发送对象";
 			 $this->error($info);
 		   };
-		   if(!$Model->canSent($gid,$i)){$this->error('剩余短信条数不足');}
+		   if(!$Model->canSent($gid,$i)){
+		   $info[1]=$Model->getSmsNum($gid);
+		    $info[0]="剩余短信条数不足";
+		   $this->error($info);
+		   }
 		   $re=$Model->sentSms($msg,$mobiles,$gid);
 		   $Model->deSmsNum($gid,$re['done']);
-		   if($i==0||$msg==''){$info[0]="必须选择发送对象！";}
-		   else
-		   {
-			   $info[0] = $re['done'].'条发送成功'.' -- '.$re['failed'].'条发送失败。';
-			   if($re['failed'])
-			   {
-					$info[0].="发送失败的为：".$re['info'];
-			   }
-			}
-		   
+			$info[0] = $re['done'].'条发送成功'.' -- '.$re['failed'].'条发送失败。';
+			 if($re['failed'])
+			 {
+				$info[0].="发送失败的为：".$re['info'];
+			 }
 		   $info[1]=$Model->getSmsNum($gid);
 		   $this->success($info);
 		}
