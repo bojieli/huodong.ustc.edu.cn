@@ -252,7 +252,7 @@ function Mselchoose(tbox,flag,num,item_id1,item_id2){
 #msn_selmem_box{
 	position:absolute;
 	top:-0px;
-	left:160px;
+	left:180px;
 	margin:0 auto;
 	z-index:11000;
 	width:700px;
@@ -277,6 +277,10 @@ function Mselchoose(tbox,flag,num,item_id1,item_id2){
 	white-space: nowrap;
 	display: inline-block;
 	}
+.NameWithBg:hover{
+	cursor:default;
+	background:#CFC;
+}
 </style>
  <div id="msn_selmem_box">
 <!--下面是选择的form代码-->
@@ -304,7 +308,7 @@ function Mselchoose(tbox,flag,num,item_id1,item_id2){
  <tr>
 	<td><select multiple size="20" name="list1" class="mem-select dxhb-blur" onfocus="this.className='mem-select dxhb-focus'" onblur="this.className='mem-select dxhb-blur'"> 
 		  <volist name="members" id="vo" key="index">
-		  <option clubindex="{$index}" value="{$vo['realname']}-{$vo['email']}-{$vo['uid']}">{$vo['info']}</option>
+		  <option clubindex="{$index}" value="{$vo['realname']}——{$vo['email']}——{$vo['uid']}">{$vo['info']}</option>
           
           
 			</volist> 
@@ -395,13 +399,17 @@ $("#giveup_sel").click(function(){
 	$("#msn_selmem_box").hide(300);
 	$("#backbg").hide(300);	
 	})
+$("#backbg").click(function(){	 
+	$("#msn_selmem_box").hide(300);
+	$("#backbg").hide(300);	
+	})
 $("#msn_selmem_tjsx").live('click',function(){
 	$("#msn_selmem_box").hide(300);
 	$("#backbg").hide(300);
 	$(".mss-input-1text").html('');
 	var mobiles = '';
     $("#members_select option").each(function() {
-		var values = $(this).val().split("-");
+		var values = $(this).val().split("——");
 		if(values[1].toString()=='')
 		{
 			$(".mss-input-1text").append("<span class='NameWithBg' style='color:red' title='无邮箱'>"+values[0]+"</span>   ");
