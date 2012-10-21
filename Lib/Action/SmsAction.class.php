@@ -23,9 +23,9 @@ class SmsAction extends PublicAction {
 			foreach($re as $row => $value)
 			{
 				if($value['priv']!='member')
-					$value['info']=$value['realname'].'('.$value['title'].')'.'---'.$value['telephone'];
+					$value['info']=$value['realname'].'('.$value['title'].')'.'--'.$value['telephone'];
 				else
-					$value['info']=$value['realname'].'---'.$value['telephone'];
+					$value['info']=$value['realname'].'--'.$value['telephone'];
 				$members[] = $value;
 			}
 			$this->assign('sms_num',$Model->getSmsNum($gid));

@@ -277,9 +277,9 @@ class ClubAction extends PublicAction {
 		foreach($re as $row => $value)
 		{
 			if($value['priv']!='member')
-				$value['info']=$value['realname'].'('.$value['title'].')'.'-'.$value['email'];
+				$value['info']=$value['realname'].'('.$value['title'].')'.'--'.$value['email'];
 			else
-				$value['info']=$value['realname'].'-'.$value['email'];
+				$value['info']=$value['realname'].'--'.$value['email'];
 			$members[] = $value;
 		}
 
