@@ -2,19 +2,26 @@
 <!--以下为筛选代码以及js代码-->
 <script type="text/javascript"> 
 <!-- Begin 
-sortitems = 1;  // Automatically sort items within lists? (1 or 0) 
-sort_flagL = 1; //left col.1 or 0 ; 1 stand for "sort by text", 0 stand for "sort by value" 
-sort_flagR = 1; //right col 1 or 0 ; 1 stand for "sort by text", 0 stand for "sort by value" 
+sortitems = 0;  // Automatically sort items within lists? (1 or 0) 
+sort_flagL = 0; //left col.1 or 0 ; 1 stand for "sort by text", 0 stand for "sort by clubindex" 
+sort_flagR = 0; //right col 1 or 0 ; 1 stand for "sort by text", 0 stand for "sort by clubindex" 
 
  function move(fbox,tbox,flag) { 
+ 
   for(var i=0; i<fbox.options.length; i++) { 
     if(fbox.options[i].selected && fbox.options[i].value != ""){ 
-    	var no = new Option(); 
+    	var no = new Option();
+		var z
     	no.value = fbox.options[i].value; 
-    	no.text = fbox.options[i].text; 
-    	tbox.options[tbox.options.length] = no; 
+    	no.text = fbox.options[i].text;		
+		z = fbox.options[i].getAttribute("clubindex");
+		no.setAttribute("clubindex",z);
+		no.selected = fbox.options[i].selected;
+    	tbox.options[tbox.options.length] = no;
     	fbox.options[i].value = ""; 
-    	fbox.options[i].text = ""; 
+    	fbox.options[i].text = "";
+		fbox.options[i].setAttribute("clubindex","");
+		fbox.options[i].selected = false ;
     };
   };
   BumpUp(fbox); 
@@ -25,10 +32,15 @@ function moveall(fbox,tbox,flag){
     if(fbox.options[i].value != ""){ 
     	var no = new Option(); 
     	no.value = fbox.options[i].value; 
-    	no.text = fbox.options[i].text; 
+    	no.text = fbox.options[i].text;
+		var z
+		z = fbox.options[i].getAttribute("clubindex");
+		no.setAttribute("clubindex",z)		
     	tbox.options[tbox.options.length] = no; 
     	fbox.options[i].value = ""; 
-    	fbox.options[i].text = ""; 
+    	fbox.options[i].text = "";
+		fbox.options[i].setAttribute("clubindex","");
+		fbox.options[i].selected = false ;
        }; 
   }; 
  BumpUp(fbox); 
@@ -39,7 +51,11 @@ function BumpUp(box){
     if(box.options[i].value == ""){ 
        for(var j=i; j<box.options.length-1; j++){ 
        	 box.options[j].value = box.options[j+1].value; 
-       	 box.options[j].text = box.options[j+1].text; 
+       	 box.options[j].text = box.options[j+1].text;
+		var z
+		z = box.options[j+1].getAttribute("clubindex");
+		box.options[j].setAttribute("clubindex",z)		 
+		
        };
        var ln = i; 
        break; 
@@ -54,6 +70,8 @@ function BumpUp(box){
 function SortD(box,flag){ 
  var temp_opts = new Array(); 
  var temp = new Object(); 
+ var z
+ var z1
  for(var i=0; i<box.options.length; i++)  { 
    temp_opts[i] = box.options[i]; 
  } 
@@ -63,43 +81,72 @@ if(flag){
      if(temp_opts[x].text > temp_opts[y].text)  { 
      	temp = temp_opts[x].text; 
     	temp_opts[x].text = temp_opts[y].text; 
-     	temp_opts[y].text = temp; 
+     	temp_opts[y].text = temp;
+		
      	temp = temp_opts[x].value; 
      	temp_opts[x].value = temp_opts[y].value; 
-     	temp_opts[y].value = temp; 
+     	temp_opts[y].value = temp;
+		
+		
+			
+		z = temp_opts[x].getAttribute("clubindex");
+		z1 = temp_opts[y].getAttribute("clubindex");		
+     	temp_opts[x].setAttribute("clubindex",z1);	
+     	temp_opts[y].setAttribute("clubindex",z);	 
+		
+		temp = temp_opts[x].selected; 
+     	temp_opts[x].selected = temp_opts[y].selected; 
+     	temp_opts[y].selected = temp; 
 		     };
    };
  };
 } //sort by test
 else{
    for(var x=0; x<temp_opts.length-1; x++)  { 
-   for(var y=(x+1); y<temp_opts.length; y++)  {	   
-     if(temp_opts[x].value > temp_opts[y].value)  { 
+   for(var y=(x+1); y<temp_opts.length; y++)  {
+	   var rrx = parseInt(temp_opts[x].getAttribute("clubindex"));
+	   var rry = parseInt(temp_opts[y].getAttribute("clubindex"));
+     if(rrx > rry)  { 
      	temp = temp_opts[x].text; 
     	temp_opts[x].text = temp_opts[y].text; 
      	temp_opts[y].text = temp; 
      	temp = temp_opts[x].value; 
      	temp_opts[x].value = temp_opts[y].value; 
-     	temp_opts[y].value = temp; 
+     	temp_opts[y].value = temp;
+		
+		temp = temp_opts[x].getAttribute("clubindex");
+		z = temp_opts[y].getAttribute("clubindex");
+		temp_opts[x].setAttribute("clubindex",z);	
+     	temp_opts[y].setAttribute("clubindex",temp);	
+     		
+		temp = temp_opts[x].selected; 
+     	temp_opts[x].selected = temp_opts[y].selected; 
+     	temp_opts[y].selected = temp; 
 		     };
    };
  };
 	}
  for(var i=0; i<box.options.length; i++)  { 
  	box.options[i].value = temp_opts[i].value; 
- 	box.options[i].text = temp_opts[i].text; 
+ 	box.options[i].text = temp_opts[i].text;
+	z = temp_opts[i].getAttribute("clubindex");
+	
+	box.options[i].setAttribute("clubindex",z);
+	box.options[i].selected = temp_opts[i].selected; 
+//	alert("box: "+ z + " temp: " + z+ "boxselect: " + box.options[i].selected + "  " + box.options[i].text);
   };
 };
 function MselAuto(fbox,flag1,tbox,flag2){
 	if(sortitems){
 		sortitems = 0 ;		
-		document.getElementById("msel_auto").style.backgroundColor='#fafafa';		
+		document.getElementById("msel_auto").style.backgroundColor='#f0f0f0';		
 		}
 	 else{
 		sortitems = 1 ;
 		SortD(fbox,flag1);
 		SortD(tbox,flag2);
-		document.getElementById("msel_auto").style.backgroundColor='#f0f0f0';
+		document.getElementById("msel_auto").style.backgroundColor='#fafafa';
+		
 		 }
 	};
 function Mselchoose(tbox,flag,num,item_id1,item_id2){
@@ -113,7 +160,7 @@ function Mselchoose(tbox,flag,num,item_id1,item_id2){
 		SortD(tbox,flag);		
 	}
 	// End --> 
-</script> 
+</script>  
 <!--筛选列表的css样式表-->
 <style type="text/css">
 .mem-select{	
@@ -172,7 +219,7 @@ function Mselchoose(tbox,flag,num,item_id1,item_id2){
 	}
 .mss-input-1text{
 	  font-family:Microsoft Yahei, "Times New Roman", Times, serif;		  	  
-	  font-size:16px;	  
+	  font-size:14px;	  
 	  outline:none;		  
 	  background:#F9F8F6;
 	  line-height:20px;
@@ -218,6 +265,18 @@ function Mselchoose(tbox,flag,num,item_id1,item_id2){
 	background:#fafafa;
 	display:none;
 	}
+.NameWithBg{
+	background:#E9E9E9;
+	border:solid #CCC;
+	border-width:0 1px 1px 0;
+	-moz-border-radius: 9px;
+	-webkit-border-radius: 9px;
+	border-radius:9px;
+	margin:2px 1px;
+	padding: 0px 10px;
+	white-space: nowrap;
+	display: inline-block;
+	}
 </style>
  <div id="msn_selmem_box">
 <!--下面是选择的form代码-->
@@ -230,31 +289,33 @@ function Mselchoose(tbox,flag,num,item_id1,item_id2){
  </tr> 
   <tr  height="30px" valign="middle">
  	<td style="border:1px solid #CCC;" align="center">
-    	<input id="msel_Lxh" class="dxhb-button msel-button-sort" style=" width:120px;" type="button" value="序号排序" onclick="Mselchoose(this.form.list1,sort_flagL,0,'msel_Lxh','msel_Lmc')" >
-		<input id="msel_Lmc" class="dxhb-button msel-button-sort" style=" width:120px;  background:#fafafa;" type="button" value="名称排序" onclick="Mselchoose(this.form.list1,sort_flagL,1,'msel_Lmc','msel_Lxh')" >
+    	<input id="msel_Lxh" class="dxhb-button msel-button-sort" style=" width:120px; background:#fafafa;" type="button" value="序号排序" onclick="Mselchoose(this.form.list1,sort_flagL,0,'msel_Lxh','msel_Lmc')" >
+		<input id="msel_Lmc" class="dxhb-button msel-button-sort" style=" width:120px;  " type="button" value="名称排序" onclick="Mselchoose(this.form.list1,sort_flagL,1,'msel_Lmc','msel_Lxh')" >
     </td>
     <td style="border:1px solid #CCC; border-left:0 solid #FFF; border-right:0 solid #FFF;" align="center">
-    	<input id="msel_auto" class="dxhb-button msel-button-sort" style=" width:96px; background:#fafafa;" type="button" value="自动排序" onclick="MselAuto(this.form.list1,sort_flagL,this.form.list2,sort_flagR)" >
+    	<input id="msel_auto" class="dxhb-button msel-button-sort" style=" width:96px;" type="button" value="自动排序" onclick="MselAuto(this.form.list1,sort_flagL,this.form.list2,sort_flagR)" >
     </td>
     <td style="border:1px solid #CCC;" align="center">
-    	<input id="msel_Rxh" class="dxhb-button msel-button-sort" style=" width:120px; " type="button" value="序号排序" onclick="Mselchoose(this.form.list2,sort_flagR,0,'msel_Rxh','msel_Rmc')" >
-        <input id="msel_Rmc" class="dxhb-button msel-button-sort" style=" width:120px;  background:#fafafa;" type="button" value="名称排序" onclick="Mselchoose(this.form.list2,sort_flagR,1,'msel_Rmc','msel_Rxh')" >
+    	<input id="msel_Rxh" class="dxhb-button msel-button-sort" style=" width:120px; background:#fafafa;" type="button" value="序号排序" onclick="Mselchoose(this.form.list2,sort_flagR,0,'msel_Rxh','msel_Rmc')" >
+        <input id="msel_Rmc" class="dxhb-button msel-button-sort" style=" width:120px;  " type="button" value="名称排序" onclick="Mselchoose(this.form.list2,sort_flagR,1,'msel_Rmc','msel_Rxh')" >
     </td>
  </tr>
   
  <tr>
 	<td><select multiple size="20" name="list1" class="mem-select dxhb-blur" onfocus="this.className='mem-select dxhb-focus'" onblur="this.className='mem-select dxhb-blur'"> 
 		  <volist name="members" id="vo" key="index">
-		  <option index="{$index}" value="{$vo['realname']}-{$vo['email']}-{$vo['uid']}">{$vo['info']}</option>
+		  <option clubindex="{$index}" value="{$vo['realname']}-{$vo['email']}-{$vo['uid']}">{$vo['info']}</option>
+          
+          
 			</volist> 
 		</select>
     </td> 
 	<td width="100" align="left" valign="top">
-		<input class="dxhb-button msel-button" type="button" value=">" onclick="move(this.form.list1,this.form.list2,sort_flagR)" name="B1">
-		<input class="dxhb-button msel-button" type="button" value="<" onclick="move(this.form.list2,this.form.list1,sort_flagL)" name="B2">
+		<input class="dxhb-button msel-button" type="button" style="width:60px" value=">" onclick="move(this.form.list1,this.form.list2,sort_flagR)" name="B1">
+		<input class="dxhb-button msel-button" type="button" style="width:60px" value="<" onclick="move(this.form.list2,this.form.list1,sort_flagL)" name="B2">
         <br/><br/>
-		<input class="dxhb-button msel-button" type="button" value=">>" onclick="moveall(this.form.list1,this.form.list2,sort_flagR)" name="B3">
-		<input class="dxhb-button msel-button" type="button" value="<<" onclick="moveall(this.form.list2,this.form.list1,sort_flagL)" name="B4"> 
+		<input class="dxhb-button msel-button" type="button" style="width:60px" value=">>" onclick="moveall(this.form.list1,this.form.list2,sort_flagR)" name="B3">
+		<input class="dxhb-button msel-button" type="button" style="width:60px" value="<<" onclick="moveall(this.form.list2,this.form.list1,sort_flagL)" name="B4"> 
    </td> 
    <td><select multiple size="20" name="list2"  id="members_select" class="mem-select dxhb-blur" onfocus="this.className='mem-select dxhb-focus'" onblur="this.className='mem-select dxhb-blur'" style="color:#690;">
 		</select>
@@ -281,20 +342,20 @@ function Mselchoose(tbox,flag,num,item_id1,item_id2){
     </div>
 	<div class="control-group">
       <label class="control-label" for="title">发邮件给</label>
-      <div class="controls">
+      <div class="controls" style="position:relative;">
 	  <div id="msn_sel_mem" class="dxhb-button mss-button" >选择会员</div>
-	  <div id="msn_sel_all" class="dxhb-button mss-button" >全部会员</div>
+	  <div id="msn_sel_all" class="dxhb-button mss-button" style=" position:absolute; left:150px; top:0px;">全部会员</div>
 		  <div class='mss-input-1text'>
-			<span  title='不包括待审核会员'>全部会员</span>
+			<span  title='不包括待审核会员'>全部会员 (不含待审核会员)</span>
 		  </div>
       </div>
     </div>
 	<input type="hidden" name="tid" id="tid" value="all"/>
     <input type="hidden" id="gid" name="gid" value="{$_GET.gid}" />
    <div class="control-group">
-      <label class="control-label"  for="title">邮件标题</label>
+      <label class="control-label"  for="title" >邮件标题</label>
       <div class="controls">
-        <input type="text" class="input-xlarge" id="title" name="title" onKeyUp="if(this.value=='') $(this).parent().parent().addClass('error'); else $(this).parent().parent().removeClass('error');">
+        <input  type="text" class="input-xlarge" id="title" name="title" onKeyUp="if(this.value=='') $(this).parent().parent().addClass('error'); else $(this).parent().parent().removeClass('error');"  style="width:836px">
       </div>
     </div>
    <div class="control-group">
@@ -304,7 +365,7 @@ function Mselchoose(tbox,flag,num,item_id1,item_id2){
         <script type="text/javascript" charset="utf-8" src="/static/ueditor/editor_all.js"></script>
 	<link rel="stylesheet" type="text/css" href="/static/ueditor/themes/default/ueditor.css"/>
         <script type="text/plain" id="message" name="message" style="width:850px;text-align:left;">
-	&nbsp;
+	
 	</script>
 	<script type="text/javascript">
 	var editor_a = new baidu.editor.ui.Editor();
@@ -343,11 +404,11 @@ $("#msn_selmem_tjsx").live('click',function(){
 		var values = $(this).val().split("-");
 		if(values[1].toString()=='')
 		{
-			$(".mss-input-1text").append("<span style='color:red' title='无邮箱'>"+values[0]+"</span>   ");
+			$(".mss-input-1text").append("<span class='NameWithBg' style='color:red' title='无邮箱'>"+values[0]+"</span>   ");
 		}
 		else
 		{
-			$(".mss-input-1text").append("<span  title='"+values[1]+"'>"+values[0]+"</span>   ");
+			$(".mss-input-1text").append("<span class='NameWithBg'  title='"+values[1]+"'>"+values[0]+"</span>   ");
 		}
 		mobiles +=values[2]+";"
      });
@@ -357,7 +418,7 @@ $("#msn_selmem_tjsx").live('click',function(){
 $("#msn_sel_all").click(function(){
 	$("#tid").val('all');
 	$(".mss-input-1text").html('');
-	$(".mss-input-1text").append("<span  title='不包括待审核会员'>全部会员</span>   ");
+	$(".mss-input-1text").append("<span  title='不包括待审核会员'>选择全部会员（不包括待审核会员，若需待审核会员请于-选择会员-中选择）</span>   ");
 });
 function sendSms()
 {
