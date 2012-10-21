@@ -4,8 +4,32 @@ class MsgModel extends Model {
 		 public function showMsgFromMe()
         {   
             global $_G;
-			$con['uid']=$_G['uid'];
-			$tids=$this->field('to_uid')->where($con)->group('to_uid')->select();
+			$con1['uid']=$_G['uid'];
+			//dump($_G['uid']);
+			$tids1=$this->field('to_uid')->where($con1)->group('to_uid')->select();
+			//dump($tids1);
+			$i=0;
+			$j=0;
+			foreach($tids1 as $row1 => $val1)
+			{
+				$tmp[$i]=$val1['to_uid'];
+				$i++;
+			}
+			$con2['to_uid']=$_G['uid'];
+			$tids2=$this->field('uid')->where($con2)->group('uid')->select();
+			//dump($tids2);
+			foreach($tids2 as $row2 => $val2)
+			{
+				$tmp[$i+$j]=$val2['uid'];
+				$j++;
+			}
+			$tips=array_unique($tmp);
+			foreach($tips as $k => $v)
+			{
+				$tids[]['to_uid'] = $v;
+			}
+			//$tids=array('to_uid'=>$tids);
+			//dump($tids);
 			foreach($tids as $row => $val)
 			{
 				$msg[$val['to_uid']]=$this->showMsgFt($val['to_uid']);
