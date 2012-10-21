@@ -403,7 +403,7 @@ function Mselchoose(tbox,flag,num,item_id1,item_id2){
     <div id="confirm-alert" class="dxhb-button alert-button" >确 认</div>
 </div>
 
-<script >
+<script type="text/javascript">
 //<!--
 $(document).ready(function(){
 /*弹出短信选择框*/
@@ -444,9 +444,7 @@ $("#msn_sel_all").click(function(){
 	$("#tid").val('all');
 	$(".mss-input-1text").html('');
 	$(".mss-input-1text").append("<span  title='不包括待审核会员'>选择全部会员（不包括待审核会员，若需待审核会员请于-选择会员-中选择）</span>   ");
-
-
-
+}); 
 //发送控制
 $("#confirm-alert").click(function(){
 	$("#backbg,#alertbox,#alert-cont-box").slideUp(300);								   
@@ -476,8 +474,6 @@ function sendSms(){
     return false;
 }
 
-
-}); //document ready
 
 
 //-->
