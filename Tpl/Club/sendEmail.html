@@ -403,7 +403,7 @@ function Mselchoose(tbox,flag,num,item_id1,item_id2){
     <div id="confirm-alert" class="dxhb-button alert-button" >确 认</div>
 </div>
 
-<script type="text/javascript">
+<script  type="text/javascript">
 //<!--
 $(document).ready(function(){
 /*弹出短信选择框*/
@@ -438,8 +438,7 @@ $("#msn_selmem_tjsx").live('click',function(){
 		mobiles +=values[2]+";"
      });
 	 $("#tid").val(mobiles);
-	})
-});
+	});
 $("#msn_sel_all").click(function(){
 	$("#tid").val('all');
 	$(".mss-input-1text").html('');
@@ -449,6 +448,9 @@ $("#msn_sel_all").click(function(){
 $("#confirm-alert").click(function(){
 	$("#backbg,#alertbox,#alert-cont-box").slideUp(300);								   
 	});
+});//document ready
+
+//发送控制2
 function sendSms(){ 	
 	$("#backbg").css("display","block");
 	var fixCenLeft = parseInt(www/2)-240+"px";
@@ -472,7 +474,9 @@ function sendSms(){
 		$("#alert-cont-box").slideDown(100);	
 	}, 'json');
     return false;
-}
+};
+
+
 
 
 
