@@ -393,7 +393,7 @@ function Mselchoose(tbox,flag,num,item_id1,item_id2){
     </div>
   </fieldset>
 </form>
-<!--弹出框代码-->
+<!--弹出框样式代码-->
 <div id="backbg"></div><!--不可点击自身消失-->
 <div id="backbg1"></div><!--可点击自身消失-->
 <div id="alertbox" style="text-align:center;"><img src="/static/images/loading1.gif" style="width:124px; margin:66px auto" /></div>
@@ -444,15 +444,14 @@ $("#msn_sel_all").click(function(){
 	$("#tid").val('all');
 	$(".mss-input-1text").html('');
 	$(".mss-input-1text").append("<span  title='不包括待审核会员'>选择全部会员（不包括待审核会员，若需待审核会员请于-选择会员-中选择）</span>   ");
-});
+
 
 
 //发送控制
 $("#confirm-alert").click(function(){
 	$("#backbg,#alertbox,#alert-cont-box").slideUp(300);								   
 	});
-function sendSms(){   
-	var flag = 0 ; // the sign of status of the submit. 0:unover ; 1:already over
+function sendSms(){ 	
 	$("#backbg").css("display","block");
 	var fixCenLeft = parseInt(www/2)-240+"px";
 	var fixCenTop = parseInt(hhh/2)-130+"px";
@@ -475,8 +474,12 @@ function sendSms(){
 		$("#alert-cont-box").slideDown(100);	
 	}, 'json');
     return false;
-
 }
+
+
+}); //document ready
+
+
 //-->
 </script>
 <include file="Public:bootstrapFooter" />
