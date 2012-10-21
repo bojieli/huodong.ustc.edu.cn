@@ -12,7 +12,7 @@ public function show(){
 	$tid = $this->_get('d');
 	$model = D('Msg');
 	$show=$model->showMsgFromMe();
-	$model->showSysMsg()
+	$sys_msg=$model->showSysMsg();
 	$show[1][]['to_uid']=$tid;
 	foreach($show[1] as $raw => $val)
 	{
