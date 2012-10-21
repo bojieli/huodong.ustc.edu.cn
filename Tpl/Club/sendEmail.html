@@ -1,4 +1,12 @@
 <include file="Public:bootstrapHeader" />
+<script type="text/javascript">
+<!--
+getwindowWH();//调用函数获取数值
+window.onresize=function(){
+getwindowWH();//调用函数获取数值
+}
+//-->
+</script>
 <!--以下为筛选代码以及js代码-->
 <script type="text/javascript"> 
 <!-- Begin 
@@ -385,28 +393,36 @@ function Mselchoose(tbox,flag,num,item_id1,item_id2){
     </div>
   </fieldset>
 </form>
+<!--弹出框代码-->
+<div id="backbg"></div><!--不可点击自身消失-->
+<div id="backbg1"></div><!--可点击自身消失-->
+<div id="alertbox" style="text-align:center;"><img src="/static/images/loading1.gif" style="width:124px; margin:66px auto" /></div>
+<div id="alert-cont-box">
+	<div class="alert-title">邮件发送结果</div>
+    <div id="sendEmail-result" class="alert-cont"></div>
+    <div id="confirm-alert" class="dxhb-button alert-button" >确 认</div>
+</div>
 
-<div id="backbg"></div>
 <script >
 //<!--
 $(document).ready(function(){
 /*弹出短信选择框*/
 $("#msn_sel_mem").click(function(){	 
 	$("#msn_selmem_box").show(300);
-	$("#backbg").css("display","block");	
+	$("#backbg1").css("display","block");	
 	})
 
 $("#giveup_sel").click(function(){	 
 	$("#msn_selmem_box").hide(300);
-	$("#backbg").css("display","none");	
+	$("#backbg1").css("display","none");	
 	})
-$("#backbg").click(function(){	 
+$("#backbg1").click(function(){	 
 	$("#msn_selmem_box").hide(300);
-	$("#backbg").css("display","none");	
+	$("#backbg1").css("display","none");	
 	})
 $("#msn_selmem_tjsx").live('click',function(){
 	$("#msn_selmem_box").hide(300);
-	$("#backbg").css("display","none");
+	$("#backbg1").css("display","none");
 	$(".mss-input-1text").html('');
 	var mobiles = '';
     $("#members_select option").each(function() {
@@ -429,20 +445,37 @@ $("#msn_sel_all").click(function(){
 	$(".mss-input-1text").html('');
 	$(".mss-input-1text").append("<span  title='不包括待审核会员'>选择全部会员（不包括待审核会员，若需待审核会员请于-选择会员-中选择）</span>   ");
 });
-function sendSms()
-{
+
+
+//发送控制
+$("#confirm-alert").click(function(){
+	$("#backbg,#alertbox,#alert-cont-box").slideUp(300);								   
+	});
+function sendSms(){   
+	var flag = 0 ; // the sign of status of the submit. 0:unover ; 1:already over
+	$("#backbg").css("display","block");
+	var fixCenLeft = parseInt(www/2)-240+"px";
+	var fixCenTop = parseInt(hhh/2)-130+"px";
+	$("#alertbox,#alert-cont-box").css("top",fixCenTop);
+	$("#alertbox,#alert-cont-box").css("left",fixCenLeft);	
+	$("#alertbox").slideDown(300);	
+	
 	var form = $("#EmailSend");
 	$.post($(form).attr('action'), $(form).serialize(), function (data) {
 		if (data.status == 1) {
-			alert(data.info);
+	//		alert(data.info);
 			$("#title").val('');
 			$("#tid").val('');
 			$(".mss-input-1text").html('');
+			$("#sendEmail-result").html("<span style='color:green;'>发送成功：</span>"+ data.info );
 		} else if(data.status==0) {
-			alert('发送信息失败：' + data.info);
+	//		alert('发送信息失败：' + data.info);
+	        $("#sendEmail-result").html("<span style='color:red;'>发送失败：</span>"+ data.info );
 		}
+		$("#alert-cont-box").slideDown(100);	
 	}, 'json');
     return false;
+
 }
 //-->
 </script>
