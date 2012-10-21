@@ -128,8 +128,10 @@ class SmsAction extends PublicAction {
 				$re[$row]['humanDate']=date("Y年n月j日H:i", $value['time']);
 			}
 			$club = D('Club')->getInfo($gid);
-			$club_name=D('Club')->getInfo($gid)['name'];
+			$club_name=$club['name'];
+			$school_name=$club['shool']['name'];
 			$this->assign('club_name',$club_name);
+			$this->assign('school_name',$school_name);
 			$this->assign('history',$re);
 			//dump($re);
 			$this->display();
