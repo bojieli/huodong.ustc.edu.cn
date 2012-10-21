@@ -57,7 +57,7 @@
 <body>
 <include file="Public:headnav" />
 <div class="tt-con1">
-<div class="mss-history-titile">&nbsp;中国科学技术大学 -- 学生创业协会 -- 短信发送记录</div>
+<div class="mss-history-titile">&nbsp;{$club.school.name} - {$club_name} - 群短信发送记录</div>
 </div>
 <div id="mainding" class="mss-history-main"><br/>
     
@@ -65,7 +65,7 @@
     <div class="history-list-title">
     {$vo['humanDate']}
     <span class="history-intro">发信人：{$vo['realname']}</span>
-    <span class="history-intro">发送量：{$vo['pid_num'} 条</span>    
+    <span class="history-intro">发送量：{$vo['pid_num']} 条</span>    
     </div>
     <div class="history-list-cont">{$vo['msg']}</div>
 </volist>
