@@ -7,11 +7,12 @@ class MsgAction extends PublicAction {
 		$this->display();
 	}
 
-public function show() {
+public function show(){
 	if(!D('User')->checkLogin()){$this->error('未登陆');}
 	$tid = $this->_get('d');
 	$model = D('Msg');
 	$show=$model->showMsgFromMe();
+	$model->showSysMsg()
 	$show[1][]['to_uid']=$tid;
 	foreach($show[1] as $raw => $val)
 	{
@@ -29,11 +30,11 @@ public function show() {
    $_G['timestamp']=time();
    //if(empty($_G['uid'])){$this->error('未登陆');}
    $msg=$this->_post('s')?$this->_post('s'):$this->_get('s');
-   $sub=$this->_post('sub')?$this->_post('sub'):$this->_get('sub');
+   $title=$this->_post('title')?$this->_post('sub'):$this->_get('title');
    $to_uid=$this->_post('t')?$this->_post('t'):$this->_get('t');
    //echo $msg;
    //return 0;
-   $re=$model->sentMsg($_G['timestamp'],$msg,$to_uid,$sub);
+   $re=$model->sentMsg($_G['timestamp'],$msg,$to_uid);
     $this->success('yeah!!!');
 	}
  }//
