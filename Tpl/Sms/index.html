@@ -177,16 +177,16 @@ $(document).ready(function(){
 $("#msn_sel_mem").click(function(){	 
 	$("#msn_selmem_box").show(300);
 	$("#backbg1").css("display","block");	
-	})
+	});
 
 $("#giveup_sel").click(function(){	 
 	$("#msn_selmem_box").hide(300);
 	$("#backbg1").css("display","none");
-	})
+	});
 $("#backbg1").click(function(){	 
 	$("#msn_selmem_box").hide(300);
 	$("#backbg1").css("display","none");	
-	})
+	});
 
 $("#msn_selmem_tjsx").live('click',function(){
 	$("#msn_selmem_box").hide(300);
@@ -210,15 +210,16 @@ $("#msn_selmem_tjsx").live('click',function(){
 	 $("#tid_num").val(i);
 	 $("#tid").val(mobiles);
 	 
-	})
-});
-
+	});
 
 //发送控制
-$("#confirm-alert").click(function(){
-	alert("asdf");
+$("#confirm-alert").click(function(){	
 	$("#backbg,#alertbox,#alert-cont-box").slideUp(300);								   
 });
+
+
+
+});//document.ready
 function sendSms()
 {
 	$("#backbg").css("display","block");
@@ -249,7 +250,9 @@ function sendSms()
 		$("#alert-cont-box").slideDown(100);
 	}, 'json');
     return false;
-}
+};
+
+
 //-->
 </script>
 <!--筛选列表的css样式表-->
