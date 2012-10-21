@@ -53,7 +53,7 @@ class MsgModel extends Model {
 			//$gids=M('Msg_sys')->field('gid')->where($con)->group('gid')->select();
 			//foreach($gids as $row => $val)
 			//{
-				$msg=M('Msg_sys')->where(array('uid'=>$uid))->select();
+				$msg=M('Msg_sys')->where(array('tid'=>$uid))->select();
 			//}
 			return $msg;
 		}
