@@ -45,6 +45,31 @@ getwindowH();
 //-->
 </script>
 
+
+<script type="text/javascript">
+function msg_append()
+{
+	var tmp=$('#area').val();
+	var d = new Date()
+    var vYear = d.getFullYear()
+    var vMon = d.getMonth() + 1
+    var vDay = d.getDate()
+    var h = d.getHours(); 
+    var m = d.getMinutes();
+	var vtime = vYear+'年'+vMon+'月'+vDay+'日  '+h+':'+m;
+	$("tbody").append('<tr><td><div class="sharp1 color5"><b class="b1"></b><b class="b2"></b><b class="b3"></b><b class="b4"></b><div class="content"> <p style="font-size:16px; font-family:Microsoft YaHei; color:#F0F; text-align:left; margin:0 ;">'+tmp+'</p> <p style="font-size:12px; color:#999;font-family:Microsoft YaHei; text-align:right;margin:5px 0px 0 0;">'+vtime+'</p></div> <b class="b5"></b><b class="b6"></b><b class="b7"></b><b class="b8"></b> </div> </td> </tr>');
+	$('.activitynotice').scrollTop(10*$('.activitynotice').height());
+};
+function sendMsg()
+{
+	var form = $("#sent_msg");
+	$.post($(form).attr('action'), $(form).serialize(), function (data) {
+		}, 'json');
+    return false;
+}
+</script>
+
+
 <!--下面是眉头的代码-->
 <include file="Public:headnav" />
 
@@ -347,10 +372,10 @@ document.getElementById("mainright").style.height=hhh-140+"px";
 </div><!--信息详情框-->   
  
  
- <div class="activitymsg"><!--回复框-->
+ <div class="activitymsg" style="display:none"><!--回复框-->
       <form action="/Msg/create/t/" method="post" id="sent_msg" style="border:0;">
-	  <textarea class="textkuang" name="s"></textarea>
-      <input id="send" type="submit" value="发送" onmouseover="this.style.backgroundColor=&#39;#FF9&#39;" onmouseout="this.style.backgroundColor=&#39;#B0C4DE&#39;"/>
+	  <textarea id="area" class="textkuang" name="s"></textarea>
+      <input id="send" type="submit" onclick="msg_append();sendMsg();return false;" value="发送" onmouseover="this.style.backgroundColor=&#39;#FF9&#39;" onmouseout="this.style.backgroundColor=&#39;#B0C4DE&#39;"/>
 	  </form>
  </div><!--回复框-->
         	
