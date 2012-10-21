@@ -15,25 +15,6 @@ class MsgModel extends Model {
 			//echo 1233;
 			//return $msg;
         }
-		
-		
-		
-		
-		
-		
-		
-		
-		public function showMsgToMe()
-        {   
-            global $_G;
-			$con['to_uid']=$_G['uid'];
-			$uids=$this->field('uid')->where($con)->group('uid')->select();
-			foreach($uids as $row => $val)
-			{
-				$msg[$val['uid']]=$this->showMsgFt($val['uid']);
-			}
-			return $msg;
-        }
         public function showMsgFt($to_uid)
 		{
 			global $_G;
@@ -47,8 +28,8 @@ class MsgModel extends Model {
 		}
 		public function sentMsg($time,$msg,$to_uid,$sub){
         global $_G;
-        $ip=get_client_ip();
-        $data=array(
+		$ip=get_client_ip();
+		$data=array(
 			'uid'=>$_G['uid'],
 			'time'=>$time,
 			'msg'=>$msg,
