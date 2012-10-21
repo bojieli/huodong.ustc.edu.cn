@@ -11,11 +11,13 @@ public function show(){
 	if(!D('User')->checkLogin()){$this->error('未登陆');}
 	$tid = $this->_get('d');
 	$model = D('Msg');
-	$show=$model->showMsgFromMe();
-	//dump($show);
+	$show=$model->showMsgFromMe();//对话消息
+	//dump($show[2]);
+	//die;
 	//$model->sentMsgForSys(time(),'科考学会邀请你加入','1385545465465454684654',3,3);
-	$sys_msg=$model->showSysMsg();
+	$sys_msg=$model->showSysMsg();//系统消息
 	//dump($sys_msg);
+	//die;
 	$show[1][]['to_uid']=$tid;
 	foreach($show[1] as $raw => $val)
 	{
@@ -24,13 +26,13 @@ public function show(){
 	}
 	foreach($sys_msg as $raw1 => $val1)
 	{
-		$sys_msg[$raw1]['name']=M('Club')->field('name')->where(array('gid'=>$val1['gid']))->find()['name'];
+		$sys_msg[0][$raw1]['name']=M('Club')->field('name')->where(array('gid'=>$val1['gid']))->find()['name'];
 	}
-	//dump($sys_msg);
 	//die;
+	$this->assign('msg_num',array($sys_msg[1],$show[2],$sys_msg[1]+$show[2]));
 	$this->assign('info',$show[0]);
 	$this->assign('tid',$tid_info);
-	$this->assign('sys',$sys_msg);
+	$this->assign('sys',$sys_msg[0]);
 	
 	/*foreach($sys_msg[1] as $raw => $val)
 	{

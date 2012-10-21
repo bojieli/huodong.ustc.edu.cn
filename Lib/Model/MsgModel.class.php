@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 class MsgModel extends Model {
 	
 		 public function showMsgFromMe()
@@ -30,12 +30,21 @@ class MsgModel extends Model {
 			}
 			//$tids=array('to_uid'=>$tids);
 			//dump($tids);
+			$m=0;
 			foreach($tids as $row => $val)
 			{
 				$msg[$val['to_uid']]=$this->showMsgFt($val['to_uid']);
+				$co=array(
+						'uid'=>$val['to_uid'],
+						'to_uid'=> $_G['uid'],
+						'status' => 0
+				);
+				$m+=$this->where($co)->count();
 			}
+			//dump($this->getLastsql());
+			//die;
 			//dump($msg);
-			return array($msg,$tids);
+			return array($msg,$tids,$m);
 			//echo 1233;
 			//return $msg;
         }
@@ -43,7 +52,12 @@ class MsgModel extends Model {
 		{
 			global $_G;
 			$uid = $_G['uid'];
-			return $this->where('(uid='.$uid.'&&to_uid='.$to_uid.')||(uid='.$to_uid.'&&to_uid='.$uid.')')->select();
+			$re=$this->where('(uid='.$uid.'&&to_uid='.$to_uid.')||(uid='.$to_uid.'&&to_uid='.$uid.')')->select();	
+			foreach($re as $row =>$val)
+				{
+					$re[$row]['humanDate']=date("Y年n月j日 H:i", $val['time']);
+				}
+			return $re;
 		}
 		public function sentMsg($time,$msg,$to_uid){
 			global $_G;
@@ -54,7 +68,7 @@ class MsgModel extends Model {
 				'msg'=>$msg,
 				'to_uid'=>$to_uid?$to_uid:0,
 				'ip'=>$ip,
-				'status'=>1
+				'status'=>0
 				);
 		
 			$this->data($data)->add();      
@@ -78,8 +92,20 @@ class MsgModel extends Model {
 			//foreach($gids as $row => $val)
 			//{
 				$msg=M('Msg_sys')->where(array('tid'=>$uid))->select();
+				foreach($msg as $row =>$val)
+				{
+					$msg[$row]['humanDate']=date("Y年n月j日 H:i", $val['time']);
+				}
+				
+				
+				
+				$con = array(
+					'tid'=>$uid,
+					'status'=>0
+				);
+				$n = M('Msg_sys')->where($con)->count();
 			//}
-			return $msg;
+			    return array($msg,$n);
 		}
 		
  
