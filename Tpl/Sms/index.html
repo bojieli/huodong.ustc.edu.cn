@@ -5,6 +5,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <link href="/static/css1.css" rel="stylesheet" type="text/css" />
 <script src="/static/jquery.js" type="text/javascript"></script>
+<script src="/static/jsjq1.js" type="text/javascript"></script>
 
 <!--以下为筛选代码以及js代码-->
 <script type="text/javascript"> 
@@ -175,21 +176,21 @@ $(document).ready(function(){
 /*弹出短信选择框*/
 $("#msn_sel_mem").click(function(){	 
 	$("#msn_selmem_box").show(300);
-	$("#backbg").show(10);	
+	$("#backbg1").css("display","block");	
 	})
 
 $("#giveup_sel").click(function(){	 
 	$("#msn_selmem_box").hide(300);
-	$("#backbg").hide(300);	
+	$("#backbg1").css("display","none");
 	})
-$("#backbg").click(function(){	 
+$("#backbg1").click(function(){	 
 	$("#msn_selmem_box").hide(300);
-	$("#backbg").hide(300);	
+	$("#backbg1").css("display","none");	
 	})
 
 $("#msn_selmem_tjsx").live('click',function(){
 	$("#msn_selmem_box").hide(300);
-	$("#backbg").hide(300);
+	$("#backbg1").css("display","none");
 	$(".mss-input-1text").html('');
 	var mobiles = '';
     $("#members_select option").each(function() {
@@ -211,20 +212,40 @@ $("#msn_selmem_tjsx").live('click',function(){
 	 
 	})
 });
+
+
+//发送控制
+$("#confirm-alert").click(function(){
+	$("#backbg,#alertbox,#alert-cont-box").slideUp(300);								   
+	});
 function sendSms()
 {
+	$("#backbg").css("display","block");
+	var fixCenLeft = parseInt(www/2)-240+"px";
+	var fixCenTop = parseInt(hhh/2)-130+"px";
+	$("#alertbox,#alert-cont-box").css("top",fixCenTop);
+	$("#alertbox,#alert-cont-box").css("left",fixCenLeft);	
+	$("#alertbox").slideDown(300);	
+	
 	var form = $("#SmsSend");
 	$.post($(form).attr('action'), $(form).serialize(), function (data) {
 		if($("#sms_num").text()<$("#tid_num").val())
-		{alert('剩余短信条数不足');return false;}
+		{   
+		 //  alert('剩余短信条数不足');
+		   $("#sendMssage-result").html("<span style='color:green; font-size:20px; '>发送失败：<br/></span><span style='margin-left:40px; line-height:24px;'>剩余短信条数不足！</span>" );
+	       return false;
+		   }
 		if (data.status == 1) {
-			alert(data.info[0]);
+	//		alert(data.info[0]);
 			$("#tid").val('');
 			$("#sms_num").text(data.info[1]);
 			$(".mss-input-1text").html('');
+			$("#sendMssage-result").html("<span style='color:green; font-size:20px; '>发送成功：<br/></span><span style='margin-left:40px; line-height:24px;'>"+ data.info[0] +"</span>" );
 		} else if(data.status==0 ) {
-			alert('发送信息失败：' + data.info[0]);
+	//		alert('发送信息失败：' + data.info[0]);
+	        $("#sendMssage-result").html("<span style='color:green; font-size:20px; '>发送信息失败：<br/></span><span style='margin-left:40px; line-height:24px;'>"+ data.info[0] +"</span>" );
 		}
+		$("#alert-cont-box").slideDown(100);
 	}, 'json');
     return false;
 }
@@ -357,6 +378,14 @@ function sendSms()
 
 
 <body>
+<script type="text/javascript">
+<!--
+getwindowWH();//调用函数获取数值
+window.onresize=function(){
+getwindowWH();//调用函数获取数值
+}
+//-->
+</script>
 <include file="Public:headnav" />
 <div id="mainding" style="position:relative; overflow: scroll;">
   <p class="mss-tittle">{$club['school']['name']} - {$club['name']} - 群发短信通知</p>
@@ -507,7 +536,15 @@ setInterval("tmp()",0);
 
 </div><!--main ding-->
 
-<div id="backbg"></div>
+<!--弹出框样式代码-->
+<div id="backbg"></div><!--不可点击自身消失-->
+<div id="backbg1"></div><!--可点击自身消失-->
+<div id="alertbox" style="text-align:center;"><img src="/static/images/loading1.gif" style="width:124px; margin:66px auto" /></div>
+<div id="alert-cont-box">
+	<div class="alert-title">群短信发送结果</div>
+    <div id="sendMssage-result" class="alert-cont"></div>
+    <div id="confirm-alert" class="dxhb-button alert-button" >确 认</div>
+</div>
 
 </body>
 </html>
