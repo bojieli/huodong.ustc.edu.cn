@@ -4,17 +4,72 @@
 <title>{$club_name}-短信历史记录</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <link href="/static/css1.css" rel="stylesheet" type="text/css" />
+<style type="text/css">
+*{
+	margin:0;
+	padding:0;
+	font-family:Microsoft Yahei, "Times New Roman", Times, serif;
+	}
+.tt-con1{
+	background:#CCF;
+	border-bottom:2px solid #9bc;
+	margin:3px auto 0px auto;
+	}
+.mss-history-titile{
+	margin:0 auto;	
+	font-size:25px;
+	padding-left: 10px;		
+	color:#333;			
+	font-weight:bold;	
+	line-height:50px;
+	vertical-align:middle;	
+}
+.mss-history-main{
+	position:relative;	
+	border-left:1px solid #f0f0f0;
+	border-right:1px solid #f0f0f0;	
+	}
+.history-list-title{	
+	font-size:25px;
+	padding-left:10px;		
+	color:#99F;			
+	font-weight:bold;	
+	line-height:40px;
+	vertical-align:middle;
+	background:#DDD;
+	border-bottom:2px solid #9C9;
+	}
+.history-intro{
+	margin-left:60px;
+	font-weight:normal;
+	color:#396;
+	font-size:20px;
+	}
+.history-list-cont{
+	margin-top:5px;
+	padding:5px 45px;
+	font-size:18px;
+	border-bottom:1px dotted #9C9;
+	margin-bottom:0px;
+	}
+</style>
 </head>
 <body>
 <include file="Public:headnav" />
-<div id="main_content" style="width:400px;margin:20px auto;">
-<volist name="history" id="vo">
-	<div class="all_content" style="">
-		<span class="realname">{$vo['realname']}:</span>
-		<span class="msg" style="background-color:#eee;margin-left:20px">{$vo['msg']}</span>
-		<span class="time" style="float:right;color:#8E8E90;font-size:10px">----{$vo['humanDate']}</span>
-	</div>
-</volist>
+<div class="tt-con1">
+<div class="mss-history-titile">&nbsp;中国科学技术大学 -- 学生创业协会 -- 短信发送记录</div>
 </div>
+<div id="mainding" class="mss-history-main"><br/>
+    
+<volist name="history" id="vo">    
+    <div class="history-list-title">
+    {$vo['humanDate']}
+    <span class="history-intro">发信人：{$vo['realname']}</span>
+    <span class="history-intro">发送量：{$vo['pid_num'} 条</span>    
+    </div>
+    <div class="history-list-cont">{$vo['msg']}</div>
+</volist>
+
+</div><!--mainding-->
 </body>
 <html>
