@@ -119,8 +119,11 @@ class SmsAction extends PublicAction {
 			if(!D('Club')->isManager($gid)){$this->error('无权限');}
 			$gid=$this->_get('gid');
 			$re=M('Sms_md5')->where(array('gid'=>$gid))->order('time')->select();
+			//dump($re);
 			foreach($re as $row => $value)
 			{
+				$pid=$value['pid'];
+				$re[$row]['pid_num']=D('Sms')->getSmsNumByPid($pid,$gid);
 				$re[$row]['realname']=D('Sms')->getUserName($value['uid']);
 				$re[$row]['humanDate']=date("Y年n月j日H:i", $value['time']);
 			}
