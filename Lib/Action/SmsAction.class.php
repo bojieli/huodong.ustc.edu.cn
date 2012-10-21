@@ -46,9 +46,9 @@ class SmsAction extends PublicAction {
 			foreach($re as $row => $value)
 			{
 				if($value['title']!='会员')
-				$member[$value['uid']]=$value['realname'].'('.$value['title'].')'.'-'.$value['telephone'];
+				$member[$value['uid']]=$value['realname'].'('.$value['title'].')'.'——'.$value['telephone'];
 				else
-				$member[$value['uid']]=$value['realname'].'-'.$value['telephone'];
+				$member[$value['uid']]=$value['realname'].'——'.$value['telephone'];
 			}
 			$this->assign('member',$member);
 			$this->display();
