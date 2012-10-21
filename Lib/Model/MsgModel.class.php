@@ -19,28 +19,45 @@ class MsgModel extends Model {
 		{
 			global $_G;
 			$uid = $_G['uid'];
-			//$con['uid']=$_G['uid'];
-           // $con['to_uid']=$to_uid;
-            //$con['_logic']='AND';
-			
-			//dump($con);
 			return $this->where('(uid='.$uid.'&&to_uid='.$to_uid.')||(uid='.$to_uid.'&&to_uid='.$uid.')')->select();
 		}
-		public function sentMsg($time,$msg,$to_uid,$sub){
-        global $_G;
-		$ip=get_client_ip();
-		$data=array(
-			'uid'=>$_G['uid'],
-			'time'=>$time,
-			'msg'=>$msg,
-			'sub'=>$sub?$sub:'blank',
-			'to_uid'=>$to_uid?$to_uid:0,
-			'ip'=>$ip,
-			'status'=>1
-		);
+		public function sentMsg($time,$msg,$to_uid){
+			global $_G;
+			$ip=get_client_ip();
+			$data=array(
+				'uid'=>$_G['uid'],
+				'time'=>$time,
+				'msg'=>$msg,
+				'to_uid'=>$to_uid?$to_uid:0,
+				'ip'=>$ip,
+				'status'=>1
+				);
 		
-		$this->data($data)->add();      
+			$this->data($data)->add();      
         }
+		public function sentMsgForSys($time,$title,$msg,$tid,$gid){
+			$data=array(
+				'time'=>$time,
+				'title'=>$title,
+				'msg'=>$msg,
+				'tid'=>$tid?$tid:0,
+				'gid'=>$gid,
+				'status'=>0
+			);
+			M('Msg_sys')->data($data)->add();      
+        }
+		public function showSysMsg(){
+			global $_G;
+			$uid = $_G['uid'];
+			//$con['tid']=$_G['uid'];
+			//$gids=M('Msg_sys')->field('gid')->where($con)->group('gid')->select();
+			//foreach($gids as $row => $val)
+			//{
+				$msg=M('Msg_sys')->where(array('uid'=>$uid))->select();
+			//}
+			return $msg;
+		}
+		
  
 }//
 ?>

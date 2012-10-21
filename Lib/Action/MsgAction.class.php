@@ -12,16 +12,34 @@ public function show(){
 	$tid = $this->_get('d');
 	$model = D('Msg');
 	$show=$model->showMsgFromMe();
+	//$model->sentMsgForSys(time(),'123','你好',5,3);
 	$sys_msg=$model->showSysMsg();
+	//dump($sys_msg);
 	$show[1][]['to_uid']=$tid;
 	foreach($show[1] as $raw => $val)
 	{
 		$tid_info[$val['to_uid']]=D('User')->getInfo($val['to_uid']);
 		$tid_info[$val['to_uid']]['last_dialog'] = $show[0][$val['to_uid']][count($show[0][$val['to_uid']])-1];
 	}
-	//dump($tid_info);
+	foreach($sys_msg as $raw1 => $val1)
+	{
+		$sys_msg[$raw1]['name']=M('Club')->field('name')->where(array('gid'=>$val1['gid']))->find()['name'];
+	}
+	//dump($sys_msg);
+	//die;
 	$this->assign('info',$show[0]);
 	$this->assign('tid',$tid_info);
+	$this->assign('sys',$sys_msg);
+	
+	/*foreach($sys_msg[1] as $raw => $val)
+	{
+		$sys_info[$val['gid']]=D('Club')->getInfo($val['gid']);
+		$sys_info[$val['gid']]['last_dialog'] = $sys_msg[0][$val['gid']][count($sys_msg[0][$val['gid']])-1];
+	}
+	//dump($sys_msg[0]);
+	//dump($sys_info);
+	$this->assign('sys',$sys_msg[0]);
+	$this->assign('gid',$sys_info);*/
 	}
 	public function create(){
    if(!D('User')->checkLogin()){$this->error('未登陆');}

@@ -118,7 +118,7 @@ document.getElementById("leftscroll").style.height=hhh-140+"px";
             <volist name="tid" id="vo">
 			<neq name="key" value="0">
 			<notempty name="key">
-				<div class=" activity1 tid{$vo['to_uid']}" style="background-color: rgb(230, 230, 250); background-position: initial initial; background-repeat: initial initial; ">
+				<div class=" activity1" style="background-color: rgb(230, 230, 250); background-position: initial initial; background-repeat: initial initial; ">
 					
 					<img src="{$vo.small_avatar}" />
 					<div class=" activitytitle">来自<span style="color:#F8C; ">个人</span><br>
@@ -134,17 +134,22 @@ document.getElementById("leftscroll").style.height=hhh-140+"px";
 				</div>
 			</notempty>
 			 <else/>
-            
-			<div class=" activity" style="background-color: rgb(230, 230, 250); background-position: initial initial; background-repeat: initial initial; ">
-            	<img src="/static/Tooolove_files/TA.png">
-                <div class=" activitytitle">来自<span style="color:#F8C; ">活动：</span><br>
-                    <span style="font-size:16px;">周末去南淝河钓鱼顺便烧烤</span>
-                </div>
-                <div class="activitydetail">
-                    <span>我们决定周六早上7:30在西区大门口集合，是否确定去？....</span>
-                </div>            
-            </div>
 			</neq>
+			</volist>
+			<volist name="sys" id="vk">
+				<notempty name="vk.gid">
+				<div class="activity" style="background-color: rgb(230, 230, 250); background-position: initial initial; background-repeat: initial initial; ">
+					<img src="/static/Tooolove_files/TA.png">
+					<div class=" activitytitle">来自<span style="color:#F8C; ">活动：{$vk.name}</span><br>
+						<span style="font-size:16px;">{$vk.title}</span>
+					</div>
+					<input name="sys_key" class="sys_key" type="hidden" value="{$key}"/>
+					<!--div class="activitydetail">
+						<span>
+						</span>
+					</div-->            
+				</div>
+				</notempty>
 			</volist>
             <!--div class="activity" style="background-color: rgb(230, 230, 250); background-position: initial initial; background-repeat: initial initial; ">
             	<img src="/static/Tooolove_files/TA.png">
@@ -231,8 +236,15 @@ document.getElementById("mainright").style.height=hhh-140+"px";
 	document.getElementById("xinxixq").style.height=hhh-270+"px";
 	-->
 	</script>
-	  <div id="huodong11" style="display: none; "><!--包含活动信息输出框-->
-		 <table width="635" cellpadding="0" cellspacing="0" border="0" align="left" style="margin:0px 0px 0px 40px; color:#000;">
+	   <volist name="sys" id="vd">
+		<notempty name="vd.gid">
+			<div id="huodong11" class="{$key}_sys" style="display: none; "><!--包含活动信息输出框-->
+			{$vd.msg}
+			</div>
+		</notempty>	
+			<!--活动信息输出框-->
+	   </volist>
+		 <!--table width="635" cellpadding="0" cellspacing="0" border="0" align="left" style="margin:0px 0px 0px 40px; color:#000;">
 			<tbody>
 			  <tr>
 				<td colspan="3" align="center" style="color: #09C; font-size:18px;">来自<span style="color:#F8C">活动</span>：周末去南淝河钓鱼顺便烧烤：周末去南淝河钓鱼顺便烧烤</td>
@@ -275,8 +287,7 @@ document.getElementById("mainright").style.height=hhh-140+"px";
 				<td>共申请 男 50 女 80 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;已确认 男 17 女 20</td>       
 			  </tr>
 			</tbody>
-		 </table>
-	   </div><!--活动信息输出框-->
+		 </table-->
 	<volist name="info" id="tmp">
 		<div id="duihua11" class="{$key}_tid" style="display:none; "><!--对话详情框-->
 			<table width="665" cellpadding="0" cellspacing="0" border="0" align="left" style="margin:0px 0px 0px 10px;">
