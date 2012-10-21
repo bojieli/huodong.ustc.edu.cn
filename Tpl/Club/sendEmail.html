@@ -392,16 +392,16 @@ $(document).ready(function(){
 /*弹出短信选择框*/
 $("#msn_sel_mem").click(function(){	 
 	$("#msn_selmem_box").show(300);
-	$("#backbg").show(10);	
+	$("#backbg").css("display","block");	
 	})
 
 $("#giveup_sel").click(function(){	 
 	$("#msn_selmem_box").hide(300);
-	$("#backbg").hide(300);	
+	$("#backbg").hide("display","none");	
 	})
 $("#backbg").click(function(){	 
 	$("#msn_selmem_box").hide(300);
-	$("#backbg").hide(300);	
+	$("#backbg").hide("display","none");	
 	})
 $("#msn_selmem_tjsx").live('click',function(){
 	$("#msn_selmem_box").hide(300);
