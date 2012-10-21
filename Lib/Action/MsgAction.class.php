@@ -12,7 +12,7 @@ public function show(){
 	$tid = $this->_get('d');
 	$model = D('Msg');
 	$show=$model->showMsgFromMe();
-	//$model->sentMsgForSys(time(),'123','你好',5,3);
+	$model->sentMsgForSys(time(),'科考学会邀请你加入','1385545465465454684654',3,3);
 	$sys_msg=$model->showSysMsg();
 	//dump($sys_msg);
 	$show[1][]['to_uid']=$tid;
