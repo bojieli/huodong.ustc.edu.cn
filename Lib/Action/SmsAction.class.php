@@ -68,7 +68,6 @@ class SmsAction extends PublicAction {
 		   //echo 123;
 		   //return 0;
 		   $Model = D('Sms');
-		   if($to_all==''||$msg==''){$this->error('未填写内容或未指明发送对象');};
 		   $i=0;
 		   foreach ($to_all as $row =>$value)
 		   {
