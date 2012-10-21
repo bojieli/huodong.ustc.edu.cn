@@ -68,6 +68,7 @@ class SmsAction extends PublicAction {
 		   //echo 123;
 		   //return 0;
 		   $Model = D('Sms');
+		   
 		   $i=0;
 		   foreach ($to_all as $row =>$value)
 		   {
@@ -77,6 +78,11 @@ class SmsAction extends PublicAction {
 						$i++;
 					}			
 		   }
+		   if($i==''||$msg==''){
+		     $info[1]=$Model->getSmsNum($gid);
+		     $info[0]="未填写内容或未指明发送对象";
+			 $this->error($info);
+		   };
 		   if(!$Model->canSent($gid,$i)){$this->error('剩余短信条数不足');}
 		   $re=$Model->sentSms($msg,$mobiles,$gid);
 		   $Model->deSmsNum($gid,$re['done']);
