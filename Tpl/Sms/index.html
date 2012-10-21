@@ -197,11 +197,11 @@ $("#msn_selmem_tjsx").live('click',function(){
 		i =0;
 		if(values[1].toString()=='')
 		{
-			$(".mss-input-1text").append("<span style='color:red' title='无手机号'>"+values[0]+"</span>   ");
+			$(".mss-input-1text").append("<span class='NameWithBg' style='color:red' title='无手机号'>"+values[0]+"</span>   ");
 		}
 		else
 		{
-			$(".mss-input-1text").append("<span  title='"+values[1]+"'>"+values[0]+"</span>   ");
+			$(".mss-input-1text").append("<span class='NameWithBg'  title='"+values[1]+"'>"+values[0]+"</span>   ");
 			mobiles +=values[2]+";"
 			i++;
 		}
@@ -410,7 +410,11 @@ function sendSms()
         <td width="120" align="left" valign="top">
 		<div id="msn_sel_mem" class="dxhb-button mss-button" >选择会员</div>
 		</td>
-        <td width="660" align="left" valign="top">
+        <td> </td>
+    </tr>
+    <tr>
+        <td width="90" align="right" valign="top" style="padding-top:3px;"> . </td>
+        <td colspan="2" width="660" align="left" valign="top">
 			<div class='mss-input-1text'>
 			</div>
 			<input type="hidden" name="tid" id="tid" value=""/>
@@ -425,7 +429,7 @@ function sendSms()
 				<textarea id="edit" name="s" title="写满两行文字的长度约为一条短信 ！" class="mss-input-text" onfocus="this.className='dxhb-focus mss-input-text'" onblur="this.className='dxhb-blur mss-input-text'" style="float:left" ></textarea>
 				<!--span style=" color:#F00;"><br/>&nbsp;&nbsp;&nbsp;写满两行文字的长度<br/>&nbsp;&nbsp;&nbsp;约为一条短信 ！</span-->
 				<span class="history">
-				<a href="/Sms/history?gid={$club.gid}" title="{$club['name']}" style="float:right; color:#06C;">全部短信记录</a>
+				<a href="/Sms/history?gid={$club.gid}" title="{$club['name']}" style=" color:#06C; margin-left:50px;">全部短信记录</a>
 				</span>
 				<span style="position:absolute;left:490px;top:135px;color:#8E8E90">
 				还可输入<span id="counter" style="color:#F00">200</span>字
