@@ -7,6 +7,7 @@ $newconfig = array(
 	'SESSION_AUTO_START' => true,
 	'APP_AUTOLOAD_PATH' => '@.TagLib,@.ORG',
 	'SHOW_PAGE_TRACE' => false,
+	'ATTACHMENT_SIZE' => 31457280,
 	'AVATAR_PATH' => 'upload/avatar/',
 	'COOKIE_PREFIX' => 'hd_',
 	'COOKIE_EXPIRE' => 3600
