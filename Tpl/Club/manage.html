@@ -160,7 +160,7 @@ $showPager = function() use($club,$pageNow) {
 		    </notempty>
 
 		    </div>
-                    <div class="stcyxx"><span class="<?=$member['gender'] ? 'boy' : 'girl' ?>name">{$member.realname}</span>：<br/>
+                    <div class="stcyxx"><span class="<?=$member['gender'] ? 'boy' : 'girl' ?>name">{$member.realname}</span>：  {$member.school}<br/>
 		    {$member.dept} {$member.grade}级 {$member.education} <notempty name="club.ismanager">
 		            <notempty name="member.student_no">
 			    学号: <span style="color:#999">{$member.student_no}</span>
@@ -215,7 +215,7 @@ $showPager = function() use($club,$pageNow) {
         <br/>
         <div class="sttttt">待审核会员：</div>
 	    <volist name="inactive" id="member">
-	        <p><span class="<?=$member['gender'] ? 'boy':'girl'?>name">{$member.realname}</span> {$member.dept} {$member.grade}级{$member.education}
+	        <p><span class="<?=$member['gender'] ? 'boy':'girl'?>name">{$member.realname}</span> {$member.school}-{$member.dept} {$member.grade}级{$member.education}
 	        <notempty name="club.ismanager">
 	        <a href="/Club/joinVerify?gid={$club.gid}&uid={$member.uid}" class="stfjdel1">允许</a> / <a href="/Club/joinDeny?gid={$club.gid}&uid={$member.uid}" class="stfjdel1">拒绝</a>
 	        </notempty>
