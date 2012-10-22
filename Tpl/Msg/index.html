@@ -47,18 +47,22 @@ getwindowH();
 
 
 <script type="text/javascript">
+function gundong(){
+e=document.getElementById("xinxixq");
+e.scrollTop=e.scrollHeight;
+};
 function msg_append()
 {
 	var tmp=$('#area').val();
-	var d = new Date()
-    var vYear = d.getFullYear()
-    var vMon = d.getMonth() + 1
-    var vDay = d.getDate()
+	var d = new Date();
+    var vYear = d.getFullYear();
+    var vMon = d.getMonth() + 1;
+    var vDay = d.getDate();
     var h = d.getHours(); 
     var m = d.getMinutes();
 	var vtime = vYear+'年'+vMon+'月'+vDay+'日  '+h+':'+m;
 	$("tbody").append('<tr><td><div class="sharp1 color5"><b class="b1"></b><b class="b2"></b><b class="b3"></b><b class="b4"></b><div class="content"> <p style="font-size:16px; font-family:Microsoft YaHei; color:#F0F; text-align:left; margin:0 ;">'+tmp+'</p> <p style="font-size:12px; color:#999;font-family:Microsoft YaHei; text-align:right;margin:5px 0px 0 0;">'+vtime+'</p></div> <b class="b5"></b><b class="b6"></b><b class="b7"></b><b class="b8"></b> </div> </td> </tr>');
-	e=document.getElementById("xinxixq")
+	e=document.getElementById("xinxixq");
     e.scrollTop=e.scrollHeight;
 	//$('.activitynotice').scrollTop(10*$('.activitynotice').height());
 };
@@ -68,7 +72,7 @@ function sendMsg()
 	$.post($(form).attr('action'), $(form).serialize(), function (data) {
 		}, 'json');
     return false;
-}
+};
 </script>
 
 
@@ -147,7 +151,7 @@ document.getElementById("leftscroll").style.height=hhh-140+"px";
             <volist name="tid" id="vo">
 			<neq name="key" value="0">
 			<notempty name="key">
-				<div class=" activity1" style="background-color: rgb(230, 230, 250); background-position: initial initial; background-repeat: initial initial; ">
+				<div class=" activity1" onclick="gundong();" style="background-color: rgb(230, 230, 250); background-position: initial initial; background-repeat: initial initial; ">
 					
 					<img src="{$vo.small_avatar}" />
 					<div class=" activitytitle">来自<span style="color:#F8C; ">个人</span><br>
