@@ -370,7 +370,8 @@ class ClubAction extends PublicAction {
 
 		$members = M()->query("SELECT * FROM (ustc_user INNER JOIN ustc_user_group ON ustc_user.uid = ustc_user_group.uid) INNER JOIN ustc_priv ON ustc_user_group.priv = ustc_priv.priv_name WHERE ustc_user_group.gid='$gid' ORDER BY ustc_priv.priv_value desc LIMIT $start,$num");
 		foreach ($members as &$member) {
-			$member['avatar'] = D('user')->getAvatar($member[uid],'small');
+			$member['avatar'] = D('user')->getAvatar($member['uid'],'small');
+			$member['school']=D('School')->result_first("select name from ustc_school where sid = ".$member['sid']);
 			/*if (empty($member['avatar']))
 				$member['avatar'] = C('AVATAR_PATH')."noavatar_big.gif";
 			else
@@ -380,6 +381,10 @@ class ClubAction extends PublicAction {
 		//$members = D('Club')->sortMemberByPriv($members);
 		$this->assign('members', $members);
 		$inactive_members = M()->query("SELECT * FROM ustc_user AS u, ustc_user_group AS ug WHERE ug.gid='$gid' AND ug.priv = 'inactive' AND ug.uid = u.uid");
+		foreach($inactive_members as &$member){
+			$member['school']=D('School')->result_first("select name from ustc_school where sid = ".$member['sid']);
+		}
+		unset($member);
 		$this->assign('inactive', $inactive_members);
 		$this->assign('pageStart', $start);
 		$this->assign('pageNow', $page);
