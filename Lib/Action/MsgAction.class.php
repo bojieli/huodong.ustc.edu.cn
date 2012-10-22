@@ -58,5 +58,19 @@ public function show(){
    $re=$model->sentMsg($_G['timestamp'],$msg,$to_uid);
     $this->success('yeah!!!');
 	}
+	public function ajax_sms_num()
+	{
+		 global $_G;
+		if(!D('User')->checkLogin()){$this->error('未登陆');}
+		 $num=$this->_post('num');
+		 $uid=$_G['uid'];
+		 $re=D('Msg')->ajaxCheck($uid);
+		 if($num!=$re[0]){
+			$info['tid']=$re[2]['to_uid'];
+			$info['msg']=$re[2]['msg'];
+		 }
+		 $info['num'] = $re[0];
+		 $this->success($info);
+	}
  }//
  ?>

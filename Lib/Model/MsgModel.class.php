@@ -107,6 +107,21 @@ class MsgModel extends Model {
 			//}
 			    return array($msg,$n);
 		}
+		public function ajaxCheck($uid)
+		{
+			$co=array(
+						'to_uid'=>$uid,
+						'status' => 0
+				);
+				$m=$this->where($co)->count();
+				$content=$this->field('uid','msg','time')->where($co)->find();
+			$con = array(
+					'tid'=>$uid,
+					'status'=>0
+				);
+				$n = M('Msg_sys')->where($con)->count();
+				return array($m,$n,$content);
+		}
 		
  
 }//
