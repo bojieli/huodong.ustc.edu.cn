@@ -156,9 +156,21 @@ class ClubAction extends PublicAction {
 		$record['title'] = '会长';
 		$row = M('user_group');
 		$row->create($record);
-		$row->add();
+		$email=D('User')->result_first("select email from ustc_user where uid = ".$record['uid']);
+		$club=D('Club')->getInfo($record['gid']);
+		$realname = D('User')->getRealname($record['uid']);
+		//$emails[] = $email;
+		if($row->add())
+		{
+			SendMail($email,"您申请成为".$club['name']."会长已被管理员审核通过",
+			$realname."您好:\n\n您申请成为".$club['name']."会长已被管理员审核通过\n\n点击下面链接进入".$club['name']."社团主页，完善社团信息\n".
+			"http://".$_SERVER['HTTP_HOST']."/Club/?gid=$gid\n\n".
+			"校园活动平台 http://".$_SERVER['HTTP_HOST']."感谢您的支持"
+			);
+			M('Club_apply')->where(array('uid'=>$uid,'gid'=>$gid,'ishandled'=>0))->save(array('ishandled'=>1));
+		}
 
-		M('Club_apply')->where(array('uid'=>$uid,'gid'=>$gid,'ishandled'=>0))->save(array('ishandled'=>1));
+		
 
 		$this->success("设置会长成功！");
 	}
