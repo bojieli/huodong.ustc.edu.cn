@@ -650,7 +650,7 @@ class ClubAction extends PublicAction {
 		'<div class="detail"><div class="hot">注册会员：'.$club->memberCount().'人'.
 		$this->apply2html($club->gid()).
 		'</div></div>'.
-		'<div class="school">'.$club->schoolName().'</div></div></li>';
+		'<div class="school">'.$club->schoolName($club->gid()).'</div></div></li>';
 	}
 
 	private function clubLogoThumbHtml($club) {
