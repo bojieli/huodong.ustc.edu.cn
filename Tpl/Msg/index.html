@@ -58,7 +58,9 @@ function msg_append()
     var m = d.getMinutes();
 	var vtime = vYear+'年'+vMon+'月'+vDay+'日  '+h+':'+m;
 	$("tbody").append('<tr><td><div class="sharp1 color5"><b class="b1"></b><b class="b2"></b><b class="b3"></b><b class="b4"></b><div class="content"> <p style="font-size:16px; font-family:Microsoft YaHei; color:#F0F; text-align:left; margin:0 ;">'+tmp+'</p> <p style="font-size:12px; color:#999;font-family:Microsoft YaHei; text-align:right;margin:5px 0px 0 0;">'+vtime+'</p></div> <b class="b5"></b><b class="b6"></b><b class="b7"></b><b class="b8"></b> </div> </td> </tr>');
-	$('.activitynotice').scrollTop(10*$('.activitynotice').height());
+	e=document.getElementById("xinxixq")
+    e.scrollTop=e.scrollHeight;
+	//$('.activitynotice').scrollTop(10*$('.activitynotice').height());
 };
 function sendMsg()
 {
