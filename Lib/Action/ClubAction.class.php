@@ -616,6 +616,17 @@ class ClubAction extends PublicAction {
 		}
 		else
 		{
+			if(!M('User_group')->where(array('uid'=>CURRENT_USER,'gid'=>$gid,'sid'=>$sid))->select())
+			{
+				$record['gid'] = $gid;
+				$record['uid'] = CURRENT_USER;
+				$record['sid'] = $sid;
+				$record['priv'] = 'inactive';
+				$record['title'] = '审核中';
+				$row = M('User_group');
+				$row->create($record);
+				$row->add();
+			}
 			M('Club_apply')->data($data)->add();
 			$this->success('申请成长，等待审核');
 		}
