@@ -129,12 +129,12 @@ class MsgModel extends Model {
       $date=array(
          'status'=>1
       );
-      if(empty($tid)){
-      $this->where(array('id'=>$id))->date($date)->save();
+      if(empty($tid)&&!empty($id)){
+      $this->where(array('id'=>$id))->data($date)->save();
       return true;
       };
-      if(empty($id)){
-      $this->where(array('uid'=>$tid,'to_uid'=>$uid))->date($date)->save();
+      if(empty($id)&&!empty($tid)){
+      $this->where(array('uid'=>$tid,'to_uid'=>$uid))->data($date)->save();
       return true;
       };
   return false;    

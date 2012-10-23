@@ -63,7 +63,6 @@ public function show(){
 		 global $_G;
 		if(!D('User')->checkLogin()){$this->error('未登陆');}
 		 $num=$this->_post('num');
-		 $tid=$this->_post('tid');
 		 $uid=$_G['uid'];
 		 $re=D('Msg')->ajaxCheck($uid);
 		 if($num!=$re[0]){
@@ -72,6 +71,22 @@ public function show(){
 		 }
 		 $info['num'] = $re[0];
 		 $this->success($info);
+	}
+	public function test()
+	{
+		$tid=5;
+		D('Msg')->readedMsg('',$tid);
+	}
+	public function ajax_read()
+	{
+		$tid=$this->_post('tid');
+		$info=0;
+		if(D('Msg')->readedMsg('',$tid));
+		{
+			$info=1;
+			$this->success($info);
+		}
+		$this->error($info);
 	}
  }//
  ?>
