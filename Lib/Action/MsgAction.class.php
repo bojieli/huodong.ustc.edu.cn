@@ -65,10 +65,12 @@ public function show(){
 		 $num=$this->_post('num');
 		 $uid=$_G['uid'];
 		 $re=D('Msg')->ajaxCheck($uid);
-		 if($num!=$re[0]){
-			$info['tid']=$re[2]['to_uid'];
+		 //dump($re);
+		 //die;
+		 //if($num!=$re[0]){
+			$info['tid']=$re[2]['uid'];
 			$info['msg']=$re[2]['msg'];
-		 }
+		 //}
 		 $info['num'] = $re[0];
 		 $this->success($info);
 	}

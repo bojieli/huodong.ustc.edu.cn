@@ -114,11 +114,12 @@ class MsgModel extends Model {
 						'status' => 0
 				);
 				$m=$this->where($co)->count();
-				$content=$this->field('uid','msg','time','id')->where($co)->find();
+				$content=$this->where($co)->find();
 			$con = array(
 					'tid'=>$uid,
 					'status'=>0
 				);
+				$id=$content['id'];
 				$n = M('Msg_sys')->where($con)->count();
 				$this->readedMsg($id);
 				return array($m,$n,$content);
