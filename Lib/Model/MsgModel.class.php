@@ -120,6 +120,7 @@ class MsgModel extends Model {
 					'status'=>0
 				);
 				$n = M('Msg_sys')->where($con)->count();
+				$this->readedMsg($id);
 				return array($m,$n,$content);
 		}
 		
