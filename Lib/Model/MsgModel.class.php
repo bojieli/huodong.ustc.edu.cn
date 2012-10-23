@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 class MsgModel extends Model {
 	
 		 public function showMsgFromMe()
@@ -114,7 +114,7 @@ class MsgModel extends Model {
 						'status' => 0
 				);
 				$m=$this->where($co)->count();
-				$content=$this->field('uid','msg','time')->where($co)->find();
+				$content=$this->field('uid','msg','time','id')->where($co)->find();
 			$con = array(
 					'tid'=>$uid,
 					'status'=>0
@@ -123,6 +123,22 @@ class MsgModel extends Model {
 				return array($m,$n,$content);
 		}
 		
- 
+ public function readedMsg($id,$tid){
+      global $_G;
+      $uid=$_G['uid'];
+      $date=array(
+         'status'=>1
+      );
+      if(empty($tid)){
+      $this->where(array('id'=>$id))->date($date)->save();
+      return true;
+      };
+      if(empty($id)){
+      $this->where(array('uid'=>$tid,'to_uid'=>$uid))->date($date)->save();
+      return true;
+      };
+  return false;    
+ }
+
 }//
 ?>

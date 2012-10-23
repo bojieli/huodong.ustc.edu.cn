@@ -63,6 +63,7 @@ public function show(){
 		 global $_G;
 		if(!D('User')->checkLogin()){$this->error('未登陆');}
 		 $num=$this->_post('num');
+		 $tid=$this->_post('tid');
 		 $uid=$_G['uid'];
 		 $re=D('Msg')->ajaxCheck($uid);
 		 if($num!=$re[0]){
