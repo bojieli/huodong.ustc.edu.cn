@@ -7,6 +7,9 @@
     <meta name="description" content="">
     <meta name="author" content="">
     
+    <link href="/static/css1.css" rel="stylesheet" type="text/css" />
+    <script src="/static/mlxh/js/jquery.js"></script>
+    <script src="/static/mlxh/js/bootstrap.min.js"></script>
     <style type="text/css">
     /*.container-radius{*/
     #headimg{
@@ -32,17 +35,16 @@
 
   </head>
   <body>
+    <include file="Public:headnav" />
    <div id="landing">
-    <div id="header">      
-    </div>
       <div class="container">
         <div class="container-radius" id="headimg">
-              <div class="" id="content">
-                <div class="">
+              <div id="content">
+                <div>
                     <h1>
                       <span id="daojishi"></span>
                     </h1>          
-                     <div class="">
+                     <div>
                         <button id="miaosha" class="btn btn-large disabled btn-primary">
                           <h3>秒杀抢票</h3> 
                         </button> 
@@ -58,9 +60,10 @@
 </p> 
                 <p>3、秒杀活动从2012年11月1日起至11月10日，每天中午11：11定时开始。
 </p>
+      <if condition="empty($_G[uid])">
                 <a href="/User/register" class="register btn btn-large btn-primary">立即注册</a>
                 <p>已有huodong.ustc.edu.cn账号？<a id="" href="/User/login">点此登录</a></p>
-               
+      </if>
                 <hr>                
               </div>
   	
@@ -75,8 +78,6 @@
       </div> <!-- /container -->
     </div><!--landing-->
    
-    <script src="/static/mlxh/js/jquery.js"></script>
-    <script src="/static/mlxh/js/bootstrap.min.js"></script>
     <script type="text/javascript">
     $(document).ready(function(){
 <?php

@@ -1,5 +1,5 @@
 <?php
-class MlxhAction extends Action {
+class MlxhAction extends PublicAction {
     function index() {
         $this->display();
     }
