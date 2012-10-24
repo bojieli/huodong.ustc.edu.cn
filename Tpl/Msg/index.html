@@ -72,6 +72,14 @@ getwindowH();
 </script> 
 
 <script type="text/javascript">
+if(window.localStorage){
+		setTimeout( function(){  
+			Storage.setItem( 'kxchat_focus_win_state', 'focus' );  
+		}, 100);
+		/*window on blur事件*/  
+		Storage.setItem( 'kxchat_focus_win_state', 'blur' );
+};
+
 const AUTO_CLOSE_DELAY_SECONDS = 5; 
 function init() {  
             if (window.webkitNotifications) {  
@@ -91,7 +99,7 @@ function notify(msg,name,img_url){
 							//激活弹出该通知窗口的浏览器窗口  
 							window.focus();  
 							//打开IM窗口  
-							WM.openWinByID( data );  
+							//WM.openWinByID( data );  
 							//关闭通知窗口  
 							popup.cancel();  
 						};
@@ -176,7 +184,9 @@ function checkMsg()
 		 $(duihua_tid).children('.activitydetail').children('span').text(ms);
 		 msg_append2(ms);
 		 img_url=data.info.img_url;
-         notify(ms,name,img_url);
+         if(localStorage.getItem("kxchat_focus_win_state")=="blur"){
+				notify(ms,name,img_url);	
+			}
 		 var audio = document.createElement("audio");
 			audio.src = "static/audio/msg.wav";
 		 audio.play();
