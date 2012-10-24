@@ -69,7 +69,9 @@ public function show(){
 		 //die;
 		 //if($num!=$re[0]){
 			$info['tid']=$re[2]['uid'];
+			$info['name']=D('User')->getRealname($re[2]['uid']);
 			$info['msg']=$re[2]['msg'];
+			$info['img_url']=D('User')->getAvatar($re[2]['uid'],$size='small');
 		 //}
 		 $info['num'] = $re[0];
 		 $this->success($info);

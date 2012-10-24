@@ -36,7 +36,24 @@ function getwindowH(){
 }
 //-->
 </script>
-<style type="text/css"></style>
+<style type="text/css">
+.notification{
+			color:#666;
+			font-size:16px; 
+			vertical-align:middle; 
+			padding:0px 3px; 
+			border:1px solid #BBB;
+			background-color:rgba(220, 220, 220, 0.9); 
+			-webkit-border-radius: 3px; 
+			-moz-border-radius: 3px; 
+			border-radius:5px;
+			}
+.notification:hover{
+	cursor:pointer;
+	background-color:#CFC;
+	color:#999;
+		}
+</style>
 </head>
 <body>
 <script type="text/javascript">
@@ -44,9 +61,42 @@ function getwindowH(){
 getwindowH();
 //-->
 </script>
-
+<script type="text/javascript">  
+        const AUTO_CLOSE_DELAY_SECONDS = 5;
+        function init() {  
+            if (window.webkitNotifications) {  
+                window.webkitNotifications.requestPermission();  
+            }  
+        }  
+          
+</script> 
 
 <script type="text/javascript">
+const AUTO_CLOSE_DELAY_SECONDS = 5; 
+function init() {  
+            if (window.webkitNotifications) {  
+                window.webkitNotifications.requestPermission();  
+            }  
+        };	
+function notify(msg,name,img_url){  
+            var icon = img_url;  
+            var title = name+"[" + new Date().toLocaleTimeString() + "]--" + AUTO_CLOSE_DELAY_SECONDS + "秒后关闭";  
+            var body = msg;
+            if (window.webkitNotifications) {  
+                if (window.webkitNotifications.checkPermission() == 0) {  
+                    var popup = window.webkitNotifications.createNotification(icon, title, body);  
+                    popup.ondisplay = function(event) {  
+                        setTimeout(function() {  
+                            event.currentTarget.cancel();  
+                        },AUTO_CLOSE_DELAY_SECONDS * 1000);  
+                    }  
+                    popup.show();  
+                } else {  
+                    window.webkitNotifications.requestPermission();  
+                    return;  
+                }
+			}
+        };
 function gundong(){
 e=document.getElementById("xinxixq");
 e.scrollTop=e.scrollHeight;
@@ -112,10 +162,13 @@ function checkMsg()
 		{
 		 $(".duihua_num").text(data.info.num);
 		 var duihua_tid='#ajax_'+data.info.tid;
+		 name=data.info.name;
 		 //alert(data.info.msg);
 		 $(duihua_tid).children('.activitydetail').children('span').text(ms);
 		 msg_append2(ms);
-         var audio = document.createElement("audio");
+		 img_url=data.info.img_url;
+         notify(ms,name,img_url);
+		 var audio = document.createElement("audio");
 			audio.src = "static/audio/msg.wav";
 		 audio.play();
 		}
@@ -159,7 +212,9 @@ document.getElementById("mainbody2").style.height=hhh-92+'px';
                     <option>未读</option>
                 </select>
             设置提醒方式 | 帮助-->
-            <div style="float:right;margin-top:0px; margin-right: 20px"><a href="../../~wyqq.1#" style="color:#666; ">返回</a></div>
+            <div style="float:right;margin-top:0px; margin-right: 20px">
+			<input type="button" class="notification" value="体验桌面通知" onclick="init();" />
+			</div>
   </div>
 </div>
 <div id="mainleft2" style="height: 584px; ">
@@ -389,7 +444,6 @@ document.getElementById("mainright").style.height=hhh-140+"px";
 							
 							<div class="sharp color2" style="border:0px">
 								<canvas id="{$key}mycanvas"height="10" width="10" style="margin-left:8px">
-								Your browser does not support the canvas element.
 								</canvas>
 								
 								<!--b class="b1"></b><b class="b2"></b><b class="b3"></b><b class="b4"></b--> 
@@ -435,7 +489,6 @@ document.getElementById("mainright").style.height=hhh-140+"px";
 								</div>
 								
 								<canvas id="mycanvas{$key}"height="10" width="10" style="float:right;margin-right:8px;">
-								Your browser does not support the canvas element.
 								</canvas>
 								<script type="text/javascript">
 								var c1=document.getElementById('mycanvas{$key}');
