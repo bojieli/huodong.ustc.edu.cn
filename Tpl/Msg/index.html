@@ -86,7 +86,16 @@ function notify(msg,name,img_url){
                 if (window.webkitNotifications.checkPermission() == 0) {  
                     var popup = window.webkitNotifications.createNotification(icon, title, body);  
                     popup.ondisplay = function(event) {  
-                        setTimeout(function() {  
+                        popup.replaceId = this.replaceId;   
+						popup.onclick = function(){  
+							//激活弹出该通知窗口的浏览器窗口  
+							window.focus();  
+							//打开IM窗口  
+							WM.openWinByID( data );  
+							//关闭通知窗口  
+							popup.cancel();  
+						};
+						setTimeout(function() {  
                             event.currentTarget.cancel();  
                         },AUTO_CLOSE_DELAY_SECONDS * 1000);  
                     }  
