@@ -177,7 +177,7 @@ function checkMsg()
 	var mm= vcheck.text();
 	$.post(url,{num:mm}, function (data) {
 		ms=data.info.msg;
-		if(!ms) return false;
+		if(ms=='') return false;
 		if(data.status==1)
 		{
 		 $(".duihua_num").text(data.info.num);
