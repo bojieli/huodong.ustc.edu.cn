@@ -176,11 +176,11 @@ function checkMsg()
 	var url="/Msg/ajax_sms_num";
 	var mm= vcheck.text();
 	$.post(url,{num:mm}, function (data) {
-		if(data.info=='') return false;
-		ms=data.info.msg;
-		if(ms=='') return false;
 		if(data.status==1)
 		{
+		 if(data.info=='') return false;
+		 ms=data.info.msg;
+		 if(ms=='') return false;
 		 $(".duihua_num").text(data.info.num);
 		 var duihua_tid='#ajax_'+data.info.tid;
 		 name=data.info.name;
