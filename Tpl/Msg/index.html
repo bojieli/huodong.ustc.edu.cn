@@ -121,7 +121,7 @@ e.scrollTop=e.scrollHeight;
 function msg_append()
 {
 	var tmp=$('#area').val();
-	if(tmp==''){alert('输入点东西吧！^_^');};
+	if(tmp==''){alert('输入点东西吧！^_^');return false;};
 	$('#area').val('');
 	var d = new Date();
     var vYear = d.getFullYear();
