@@ -74,9 +74,9 @@ getwindowH();
 <script type="text/javascript">
 if(window.localStorage){
 		setTimeout( function(){  
-			Storage.setItem('kxchat_focus_win_state','focus');  
-		}, 100);
-		Storage.setItem('kxchat_focus_win_state','blur');
+			localStorage.state='focus';  
+		},100);
+		localStorage.state='blur';
 };
 const AUTO_CLOSE_DELAY_SECONDS = 5; 
 function init() {  
@@ -182,7 +182,7 @@ function checkMsg()
 		 $(duihua_tid).children('.activitydetail').children('span').text(ms);
 		 msg_append2(ms);
 		 img_url=data.info.img_url;
-         if(localStorage.getItem("kxchat_focus_win_state")=="blur"){
+         if(localStorage.getItem("state")=="blur"){
 				notify(ms,name,img_url);	
 			}
 		 var audio = document.createElement("audio");
