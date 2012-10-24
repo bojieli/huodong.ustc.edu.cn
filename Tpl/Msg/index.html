@@ -73,10 +73,12 @@ getwindowH();
 
 <script type="text/javascript">
 if(window.localStorage){
-		setTimeout( function(){  
-			localStorage.state='focus';  
-		},100);
-		localStorage.state='blur';
+$(window).bind('focus',function(){
+            setTimeout( function(){  
+			localStorage.state='focus';
+			},100);
+					  });
+	$(window).bind('blur',function(){localStorage.state='blur';});
 };
 const AUTO_CLOSE_DELAY_SECONDS = 5; 
 function init() {  
