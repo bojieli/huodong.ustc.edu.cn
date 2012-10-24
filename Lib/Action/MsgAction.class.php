@@ -22,7 +22,8 @@ class MsgAction extends PublicAction {
         foreach($show[1] as $raw => $val)
         {
             $tid_info[$val['to_uid']]=D('User')->getInfo($val['to_uid']);
-            $tid_info[$val['to_uid']]['last_dialog'] = $show[0][$val['to_uid']][count($show[0][$val['to_uid']])-1];
+            //dump($tid_info[$val['to_uid']]);
+			$tid_info[$val['to_uid']]['last_dialog'] = $show[0][$val['to_uid']][count($show[0][$val['to_uid']])-1];
         }
         foreach($sys_msg as $raw1 => $val1)
         {
@@ -62,19 +63,19 @@ class MsgAction extends PublicAction {
     {
         global $_G;
         if(!D('User')->checkLogin()){$this->error('未登陆');}
-        $num=$this->_post('num');
+        
+		$num=$this->_post('num');
         $uid=$_G['uid'];
         $re=D('Msg')->ajaxCheck($uid);
-        //dump($re);
-        //die;
-        //if($num!=$re[0]){
+        if($re[2]['uid']==''){return 0;};
         $info['tid']=$re[2]['uid'];
-        $info['name']=D('User')->getRealname($re[2]['uid']);
-        $info['msg']=$re[2]['msg'];
+		$info['name']=D('User')->getRealname($re[2]['uid']);
+		$info['msg']=$re[2]['msg'];
         $info['img_url']=D('User')->getAvatar($re[2]['uid'],$size='small');
-        //}
-        $info['num'] = $re[0];
-        $this->success($info);
+		$info['num'] = $re[0];
+        //dump($info);
+        //die;
+		$this->success($info);
     }
     public function test()
     {
