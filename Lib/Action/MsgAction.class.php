@@ -67,7 +67,7 @@ class MsgAction extends PublicAction {
 		$num=$this->_post('num');
         $uid=$_G['uid'];
         $re=D('Msg')->ajaxCheck($uid);
-        if($re[2]['uid']==''){return 0;};
+        if($re[2]['uid']==''){$this->error($info);};
         $info['tid']=$re[2]['uid'];
 		$info['name']=D('User')->getRealname($re[2]['uid']);
 		$info['msg']=$re[2]['msg'];
