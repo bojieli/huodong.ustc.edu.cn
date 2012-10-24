@@ -50,8 +50,8 @@ class UserModel extends Model {
     }
     function getRealname($uid)
     {
-        $res= $this->where("uid = $uid")->limit(1)->select();
-        return($res[0]['realname']);
+		$res= $this->where("uid = $uid")->find();
+        return($res['realname']);
     }
     function getSid($uid)
     {

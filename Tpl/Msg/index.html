@@ -121,8 +121,7 @@ e.scrollTop=e.scrollHeight;
 function msg_append()
 {
 	var tmp=$('#area').val();
-	if(tmp==''){alert('输入点东西吧！^_^');};
-	$('#area').val('');
+	if(tmp==''){alert('输入点东西吧！^_^');return false;};
 	var d = new Date();
     var vYear = d.getFullYear();
     var vMon = d.getMonth() + 1;
@@ -163,9 +162,11 @@ function msg_append2(msg)
 };
 function sendMsg()
 {
+	if(msg_append()==false){return false;};
 	var form = $("#sent_msg");
 	$.post($(form).attr('action'), $(form).serialize(), function (data) {
 		}, 'json');
+	$('#area').val('');
     return false;
 };
 i=1;
@@ -175,10 +176,11 @@ function checkMsg()
 	var url="/Msg/ajax_sms_num";
 	var mm= vcheck.text();
 	$.post(url,{num:mm}, function (data) {
-		ms=data.info.msg;
-		if(!ms) return false;
 		if(data.status==1)
 		{
+		 if(data.info=='') return false;
+		 ms=data.info.msg;
+		 if(ms=='') return false;
 		 $(".duihua_num").text(data.info.num);
 		 var duihua_tid='#ajax_'+data.info.tid;
 		 name=data.info.name;
@@ -542,7 +544,7 @@ document.getElementById("mainright").style.height=hhh-140+"px";
  <div class="activitymsg" style="display:none"><!--回复框-->
       <form action="/Msg/create/t/" method="post" id="sent_msg" style="border:0;">
 	  <textarea id="area" class="textkuang" name="s"></textarea>
-      <input id="send" type="submit" onclick="msg_append();sendMsg();return false;" value="发送" onmouseover="this.style.backgroundColor=&#39;#FF9&#39;" onmouseout="this.style.backgroundColor=&#39;#B0C4DE&#39;"/>
+      <input id="send" type="submit" onclick="sendMsg();return false;" value="发送" onmouseover="this.style.backgroundColor=&#39;#FF9&#39;" onmouseout="this.style.backgroundColor=&#39;#B0C4DE&#39;"/>
 	  </form>
  </div><!--回复框-->
         	
