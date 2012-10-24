@@ -542,7 +542,7 @@ document.getElementById("mainright").style.height=hhh-140+"px";
  <div class="activitymsg" style="display:none"><!--回复框-->
       <form action="/Msg/create/t/" method="post" id="sent_msg" style="border:0;">
 	  <textarea id="area" class="textkuang" name="s"></textarea>
-      <input id="send" type="submit" onclick="msg_append();sendMsg();return false;" value="发送" onmouseover="this.style.backgroundColor=&#39;#FF9&#39;" onmouseout="this.style.backgroundColor=&#39;#B0C4DE&#39;"/>
+      <input id="send" type="submit" onclick="if(!msg_append()){return false;};sendMsg();return false;" value="发送" onmouseover="this.style.backgroundColor=&#39;#FF9&#39;" onmouseout="this.style.backgroundColor=&#39;#B0C4DE&#39;"/>
 	  </form>
  </div><!--回复框-->
         	
