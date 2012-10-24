@@ -111,14 +111,18 @@ class UserAction extends PublicAction {
     public function logout(){
         global $_G;
         if(empty($_G['uid'])) {
-            $this->error('没有登录');
+            echo json_encode(array('status'=>false, 'msg'=>'没有登录'));
         }
         else{
             $user=D('User');
             $passport=$user->delsession($_G[uid]);//清除session
             cookie(null);//清空cookie
-            $this->assign('jumpUrl','/');
-            $this->success('登出成功');
+            // jump to last page
+            if (!empty($_SERVER['HTTP_REFERER']) && !strstr($_SERVER['HTTP_REFERER'], '/User/home'))
+                $jumpUrl = $_SERVER['HTTP_REFERER'];
+            else
+                $jumpUrl = '/';
+            echo json_encode(array('status'=>true, 'msg'=>'退出成功', 'jumpUrl'=>$jumpUrl));
         }
     }
     public function editInfo(){
