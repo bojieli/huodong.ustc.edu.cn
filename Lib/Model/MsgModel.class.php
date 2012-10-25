@@ -135,7 +135,7 @@ class MsgModel extends Model {
                             );
                     $id=$content['id'];
                     $n = M('Msg_sys')->where($con)->count();
-                    $this->openDialog($content['uid'],$uid);
+                    $this->openDialog($uid,$content['uid']);
 					$this->readedMsg($id);
 					
                     return array($m,$n,$content);
