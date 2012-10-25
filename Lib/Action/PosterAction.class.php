@@ -96,9 +96,11 @@ class PosterAction extends PublicAction {
 
         $fields = ['name','place','description'];
         foreach ($fields as $field) {
-            $poster[$field] = htmlspecialchars($_POST[$field]);
+            if($field=='description'){$poster[$field]=$_POST[$field];}
+			else $poster[$field] = htmlspecialchars($_POST[$field]);
         }
-        $poster['start_time'] = $this->parseTime($_POST['start_date'], $_POST['start_hour'], $_POST['start_minute']);
+        //dump($_POST['description']);
+		$poster['start_time'] = $this->parseTime($_POST['start_date'], $_POST['start_hour'], $_POST['start_minute']);
         $poster['end_time'] = $this->parseTime($_POST['end_date'], $_POST['end_hour'], $_POST['end_minute']);
         if ($poster['start_time'] >= $poster['end_time'])
             $this->error("开始时间必须早于结束时间，请返回检查");
@@ -309,7 +311,8 @@ class PosterAction extends PublicAction {
         $aid = $this->getInputAid();
         D('Poster')->addClick($aid);
         $poster = D('Poster')->getPosterById($aid);
-        $poster->rate = $poster->getRate();
+        //dump($poster);
+		$poster->rate = $poster->getRate();
         $poster->school = $poster->schoolName();
         $poster->name = $poster->name();
         $poster->humanDate = $poster->humanDate();
@@ -318,7 +321,9 @@ class PosterAction extends PublicAction {
         $poster->origPoster = $poster->origPosterUrl();
         $poster->canModify = $poster->canModify();
         $poster->clubName = $poster->clubName();
-        $this->assign('poster', $poster->toArray());
+        //dump($poster);
+		$this->assign('poster', $poster->toArray());
+		//dump($poster->canModify);
         $comments = M('poster_comment')->where(['aid'=>$aid])->order("time DESC")->select();
         foreach ($comments as &$comment) {
             $comment['author'] = D('User')->getInfo($comment['author']);
