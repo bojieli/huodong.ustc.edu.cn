@@ -1,7 +1,7 @@
 <?php
 class MsgModel extends Model {
 
-    public function showMsgFromMe()
+    public function showMsgFromMe($mytid)
     {   
         global $_G;
         $con1['uid']=$_G['uid'];
@@ -23,8 +23,21 @@ class MsgModel extends Model {
             $tmp[$i+$j]=$val2['uid'];
             $j++;
         }
-        $tips=array_unique($tmp);
-        foreach($tips as $k => $v)
+		//echo $tid;
+		 if(!empty($mytid)){
+				 D('Msg')->openDialog($_G['uid'],$mytid);
+				 $tmp[]=$mytid;
+		 }
+		$tips=array_unique($tmp);
+        //dump($tips);
+		$tips=$this->hideSomeTids($tips);
+		//dump($tips);
+		$tips=$this->addSomeTids($tips);
+		//dump($tips);
+		$tips=array_unique($tips);
+		//dump($tips);
+		//die;
+		foreach($tips as $k => $v)
         {
             $tids[]['to_uid'] = $v;
         }
@@ -57,8 +70,9 @@ class MsgModel extends Model {
                 {
                 $re[$row]['humanDate']=date("Y年n月j日 H:i", $val['time']);
                 }
-                return $re;
-                }
+                //$this->openDialog($uid,$to_uid);
+				return $re;
+	}
                 public function sentMsg($time,$msg,$to_uid){
                 global $_G;
                 $ip=get_client_ip();
@@ -125,7 +139,8 @@ class MsgModel extends Model {
                     return array($m,$n,$content);
                 }
 
-                public function readedMsg($id,$tid){
+                
+public function readedMsg($id,$tid){
                     global $_G;
                     $uid=$_G['uid'];
                     $date=array(
@@ -136,11 +151,65 @@ class MsgModel extends Model {
                         return true;
                     };
                     if(empty($id)&&!empty($tid)){
-                        $this->where(array('uid'=>$tid,'to_uid'=>$uid))->data($date)->save();
+                        $this->where(array('uid='.$tid.'&&to_uid='.$uid))->data($date)->save();
                         return true;
                     };
                     return false;    
                 }
+public function closeDialog($uid,$tid){
+				if(empty($uid)||empty($tid)){return 'uid or tid is empty';};
+				$data=array('status'=>0);
+				M('Msg_dialog')->where('uid='.$uid.'&&tid='.$tid)->data($data)->save();
+}
+public function openDialog($uid,$tid){
+				if(empty($uid)||empty($tid)){return 'uid or tid is empty';};
+				if(M('Msg_dialog')->where('uid='.$uid.'&&tid='.$tid)->find())				
+					{
+						$data=array('status'=>1);
+						M('Msg_dialog')->where('uid='.$uid.'&&tid='.$tid)->data($data)->save();
+					}
+				else{
+						$data=array('uid'=>$uid,'tid'=>$tid,'status'=>1);
+						M('Msg_dialog')->data($data)->add();
+				}
+}
+public function hideSomeTids($tips){
+				global $_G;
+				$uid=$_G['uid'];
+				$res=M('Msg_dialog')->field('tid')->where('uid='.$uid.'&&status=0')->select();
+				foreach($res as $val)
+				{
+					$rt[]=$val['tid'];
+				}
+				foreach($tips as $value)
+				{
+					if(in_array($value,$rt)==false)
+					{
+						$re[]=$value;
+					}
+				}
+				//dump($re);
+				$res2=M('Msg_dialog')->field('tid')->where('uid='.$uid.'&&status=1')->select();
+				//dump($res2);
+				foreach($res2 as $val2)
+				{
+					$re[]=$val2['tid'];
+				}
+				$re=array_unique($re);
+				//dump($re);
+				//dump($re+$rt2);
+				return $re;
+}
+public function addSomeTids($rt){
+                global $_G;
+				$uid=$_G['uid'];
+				$res=$this->field('uid')->where('to_uid='.$uid.'&&status=0')->select();
+				foreach($res as $val)
+				{
+					$rt[]=$val['uid'];
+				}
+				return $rt;
+}
 
 }//
 ?>

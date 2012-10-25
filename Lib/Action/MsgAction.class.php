@@ -3,22 +3,22 @@ class MsgAction extends PublicAction {
 
     public function index(){
         if(!D('User')->checkLogin()){$this->error('未登陆');}
-        $this->show();
+		$this->show();
         $this->display();
     }
 
     public function show(){
         if(!D('User')->checkLogin()){$this->error('未登陆');}
-        $tid = $this->_get('d');
-        $model = D('Msg');
-        $show=$model->showMsgFromMe();//对话消息
-        //dump($show[2]);
+		$tid = $this->_get('add');
+		//echo $tid;
+		$model = D('Msg');
+		$show=$model->showMsgFromMe($tid);//对话消息
+        //dump($show);
         //die;
         //$model->sentMsgForSys(time(),'科考学会邀请你加入','1385545465465454684654',3,3);
         $sys_msg=$model->showSysMsg();//系统消息
         //dump($sys_msg);
         //die;
-        $show[1][]['to_uid']=$tid;
         foreach($show[1] as $raw => $val)
         {
             $tid_info[$val['to_uid']]=D('User')->getInfo($val['to_uid']);
@@ -30,7 +30,8 @@ class MsgAction extends PublicAction {
             $sys_msg[0][$raw1]['name']=M('Club')->field('name')->where(array('gid'=>$val1['gid']))->find()['name'];
         }
         //die;
-        $this->assign('msg_num',array($sys_msg[1],$show[2],$sys_msg[1]+$show[2]));
+		if(!empty($tid)){$this->redirect("/Msg");}
+		$this->assign('msg_num',array($sys_msg[1],$show[2],$sys_msg[1]+$show[2]));
         $this->assign('info',$show[0]);
         $this->assign('tid',$tid_info);
         $this->assign('sys',$sys_msg[0]);
@@ -93,5 +94,16 @@ class MsgAction extends PublicAction {
         }
         $this->error($info);
     }
+	public function ajax_dialog()
+	{
+		$status =$this->_post('status');
+		$tid = $this->_post('tid');
+		global $_G;
+		$uid=$_G['uid'];
+		if($status=='closed')
+			D('Msg')->closeDialog($uid,$tid);
+		if($status=='open')
+			D('Msg')->openDialog($uid,$tid);
+	}
 }//
 ?>
