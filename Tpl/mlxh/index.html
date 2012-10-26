@@ -1,83 +1,73 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html>
   <head>
+    <title>美丽邂逅2012</title>
     <meta charset="utf-8">
-    <title>美丽邂逅</title>
-   <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0">-->
-    <meta name="description" content="">
-    <meta name="author" content="">
-    
-    <link href="/static/css1.css" rel="stylesheet" type="text/css" />
-    <script src="/static/mlxh/js/jquery.js"></script>
-    <script src="/static/mlxh/js/bootstrap.min.js"></script>
     <style type="text/css">
-    /*.container-radius{*/
-    #headimg{
-        background-image: url("/static/mlxh/img/main.jpg");
-        background-repeat: no-repeat;
-    		margin-top: 10px;
-    		/*padding: 78px;*/
-        padding-top: 78px;
-        padding-left: 78px;
-        padding-right: 78px;
-        max-width:100%;
-    } 
-    #content{
-      margin-top: 530px;
-    }
+      #landing{
+        width: 1024px;
+        height: 576px;
+        background: url("/static/mlxh/img/ml_big.jpg") no-repeat;
+        margin: 0 auto;
+        margin-top: 30px;
+        position: relative;
+      }
+      #mlxh_content{
+        position: absolute;
+        top:520px;
+        left:100px;
+        /*margin-left:-400px; */
+      }
+      #mlxh_content a{
+        text-decoration: none;
+        text-align: center;
+        font-style: italic;
+        font-size: 18px;
+        font-family: "微软雅黑";
+        padding: 3px;
+        height: 25px;
+        width:60px;
+        display: block;
+        border:1px solid #e62589;
+        float: left;
+        margin-left: 30px;
+      }
+      #mlxh_content span{
+        float: left;
+        color:#e62589;
+        font-size: 24px;
+        font-style: italic;
+        margin-left: 30px;
+        padding: 3px;
+      }
+      #mlxh_content a:link{
+        background: url("/static/mlxh/img/mlxh_bt1.png");
+        background-color:#ffffff;
+        color:#e62589; 
+      }
+      #mlxh_content a:hover{
+        background: url("/static/mlxh/img/mlxh_bt2.png");
+        color:#ffffff;
+        background-color:#e62589; 
+      }
+      #mlxh_miaosha,#mlxh_choujiang{
+        display: none;
+      }
     </style>
-  	<link href="/static/mlxh/less/bootstrap.less" rel="stylesheet/less" type="text/css">
-  	<script type="text/javascript" src="/static/mlxh/js/less.js"></script>
-    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
-    <!--[if lt IE 9]>
-      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
-
   </head>
   <body>
-    <include file="Public:headnav" />
-   <div id="landing">
-      <div class="container">
-        <div class="container-radius" id="headimg">
-              <div id="content">
-                <div>
-                    <h1>
-                      <span id="daojishi"></span>
-                    </h1>          
-                     <div>
-                        <button id="miaosha" class="btn btn-large disabled btn-primary">
-                          <h3>秒杀抢票</h3> 
-                        </button> 
-                        <span id="clock"></span>                      
-                     </div>              
-                </div>                
-                <h3>
-                  活动细则：
-                </h3>
-                <p>1、请先用科大邮箱（mail.ustc.edu.cn）进行注册，系统将自动发送激活链接，确认后方可登录
-</p>
-                <p>2、每位注册的会员均可进行（仅限一次）抽奖。
-</p> 
-                <p>3、秒杀活动从2012年11月1日起至11月10日，每天中午11：11定时开始。
-</p>
-      <if condition="empty($_G[uid])">
-                <a href="/User/register" class="register btn btn-large btn-primary">立即注册</a>
-                <p>已有huodong.ustc.edu.cn账号？<a id="" href="/User/login">点此登录</a></p>
-      </if>
-                <hr>                
-              </div>
-  	
-   		</div>
-
-      <hr>
-
-      <footer>
-        <p>美丽邂逅 &copy; 2012</p>
-      </footer>
-
-      </div> <!-- /container -->
-    </div><!--landing-->
-   
+    <div id="landing">
+    <div id="mlxh_content">
+      <a id="mlxh_reg" href="/User/register">注册</a>
+      <a id="mlxh_login" href="/User/login">登录</a>
+      <a id="mlxh_miaosha" href="#">秒杀</a>
+      <a id="mlxh_choujiang" href="#">抽奖</a>
+      <span id="daojishi"></span>
+    </div>
+      
+    </div>
+    <script src="/static/mlxh/js/jquery.js"></script>
+    <script src="/static/mlxh/js/bootstrap.min.js"></script>
     <script type="text/javascript">
     $(document).ready(function(){
 <?php
@@ -92,32 +82,32 @@
             <?=$t['tm_min']?>,
             <?=$t['tm_sec']?>
             );
-        var theTime =new Date(now.getFullYear(),now.getMonth(),now.getDay(),11,11,11);
-		var isTime = false;
-		function CurrentTime(){      
-			var mm = now.getMinutes();      
-			var ss = now.getTime() % 60000;
-			ss = (ss - (ss % 1000)) / 1000;      
-			var clock = now.getHours() +':';      
-			if (mm < 10) clock += '0';     
-			clock += mm+':';      
-			if (ss < 10) clock += '0'; 
-			if(now.getHours()==11){
-				
-				if (mm>=11) {
-					if (mm==11) {
-						if(ss>=11){
-							isTime = true
-						};
-					}else{
-						isTime = true;
-					};
-				};
-			};   
-			return(clock + ss); 
-		}
+    var theTime =new Date(now.getFullYear(),now.getMonth(),now.getDay(),12,30,00);
+    var isTime = false;
+    function CurentTime(){      
+      var mm = now.getMinutes();      
+      var ss = now.getTime() % 60000;
+      ss = (ss - (ss % 1000)) / 1000;      
+      var clock = now.getHours() +':';      
+      if (mm < 10) clock += '0';     
+      clock += mm+':';      
+      if (ss < 10) clock += '0'; 
+      if(now.getHours()==11){
+        
+        if (mm>=11) {
+          if (mm==11) {
+            if(ss>=11){
+              isTime = true
+            };
+          }else{
+            isTime = true;
+          };
+        };
+      };   
+      return(clock + ss); 
+    }
     function leftTime(){
-      if (now - theTime > 3600)
+      if (now - theTime > 60 * 80) // 11:11 ~ 12:30
         return "今天的秒杀已经结束 :)";
       if (now - theTime >= 0)
         return "秒杀已经开始啦，立即抢票";
@@ -130,21 +120,25 @@
       var leftS = time_up-time_now-3600*leftH-60*leftM;
       return "距离下一次秒杀还有 "+leftH+"小时"+leftM+"分"+leftS+"秒";
     }  
-		function refresh(){      
-      document.getElementById("clock").innerHTML = now.getFullYear()+"年"+now.getMonth()+"月"+now.getDate()+"日 "+ CurrentTime();
+    function refresh(){      
+      // document.getElementById("clock").innerHTML = now.getFullYear()+"年"+now.getMonth()+"月"+now.getDate()+"日 "+ CurentTime();
       if(!isTime){
         document.getElementById("daojishi").innerHTML = leftTime();
       }else{
-        $("#miaosha").removeClass("disabled");
-        $("#miaosha")[0].innerHTML = '<h1>立即抢票</h1>';        
+        $("#mlxh_miaosha").removeClass("disabled");
+        $("#mlxh_miaosha").innerHTML = '立即抢票';        
       }
-			now.setSeconds(now.getSeconds()+1);
-		} 
-		intervalId = setInterval(refresh,1000); 	    	
+      now.setSeconds(now.getSeconds()+1);
+    } 
+    setInterval(refresh,1000);        
     
-    $('#miaosha').click(function(){
-//        if ($('#miaosha').hasClass('disabled'))
-//          return;
+    $("#mlxh_choujiang").css("display","none");
+    $("#mlxh_miaosha").css("display","none");
+    })
+
+    $('#mlxh_miaosha').click(function(){
+        if ($('#miaosha').hasClass('disabled'))
+            return;
         $.ajax({
             url: '/mlxh/miaosha',
             dataType: 'json',
@@ -164,9 +158,6 @@
             }
         });
     });
-    })
-		
-	
-    </script>	
+    </script>     
   </body>
 </html>
