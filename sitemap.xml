@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset
+      xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
+            http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
+<!-- created with Free Online Sitemap Generator www.xml-sitemaps.com -->
+
+<url>
+  <loc>http://huodong.ustc.edu.cn/</loc>
+  <changefreq>hourly</changefreq>
+  <priority>1.00</priority>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/</loc>
+  <changefreq>hourly</changefreq>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/User/login</loc>
+  <changefreq>hourly</changefreq>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/User/register</loc>
+  <changefreq>hourly</changefreq>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Poster/index?order=new</loc>
+  <changefreq>hourly</changefreq>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Poster/index?order=near</loc>
+  <changefreq>hourly</changefreq>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Poster/index?order=hot</loc>
+  <changefreq>hourly</changefreq>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Poster/index?order=follow</loc>
+  <changefreq>hourly</changefreq>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/static/help/aboutus.html</loc>
+  <changefreq>hourly</changefreq>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/static/help/howtouse.html</loc>
+  <changefreq>hourly</changefreq>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/static/help/contactus.html</loc>
+  <changefreq>hourly</changefreq>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/static/help/UpdateLog.html</loc>
+  <changefreq>hourly</changefreq>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/index</loc>
+  <changefreq>hourly</changefreq>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/index?filter=club</loc>
+  <changefreq>hourly</changefreq>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/index?filter=gradUnion</loc>
+  <changefreq>hourly</changefreq>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/index?filter=studentUnion</loc>
+  <changefreq>hourly</changefreq>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/index?filter=other</loc>
+  <changefreq>hourly</changefreq>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/User/GetbackPassword.html</loc>
+  <changefreq>hourly</changefreq>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/static/help/aboutusd.htm</loc>
+  <changefreq>hourly</changefreq>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/static/help/shetuanhaibao.pptx</loc>
+  <changefreq>hourly</changefreq>
+  <priority>0.64</priority>
+</url>
+</urlset>
