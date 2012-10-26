@@ -107,8 +107,8 @@
       return(clock + ss); 
     }
     function leftTime(){
-      if (now - theTime > 3600)
-        return "今天的秒杀已经结束 :)";
+    //  if (now - theTime > 60 * 80) // 11:11 ~ 12:30
+    //    return "今天的秒杀已经结束 :)";
       if (now - theTime >= 0)
         return "秒杀已经开始啦，立即抢票";
       var time_now = now.getHours()*3600+now.getMinutes()*60+now.getSeconds();
@@ -125,8 +125,8 @@
       if(!isTime){
         document.getElementById("daojishi").innerHTML = leftTime();
       }else{
-        $("#miaosha").removeClass("disabled");
-        $("#miaosha")[0].innerHTML = '<h1>立即抢票</h1>';        
+        $("#mlxh_miaosha").removeClass("disabled");
+        $("#mlxh_miaosha").innerHTML = '立即抢票';        
       }
       now.setSeconds(now.getSeconds()+1);
     } 
@@ -137,8 +137,8 @@
     })
 
     $('#mlxh_miaosha').click(function(){
-//      if ($('#miaosha').hasClass('disabled'))
-//          return;
+        if ($('#miaosha').hasClass('disabled'))
+            return;
         $.ajax({
             url: '/mlxh/miaosha',
             dataType: 'json',
