@@ -1,0 +1,32 @@
+<!DOCTYPE HTML>
+<html lang="en-US">
+<head>
+	<meta charset="UTF-8">
+	<title></title>
+</head>
+<body>
+	<h1>PHP QR Code</h1><hr/>
+	You can provide data in GET parameter: <a href="?data=huodong.ustc.edu.cn">like that</a><hr/>
+	<img src="{$filename}" /><hr/>
+	<form action="/Qr" method="post">
+        Data:
+		<textarea name="data" />
+		</textarea>
+        ECC:
+		<select name="level">
+            <option value="L" <eq name="errorCorrectionLevel" value="L" >selected</eq>>L - smallest</option>
+            <option value="M" <eq name="errorCorrectionLevel" value="M" >selected</eq>>M</option>
+            <option value="Q" <eq name="errorCorrectionLevel" value="Q" >selected</eq>>Q</option>
+            <option value="H" <eq name="errorCorrectionLevel" value="H" >selected</eq>>H - best</option>
+        </select>
+        Size:
+		<select name="size">
+			<for start="1" end="10">
+				<option value="{$i}">{$i}</option>
+			</for>
+		</select>
+        <input type="submit" value="GENERATE"/>
+	</form>
+	<hr/>
+</body>
+</html>
