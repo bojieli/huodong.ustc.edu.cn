@@ -25,6 +25,9 @@ document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3
       <if condition="!empty($_G[uid])">
       <div class="nav"><a href="/User/home"><span <if condition="$here == UserAction">class="here1"</if>>个人信息管理</span></a></div>
       </if>
+      <notempty name="theday">
+      <div class="nav"><a href="/mlxh"><span <if condition="$here == MlxhAction">class="here1"</if>>美丽邂逅</span></a></div>
+      </notempty>
 
       <div class="login1">
       <if condition="!empty($_G[uid])">

@@ -1,15 +1,19 @@
 <?php
 class MlxhAction extends PublicAction {
+    function isTheDay() {
+        date_default_timezone_set('Asia/Chongqing');
+        $t = localtime(time(), true);
+        return ($t['tm_mon']+1 == 11 && $t['tm_mday'] >= 1 && $t['tm_mday'] <= 8);
+    }
+
     function index() {
+        $this->headnav();
         if (CURRENT_USER > 0) {
             $count = M('mlxh_log')->where(array('uid'=>CURRENT_USER, 'action'=>'miaosha'))->count();
             if ($count > 0)
                 $this->assign('miaoshaguole', true);
         }
-        date_default_timezone_set('Asia/Chongqing');
-        $t = localtime(time(), true);
-        $theday = ($t['tm_mon']+1 == 11 && $t['tm_mday'] >= 1 && $t['tm_mday'] <= 8);
-        $this->assign('theday', $theday);
+        $this->assign('theday', $this->isTheDay());
         $this->display();
     }
 
