@@ -6,7 +6,15 @@ class MlxhAction extends PublicAction {
             if ($count > 0)
                 $this->assign('miaoshaguole', true);
         }
+        date_default_timezone_set('Asia/Chongqing');
+        $t = localtime(time(), true);
+        $theday = ($t['tm_mon']+1 == 11 && $t['tm_mday'] >= 1 && $t['tm_mday'] <= 8);
+        $this->assign('theday', $theday);
         $this->display();
+    }
+
+    function testindex() {
+        $this->index();
     }
 
     function miaosha() {
