@@ -107,8 +107,8 @@
       return(clock + ss); 
     }
     function leftTime(){
-    //  if (now - theTime > 60 * 80) // 11:11 ~ 12:30
-    //    return "今天的秒杀已经结束 :)";
+      if (now - theTime > 60 * 80) // 11:11 ~ 12:30
+        return "今天的秒杀已经结束 :)";
       if (now - theTime >= 0)
         return "秒杀已经开始啦，立即抢票";
       var time_now = now.getHours()*3600+now.getMinutes()*60+now.getSeconds();
