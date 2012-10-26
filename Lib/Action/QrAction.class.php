@@ -15,7 +15,7 @@ class QrAction extends PublicAction{
 	}
 	public function getQR($gid,$data,$level,$size){
 		include_once("./phpqrcode/qrlib.php");
-		$PNG_TEMP_DIR = './upload'.DIRECTORY_SEPARATOR.'temp'.DIRECTORY_SEPARATOR;
+		$PNG_TEMP_DIR = './upload/avatar'.DIRECTORY_SEPARATOR.'Qr'.DIRECTORY_SEPARATOR;
 		//$PNG_WEB_DIR = './upload/temp'.DIRECTORY_SEPARATOR;
 		
 		if (!file_exists($PNG_TEMP_DIR))
@@ -78,7 +78,7 @@ class QrAction extends PublicAction{
 		$gid=$this->_get('gid');
 		if(empty($gid)){return 0;}
 		$QRcode=M('Club')->field('QRcode')->where(array('gid'=>$gid))->find()['QRcode'];
-		$filename='/upload/temp/'.'huodongQR_for'.$gid.'_'.$QRcode.'.png';
+		$filename='/upload//avatar/Qr/'.'huodongQR_for'.$gid.'_'.$QRcode.'.png';
 		$this->assign('filename',$filename);
 		$this->display('QRpl');
 	}
