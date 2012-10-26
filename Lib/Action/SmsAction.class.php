@@ -3,35 +3,69 @@ class SmsAction extends PublicAction {
     public function index()
     {
         $gid=$this->_get('gid');
-        if(!$gid){$this->error('非法操作！');}
-        if(!D('User')->checkLogin()){$this->error('未登陆');}
-        if(!D('Club')->isManager($gid)){$this->error('无权限');}
-        $Model = D('Sms');
-        $tip=$Model->getSmsTip($gid);
-        if($Model->getUpdateTime($gid)==$Model->updateTime($gid))
-        {
-            if(!$tip)$Model->reSmsNum($gid);
-        }
-        else
-        {
-            $Model->changeUpdateTime($gid);
-            $Model->reSmsNum($gid);
-        }
-        $club = D('Club')->getInfo($gid);
-        $re=$Model->getMember($gid);
-        $members = array();
-        foreach($re as $row => $value)
-        {
-            if($value['priv']!='member')
-                $value['info']=$value['realname'].'('.$value['title'].')'.'--'.$value['telephone'];
-            else
-                $value['info']=$value['realname'].'--'.$value['telephone'];
-            $members[] = $value;
-        }
+		$tid=$this->_get('tid');
+		if($gid)
+		{
+			if(!$gid){$this->error('非法操作！');}
+			if(!D('User')->checkLogin()){$this->error('未登陆');}
+			if(!D('Club')->isManager($gid)){$this->error('无权限');}
+			$Model = D('Sms');
+			$tip=$Model->getSmsTip($gid);
+			if($Model->getUpdateTime($gid)==$Model->updateTime($gid))
+			{
+				if(!$tip)$Model->reSmsNum($gid);
+			}
+			else
+			{
+				$Model->changeUpdateTime($gid);
+				$Model->reSmsNum($gid);
+			}
+			$club = D('Club')->getInfo($gid);
+			$re=$Model->getMember($gid);
+			$members = array();
+			foreach($re as $row => $value)
+			{
+				if($value['priv']!='member')
+					$value['info']=$value['realname'].'('.$value['title'].')'.'--'.$value['telephone'];
+				else
+					$value['info']=$value['realname'].'--'.$value['telephone'];
+				$members[] = $value;
+			}
+			$this->assign('club',$club);
+		}
+		if($tid)
+		{
+			if(!D('User')->checkLogin()){$this->error('未登陆');}
+			if(!D('Team')->isManager($tid)){$this->error('无权限');}
+			$gid = D('Team')->getGidByTid($tid);
+			$Model = D('Sms');
+			$tip=$Model->getSmsTip($gid);
+			if($Model->getUpdateTime($gid)==$Model->updateTime($gid))
+			{
+				if(!$tip)$Model->reSmsNum($gid);
+			}
+			else
+			{
+				$Model->changeUpdateTime($gid);
+				$Model->reSmsNum($gid);
+			}
+			$team = D('Team')->getInfo($tid);
+			$re=D('Team')->getMembers($tid);
+			$members = array();
+			foreach($re as $row => $value)
+			{
+				if($value['priv']!='member')
+					$value['info']=$value['realname'].'('.$value['title'].')'.'--'.$value['telephone'];
+				else
+					$value['info']=$value['realname'].'--'.$value['telephone'];
+				$members[] = $value;
+			}
+			$this->assign('team',$team);
+		}
         $this->assign('sms_num',$Model->getSmsNum($gid));
 
         //dump($members);
-        $this->assign('club',$club);
+        
         $this->assign('members',$members);
         $this->display();
     }
