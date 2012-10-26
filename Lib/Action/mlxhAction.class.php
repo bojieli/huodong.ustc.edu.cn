@@ -1,6 +1,11 @@
 <?php
 class MlxhAction extends PublicAction {
     function index() {
+        if (CURRENT_USER > 0) {
+            $count = M('mlxh_log')->where(array('uid'=>CURRENT_USER, 'action'=>'miaosha'))->count();
+            if ($count > 0)
+                $this->assign('miaoshaguole', true);
+        }
         $this->display();
     }
 
@@ -12,21 +17,21 @@ class MlxhAction extends PublicAction {
         $time = time();
         $t = localtime($time, true);
         $daysec = $t['tm_hour'] * 3600 + $t['tm_min'] * 60 + $t['tm_sec'];
-        // 11:11 ~ 12:30
-        if ($daysec < 11*3600+11*60)
-            $this->error('今天的秒杀尚未开始');
-        if ($daysec > 12*3600+30*60)
-            $this->error('今天的秒杀已于12:30结束');
+        // 12:30 ~ 13:30
+        if ($daysec < 12*3600+30*60)
+            $this->error('今天的秒杀尚未开始，再等等吧~');
+        if ($daysec > 13*3600+30*60)
+            $this->error('今天的秒杀已于13:30结束 :(');
 
-        $count = M('mlxh_log')->where(array('uid'=>CURRENT_USER))->count();
+        $count = M('mlxh_log')->where(array('uid'=>CURRENT_USER, 'action'=>'miaosha'))->count();
         if ($count > 0)
-            $this->error('你已经参与过秒杀或抽奖了，每人只有一次机会哦~');
+            $this->error('你已经秒杀成功了，请不要重复秒杀');
 
         $todaybegin = $time - $time % 86400;
         $count = M('mlxh_log')->where("time > $todaybegin AND action='miaosha'")->count();
         $everyday_tickets = 10;
         if ($count >= $everyday_tickets)
-            $this->error("抱歉，今天已经有 $everyday_tickets 人秒杀了……");
+            $this->error("抱歉，今天已经有 $everyday_tickets 人秒杀了，明天再来吧 :)");
 
         $log['uid'] = CURRENT_USER;
         $log['time'] = $time;
@@ -38,6 +43,26 @@ class MlxhAction extends PublicAction {
     }
 
     function choujiang() {
+        if (CURRENT_USER == 0)
+            $this->error("请首先注册或登录");
+
+        $count = M('mlxh_log')->where(array('uid'=>CURRENT_USER, 'action'=>'miaosha'))->count();
+        if ($count > 0)
+            $this->error('你已经秒杀成功了，不需要再抽奖啦！');
+
+        $count = M('mlxh_log')->where(array('uid'=>CURRENT_USER, 'action'=>'choujiang'))->count();
+        if ($count > 0)
+            $this->error("你已经提交过抽奖<br>请耐心等待11月9日的开奖");
+
+        date_default_timezone_set('Asia/Chongqing');
+        $log['uid'] = CURRENT_USER;
+        $log['time'] = time();
+        $log['action'] = 'choujiang';
+        
+        $o = M('mlxh_log');
+        $o->create($log);
+        $o->add();
+        $this->success('已经加入抽奖池中！<br>我们将在11月9日进行抽奖并通知到您的注册邮箱');
     }
 
     function error($msg) {

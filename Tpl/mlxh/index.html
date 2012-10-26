@@ -1,4 +1,3 @@
-<!doctype html>
 <html>
   <head>
     <title>美丽邂逅2012</title>
@@ -9,7 +8,7 @@
         height: 576px;
         background: url("/static/mlxh/img/ml_big.jpg") no-repeat;
         margin: 0 auto;
-        margin-top: 30px;
+        margin-top: 10px;
         position: relative;
       }
       #mlxh_content{
@@ -50,23 +49,30 @@
         color:#ffffff;
         background-color:#e62589; 
       }
-      #mlxh_miaosha,#mlxh_choujiang{
-        display: none;
-      }
     </style>
+    <script src="/static/mlxh/js/jquery.js"></script>
+    <link href="/static/css1.css" rel="stylesheet" type="text/css" />
   </head>
   <body>
+    <include file="Public:headnav" />
     <div id="landing">
     <div id="mlxh_content">
+    <if condition="$_G['uid'] == 0">
       <a id="mlxh_reg" href="/User/register">注册</a>
       <a id="mlxh_login" href="/User/login">登录</a>
-      <a id="mlxh_miaosha" href="#">秒杀</a>
-      <a id="mlxh_choujiang" href="#">抽奖</a>
-      <span id="daojishi"></span>
+      <span id="daojishi">需要注册或登录才能秒杀或抽奖</span>
+    <else />
+    <if condition="empty($miaoshaguole)">
+      <a id="mlxh_miaosha" class="disabled" style="cursor:pointer">秒杀</a>
+      <a id="mlxh_choujiang" class="" style="cursor:pointer">抽奖</a>
+      <span id="daojishi">载入中……</span>
+    <else />
+      <span id="daojishi">恭喜你，秒杀成功！</span>
+    </if>
+    </if>
     </div>
       
     </div>
-    <script src="/static/mlxh/js/jquery.js"></script>
     <script src="/static/mlxh/js/bootstrap.min.js"></script>
     <script type="text/javascript">
     $(document).ready(function(){
@@ -74,7 +80,7 @@
     date_default_timezone_set('Asia/Chongqing');
     $t = localtime(time(), true);
 ?>
-		var now = new Date(
+	var now = new Date(
             <?=$t['tm_year']+1900?>,
             <?=$t['tm_mon']+1?>,
             <?=$t['tm_mday']?>,
@@ -84,7 +90,7 @@
             );
     var theTime =new Date(now.getFullYear(),now.getMonth(),now.getDay(),12,30,00);
     var isTime = false;
-    function CurentTime(){      
+    /*function CurentTime(){      
       var mm = now.getMinutes();      
       var ss = now.getTime() % 60000;
       ss = (ss - (ss % 1000)) / 1000;      
@@ -105,20 +111,22 @@
         };
       };   
       return(clock + ss); 
-    }
+    }*/
     function leftTime(){
-      if (now - theTime > 60 * 80) // 11:11 ~ 12:30
-        return "今天的秒杀已经结束 :)";
-      if (now - theTime >= 0)
-        return "秒杀已经开始啦，立即抢票";
       var time_now = now.getHours()*3600+now.getMinutes()*60+now.getSeconds();
       var time_up = theTime.getHours()*3600+theTime.getMinutes()*60+theTime.getSeconds();
+      if (time_now - time_up > 3600) // 12:30 ~ 13:30
+        return "今天的秒杀已经结束，明天12:30再来吧 :)";
+      if (time_now - time_up >= 0) {
+        isTime = true;
+        return "秒杀已经开始啦，赶快抢票吧";
+      }
       var leftH = (time_up-time_now)/3600;
       leftH=Math.floor(leftH);
       var leftM = (time_up-time_now-3600*leftH)/60;
       leftM = Math.floor(leftM);
       var leftS = time_up-time_now-3600*leftH-60*leftM;
-      return "距离下一次秒杀还有 "+leftH+"小时"+leftM+"分"+leftS+"秒";
+      return "距下次秒杀还有 "+leftH+"小时"+leftM+"分"+leftS+"秒";
     }  
     function refresh(){      
       // document.getElementById("clock").innerHTML = now.getFullYear()+"年"+now.getMonth()+"月"+now.getDate()+"日 "+ CurentTime();
@@ -126,37 +134,78 @@
         document.getElementById("daojishi").innerHTML = leftTime();
       }else{
         $("#mlxh_miaosha").removeClass("disabled");
-        $("#mlxh_miaosha").innerHTML = '立即抢票';        
+        $("#mlxh_miaosha").html('<b>抢票</b>');        
       }
       now.setSeconds(now.getSeconds()+1);
     } 
-    setInterval(refresh,1000);        
+    if ($('#mlxh_miaosha').html()) {
+        intervalId = setInterval(refresh,1000);
+        $('#mlxh_miaosha').attr("intervalId", intervalId);
+    }
     
-    $("#mlxh_choujiang").css("display","none");
-    $("#mlxh_miaosha").css("display","none");
+    //$("#mlxh_miaosha").css("display","none");
+    //$("#mlxh_choujiang").css("display","none");
     })
 
+    function stopCounting() {
+        clearInterval($('#mlxh_miaosha').attr('intervalId'));
+    }
+
     $('#mlxh_miaosha').click(function(){
-        if ($('#miaosha').hasClass('disabled'))
+        if ($(this).hasClass('disabled')) {
+            $('#daojishi').html("秒杀还没有开始，再等一会儿吧 :)");
             return;
+        }
+        if ($(this).hasClass('done')) {
+            $('#daojishi').html("你已经秒杀成功啦！");
+            return;
+        }
         $.ajax({
             url: '/mlxh/miaosha',
             dataType: 'json',
             success: function(obj) {
+                stopCounting();
                 if(obj.status) {
                     $('#daojishi').html(obj.msg);
-                    $('#daojishi').addClass('disabled');
-                    clearInterval(intervalId);
+                    $('#mlxh_miaosha').addClass('done');
+                    $('#mlxh_choujiang').addClass('done');
                 } else {
                     $('#daojishi').html(obj.msg);
-                    clearInterval(intervalId);
                 }
             },
             error: function(e) {
+                stopCounting();
                 $('#daojishi').html("服务器错误，请重试");
-                clearInterval(intervalId);
             }
         });
+    });
+
+    $('#mlxh_choujiang').click(function(){
+        if ($(this).hasClass('disabled')) {
+            $('#daojishi').html("你已经提交过抽奖<br>请耐心等待11月9日的开奖！");
+            return;
+        }
+        if ($(this).hasClass('done')) {
+            $('#daojishi').html("你已经秒杀成功啦！");
+            return;
+        }
+        $.ajax({
+            url: '/mlxh/choujiang',
+            dataType: 'json',
+            success: function(obj) {
+                stopCounting();
+                if(obj.status) {
+                    $('#daojishi').html(obj.msg);
+                } else {
+                    $('#daojishi').html(obj.msg);
+                }
+                $('#mlxh_choujiang').addClass('disabled');
+            },
+            error: function(e) {
+                $('#daojishi').html("服务器错误，请重试");
+                stopCounting();
+            }
+       });
     });
     </script>     
   </body>
