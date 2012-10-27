@@ -15,5 +15,8 @@ class PublicAction extends Action {
             $this->assign('here', "club".$_GET['gid']);
         else
             $this->assign('here', get_class($this));
+
+        // 美丽邂逅
+        $this->assign('theday', A('mlxh')->isTheDay());
     }
 }
