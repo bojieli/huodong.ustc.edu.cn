@@ -208,10 +208,31 @@ $showPager = function() use($club,$pageNow) {
                 	<td align="left"><a href="/Club/emailAddress?gid={$club.gid}" target='_blank' style="color:#088;">群邮件地址</a></td>
                     <td align="left"><a href="/Club/createAddressEmailUSTC?gid={$club.gid}" style="color:#088;">导出为科大邮件联系人</a></td>
                 </tr>
+				<tr>
+                	<notempty name="club.iscorers"><td align="left"><a href="/Team/introAdd?gid={$club.gid}&type=department" target='_blank' style="color:#088;">创建部门</a></td></notempty>
+                    <td align="left"><a href="/Team/introAdd?gid={$club.gid}&type=team" target='_blank' style="color:#088;">创建项目组</a></td>
+                </tr>
             </table>            
             
          </notempty>   
+        <notempty name="departments">
         <br/>
+        <div class="sttttt">部门：</div>
+	    <volist name="departments" id="department">
+	        <p>
+			<a href="/Team?tid={$department.tid}" target="_blank">{$department.name}</a>
+	        </p>
+        </volist>
+		</notempty>
+		<notempty name="teams">
+		<br/>
+        <div class="sttttt">项目组：</div>
+	    <volist name="teams" id="team">
+	        <p>
+			<a href="/Team?tid={$team.tid}" target="_blank">{$team.name}</a>
+	        </p>
+        </volist>
+		</notempty>
         <br/>
         <div class="sttttt">待审核会员：</div>
 	    <volist name="inactive" id="member">
