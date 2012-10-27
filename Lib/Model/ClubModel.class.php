@@ -170,6 +170,14 @@ class ClubModel extends Model {
     {
         return M()->result_first("SELECT up.priv_value FROM ustc_user_group As ug, ustc_priv As up WHERE ug.priv = up.priv_name AND ug.uid='$uid' AND ug.gid='$gid'");
     }
+	public function isAdmins($gid,$uid = CURRENT_USER)//副主席以上
+	{
+		return D('User')->isDeveloper($uid)||$this->getPrivValue($gid)>7;
+	}
+	public function isCorer($gid, $uid = CURRENT_USER)//副部长及以上
+	{
+		return D('User')->isDeveloper($uid)||$this->getPrivValue($gid)>5;
+	}
     public function isManager($gid, $uid = CURRENT_USER) {
         return $this->isSchoolAdmin($uid,$gid) || $this->getPrivValue($gid,$uid)>1;
     }
