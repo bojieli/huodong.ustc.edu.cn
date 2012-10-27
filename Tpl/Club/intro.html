@@ -20,7 +20,24 @@
     	</div><!--stcon2-->
         <div class="stsjz">社团经历时间轴</div>
         <div class="stsjz2">
-	<p>此功能正在开发中，将在一个月后与大家见面 :)</p>
+		
+		<table align="left" border="0">
+			<tr>
+				<th>活动名</th>
+				<th>发布时间</th>
+				<th>地点</th>
+				<th>关注度</th>
+			</tr>
+		<volist name="schedule" id="vo">
+			<tr>
+				<td style="border-bottom:1px dotted #ccc"><a href="/Poster/singlePage?aid={$vo.aid}">{$vo.name}</a></td>
+				<td style="border-bottom:1px dotted #ccc">{$vo.Publish_time}</td>
+				<td style="border-bottom:1px dotted #ccc">{$vo.place}</td>
+				<td style="border-bottom:1px dotted #ccc">{$vo.rate_total}</td>
+			</tr>
+		</volist>
+		</table>
+		
         </div>
         
     </div><!--stcon1-->
