@@ -75,8 +75,8 @@
 	});
 	</script>
 	
-	<div id="qrcodeId" style=" position:absolute; top:-7px; right:4px; "><img title="组织二维码"  style=" width:124px; border:1px solid #8a4419; border-style:inset;"  src="http://huodong.ustc.edu.cn/upload/avatar/Qr/huodongQR_for2_508ee792b58a3c7f11f12d51472a5a67.png"  alt="{$club.name}二维码"/></div>    
-    <div class="qrcode"><img src="http://huodong.ustc.edu.cn/upload/avatar/Qr/huodongQR_for2_508ee792b58a3c7f11f12d51472a5a67.png"  alt="{$club.name}二维码"/></div>
+	<div id="qrcodeId" style=" position:absolute; top:-7px; right:4px; "><img title="组织二维码"   style=" width:124px; border:1px solid #8a4419; border-style:inset;"  src="{$Qrcode}"  alt="{$club.name}二维码"/></div>    
+    <div class="qrcode"><img src="{$Qrcode}"  alt="{$club.name}二维码"/></div>
 <script type="text/javascript">
 		$("#qrcodeId").hover(
 				function(){ $(".qrcode").show(300);},
