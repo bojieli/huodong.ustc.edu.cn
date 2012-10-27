@@ -1,4 +1,5 @@
-	<div class="sttitle2">{$club.school.name}</div>
+	
+    <div class="sttitle2">{$club.school.name}</div>
 	<div class="sttitle"><a href="/Club/intro?gid={$club.gid}">{$club.name}</a></div>
     <div class="sttitle3">
     <notempty name="club.name_en">
@@ -14,12 +15,15 @@
     <p>社团联系方式：{$club.contact}</p>
     </notempty>
     </div>
-    <div class="sttitle4">网上注册会员：{$club.memberCount} 人<br/>
+    <div class="sttitle4"><span class="marginR1">网上会员：{$club.memberCount} 人</span><br/>
+    
     <if condition="$club[admin][uid] != 0">
-    会长：{$club.admin.realname} ({$club.admin.dept} {$club.admin.grade}级 {$club.admin.education})
+    <span class="marginR1">会长：{$club.admin.realname} ({$club.admin.dept} {$club.admin.grade}级 {$club.admin.education}) </span>
     <elseif condition="!$club['apply']" />
-    <div id="js-apply">尚未设置会长，<a style="text-decoration:underline; color:#F00;" href="/static/help/contactus.html">请会长联系我们!</a>或者<a class="<if condition="$_G['uid'] == 0">js-not-login<else />js-login</if>" style="text-decoration:underline; color:#F00;" href="javascript:void(0)">点此申请成为该社团会长</a></div>
+    <div id="js-apply">尚未设置会长，<a style="text-decoration:underline; color:#F00;" href="/static/help/contactus.html">请会长联系我们!</a>或<a class="<if condition="$_G['uid'] == 0">js-not-login<else />js-login</if>" style="text-decoration:underline; color:#F00;" href="javascript:void(0)"> 点击申请成为会长</a></div>
+    
 	<else />
+    
 	<span style ="color:red">您申请成为该团体会长，审核中……</span>
     </if>
         <div class="sttitle5">
@@ -35,13 +39,13 @@
 		    欢迎您，{$club.title}
 		<else />
 		  <if condition="$_G['uid'] == 0">
-		    <a href="/User/register" style="color:#F00;">注册</a> 或 <a href="/User/login" style="color:#F00;">登录</a> 后才能加入社团
+	 	    <a href="/User/register" style="color:#F00;">注册</a> 或 <a href="/User/login" style="color:#F00;">登录</a> 后才能加入社团
 		  <else />
 	    	    <a href="/Club/join?gid={$club.gid}" style="color:#F00;">您还未加入，点击申请加入</a>
 		  </if>
 		</if>
 	    </switch>
-	    <a style="margin-left:50px;" href="/Club/manage?gid={$club.gid}">查看及管理会员</a>
+	    <a style="margin-left:50px;" href="/Club/manage?gid={$club.gid}">查看及管理</a>
 	    <notempty name="club.isadmins">
 	    <a style="margin-left:20px;" href="/Club/introModify?gid={$club.gid}">修改社团简介</a>
 	    </notempty>
@@ -70,8 +74,12 @@
 		},'json');
 	});
 	</script>
-	<script type="text/javascript">
-		$(".sttitle").mouseover(function(){ $(".qrcode").show();});
-		$(".sttitle").mouseout(function(){ $(".qrcode").hide();});
-	</script>
-	<div class="qrcode"style="display:none"><img src="{$Qrcode}" alt="{$club.name}二维码"/></div>
+	
+	<div id="qrcodeId" style=" position:absolute; top:-7px; right:4px; "><img title="组织二维码"  style=" width:124px; border:1px solid #8a4419; border-style:inset;"  src="http://huodong.ustc.edu.cn/upload/avatar/Qr/huodongQR_for2_508ee792b58a3c7f11f12d51472a5a67.png"  alt="{$club.name}二维码"/></div>    
+    <div class="qrcode"><img src="http://huodong.ustc.edu.cn/upload/avatar/Qr/huodongQR_for2_508ee792b58a3c7f11f12d51472a5a67.png"  alt="{$club.name}二维码"/></div>
+<script type="text/javascript">
+		$("#qrcodeId").hover(
+				function(){ $(".qrcode").show(300);},
+				function(){ $(".qrcode").hide(300);}
+				);		
+</script>
