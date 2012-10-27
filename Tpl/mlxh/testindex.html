@@ -50,19 +50,15 @@
         background-color:#e62589; 
       }
     </style>
-    <script src="/static/mlxh/js/jquery.js"></script>
-    <link href="/static/css1.css" rel="stylesheet" type="text/css" />
   </head>
   <body>
-    <include file="Public:headnav" />
     <div id="landing">
     <div id="mlxh_content">
     <if condition="$_G['uid'] == 0">
       <a id="mlxh_reg" href="/User/register">注册</a>
       <a id="mlxh_login" href="/User/login">登录</a>
       <span id="daojishi">需要注册或登录才能秒杀或抽奖</span>
-    <else />
-    <if condition="empty($miaoshaguole)">
+    <elseif condition="empty($miaoshaguole)" />
       <a id="mlxh_miaosha" class="disabled" style="cursor:pointer">秒杀</a>
       <a id="mlxh_choujiang" class="" style="cursor:pointer">抽奖</a>
       <span id="daojishi">载入中……</span>
@@ -73,6 +69,7 @@
     </div>
       
     </div>
+    <script src="/static/mlxh/js/jquery.js"></script>
     <script src="/static/mlxh/js/bootstrap.min.js"></script>
     <script type="text/javascript">
     $(document).ready(function(){
@@ -90,28 +87,7 @@
             );
     var theTime =new Date(now.getFullYear(),now.getMonth(),now.getDay(),12,30,00);
     var isTime = false;
-    /*function CurentTime(){      
-      var mm = now.getMinutes();      
-      var ss = now.getTime() % 60000;
-      ss = (ss - (ss % 1000)) / 1000;      
-      var clock = now.getHours() +':';      
-      if (mm < 10) clock += '0';     
-      clock += mm+':';      
-      if (ss < 10) clock += '0'; 
-      if(now.getHours()==11){
-        
-        if (mm>=11) {
-          if (mm==11) {
-            if(ss>=11){
-              isTime = true
-            };
-          }else{
-            isTime = true;
-          };
-        };
-      };   
-      return(clock + ss); 
-    }*/
+    
     function leftTime(){
       var time_now = now.getHours()*3600+now.getMinutes()*60+now.getSeconds();
       var time_up = theTime.getHours()*3600+theTime.getMinutes()*60+theTime.getSeconds();
