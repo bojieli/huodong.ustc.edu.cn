@@ -389,6 +389,11 @@ class ClubAction extends PublicAction {
             $member['school']=D('School')->result_first("select name from ustc_school where sid = ".$member['sid']);
         }
         unset($member);
+		$teams = M("Team")->where(array('type'=>'team','gid'=>$gid,'flag'=>1))->select();
+		$departments =M("Team")->where(array('type'=>'department','gid'=>$gid,'flag'=>1))->select();
+		$this->assign('teams', $teams);
+		$this->assign('departments', $departments);
+
         $this->assign('inactive', $inactive_members);
         $this->assign('pageStart', $start);
         $this->assign('pageNow', $page);
