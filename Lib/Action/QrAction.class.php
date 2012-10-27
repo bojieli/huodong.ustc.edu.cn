@@ -45,6 +45,12 @@ class QrAction extends PublicAction{
 			QRcode::png('huodong.ustc.edu.cn', $filename, $errorCorrectionLevel, $matrixPointSize, 2);   
 		}
 	}
+	public function update()
+	{
+		$gid=$this->_get('g');
+		$n=$this->_get('n','',1);
+		$this->QRpl($gid,$n);
+	}
 	public function QRpl($gid,$n)
 	{
 		if($n==0)
@@ -53,7 +59,8 @@ class QrAction extends PublicAction{
 		}
 		else
 		{
-			$gids=array($gid);
+			$gids[]=array('gid'=>$gid);
+			
 		}
 		$i=0;
 		$j=0;
@@ -100,13 +107,14 @@ class QrAction extends PublicAction{
 				{$note.=$qq_group;}
 				else
 				{$qq=$qq_group;}
+				//dump($qq);
 				$company=$re['school']['name'];
 				$address=$re['homepage'];
 				$website=$huodong_home;
 				$weibo=$re['weibo'];
-				$qq=$re['qq'];
 				$ww=$re['ww'];
 				$msn=$re['msn'];
+				//echo $qq;
 				$data=$this->QRforCards($name,$phone,$company,$role,$email,$address,$website,$weibo,$qq,$ww,$msn,$note);
 				//dump($data);
 				//$data="【".$re['name']."】"."\n"."标语:".$slogan."\n"."学校:".$re['school']['name']."\n"."联系我们:"."\n"."BBS或QQ群:".$qq_group."\n"."邮箱或手机号:".$contact."\n"."活动平台主页:".$huodong_home.$end;
@@ -152,6 +160,7 @@ class QrAction extends PublicAction{
 		 }
 		 $data=$begin.$data.$end;
 		 //dump($data);
+		 //die;
 		 return($data);
 	}
 	public function QRshow(){
