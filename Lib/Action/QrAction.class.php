@@ -124,6 +124,7 @@ class QrAction extends PublicAction{
 			}
 			$j++;
 		}
+		dump(array('success'=>$i,'failed'=>$j-$i));
 		return array('success'=>$i,'failed'=>$j-$i);
 		//die;
 		//dump(array('success'=>$i,'failed'=>$j-$i));
