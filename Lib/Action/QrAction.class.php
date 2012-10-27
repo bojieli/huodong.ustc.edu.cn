@@ -53,7 +53,8 @@ class QrAction extends PublicAction{
 	}
 	public function QRpl($gid,$n)
 	{
-		if($n==0)
+		//dump($gid);
+		if($n==2)
 		{
 			$gids=M('Club')->field('gid')->select();
 		}
@@ -64,6 +65,8 @@ class QrAction extends PublicAction{
 		}
 		$i=0;
 		$j=0;
+		//dump($gids);
+		//die;
 		$regex = array(
             'require'=> '/.+/', //匹配任意字符，除了空和断行符
             'email' => '/^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/',
@@ -116,6 +119,18 @@ class QrAction extends PublicAction{
 				$msn=$re['msn'];
 				//echo $qq;
 				$data=$this->QRforCards($name,$phone,$company,$role,$email,$address,$website,$weibo,$qq,$ww,$msn,$note);
+				$name='';
+				$phone='';
+				$company='';
+				$role='';
+				$email='';
+				$address='';
+				$website='';
+				$weibo='';
+				$qq='';
+				$ww='';
+				$msn='';
+				$note='';
 				//dump($data);
 				//$data="【".$re['name']."】"."\n"."标语:".$slogan."\n"."学校:".$re['school']['name']."\n"."联系我们:"."\n"."BBS或QQ群:".$qq_group."\n"."邮箱或手机号:".$contact."\n"."活动平台主页:".$huodong_home.$end;
 				$this->getQR($data,$gid,$level='L',$size=4);
@@ -136,6 +151,7 @@ class QrAction extends PublicAction{
 	}
 	public function QRforCards($name,$phone,$company,$role,$email,$address,$website,$weibo,$qq,$ww,$msn,$note){
 	     $tmps=array('NOTE'=>$note,'weibo'=>$weibo,'QQ'=>$qq,'旺旺'=>$ww,'MSN'=>$msn,);
+		 //dump($tmps);
 		 foreach($tmps as $tmp => $value)
 		 {
 			if(!empty($value)){$note1.=$tmp.":".$value.' ';}
