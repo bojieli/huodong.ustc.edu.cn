@@ -3,11 +3,20 @@ class PosterModel extends Model {
     public function getPoster($start, $num, $cond = [], $order = '') {
         return M('Poster')->where($cond)->order($order)->limit("$start,$num")->cast(__CLASS__)->select();
     }
-
     public function getPosterById($aid) {
         return M('Poster')->cast(__CLASS__)->find($aid);
     }
-
+	public function getPosterByGid($gid)
+	{
+		$re=M('Poster')->where(array('gid'=>$gid))->order('publish_time desc')->select();
+	    foreach($re as $row=>$val)
+		{
+			$re[$row]['Publish_time']=date("n月j日 H:i:s",$val['publish_time']);
+			$re[$row]['Start_time']=date("n月j日 H:i:s",$val['start_time']);
+			$re[$row]['End_time']=date("n月j日 H:i:s",$val['end_time']);
+		}
+		return $re;
+	}
 
     public function id() {
         return $this->aid;

@@ -19,12 +19,26 @@
 	{$club.description}
     	</div><!--stcon2-->
         <div class="stsjz">社团经历时间轴</div>
-        <div class="stsjz2">
-	<p>此功能正在开发中，将在一个月后与大家见面 :)</p>
+		<div class="stsjz2">	
+			<table align="left" border="1">
+			<tr>
+				<th>名称</th>
+				<th>发布时间</th>
+				<th>地点</th>
+				<th>关注度</th>
+			</tr>
+			<volist name="schedule" id="vo">
+				<tr>
+					<td>{$vo.name}</th>
+					<td>{$vo.Publish_time}</th>
+					<td>{$vo.place}</th>
+					<td>{$vo.rate_total}</th>
+				</tr>
+			</volist>		
+			</table>
         </div>
-        
+		
     </div><!--stcon1-->
 </div><!--stmain--> 
-
 </body>
 </html>

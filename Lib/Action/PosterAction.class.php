@@ -275,7 +275,7 @@ class PosterAction extends PublicAction {
             '</div></div></li>';
     }
 
-    public function reloadComments() {
+    public function reloadComments(){
         $this->loadComments();
     }
 
