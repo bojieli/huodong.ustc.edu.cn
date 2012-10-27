@@ -50,6 +50,7 @@
 	<div class="zc1contentrect" style="padding-top:20px;">
     	<div class="zc1content">
 		 <form id="registerform" name="registerform" action="/User/addUser" method="post">
+            <input type="hidden" name="register_referer" value="<?=$_SERVER['HTTP_REFERER']?>" />
 			<table cellspacing="0" cellpadding="0" border="0" class="zc1table">
                 <tr>
                 	<td align="right" valign="middle" width="150px" height="58px"><em>*</em>学校</td>

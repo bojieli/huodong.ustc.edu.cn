@@ -284,9 +284,15 @@ class UserAction extends PublicAction {
             $record['status'] = 'active';
             M('User')->where(['uid' => $_GET['uid']])->save($record);
         }
-
-        $this->assign('jumpUrl','/User/login');
-        $this->success('帐号激活成功，现在跳转到登录页面……');
+        
+        $referer = $info['register_referer'];
+        if (empty($referer) || !strstr($referer, $_SERVER['HTTP_HOST'])) {
+            $this->assign('jumpUrl', '/User/login');
+            $this->success('帐号激活成功，现在跳转到登录页面……');
+        } else {
+            $this->assign('jumpUrl', $referer);
+            $this->success('帐号激活成功，现在跳转到注册前页面……');
+        }
     }
 
     /* public function avatarUpload(){
