@@ -280,6 +280,7 @@ class ClubAction extends PublicAction {
     }
 
     public function sendEmail() {
+		$gid = $_REQUEST['gid'];
         if(!D('User')->checkLogin()){$this->assign('jumpUrl', '/User/login');$this->error('您尚未登陆');}
         if(!D('Club')->isManager($gid)){$this->error('只有会长和部长才有权限群发邮件。');}
         $gid = $_GET['gid'];

@@ -392,7 +392,7 @@ getwindowWH();//调用函数获取数值
 </script>
 <include file="Public:headnav" />
 <div id="mainding" style="position:relative; overflow: scroll;">
-  <p class="mss-tittle">{$club['school']['name']} - {$club['name']} - 群发短信通知</p>
+  <p class="mss-tittle"><notempty name="club"> {$club['school']['name']} - <a href="/Club/manage?gid={$club.gid}">{$club['name']}</a></notempty><notempty name="team"><a href="/Club/manage?gid={$team.gid}">{$team['club']}</a> - <a href="/Team?tid={$team.tid}">{$team['name']}</a></notempty> - 群发短信通知</p>
   <div id="msn_selmem_box">
 <form>
 <table border="0" cellpadding="0" cellspacing="0" style="margin:0 auto;">
@@ -458,7 +458,7 @@ getwindowWH();//调用函数获取数值
 			</div>
 			<input type="hidden" name="tid" id="tid" value=""/>
 			<input type="hidden" id="tid_num" value=""/>
-			<input type="hidden" name="gid" value="{$club.gid}"/>
+			<input type="hidden" name="gid" value="<notempty name="club">{$club.gid}</notempty><notempty name="team">{$team.gid}</notempty>"/>
 		</td>
     </tr>
     <tr>
@@ -467,9 +467,9 @@ getwindowWH();//调用函数获取数值
             <div class="inputarea" style="position:relative;">
 				<textarea id="edit" name="s" title="写满两行文字的长度约为一条短信 ！" class="mss-input-text" onfocus="this.className='dxhb-focus mss-input-text'" onblur="this.className='dxhb-blur mss-input-text'" style="float:left" ></textarea>
 				<!--span style=" color:#F00;"><br/>&nbsp;&nbsp;&nbsp;写满两行文字的长度<br/>&nbsp;&nbsp;&nbsp;约为一条短信 ！</span-->
-				<span class="history">
+				<notempty name="club"><span class="history">
 				<a href="/Sms/history?gid={$club.gid}" title="{$club['name']}" style=" color:#06C; margin-left:50px;">全部短信记录</a>
-				</span>
+				</span></notempty>
 				<span style="position:absolute;left:490px;top:135px;color:#8E8E90">
 				还可输入<span id="counter" style="color:#F00">200</span>字
 				</span>
