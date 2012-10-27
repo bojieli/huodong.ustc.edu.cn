@@ -1,0 +1,632 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="keywords" content="大学海报,海报墙,社团,社团管理,大学活动,活动搜索,活动筛选,搜索海报,搜索社团,筛选海报,筛选社团,邮件通知,短信通知,申请加入,瀑布流,评价分享,时间轴" />
+<meta name="description" content="大学活动的集中展示平台,大学海报的集中发布与分享平台,大学社团的集中展示与集中管理平台。更便捷、更简单、更高效、更美观、更流畅、更快速……" />
+<title>社团项目组</title>
+<link href="/static/css1.css" type="text/css" rel="stylesheet" />
+<link href="/static/shetuanxianshi.css" type="text/css" rel="stylesheet" />
+<script src="/static/jquery.js" type="text/javascript"></script>
+</head>
+<notempty name="team.isAdmin">
+<!--以下为筛选代码以及js代码-->
+<script type="text/javascript"> 
+<!-- Begin 
+sortitems = 0;  // Automatically sort items within lists? (1 or 0) 
+sort_flagL = 0; //left col.1 or 0 ; 1 stand for "sort by text", 0 stand for "sort by clubindex" 
+sort_flagR = 0; //right col 1 or 0 ; 1 stand for "sort by text", 0 stand for "sort by clubindex" 
+
+ function move(fbox,tbox,flag) { 
+ 
+  for(var i=0; i<fbox.options.length; i++) { 
+    if(fbox.options[i].selected && fbox.options[i].value != ""){ 
+    	var no = new Option();
+		var z
+    	no.value = fbox.options[i].value; 
+    	no.text = fbox.options[i].text;		
+		z = fbox.options[i].getAttribute("clubindex");
+		no.setAttribute("clubindex",z);
+		no.selected = fbox.options[i].selected;
+    	tbox.options[tbox.options.length] = no;
+    	fbox.options[i].value = ""; 
+    	fbox.options[i].text = "";
+		fbox.options[i].setAttribute("clubindex","");
+		fbox.options[i].selected = false ;
+    };
+  };
+  BumpUp(fbox); 
+  if (sortitems) SortD(tbox,flag); 
+ };
+function moveall(fbox,tbox,flag){ 
+  for(var i=0; i<fbox.options.length; i++){ 
+    if(fbox.options[i].value != ""){ 
+    	var no = new Option(); 
+    	no.value = fbox.options[i].value; 
+    	no.text = fbox.options[i].text;
+		var z
+		z = fbox.options[i].getAttribute("clubindex");
+		no.setAttribute("clubindex",z)		
+    	tbox.options[tbox.options.length] = no; 
+    	fbox.options[i].value = ""; 
+    	fbox.options[i].text = "";
+		fbox.options[i].setAttribute("clubindex","");
+		fbox.options[i].selected = false ;
+       }; 
+  }; 
+ BumpUp(fbox); 
+ if (sortitems) SortD(tbox,flag); 
+ };
+function BumpUp(box){ 
+  for(var i=0; i<box.options.length; i++){ 
+    if(box.options[i].value == ""){ 
+       for(var j=i; j<box.options.length-1; j++){ 
+       	 box.options[j].value = box.options[j+1].value; 
+       	 box.options[j].text = box.options[j+1].text;
+		var z
+		z = box.options[j+1].getAttribute("clubindex");
+		box.options[j].setAttribute("clubindex",z)		 
+		
+       };
+       var ln = i; 
+       break; 
+    }; 
+  }; 
+  if(ln < box.options.length)  { 
+  	box.options.length -= 1; 
+  	BumpUp(box); 
+  }; 
+}; 
+
+function SortD(box,flag){ 
+ var temp_opts = new Array(); 
+ var temp = new Object(); 
+ var z
+ var z1
+ for(var i=0; i<box.options.length; i++)  { 
+   temp_opts[i] = box.options[i]; 
+ } 
+if(flag){
+ for(var x=0; x<temp_opts.length-1; x++)  { 
+   for(var y=(x+1); y<temp_opts.length; y++)  {	   
+     if(temp_opts[x].text > temp_opts[y].text)  { 
+     	temp = temp_opts[x].text; 
+    	temp_opts[x].text = temp_opts[y].text; 
+     	temp_opts[y].text = temp;
+		
+     	temp = temp_opts[x].value; 
+     	temp_opts[x].value = temp_opts[y].value; 
+     	temp_opts[y].value = temp;
+		
+		
+			
+		z = temp_opts[x].getAttribute("clubindex");
+		z1 = temp_opts[y].getAttribute("clubindex");		
+     	temp_opts[x].setAttribute("clubindex",z1);	
+     	temp_opts[y].setAttribute("clubindex",z);	 
+		
+		temp = temp_opts[x].selected; 
+     	temp_opts[x].selected = temp_opts[y].selected; 
+     	temp_opts[y].selected = temp; 
+		     };
+   };
+ };
+} //sort by test
+else{
+   for(var x=0; x<temp_opts.length-1; x++)  { 
+   for(var y=(x+1); y<temp_opts.length; y++)  {
+	   var rrx = parseInt(temp_opts[x].getAttribute("clubindex"));
+	   var rry = parseInt(temp_opts[y].getAttribute("clubindex"));
+     if(rrx > rry)  { 
+     	temp = temp_opts[x].text; 
+    	temp_opts[x].text = temp_opts[y].text; 
+     	temp_opts[y].text = temp; 
+     	temp = temp_opts[x].value; 
+     	temp_opts[x].value = temp_opts[y].value; 
+     	temp_opts[y].value = temp;
+		
+		temp = temp_opts[x].getAttribute("clubindex");
+		z = temp_opts[y].getAttribute("clubindex");
+		temp_opts[x].setAttribute("clubindex",z);	
+     	temp_opts[y].setAttribute("clubindex",temp);	
+     		
+		temp = temp_opts[x].selected; 
+     	temp_opts[x].selected = temp_opts[y].selected; 
+     	temp_opts[y].selected = temp; 
+		     };
+   };
+ };
+	}
+ for(var i=0; i<box.options.length; i++)  { 
+ 	box.options[i].value = temp_opts[i].value; 
+ 	box.options[i].text = temp_opts[i].text;
+	z = temp_opts[i].getAttribute("clubindex");
+	
+	box.options[i].setAttribute("clubindex",z);
+	box.options[i].selected = temp_opts[i].selected; 
+//	alert("box: "+ z + " temp: " + z+ "boxselect: " + box.options[i].selected + "  " + box.options[i].text);
+  };
+};
+function MselAuto(fbox,flag1,tbox,flag2){
+	if(sortitems){
+		sortitems = 0 ;		
+		document.getElementById("msel_auto").style.backgroundColor='#f0f0f0';		
+		}
+	 else{
+		sortitems = 1 ;
+		SortD(fbox,flag1);
+		SortD(tbox,flag2);
+		document.getElementById("msel_auto").style.backgroundColor='#fafafa';
+		
+		 }
+	};
+function Mselchoose(tbox,flag,num,item_id1,item_id2){
+	//tbox 为要排列的序列的 select 框的 name
+	//flag 为tbox对应的排序规则对应的flag变量
+	//num 为 flag 对应的该改成的值 0 or 1
+	//item_id1 为对应点击的 button 的id, item_id2为点击button对应互斥button的id	
+		flag = num ;
+		document.getElementById(item_id1).style.backgroundColor='#fafafa';
+		document.getElementById(item_id2).style.backgroundColor='#f0f0f0';		
+		SortD(tbox,flag);		
+	}
+	// End --> 
+</script> 
+<script>
+    function ajaxChangeTitle(uid, priv, title) {
+		$.post('/Team/changeTitle', {uid: uid, tid: <?=$team['tid']?>, title: title, priv: priv}, function (res) {
+			if(res.status==0) {
+				alert(res.info);
+			}
+			else
+			{
+				dom = $("#stcy"+uid).children('.stcycell2').children('.stzhiwu');
+				dom.children('img').attr("src", "/static/images/aa"+
+					function() {
+					switch(priv) {
+					case 'manager': return 3;
+					case 'vice-manager': return 3;
+					case 'team-leader': return 3;
+					case 'member': return 4;
+					default: return 5;
+					}
+					}()
+					+".png"
+				);
+				dom.children('.ajax_title_now').html(title);
+				$(".ajax_title_text").val(title);
+			}
+		},'json');
+    }
+	
+	function delAttachment(fid)
+	{
+		$.post('/Team/delAttachment', {fid: fid }, function (res) {
+					if(res.status==0) {
+						alert(res.info);
+					}
+					else
+					{
+						title_div.html(data);
+					}
+		},'json');
+	}
+	$(function(){
+		$(".ajax_title").hide();
+		$(".title_set").live('click',function(){
+			var text = $(this).html();
+			if(text=='个性职称')
+			{
+				$(this).parents('div:eq(0)').find(".ajax_title_now").hide();
+				$(this).parents('div:eq(0)').find(".ajax_title").show();
+				$(this).html("保存");
+				$(this).css({ opacity: 1 }); 
+			}
+			if(text=='保存')
+			{
+				$(this).parents('div:eq(0)').find(".ajax_title_now").show();
+				$(this).parents('div:eq(0)').find(".ajax_title").hide();
+				var title_div = $(this).parents('div:eq(0)').find(".ajax_title_now");
+				var data = $(this).parents('div:eq(0)').find(".ajax_title_text").val();
+				var uid = $(this).parents('div:eq(0)').find(".ajax_title_text").attr('id');
+				$.post('/Team/changeTitleText', {uid: uid, tid: <?=$team['tid']?>, 'title': data }, function (res) {
+					if(res.status==0) {
+						alert(res.info);
+					}
+					else
+					{
+						title_div.html(data);
+					}
+				},'json');
+				$(this).html("个性职称");
+				$(this).css({ opacity: 0.1 });
+			}
+		});
+	$("#js-add-member").click(function(){	 
+		$("#msn_selmem_box").show(300);
+		$("#backbg1").css("display","block");
+	});
+	$("#giveup_sel").click(function(){	 
+		$("#msn_selmem_box").hide(300);
+		$("#backbg1").css("display","none");
+		});
+	$("#backbg1").click(function(){	 
+		$("#msn_selmem_box").hide(300);
+		$("#backbg1").css("display","none");	
+		});
+
+	$("#msn_selmem_tjsx").live('click',function(){
+		$("#msn_selmem_box").hide();
+		$("#backbg1").css("display","none");
+		$(".mss-input-1text").html('');
+		var touid = '';
+		$("#members_select option").each(function() {
+			touid +=$(this).val()+";"
+		 });
+		$.post("/Team/addMembers", { tid: {$team.tid}, touid: touid}, function (data) {
+			alert(data.info);
+			window.location.reload();
+		}, 'json');
+		 
+	});
+		
+});
+</script>
+<!--筛选列表的css样式表-->
+<style type="text/css">
+.mem-select{	
+	width:250px;
+	font-size:16px;	
+	padding:5px;
+	font-family:Microsoft Yahei, "Times New Roman", Times, serif;
+	line-height:20px;
+	vertical-align:middle;	
+	}
+.msel-button{
+	margin-top:15px;
+	margin-left:19px;
+	padding:0;
+	font-size:20px;
+	font-weight:bold;
+	color:#333;
+	height:30px;	
+	line-height:24px;
+	vertical-align:middle;
+	width:60px;
+	text-align:center;
+	}
+.msel-button-sort{
+	color:#99F;
+	font-size:16px;		
+	height:24px;	
+	line-height:22px;
+	vertical-align:middle;
+	width:90px;
+	text-align:center;
+	border-radius:0px;	
+	}
+.mss-tittle{
+	font-family:Microsoft Yahei, "Times New Roman", Times, serif;
+	font-size:25px;
+	color:#99F;
+	margin-bottom:5px;
+	font-weight:bold;
+	background:#DDDDDD;
+	line-height:40px;
+	vertical-align:middle;
+	border-bottom:2px solid #9bc;
+	}
+.mss-button{
+	margin:auto 10px;
+	width:80px;
+	height:28px;
+	line-height:27px;
+	vertical-align:middle;
+	text-align:center;
+	padding:0 6px;
+	font-size:16px;	
+	font-family:Microsoft Yahei, "Times New Roman", Times, serif;
+	background:#FC0;
+	}
+.mss-input-1text{
+	  font-family:Microsoft Yahei, "Times New Roman", Times, serif;		  	  
+	  font-size:14px;	  
+	  outline:none;		  
+	  background:#F9F8F6;
+	  line-height:20px;
+	  vertical-align:middle;
+	  padding:8px;
+	  margin:0;
+	  margin-bottom:6px;
+	  color:#999;
+	  max-height:400px;
+	  min-height:13px;
+
+	}
+.mss-input-text{
+	font-family:Microsoft Yahei, "Times New Roman", Times, serif;
+	font-size:16px;
+	width:590px;
+	line-height:22px;
+	height:140px;
+	padding:10px;		
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius:5px;
+	outline:none;
+	}
+#giveup_sel{
+	color:#F33;
+	margin-left:30px;
+	}
+#giveup_sel:hover{
+	cursor:pointer;
+	}
+#msn_selmem_box{
+	position:absolute;
+	top:-0px;
+	left:160px;
+	margin:0 auto;
+	z-index:11000;
+	width:700px;
+	height:560px;
+	text-align:center;
+	padding:10px 40px;
+	-moz-border-radius: 4px;
+	-webkit-border-radius: 4px;
+	border-radius:4px;
+	background:#fafafa;
+	display:none;
+	}
+.NameWithBg{
+	background:#E9E9E9;
+	border:solid #CCC;
+	border-width:0 1px 1px 0;
+	-moz-border-radius: 9px;
+	-webkit-border-radius: 9px;
+	border-radius:9px;
+	margin:2px 1px;
+	padding: 0px 10px;
+	white-space: nowrap;
+	display: inline-block;
+	}
+.NameWithBg:hover{
+	cursor:default;
+	background:#CFC;
+}
+</style>
+</notempty>
+<script>
+$(function () {
+	$("#apply-add").live('click',function(){
+		$.post("/Team/join", { tid: {$team.tid}}, function (data) {
+			if (data.status == 1) {
+				$("#ajax-apply-span").html('您的申请正审核中……');
+			}
+			alert(data.info);
+		}, 'json');
+	});
+	$("#apply-quit").live('click',function(){
+		$.post("/Team/quit", { tid: {$team.tid}}, function (data) {
+			if (data.status == 1) {
+				$("#ajax-apply-span").html("<a href=\"javascript:void(0)\" id=\"apply-add\">申请加入</a>");
+			}
+			alert(data.info);
+		}, 'json');
+	});
+});
+</script>
+<body>	
+<?php
+$showPager = function() use($team,$pageNow) {
+if ($team['member_count'] > 20) {
+?>
+<div class="pager">
+ <table border="0" cellpadding="0" cellspacing="0" align="center" style="margin:0 auto;">
+ <tr>
+ <td style="color:#DDDDDD;" width="46">page</td>
+<?php	$num = floor(($team['member_count'] + 19) / 20);
+	for ($page=1; $page<=$num; $page++) { ?>
+<td width="20" align="center"><if condition="$page eq $pageNow"><span class="nowpage"><?=$page?></span><else /><a href="/Team?tid=<?=$team['tid']?>&page=<?=$page?>"><?=$page?></a></if></td>
+<?php	} ?>
+ <td style="color:#DDDDDD;" width="46">page</td>
+ </tr>
+ </table>
+</div>
+<?php
+	}
+};
+?>
+<include file="Public:headnav" />
+<notempty name="team.isAdmin">
+ <div id="msn_selmem_box">
+<form>
+<table border="0" cellpadding="0" cellspacing="0" style="margin:0 auto;">
+ <tr  height="26px" valign="middle">
+ 	<td style=" font-family:microsoft Yahei;" align="center">待选列表</td>
+    <td></td>
+    <td style="color:#690; font-family:microsoft Yahei;" align="center">已选列表</td>
+ </tr> 
+  <tr  height="30px" valign="middle">
+ 	<td style="border:1px solid #CCC;" align="center">
+    	<input id="msel_Lxh" class="dxhb-button msel-button-sort" style=" width:120px; background:#fafafa;" type="button" value="序号排序" onclick="Mselchoose(this.form.list1,sort_flagL,0,'msel_Lxh','msel_Lmc')" >
+		<input id="msel_Lmc" class="dxhb-button msel-button-sort" style=" width:120px;  " type="button" value="名称排序" onclick="Mselchoose(this.form.list1,sort_flagL,1,'msel_Lmc','msel_Lxh')" >
+    </td>
+    <td style="border:1px solid #CCC; border-left:0 solid #FFF; border-right:0 solid #FFF;" align="center">
+    	<input id="msel_auto" class="dxhb-button msel-button-sort" style=" width:96px; " type="button" value="自动排序" onclick="MselAuto(this.form.list1,sort_flagL,this.form.list2,sort_flagR)" >
+    </td>
+    <td style="border:1px solid #CCC;" align="center">
+    	<input id="msel_Rxh" class="dxhb-button msel-button-sort" style=" width:120px; background:#fafafa;" type="button" value="序号排序" onclick="Mselchoose(this.form.list2,sort_flagR,0,'msel_Rxh','msel_Rmc')" >
+        <input id="msel_Rmc" class="dxhb-button msel-button-sort" style=" width:120px;  " type="button" value="名称排序" onclick="Mselchoose(this.form.list2,sort_flagR,1,'msel_Rmc','msel_Rxh')" >
+    </td>
+ </tr>
+  
+ <tr>
+	<td><select multiple size="20" name="list1" class="mem-select dxhb-blur" onfocus="this.className='mem-select dxhb-focus'" onblur="this.className='mem-select dxhb-blur'"> 
+		  <volist name="club_members" id="vo" key="index">
+		  <option index="{$index}" value="{$vo['uid']}">{$vo['realname']}-{$vo['student_no']}</option>
+			</volist> 
+		</select>
+    </td> 
+	<td width="100" align="left" valign="top">
+		<input class="dxhb-button msel-button" type="button" value=">" onclick="move(this.form.list1,this.form.list2,sort_flagR)" name="B1">
+		<input class="dxhb-button msel-button" type="button" value="<" onclick="move(this.form.list2,this.form.list1,sort_flagL)" name="B2">
+        <br/><br/>
+		<input class="dxhb-button msel-button" type="button" value=">>" onclick="moveall(this.form.list1,this.form.list2,sort_flagR)" name="B3">
+		<input class="dxhb-button msel-button" type="button" value="<<" onclick="moveall(this.form.list2,this.form.list1,sort_flagL)" name="B4"> 
+   </td> 
+   <td><select multiple size="20" name="list2"  id="members_select" class="mem-select dxhb-blur" onfocus="this.className='mem-select dxhb-focus'" onblur="this.className='mem-select dxhb-blur'" style="color:#690;">
+		</select>
+   </td>
+</tr> 
+</table> 
+<table><tr>
+	<td><input id="msn_selmem_tjsx" type="button" value="提交所选" class="dxhb-button mss-button" style="margin-left:300px;"/></td>
+    <td><div id="giveup_sel" >取消选择</div></td>
+</tr></table>
+
+</form> 
+</div>
+</notempty>
+<div id="stmain">
+	<div class="sttitle2">{$club.school.name}</div>
+	<div class="sttitle"><a href="/Club/manage?gid={$club.gid}">{$club.name}</a> - <if condition="$team.type eq 'department'">部门<else />项目组</if>: {$team.name}</div>
+    <div class="sttitle3">
+		<notempty name="club.name_en">
+		<p>{$club.name_en}</p>
+		</notempty> 
+		<notempty name="club.slogan">
+		<p>{$club.slogan}</p>
+		</notempty>
+		<notempty name="club.qq_group">
+		<p>QQ群：{$club.qq_group}</p>
+		</notempty>
+		 <notempty name="club.contact">
+		<p>社团联系方式：{$club.contact}</p>
+		</notempty>
+	</div>
+    <div class="sttitle4">参与会员：{$team.member_count}人<br/>组长：<if condition="$team[leader_uid]">{$team.leader.realname}（{$team.leader.sex} {$team.leader.education}）<else />暂无</if><br/>组建时间：{$team.found_date}
+    	<div class="sttitle5"><notempty name="team.isAdmin"><a href="/Team/deleteTeam?tid={$team[tid]}" onClick= "return   confirm( '您确定删除该组织？') ">删除该<if condition="$team.type eq 'department'">部门<else />项目组</if></a></notempty></div>
+     </div>
+     <div style="clear:both; height:1px;"> </div>
+
+	<div class="stcon1">
+    	<div class="stcylb">项目组成员<span class="stnotice11" id='ajax-apply-span'><if condition="$team['priv']==0">您的申请正审核中……<elseif condition="$team['priv']==-1" /><a href="javascript:void(0)" id="apply-add">申请加入</a><else /><a href="javascript:void(0)" id="apply-quit">退出</a></if><notempty name="team.isAdmin"><a href="javascript:void(0)" id="js-add-member" style="margin-left:40px;">添加成员</a></notempty></span></div>
+        <div class="stcyleft">
+        	            
+            <?php $showPager(); ?>
+			<volist name="members" id="member">
+            <div class="stcycell" id="stcy{$member.uid}">
+            	<div class="stcycell1"><img width="90" height="90" src="/{$member.avatar}"></div>
+                <div class="stcycell2">
+        <div class="stzhiwu">
+          	<img src="/static/images/aa{$member.privlevel}.png" />
+		    <div class="stzhiwumc ajax_title_now">{$member.title}</div>
+		  <notempty name="team.isAdmin">
+          	<div class="stzhiwumc ajax_title">
+            	<input id="{$member.uid}" class="ajax_title_text putin_out" value="{$member.title}" onfocus="this.className='ajax_title_text putin_on'" onblur="this.className='ajax_title_text putin_out'"/>
+            </div>
+			<a class="title_set" href="javascript:void(0);">个性职称</a>
+			
+	    	<div class="stzhiwusz">设置权限：
+                        <select onchange="ajaxChangeTitle({$member.uid}, this.options[this.selectedIndex].getAttribute('priv'), this.options[this.selectedIndex].getAttribute('title'))">
+                        <option priv="" title="" selected="selected">------</option>
+						<if condition="$team.type eq 'department'">
+                        <option priv="manager" title="部长" style="color:#F93">部长</option>
+                        <option priv="vice-manager" title="副部长" style="color:#F93">副部长</option>
+						<else />
+                        <option priv="team-leader" title="项目组长" style="color:#F93">项目组长</option>
+						<option priv="vice-team-leader" title="副项目组长" style="color:#F93">副项目组长</option>
+                        </if>
+                        <option priv="" title="" >------</option>
+                        <option priv="member" title="会员" style="color:#09F;">普通会员</option>
+                       
+                        <option priv="" title="" >------</option>
+						<option priv="inactive" title="待审核">待审核</option>
+                		</select>
+            </div>
+		    </notempty>
+
+
+		    </div>
+                    <div class="stcyxx"><span class="<?=$member['gender'] ? 'boy' : 'girl' ?>name">{$member.realname}</span>：<br/>
+		    {$member.dept} {$member.grade}级 {$member.education} <if condition="$team['isManager']">
+		            <notempty name="member.student_no">
+			    学号: <span style="color:#999">{$member.student_no}</span>
+			    </notempty>
+			 </if><br/>
+
+		    <if condition="$team['isManager']">
+			    <notempty name="member.qq">
+			    QQ:  <span style="color:#999">{$member.qq}</span>
+			    </notempty>
+			    <notempty name="member.telephone">
+			    电话:  <span style="color:#999">{$member.telephone}</span>
+			    </notempty>
+			    <notempty name="member.email">
+			    Email:  <span style="color:#999">{$member.email}</span>
+			    </notempty>
+		    </if>
+		    
+		    </div>
+                </div><!--cell2-->
+            </div><!--ctcycell-->
+	    </volist>
+          <?php $showPager(); ?>
+            
+        </div><!--stcy left-->
+        
+        <div class="stcyright">
+
+		<notempty name="team.isManager"> 
+        <div class="sttttt">功能面板<span class="stxmz11"><span style="color:#CCC; font-size:14px">管理员可见 &nbsp;&nbsp;</span><a href="/static/help/quanxiansm.html" target='_blank'  style="color:#F00">权限说明</a></span></div>     
+        	<table cellpadding="0" cellspacing="0" border="0" >
+            	<tr >
+                	<td align="left" width="200px" ><a target="_blank" href="/Team/sendEmail?tid={$team.tid}"  style="color:#088;">群邮件</a></td>
+                    <td align="left"><a href="/Sms?tid={$team.tid}" target="_blank" style="color:#088;">群短信</a></td>
+                </tr>
+                <tr>
+                    <td align="left"><a href="/Team/address?tid={$team.tid}" target='_blank' style="color:#088;">通讯录</a></td>
+					<td align="left"></td>
+                </tr>
+                <tr>
+                	<td align="left"><a href="/Team/createAddress?tid={$team.tid}" style="color:#088;">导出为excel会员表</a></td>
+                    <td align="left"><a href="/Team/createAddressFetion?tid={$team.tid}" style="color:#088;">导出为飞信联系人</a></td>
+                </tr>
+                <tr>
+                	<td align="left"><a href="/Team/emailAddress?tid={$team.tid}" target='_blank' style="color:#088;">群邮件地址</a></td>
+                    <td align="left"><a href="/Team/createAddressEmailUSTC?tid={$team.tid}" style="color:#088;">导出为科大邮件联系人</a></td>
+                </tr>
+            </table>            
+         </notempty>
+
+			<div style="height:40px;"> </div>
+		<notempty name="team.isMember">
+        	<div class="sttttt">共享文件与文档<a href="/Team/upload?tid={$team.tid}" target="_blank" class="stxmz11">上传新文件</a></div>
+            <ol class="stol">
+			<volist name="attachments" id="attachment">
+            	<li><a href="/Team/downloadFile?fid={$attachment.fid}" target="_blank">{$attachment.realname}</a><if condition="$team['isManager']"><a class="stfjdel" href="/Team/deleteFile?fid={$attachment.fid}">删除</a></if></li>
+			</volist>
+            </ol>
+            <div style="height:40px;"> </div>
+		</notempty>
+            <div class="sttttt">待审核加入成员</div>
+            <ol class="stol">
+			 <volist name="inactive" id="member">
+            	<li><span class="<?=$member['gender'] ? 'boy':'girl'?>name">{$member.realname}</span> {$member.dept} {$member.grade}级{$member.education}
+	        <notempty name="team.isManager">
+	        <a href="/Team/joinVerify?uid={$member.uid}&tid={$team.tid}" class="stfjdel1" id="ajax-allow">允许</a> / <a href="/Team/joinDeny?uid={$member.uid}&tid={$team.tid}" class="stfjdel1">拒绝</a>
+	        </notempty></li>
+			 </volist>
+            </ol>
+
+        </div><!--ctcy right-->
+        
+        
+    </div><!--stcon1-->
+
+
+</div><!--stmain--> 
+<div id="backbg1"></div><!--可点击自身消失-->
+</body>
+</html>

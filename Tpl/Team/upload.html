@@ -1,0 +1,65 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="/static/css1.css" type="text/css" rel="stylesheet" />
+<script src="/static/jquery.js" type="text/javascript"></script>
+<link href="/static/shetuanxianshi.css" type="text/css" rel="stylesheet" />
+<title>上传文件</title>
+<style>
+.table-addresslist{
+	margin:15px auto;
+	border:#FFF double 4px;
+	background-color:#9C9;
+	font-family:Microsoft Yahei, "Times New Roman", Times, serif;
+	}
+.table-addresslist td{
+	background-color:#FFF;
+	height:25px;
+	font-size:16px;
+	padding:0 4px;
+	word-break:keep-all;
+	white-space:nowrap;
+}
+.table-addresslist .row1 td{
+	background-color:#FFF;	
+	}
+.table-addresslist .row2 td{
+	background-color:#f5f5f5;	
+	}
+
+.table-addresslist .td1{
+	background-color:#ccf;
+	height:30px;
+	font-size:20px;
+	text-align:center;
+	word-break:keep-all;
+	white-space:nowrap;
+	}
+.table-addresslist .td1:hover{
+	cursor:pointer;
+	background-color:#FF9;	
+	}
+.table-addresslist .td1::selection{	
+	background-color:#FF9;	
+	}
+
+</style>
+</head>
+
+<body>	
+<include file="Public:headnav" />
+
+<div id="stmain" style="width:auto;">
+	<div class="stcon1">
+    	<div class="stcylb">{$team.club}-{$team.name}-上传附件</div>
+	</div>
+	<form action="/Team/uploadSubmit" method="post" enctype="multipart/form-data">
+	<input type='hidden' name='tid' value="{$team.tid}">
+	<input type='file'  name='attachment'>
+	<input type='submit' value="提交">
+	</form>
+</div>
+
+</body>
+</html>
