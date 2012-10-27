@@ -45,9 +45,16 @@ class QrAction extends PublicAction{
 			QRcode::png('huodong.ustc.edu.cn', $filename, $errorCorrectionLevel, $matrixPointSize, 2);   
 		}
 	}
-	public function QRpl()
+	public function QRpl($gid,$n)
 	{
-		$gids=M('Club')->field('gid')->select();
+		if($n==0)
+		{
+			$gids=M('Club')->field('gid')->select();
+		}
+		else
+		{
+			$gids=array($gid);
+		}
 		$i=0;
 		$j=0;
 		$regex = array(
@@ -68,7 +75,7 @@ class QrAction extends PublicAction{
 		{
 			$gid=$val['gid'];
 			$re=M('Club')->field('QRcode')->where(array('gid'=>$gid))->find()['QRcode'];
-			if($gid!=0&&$gid!=''&&$re=='')
+			if($gid!=0&&$gid!='')
 			{	
 				
 				$re=D('Club')->getInfo($gid);
@@ -109,21 +116,14 @@ class QrAction extends PublicAction{
 			}
 			$j++;
 		}
+		return array('success'=>$i,'failed'=>$j-$i);
 		//die;
-		dump(array('success'=>$i,'failed'=>$j-$i));
+		//dump(array('success'=>$i,'failed'=>$j-$i));
 		//$QRcode=M('Club')->field('QRcode')->where(array('gid'=>$gid))->find()['QRcode'];
 		//$filename='/upload/temp/'.'huodongQR_for'.$gid.'_'.$QRcode.'.png';
 		//$this->assign('filename',$filename);
 		//$this->display();
 		//return $club_info;
-	}
-	public function QRshow(){
-		$gid=$this->_get('gid');
-		if(empty($gid)){return 0;}
-		$QRcode=M('Club')->field('QRcode')->where(array('gid'=>$gid))->find()['QRcode'];
-		$filename='/upload/avatar/Qr/'.'huodongQR_for'.$gid.'_'.$QRcode.'.png';
-		$this->assign('filename',$filename);
-		$this->display('QRpl');
 	}
 	public function QRforCards($name,$phone,$company,$role,$email,$address,$website,$weibo,$qq,$ww,$msn,$note){
 	     $tmps=array('NOTE'=>$note,'weibo'=>$weibo,'QQ'=>$qq,'旺旺'=>$ww,'MSN'=>$msn,);
@@ -154,6 +154,41 @@ class QrAction extends PublicAction{
 		 //dump($data);
 		 return($data);
 	}
+	public function QRshow(){
+		$gid=$this->_get('gid');
+		if(empty($gid)){return 0;}
+		$QRcode=M('Club')->field('QRcode')->where(array('gid'=>$gid))->find()['QRcode'];
+		$filename='/upload/avatar/Qr/'.'huodongQR_for'.$gid.'_'.$QRcode.'.png';
+		$this->assign('filename',$filename);
+		$this->display('QRpl');
+	}
+	public function ajaxUpdateQr()
+	{
+		$gid=$this->_get('gid');
+		if(empty($gid)||$gid==0)
+		{
+		 $info['status']="非法操作！";
+		 $this->error($info);
+		}
+		if(!D('Club')->isManager($gid))
+		{
+			$info['status']="抱歉，只有会长和部长级别的会员才能更新二维码！";
+		    $this->error($info);
+		}
+		else
+		{
+			$this->QRpl($gid,1);
+			$QRcode=M('Club')->field('QRcode')->where(array('gid'=>$gid))->find()['QRcode'];
+			$info['status']="done";
+			$info['QR']=$QRcode;
+			$this->success($info);
+			//$filename='/upload/avatar/Qr/'.'huodongQR_for'.$gid.'_'.$QRcode.'.png';
+		    //$this->assign('filename',$filename);
+		}
+	}
+	public function getQrcode($gid){
+		 return $QRcode=M('Club')->field('QRcode')->where(array('gid'=>$gid))->find()['QRcode'];
+		}
 	public function test()
 	{
 		$name='林太行';
@@ -169,9 +204,9 @@ class QrAction extends PublicAction{
 		$qq=845552145;
 		$ww=7987854654;
 		$msn=84555555;
-		$data=$this->QRforCards($name,$phone,$company,$role,$email,$address,$website,$weibo,$qq,$ww,$msn,$note);
+		//$data=$this->QRforCards($name,$phone,$company,$role,$email,$address,$website,$weibo,$qq,$ww,$msn,$note);
 		//dump($data);
-		$this->getQR($data);
+		//$this->getQR($data);
 	}
 	
 }

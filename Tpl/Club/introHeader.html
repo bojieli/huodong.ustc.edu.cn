@@ -70,3 +70,8 @@
 		},'json');
 	});
 	</script>
+	<script type="text/javascript">
+		$(".sttitle").mouseover(function(){ $(".qrcode").show();});
+		$(".sttitle").mouseout(function(){ $(".qrcode").hide();});
+	</script>
+	<div class="qrcode"style="display:none"><img src="{$Qrcode}" alt="{$club.name}二维码"/></div>

@@ -76,7 +76,8 @@ class ClubAction extends PublicAction {
         {
             $club['apply']=false;
         }
-
+		$Qrcode='/upload/avatar/Qr/'.'huodongQR_for'.$gid.'_'.A('Qr')->getQrcode($gid).'.png';
+		$this->assign('Qrcode',$Qrcode);
         $this->assign('club', $club);
         $this->display();
     }
