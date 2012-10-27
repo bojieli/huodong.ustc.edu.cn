@@ -584,6 +584,7 @@ class ClubAction extends PublicAction {
         $club['isSchoolAdmin'] = D('User')->isSchoolAdmin(CURRENT_USER);
         $club['isadmin'] = ($club['isSchoolAdmin'] || $club['mypriv'] == 'admin');//主席
         $club['isadmins'] = ($club['isadmin'] || $club['mypriv'] == 'vice-admin');//副主席以上
+		$club['iscorers'] = ($club['isSchoolAdmin'] || $club['mypriv_value'] > 5 );//副部长以上
         $club['ismanager'] = ($club['isadmins'] || $club['mypriv_value'] > 1 );//项目负责人以上
         $club['isin'] = $club['mypriv_value'] > 0;//会员
         $club['memberCount'] = $club['member_count'];
