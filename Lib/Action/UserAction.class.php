@@ -269,13 +269,14 @@ class UserAction extends PublicAction {
     }
 
     public function registerVerify() {
+        $this->assign('jumpUrl', '/User/register'); // jump when error
         if (!is_numeric($_GET['uid']))
             $this->error("您所激活的用户不存在，请重新注册");
         $info = D('User')->getInfo($_GET['uid']);
         if (empty($info))
             $this->error("您所激活的用户不存在，请重新注册");
         if (md5($info['email'].$info['salt'].$info['register_time']) !== trim($_GET['token']))
-            $this->error("激活链接无效，请将激活信中的链接准确复制到浏览器地址栏中，重试一次");
+            $this->error("激活链接无效<br>请将激活信中的链接准确复制到浏览器地址栏中，重试一次");
         if ($info['status'] == 'active')
             $this->error("您已经激活，不需要再次激活了 :)");
         if ($info['status'] == 'locked')
