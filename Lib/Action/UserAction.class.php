@@ -155,7 +155,7 @@ class UserAction extends PublicAction {
         $this->success('修改信息成功');
     }
 	public function getBackPassword(){
-		$this->display();
+		 $this->display();
 		}
     public function getBackPassword_do(){
 		session_start();
