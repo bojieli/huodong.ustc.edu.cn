@@ -100,7 +100,7 @@ $showPager = function() use($club,$pageNow) {
 <div id="stmain">
 <include file="introHeaderin" />
 	<div class="stcon1">
-    	<div class="stcylb">会员<span class="stnotice1">（为保护隐私，普通成员无法看到除了社团管理者之外的会员的联系方式。非会员最多只能看到协会的20个会员）</span></div>
+    	<div class="stcylb">成员列表<span class="stnotice1">（为保护隐私，普通成员无法看到除了社团管理者之外的会员的联系方式。非会员最多只能看到协会的20个会员）</span></div>
         <div class="stcyleft">
 <notempty name="club.ismanager">
 	<?php $showPager(); ?>
@@ -135,19 +135,20 @@ $showPager = function() use($club,$pageNow) {
 	    	<div class="stzhiwusz">设置权限：
                         <select onchange="ajaxChangeTitle({$member.uid}, this.options[this.selectedIndex].getAttribute('priv'), this.options[this.selectedIndex].getAttribute('title'))">
                         <option priv="" title="" selected="selected">------</option>
+                        <option priv="" title="" >--等级2--</option>
                          <option priv="vice-admin" title="副会长" style="color:#F0F">副会长</option>
 						<option priv="vice-admin" title="副社长" style="color:#F0F">副社长</option>
 						<option priv="vice-admin" title="副主席" style="color:#F0F">副主席</option>
-                        <option priv="" title="">------</option>
+                        <option priv="" title="">--等级3--</option>
                         <option priv="manager" title="部长" style="color:#F93">部长</option>
                         <option priv="vice-manager" title="副部长" style="color:#F93">副部长</option>
                         <option priv="team-leader" title="项目组长" style="color:#F93">项目组长</option>
                         <option priv="team-leader" title="活动负责人" style="color:#F93">活动负责人</option>
                         
-                        <option priv="" title="" >------</option>
+                        <option priv="" title="" >--等级4--</option>
                         <option priv="member" title="会员" style="color:#09F;">普通会员</option>
                        
-                        <option priv="" title="" >------</option>
+                        <option priv="" title="" >--等级5--</option>
 			<option priv="inactive" title="待审核">待审核</option>
                 	</select>
                     </div>
@@ -192,14 +193,16 @@ $showPager = function() use($club,$pageNow) {
         <div class="sttttt">功能面板<span class="stxmz11"><span style="color:#CCC; font-size:14px">部长及以上权限可见 &nbsp;&nbsp;</span><a href="/static/help/quanxiansm.html" target='_blank'  style="color:#F00">权限说明</a></span></div>
         <notempty name="club.ismanager">       
         	<table cellpadding="0" cellspacing="0" border="0" >
-            	<tr >
+            	<tr>
+                    <td align="left"><a href="/Club/address?gid={$club.gid}" target='_blank' style="color:#088;">在线通讯录</a></td>
+					<td align="left"></td>
+                </tr>
+                <tr height="15px;"><td colspan="2" style="border-top:1px #F0F dotted"></td></tr>
+                <tr >
                 	<td align="left" width="200px" ><a target="_blank" href="/Club/sendEmail?gid={$club.gid}"  style="color:#088;">群邮件</a></td>
                     <td align="left"><a href="/Sms?gid={$club.gid}" style="color:#088;">群短信</a></td>
                 </tr>
-                <tr>
-                    <td align="left"><a href="/Club/address?gid={$club.gid}" target='_blank' style="color:#088;">通讯录</a></td>
-					<td align="left"></td>
-                </tr>
+                <tr height="15px;"><td colspan="2" style="border-top:1px #F0F dotted"></td></tr>
                 <tr>
                 	<td align="left"><a href="/Club/createAddress?gid={$club.gid}" style="color:#088;">导出为excel会员表</a></td>
                     <td align="left"><a href="/Club/createAddressFetion?gid={$club.gid}" style="color:#088;">导出为飞信联系人</a></td>
@@ -208,28 +211,41 @@ $showPager = function() use($club,$pageNow) {
                 	<td align="left"><a href="/Club/emailAddress?gid={$club.gid}" target='_blank' style="color:#088;">群邮件地址</a></td>
                     <td align="left"><a href="/Club/createAddressEmailUSTC?gid={$club.gid}" style="color:#088;">导出为科大邮件联系人</a></td>
                 </tr>
-				<tr>
+                <tr height="15px;"><td colspan="2" style="border-top:1px #F0F dotted"></td></tr>
+				<!--tr>
                 	<notempty name="club.iscorers"><td align="left"><a href="/Team/introAdd?gid={$club.gid}&type=department" target='_blank' style="color:#088;">创建部门</a></td></notempty>
                     <td align="left"><a href="/Team/introAdd?gid={$club.gid}&type=team" target='_blank' style="color:#088;">创建项目组</a></td>
-                </tr>
+                </tr-->
             </table>            
             
-         </notempty>   
-        <notempty name="departments">
-        <br/>
-        <div class="sttttt">部门：</div>
+         </notempty> 
+         
+         <br/>  
+        <div class="sttttt">现有部门<span class="stxmz11">
+        <notempty name="club.iscorers">
+        <a href="/Team/introAdd?gid={$club.gid}&type=department" target='_blank' style="color:#F00;">创建部门</a>
+        </notempty>
+        </span></div>
+        
+        <notempty name="departments"> 
 	    <volist name="departments" id="department">
 	        <p>
-			<a href="/Team?tid={$department.tid}" target="_blank">{$department.name}</a>
+			<a href="/Team?tid={$department.tid}" target="_blank" style="color:#088;">{$department.name}</a>
 	        </p>
         </volist>
 		</notempty>
-		<notempty name="teams">
-		<br/>
-        <div class="sttttt">项目组：</div>
+        
+        <br/>
+        <div class="sttttt">已有项目组<span class="stxmz11">
+        <notempty name="club.iscorers">
+        <a href="/Team/introAdd?gid={$club.gid}&type=team" target='_blank' style="color:#F00;">创建项目组</a>
+        </notempty>
+        </span></div>
+        
+		<notempty name="teams">		
 	    <volist name="teams" id="team">
 	        <p>
-			<a href="/Team?tid={$team.tid}" target="_blank">{$team.name}</a>
+			<a href="/Team?tid={$team.tid}" target="_blank" style="color:#088;">{$team.name}</a>
 	        </p>
         </volist>
 		</notempty>
