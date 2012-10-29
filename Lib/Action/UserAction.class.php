@@ -154,38 +154,101 @@ class UserAction extends PublicAction {
         $this->assign('jumpUrl','/User/home');
         $this->success('修改信息成功');
     }
-
-    public function changePassword() {
+	public function getBackPassword(){
+		$this->display();
+		}
+    public function getBackPassword_do(){
+		session_start();
+		if($_SESSION['verify'] != md5($_POST['check'])) {
+            $this->error('验证码错误');
+        }
+		$mail=$this->_post('email');
+		$User=D('User');
+		if(!$User->is_loginname_existed($mail)){$this->error("用户名不存在");}
+		$uid=$User->getUidWithMail($mail);
+		//dump($uid);
+		if($uid!=''&&$uid!=0)
+		{
+			$status=$User->getBackPassWithEmail($uid);
+		    if($status==0){$this->error('系统忙，请稍后再试！');}	
+			$info['realname']=$User->getRealname($uid);
+			$info['email']=$mail;
+            $info['mail_md5']=$User->getMailPwInfo($uid)['mail_md5'];			
+			$this->sendEmailToGetPassword($info);
+			$this->success('验证邮件已发送，请三天内登录注册邮箱验证^_^');
+		}
+		return false;
+	}
+	public function changePassword2(){
+		$w=$this->_get('w')?$this->_get('w'):$this->_post('w');
+		 $u=D('User')->getPwByMd5($w);
+		 if(empty($u)){$this->error('密码重置失败，请重新找回密码！');}
+		 $uid=$u;
+		 $info=D('User')->getMailPwInfo($uid);
+		 if(time()-$info['mail_time']>3*24*3600){$this->error('密码重置失效，请重新找回密码！');}
+		if($_POST['submit'])
+		{  
+			if(empty($_POST[password_new]))
+			{   
+				$this->error('新密码不能为空');
+			}   
+			if($_POST[password_new2]!=$_POST[password_new])
+			{   
+				$this->error('两次密码不一致');
+			}   
+			$user=D('User');
+			$re=$user->changePassword_direct($uid,$_POST[password_new]);
+			$user->delPw($uid);//删掉验证成功的邮箱验证码记录
+			$user->delsession($uid);//清除session
+			cookie(null);//清空cookie
+			$this->assign('jumpUrl','/User/login');
+			$this->success('修改密码成功，请重新登录');
+		}   
+		else
+		{   
+			$this->assign('_G',$_G);
+			$this->display();
+		}   
+	
+	}
+	private function sendEmailToGetPassword($info){
+        SendMail($info['email'], "大学海报活动平台用户重置登录密码",
+                "亲爱的".$info['realname'].",您好!:\n\n".
+				"您申请重置活动平台账号，如非本人操作，请忽略此邮件。\n\n".				"点击下面链接立即重置密码。（如果下面的链接无法点击，您可以将其复制，并粘帖到浏览器的地址栏中访问）\n\n".				"http://".$_SERVER['HTTP_HOST']."/User/changePassword2?w=".$info['mail_md5']);
+    }
+	public function changePassword(){
         global $_G;
-        if(empty($_G['uid'])) {
-            $this->error('没有登录');
-        }   
-        if($_POST[submit]){
-            $passport=D('User')->getpassport($_G[uid],$_POST[password],'uid');
-            //dump($passport);
-            if(!is_array($passport)){
-                $this->error('原密码错误');
-            }   
-            if(empty($_POST[password_new]))
-            {   
-                $this->error('新密码不能为空');
-            }   
-            if($_POST[password_new2]!=$_POST[password_new])
-            {   
-                $this->error('两次密码不一致');
-            }   
-            $user=D('User');
-            $user->changepassword($_POST[password_new]);
-            $user->delsession($_G[uid]);//清除session
-            cookie(null);//清空cookie
-            $this->assign('jumpUrl','/User/login');
-            $this->success('修改密码成功，请重新登录');
-        }   
-        else
-        {   
-            $this->assign('_G',$_G);
-            $this->display();
-        }   
+        $uid=$_G['uid'];
+		if(empty($uid)) {
+					$this->error('没有登录');
+				}   
+		if($_POST[submit])
+			{
+				$passport=D('User')->getpassport($uid,$_POST[password],'uid');
+				//dump($passport);
+				if(!is_array($passport)){
+					$this->error('原密码错误');
+				}   
+				if(empty($_POST[password_new]))
+				{   
+					$this->error('新密码不能为空');
+				}   
+				if($_POST[password_new2]!=$_POST[password_new])
+				{   
+					$this->error('两次密码不一致');
+				}   
+				$user=D('User');
+				$user->changepassword($_POST[password_new]);
+				$user->delsession($uid);//清除session
+				cookie(null);//清空cookie
+				$this->assign('jumpUrl','/User/login');
+				$this->success('修改密码成功，请重新登录');
+			}   
+				else
+				{   
+					$this->assign('_G',$_G);
+					$this->display();
+				}   
     }
 
     public function register() {

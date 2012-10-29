@@ -65,7 +65,45 @@ class UserModel extends Model {
         }
         return false;
     }
-    function changePassword($pw)
+    function getUidWithMail($mail)
+	{
+	    //dump(M('User')->where(array('email'=>$mail))->find());
+	    return M('User')->field('uid')->where(array('email'=>$mail))->find()['uid'];
+	}
+	function getBackPassWithEmail($uid)
+	{
+		//echo 1213;
+		$str=$uid.'@'.time().'@'.mt_rand();
+		$mail_md5=md5(md5(($str)));
+		if(D('User_password')->field('uid')->where(array('uid'=>$uid))->find())
+		{
+			$data=array(
+				'mail_md5'=>$mail_md5,
+				'mail_time'=>time(),
+			);
+			return D('User_password')->where(array('uid'=>$uid))->data($data)->save();
+		}
+		else
+		{
+			$data=array(
+				'uid'=>$uid,
+				'mail_md5'=>$mail_md5,
+				'mail_time'=>time(),
+			);
+			return D('User_password')->data($data)->add();
+		}
+	return 0;
+	}
+function getMailPwInfo($uid)	{
+   return M('User_password')->where(array('uid'=>$uid))->find();
+}
+function getPwByMd5($mail_md5){
+    return M('User_password')->field('uid')->where(array('mail_md5'=>$mail_md5))->find()['uid'];
+}
+function delPw($uid){
+return M('User_password')->where(array('uid'=>$uid))->delete();
+}
+function changePassword($pw)
     {   
         global $_G;
         $user=$this->where("uid=".$_G[uid])->select();
@@ -74,7 +112,14 @@ class UserModel extends Model {
         $this->save($cond);
         return true;
     }
-
+function changePassword_direct($uid,$pw)
+ {   
+        $user=$this->where(array('uid'=>$uid))->find();
+		$password = md5(md5($pw).$user[salt]);
+        $cond = array('password'=>$password);
+		$this->where(array('uid'=>$uid))->save($cond);
+		return true;
+ }
     public function getClubs($uid) {
         return $this->__getClub($uid, false);
     }
