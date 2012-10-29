@@ -154,7 +154,7 @@ class UserAction extends PublicAction {
         $this->assign('jumpUrl','/User/home');
         $this->success('修改信息成功');
     }
-	public function getBackPassword(){
+	public function GetbackPassword(){
 		 $this->display();
 		}
     public function getBackPassword_do(){
