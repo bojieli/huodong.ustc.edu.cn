@@ -221,7 +221,7 @@ $showPager = function() use($club,$pageNow) {
          </notempty> 
          
          <br/>  
-        <div class="sttttt">现有部门<span class="stxmz11" style="float:right;">需要加入本团体才可见！&nbsp;&nbsp;&nbsp;&nbsp;
+        <div class="sttttt">现有部门<span class="stxmz11" style="float:right;"><span style="color:#CCC; font-size:14px">需为成员才可见！&nbsp;&nbsp;&nbsp;&nbsp;</span>
         <notempty name="club.iscorers">
         <a href="/Team/introAdd?gid={$club.gid}&type=department" target='_blank' style="color:#F00;">创建部门</a>
         </notempty>
@@ -236,7 +236,7 @@ $showPager = function() use($club,$pageNow) {
 		</notempty>
         
         <br/>
-        <div class="sttttt">已有项目组<span class="stxmz11" style="float:right;">需要加入本团体才可见！&nbsp;&nbsp;&nbsp;&nbsp;
+        <div class="sttttt">已有项目组<span class="stxmz11" style="float:right;"><span style="color:#CCC; font-size:14px">需为成员才可见！&nbsp;&nbsp;&nbsp;&nbsp;</span>
         <notempty name="club.iscorers">
         <a href="/Team/introAdd?gid={$club.gid}&type=team" target='_blank' style="color:#F00;">创建项目组</a>
         </notempty>
