@@ -92,7 +92,7 @@
       var time_now = now.getHours()*3600+now.getMinutes()*60+now.getSeconds();
       var time_up = theTime.getHours()*3600+theTime.getMinutes()*60+theTime.getSeconds();
       if (time_now - time_up > 3600) // 12:30 ~ 13:30
-        return "今天的秒杀已经结束，明天12:30再来吧 :)";
+        return "今天的秒杀已经结束<br>明天12:30再来吧 :)";
       if (time_now - time_up >= 0) {
         isTime = true;
         return "秒杀已经开始啦，赶快抢票吧";
