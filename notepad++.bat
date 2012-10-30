@@ -1,0 +1,1 @@
+start \Èí¼ş\³£ÓÃ\notepad++\unicode\notepad++.exe
