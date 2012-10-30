@@ -182,7 +182,7 @@ class UserAction extends PublicAction {
     public function changePassword2(){
         $w=$this->_get('w')?$this->_get('w'):$this->_post('w');
         $u=D('User')->getPwByMd5($w);
-        if(empty($u)){$this->display();die;$this->error('无效链接！');}
+        if(empty($u)){$this->error('无效链接！');}
         $uid=$u;
         $info=D('User')->getMailPwInfo($uid);
         if(time()-$info['mail_time']>3*24*3600){$this->error('密码重置失效，请重新找回密码！');}
