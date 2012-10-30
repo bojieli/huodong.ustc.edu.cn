@@ -43,7 +43,7 @@ class MlxhAction extends PublicAction {
         $count = M('mlxh_log')->where("time > $todaybegin AND action='miaosha'")->count();
         $everyday_tickets = 10;
         if ($count >= $everyday_tickets)
-            $this->error("抱歉，今天已经有 $everyday_tickets 人秒杀了，明天再来吧 :)");
+            $this->error("今天已经有 $everyday_tickets 人秒杀了，明天再来吧 :)");
 
         $log['uid'] = CURRENT_USER;
         $log['time'] = $time;
