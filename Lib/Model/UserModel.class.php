@@ -160,9 +160,9 @@ class UserModel extends Model {
     public function getpassport($username,$pw,$type='email'){
         $user = array();
         if ($type == 'uid')
-            $user = $this->where('uid'=>$username)->select();
+            $user = $this->where(array('uid'=>$username))->select();
         else
-            $user = $this->where('email'=>$username)->select();
+            $user = $this->where(array('email'=>$username))->select();
         // echo $this->getLastSql();
         if(empty($user)){
             return -1;
