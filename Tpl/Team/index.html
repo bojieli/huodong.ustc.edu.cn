@@ -606,7 +606,7 @@ if ($team['member_count'] > 20) {
         	<div class="sttttt">共享文档<span class="stxmz11" style="float:right;margin-left:0;"><span style="color:#CCC; font-size:14px">需为成员才可见！&nbsp;&nbsp;&nbsp;&nbsp;</span><a href="/Team/upload?tid={$team.tid}" target="_blank" style="color:#F00;">上传新文件</a></span></div>
             <ol class="stol">
 			<volist name="attachments" id="attachment">
-            	<li><a href="/Team/downloadFile?fid={$attachment.fid}" target="_blank">{$attachment.realname}</a><if condition="$team['isManager']"><a class="stfjdel" href="/Team/deleteFile?fid={$attachment.fid}">删除</a></if></li>
+            	<li><a href="/Team/downloadFile?fid={$attachment.fid}" target="_blank">{$attachment.realname}</a><if condition="$team['isManager']"><a class="stfjdel" href="/Team/deleteFile?fid={$attachment.fid}" onClick= "return   confirm( '您确定删除该文件？') ">删除</a></if></li>
 			</volist> 
             </ol>
             <div style="height:40px;"> </div>
