@@ -1,22 +1,22 @@
-	
-    <div class="sttitle2">{$club.school.name}</div>
-	<div class="sttitle"><a href="/Club/intro?gid={$club.gid}">{$club.name}</a></div>
-    <div class="sttitle3">
-    <notempty name="club.name_en">
-    <p>{$club.name_en}</p>
-    </notempty>
-    <notempty name="club.slogan">
-    <p>{$club.slogan}</p>
-    </notempty>
-    <notempty name="club.qq_group">
-    <p>QQ群：{$club.qq_group}</p>
-    </notempty>
-    <notempty name="club.contact">
-    <p>社团联系方式：{$club.contact}</p>
-    </notempty>
-    </div>
+	<div  itemscope itemtype="http://data-vocabulary.org/Organization">
+		<div class="sttitle2">{$club.school.name}</div>
+		<div class="sttitle" itemprop="name"><a href="/Club/intro?gid={$club.gid}" itemprop="url">{$club.name}</a></div>
+		<div class="sttitle3">
+		<notempty name="club.name_en">
+		<p>{$club.name_en}</p>
+		</notempty>
+		<notempty name="club.slogan">
+		<p>{$club.slogan}</p>
+		</notempty>
+		<notempty name="club.qq_group">
+		<p>QQ群：{$club.qq_group}</p>
+		</notempty>
+		<notempty name="club.contact">
+		<p><div itemprop="tel">社团联系方式：{$club.contact}</div></p>
+		</notempty>
+		</div>
+	</div>
     <div class="sttitle4"><span class="marginR1">网上会员：{$club.memberCount} 人</span><br/>
-    
     <if condition="$club[admin][uid] != 0">
     <span class="marginR1">会长：{$club.admin.realname} ({$club.admin.dept} {$club.admin.grade}级 {$club.admin.education}) </span>
     <elseif condition="!$club['apply']" />
