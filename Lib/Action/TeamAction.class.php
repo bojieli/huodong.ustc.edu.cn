@@ -154,6 +154,7 @@ class TeamAction extends PublicAction {
 		M("User_team")->create($user_team);
 		M("User_team")->add();
 		D('Team')->where(array('tid'=>$tid))->setInc('member_count');
+		$this->assign('jumpUrl','/Club/manage?gid='.$gid);
 		$this->success("添加成功！");
 	}
 	public function introModify() {
