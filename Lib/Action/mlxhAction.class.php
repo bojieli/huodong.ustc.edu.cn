@@ -3,7 +3,7 @@ class MlxhAction extends PublicAction {
     function isTheDay() {
         date_default_timezone_set('Asia/Chongqing');
         $t = localtime(time(), true);
-        return ($t['tm_mon']+1 == 11 && $t['tm_mday'] >= 1 && $t['tm_mday'] <= 8);
+        return $t['tm_mon']+1 == 10 || ($t['tm_mon']+1 == 11 && $t['tm_mday'] <= 8);
     }
 
     function index() {
@@ -32,8 +32,8 @@ class MlxhAction extends PublicAction {
         // 20:00 ~ 21:00
         if ($daysec < 20*3600+00*60)
             $this->error('今天的秒杀尚未开始，再等等吧~');
-        if ($daysec > 21*3600+00*60)
-            $this->error('今天的秒杀已于21:00结束 :(');
+        if ($daysec > 20*3600+15*60)
+            $this->error('今天的秒杀已于20:15结束 :(');
 
         $count = M('mlxh_log')->where(array('uid'=>CURRENT_USER, 'action'=>'miaosha'))->count();
         if ($count > 0)
