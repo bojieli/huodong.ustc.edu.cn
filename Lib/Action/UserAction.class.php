@@ -214,7 +214,9 @@ class UserAction extends PublicAction {
     private function sendEmailToGetPassword($info){
         SendMail($info['email'], "大学海报活动平台用户重置登录密码",
                 "亲爱的".$info['realname'].",您好!:\n\n".
-                "您申请重置活动平台账号，如非本人操作，请忽略此邮件。\n\n".				"点击下面链接立即重置密码。（如果下面的链接无法点击，您可以将其复制，并粘帖到浏览器的地址栏中访问）\n\n".				"http://".$_SERVER['HTTP_HOST']."/User/changePassword2?w=".$info['mail_md5']);
+                "您申请重置活动平台账号，如非本人操作，请忽略此邮件。\n\n".
+                "点击下面链接立即重置密码。（如果下面的链接无法点击，您可以将其复制，并粘帖到浏览器的地址栏中访问）\n\n".
+                "http://".$_SERVER['HTTP_HOST']."/User/changePassword2?w=".$info['mail_md5']);
     }
     public function changePassword(){
         global $_G;

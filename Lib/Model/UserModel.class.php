@@ -50,76 +50,73 @@ class UserModel extends Model {
     }
     function getRealname($uid)
     {
-		$res= $this->where("uid = $uid")->find();
-        return($res['realname']);
+        return $this->find($uid)['realname'];
     }
     function getSid($uid)
     {
-        $res= $this->where("uid = $uid")->limit(1)->select();
-        return($res[0]['sid']);
+        return $this->find($uid)['sid'];
     }
     function is_loginname_existed($email)
     {
-        if (M('User')->where("email = '$email'")->count('uid')) {
+        if (M('User')->where(array('email' => $email))->count()) {
             return true;
         }
         return false;
     }
     function getUidWithMail($mail)
-	{
-	    //dump(M('User')->where(array('email'=>$mail))->find());
-	    return M('User')->field('uid')->where(array('email'=>$mail))->find()['uid'];
-	}
-	function getBackPassWithEmail($uid)
-	{
-		//echo 1213;
-		$str=$uid.'@'.time().'@'.mt_rand();
-		$mail_md5=md5(md5(($str)));
-		if(D('User_password')->field('uid')->where(array('uid'=>$uid))->find())
-		{
-			$data=array(
-				'mail_md5'=>$mail_md5,
-				'mail_time'=>time(),
-			);
-			return D('User_password')->where(array('uid'=>$uid))->data($data)->save();
-		}
-		else
-		{
-			$data=array(
-				'uid'=>$uid,
-				'mail_md5'=>$mail_md5,
-				'mail_time'=>time(),
-			);
-			return D('User_password')->data($data)->add();
-		}
-	return 0;
-	}
-function getMailPwInfo($uid)	{
-   return M('User_password')->where(array('uid'=>$uid))->find();
-}
-function getPwByMd5($mail_md5){
-    return M('User_password')->field('uid')->where(array('mail_md5'=>$mail_md5))->find()['uid'];
-}
-function delPw($uid){
-return M('User_password')->where(array('uid'=>$uid))->delete();
-}
-function changePassword($pw)
+    {
+        return M('User')->field('uid')->where(array('email'=>$mail))->find()['uid'];
+    }
+    function getBackPassWithEmail($uid)
+    {
+        //echo 1213;
+        $str=$uid.'@'.time().'@'.mt_rand();
+        $mail_md5=md5(md5(($str)));
+        if(D('User_password')->field('uid')->find($uid))
+        {
+            $data=array(
+                    'mail_md5'=>$mail_md5,
+                    'mail_time'=>time(),
+                    );
+            return D('User_password')->where(array('uid'=>$uid))->data($data)->save();
+        }
+        else
+        {
+            $data=array(
+                    'uid'=>$uid,
+                    'mail_md5'=>$mail_md5,
+                    'mail_time'=>time(),
+                    );
+            return D('User_password')->data($data)->add();
+        }
+        return 0;
+    }
+    function getMailPwInfo($uid)	{
+        return M('User_password')->find($uid);
+    }
+    function getPwByMd5($mail_md5){
+        return M('User_password')->field('uid')->where(array('mail_md5'=>$mail_md5))->find()['uid'];
+    }
+    function delPw($uid){
+        return M('User_password')->where(array('uid'=>$uid))->delete();
+    }
+    function changePassword($pw)
     {   
         global $_G;
-        $user=$this->where("uid=".$_G[uid])->select();
-        $password = md5(md5($pw).$user[0][salt]);
+        $user=$this->find($uid);
+        $password = md5(md5($pw).$user[salt]);
         $cond = array('uid'=>$_G[uid],'password'=>$password);
         $this->save($cond);
         return true;
     }
-function changePassword_direct($uid,$pw)
- {   
-        $user=$this->where(array('uid'=>$uid))->find();
-		$password = md5(md5($pw).$user[salt]);
+    function changePassword_direct($uid,$pw)
+    {   
+        $user=$this->find($uid);
+        $password = md5(md5($pw).$user[salt]);
         $cond = array('password'=>$password);
-		$this->where(array('uid'=>$uid))->save($cond);
-		return true;
- }
+        $this->where(array('uid'=>$uid))->save($cond);
+        return true;
+    }
     public function getClubs($uid) {
         return $this->__getClub($uid, false);
     }
@@ -163,9 +160,9 @@ function changePassword_direct($uid,$pw)
     public function getpassport($username,$pw,$type='email'){
         $user = array();
         if ($type == 'uid')
-            $user = $this->where("uid='".$username."'")->select();
+            $user = $this->where('uid'=>$username)->select();
         else
-            $user = $this->where("email='".$username."'")->select();
+            $user = $this->where('email'=>$username)->select();
         // echo $this->getLastSql();
         if(empty($user)){
             return -1;
@@ -181,10 +178,10 @@ function changePassword_direct($uid,$pw)
     }
     public function setAvatarTmp($uid,$avatar_name)
     {
-        $info= $this->where(array('uid',$uid))->limit(1)->select();
-        if(!empty($info[0][avatar_tmp]))
+        $info = $this->find($uid);
+        if(!empty($info[avatar_tmp]))
         {
-            @unlink('./upload/avatar/'.$info[0][avatar_tmp]);
+            @unlink('./upload/avatar/'.$info[avatar_tmp]);
             $cond = array('uid'=>$uid,'avatar_tmp'=>'');
             $this->save($cond);
         }
@@ -193,12 +190,12 @@ function changePassword_direct($uid,$pw)
     }
     public function setAvatar($uid,$avatar_name)
     {
-        $info= $this->where(array('uid',$uid))->limit(1)->select();
-        if(!empty($info[0][avatar]))
+        $info = $this->find($uid);
+        if(!empty($info[avatar]))
         {
-            @unlink('./upload/avatar/'.$info[0][avatar]);
-            @unlink('./upload/avatar/small_'.$info[0][avatar]);
-            @unlink('./upload/avatar/big_'.$info[0][avatar]);
+            @unlink('./upload/avatar/'.$info[avatar]);
+            @unlink('./upload/avatar/small_'.$info[avatar]);
+            @unlink('./upload/avatar/big_'.$info[avatar]);
             $cond = array('uid'=>$uid,'avatar'=>'');
             $this->save($cond);
         }
