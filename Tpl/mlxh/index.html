@@ -1,27 +1,37 @@
-<html>
-  <head>
-    <title>美丽邂逅2012</title>
-    <meta charset="utf-8">
-    <style type="text/css">
-      body{
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="keywords" content="大学海报,海报墙,社团,社团管理,大学活动,活动搜索,活动筛选,搜索海报,搜索社团,筛选海报,筛选社团,邮件通知,短信通知,申请加入,瀑布流,评价分享,时间轴" />
+<meta name="description" content="大学活动的集中展示平台,大学海报的集中发布与分享平台,大学社团的集中展示与集中管理平台。更便捷、更简单、更高效、更美观、更流畅、更快速……" />
+<title>美丽邂逅2012</title>
+  
+<style type="text/css">
+*{
+	margin:0; padding:0;
+	word-wrap:break-word; word-break:normal; 
+	font-family:Microsoft Yahei, "Times New Roman", Times, serif;
+}
+body{
         text-align: center; /* IE hack */
-      }
-      #landing{
+		background:#FCF;
+}
+#landing{
         width: 1024px;
         height: 576px;
         background: url("/static/mlxh/img/ml_big.jpg") no-repeat;
         margin: 0 auto;
-        margin-top: 10px;
+        margin-top: 20px;
         position: relative;
         text-align: left;
-      }
-      #mlxh_content{
+ }
+ #mlxh_content{
         position: absolute;
         top:520px;
-        left:100px;
+        left:50px;
         /*margin-left:-400px; */
-      }
-      #mlxh_content a{
+ }
+#mlxh_content a{
         text-decoration: none;
         text-align: center;
         font-style: italic;
@@ -34,29 +44,59 @@
         border:1px solid #e62589;
         float: left;
         margin-left: 30px;
-      }
-      #mlxh_content span{
+}
+#mlxh_content span{
+	font-family:Georgia, "Times New Roman", Times, serif;
         float: left;
         color:#e62589;
-        font-size: 24px;
+        font-size: 22px;
         font-style: italic;
         margin-left: 30px;
         padding: 3px;
       }
-      #mlxh_content a:link{
+#mlxh_content a:link{
         background: url("/static/mlxh/img/mlxh_bt1.png");
         background-color:#ffffff;
         color:#e62589; 
       }
-      #mlxh_content a:hover{
+#mlxh_content a:hover{
         background: url("/static/mlxh/img/mlxh_bt2.png");
         color:#ffffff;
         background-color:#e62589; 
       }
-    </style>
+</style>
   </head>
-  <body>
+  <body style="position:relative">
+ <div style="position:absolute; top:0; left:0px;">
+       <object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" codebase="http://fpdownload.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=7,0,0,0" width="100%" height="600" align="middle">
+<param name="allowScriptAccess" value="sameDomain" />
+<param name="movie" value="/flashcode/fbg/wwwchn_net_fbg_3.swf" />
+<param name="quality" value="high" />
+<param name="wmode" value="transparent" />
+<embed src="/static/images/star_flash2.swf" width="100%" height="600" align="middle" quality="high" name="FlashVars" allowScriptAccess="sameDomain" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" wmode="transparent" />
+</object>
+    </div>
+    
+     <div style="position:absolute; top:0; right:0px;">
+       <object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" codebase="http://fpdownload.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=7,0,0,0" width="100%" height="600" align="middle">
+<param name="allowScriptAccess" value="sameDomain" />
+<param name="movie" value="/flashcode/fbg/wwwchn_net_fbg_3.swf" />
+<param name="quality" value="high" />
+<param name="wmode" value="transparent" />
+<embed src="/static/images/star_flash2.swf" width="100%" height="600" align="middle" quality="high" name="FlashVars" allowScriptAccess="sameDomain" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" wmode="transparent" />
+</object>
+    </div>  
+    
     <div id="landing">
+    <div style="opacity: 0.8;filter: Alpha(Opacity=80);">
+      <object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" codebase="http://fpdownload.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=7,0,0,0" width="100%" height="450" align="middle">
+<param name="allowScriptAccess" value="sameDomain" />
+<param name="movie" value="/flashcode/fbg/wwwchn_net_fbg_3.swf" />
+<param name="quality" value="high" />
+<param name="wmode" value="transparent" />
+<embed src="/static/images/star_flash3.swf" width="100%" height="450" align="middle" quality="high" name="FlashVars" allowScriptAccess="sameDomain" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" wmode="transparent" />
+</object>
+    </div>        
     <div id="mlxh_content">
     <if condition="empty($theday)">
       <span id="daojishi">秒杀和抽奖将于11月1日开始，请耐心等待 :)</span>
