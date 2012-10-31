@@ -603,7 +603,10 @@ if ($team['member_count'] > 20) {
 
 			<div style="height:40px;"> </div>
 		<notempty name="team.isMember">
-        	<div class="sttttt">共享文档<span class="stxmz11" style="float:right;margin-left:0;"><span style="color:#CCC; font-size:14px">需为成员才可见！&nbsp;&nbsp;&nbsp;&nbsp;</span><a href="/Team/upload?tid={$team.tid}" target="_blank" style="color:#F00;">上传新文件</a></span></div>
+        	<div class="sttttt">共享文档<span class="stxmz11" style="float:right;margin-left:0;"><span style="color:#CCC; font-size:14px">需为成员才可见！&nbsp;&nbsp;&nbsp;&nbsp;</span>
+            <!--a href="/Team/upload?tid={$team.tid}" target="_blank" style="color:#F00;" >上传新文件</a-->
+            <span   style="color:#F00;" id="uploadDOC">上传新文件</span>
+            </span></div>
             <ol class="stol">
 			<volist name="attachments" id="attachment">
             	<li><a href="/Team/downloadFile?fid={$attachment.fid}" target="_blank">{$attachment.realname}</a><if condition="$team['isManager']"><a class="stfjdel" href="/Team/deleteFile?fid={$attachment.fid}">删除</a></if></li>
@@ -628,6 +631,45 @@ if ($team['member_count'] > 20) {
 
 
 </div><!--stmain--> 
-<div id="backbg1"></div><!--可点击自身消失-->
+<div id="backbg1" class="bg123"></div><!--可点击自身消失-->
+<div id="alert-cont-box">
+ <div class="alert-title">上传文档</div>
+ <div id="sendMssage-result" class="alert-cont">
+<style type="text/css">
+	.controls .file-box{ position:relative; width:340px} 
+	.controls .txt{ height:22px; border:1px solid #cdcdcd; width:180px;height:30px;} 
+	.controls .btn{ background-color:#FFF; border:1px solid #CDCDCD;height:30px; width:70px; font-family:Microsoft Yahei, "Times New Roman", Times, serif;} 
+	.controls .file{ position:absolute; top:0; right:80px; height:32px; width:260px; filter:alpha(opacity:0);opacity: 0; } 
+</style>      
+    <div class="controls">
+     <div class="file-box">             
+         <input type='text' name='textfield' id='textfield' class='txt' /> 
+         <input type='button' class='btn' value='浏览...' /> 
+         <input type="file" name="poster" class="file" id="poster" size="36" onchange="document.getElementById('textfield').value=this.value" /> 
+     </div>
+    </div>     
+  </div>
+    <div id="confirm-alert" class="dxhb-button alert-button" >确 认</div>
+</div>
+<script type="text/javascript">
+//<!--
+$(document).ready(function(){
+/*弹出短信选择框*/
+$("#uploadDOC").click(function(){	 
+	$("#alert-cont-box").show(300);
+	$(".bg123").css("display","block");	
+	});
+
+$("#giveup_upload").click(function(){	 
+	$("#alert-cont-box").hide(300);
+	$(".bg123").css("display","none");
+	});
+$(".bg123").click(function(){	 
+	$("#alert-cont-box").hide(300);
+	$(".bg123").css("display","none");	
+	});
+});
+</script>
+
 </body>
 </html>
