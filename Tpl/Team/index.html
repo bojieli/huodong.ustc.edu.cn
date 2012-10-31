@@ -579,14 +579,15 @@ if ($team['member_count'] > 20) {
         <div class="stcyright">
 
 		<notempty name="team.isManager"> 
-        <div class="sttttt">功能面板<span class="stxmz11"><span style="color:#CCC; font-size:14px">管理员可见 &nbsp;&nbsp;</span><a href="/static/help/quanxiansm.html" target='_blank'  style="color:#F00">权限说明</a></span></div>     
+        <div class="sttttt">组功能面板<span class="stxmz11"><span style="color:#CCC; font-size:14px">管理员可见 &nbsp;&nbsp;</span><a href="/static/help/quanxiansm.html" target='_blank'  style="color:#F00">权限说明</a></span></div>     
         	<table cellpadding="0" cellspacing="0" border="0" >
             	<tr >
-                	<td align="left" width="200px" ><a target="_blank" href="/Team/sendEmail?tid={$team.tid}"  style="color:#088;">群邮件</a></td>
-                    <td align="left"><a href="/Sms?tid={$team.tid}" target="_blank" style="color:#088;">群短信</a></td>
+                	<td align="left" width="200px" ><a target="_blank" href="/Team/sendEmail?tid={$team.tid}"  style="color:#088;">发送邮件通知</a></td>
+                    <td align="left"><a href="/Sms?tid={$team.tid}" target="_blank" style="color:#088;">发送短信通知</a></td>
                 </tr>
+                <tr height="15px;"><td colspan="2" style="border-top:1px #CCF dotted"></td></tr>
                 <tr>
-                    <td align="left"><a href="/Team/address?tid={$team.tid}" target='_blank' style="color:#088;">通讯录</a></td>
+                    <td align="left"><a href="/Team/address?tid={$team.tid}" target='_blank' style="color:#088;">本组通讯录</a></td>
 					<td align="left"></td>
                 </tr>
                 <tr>
@@ -602,11 +603,11 @@ if ($team['member_count'] > 20) {
 
 			<div style="height:40px;"> </div>
 		<notempty name="team.isMember">
-        	<div class="sttttt">共享文件与文档<a href="/Team/upload?tid={$team.tid}" target="_blank" class="stxmz11">上传新文件</a></div>
+        	<div class="sttttt">共享文档<span class="stxmz11" style="float:right;margin-left:0;"><span style="color:#CCC; font-size:14px">需为成员才可见！&nbsp;&nbsp;&nbsp;&nbsp;</span><a href="/Team/upload?tid={$team.tid}" target="_blank" style="color:#F00;">上传新文件</a></span></div>
             <ol class="stol">
 			<volist name="attachments" id="attachment">
             	<li><a href="/Team/downloadFile?fid={$attachment.fid}" target="_blank">{$attachment.realname}</a><if condition="$team['isManager']"><a class="stfjdel" href="/Team/deleteFile?fid={$attachment.fid}">删除</a></if></li>
-			</volist>
+			</volist> 
             </ol>
             <div style="height:40px;"> </div>
 		</notempty>
