@@ -6,7 +6,9 @@
       <div class="nav"><a href="/"><span <if condition="$here == PosterAction">class="here1"</if>>海报墙</span></a></div>
       <div class="nav"><a href="/Club/"><span <if condition="$here == ClubAction">class="here1"</if>>学生团体</span></a></div>
       <if condition="!empty($_G[uid])">
-      <!--div class="nav"><a href="/User/home"><span <if condition="$here == UserAction">class="here1"</if>>个人信息管理</span></a></div-->
+      <!--
+      <div class="nav"><a href="/User/home"><span <if condition="$here == UserAction">class="here1"</if>>个人信息管理</span></a></div>
+      -->
       </if>
       <notempty name="theday">
       <div class="nav"><a href="/mlxh"><span style="color:#F00" <if condition="$here == MlxhAction">class="here1"</if>>美丽邂逅</span></a></div>
