@@ -74,7 +74,7 @@ class MlxhAction extends PublicAction {
         $o = M('mlxh_log');
         $o->create($log);
         $o->add();
-        $this->success('已经加入抽奖池中！<br>我们将在11月9日进行抽奖并通知到您的注册邮箱');
+        $this->success('已经加入抽奖池中！<br>我们将在11月9日进行抽奖<br>  并通知到您的注册邮箱');
     }
 
     function error($msg) {
