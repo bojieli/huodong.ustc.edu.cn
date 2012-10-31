@@ -85,14 +85,14 @@
             <?=$t['tm_min']?>,
             <?=$t['tm_sec']?>
             );
-    var theTime =new Date(now.getFullYear(),now.getMonth(),now.getDay(),12,30,00);
+    var theTime =new Date(now.getFullYear(),now.getMonth(),now.getDay(),20,00,00);
     var isTime = false;
     
     function leftTime(){
       var time_now = now.getHours()*3600+now.getMinutes()*60+now.getSeconds();
       var time_up = theTime.getHours()*3600+theTime.getMinutes()*60+theTime.getSeconds();
-      if (time_now - time_up > 3600) // 12:30 ~ 13:30
-        return "今天的秒杀已经结束<br>明天12:30再来吧 :)";
+      if (time_now - time_up > 3600) // 20:00 ~ 21:00
+        return "今天的秒杀已经结束<br>明天20:00再来吧 :)";
       if (time_now - time_up >= 0) {
         isTime = true;
         return "秒杀已经开始啦，赶快抢票吧";
