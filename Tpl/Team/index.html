@@ -652,16 +652,25 @@ if ($team['member_count'] > 20) {
 	.controls .btn{ background-color:#FFF; border:1px solid #CDCDCD;height:30px; width:70px; font-family:Microsoft Yahei, "Times New Roman", Times, serif;} 
 	.controls .file{ position:absolute; top:0; right:80px; height:32px; width:260px; filter:alpha(opacity:0);opacity: 0; } 
 </style>      
-    <div class="controls">
-     <div class="file-box">             
+    <div class="controls" style="width:400px; margin:15px auto;">
+     <p style="color:#F00">点击黑色半透明背景，可取消上传操作</p>
+     <div class="file-box">
+         <form action="/Team/uploadSubmit" method="post" enctype="multipart/form-data">
+	     <input type='hidden' name='tid' value="{$team.tid}">
+	     <input type='file'  name='attachment'>
+	     
          <input type='text' name='textfield' id='textfield' class='txt' /> 
          <input type='button' class='btn' value='浏览...' /> 
-         <input type="file" name="poster" class="file" id="poster" size="36" onchange="document.getElementById('textfield').value=this.value" /> 
+         <input type="file" name="attachment" class="file" id="attachment" size="36" onchange="document.getElementById('textfield').value=this.value" /> 
      </div>
     </div>     
   </div>
-    <div id="confirm-alert" class="dxhb-button alert-button" >确 认</div>
+  
+    <div id="confirm-alert" class="dxhb-button alert-button" style="position:relative;">提 交
+    <input type='submit' value="提交" style=" position:absolute; top:-5px; left:-5px; width:104px; height:40px;opacity:0.76;	filter:alpha(opacity=76);"  />
+    </div>
 </div>
+</form>
 <script type="text/javascript">
 //<!--
 function alertUpload(){
