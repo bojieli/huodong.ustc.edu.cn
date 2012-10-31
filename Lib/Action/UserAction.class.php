@@ -96,11 +96,11 @@ class UserAction extends PublicAction {
             //dump($_COOKIE);
 
             // registerVerify should not jump back
-            if (!empty($_POST['referer']) && !strstr($_POST['referer'], '/User/registerVerify'))
+            if (!empty($_POST['referer']) && !strstr($_POST['referer'], '/User/'))
                 $this->assign('jumpUrl', $_POST['referer']);
             else
                 $this->assign('jumpUrl','/User/home?uid='.$passport['uid']);
-            D(User)->loginLog($passport['uid']);
+            D('User')->loginLog($passport['uid']);
             $this->success('登陆成功');
         }
         else{
