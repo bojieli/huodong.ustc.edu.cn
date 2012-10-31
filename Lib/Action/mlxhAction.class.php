@@ -29,11 +29,11 @@ class MlxhAction extends PublicAction {
         $time = time();
         $t = localtime($time, true);
         $daysec = $t['tm_hour'] * 3600 + $t['tm_min'] * 60 + $t['tm_sec'];
-        // 12:30 ~ 13:30
-        if ($daysec < 12*3600+30*60)
+        // 20:00 ~ 21:00
+        if ($daysec < 20*3600+00*60)
             $this->error('今天的秒杀尚未开始，再等等吧~');
-        if ($daysec > 13*3600+30*60)
-            $this->error('今天的秒杀已于13:30结束 :(');
+        if ($daysec > 21*3600+00*60)
+            $this->error('今天的秒杀已于21:00结束 :(');
 
         $count = M('mlxh_log')->where(array('uid'=>CURRENT_USER, 'action'=>'miaosha'))->count();
         if ($count > 0)
