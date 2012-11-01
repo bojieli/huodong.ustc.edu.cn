@@ -284,6 +284,11 @@ class QrAction extends PublicAction{
 		$info['status']="成功删除";
 		$this->success($info);
 	}
+	public function ltx(){
+		$id=$this->_get('i');
+		$aid=M('Qr')->field('aid')->where(array('id'=>$id))->find()['aid'];
+		$this->redirect('Poster/singlePage',array('aid'=>$aid),1,'页面跳转中~');
+	}
 	public function test()
 	{
 		$name='林太行';
