@@ -312,7 +312,7 @@ class PosterAction extends PublicAction {
         $aid = $this->getInputAid();
         D('Poster')->addClick($aid);
         $poster = D('Poster')->getPosterById($aid);
-        dump($poster);
+        //dump($poster);
 		$poster->rate = $poster->getRate();
         $poster->school = $poster->schoolName();
         $poster->name = $poster->name();
@@ -324,7 +324,7 @@ class PosterAction extends PublicAction {
         $poster->clubName = $poster->clubName();
         //dump($poster);
 		$this->assign('poster', $poster->toArray());
-		//dump($poster->canModify);
+		dump($poster->toArray());
         $comments = M('poster_comment')->where(['aid'=>$aid])->order("time DESC")->select();
         foreach ($comments as &$comment) {
             $comment['author'] = D('User')->getInfo($comment['author']);
