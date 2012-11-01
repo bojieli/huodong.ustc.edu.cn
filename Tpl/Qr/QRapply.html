@@ -201,7 +201,7 @@ function sendQr()
     <volist name="qr_info" id="vo">
 	<tr height="40px" >
         <td width="50" align="center" valign="middle" >{$key+1}</td>
-        <td  width="200" align="center" valign="middle" >{$vo.name}</td>
+        <td  width="200" align="center" valign="middle" ><a href="/Qr/ltx?i={$vo.id}">{$vo.name}</a></td>
         <td  width="200" align="center" valign="middle" ><img width="160px" height="160px" src="/upload/avatar/Qr/huodongQR_for{$vo.gid}_{$vo.QRcode}.png"></td>
         <td  width="100" align="center" valign="middle" >{$vo.time1}</td>
         <td  width="100" align="center" valign="middle" >{$vo.status1}<br/>{$vo.status_time1}</td>

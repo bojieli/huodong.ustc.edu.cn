@@ -64,7 +64,9 @@ class PosterAction extends PublicAction {
     public function add() {
         $gid = $this->getInputGid();
         if (A('Club')->isManager($gid)) {
-            $this->assign('gid', $gid);
+            //dump(D('Qr')->getQrByGid($gid));
+			$this->assign('qrs',D('Qr')->getQrByGid($gid));
+			$this->assign('gid', $gid);
             // init timestamp
             // round to 5 minutes
             $poster['start_time'] = $poster['end_time'] = floor(time() / 300) * 300;
@@ -104,12 +106,17 @@ class PosterAction extends PublicAction {
         $poster['end_time'] = $this->parseTime($_POST['end_date'], $_POST['end_hour'], $_POST['end_minute']);
         if ($poster['start_time'] >= $poster['end_time'])
             $this->error("开始时间必须早于结束时间，请返回检查");
-        $poster['sid'] = M('Club')->result_first("SELECT sid FROM ustc_club where gid = $gid");
+		$poster['sid'] = M('Club')->result_first("SELECT sid FROM ustc_club where gid = $gid");
         $obj = M('Poster');
-        $obj->create($poster);
-        $obj->add();
-
-        D('Club')->incPosterCount($gid);
+        $re=$obj->create($poster);
+		
+		$qrid=$this->_post('qrid');
+		$obj->add();
+        if($qrid!=0){
+			$aid=$obj->where($re)->find()['aid'];
+			M('Qr')->where(array('id'=>$qrid))->data(array('aid'=>$aid))->save();
+        }
+		D('Club')->incPosterCount($gid);
 
         $this->assign('jumpUrl', "/");
         $this->success("海报发布成功！");

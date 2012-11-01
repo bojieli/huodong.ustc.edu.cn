@@ -229,7 +229,7 @@ class QrAction extends PublicAction{
 		}
 		$re=D('Club')->getInfo($gid);
 		$company=$re['name'];
-		$website='http://huodong.ustc.edu.cn/Club/intro?gid='.$gid;
+		$website='http://huodong.ustc.edu.cn/Qr/ltx?i='.$gid;
 		$note=$content;
 		$data=$this->QRforCards($name,$phone,$company,$role,$email,$address,$website,$weibo,$qq,$ww,$msn,$note);
 		$md5=$this->getQR($data,$gid,$level='L',$size=4);

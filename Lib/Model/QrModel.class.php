@@ -53,5 +53,14 @@ function status_means($status){
 	  return "已修改";	  
 	}
 }
+function getQrByGid($gid)
+{
+	$res=$this->where(array('gid'=>$gid))->select();
+	foreach($res as $re)
+	{
+		$info[$re['id']]=$re['name'];
+	}
+	return $info;
+}
 }
 ?>

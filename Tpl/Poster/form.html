@@ -53,6 +53,21 @@
         <input type="text" class="input-large" id="place" name="place" value="{$poster.place}" onKeyUp="if(this.value=='') $(this).parent().parent().addClass('error'); else $(this).parent().parent().removeClass('error');">
       </div>
     </div>
+	<div class="control-group">
+	 <label class="control-label" for="place">选择活动二维码</label>
+	 <div class="controls">
+	<select name="qrid" id="qrid">
+	<option value="0" selected>
+	--------------------------------
+	</option>
+	<volist name="qrs" id="qr">
+	<option value="{$key}">
+	{$qr}
+	</option>
+	</volist>
+	</select>
+	</div>
+	</div>
     <div class="control-group">
       <label class="control-label" for="poster" >上传海报</label>
       
