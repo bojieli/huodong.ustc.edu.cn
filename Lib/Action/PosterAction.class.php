@@ -262,15 +262,16 @@ class PosterAction extends PublicAction {
     }
 
     private function poster2html($poster) {
-        return '<li class="hide"><div class="celldiv">'.
-            ($poster->thumbUrl() ? '<img class="haibao" height="'.$poster->thumbHeight().'" id="poster-'.$poster->id().'" src="'.$poster->thumbUrl().'" onclick="loadComments('.$poster->id().')" />' : '').
+        return '<li class="hide"><div class="celldiv" itemscope itemtype="http://data-vocabulary.org/Event">'.
+            ($poster->thumbUrl() ? '<img class="haibao" itemprop="photo" height="'.$poster->thumbHeight().'" id="poster-'.$poster->id().'" src="'.$poster->thumbUrl().'" onclick="loadComments('.$poster->id().')" />' : '').
             '<div class="detail"><div class="hot">'.
             '<span class="ding" id="ding-'.$poster->id().'"><span class="iconding"></span><span class="rate">'.$poster->getRate().'</span></span></div>'.
-
+			'<meta itemprop="name" content="'.$poster->name().'" />'.
             /*		热度：<span class="rate">'.$poster->getRate().'</span>'.
                     '<span class="ding" id="ding-'.$poster->id().'">顶</span></div>'.
-             */		'<p>时间: '.$poster->humanDate().'<br>'.
-            '地点: '.$poster->place().'</p></div>'.
+             */		'<p>时间: <time itemprop="startDate" datetime="2015-10-16T19:00-08:00">
+                    '.$poster->humanDate().'</time><br>'.
+            '<div itemprop="location">地点: '.$poster->place().'</div></p></div>'.
             '<div class="school">'.$poster->schoolName().
             '</div></div></li>';
     }
@@ -323,7 +324,7 @@ class PosterAction extends PublicAction {
         $poster->clubName = $poster->clubName();
         //dump($poster);
 		$this->assign('poster', $poster->toArray());
-		//dump($poster->canModify);
+		//dump($poster->toArray());
         $comments = M('poster_comment')->where(['aid'=>$aid])->order("time DESC")->select();
         foreach ($comments as &$comment) {
             $comment['author'] = D('User')->getInfo($comment['author']);

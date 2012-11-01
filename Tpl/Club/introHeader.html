@@ -1,4 +1,4 @@
-	<div  itemscope itemtype="http://data-vocabulary.org/Organization">
+	<div itemscope itemtype="http://data-vocabulary.org/Organization">
 		<div class="sttitle2">{$club.school.name}</div>
 		<div class="sttitle" itemprop="name"><a href="/Club/intro?gid={$club.gid}" itemprop="url">{$club.name}</a></div>
 		<div class="sttitle3">
@@ -75,7 +75,7 @@
 	});
 	</script>
 	
-	<div id="qrcodeId" style=" position:absolute; top:-7px; right:4px; "><img title="组织二维码"   style=" width:124px; border:1px solid #8a4419; border-style:inset;"  src="{$Qrcode}"  alt="{$club.name}二维码"/></div>    
+	<div id="qrcodeId" style=" position:absolute; top:-7px; right:4px; "><img title="{$club.name}二维码"   style=" width:124px; border:1px solid #8a4419; border-style:inset;"  src="{$Qrcode}"  alt="{$club.name}二维码"/></div>    
     <div class="qrcode"><img src="{$Qrcode}"  alt="{$club.name}二维码"/></div>
 <script type="text/javascript">
 		$("#qrcodeId").hover(
