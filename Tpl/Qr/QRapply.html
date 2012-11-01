@@ -1,0 +1,202 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>申请与管理活动二维码</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="/static/css1.css" rel="stylesheet" type="text/css" />
+
+<style type="text/css">
+.mem-select{	
+	width:250px;
+	font-size:16px;	
+	padding:5px;
+	font-family:Microsoft Yahei, "Times New Roman", Times, serif;
+	line-height:20px;
+	vertical-align:middle;	
+	}
+.msel-button{
+	margin-top:15px;
+	margin-left:19px;
+	padding:0;
+	font-size:20px;
+	font-weight:bold;
+	color:#333;
+	height:30px;	
+	line-height:24px;
+	vertical-align:middle;
+	width:60px;
+	text-align:center;
+	}
+.msel-button-sort{
+	color:#99F;
+	font-size:16px;		
+	height:24px;	
+	line-height:22px;
+	vertical-align:middle;
+	width:90px;
+	text-align:center;
+	border-radius:0px;	
+	}
+.mss-tittle{
+	font-family:Microsoft Yahei, "Times New Roman", Times, serif;
+	font-size:25px;
+	color:#99F;
+	margin-bottom:5px;
+	font-weight:bold;
+	background:#DDDDDD;
+	line-height:40px;
+	vertical-align:middle;
+	border-bottom:2px solid #9bc;
+	}
+.mss-button{
+	margin:auto 10px;
+	width:80px;
+	height:28px;
+	line-height:27px;
+	vertical-align:middle;
+	text-align:center;
+	padding:0 6px;
+	font-size:16px;	
+	font-family:Microsoft Yahei, "Times New Roman", Times, serif;
+	background:#FC0;
+	}
+.mss-input-1text{
+	  font-family:Microsoft Yahei, "Times New Roman", Times, serif;		  	  
+	  font-size:16px;
+	  height:32px;
+	  width:595px;
+	  line-height:24px;
+	  vertical-align:middle;
+	  padding:0px 8px;
+	  margin:0;
+	  margin-bottom:6px;
+	  color:#999;	  
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius:5px;
+	outline:none;
+	border:1px solid #CEE;
+
+	}
+.mss-input-text{
+	font-family:Microsoft Yahei, "Times New Roman", Times, serif;
+	font-size:16px;
+	width:590px;
+	line-height:22px;
+	height:140px;
+	padding:10px;		
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius:5px;
+	outline:none;
+	border:1px solid #CEE;
+	}
+#giveup_sel{
+	color:#F33;
+	margin-left:30px;
+	}
+#giveup_sel:hover{
+	cursor:pointer;
+	}
+
+.NameWithBg{
+	background:#E9E9E9;
+	border:solid #CCC;
+	border-width:0 1px 1px 0;
+	-moz-border-radius: 9px;
+	-webkit-border-radius: 9px;
+	border-radius:9px;
+	margin:2px 1px;
+	padding: 0px 10px;
+	white-space: nowrap;
+	display: inline-block;
+	}
+.NameWithBg:hover{
+	cursor:default;
+	background:#CFC;
+}
+</style>
+</head>
+
+<body>
+<include file="Public:headnav" />
+<div id="mainding">
+ <p class="mss-tittle"><notempty name="club"> {$club['school']['name']} - <a href="/Club/manage?gid={$club.gid}">{$club['name']}</a></notempty><notempty name="team"><a href="/Club/manage?gid={$team.gid}">{$team['club']}</a> - <a href="/Team?tid={$team.tid}">{$team['name']}</a></notempty> - 二维码申请与管理</p>
+
+<p style="color:#F00">二维码使用教程：
+<br/>&nbsp;&nbsp;第一步，填写活动名称、活动简介（联系人、方式）等信息，点击申请二维码。
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;平台会自动生成一个png格式的二维码，包含您填写的活动的主要信息，以及一个预定的访问地址。您可以用手机扫描验证。
+<br/>&nbsp;&nbsp;第二步，二维码上右键点击，另存二维码（png格式的二维码可以放大到较大，不容易出现不清晰的图像）
+<br/>&nbsp;&nbsp;第三步，将另存下来的二维码印刷到对应的活动的海报及传单上。
+<br/>&nbsp;&nbsp;第四步，在您的社团主页处发布海报，选择活动所对应的二维码（印刷到海报上所对应的二维码），确认发布海报。
+<br/>&nbsp;&nbsp;完成。现在您可以扫描海报上的二维码，查看活动主要信息，并可以点击给出的海报链接，在线查看活动及海报的详细介绍等信息。
+</p>
+<p class="mss-tittle">二维码申请</p>
+<form>
+<table border="0" cellpadding="0" cellspacing="0">
+  	<tr height="40px">
+        <td width="90" align="right" valign="top" style="padding-top:3px;">活动名称：</td>
+        <td width="920" align="left" valign="top" colspan="2">
+		<input class="dxhb-blur mss-input-1text" onfocus="this.className='dxhb-focus mss-input-1text'" onblur="this.className='dxhb-blur mss-input-1text'" >
+		
+        </td>
+    </tr>    
+    <tr>
+        <td width="90" align="right" valign="top" style="padding-top:10px;">活动简介：</td>
+        <td colspan="2"  align="left" valign="top">
+            <div class="inputarea" style="position:relative;">
+				<textarea id="edit" name="s" title="写满两行文字的长度约为一条短信 ！" class="mss-input-text" onfocus="this.className='dxhb-focus mss-input-text'" onblur="this.className='dxhb-blur mss-input-text'" style="float:left" ></textarea>
+                <span style=" color:#F00; margin-left:70px;"><img width="160px" height="160px" src="http://huodong.ustc.edu.cn/static/images/dxhbQR.png"></span>				
+			</div>
+		</td>
+    </tr>
+    <tr>
+       <td> </td>
+       <td colspan="2" align="left" valign="middle" style="height:70px;">
+       		<div  onclick=";return false;" class="dxhb-button mss-button" style="margin-left:518px;">确认申请</div>
+       </td>
+    </tr>
+</table>
+
+</form>
+<p style="color:#F0F">说明：
+<br/>&nbsp;&nbsp;1、每个团体至多能存有 15 个还未使用的二维码
+<br/>&nbsp;&nbsp;2、上传海报时，被使用的二维码不算在 15 个未使用的二维码之中
+<br/>&nbsp;&nbsp;3、活动名称请不要太长，活动介绍中也请尽量填写最主要的信息，以免二维码过于复杂
+</p>
+<p class="mss-tittle">二维码管理</p>
+<style type="text/css">
+#QRlist tr td{
+	border-bottom:1px #99F dotted;
+	}
+</style>
+<table id="QRlist" border="0" cellpadding="0" cellspacing="0">
+  	<tr height="40px">
+        <td width="50" align="center" valign="middle" >序号</td>
+        <td width="200" align="center" valign="middle" >活动名称</td>
+        <td width="200" align="center" valign="middle" >二维码</td>
+        <td width="100" align="center" valign="middle" >申请时间</td>
+        <td width="150" align="center" valign="middle" >状态</td>
+        <td width="100" align="center" valign="middle" >管理</td>
+    </tr>
+    <tr height="40px" >
+        <td width="50" align="center" valign="middle" >1</td>
+        <td  width="200" align="center" valign="middle" >美丽邂逅秒票活动</td>
+        <td  width="200" align="center" valign="middle" ><img width="160px" height="160px" src="http://huodong.ustc.edu.cn/static/images/dxhbQR.png"></td>
+        <td  width="100" align="center" valign="middle" >2012/11/01</td>
+        <td  width="100" align="center" valign="middle" >已使用<br/>2012/11/01 20:10</td>
+        <td  width="100" align="center" valign="middle" >管理</td>
+    </tr>
+	<tr height="40px" >
+        <td width="50" align="center" valign="middle" >2</td>
+        <td  width="200" align="center" valign="middle" >美丽邂逅秒票活动</td>
+        <td  width="200" align="center" valign="middle" ><img width="160px" height="160px" src="http://huodong.ustc.edu.cn/static/images/dxhbQR.png"></td>
+        <td  width="100" align="center" valign="middle" >2012/11/01</td>
+        <td  width="100" align="center" valign="middle" >已使用<br/>2012/11/01 20:10</td>
+        <td  width="100" align="center" valign="middle" >管理</td>
+    </tr>
+</table>    
+
+</div><!--main ding-->
+</body>
+</html>
