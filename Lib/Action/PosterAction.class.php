@@ -317,8 +317,8 @@ class PosterAction extends PublicAction {
         $poster->school = $poster->schoolName();
         $poster->name = $poster->name();
         $poster->humanDate = $poster->humanDate();
-        dump($poster->start_time());
-        dump($poster->end_time());
+        dump($poster->start_time);
+        dump($poster->end_time);
         $poster->thumbPoster = $poster->thumbUrl();
         $poster->largePoster = $poster->thumbUrl(true);
         $poster->origPoster = $poster->origPosterUrl();
