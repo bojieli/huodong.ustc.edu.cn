@@ -7,8 +7,9 @@
 <notempty name="singlePage">
 <div id="mainding">
 </notempty>
+  <div itemscope itemtype="http://data-vocabulary.org/Event">
   <div class="photocome">
-     <a href="{$poster.origPoster}" target="_blank"><img src="{$poster.largePoster}" alt="点击查看原图" title="点击查看原图" /></a>
+     <a href="{$poster.origPoster}" target="_blank"><img itemprop="photo" src="{$poster.largePoster}" alt="点击查看原图" title="点击查看原图" /></a>
   </div>
     <div class="hb_footer">
        <div class="fenxiangl">
@@ -30,8 +31,8 @@ $(".like").live('click', function(event){
 </script>
 	    热度：<span class="rate">{$poster.rate}</span>
 	    <!--<span class="like" id="ding-{$poster.aid}">顶</span>-->
-	    <span class="dymian"><a target="_blank" href="/Club/intro?gid={$poster.gid}">查看 {$poster.clubName} 的简介</a></span>
-	    <span class="dymian"><a target="_blank" href="/Poster/singlePage?aid={$poster.aid}">在单独页面内打开</a></span>
+	    <span class="dymian"><a itemprop="url" target="_blank" href="/Club/intro?gid={$poster.gid}">查看 {$poster.clubName} 的简介</a></span>
+	    <span class="dymian"><a itemprop="url" target="_blank" href="/Poster/singlePage?aid={$poster.aid}">在单独页面内打开</a></span>
 	    <if condition="$poster['canModify'] == true">
 	    <span class="dymian"><a href="/Poster/modify?aid={$poster.aid}">修改海报</a></span>
 	    <span class="dymian"><a href="/Poster/delete?aid={$poster.aid}" onclick="return confirm('被删除的海报是不可恢复的。您真的要删除此海报吗？');">删除海报</a></span>
@@ -47,9 +48,11 @@ $(".like").live('click', function(event){
        </div>
     </div><!--hbfooter-->
     <div class="hbbeizhu">时间：{$poster.humanDate}</div>
-    <div class="hbbeizhu">地点：{$poster.place}</div>
-    <div class="hbbeizhu">{$poster.description}</div>
-
+	<meta itemprop="startDate" datetime="2015-10-15T19:00-08:00" />
+    <meta itemprop="endDate" datetime="2015-10-15T19:00-08:00" />
+    <div class="hbbeizhu" itemprop="location">地点：{$poster.place}</div>
+    <div class="hbbeizhu" itemprop="description">{$poster.description}</div>
+	</div>
     <div class="post_reply">
           <div class="add_reply">
 	  <if condition="CURRENT_USER != 0">
