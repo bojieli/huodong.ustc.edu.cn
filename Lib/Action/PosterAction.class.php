@@ -312,7 +312,7 @@ class PosterAction extends PublicAction {
         $aid = $this->getInputAid();
         D('Poster')->addClick($aid);
         $poster = D('Poster')->getPosterById($aid);
-        //dump($poster);
+        dump($poster);
 		$poster->rate = $poster->getRate();
         $poster->school = $poster->schoolName();
         $poster->name = $poster->name();
