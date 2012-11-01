@@ -8,7 +8,12 @@
     	<div class="kuang"><a href="/Poster/index?order=near<if condition="$keyword != ''">&keyword={$keyword}</if><if condition="$sid != ''">&sid={$sid}</if>"><div class="topbutton <if condition="$order == 'near'">here2</if>">最近举行</div></a><div class="topnum">{$stat.incoming}</div></div>
     	<div class="kuang"><a href="/Poster/index?order=hot<if condition="$keyword != ''">&keyword={$keyword}</if><if condition="$sid != ''">&sid={$sid}</if>"><div class="topbutton <if condition="$order == 'hot'">here2</if>">最热海报</div></a><div class="topnum">{$stat.incoming}</div></div>
     	<div class="kuang"><a href="/Poster/index?order=follow<if condition="$keyword != ''">&keyword={$keyword}</if><if condition="$sid != ''">&sid={$sid}</if>"><div class="topbutton <if condition="$order == 'follow'">here2</if>">我社团的</div></a><div class="topnum">{$stat.followed}</div></div>
-    	<!--<div class="kuang"><a href="/Notify"><div class="topbutton">最新消息</div></a><div class="topnum">{$stat.newmsg}</div></div>-->
+    	<div class="kuang">
+			<a href="/Msg">
+				<div class="topbutton">最新消息</div>
+			</a>
+			<div class="topnum">{$stat.newmsg}</div>
+		</div>
 		<form method='get' action="/Poster/index">
         <div class="kuang" style="width:230px;">
         	<input type="text" name="keyword" class="searchcss_out" onfocus="this.className='searchcss_on'" onblur="this.className='searchcss_out'" value="{$keyword}">
@@ -33,8 +38,7 @@
 	border:1px solid RGB(116, 185, 239);	
    }
 </style>
-        <div class="ykuang" id='school_div' "><span style="color:#F00;">选择学校：</span></div>
- 
+        <div class="ykuang" id="school_div"><span style="color:#F00;">选择学校：</span></div>
 		<script>
 			var school_all= '{$schools}';
 			var school_id = {$sid};
