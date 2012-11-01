@@ -287,7 +287,7 @@ class QrAction extends PublicAction{
 	public function ltx(){
 		$id=$this->_get('i');
 		$aid=M('Qr')->field('aid')->where(array('id'=>$id))->find()['aid'];
-		$this->redirect('Poster/singlePage',array('aid'=>$aid),1,'');
+		$this->redirect('Poster/singlePage',array('aid'=>$aid),1,' ');
 	}
 	public function test()
 	{
