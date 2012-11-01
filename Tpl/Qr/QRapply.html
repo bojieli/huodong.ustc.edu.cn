@@ -125,9 +125,11 @@ function sendQr()
 		if (data.status == 1) {
 			$("#huodong_name").val('');
 			$("#edit").val('');
-			
 			 $("#huodong_qr_img").attr("src","/upload/avatar/Qr/huodongQR_for"+data.info.gid+"_"+data.info.md5+".png");
 			 return true;
+		}
+		else{
+		if(data.info.status){alert(data.info.status);}
 		}
 	}, 'json');
     return false;
@@ -219,8 +221,10 @@ $('.del').click(function(){
 	$(this).parent().parent().hide();
 	$.post(url,{gid:gid,md5:md5}, function (data) {
 		if (data.status == 1) {
+			/*if(data.info.status){alert(data.info.status);}*/
 			return true;
 		}
+		else{if(data.info.status){alert(data.info.status);}}
 	}, 'json');
     return false;
 });

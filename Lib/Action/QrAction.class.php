@@ -243,6 +243,10 @@ class QrAction extends PublicAction{
 		}
 	public function QRapply(){
 		$gid=$this->_get('gid');
+		if(empty($gid))
+		{
+			$this->error("非法操作");
+		}
 		$uid=$_G['uid'];
 		if(!D('Club')->isManager($gid))
 		{
@@ -277,7 +281,7 @@ class QrAction extends PublicAction{
 		}
 		
 		D('Qr')->qrDelForHuodong($uid,$gid,$md5);
-		$info['status']="删除成功";
+		$info['status']="成功删除";
 		$this->success($info);
 	}
 	public function test()
