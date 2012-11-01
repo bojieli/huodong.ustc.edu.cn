@@ -48,8 +48,8 @@ $(".like").live('click', function(event){
        </div>
     </div><!--hbfooter-->
     <div class="hbbeizhu">时间：{$poster.humanDate}</div>
-	<meta itemprop="startDate" datetime="2015-10-15T19:00-08:00" />
-    <meta itemprop="endDate" datetime="2015-10-15T19:00-08:00" />
+	<meta itemprop="startDate" datetime="{$poster.start_time}" />
+    <meta itemprop="endDate" datetime="{$poster.end_time}" />
     <div class="hbbeizhu" itemprop="location">地点：{$poster.place}</div>
     <div class="hbbeizhu" itemprop="description">{$poster.description}</div>
 	</div>
