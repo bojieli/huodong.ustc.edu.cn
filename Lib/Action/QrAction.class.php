@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 set_time_limit(0);
 class QrAction extends PublicAction{
 	public function index(){
@@ -36,10 +36,7 @@ class QrAction extends PublicAction{
 			$filename = $PNG_TEMP_DIR.'huodongQR_for'.$gid.'_'.$md5.'.png';
 			//dump($filename);
 			QRcode::png($data, $filename, $errorCorrectionLevel, $matrixPointSize, 2);
-			if(file_exists($filename)){
-				$da=array('QRcode'=>$md5);
-				if($gid!=''){M('Club')->where(array('gid'=>$gid))->data($da)->save();}
-			}
+			return $md5;
 		} 
 		else {   
 			QRcode::png('huodong.ustc.edu.cn', $filename, $errorCorrectionLevel, $matrixPointSize, 2);   
@@ -133,7 +130,8 @@ class QrAction extends PublicAction{
 				$note='';
 				//dump($data);
 				//$data="【".$re['name']."】"."\n"."标语:".$slogan."\n"."学校:".$re['school']['name']."\n"."联系我们:"."\n"."BBS或QQ群:".$qq_group."\n"."邮箱或手机号:".$contact."\n"."活动平台主页:".$huodong_home.$end;
-				$this->getQR($data,$gid,$level='L',$size=4);
+				$md5=$this->getQR($data,$gid,$level='L',$size=4);
+				D('Qr')->qrInsertForShetuan($gid,$md5);
 				//die;
 				$i++;
 			}
@@ -212,9 +210,76 @@ class QrAction extends PublicAction{
 		    //$this->assign('filename',$filename);
 		}
 	}
+	function ajax_qrInsert()//ForHuodong
+{
+		global $_G;
+		$name=$this->_post('name');
+		$content=$this->_post('con');
+		$gid=$this->_post('gid');
+		$uid=$_G['uid'];
+		if(!D('Club')->isManager($gid))
+		{
+			$info['status']="抱歉，只有会长和部长级别的会员才能更新二维码！";
+		    $this->error($info);
+		}
+		if(empty($name)||empty($content))
+		{
+			$info['status']='活动名称或活动简介为空';
+			$this->error($info);
+		}
+		$re=D('Club')->getInfo($gid);
+		$company=$re['name'];
+		$website='http://huodong.ustc.edu.cn/Club/intro?gid='.$gid;
+		$note=$content;
+		$data=$this->QRforCards($name,$phone,$company,$role,$email,$address,$website,$weibo,$qq,$ww,$msn,$note);
+		$md5=$this->getQR($data,$gid,$level='L',$size=4);
+		D('Qr')->qrInsertForHuodong($gid,$uid,$name,$content,$md5);
+		$info['md5']=$md5;
+		$info['gid']=$gid;
+		$this->success($info);
+}
 	public function getQrcode($gid){
 		 return $QRcode=M('Club')->field('QRcode')->where(array('gid'=>$gid))->find()['QRcode'];
 		}
+	public function QRapply(){
+		$gid=$this->_get('gid');
+		$uid=$_G['uid'];
+		if(!D('Club')->isManager($gid))
+		{
+			$this->error("抱歉，只有会长和部长级别的会员才能申请管理二维码！");
+		}
+		$res=D('Qr')->getQrInfo($gid);
+		foreach($res as $key=>$re)
+		{
+			$res[$key]['time1']=date("Y/n/j H:i:s",$re['time']);
+			$res[$key]['status_time1']=date("Y/n/j H:i:s",$re['status_time']);
+			$res[$key]['status1']=D('Qr')->status_means($re['status']);
+		}
+		//dump($res);
+		$this->assign('qr_info',$res);
+		$this->assign('gid',$gid);
+		$this->display();
+	}
+	public function ajax_qrDel(){
+	    global $_G;
+		$md5=$this->_post('md5');
+		$gid=$this->_post('gid');
+		$uid=$_G['uid'];
+		if(!D('Club')->isManager($gid))
+		{
+			$info['status']="抱歉，只有会长和部长级别的会员才能删除二维码！";
+		    $this->error($info);
+		}
+		if(empty($md5))
+		{
+			$info['status']='没有指定删除对象';
+			$this->error($info);
+		}
+		
+		D('Qr')->qrDelForHuodong($uid,$gid,$md5);
+		$info['status']="删除成功";
+		$this->success($info);
+	}
 	public function test()
 	{
 		$name='林太行';

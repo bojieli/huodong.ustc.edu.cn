@@ -4,6 +4,7 @@
 <title>申请与管理活动二维码</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <link href="/static/css1.css" rel="stylesheet" type="text/css" />
+<script src="/static/jquery.js" type="text/javascript"></script>
 
 <style type="text/css">
 .mem-select{	
@@ -116,6 +117,22 @@
 	background:#CFC;
 }
 </style>
+<script type="text/javascript">
+function sendQr()
+{
+	var form = $("#huodong_qr");
+	$.post($(form).attr('action'), $(form).serialize(), function (data) {
+		if (data.status == 1) {
+			$("#huodong_name").val('');
+			$("#edit").val('');
+			
+			 $("#huodong_qr_img").attr("src","/upload/avatar/Qr/huodongQR_for"+data.info.gid+"_"+data.info.md5+".png");
+			 return true;
+		}
+	}, 'json');
+    return false;
+}
+</script>
 </head>
 
 <body>
@@ -132,32 +149,32 @@
 <br/>&nbsp;&nbsp;完成。现在您可以扫描海报上的二维码，查看活动主要信息，并可以点击给出的海报链接，在线查看活动及海报的详细介绍等信息。
 </p>
 <p class="mss-tittle">二维码申请</p>
-<form>
-<table border="0" cellpadding="0" cellspacing="0">
-  	<tr height="40px">
-        <td width="90" align="right" valign="top" style="padding-top:3px;">活动名称：</td>
-        <td width="920" align="left" valign="top" colspan="2">
-		<input class="dxhb-blur mss-input-1text" onfocus="this.className='dxhb-focus mss-input-1text'" onblur="this.className='dxhb-blur mss-input-1text'" >
-		
-        </td>
-    </tr>    
-    <tr>
-        <td width="90" align="right" valign="top" style="padding-top:10px;">活动简介：</td>
-        <td colspan="2"  align="left" valign="top">
-            <div class="inputarea" style="position:relative;">
-				<textarea id="edit" name="s" title="写满两行文字的长度约为一条短信 ！" class="mss-input-text" onfocus="this.className='dxhb-focus mss-input-text'" onblur="this.className='dxhb-blur mss-input-text'" style="float:left" ></textarea>
-                <span style=" color:#F00; margin-left:70px;"><img width="160px" height="160px" src="http://huodong.ustc.edu.cn/static/images/dxhbQR.png"></span>				
-			</div>
-		</td>
-    </tr>
-    <tr>
-       <td> </td>
-       <td colspan="2" align="left" valign="middle" style="height:70px;">
-       		<div  onclick=";return false;" class="dxhb-button mss-button" style="margin-left:518px;">确认申请</div>
-       </td>
-    </tr>
-</table>
-
+<form action="/Qr/ajax_qrInsert" id="huodong_qr" method="post">
+	<table border="0" cellpadding="0" cellspacing="0">
+		<tr height="40px">
+			<td width="90" align="right" valign="top" style="padding-top:3px;">活动名称：</td>
+			<td width="920" align="left" valign="top" colspan="2">
+			<input name="name" id="huodong_name" class="dxhb-blur mss-input-1text" onfocus="this.className='dxhb-focus mss-input-1text'" onblur="this.className='dxhb-blur mss-input-1text'" >
+			
+			</td>
+		</tr>    
+		<tr>
+			<td width="90" align="right" valign="top" style="padding-top:10px;">活动简介：</td>
+			<td colspan="2"  align="left" valign="top">
+				<div class="inputarea" style="position:relative;">
+					<textarea id="edit" name="con" title="" class="mss-input-text" onfocus="this.className='dxhb-focus mss-input-text'" onblur="this.className='dxhb-blur mss-input-text'" style="float:left" ></textarea>
+					<span style=" color:#F00; margin-left:70px;"><img id="huodong_qr_img"width="160px" height="160px" src="http://huodong.ustc.edu.cn/static/images/dxhbQR.png"></span>				
+				</div>
+			</td>
+		</tr>
+		<tr>
+		   <td> </td>
+		   <td colspan="2" align="left" valign="middle" style="height:70px;">
+				<div  onclick="sendQr();return false;" class="dxhb-button mss-button" style="margin-left:518px;">确认申请</div>
+		   </td>
+		</tr>
+	</table>
+	<input type="hidden" name="gid" id="gid" value="{$gid}"/>
 </form>
 <p style="color:#F0F">说明：
 <br/>&nbsp;&nbsp;1、每个团体至多能存有 15 个还未使用的二维码
@@ -179,24 +196,35 @@
         <td width="150" align="center" valign="middle" >状态</td>
         <td width="100" align="center" valign="middle" >管理</td>
     </tr>
-    <tr height="40px" >
-        <td width="50" align="center" valign="middle" >1</td>
-        <td  width="200" align="center" valign="middle" >美丽邂逅秒票活动</td>
-        <td  width="200" align="center" valign="middle" ><img width="160px" height="160px" src="http://huodong.ustc.edu.cn/static/images/dxhbQR.png"></td>
-        <td  width="100" align="center" valign="middle" >2012/11/01</td>
-        <td  width="100" align="center" valign="middle" >已使用<br/>2012/11/01 20:10</td>
-        <td  width="100" align="center" valign="middle" >管理</td>
-    </tr>
+    <volist name="qr_info" id="vo">
 	<tr height="40px" >
-        <td width="50" align="center" valign="middle" >2</td>
-        <td  width="200" align="center" valign="middle" >美丽邂逅秒票活动</td>
-        <td  width="200" align="center" valign="middle" ><img width="160px" height="160px" src="http://huodong.ustc.edu.cn/static/images/dxhbQR.png"></td>
-        <td  width="100" align="center" valign="middle" >2012/11/01</td>
-        <td  width="100" align="center" valign="middle" >已使用<br/>2012/11/01 20:10</td>
-        <td  width="100" align="center" valign="middle" >管理</td>
+        <td width="50" align="center" valign="middle" >{$key+1}</td>
+        <td  width="200" align="center" valign="middle" >{$vo.name}</td>
+        <td  width="200" align="center" valign="middle" ><img width="160px" height="160px" src="/upload/avatar/Qr/huodongQR_for{$vo.gid}_{$vo.QRcode}.png"></td>
+        <td  width="100" align="center" valign="middle" >{$vo.time1}</td>
+        <td  width="100" align="center" valign="middle" >{$vo.status1}<br/>{$vo.status_time1}</td>
+		<input type="hidden" class="QRcode" value="{$vo.QRcode}"/>
+		<td  width="100" align="center" valign="middle" >			
+			修改|
+			<span class="del" style="cursor:pointer;">删除</span>
+		</td>
     </tr>
+	</volist>
 </table>    
-
+<script type="text/javascript">
+$('.del').click(function(){
+	url="/Qr/ajax_qrDel";
+	gid=$('#gid').val();
+	md5=$(this).parent().prev().val();
+	$(this).parent().parent().hide();
+	$.post(url,{gid:gid,md5:md5}, function (data) {
+		if (data.status == 1) {
+			return true;
+		}
+	}, 'json');
+    return false;
+});
+</script>
 </div><!--main ding-->
 </body>
 </html>
