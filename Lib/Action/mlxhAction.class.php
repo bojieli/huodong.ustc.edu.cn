@@ -46,7 +46,8 @@ class MlxhAction extends PublicAction {
     }
 
     function allUsers() {
-        if (CURRENT_USER == 0 || ! D('User')->isDeveloper(CURRENT_USER))
+        // uid 550 yangangyi
+        if (CURRENT_USER == 0 || ! D('User')->isDeveloper(CURRENT_USER) && CURRENT_USER != 550)
             $this->error("管理员才能查看秒杀日志");
 
         $members = M('mlxh_log')->where("`action` IN ('miaosha','choujiang')")->select();
