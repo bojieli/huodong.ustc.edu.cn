@@ -57,11 +57,11 @@
 	 <label class="control-label" for="place">选择活动二维码</label>
 	 <div class="controls">
 	<select name="qrid" id="qrid">
-	<option value="0" selected>
+	<option value="0">
 	--------------------------------
 	</option>
 	<volist name="qrs" id="qr">
-	<option value="{$key}">
+	<option value="{$key}" <if condition="$selected_id == $key">selected="selected"</if>>
 	{$qr}
 	</option>
 	</volist>
@@ -101,7 +101,7 @@
         <script type="text/javascript" charset="utf-8" src="/static/ueditor/editor_all.js"></script>
 		<link rel="stylesheet" type="text/css" href="/static/ueditor/themes/default/ueditor.css"/>
 		<script type="text/plain" id="message" name="description" style="width:960px;text-align:left;">
-		欢迎使用大学海报平台!支持文字图片视频混合编辑！​
+		{$poster.description}
 		</script>
 		<script type="text/javascript">
 			var editor_a = new baidu.editor.ui.Editor();

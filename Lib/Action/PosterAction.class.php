@@ -127,9 +127,16 @@ class PosterAction extends PublicAction {
         $poster = $this->getPoster($aid);
         if (A('Club')->isManager($poster['gid'])) {
             $gid=$poster['gid'];
+			
+			$con['aid']=$aid;
+			$con['gid']=$gid;
+			$id=M('Qr')->field('id')->where($con)->find()['id'];
+			//dump($id);
 			$this->assign('qrs',D('Qr')->getQrByGid($gid));
+			$this->assign('selected_id',$id);
 			$this->assign('poster', $poster);
-            $this->display();
+            //dump($poster);
+			$this->display();
         } else {
             $this->assign('jumpUrl', "/");
             $this->error("抱歉，只有会长和部长级别的会员才能修改海报");
