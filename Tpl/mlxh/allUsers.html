@@ -668,6 +668,7 @@ window.onscroll = onScroll;
     	<td class="td1" width="40">序</td>	
 		<td class="td1" width="180" align="center">时间</td>
 		<td class="td1" width="50" align="center">操作</td>
+        <td class="td1" width="50" align="center">UID</td>        
 		<td class="td1" width="80" align="center">姓名</td>
         <td class="td1" width="50" align="center">性别</td>        
 		<td class="td1" width="110" align="right">学号</td>
@@ -682,6 +683,7 @@ window.onscroll = onScroll;
         <td align="center">{$kid}</td>
 		<td align="center">{$member.time|date="m月d日 H:i:s",###}</td>
 		<td align="center"><?=$member[action]=='miaosha'?'秒杀':'抽奖' ?></td>
+		<td align="center">{$member.uid}</td>
 		<td align="center" class="<if condition="$member[gender] eq 1">boyname<else />girlname</if>">{$member.realname}</td>
         <td align="center"><if condition="$member[gender] eq 1">男<else />女</if></td>
 		<td align="right">{$member.student_no}</td>
