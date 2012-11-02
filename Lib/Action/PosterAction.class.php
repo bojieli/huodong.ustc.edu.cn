@@ -223,47 +223,47 @@ class PosterAction extends PublicAction {
             $today_epoch = floor(time()/86400)*86400;
             switch ($_GET['start_time']) {
                 case 'today': $cond[] = 'start_time BETWEEN ('.$today_epoch.','.($today_epoch+86400).')';break;
-                                      case 'week': $cond[] = 'start_time BETWEEN ('.$today_epoch.','.($today_epoch+86400*7).')';break;
-                                                       case 'month': $cond[] = 'start_time BETWEEN ('.$today_epoch.','.($today_epoch+86400*30).')';break;
-                                                                         }
-                                                                         }
-                                                                         if (!empty($_GET['publish_time'])) {
-                                                                         $today_epoch = floor(time()/86400)*86400;
-                                                                         switch ($_GET['publish_time']) {
-                                                                         case 'today': $cond[] = 'publish_time BETWEEN ('.$today_epoch.','.($today_epoch+86400).')';break;
-                                                                                           case 'week': $cond[] = 'publish_time BETWEEN ('.$today_epoch.','.($today_epoch+86400*7).')';break;
-                                                                                                            case 'month': $cond[] = 'publish_time BETWEEN ('.$today_epoch.' '.($today_epoch+86400*30).')';break;
-                                                                                                                              }
-                                                                                                                              }
-                                                                                                                              $order = "publish_time";
-                                                                                                                              if (!empty($_GET['order'])) {
-                                                                                                                              switch ($_GET['order']) {
-                                                                                                                              case 'new': $order = 'publish_time DESC'; break;
-                                                                                                                              case 'near': $order = 'end_time asc'; $cond[] = "end_time > '".time()."'"; break;
-                                                                                                                              case 'follow': 
-                                                                                                                              $gid_result = M('User_group')->query("SELECT DISTINCT gid FROM ustc_user_group where uid = '".CURRENT_USER."'");
-                                                                                                                              $gid_condition = "(";
-                                                                                                                              foreach($gid_result as $v)
-                                                                                                                              {
-                                                                                                                              $gid_condition .=$v['gid'].",";
-                                                                                                                              }
-                                                                                                                              $gid_condition .= "-1)";
-                                                                                                                              $cond[] = "gid IN $gid_condition";$order = 'publish_time DESC'; break;
-                                                                                                                              //$cond[] = "EXISTS (SELECT * FROM ustc_user_group AS ug WHERE ug.uid = '".CURRENT_USER."' AND gid = ug.gid)"; break;
-                                                                                                                              case 'hot': $order = 'rate_total DESC'; $cond[] = "end_time > '".time()."'"; break;
-                                                                                                                              }
-                                                                                                                              }
-                                                                                                                              $keyword = isset($_GET['keyword']) ? $_GET['keyword'] : '';
-                                                                                                                              if(!empty($keyword))
-                                                                                                                              {
-                                                                                                                                  $cond[] = "(name like '%$keyword%' or place like '%$keyword%' or description like '%$keyword%')";
-                                                                                                                              }
-                                                                                                                              $sid = isset($_GET['sid']) ? $_GET['sid'] : '';
-                                                                                                                              if(!empty($sid))
-                                                                                                                              {
-                                                                                                                                  $cond[] = "(sid = $sid)";
-                                                                                                                              }
-                                                                                                                              return [$start, $num, implode(' AND ', $cond), $order];
+                case 'week': $cond[] = 'start_time BETWEEN ('.$today_epoch.','.($today_epoch+86400*7).')';break;
+                case 'month': $cond[] = 'start_time BETWEEN ('.$today_epoch.','.($today_epoch+86400*30).')';break;
+            }
+        }
+        if (!empty($_GET['publish_time'])) {
+            $today_epoch = floor(time()/86400)*86400;
+            switch ($_GET['publish_time']) {
+                case 'today': $cond[] = 'publish_time BETWEEN ('.$today_epoch.','.($today_epoch+86400).')';break;
+                case 'week': $cond[] = 'publish_time BETWEEN ('.$today_epoch.','.($today_epoch+86400*7).')';break;
+                case 'month': $cond[] = 'publish_time BETWEEN ('.$today_epoch.' '.($today_epoch+86400*30).')';break;
+            }
+        }
+        $order = "publish_time";
+        if (!empty($_GET['order'])) {
+            switch ($_GET['order']) {
+                case 'new': $order = 'publish_time DESC'; break;
+                case 'near': $order = 'end_time asc'; $cond[] = "end_time > '".time()."'"; break;
+                case 'follow': 
+                    $gid_result = M('User_group')->query("SELECT DISTINCT gid FROM ustc_user_group where uid = '".CURRENT_USER."'");
+                    $gid_condition = "(";
+                    foreach($gid_result as $v)
+                    {
+                        $gid_condition .=$v['gid'].",";
+                    }
+                    $gid_condition .= "-1)";
+                    $cond[] = "gid IN $gid_condition";$order = 'publish_time DESC'; break;
+                    //$cond[] = "EXISTS (SELECT * FROM ustc_user_group AS ug WHERE ug.uid = '".CURRENT_USER."' AND gid = ug.gid)"; break;
+                case 'hot': $order = 'rate_total DESC'; $cond[] = "end_time > '".time()."'"; break;
+            }
+        }
+        $keyword = isset($_GET['keyword']) ? $_GET['keyword'] : '';
+        if(!empty($keyword))
+        {
+            $cond[] = "(name like '%$keyword%' or place like '%$keyword%' or description like '%$keyword%')";
+        }
+        $sid = isset($_GET['sid']) ? $_GET['sid'] : '';
+        if(!empty($sid))
+        {
+            $cond[] = "(sid = $sid)";
+        }
+        return [$start, $num, implode(' AND ', $cond), $order];
     }
 
     public function ajaxGet() {
