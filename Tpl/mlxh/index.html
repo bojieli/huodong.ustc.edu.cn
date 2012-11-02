@@ -39,6 +39,12 @@ body{
 		font-family:Georgia, "Times New Roman", Times, serif;
         /*margin-left:-400px; */
  }
+ #mlxh_resultcontent a{
+	 color:#FF0000;
+	 }
+ #mlxh_resultcontent a:hover{
+	 color:#06F;
+	 }
 #mlxh_content a.button{
         text-decoration: none;
         text-align: center;
@@ -107,7 +113,7 @@ body{
 </object>
     </div>
     <div id="mlxh_resultcontent">
-    <a style="text-decoration:underline;font-style:normal;color:#f00; margin-left:30px;" href="/mlxh/miaoshaUsers">查看已秒杀成功者名单</a>
+    <span style="text-decoration:none; margin-left:30px;"><a target="_blank" href="/mlxh/miaoshaUsers">查看已秒杀成功者名单</a></span>
     </div>   
     <div id="mlxh_content">
     <if condition="empty($theday)">
