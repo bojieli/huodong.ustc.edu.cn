@@ -21,7 +21,7 @@ body{
         height: 576px;
         background: url("/static/mlxh/img/ml_big.jpg") no-repeat;
         margin: 0 auto;
-        margin-top: 20px;
+        margin-top: 10px;
         position: relative;
         text-align: left;
  }
@@ -31,7 +31,7 @@ body{
         left:50px;
         /*margin-left:-400px; */
  }
-#mlxh_content a{
+#mlxh_content a.button{
         text-decoration: none;
         text-align: center;
         font-style: italic;
@@ -102,15 +102,15 @@ body{
     <if condition="empty($theday)">
       <span id="daojishi">秒杀和抽奖将于11月1日开始，请耐心等待 :)</span>
     <elseif condition="$_G['uid'] == 0" />
-      <a id="mlxh_reg" href="/User/register">注册</a>
-      <a id="mlxh_login" href="/User/login">登录</a>
+      <a id="mlxh_reg" class="button" href="/User/register">注册</a>
+      <a id="mlxh_login" class="button" href="/User/login">登录</a>
       <span id="daojishi">需要注册或登录才能秒杀或抽奖</span>
     <elseif condition="empty($miaoshaguole)" />
-      <a id="mlxh_miaosha" class="" style="cursor:pointer">秒杀</a>
-      <a id="mlxh_choujiang" class="" style="cursor:pointer">抽奖</a>
+      <a id="mlxh_miaosha" class="button" style="cursor:pointer">秒杀</a>
+      <a id="mlxh_choujiang" class="button" style="cursor:pointer">抽奖</a>
       <span id="daojishi">载入中……</span>
     <else />
-      <span id="daojishi">恭喜你，秒杀成功！</span>
+      <span id="daojishi">恭喜你，秒杀成功！ <a href="/mlxh/miaoshaUsers">查看</a></span>
     </if>
     </div>
     
@@ -141,6 +141,7 @@ body{
             );
     var theTime =new Date(now.getFullYear(),now.getMonth(),now.getDay(),20,00,00);
     var isTime = false;
+    var chakan = ' <a style="text-decoration:underline;font-style:normal;color:black" href="/mlxh/miaoshaUsers">查看</a>';
 
     function leftTime(){
       var time_now = now.getHours()*3600+now.getMinutes()*60+now.getSeconds();
@@ -160,7 +161,7 @@ body{
     }  
     function refresh(){      
       if(!isTime){
-        document.getElementById("daojishi").innerHTML = leftTime();
+        document.getElementById("daojishi").innerHTML = leftTime() + chakan;
       }else{
         $("#mlxh_miaosha").html('<b>秒杀</b>');        
       }
@@ -183,9 +184,9 @@ body{
             success: function(obj) {
                 stopCounting();
                 if(obj.status) {
-                    $('#daojishi').html(obj.msg);
+                    $('#daojishi').html(obj.msg + chakan);
                 } else {
-                    $('#daojishi').html(obj.msg);
+                    $('#daojishi').html(obj.msg + chakan);
                 }
             },
             error: function(e) {

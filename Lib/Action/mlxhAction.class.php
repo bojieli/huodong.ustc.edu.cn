@@ -38,6 +38,7 @@ class MlxhAction extends PublicAction {
     }
 
     function miaoshaUsers() {
+        $this->headnav();
         if (CURRENT_USER == 0)
             $this->error("为保护隐私，登录用户才能查看秒杀用户列表");
         
@@ -46,6 +47,7 @@ class MlxhAction extends PublicAction {
     }
 
     function allUsers() {
+        $this->headnav();
         // uid 550 yangangyi
         if (CURRENT_USER == 0 || ! D('User')->isDeveloper(CURRENT_USER) && CURRENT_USER != 550)
             $this->error("管理员才能查看秒杀日志");
@@ -65,28 +67,32 @@ class MlxhAction extends PublicAction {
         // 20:00 ~ 21:00
         if ($daysec < 20*3600+00*60) {
             $this->savelog('miaosha-before-start');
-            $this->error('今天的秒杀尚未开始，再等等吧~');
+            $this->merror('今天的秒杀尚未开始，再等等吧~');
         }
         if ($daysec > 20*3600+15*60) {
             $this->savelog('miaosha-after-end');
-            $this->error('今天的秒杀已于20:15结束 :(');
+            $this->merror('今天的秒杀已于20:15结束 :(');
         }
 
         $count = M('mlxh_log')->where(array('uid'=>CURRENT_USER, 'action'=>'miaosha'))->count();
         if ($count > 0) {
             $this->savelog('miaosha-have-succeed');
-            $this->error('你已经秒杀成功了，请不要重复秒杀');
+            $this->merror('你已经秒杀成功了，请不要重复秒杀');
         }
         $todaybegin = $time - $time % 86400;
         $count = M('mlxh_log')->where("time > $todaybegin AND action='miaosha'")->count();
         $everyday_tickets = 10;
         if ($count >= $everyday_tickets) {
             $this->savelog('miaosha-used-up');
-            $this->error("今天已经有 $everyday_tickets 人秒杀了，明天再来吧 :)");
+            $this->merror("今天已经有 $everyday_tickets 人秒杀了，明天再来吧 :)");
         }
 
         $this->savelog('miaosha');
         $this->success('恭喜你，秒杀成功！');
+    }
+
+    private function merror($msg) {
+        $this->error($msg);
     }
 
     function choujiang() {
