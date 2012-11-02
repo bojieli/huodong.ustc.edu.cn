@@ -54,10 +54,24 @@ $(".like").live('click', function(event){
     </div><!--hbfooter-->
 	<span itemprop="summary" style="display:none">{$poster.name}</span>
 	<time itemprop="startDate" datetime="{$poster.start_time1}">
-	<span class="hbbeizhu"><strong>时间：</strong>{$poster.humanDate}</span>
+	<br/><span class="hbbeizhu"><strong>时间：</strong>{$poster.humanDate}</span>
 	</time>
 	<time itemprop="endDate" datetime="{$poster.end_time1}"></time>
-    <span class="hbbeizhu" itemprop="location"><strong>地点：</strong>{$poster.place}</span><br/><hr  style="border:3px double #9C6" SIZE=3  /><br/>
+    <span class="hbbeizhu" itemprop="location"><strong>地点：</strong>{$poster.place}</span><br/>&nbsp;
+    <style type="text/css">
+	.descrip-tittle{
+	font-family:Microsoft Yahei, "Times New Roman", Times, serif;
+	font-size:25px;
+	color:#99F;
+	margin-bottom:5px;
+	font-weight:bold;
+	background:#DDDDDD;
+	line-height:40px;
+	vertical-align:middle;
+	border-bottom:2px solid #9bc;
+	}
+	</style>
+    <p class="descrip-tittle"> 活动介绍</p>
     <div class="hbbeizhu" itemprop="description">{$poster.description}</div>
 	</div>
     <div class="post_reply">
