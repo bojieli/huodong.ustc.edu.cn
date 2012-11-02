@@ -54,10 +54,10 @@ $(".like").live('click', function(event){
     </div><!--hbfooter-->
 	<span itemprop="summary" style="display:none">{$poster.name}</span>
 	<time itemprop="startDate" datetime="{$poster.start_time1}">
-	<div class="hbbeizhu">时间：{$poster.humanDate}</div>
+	<span class="hbbeizhu"><strong>时间：</strong>{$poster.humanDate}</span>
 	</time>
 	<time itemprop="endDate" datetime="{$poster.end_time1}"></time>
-    <div class="hbbeizhu" itemprop="location">地点：{$poster.place}</div>
+    <span class="hbbeizhu" itemprop="location"><strong>地点：</strong>{$poster.place}</span><br/><hr  style="border:3px double #9C6" SIZE=3  /><br/>
     <div class="hbbeizhu" itemprop="description">{$poster.description}</div>
 	</div>
     <div class="post_reply">
