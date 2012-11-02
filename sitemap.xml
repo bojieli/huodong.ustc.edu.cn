@@ -8,102 +8,1290 @@
 
 <url>
   <loc>http://huodong.ustc.edu.cn/</loc>
-  <changefreq>hourly</changefreq>
-  <priority>1.00</priority>
 </url>
 <url>
   <loc>http://huodong.ustc.edu.cn/Club/</loc>
-  <changefreq>hourly</changefreq>
-  <priority>0.80</priority>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/mlxh</loc>
 </url>
 <url>
   <loc>http://huodong.ustc.edu.cn/User/login</loc>
-  <changefreq>hourly</changefreq>
-  <priority>0.80</priority>
 </url>
 <url>
   <loc>http://huodong.ustc.edu.cn/User/register</loc>
-  <changefreq>hourly</changefreq>
-  <priority>0.80</priority>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Map</loc>
 </url>
 <url>
   <loc>http://huodong.ustc.edu.cn/Poster/index?order=new</loc>
-  <changefreq>hourly</changefreq>
-  <priority>0.80</priority>
 </url>
 <url>
   <loc>http://huodong.ustc.edu.cn/Poster/index?order=near</loc>
-  <changefreq>hourly</changefreq>
-  <priority>0.80</priority>
 </url>
 <url>
   <loc>http://huodong.ustc.edu.cn/Poster/index?order=hot</loc>
-  <changefreq>hourly</changefreq>
-  <priority>0.80</priority>
 </url>
 <url>
   <loc>http://huodong.ustc.edu.cn/Poster/index?order=follow</loc>
-  <changefreq>hourly</changefreq>
-  <priority>0.80</priority>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Msg</loc>
 </url>
 <url>
   <loc>http://huodong.ustc.edu.cn/static/help/aboutus.html</loc>
-  <changefreq>hourly</changefreq>
-  <priority>0.80</priority>
+  <lastmod>2012-10-31T06:12:02+00:00</lastmod>
 </url>
 <url>
   <loc>http://huodong.ustc.edu.cn/static/help/howtouse.html</loc>
-  <changefreq>hourly</changefreq>
-  <priority>0.80</priority>
+  <lastmod>2012-10-31T06:12:02+00:00</lastmod>
 </url>
 <url>
   <loc>http://huodong.ustc.edu.cn/static/help/contactus.html</loc>
-  <changefreq>hourly</changefreq>
-  <priority>0.80</priority>
+  <lastmod>2012-10-31T06:12:02+00:00</lastmod>
 </url>
 <url>
   <loc>http://huodong.ustc.edu.cn/static/help/UpdateLog.html</loc>
-  <changefreq>hourly</changefreq>
-  <priority>0.80</priority>
+  <lastmod>2012-11-01T15:53:13+00:00</lastmod>
 </url>
 <url>
   <loc>http://huodong.ustc.edu.cn/Club/index</loc>
-  <changefreq>hourly</changefreq>
-  <priority>0.64</priority>
 </url>
 <url>
   <loc>http://huodong.ustc.edu.cn/Club/index?filter=club</loc>
-  <changefreq>hourly</changefreq>
-  <priority>0.64</priority>
 </url>
 <url>
   <loc>http://huodong.ustc.edu.cn/Club/index?filter=gradUnion</loc>
-  <changefreq>hourly</changefreq>
-  <priority>0.64</priority>
 </url>
 <url>
   <loc>http://huodong.ustc.edu.cn/Club/index?filter=studentUnion</loc>
-  <changefreq>hourly</changefreq>
-  <priority>0.64</priority>
 </url>
 <url>
   <loc>http://huodong.ustc.edu.cn/Club/index?filter=other</loc>
-  <changefreq>hourly</changefreq>
-  <priority>0.64</priority>
 </url>
 <url>
-  <loc>http://huodong.ustc.edu.cn/User/GetbackPassword.html</loc>
-  <changefreq>hourly</changefreq>
-  <priority>0.64</priority>
+  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=76</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=73</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/User/GetbackPassword</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Poster/singlePage?aid=25</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Poster/singlePage?aid=18</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Poster/singlePage?aid=65</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Poster/singlePage?aid=16</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Poster/singlePage?aid=17</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Poster/singlePage?aid=24</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Poster/singlePage?aid=27</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Poster/singlePage?aid=28</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Poster/singlePage?aid=26</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Poster/singlePage?aid=29</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Poster/singlePage?aid=30</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Poster/singlePage?aid=31</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Poster/singlePage?aid=32</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Poster/singlePage?aid=33</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Poster/singlePage?aid=34</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Poster/singlePage?aid=35</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Poster/singlePage?aid=36</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Poster/singlePage?aid=37</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Poster/singlePage?aid=38</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Poster/singlePage?aid=41</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Poster/singlePage?aid=40</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Poster/singlePage?aid=46</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Poster/singlePage?aid=50</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Poster/singlePage?aid=49</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Poster/singlePage?aid=51</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Poster/singlePage?aid=52</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Poster/singlePage?aid=53</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Poster/singlePage?aid=54</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Poster/singlePage?aid=55</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Poster/singlePage?aid=56</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Poster/singlePage?aid=57</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Poster/singlePage?aid=59</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Poster/singlePage?aid=64</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Poster/singlePage?aid=60</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Poster/singlePage?aid=61</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Poster/singlePage?aid=62</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Poster/singlePage?aid=63</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Poster/singlePage?aid=66</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Poster/singlePage?aid=67</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Poster/singlePage?aid=68</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Poster/singlePage?aid=69</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Poster/singlePage?aid=70</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Poster/singlePage?aid=71</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Poster/singlePage?aid=74</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Poster/singlePage?aid=75</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Poster/singlePage?aid=73</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Poster/singlePage?aid=76</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Poster/singlePage?aid=77</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Poster/singlePage?aid=79</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Poster/singlePage?aid=80</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Poster/singlePage?aid=81</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Poster/singlePage?aid=82</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Poster/singlePage?aid=83</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Poster/singlePage?aid=84</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Poster/singlePage?aid=85</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Poster/singlePage?aid=86</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Poster/singlePage?aid=87</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Poster/singlePage?aid=88</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Poster/singlePage?aid=89</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Poster/singlePage?aid=90</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Poster/singlePage?aid=91</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Poster/singlePage?aid=101</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Poster/singlePage?aid=102</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Poster/singlePage?aid=103</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Poster/singlePage?aid=105</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Poster/singlePage?aid=95</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Poster/singlePage?aid=96</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Poster/singlePage?aid=97</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Poster/singlePage?aid=98</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Poster/singlePage?aid=99</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Poster/singlePage?aid=100</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=1</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=2</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=3</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=4</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=5</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=6</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=7</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=8</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=9</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=10</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=11</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=12</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=13</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=14</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=15</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=16</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=17</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=18</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=19</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=20</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=21</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=22</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=71</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=23</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=24</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=25</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=26</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=27</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=28</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=29</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=30</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=31</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=67</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=68</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=69</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=32</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=33</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=34</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=35</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=36</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=37</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=38</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=39</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=40</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=41</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=42</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=43</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=44</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=45</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=46</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=47</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=48</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=49</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=50</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=51</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=52</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=53</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=54</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=55</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=56</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=57</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=58</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=59</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=60</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=61</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=62</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=63</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=66</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=65</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=70</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=72</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=74</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=77</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=78</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=79</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=80</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=81</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=82</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=83</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=84</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=85</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=86</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=87</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=88</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=89</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=90</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=91</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=92</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=93</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=94</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=95</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=96</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=97</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=98</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=99</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=100</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=101</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=102</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=103</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=104</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=105</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=106</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=107</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=108</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=109</loc>
 </url>
 <url>
   <loc>http://huodong.ustc.edu.cn/static/help/aboutusd.htm</loc>
-  <changefreq>hourly</changefreq>
-  <priority>0.64</priority>
+  <lastmod>2012-10-31T06:12:02+00:00</lastmod>
 </url>
 <url>
   <loc>http://huodong.ustc.edu.cn/static/help/shetuanhaibao.pptx</loc>
-  <changefreq>hourly</changefreq>
-  <priority>0.64</priority>
+  <lastmod>2012-10-31T06:12:02+00:00</lastmod>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=76</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=76</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=73</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=73</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=1</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=1</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=2</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=2</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=3</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=3</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=4</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=4</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=5</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=5</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=6</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=6</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=7</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=7</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=8</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=8</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=9</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=9</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=10</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=10</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=11</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=11</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=12</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=12</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=13</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=13</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=14</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=14</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=15</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=15</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=16</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=16</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=17</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=17</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=18</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=18</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=19</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=19</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=20</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=20</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=21</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=21</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=22</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=22</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=71</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=71</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=23</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=23</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=24</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=24</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=25</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=25</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=26</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=26</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=27</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=27</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=28</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=28</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=29</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=29</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=30</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=30</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=31</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=31</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=67</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=67</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=68</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=68</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=69</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=69</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=32</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=32</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=33</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=33</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=34</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=34</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=35</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=35</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=36</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=36</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=37</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=37</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=38</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=38</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=39</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=39</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=40</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=40</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=41</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=41</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=42</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=42</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=43</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=43</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=44</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=44</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=45</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=45</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=46</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=46</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=47</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=47</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=48</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=48</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=49</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=49</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=50</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=50</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=51</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=51</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=52</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=52</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=53</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=53</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=54</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=54</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=55</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=55</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=56</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=56</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=57</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=57</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=58</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=58</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=59</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=59</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=60</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=60</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=61</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=61</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=62</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=62</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=63</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=63</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=66</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=66</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=65</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=65</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=70</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=70</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=72</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=72</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=74</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=74</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=77</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=77</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=78</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=78</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=79</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=79</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=80</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=80</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=81</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=81</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=82</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=82</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=83</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=83</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=84</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=84</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=85</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=85</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=86</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=86</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=87</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=87</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=88</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=88</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=89</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=89</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=90</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=90</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=91</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=91</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=92</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=92</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=93</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=93</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=94</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=94</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=95</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=95</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=96</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=96</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=97</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=97</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=98</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=98</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=99</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=99</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=100</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=100</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=101</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=101</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=102</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=102</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=103</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=103</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=104</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=104</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=105</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=105</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=106</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=106</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=107</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=107</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=108</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=108</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=109</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=109</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/static/help/quanxiansm.html</loc>
+  <lastmod>2012-10-31T06:12:02+00:00</lastmod>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Team?tid=5</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Team?tid=6</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Team?tid=8</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Team?tid=9</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Team?tid=10</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Team?tid=11</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Team?tid=12</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Team?tid=13</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Team?tid=14</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Team?tid=1</loc>
+</url>
+<url>
+  <loc>http://huodong.ustc.edu.cn/Team?tid=2</loc>
 </url>
 </urlset>
