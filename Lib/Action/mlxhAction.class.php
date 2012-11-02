@@ -30,7 +30,7 @@ class MlxhAction extends PublicAction {
 
     private function showUserList($members) {
         foreach ($members as $key => $member) {
-            $user = M('user')->find($member['uid']));
+            $user = M('user')->find($member['uid']);
             if (empty($user))
                 unset($members[$key]);
             else
