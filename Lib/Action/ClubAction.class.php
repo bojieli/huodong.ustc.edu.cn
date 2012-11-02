@@ -67,6 +67,8 @@ class ClubAction extends PublicAction {
         $gid = $_GET['gid'];
         D('Club')->updateClicks($_GET['gid']);
         $club = $this->getData($_GET['gid']);
+        if (empty($club))
+            $this->error('社团不存在！');
 
         if(M('Club_apply')->where(array('uid'=>CURRENT_USER,'gid'=>$gid))->select())
         {
