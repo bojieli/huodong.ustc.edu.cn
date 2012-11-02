@@ -29,10 +29,13 @@ class MlxhAction extends PublicAction {
     }
 
     private function showUserList($members) {
-        foreach ($members as &$member) {
-            $member = array_merge($member, M('user')->find($member['uid']));
+        foreach ($members as $key => $member) {
+            $user = M('user')->find($member['uid']));
+            if (empty($user))
+                unset($members[$key]);
+            else
+                $members[$key] = array_merge($member, $user);
         }
-        unset($member);
         $this->assign('members', $members);
         $this->display();
     }
