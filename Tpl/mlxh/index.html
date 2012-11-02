@@ -110,7 +110,7 @@ body{
       <a id="mlxh_choujiang" class="button" style="cursor:pointer">抽奖</a>
       <span id="daojishi">载入中……</span>
     <else />
-      <span id="daojishi">恭喜你，秒杀成功！ <a href="/mlxh/miaoshaUsers">查看</a></span>
+      <span id="daojishi">恭喜你，秒杀成功！ <a target="_blank" href="/mlxh/miaoshaUsers"> 查看结果</a></span>
     </if>
     </div>
     
@@ -141,7 +141,7 @@ body{
             );
     var theTime =new Date(now.getFullYear(),now.getMonth(),now.getDay(),20,00,00);
     var isTime = false;
-    var chakan = ' <a style="text-decoration:underline;font-style:normal;color:black" href="/mlxh/miaoshaUsers">查看</a>';
+    var chakan = ' <a style="text-decoration:underline;font-style:normal;color:#f00; backgroung:#fafafa; padding:auto 10px;" href="/mlxh/miaoshaUsers">查看获票名单</a>';
 
     function leftTime(){
       var time_now = now.getHours()*3600+now.getMinutes()*60+now.getSeconds();
