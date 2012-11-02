@@ -645,7 +645,7 @@ class ClubAction extends PublicAction {
                 $row->add();
             }
             M('Club_apply')->data($data)->add();
-            $this->success('申请成长，等待审核');
+            $this->success('申请成功，等待审核');
         }
     }
 
@@ -660,7 +660,7 @@ class ClubAction extends PublicAction {
 
     private function club2html($club) {
         return '<li class="hide">'.
-            '<div class="celldiv"><a href="/Club/intro?gid='.$club->gid().'">'.
+            '<div class="celldiv"><a target="_blank" href="/Club/intro?gid='.$club->gid().'">'.
             '<p class="title">'.$club->name().'</p></a>'.
             $this->clubLogoThumbHtml($club).
             '<div class="intro">'.$club->shortdesc().'</div>'.
