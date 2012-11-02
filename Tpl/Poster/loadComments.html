@@ -74,7 +74,7 @@ $(".like").live('click', function(event){
     <p class="descrip-tittle"> 活动介绍</p>
     <div class="hbbeizhu" itemprop="description">{$poster.description}</div>
 	</div>
-    <div class="post_reply">
+    <div class="post_reply" style="border-top:2px solid #9BC">
           <div class="add_reply">
 	  <if condition="CURRENT_USER != 0">
 	  <script>
@@ -121,7 +121,7 @@ $(".like").live('click', function(event){
 	    }
 	  </script>
           <form id="replyForm" class="clear_fix">
-              <textarea id="content-{$poster.aid}" name="content" autocomplete="none" onclick="if(this.value == '回复。。。') this.value = '';">回复。。。</textarea>
+              <textarea id="content-{$poster.aid}" name="content" autocomplete="none" onclick="if(this.value == '回复。。。') this.value = '';" class="dxhb-blur" onfocus="this.className='dxhb-focus'" onblur="this.className='dxhb-blur'">回复。。。</textarea>
           </form>
           <button class="reply_submit" onclick="reply({$poster.aid});">回复</button>
           <else />
