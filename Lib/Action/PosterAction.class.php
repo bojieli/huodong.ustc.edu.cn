@@ -327,7 +327,8 @@ class PosterAction extends PublicAction {
         $aid = $this->getInputAid();
         D('Poster')->addClick($aid);
         $poster = D('Poster')->getPosterById($aid);
-        //dump($poster);
+        if (empty($poster))
+            $this->error("海报不存在！");
 		$poster->rate = $poster->getRate();
         $poster->school = $poster->schoolName();
         $poster->name = $poster->name();
