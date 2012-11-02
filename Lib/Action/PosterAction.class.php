@@ -114,7 +114,7 @@ class PosterAction extends PublicAction {
 		$obj->add();
         if($qrid!=0){
 			$aid=$obj->where($re)->find()['aid'];
-			M('Qr')->where(array('id'=>$qrid))->data(array('aid'=>$aid))->save();
+			M('Qr')->where(array('id'=>$qrid))->data(array('aid'=>$aid,'status'=>2,'status_time'=>time()))->save();
         }
 		D('Club')->incPosterCount($gid);
 
@@ -126,7 +126,9 @@ class PosterAction extends PublicAction {
         $aid = $this->getInputAid();
         $poster = $this->getPoster($aid);
         if (A('Club')->isManager($poster['gid'])) {
-            $this->assign('poster', $poster);
+            $gid=$poster['gid'];
+			$this->assign('qrs',D('Qr')->getQrByGid($gid));
+			$this->assign('poster', $poster);
             $this->display();
         } else {
             $this->assign('jumpUrl', "/");
@@ -155,9 +157,14 @@ class PosterAction extends PublicAction {
         $poster['end_time'] = $this->parseTime($_POST['end_date'], $_POST['end_hour'], $_POST['end_minute']);
         if ($poster['start_time'] >= $poster['end_time'])
             $this->error("开始时间必须早于结束时间，请返回检查");
-
-        M('Poster')->where(['aid'=>$aid])->save($poster);
-
+		//For二维码
+		$qrid=$this->_post('qrid');
+		if($qrid!=0){
+			M('Qr')->where(array('id'=>$qrid))->data(array('aid'=>$aid,'status'=>3,'status_time'=>time()))->save();
+        }
+		else{M('Qr')->where(array('aid'=>$aid))->data(array('aid'=>'','status'=>1,'status_time'=>time()))->save();}
+		//For二维码
+		M('Poster')->where(['aid'=>$aid])->save($poster);
         $this->assign('jumpUrl', "/Poster/singlePage?aid=$aid");
         $this->success("海报修改成功！");
     }
@@ -198,8 +205,9 @@ class PosterAction extends PublicAction {
         if (A('Club')->isManager($poster['gid'])) {
             M('poster_comment')->where(['aid'=>$aid])->delete();
             M('Poster')->where(['aid'=>$aid])->delete();
-            D('Club')->decPosterCount($poster['gid']);
-            $this->assign('jumpUrl', "/");
+			D('Club')->decPosterCount($poster['gid']);
+            M('Qr')->where(array('$aid'=>$aid))->data(array('aid'=>'','status'=>1,'status_time'=>time()))->save();//For二维码
+			$this->assign('jumpUrl', "/");
             $this->success("海报删除成功！");
         } else {
             $this->assign('jumpUrl', "/");

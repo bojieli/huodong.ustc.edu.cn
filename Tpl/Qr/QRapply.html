@@ -116,6 +116,9 @@
 	cursor:default;
 	background:#CFC;
 }
+.del:hover,#huodong_url:hover{
+	color:red;
+}
 </style>
 <script type="text/javascript">
 function sendQr()
@@ -195,19 +198,20 @@ function sendQr()
         <td width="200" align="center" valign="middle" >活动名称</td>
         <td width="200" align="center" valign="middle" >二维码</td>
         <td width="100" align="center" valign="middle" >申请时间</td>
+        <td width="100" align="center" valign="middle" >申请人</td>
         <td width="150" align="center" valign="middle" >状态</td>
         <td width="100" align="center" valign="middle" >管理</td>
     </tr>
     <volist name="qr_info" id="vo">
 	<tr height="40px" >
         <td width="50" align="center" valign="middle" >{$key+1}</td>
-        <td  width="200" align="center" valign="middle" ><a href="/Qr/ltx?i={$vo.id}">{$vo.name}</a></td>
+        <td  width="200" align="center" valign="middle" ><a id="huodong_url" href="/Qr/ltx?i={$vo.rewrite_code}">{$vo.name}</a></td>
         <td  width="200" align="center" valign="middle" ><img width="160px" height="160px" src="/upload/avatar/Qr/huodongQR_for{$vo.gid}_{$vo.QRcode}.png"></td>
         <td  width="100" align="center" valign="middle" >{$vo.time1}</td>
+        <td  width="100" align="center" valign="middle" >{$vo.realname}</td>
         <td  width="100" align="center" valign="middle" >{$vo.status1}<br/>{$vo.status_time1}</td>
 		<input type="hidden" class="QRcode" value="{$vo.QRcode}"/>
 		<td  width="100" align="center" valign="middle" >			
-			修改|
 			<span class="del" style="cursor:pointer;">删除</span>
 		</td>
     </tr>

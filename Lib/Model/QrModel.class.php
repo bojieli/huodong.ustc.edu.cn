@@ -1,6 +1,6 @@
 ﻿<?php
 class QrModel extends Model{
-function qrInsertForHuodong($gid,$uid,$name,$content,$md5){
+function qrInsertForHuodong($gid,$uid,$name,$content,$rewrite_code,$md5){
 	$PNG_TEMP_DIR = './upload/avatar'.DIRECTORY_SEPARATOR.'Qr'.DIRECTORY_SEPARATOR;
 	$filename = $PNG_TEMP_DIR.'huodongQR_for'.$gid.'_'.$md5.'.png';
 	if(file_exists($filename)){
@@ -10,6 +10,7 @@ function qrInsertForHuodong($gid,$uid,$name,$content,$md5){
 				'uid'=>$uid,
 				'name'=>$name,
 				'content'=>$content,
+				'rewrite_code'=>$rewrite_code,
 				'QRcode'=>$md5,
 				'time'=>$time,
 				'status'=>1,
@@ -47,15 +48,19 @@ function status_means($status){
 	  return "已删除";
 	  break;  
 	case 1: 
-	  return "已生成";
+	  return "未使用";
 	  break;
 	default:
-	  return "已修改";	  
+	  return "已使用";	  
 	}
 }
 function getQrByGid($gid)
 {
-	$res=$this->where(array('gid'=>$gid))->select();
+	$con['gid']=$gid;
+	$con['status']=array('neq',0);
+	$res=$this->field('id,name')->where($con)->order('time desc')->select();
+	//dump($res);
+	//dump($this->getLastSql());die;
 	foreach($res as $re)
 	{
 		$info[$re['id']]=$re['name'];

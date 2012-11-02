@@ -229,11 +229,14 @@ class QrAction extends PublicAction{
 		}
 		$re=D('Club')->getInfo($gid);
 		$company=$re['name'];
-		$website='http://huodong.ustc.edu.cn/Qr/ltx?i='.$gid;
+		$rd=microtime().$name.$content.$gid.$uid;
+		$rewrite_code = shorturl($rd, $prefix='huodong', $suffix='huodong');
+		//dump($rewrite_code);die;
+		$website='http://huodong.ustc.edu.cn/Qr/ltx?i='.$rewrite_code;
 		$note=$content;
 		$data=$this->QRforCards($name,$phone,$company,$role,$email,$address,$website,$weibo,$qq,$ww,$msn,$note);
 		$md5=$this->getQR($data,$gid,$level='L',$size=4);
-		D('Qr')->qrInsertForHuodong($gid,$uid,$name,$content,$md5);
+		D('Qr')->qrInsertForHuodong($gid,$uid,$name,$content,$rewrite_code,$md5);
 		$info['md5']=$md5;
 		$info['gid']=$gid;
 		$this->success($info);
@@ -258,9 +261,11 @@ class QrAction extends PublicAction{
 			$res[$key]['time1']=date("Y/n/j H:i:s",$re['time']);
 			$res[$key]['status_time1']=date("Y/n/j H:i:s",$re['status_time']);
 			$res[$key]['status1']=D('Qr')->status_means($re['status']);
+			$res[$key]['realname']=D('User')->getrealname($re['uid']);
 		}
 		//dump($res);
 		$this->assign('qr_info',$res);
+		$this->assign('club',D('Club')->getInfo($gid));
 		$this->assign('gid',$gid);
 		$this->display();
 	}
@@ -285,28 +290,10 @@ class QrAction extends PublicAction{
 		$this->success($info);
 	}
 	public function ltx(){
-		$id=$this->_get('i');
-		$aid=M('Qr')->field('aid')->where(array('id'=>$id))->find()['aid'];
+		$rewrite_code=$this->_get('i');
+		$aid=M('Qr')->field('aid')->where(array('rewrite_code'=>$rewrite_code))->find()['aid'];
+		if(empty($aid)){$this->assign("jumpUrl","/");$this->error('请等候活动负责人将链接激活');}
 		$this->redirect('Poster/singlePage',array('aid'=>$aid),1,' ');
-	}
-	public function test()
-	{
-		$name='林太行';
-		$phone='15655170201';
-		$phone2='54654654564';
-		$company='科大';
-		$role='经理';
-		$email='ltx@qq.com';
-		$address='金寨路';
-		$website='huodong.ustc.edu.cn';
-		$weibo='weibo';
-		$note='note';
-		$qq=845552145;
-		$ww=7987854654;
-		$msn=84555555;
-		//$data=$this->QRforCards($name,$phone,$company,$role,$email,$address,$website,$weibo,$qq,$ww,$msn,$note);
-		//dump($data);
-		//$this->getQR($data);
 	}
 	
 }
