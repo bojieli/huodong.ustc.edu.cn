@@ -106,7 +106,7 @@ body{
       <a id="mlxh_login" href="/User/login">登录</a>
       <span id="daojishi">需要注册或登录才能秒杀或抽奖</span>
     <elseif condition="empty($miaoshaguole)" />
-      <a id="mlxh_miaosha" class="disabled" style="cursor:pointer">秒杀</a>
+      <a id="mlxh_miaosha" class="" style="cursor:pointer">秒杀</a>
       <a id="mlxh_choujiang" class="" style="cursor:pointer">抽奖</a>
       <span id="daojishi">载入中……</span>
     <else />
@@ -159,12 +159,10 @@ body{
       return "距下次秒杀还有 "+leftH+"小时"+leftM+"分"+leftS+"秒";
     }  
     function refresh(){      
-      // document.getElementById("clock").innerHTML = now.getFullYear()+"年"+now.getMonth()+"月"+now.getDate()+"日 "+ CurentTime();
       if(!isTime){
         document.getElementById("daojishi").innerHTML = leftTime();
       }else{
-        $("#mlxh_miaosha").removeClass("disabled");
-        $("#mlxh_miaosha").html('<b>抢票</b>');        
+        $("#mlxh_miaosha").html('<b>秒杀</b>');        
       }
       now.setSeconds(now.getSeconds()+1);
     } 
@@ -172,9 +170,6 @@ body{
         intervalId = setInterval(refresh,1000);
         $('#mlxh_miaosha').attr("intervalId", intervalId);
     }
-    
-    //$("#mlxh_miaosha").css("display","none");
-    //$("#mlxh_choujiang").css("display","none");
     })
 
     function stopCounting() {
@@ -182,14 +177,6 @@ body{
     }
 
     $('#mlxh_miaosha').click(function(){
-        if ($(this).hasClass('disabled')) {
-            $('#daojishi').html("秒杀还没有开始，再等一会儿吧 :)");
-            return;
-        }
-        if ($(this).hasClass('done')) {
-            $('#daojishi').html("你已经秒杀成功啦！");
-            return;
-        }
         $.ajax({
             url: '/mlxh/miaosha',
             dataType: 'json',
@@ -197,8 +184,6 @@ body{
                 stopCounting();
                 if(obj.status) {
                     $('#daojishi').html(obj.msg);
-                    $('#mlxh_miaosha').addClass('done');
-                    $('#mlxh_choujiang').addClass('done');
                 } else {
                     $('#daojishi').html(obj.msg);
                 }
@@ -211,14 +196,6 @@ body{
     });
 
     $('#mlxh_choujiang').click(function(){
-        if ($(this).hasClass('disabled')) {
-            $('#daojishi').html("你已经提交过抽奖<br>请耐心等待11月9日的开奖！");
-            return;
-        }
-        if ($(this).hasClass('done')) {
-            $('#daojishi').html("你已经秒杀成功啦！");
-            return;
-        }
         $.ajax({
             url: '/mlxh/choujiang',
             dataType: 'json',
@@ -229,11 +206,10 @@ body{
                 } else {
                     $('#daojishi').html(obj.msg);
                 }
-                $('#mlxh_choujiang').addClass('disabled');
             },
             error: function(e) {
-                $('#daojishi').html("服务器错误，请重试");
                 stopCounting();
+                $('#daojishi').html("服务器错误，请重试");
             }
        });
     });

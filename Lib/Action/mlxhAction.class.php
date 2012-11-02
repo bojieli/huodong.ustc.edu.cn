@@ -28,6 +28,31 @@ class MlxhAction extends PublicAction {
         $o->add();
     }
 
+    function miaoshaUsers() {
+        if (CURRENT_USER == 0)
+            $this->error("为保护隐私，登录用户才能查看秒杀用户列表");
+        
+        $members = M('mlxh_log')->where(array('uid'=>CURRENT_USER, 'action'=>'miaosha'))->select();
+        $this->showUserList($members);
+    }
+
+    private function showUserList($members) {
+        foreach ($members as &$member) {
+            $member = array_merge($member, M('user')->find($member['uid']));
+        }
+        unset($member);
+        $this->assign('members', $members);
+        $this->display();
+    }
+
+    function allUsers() {
+        if (CURRENT_USER == 0 || ! D('User')->isDeveloper(CURRENT_USER))
+            $this->error("管理员才能查看秒杀日志");
+
+        $members = M('mlxh_log')->select();
+        $this->showUserList($members);
+    }
+
     function miaosha() {
         if (CURRENT_USER == 0)
             $this->error("请首先注册或登录");
