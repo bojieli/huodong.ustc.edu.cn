@@ -58,7 +58,8 @@ class MlxhAction extends PublicAction {
             $this->error("请首先注册或登录");
 
         date_default_timezone_set('Asia/Chongqing');
-        $t = localtime(time(), true);
+        $time = time();
+        $t = localtime($time, true);
         $daysec = $t['tm_hour'] * 3600 + $t['tm_min'] * 60 + $t['tm_sec'];
         // 20:00 ~ 21:00
         if ($daysec < 20*3600+00*60) {
