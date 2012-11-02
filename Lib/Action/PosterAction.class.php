@@ -145,10 +145,10 @@ class PosterAction extends PublicAction {
         }
 
         $fields = ['name','place','description'];
-        foreach ($fields as $field) {
-            $poster[$field] = htmlspecialchars($_POST[$field]);
+		foreach ($fields as $field) {
+            if($field=='description'){$poster[$field]=$_POST[$field];}
+			else $poster[$field] = htmlspecialchars($_POST[$field]);
         }
-
         $image = $this->uploadPoster();
         if ($image)
             $poster['poster'] = $image;
