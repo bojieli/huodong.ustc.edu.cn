@@ -5,7 +5,9 @@
 <meta name="keywords" content="大学海报,海报墙,社团,社团管理,大学活动,活动搜索,活动筛选,搜索海报,搜索社团,筛选海报,筛选社团,邮件通知,短信通知,申请加入,瀑布流,评价分享,时间轴" />
 <meta name="description" content="大学活动的集中展示平台,大学海报的集中发布与分享平台,大学社团的集中展示与集中管理平台。更便捷、更简单、更高效、更美观、更流畅、更快速……" />
 <title>2012美丽邂逅</title>
-<link href="/static/css1.css" rel="stylesheet" type="text/css" />  
+<link href="/static/css1.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="/static/jquery.js"></script>
+  
 <style type="text/css">
 *{
 	margin:0; padding:0;
@@ -31,6 +33,28 @@ body{
         left:50px;
         /*margin-left:-400px; */
  }
+ #mlxh_resultcontent{
+        position: absolute;
+        top:486px;
+        left:50px;
+		font-size:16px;
+		font-family:Georgia, "Times New Roman", Times, serif;
+        /*margin-left:-400px; */
+ }
+ #mlxh_resultcontent span{
+	 color:#FF0000;
+	  margin-left:30px;
+	  line-height:25px;
+	  vertical-align:middle;
+	  border-bottom:1px solid #FF0000;
+	 }
+ #mlxh_resultcontent span a{
+	 color:#FF0000;
+	 text-decoration:none;
+	 }
+ #mlxh_resultcontent a:hover{
+	 color:#06F;
+	 }
 #mlxh_content a.button{
         text-decoration: none;
         text-align: center;
@@ -97,20 +121,26 @@ body{
 <param name="wmode" value="transparent" />
 <embed src="/static/images/star_flash3.swf" width="100%" height="450" align="middle" quality="high" name="FlashVars" allowScriptAccess="sameDomain" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" wmode="transparent" />
 </object>
-    </div>        
+    </div>
+<if condition="!empty($_G[uid])">
+  <div id="mlxh_resultcontent">
+    <span ><a target="_blank" href="/mlxh/miaoshaUsers">查看已秒杀成功者名单</a></span>
+ </div>
+</if>  
     <div id="mlxh_content">
     <if condition="empty($theday)">
       <span id="daojishi">秒杀和抽奖将于11月1日开始，请耐心等待 :)</span>
     <elseif condition="$_G['uid'] == 0" />
       <a id="mlxh_reg" class="button" href="/User/register">注册</a>
       <a id="mlxh_login" class="button" href="/User/login">登录</a>
-      <span id="daojishi">需要注册或登录才能秒杀或抽奖</span>
+      <span id="daojishi">需要注册或登录才能秒杀、抽奖及查看结果</span>
     <elseif condition="empty($miaoshaguole)" />
       <a id="mlxh_miaosha" class="button" style="cursor:pointer">秒杀</a>
       <a id="mlxh_choujiang" class="button" style="cursor:pointer">抽奖</a>
       <span id="daojishi">载入中……</span>
+
     <else />
-      <span id="daojishi">恭喜你，秒杀成功！ <a href="/mlxh/miaoshaUsers">查看</a></span>
+      <span id="daojishi">恭喜你，秒杀成功！ <a target="_blank" href="/mlxh/miaoshaUsers"> 查看结果</a></span>
     </if>
     </div>
     
@@ -118,8 +148,7 @@ body{
     <div style="font-size:14px; color:#96F; position:absolute; top:610px; right:0px;">技术支持：
        <a href="/Club/intro?gid=76" style=" color:#96F; text-decoration:none;" >大学海报团队</a>
        <a href="/" style="margin-left:15px; color:#96F; text-decoration:none;"  >网站首页</a>
-       <a href="/Club/intro?gid=73" style="margin-left:15px; color:#96F; text-decoration:none;"  >规则解释权归：共青团中国科学技术大学委员会、中国科学技术大学校研究生会</a>
-            
+       <a href="/Club/intro?gid=73" style="margin-left:15px; color:#96F; text-decoration:none;"  >规则解释权归：共青团中国科学技术大学委员会、中国科学技术大学校研究生会</a>            
     </div>
       
     </div>
@@ -141,7 +170,7 @@ body{
             );
     var theTime =new Date(now.getFullYear(),now.getMonth(),now.getDay(),20,00,00);
     var isTime = false;
-    var chakan = ' <a style="text-decoration:underline;font-style:normal;color:black" href="/mlxh/miaoshaUsers">查看</a>';
+    var chakan = ' <a style="text-decoration:underline;font-style:normal;color:#f00; backgroung:#fafafa; padding:auto 10px;" href="/mlxh/miaoshaUsers">查看获票名单</a>';
 
     function leftTime(){
       var time_now = now.getHours()*3600+now.getMinutes()*60+now.getSeconds();
@@ -161,7 +190,8 @@ body{
     }  
     function refresh(){      
       if(!isTime){
-        document.getElementById("daojishi").innerHTML = leftTime() + chakan;
+        document.getElementById("daojishi").innerHTML = leftTime() ;
+		//+ chakan;
       }else{
         $("#mlxh_miaosha").html('<b>秒杀</b>');        
       }
