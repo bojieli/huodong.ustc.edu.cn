@@ -126,9 +126,12 @@ function sendQr()
 	var form = $("#huodong_qr");
 	$.post($(form).attr('action'), $(form).serialize(), function (data) {
 		if (data.status == 1) {
-			$("#huodong_name").val('');
-			$("#edit").val('');
+			//$("#huodong_name").val('');
+			//$("#edit").val('');
 			 $("#huodong_qr_img").attr("src","/upload/avatar/Qr/huodongQR_for"+data.info.gid+"_"+data.info.md5+".png");
+			 $("#md5tmp").val(data.info.md5);
+			 if($('#save').val()==1){
+			 window.location.reload();}
 			 return true;
 		}
 		else{
@@ -136,6 +139,10 @@ function sendQr()
 		}
 	}, 'json');
     return false;
+}
+function getType()
+{
+	$('#save').val(1);
 }
 </script>
 </head>
@@ -168,14 +175,19 @@ function sendQr()
 			<td colspan="2"  align="left" valign="top">
 				<div class="inputarea" style="position:relative;">
 					<textarea id="edit" name="con" title="" class="mss-input-text" onfocus="this.className='dxhb-focus mss-input-text'" onblur="this.className='dxhb-blur mss-input-text'" style="float:left" ></textarea>
-					<span style=" color:#F00; margin-left:70px;"><img id="huodong_qr_img"width="160px" height="160px" src="http://huodong.ustc.edu.cn/static/images/dxhbQR.png"></span>				
+					<span style=" color:#F00; margin-left:70px;">
+					<img id="huodong_qr_img"width="160px" height="160px" src="/static/images/qrarea.png">
+					<input type="hidden" name="md5tmp" id="md5tmp" value=""/>
+					<input type="hidden" name="save" id="save" value="0" />
+					</span>				
 				</div>
 			</td>
 		</tr>
 		<tr>
 		   <td> </td>
 		   <td colspan="2" align="left" valign="middle" style="height:70px;">
-				<div  onclick="sendQr();return false;" class="dxhb-button mss-button" style="margin-left:518px;">确认申请</div>
+				<span  onclick="getType();sendQr();return false;" class="dxhb-button mss-button" style="margin-left:0px;">直接保存</span>
+				<span  onclick="sendQr();return false;" class="dxhb-button mss-button" style="margin-left:410px;">二维码预览→</span>
 		   </td>
 		</tr>
 	</table>
