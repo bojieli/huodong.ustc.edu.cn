@@ -680,7 +680,7 @@ window.onscroll = onScroll;
 		<td align="center">{$member.time|date="m月d日 H:i:s",###}</td>
 		<td align="center" class="<if condition="$member[gender] eq 1">boyname<else />girlname</if>">{$member.realname}</td>
 		<td align="center">{$member.education}</td>
-		<td align="left">{$member.dept}</td>
+		<td align="right">{$member.dept}</td>
 	</tr>
 	</volist>
 	</table>
