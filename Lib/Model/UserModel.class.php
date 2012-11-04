@@ -56,6 +56,13 @@ class UserModel extends Model {
     {
         return $this->find($uid)['sid'];
     }
+	function is_telephone_existed($telephone)
+	{
+		if (M('User')->where(array('telephone' => $telephone))->count()) {
+            return true;
+        }
+        return false;
+	}
     function is_loginname_existed($email)
     {
         if (M('User')->where(array('email' => $email))->count()) {
@@ -243,6 +250,10 @@ class UserModel extends Model {
     }
     public function getInfo($uid){
         $user_info = $this->find($uid);
+		if(empty($user_info))
+		{
+			return false;
+		}
         if($user_info['sid'])
         {
             $user_info['school'] = M('School')->result_first("select name from ustc_school where sid = ".$user_info['sid']);
