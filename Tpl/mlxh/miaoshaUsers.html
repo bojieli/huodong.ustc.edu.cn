@@ -672,6 +672,7 @@ window.onscroll = onScroll;
 		<td class="td1" width="180" align="center">秒杀时间</td>
 		<td class="td1" width="80" align="center">姓名</td>
 		<td class="td1" width="50" align="center">学历</td>
+		<td class="td1" align="center">学院</td>
 	</tr>
 	<volist name="members" id="member" key="kid"  mod="2">
 	<tr>
@@ -679,6 +680,7 @@ window.onscroll = onScroll;
 		<td align="center">{$member.time|date="m月d日 H:i:s",###}</td>
 		<td align="center" class="<if condition="$member[gender] eq 1">boyname<else />girlname</if>">{$member.realname}</td>
 		<td align="center">{$member.education}</td>
+		<td align="left">{$member.dept}</td>
 	</tr>
 	</volist>
 	</table>

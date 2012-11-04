@@ -36,7 +36,7 @@ class MlxhAction extends PublicAction {
             else
                 $members[$key] = array_merge($member, $user);
         }
-        $this->assign('members', $members);
+		$this->assign('members', $members);
         $this->display();
     }
 
