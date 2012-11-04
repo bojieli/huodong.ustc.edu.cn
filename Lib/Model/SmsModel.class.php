@@ -1,5 +1,12 @@
 <?php
 class SmsModel extends Model {
+	public function sentMsg($msg,$mobile)//单独发短信
+	{
+		$url="http://umess.ustc.edu.cn/uMessApi.php?wsdl";//接口地址
+        $client=new SoapClient($url,array('encoding'=>'UTF-8'));
+		$client->wsCsLogin('huodong','hzbjlsjr2012');
+		$client->wsSendSms($msg,$mobile);
+	}
     public function sentSms($msg,$mobiles,$gid)
     {
         global $_G;
