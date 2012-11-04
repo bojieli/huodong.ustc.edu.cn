@@ -91,8 +91,8 @@ class UserAction extends PublicAction {
                     );
             //dump($setarr);
             $user->insertsession($setarr);
-            cookie('auth', $user->authcode("$setarr[password]\t$setarr[uid]", 'ENCODE'), 3600);
-            cookie('loginuser', $passport['username'], 3600);
+            cookie('auth', $user->authcode("$setarr[password]\t$setarr[uid]", 'ENCODE'), C('COOKIE_EXPIRE'));
+            cookie('loginuser', $passport['username'], C('COOKIE_EXPIRE'));
             //dump($_COOKIE);
 
             // registerVerify should not jump back
