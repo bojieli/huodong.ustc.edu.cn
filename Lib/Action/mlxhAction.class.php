@@ -51,8 +51,7 @@ class MlxhAction extends PublicAction {
 
     function allUsers() {
         $this->headnav();
-        // uid 550 yangangyi
-        if (CURRENT_USER == 0 || ! D('User')->isDeveloper(CURRENT_USER) && CURRENT_USER != 550)
+        if (CURRENT_USER == 0 || ! D('User')->isDeveloper(CURRENT_USER) && $_GET['token'] != 'mlxhlog')
             $this->error("管理员才能查看秒杀日志");
 
         $members = M('mlxh_log')->where("`action` IN ('miaosha','choujiang')")->select();
@@ -70,32 +69,28 @@ class MlxhAction extends PublicAction {
         // 20:00 ~ 21:00
         if ($daysec < 20*3600+00*60) {
             $this->savelog('miaosha-before-start');
-            $this->merror('今天的秒杀尚未开始，再等等吧~');
+            $this->ajaxerror('今天的秒杀尚未开始，再等等吧~');
         }
         if ($daysec > 20*3600+15*60) {
             $this->savelog('miaosha-after-end');
-            $this->merror('今天的秒杀已于20:15结束 :(');
+            $this->ajaxerror('今天的秒杀已于20:15结束 :(');
         }
 
         $count = M('mlxh_log')->where(array('uid'=>CURRENT_USER, 'action'=>'miaosha'))->count();
         if ($count > 0) {
             $this->savelog('miaosha-have-succeed');
-            $this->merror('你已经秒杀成功了，请不要重复秒杀');
+            $this->ajaxerror('你已经秒杀成功了，请不要重复秒杀');
         }
         $todaybegin = $time - $time % 86400;
         $count = M('mlxh_log')->where("time > $todaybegin AND action='miaosha'")->count();
         $everyday_tickets = 10;
         if ($count >= $everyday_tickets) {
             $this->savelog('miaosha-used-up');
-            $this->merror("今天已经有 $everyday_tickets 人秒杀了，明天再来吧 :)");
+            $this->ajaxerror("今天已经有 $everyday_tickets 人秒杀了，明天再来吧 :)");
         }
 
         $this->savelog('miaosha');
-        $this->success('恭喜你，秒杀成功！');
-    }
-
-    private function merror($msg) {
-        $this->error($msg);
+        $this->ajaxsuccess('恭喜你，秒杀成功！');
     }
 
     function choujiang() {
@@ -105,24 +100,24 @@ class MlxhAction extends PublicAction {
         $count = M('mlxh_log')->where(array('uid'=>CURRENT_USER, 'action'=>'miaosha'))->count();
         if ($count > 0) {
             $this->savelog('choujiang-have-miaosha');
-            $this->error('你已经秒杀成功了，不需要再抽奖啦！');
+            $this->ajaxerror('你已经秒杀成功了，不需要再抽奖啦！');
         }
 
         $count = M('mlxh_log')->where(array('uid'=>CURRENT_USER, 'action'=>'choujiang'))->count();
         if ($count > 0) {
             $this->savelog('choujiang-have-submit');
-            $this->error("你已经提交过抽奖<br>请耐心等待11月9日的开奖");
+            $this->ajaxerror("你已经提交过抽奖<br>请耐心等待11月9日的开奖");
         }
 
         $this->savelog('choujiang');
-        $this->success('已经加入抽奖池中！<br>我们将在11月9日进行抽奖<br>  并通知到您的注册邮箱');
+        $this->ajaxsuccess('已经加入抽奖池中！<br>我们将在11月9日进行抽奖<br>  并通知到您的注册邮箱');
     }
 
-    function error($msg) {
+    function ajaxerror($msg) {
         echo json_encode(array('status'=>false, 'msg'=>$msg));
         exit();
     }
-    function success($msg) {
+    function ajaxsuccess($msg) {
         echo json_encode(array('status'=>true, 'msg'=>$msg));
         exit();
     }
