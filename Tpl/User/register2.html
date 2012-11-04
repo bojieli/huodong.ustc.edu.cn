@@ -83,14 +83,69 @@ var objx  //objx: the obj of the item need to be moved
 var nowMarginLeft1   //nowMarginLeft :the margin-left value of the obj now
 var direc1	//direc : the direction of the moving step, 1 ringht , 0 left
 	
-	
+function checkFeild(movPos)
+{
+	if(movPos==1)
+	{
+		if($("#school").val()==0)
+		{
+			$("#checkSchool").html('<font color="#FF0000"  size="1">请选择学学校</font>');
+			return false;
+		}
+	}
+	else if(movPos==2)
+	{
+		if($.trim($('#dept').val())==0)
+		{
+			$("#checkDept").html('<font color="#FF0000"  size="1">请选择学院</font>');
+			return false;
+		}
+		if($.trim($('#student_no').val())=="")
+		{
+			$("#checkStudent_no").html('<font color="#FF0000"  size="1">请填写学号</font>');
+			return false;
+		}
+		if($.trim($('#realname').val())=="")
+		{
+			$("#checkRealname").html('<font color="#FF0000"  size="1">请填写真实姓名</font>');
+			return false;
+		}
+		if($("#school").val()==1&&($.trim($("#telephone").val())==''))
+		{
+			$("#checkTelephone").html('');
+		}
+		else
+		{
+			$.post("/User/ajaxCheckTelephone",{telephone : $("#telephone").val()},
+				function(data){
+					if(data.status==1)
+					{
+						$("#checkTelephone").html('<img src="/static/check_right.gif">');
+						
+					}
+					else
+					{
+						$("#checkTelephone").html('<font color="#FF0000"  size="1">'+data.info+'</font>');
+					}
+			},"json");
+		}
+		
+	}
+	return true;
+}
 function moveidx(idx , nums , len , direc ,CouldMov){
 	//idx : the id of the item need to be moved 
  	//nums: the total number of the moving steps
 	//len : the length of the moving step
 	//direc : the direction of the moving step, 1 ringht , 0 left
 	//CouldMov : the flag to control if it could move, 1:could , 0:couldnot	
-	
+	if(direc)//往右的时候才验证
+	{
+		if(!checkFeild(movPos))
+		{
+			return false;
+		}
+	}
 	if(CouldMov==0) return;
 	if(nums < 2) return;
     var x=document.getElementById(idx);
@@ -159,7 +214,7 @@ function mmove(){
 <tr>
 <td class="regist-slide-table-left" valign="middle" align="center"><div id="regist-slide-pre" onclick="moveidx('regist-move-table',3,660,0,CouldPre)" style="display:none"></div></td>
 <td class="regist-slide-table-mid" align="center" valign="top">
-<form id="registerform" name="registerform" action="/User/addUser" method="post">
+<form id="registerform" name="registerform" action="/User/addUser2" method="post">
 <div class="regist-slide-table-mid">
 
 <table id="regist-move-table">
@@ -168,16 +223,64 @@ function mmove(){
  <div class="zc1content" style="margin-left:-50px;">	
                 <table cellspacing="0" cellpadding="0" border="0" class="zc1table">
                 	 <tr>
-                		 <td align="right" valign="middle" width="150px" height="58px"><em style="color:#F00">* </em>学校</td>
+                		 <td align="right" valign="middle" width="150px" height="58px"><em style="color:#F00">* </em>选择学校</td>
                     	 <td class="zc1tablerect" width="300px"  valign="middle" align="left">
-                    		<div class="zc1school">
-                        	<!--
-                        	<strong>
-                            	<input type="text" autocomplete="off" name="" width=230px />
-                            </strong>
-                            -->
-                            中国科学技术大学
-                             </div>                        
+						 <div class="zc1school" ><span id='school_div'></span><span id="checkSchool"></span></div>
+							<script>
+								var school_all= '{$schools}';
+								eval('option_array='+school_all);
+								
+								var selObj = document.createElement("select");
+								selObj.name = "school";
+								selObj.id = "school";
+								var box = document.getElementById('school_div');
+								box.appendChild(selObj);
+								//alert(value);
+								selObj.options[0] = new Option("请选择学校", 0);
+								var i=1;
+								for(var p in option_array)
+								{
+									selObj.options[i] = new Option(option_array[p]['name'], option_array[p]['sid']);
+									i++;
+								}
+								$("#school").change(function(){
+									if($("#school").val()!=0)
+									{
+										$("#checkSchool").html('<img src="/static/check_right.gif">');
+									}
+									else
+									{
+										$("#checkSchool").html('<font color="#FF0000"  size="1">请选择学学校</font>');
+									}
+									if($("#school").val()!=1)
+									{
+										$("#telephone-em").html("* ");
+										$("#telephone-intro").html('<br><font color="#0000FF"  size="1">请填写正确的手机号用来验证身份</font>');
+										$("#email-intro").html('');
+										$("#email").attr('size',20);
+										$("#email_ustc").hide();
+									}
+									if($("#school").val()==1)
+									{
+										$("#telephone-em").html("");
+										$("#telephone-intro").html("");
+										$("#email-intro").html('<font color="#0000FF"  size="1">请使用科大邮箱注册</font>');
+										$("#email").attr('size',10);
+										$("#email_ustc").show();
+										$("input[name=type]").change(function(){
+											if($(this).val()=='teacher')
+											{
+												$('#emailSuffix').html('@ustc.edu.cn');
+											}
+											else
+											{
+												$('#emailSuffix').html('@mail.ustc.edu.cn');
+											}
+										});
+
+									}
+								});
+							</script>                      
                           </td>
                        </tr>
                   </table>               
@@ -273,10 +376,10 @@ function mmove(){
                     </td>
                 </tr>
                 <tr>
-                	<td align="right" valign="middle" width="150px" height="58px"><em> </em>电话</td>
+                	<td align="right" valign="middle" width="150px" height="58px"><em id='telephone-em'></em>电话</td>
                     <td class="zc1tablerect" width="300px"  valign="middle" align="left">
                     	<div class="zc1school">
-                        	<input type="text" id = "telephone" name="telephone" size='20' class="regist-input-box dxhb-blur" onfocus="this.className='dxhb-focus regist-input-box'" onblur="this.className='dxhb-blur regist-input-box'"/><span id="checkTelephone"></span>
+                        	<input type="text" id = "telephone" name="telephone" size='20' class="regist-input-box dxhb-blur" onfocus="this.className='dxhb-focus regist-input-box'" onblur="this.className='dxhb-blur regist-input-box'"/><span id="checkTelephone"></span><span id="telephone-intro"></span>
                         </div>                        
                     </td>
                 </tr>
@@ -292,7 +395,10 @@ function mmove(){
                 	<td align="right" valign="middle" width="150px" height="58px"><em>* </em>注册邮箱</td>
                     <td class="zc1tablerect" width="300px"  valign="middle" align="left">
                     	<div class="zc1school">
-                        	<input type="text" id="email" name="email" size='10' class="regist-input-box dxhb-blur" onfocus="this.className='dxhb-focus regist-input-box'" onblur="this.className='dxhb-blur regist-input-box'"/>@mail.ustc.edu.cn <br><span id="checkMail"></span>
+                        	<input type="text" id="email" name="email" size='10' class="regist-input-box dxhb-blur" onfocus="this.className='dxhb-focus regist-input-box'" onblur="this.className='dxhb-blur regist-input-box'"/><span id="email_ustc"><span id="emailSuffix">@mail.ustc.edu.cn</span><br>
+                        	<input type="radio" name="type" checked="" value="student">学生
+							<input type="radio" name="type" value="teacher">老师</span>
+							<br><span id="checkMail"></span><span id="email-intro"></span>
                         </div>                        
                     </td>
                 </tr>
@@ -378,13 +484,26 @@ $(function(){
 		}
 	});
 
-	$('#email').blur(function(){												
-		if($.trim($(this).val())==""){
+	$('#email').blur(function(){
+		var email = $.trim($(this).val());
+		if(email==""){
 			$("#checkMail").html('<font color="#FF0000"  size="1">邮箱不能为空</font>');
 		}
 		else {
 			$("#tj_err_total").html('');
-			$.post("/User/ajaxCheckEmail",{email: $(this).val()},
+			
+			if($("#school").val()==1)
+			{
+				if($("input[name=type]:checked").val()=='teacher')
+				{
+					email+='@ustc.edu.cn';
+				}
+				else
+				{
+					email+='@mail.ustc.edu.cn';
+				}
+			}
+			$.post("/User/ajaxCheckEmail2",{email: email},
 				function(data){
 					if(data.status==1)
 					{
@@ -398,6 +517,28 @@ $(function(){
 			},"json");
 			
 		}
+	});	
+	$('#telephone').blur(function(){
+		if($("#school").val()==1&&($.trim($("#telephone").val())==''))
+		{
+			$("#checkTelephone").html('');
+		}
+		else
+		{
+			$.post("/User/ajaxCheckTelephone",{telephone : $("#telephone").val()},
+				function(data){
+					if(data.status==1)
+					{
+						$("#checkTelephone").html('<img src="/static/check_right.gif">');
+						
+					}
+					else
+					{
+						$("#checkTelephone").html('<font color="#FF0000"  size="1">'+data.info+'</font>');
+					}
+			},"json");
+		}
+		
 	});	
 	$('#password').blur(function(){												
 		if($(this).val()==""){
@@ -469,6 +610,18 @@ function submituser(){
 		$("#checkPassword2").html('<font color="#FF0000"  size="1">密码前后不一致！</font>');
 		return false;
 	}
+	var email = $.trim($("#email").val());
+	if($("#school").val()==1)
+	{
+		if($("input[name=type]:checked").val()=='teacher')
+		{
+			email+='@ustc.edu.cn';
+		}
+		else
+		{
+			email+='@mail.ustc.edu.cn';
+		}
+	}
 	$.post("/User/ajaxCheckCode",{check: $("#check").val()},
 				function(data){
 					if(data.status!=1)
@@ -480,12 +633,32 @@ function submituser(){
 					else
 					{	
 						
-						$.post("/User/ajaxCheckEmail",{email: $("#email").val()},
+						$.post("/User/ajaxCheckEmail2",{email: email},
 							function(data){
+								$("#checkMail").html('<img src="/static/check_right.gif">');
 								if(data.status==1)
 								{
-									$("#checkMail").html('<img src="/static/check_right.gif">');
-									$('#registerform').get(0).submit();
+									if($("#school").val()!=1)
+									{
+										$.post("/User/ajaxCheckTelephone",{telephone : $("#telephone").val()},
+											function(data){
+												if(data.status==1)
+												{
+													$("#checkTelephone").html('<img src="/static/check_right.gif">');
+													$('#registerform').get(0).submit();
+													
+												}
+												else
+												{
+													$("#tj_err_total").html('<font color="#FF0000"  size="1">请于前面页面填写正确的手机号码</font>');
+													$("#checkTelephone").html('<font color="#FF0000"  size="1">'+data.info+'</font>');
+												}
+										},"json");
+									}
+									else
+									{
+										$('#registerform').get(0).submit();
+									}
 												
 								}
 								else
