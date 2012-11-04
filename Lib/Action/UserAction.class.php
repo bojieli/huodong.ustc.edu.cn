@@ -428,7 +428,6 @@ class UserAction extends PublicAction {
         if (!preg_match("/[a-zA-Z0-9+_-]+/", $_POST['email'])) {
             $this->error("请输入有效的邮箱地址");
         }
-        $_POST['email']=trim($_POST['email'])."@mail.ustc.edu.cn";
 
         if(empty($_POST['dept']))
         {
