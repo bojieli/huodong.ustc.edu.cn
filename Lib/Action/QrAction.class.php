@@ -216,6 +216,8 @@ class QrAction extends PublicAction{
 		$name=$this->_post('name');
 		$content=$this->_post('con');
 		$gid=$this->_post('gid');
+		$save=$this->_post('save','','0');
+		$md5tmp=$this->_post('md5tmp');
 		$uid=$_G['uid'];
 		if(!D('Club')->isManager($gid))
 		{
@@ -227,8 +229,8 @@ class QrAction extends PublicAction{
 			$info['status']='活动名称或活动简介为空';
 			$this->error($info);
 		}
-		$re=D('Club')->getInfo($gid);
-		$company=$re['name'];
+		//$re=D('Club')->getInfo($gid);
+		//$company=$re['name'];
 		$rd=microtime().$name.$content.$gid.$uid;
 		$rewrite_code = shorturl($rd, $prefix='huodong', $suffix='huodong');
 		//dump($rewrite_code);die;
@@ -236,7 +238,12 @@ class QrAction extends PublicAction{
 		$note=$content;
 		$data=$this->QRforCards($name,$phone,$company,$role,$email,$address,$website,$weibo,$qq,$ww,$msn,$note);
 		$md5=$this->getQR($data,$gid,$level='L',$size=4);
-		D('Qr')->qrInsertForHuodong($gid,$uid,$name,$content,$rewrite_code,$md5);
+		if($save!=0)
+		{D('Qr')->qrInsertForHuodong($gid,$uid,$name,$content,$rewrite_code,$md5);}
+		$myfile = './upload/avatar/Qr/huodongQR_for'.$gid.'_'.$md5tmp.'.png';
+		if (file_exists($myfile)){
+			unlink ($myfile);
+		}
 		$info['md5']=$md5;
 		$info['gid']=$gid;
 		$this->success($info);

@@ -1,6 +1,8 @@
 <?php
 if (!defined('THINK_PATH')) exit();
 
+date_default_timezone_set('Asia/Chongqing');
+
 $config = require("./Conf/dbconfig.php");
 $newconfig = array(
 	'DEFAULT_MODULE' => 'Poster',
