@@ -12,7 +12,7 @@ $newconfig = array(
 	'ATTACHMENT_SIZE' => 31457280,
 	'AVATAR_PATH' => 'upload/avatar/',
 	'COOKIE_PREFIX' => 'hd_',
-	'COOKIE_EXPIRE' => 3600
+	'COOKIE_EXPIRE' => 36000
 );
 $mailconfig = array(
 	'MAIL_ADDRESS' => 'huodong@ustc.edu.cn',

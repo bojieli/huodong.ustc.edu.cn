@@ -52,6 +52,10 @@ class UserAction extends PublicAction {
     {
         $this->display();
     }
+	public function login2()
+	{
+		$this->display();
+	}
     public function do_login() {
         global $_G;
 
@@ -91,6 +95,69 @@ class UserAction extends PublicAction {
                     );
             //dump($setarr);
             $user->insertsession($setarr);
+            cookie('auth', $user->authcode("$setarr[password]\t$setarr[uid]", 'ENCODE'), C('COOKIE_EXPIRE'));
+            cookie('loginuser', $passport['username'], C('COOKIE_EXPIRE'));
+            //dump($_COOKIE);
+
+            // registerVerify should not jump back
+            if (!empty($_POST['referer']) && !strstr($_POST['referer'], '/User/'))
+                $this->assign('jumpUrl', $_POST['referer']);
+            else
+                $this->assign('jumpUrl','/User/home?uid='.$passport['uid']);
+            D('User')->loginLog($passport['uid']);
+            $this->success('登陆成功');
+        }
+        else{
+            $this->display('User:login');
+        }
+    }
+
+	public function do_login2() {
+        global $_G;
+
+        if($_POST[submit]){
+            $username=trim($_POST[email]);
+            $pw=$_POST[password];
+            if(empty($username)||empty($pw)){
+                $this->error('密码或用户名不能为空');
+            }
+            $post=array(
+                    'username'=>$username,
+                    'password'=>$pw,
+                    );
+            $user=D('User');
+            $passport=$user->getpassport($post[username],$post[password]);
+            //dump($passport);
+            if(!is_array($passport)){
+                $this->error('登录失败，请检查用户名和密码');
+            }
+
+            $info = D('User')->getInfo($passport['uid']);
+            if ($info['status'] == 'locked')
+                $this->error("您的帐号已被锁定，请联系管理员解锁");
+            else if ($info['status'] == 'inactive')
+			{
+				if($info['sid']!=1)
+				{
+					$this->assign('jumpUrl','/User/registerToVerify?uid='.$info['uid']);
+					 $this->error("您还没有激活，请首先激活账号");
+				}
+                $this->error("您还没有激活，请首先点击邮件中的链接激活");
+			}
+            else if ($info['status'] != 'active')
+                $this->error("账户状态发生未知错误，请联系管理员");
+
+            global $_G;
+
+            $_G[timestamp]=empty($_G[timestamp])? time():$_G[timestamp];
+            $setarr = array(
+                    'uid' => $passport['uid'],
+                    'username' => addslashes($passport['username']),
+                    'password' => md5("$passport[uid]|$_G[timestamp]"),//本地密码随机生成
+
+                    );
+            //dump($setarr);
+            $user->insertsession($setarr);
             cookie('auth', $user->authcode("$setarr[password]\t$setarr[uid]", 'ENCODE'), 3600);
             cookie('loginuser', $passport['username'], 3600);
             //dump($_COOKIE);
@@ -104,7 +171,7 @@ class UserAction extends PublicAction {
             $this->success('登陆成功');
         }
         else{
-            $this->display('User:login');
+            $this->display('User:login2');
         }
     }
 
@@ -256,6 +323,12 @@ class UserAction extends PublicAction {
     public function register() {
         $this->display();
     }
+	public function register2() {
+		$schools = M('School')->select();
+		$schools = json_encode($schools);
+		$this->assign('schools', $schools);
+        $this->display();
+    }
     public function addUser() {
         session_start();
 
@@ -324,6 +397,114 @@ class UserAction extends PublicAction {
         $this->success('注册成功，已经向 '.$_POST['email'].' 发送一封激活信，请点击激活信中的链接以完成注册过程。');
     }
 
+	public function addUser2() {
+        session_start();
+
+        $User = D("User");
+		$sid = $_POST['school'];
+		$telephone=trim($_POST['telephone']);
+		if(empty($sid))
+		{
+			$this->error("请选择学校");
+		}
+		elseif($sid!=1)
+		{
+			if(!preg_match('/^[1-9]\d{10}$/', trim($_POST['telephone'])))
+			{
+				$this->error("请输入合法的手机号");
+			}
+			if($User->is_telephone_existed($_POST['telephone']))
+			{
+				$this->error("该手机号已经验证过");
+			}
+
+		}
+		//dump($_POST['telephone']);
+		//die;
+        if(empty($_POST['email']))
+        {
+            $this->error("邮箱不能为空");
+        }
+        if (!preg_match("/[a-zA-Z0-9+_-]+/", $_POST['email'])) {
+            $this->error("请输入有效的邮箱地址");
+        }
+
+        if(empty($_POST['dept']))
+        {
+            $this->error("学院不能为空");
+        }
+        if(empty($_POST[student_no]))
+        {
+            $this->error("学号不能为空");
+        }
+        if(empty($_POST[realname]))
+        {
+            $this->error("真实姓名不能为空");
+        }
+        if (empty($_POST[education]))
+        {
+            $this->error("学历不能为空");
+        }
+        if($User->is_loginname_existed($_POST['email']))
+        {
+            $this->error("该邮件已注册");
+        }
+        if(empty($_POST[password]))
+        {
+            $this->error("密码不能为空");
+        }
+        if($_POST[password]!=$_POST[password2])
+        {
+            $this->error("前后密码不一致");
+        }
+        if($_SESSION['verify'] != md5($_POST['check'])) {
+            $this->error('验证码错误');
+        }
+        $_POST['student_no'] = strtoupper($_POST['student_no']);
+        $_POST['sid'] = $sid; // currently force USTC
+        $_POST['register_time']=time();
+        $_POST['status'] = 'inactive'; // need email activate
+
+        $_POST['salt'] = substr(uniqid(rand()), -6);
+        $_POST['password'] = md5(md5($_POST[password]).$_POST[salt]);
+
+        $User->create();
+        $uid = $User->add();
+
+		$info = $User->where(array('email'=>$_POST['email']))->find();
+        if (empty($info) || !is_numeric($info['uid'])) {
+            $this->error('未知错误，请重新注册');
+        }
+		if($sid==1)
+		{
+			$this->sendVerifyEmail($info);
+			$this->assign('jumpUrl', '/User/login');
+			$this->assign('waitSecond', 10);
+			$this->success('注册成功，已经向 '.$_POST['email'].' 发送一封激活信，请点击激活信中的链接以完成注册过程。');
+		}
+		else
+		{
+			$verify_msg = substr(uniqid(rand()), -6);
+			$data=array(
+				'uid'=> $uid,
+				'code'=> $verify_msg,
+				'address'=>$telephone,
+				'type'=>'telephone',
+				'time'=>time()
+			);
+			M('Regist_verify')->create($data);
+			M('Regist_verify')->add();
+			
+			D('Sms')->sentMsg($verify_msg."  注册验证码，请在5分钟内正确输入，过期请重新获取--来自【中科大活动平台】",$telephone);
+			$this->assign('jumpUrl', '/User/registerToVerify?uid='.$uid);
+			$this->assign('waitSecond', 10);
+			$this->success('注册成功，已经向 '.$telephone.' 发送了6位激活码，请在激活页面验证激活码以完成注册过程。');
+
+
+		}
+        
+    }
+
     private function sendVerifyEmail($info) {
         SendMail($info['email'], "欢迎注册校园活动平台",
                 $info['realname']."你好:\n\n".
@@ -333,24 +514,151 @@ class UserAction extends PublicAction {
                 );
     }
 
-    public function registerVerify() {
-        $this->assign('jumpUrl', '/User/register'); // jump when error
-        if (!is_numeric($_GET['uid']))
+	public function registerToVerify()
+	{
+		$uid = $this->_request('uid');
+		
+		if (!is_numeric($uid))
+		{
+			$this->assign('jumpUrl', '/User/register');
             $this->error("您所激活的用户不存在，请重新注册");
-        $info = D('User')->getInfo($_GET['uid']);
+		}
+        $info = D('User')->getInfo($uid);
         if (empty($info))
+		{
+			$this->assign('jumpUrl', '/User/register');
             $this->error("您所激活的用户不存在，请重新注册");
-        if (md5($info['email'].$info['salt'].$info['register_time']) !== trim($_GET['token']))
-            $this->error("激活链接无效<br>请将激活信中的链接准确复制到浏览器地址栏中，重试一次");
+		}
         if ($info['status'] == 'active')
+		{
+			$this->assign('jumpUrl', '/User/login');
             $this->error("您已经激活，不需要再次激活了 :)");
+		}
         if ($info['status'] == 'locked')
+		{
+			$this->assign('jumpUrl', '/User/login');
             $this->error("您的帐号已被锁定，请联系管理员解锁");
+		}
+		$this->assign('uid', $uid);
+		$this->display('verify');
+	}
+
+	public function sendCode()
+	{
+		$uid = $this->_request('uid');
+		
+        if (!is_numeric($uid))
+		{
+			$this->assign('jumpUrl', '/User/register');
+            $this->error("您所激活的用户不存在，请重新注册");
+		}
+        $info = D('User')->getInfo($uid);
+
+        if (empty($info))
+		{
+			$this->assign('jumpUrl', '/User/register');
+            $this->error("您所激活的用户不存在，请重新注册");
+		}
+        if ($info['status'] == 'active')
+		{
+			$this->assign('jumpUrl', '/User/login');
+            $this->error("您已经激活，不需要再次激活了 :)");
+		}
+        if ($info['status'] == 'locked')
+		{
+			$this->assign('jumpUrl', '/User/login');
+            $this->error("您的帐号已被锁定，请联系管理员解锁");
+		}
+		if($info['sid']==1)
+		{
+            $this->error("您的账户不需要通过手机激活");
+		}
+		else
+		{	
+			$verify_msg = substr(uniqid(rand()), -6);
+			$data=array(
+				'uid'=> $uid,
+				'code'=> $verify_msg,
+				'address'=>$info['telephone'],
+				'type'=>'telephone',
+				'time'=>time()
+			);
+
+			$verify = M('Regist_verify')->where(array('uid'=>$uid))->limit(1)->select();
+
+			if(empty($verify))
+			{
+				M('Regist_verify')->create($data);
+				M('Regist_verify')->add();
+				D('Sms')->sentMsg($verify_msg."  注册验证码，请在5分钟内正确输入，过期请重新获取--来自【中科大活动平台】",$info['telephone']);
+				$this->success('发送验证码成功，请查收');
+			}
+			elseif($data['time']-$verify[0]['time']<30)
+			{	
+				$this->error("发送验证短信太频繁，请30秒后在发送");
+			}
+			else
+			{
+				M('Regist_verify')->where(array('uid'=>$uid))->save($data);
+				D('Sms')->sentMsg($verify_msg."  注册验证码，请在5分钟内正确输入，过期请重新获取--来自【中科大活动平台】",$info['telephone']);
+				$this->success('发送验证码成功，请查收');
+			}
+		}
+	}
+
+    public function registerVerify() {
+		$uid = $this->_request('uid');
+        if (!is_numeric($uid))
+		{
+			$this->assign('jumpUrl', '/User/register');
+            $this->error("您所激活的用户不存在，请重新注册");
+		}
+        $info = D('User')->getInfo($uid);
+
+        if (empty($info))
+		{
+			$this->assign('jumpUrl', '/User/register');
+            $this->error("您所激活的用户不存在，请重新注册");
+		}
+        if ($info['status'] == 'active')
+		{
+			$this->assign('jumpUrl', '/User/login');
+            $this->error("您已经激活，不需要再次激活了 :)");
+		}
+        if ($info['status'] == 'locked')
+		{
+			$this->assign('jumpUrl', '/User/login');
+            $this->error("您的帐号已被锁定，请联系管理员解锁");
+		}
+		if($info['sid']==1)
+		{
+			if (md5($info['email'].$info['salt'].$info['register_time']) !== trim($_GET['token']))
+            $this->error("激活链接无效<br>请将激活信中的链接准确复制到浏览器地址栏中，重试一次");
+		}
+		else
+		{
+			$code = trim($this->_request('code'));
+			$verify = M('Regist_verify')->where(array('uid'=>$uid))->limit(1)->select();
+		
+			if(empty($verify))
+			{
+				$this->error("验证码获取失败，请重新通过手机获取验证码");
+			}
+			elseif($verify[0]['code']!=$code)
+			{
+				$this->error("您所输入的验证码有误，请重新输入");
+			}
+			elseif((time()-$verify[0]['time'])>5*60)
+			{
+				$this->error("验证码已经过期，请重新通过手机获取验证码");
+			}
+		}
+
         if ($info['status'] == 'inactive') {
             $record['status'] = 'active';
-            M('User')->where(['uid' => $_GET['uid']])->save($record);
+            M('User')->where(['uid' => $uid])->save($record);
         }
-
+		M('Regist_verify')->where(array('uid'=>$uid))->delete();
         $referer = $info['register_referer'];
         if (empty($referer) || !strstr($referer, $_SERVER['HTTP_HOST'])) {
             $this->assign('jumpUrl', '/User/login');
@@ -505,6 +813,50 @@ class UserAction extends PublicAction {
         }
         else
             $this->error("邮箱错误",1);
+    }
+	public function ajaxCheckEmail2()
+    {
+        $email = empty($_POST[email])?$_GET[email]:$_POST[email];
+        //$this->error("邮箱错误",1);
+        if(isset($email))
+        {
+            $User = D('User');
+            if($User->is_loginname_existed($email))
+            {
+                $this->error("邮箱已注册",1);
+            }
+            else
+            {
+                $this->success("success",1);
+            }
+
+        }
+        else
+            $this->error("邮箱错误",1);
+    }
+	public function ajaxCheckTelephone()
+    {
+        $telephone = $this->_request('telephone');
+        //$this->error("邮箱错误",1);
+        if(isset($telephone))
+        {
+			if(!preg_match('/^[1-9]\d{10}$/', trim($telephone)))
+				$this->error("请输入正确的手机号");
+            $User = D('User');
+            if($User->is_telephone_existed($telephone))
+            {
+                $this->error("该手机已注册");
+            }
+            else
+            {
+                $this->success("success");
+            }
+        }
+		else
+		{
+			$this->error("请输入正确的手机号");
+		}
+        
     }
     public function avatar()
     {
