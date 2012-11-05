@@ -1,0 +1,45 @@
+<include file="header" />
+<h1>创建调查问卷</h1>
+
+<form id="createSurvey" method="post">
+<div id="form">
+</div>
+<button type="submit">创建问卷</button>
+</form>
+
+<script>
+$(function(){
+    $('#createSurvey').submit(function(){
+        $(this).ajax({
+            url: "/Survey/do_submit",
+            type: "POST",
+            success: function() {
+                location.href = "/Survey";
+            }
+        });
+    });
+
+    var form = [];
+    form.append(new Section('第一部分', '#form'));
+    form[0].append(new Question('问题1', '#form'));
+});
+
+function Section(title, container) {
+}
+
+function Question(title, container) {
+    this.container = container;
+    this.title = title;
+    this.help_text = '';
+    this.type = 'radio';
+    this.required = true;
+    this.options = [];
+
+    modify: function() {
+    },
+    save: function() {
+    },
+    remove: function() {
+    }
+}
+</script>

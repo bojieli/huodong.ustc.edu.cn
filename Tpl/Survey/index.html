@@ -1,0 +1,8 @@
+<include file="header" />
+<h1>调查问卷列表</h1>
+<ul>
+<volist name="surveys" id="vo">
+<li><a href="/Survey/response?survey={$vo.id}">{$vo.title}</a> <a href="/Survey/result?survey={$vo.id}">查看结果</a></li>
+</volist>
+</ul>
+<a href="/Survey/create?gid=1">新建调查问卷</a>
