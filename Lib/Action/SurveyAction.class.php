@@ -1,6 +1,8 @@
 <?php
 class SurveyAction extends PublicAction {
     function index() {
+        if (CURRENT_USER == 0)
+            $this->error("需要登录才能使用调查问卷");
         $list = M('Survey')->select();
         $this->assign('surveys', $list);
         $this->headnav();
