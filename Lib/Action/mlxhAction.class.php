@@ -76,6 +76,8 @@ class MlxhAction extends PublicAction {
             $this->ajaxerror('今天的秒杀已于20:15结束 :(');
         }
 
+        $this->transaction();
+
         $count = M('mlxh_log')->where(array('uid'=>CURRENT_USER, 'action'=>'miaosha'))->count();
         if ($count > 0) {
             $this->savelog('miaosha-have-succeed');
@@ -97,6 +99,8 @@ class MlxhAction extends PublicAction {
         if (CURRENT_USER == 0)
             $this->error("请首先注册或登录");
 
+        $this->transaction();
+
         $count = M('mlxh_log')->where(array('uid'=>CURRENT_USER, 'action'=>'miaosha'))->count();
         if ($count > 0) {
             $this->savelog('choujiang-have-miaosha');
@@ -112,12 +116,21 @@ class MlxhAction extends PublicAction {
         $this->savelog('choujiang');
         $this->ajaxsuccess('已经加入抽奖池中！<br>我们将在11月9日进行抽奖<br>  并通知到您的注册邮箱');
     }
+    
+    private function transaction() {
+        mysql_query('BEGIN');
+        $this->transaction = true;
+    }
 
     function ajaxerror($msg) {
+        if (!empty($this->transaction))
+            mysql_query('COMMIT');
         echo json_encode(array('status'=>false, 'msg'=>$msg));
         exit();
     }
     function ajaxsuccess($msg) {
+        if (!empty($this->transaction))
+            mysql_query('COMMIT');
         echo json_encode(array('status'=>true, 'msg'=>$msg));
         exit();
     }
