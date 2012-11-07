@@ -67,7 +67,7 @@ class MlxhAction extends PublicAction {
         $t = localtime($time, true);
         $daysec = $t['tm_hour'] * 3600 + $t['tm_min'] * 60 + $t['tm_sec'];
 
-        if ($daysec > 20*3600+30*60) {
+        if ($daysec > 20*3600+60*60) {
             $this->savelog('miaosha-after-end');
             $this->ajaxerror('今天的秒杀已经结束，明天再来吧 :(');
         }
@@ -126,14 +126,15 @@ class MlxhAction extends PublicAction {
     }
 
     function ajaxerror($msg) {
-        if (!empty($this->transaction))
+        if ($this->transaction)
             $this->commit();
         echo json_encode(array('status'=>false, 'msg'=>$msg));
         exit();
     }
     function ajaxsuccess($msg) {
-        if (!empty($this->transaction))
+        if ($this->transaction) {
             $this->commit();
+        }
         echo json_encode(array('status'=>true, 'msg'=>$msg));
         exit();
     }
