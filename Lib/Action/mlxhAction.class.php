@@ -66,23 +66,31 @@ class MlxhAction extends PublicAction {
         $time = time();
         $t = localtime($time, true);
         $daysec = $t['tm_hour'] * 3600 + $t['tm_min'] * 60 + $t['tm_sec'];
-        // 20:00 ~ 21:00
-        if ($daysec < 20*3600+00*60) {
-            $this->savelog('miaosha-before-start');
-            $this->ajaxerror('今天的秒杀尚未开始，再等等吧~');
-        }
-        if ($daysec > 20*3600+15*60) {
+
+        if ($daysec > 20*3600+60*60) {
             $this->savelog('miaosha-after-end');
-            $this->ajaxerror('今天的秒杀已于20:15结束 :(');
+            $this->ajaxerror('今天的秒杀已经结束，明天再来吧 :(');
+        }
+        if ($daysec <= 20*3600+0*60) {
+            $this->savelog('miaosha-shuapiao');
+            $this->ajaxerror('系统检测到你有刷票嫌疑<br>请联系管理员 bojieli@gmail.com');
         }
 
-        $count = M('mlxh_log')->where(array('uid'=>CURRENT_USER, 'action'=>'miaosha'))->count();
+        $log = M('mlxh_log');
+        $log->startTrans();
+        $this->transaction = true;
+
+        $count = $log->lock(true)->where(array('uid'=>CURRENT_USER, 'action'=>'miaosha-shuapiao'))->count();
+        if ($count > 0) {
+            $this->ajaxerror('系统检测到你有刷票嫌疑<br>请联系管理员 bojieli@gmail.com');
+        }
+        $count = $log->lock(true)->where(array('uid'=>CURRENT_USER, 'action'=>'miaosha'))->count();
         if ($count > 0) {
             $this->savelog('miaosha-have-succeed');
             $this->ajaxerror('你已经秒杀成功了，请不要重复秒杀');
         }
         $todaybegin = $time - $time % 86400;
-        $count = M('mlxh_log')->where("time > $todaybegin AND action='miaosha'")->count();
+        $count = $log->lock(true)->where("time > $todaybegin AND action='miaosha'")->count();
         $everyday_tickets = 10;
         if ($count >= $everyday_tickets) {
             $this->savelog('miaosha-used-up');
@@ -97,13 +105,17 @@ class MlxhAction extends PublicAction {
         if (CURRENT_USER == 0)
             $this->error("请首先注册或登录");
 
-        $count = M('mlxh_log')->where(array('uid'=>CURRENT_USER, 'action'=>'miaosha'))->count();
+        $log = M('mlxh_log');
+        $log->startTrans();
+        $this->transaction = true;
+
+        $count = M('mlxh_log')->lock(true)->where(array('uid'=>CURRENT_USER, 'action'=>'miaosha'))->count();
         if ($count > 0) {
             $this->savelog('choujiang-have-miaosha');
             $this->ajaxerror('你已经秒杀成功了，不需要再抽奖啦！');
         }
 
-        $count = M('mlxh_log')->where(array('uid'=>CURRENT_USER, 'action'=>'choujiang'))->count();
+        $count = M('mlxh_log')->lock(true)->where(array('uid'=>CURRENT_USER, 'action'=>'choujiang'))->count();
         if ($count > 0) {
             $this->savelog('choujiang-have-submit');
             $this->ajaxerror("你已经提交过抽奖<br>请耐心等待11月9日的开奖");
@@ -114,10 +126,15 @@ class MlxhAction extends PublicAction {
     }
 
     function ajaxerror($msg) {
+        if ($this->transaction)
+            M('mlxh_log')->commit();
         echo json_encode(array('status'=>false, 'msg'=>$msg));
         exit();
     }
     function ajaxsuccess($msg) {
+        if ($this->transaction) {
+            M('mlxh_log')->commit();
+        }
         echo json_encode(array('status'=>true, 'msg'=>$msg));
         exit();
     }
