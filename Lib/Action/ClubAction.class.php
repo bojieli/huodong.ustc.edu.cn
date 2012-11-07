@@ -386,6 +386,7 @@ class ClubAction extends PublicAction {
         unset($member);
         //$members = D('Club')->sortMemberByPriv($members);
         $this->assign('members', $members);
+		dump($members);
         $inactive_members = M()->query("SELECT * FROM ustc_user AS u, ustc_user_group AS ug WHERE ug.gid='$gid' AND ug.priv = 'inactive' AND ug.uid = u.uid");
         foreach($inactive_members as &$member){
             $member['school']=D('School')->result_first("select name from ustc_school where sid = ".$member['sid']);
