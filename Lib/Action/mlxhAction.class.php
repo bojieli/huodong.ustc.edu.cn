@@ -127,13 +127,13 @@ class MlxhAction extends PublicAction {
 
     function ajaxerror($msg) {
         if ($this->transaction)
-            $this->commit();
+            M('mlxh_log')->commit();
         echo json_encode(array('status'=>false, 'msg'=>$msg));
         exit();
     }
     function ajaxsuccess($msg) {
         if ($this->transaction) {
-            $this->commit();
+            M('mlxh_log')->commit();
         }
         echo json_encode(array('status'=>true, 'msg'=>$msg));
         exit();
