@@ -495,19 +495,19 @@ class ClubAction extends PublicAction {
     } 
     public function test()
     {
-        /*$clubs = M('Club')->where("1")->select();
-          foreach($clubs as $value)
-          {
-          $num = M('User_group')->result_first("SELECT count(*) FROM ustc_user_group where gid = $value[gid] and sid = 1 and priv !='inactive'");
-          $record['member_count'] = $num;
-          M('Club')->where(['gid'=>$value[gid]])->save($record);
-          }*/
-        M('Club')->query("update ustc_user_group set priv = 'vice-admin' where title = '副主席'");
+        $clubs = M('Club')->where("1")->select();
+        foreach($clubs as $value)
+        {
+			$num = M('User_group')->result_first("SELECT count(*) FROM ustc_user_group where gid = $value[gid] and sid = 1 and priv !='inactive'");
+			$record['member_count'] = $num;
+			M('Club')->where(['gid'=>$value[gid]])->save($record);
+        }
+        /*M('Club')->query("update ustc_user_group set priv = 'vice-admin' where title = '副主席'");
         M('Club')->query("update ustc_user_group set priv = 'vice-admin' where title = '副会长'");
         M('Club')->query("update ustc_user_group set priv = 'vice-admin' where title = '副社长'");
         M('Club')->query("update ustc_user_group set priv = 'vice-manager' where title = '副部长'");
         M('Club')->query("update ustc_user_group set priv = 'team-leader' where title = '活动负责人'");
-        M('Club')->query("update ustc_user_group set priv = 'team-leader' where title = '项目组长'");
+        M('Club')->query("update ustc_user_group set priv = 'team-leader' where title = '项目组长'");*/
     }
 
     public function removeMember() {
