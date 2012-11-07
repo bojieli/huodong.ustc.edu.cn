@@ -67,9 +67,9 @@ class MlxhAction extends PublicAction {
         $t = localtime($time, true);
         $daysec = $t['tm_hour'] * 3600 + $t['tm_min'] * 60 + $t['tm_sec'];
 
-        if ($daysec > 20*3600+15*60) {
+        if ($daysec > 20*3600+30*60) {
             $this->savelog('miaosha-after-end');
-            $this->ajaxerror('今天的秒杀已于20:15结束 :(');
+            $this->ajaxerror('今天的秒杀已经结束，明天再来吧 :(');
         }
         if ($daysec <= 20*3600+0*60) {
             $this->savelog('miaosha-shuapiao');
