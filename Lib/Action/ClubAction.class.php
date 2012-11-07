@@ -501,7 +501,9 @@ class ClubAction extends PublicAction {
 			$num = M('User_group')->result_first("SELECT count(*) FROM ustc_user_group where gid = $value[gid] and sid = 1 and priv !='inactive'");
 			$record['member_count'] = $num;
 			M('Club')->where(['gid'=>$value[gid]])->save($record);
+			dump(M('Club')->getLastSql());
         }
+		
         /*M('Club')->query("update ustc_user_group set priv = 'vice-admin' where title = '副主席'");
         M('Club')->query("update ustc_user_group set priv = 'vice-admin' where title = '副会长'");
         M('Club')->query("update ustc_user_group set priv = 'vice-admin' where title = '副社长'");
