@@ -122,11 +122,6 @@ body{
 <embed src="/static/images/star_flash3.swf" width="100%" height="450" align="middle" quality="high" name="FlashVars" allowScriptAccess="sameDomain" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" wmode="transparent" />
 </object>
     </div>
-<if condition="!empty($_G[uid])">
-  <div id="mlxh_resultcontent">
-    <span ><a target="_blank" href="/mlxh/miaoshaUsers">查看已秒杀成功者名单</a></span>
- </div>
-</if>  
     <div id="mlxh_content">
     <if condition="empty($theday)">
       <span id="daojishi">秒杀和抽奖将于11月1日开始，请耐心等待 :)</span>
@@ -135,15 +130,18 @@ body{
       <a id="mlxh_login" class="button" href="/User/login">登录</a>
       <span id="daojishi">需要注册或登录才能秒杀、抽奖及查看结果</span>
     <elseif condition="empty($miaoshaguole)" />
-      <a id="mlxh_miaosha" class="button disabled" style="cursor:pointer">秒杀</a>
+      <!--<a id="mlxh_miaosha" class="button disabled" style="cursor:pointer">秒杀</a>-->
       <a id="mlxh_choujiang" class="button" style="cursor:pointer">抽奖</a>
       <span id="daojishi">载入中……</span>
-
     <else />
       <span id="daojishi">恭喜你，秒杀成功！ <a target="_blank" href="/mlxh/miaoshaUsers"> 查看结果</a></span>
     </if>
+<if condition="!empty($_G[uid])">
+  <div>
+    <span><a target="_blank" href="/mlxh/miaoshaUsers" style="color:red;font-size:16px">查看已秒杀成功者名单</a></span>
+ </div>
+</if>  
     </div>
-    
     
     <div style="font-size:14px; color:#96F; position:absolute; top:610px; right:0px;">技术支持：
        <a href="/Club/intro?gid=76" style=" color:#96F; text-decoration:none;" >大学海报团队</a>
