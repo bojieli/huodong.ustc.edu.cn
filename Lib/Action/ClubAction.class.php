@@ -108,7 +108,7 @@ class ClubAction extends PublicAction {
             $club[$field] = htmlspecialchars($_POST[$field]);
         }
         // long desc is allowed to have HTML
-        $club['description'] = $_POST['description'];
+		$club['description']=xss_clean($_POST['description']);//防止XSS攻击
         if (strlen($club['shortdesc']) > 420)
             $club['shortdesc'] = substr($club['shortdesc'], 0, 420);
 
@@ -249,8 +249,7 @@ class ClubAction extends PublicAction {
             $this->error("必须有社团名称");
         if (strlen($club['shortdesc']) > 420)
             $club['shortdesc'] = substr($club['shortdesc'], 0, 420);
-        $club['description'] = $_POST['description'];
-
+		$club['description']=xss_clean($_POST['description']);//防止XSS攻击
         $club['logo'] = $this->uploadLogo();
 
         if (!is_numeric($club['owner']) || $club['owner'] <= 0) // key constraint
@@ -349,7 +348,8 @@ class ClubAction extends PublicAction {
             $this->error("邮件标题过长!");
         if (strlen($title) < 5)
             $this->error("邮件标题过短!");
-        if (!($message = $_POST['message']))
+		$message=xss_clean($_POST['message']);//防止XSS攻击
+		if (!($message))
             $this->error("必须填写邮件内容");
         if (strlen($message) > 10000)
             $this->error("邮件内容过长!");
@@ -501,7 +501,9 @@ class ClubAction extends PublicAction {
 			$num = M('User_group')->result_first("SELECT count(*) FROM ustc_user_group where gid = $value[gid] and sid = 1 and priv !='inactive'");
 			$record['member_count'] = $num;
 			M('Club')->where(['gid'=>$value[gid]])->save($record);
+			dump(M('Club')->getLastSql());
         }
+		
         /*M('Club')->query("update ustc_user_group set priv = 'vice-admin' where title = '副主席'");
         M('Club')->query("update ustc_user_group set priv = 'vice-admin' where title = '副会长'");
         M('Club')->query("update ustc_user_group set priv = 'vice-admin' where title = '副社长'");

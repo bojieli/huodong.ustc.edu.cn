@@ -98,7 +98,9 @@ class PosterAction extends PublicAction {
 
         $fields = ['name','place','description'];
         foreach ($fields as $field) {
-            if($field=='description'){$poster[$field]=$_POST[$field];}
+            if($field=='description'){
+			$poster[$field]=xss_clean($_POST[$field]);//防止XSS攻击
+			}
 			else $poster[$field] = htmlspecialchars($_POST[$field]);
         }
         //dump($_POST['description']);
@@ -153,7 +155,9 @@ class PosterAction extends PublicAction {
 
         $fields = ['name','place','description'];
 		foreach ($fields as $field) {
-            if($field=='description'){$poster[$field]=$_POST[$field];}
+            if($field=='description'){
+			$poster[$field]=xss_clean($_POST[$field]);//防止xss攻击
+			}
 			else $poster[$field] = htmlspecialchars($_POST[$field]);
         }
         $image = $this->uploadPoster();
@@ -220,6 +224,21 @@ class PosterAction extends PublicAction {
             $this->assign('jumpUrl', "/");
             $this->error("抱歉，只有会长和部长级别的会员才能删除海报");
         }
+    }
+
+    public function deleteComment() {
+        $aid = $this->getInputAid();
+        $poster = $this->getPoster($aid);
+        $cid = $_REQUEST['cid'];
+        if (! A('Club')->isManager($poster['gid'])) {
+            $comment = M('poster_comment')->field('author')->find($cid);
+            if ($comment['author'] != CURRENT_USER) {
+                $this->error("您没有权限删除评论！");
+                return;
+            }
+        }
+        M('poster_comment')->where(['cid'=>$cid])->delete();
+        $this->success('评论删除成功');
     }
 
     private function parseInput() {
@@ -320,6 +339,8 @@ class PosterAction extends PublicAction {
                 'time' => time(),
                 'content' => nl2br(htmlspecialchars($_POST['content'])),
                 );
+        if ($comment['content'] == '')
+            $this->error('评论内容不能为空');
         $obj = M('poster_comment');
         $obj->create($comment);
         $obj->add();
@@ -352,6 +373,8 @@ class PosterAction extends PublicAction {
 		//dump($poster->toArray());
         $comments = M('poster_comment')->where(['aid'=>$aid])->order("time DESC")->select();
         foreach ($comments as &$comment) {
+            $comment['canModify'] = $poster->canModify || ($comment['author'] == CURRENT_USER);
+            // rewrite author!
             $comment['author'] = D('User')->getInfo($comment['author']);
         }
         unset($comment);

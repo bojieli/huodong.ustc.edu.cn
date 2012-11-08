@@ -8,6 +8,9 @@
                         	<a href="{$comment.author.homepage}" class="<?=$comment['author']['gender'] ? 'boy' : 'girl' ?>name" target="_blank">{$comment.author.realname}</a>
                             <span>{$comment.content}</span> 
                             <a class="hfpointer" onclick="gotoReply({$poster.aid}, '回复{$comment.author.realname}: ');">回复</a>                                   
+	                        <if condition="$comment['canModify'] == true">
+                            <a class="hfpointer" onclick="deleteComment({$poster.aid}, {$comment.cid});">删除</a>
+                            </if>
                         </div>
                     </td>
                     <td width="150" align="center" valign="top"><!--<a href="" class="hfpointer">回复</a>--><br/><span class="time11">{$comment.time|date="Y-m-d H:i:s",###}</span></td>

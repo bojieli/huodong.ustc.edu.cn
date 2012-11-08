@@ -126,7 +126,7 @@ $showPager = function() use($club,$pageNow) {
         <div class="stzhiwu">
           	<img src="/static/images/aa{$member.privlevel}.png" />
 		    <div class="stzhiwumc ajax_title_now">{$member.title}</div>
-		  <notempty name="club.isadmin">
+		  <if condition="($member[priv] != 'admin' && $club['isadmin'])">
           	<div class="stzhiwumc ajax_title">
             	<input id="{$member.uid}" class="ajax_title_text putin_out" value="{$member.title}" onfocus="this.className='ajax_title_text putin_on'" onblur="this.className='ajax_title_text putin_out'"/>
             </div>
@@ -152,7 +152,7 @@ $showPager = function() use($club,$pageNow) {
 			<option priv="inactive" title="待审核">待审核</option>
                 	</select>
                     </div>
-		    </notempty>
+		     </if>
 
 		    <notempty name="club.isSchoolAdmin">
 		    <div class="stsetowner">
