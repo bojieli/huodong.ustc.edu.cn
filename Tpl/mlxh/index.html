@@ -198,6 +198,8 @@ body{
     if ($('#mlxh_miaosha').html()) {
         intervalId = setInterval(refresh,1000);
         $('#mlxh_miaosha').attr("intervalId", intervalId);
+    } else {
+        $('#daojishi').html("秒杀功能已经关闭，请参与抽奖 :)");
     }
 
     })
