@@ -98,7 +98,9 @@ class PosterAction extends PublicAction {
 
         $fields = ['name','place','description'];
         foreach ($fields as $field) {
-            if($field=='description'){$poster[$field]=$_POST[$field];}
+            if($field=='description'){
+			$poster[$field]=xss_clean($_POST[$field]);//防止XSS攻击
+			}
 			else $poster[$field] = htmlspecialchars($_POST[$field]);
         }
         //dump($_POST['description']);
@@ -153,7 +155,9 @@ class PosterAction extends PublicAction {
 
         $fields = ['name','place','description'];
 		foreach ($fields as $field) {
-            if($field=='description'){$poster[$field]=$_POST[$field];}
+            if($field=='description'){
+			$poster[$field]=xss_clean($_POST[$field]);//防止xss攻击
+			}
 			else $poster[$field] = htmlspecialchars($_POST[$field]);
         }
         $image = $this->uploadPoster();
