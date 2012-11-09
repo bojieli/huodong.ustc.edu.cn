@@ -164,6 +164,9 @@ class MlxhAction extends PublicAction {
             if (M('mlxh_log')->where(array('action'=>'miaosha', 'uid'=>$row['uid']))->count() > 0) {
                 continue;
             }
+            $user = M('User')->find($row['uid']);
+            if (strlen($user['student_no']) != strlen("PB10000000"))
+                continue;
             $uids[] = $row['uid'];
             $num--;
             $row['action'] = 'choujiang-gotit';
