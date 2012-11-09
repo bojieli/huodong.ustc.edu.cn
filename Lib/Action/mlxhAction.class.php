@@ -149,7 +149,7 @@ class MlxhAction extends PublicAction {
     }
 
     function doChoujiang() {
-        $M('mlxh_log')->where(array('action'=>'choujiang-gotit'))->delete();
+        M('mlxh_log')->where(array('action'=>'choujiang-gotit'))->delete();
         $num = 56;
         $count = M('mlxh_log')->where(array('action'=>'choujiang'))->count();
         for ($i=0; $i<$num; $i++) {
