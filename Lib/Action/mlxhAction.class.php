@@ -59,6 +59,36 @@ class MlxhAction extends PublicAction {
         $this->showUserList($members);
     }
 
+    function sendEmail() {
+        if (CURRENT_USER != 1)
+            $this->error("不允许的操作");
+        $members = M('mlxh_log')->where(array('action'=>'choujiang-gotit'))->select();
+        $members = array_merge($members, M('mlxh_log')->where(array('action'=>'miaosha'))->select());
+
+        foreach ($members as $key => $member) {
+            $user = M('user')->find($member['uid']);
+            if (!empty($user)) {
+                  $HOST = $_SERVER['HTTP_HOST'];
+                  $realname = $user['realname'];
+                  $msg = "$realname 您好:
+
+  恭喜您在美丽邂逅抢票网站抢票成功！非常感谢您对我们活动的支持，现通知您领取门票，具体事项如下：
+
+  【时间】2012年11月10日中午12:30--13:30
+  【地点】中国科学技术大学东区团委楼一楼（人文学院西边）
+  【领票方式】科大同学凭本人校园一卡通领取，一人一票，不得代领，不得重复领票。请在规定时间内领票，过期不候。
+
+  注：领票时请自觉排队、遵守秩序。您的配合是对我们工作的最大支持。
+                     
+  秒杀和抽奖成功名单（需登录后访问）： http://$HOST/mlxh/choujiangUsers
+
+                                                                    美丽邂逅项目组
+";
+                SendMail($user['email'], "美丽邂逅取票通知", $msg);
+            }
+        }
+    }
+
     function allUsers() {
         $this->headnav();
         if (CURRENT_USER == 0 || ! D('User')->isDeveloper(CURRENT_USER) && $_GET['token'] != 'mlxhlog')
