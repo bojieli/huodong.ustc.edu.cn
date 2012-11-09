@@ -53,7 +53,12 @@ class PosterAction extends PublicAction {
                 );
         $schools =  array_merge($school_all,$schools);
         $schools = json_encode($schools);
-       
+        list($start, $num, $cond, $order) = $this->parseInput();
+		$posters = D('Poster')->getPoster(0,8,$cond,$order);
+        $elements = [];
+        foreach ($posters as $poster)
+           $php_poster.= $this->poster2html($poster);
+		$this->assign('php_poster',$php_poster);
 		$this->assign('schools', $schools);
         $this->assign('sid', $sid);
         $this->assign('keyword', $keyword);
@@ -296,11 +301,10 @@ class PosterAction extends PublicAction {
 
     public function ajaxGet() {
         list($start, $num, $cond, $order) = $this->parseInput();
-        $posters = D('Poster')->getPoster($start, $num, $cond, $order);
+		$posters = D('Poster')->getPoster($start, $num, $cond, $order);
         $elements = [];
         foreach ($posters as $poster)
             $elements[] = $this->poster2html($poster);
-
         echo json_encode($elements);
     }
 
@@ -312,7 +316,7 @@ class PosterAction extends PublicAction {
 			'<meta itemprop="name" content="'.$poster->name().'" />'.
             /*		热度：<span class="rate">'.$poster->getRate().'</span>'.
                     '<span class="ding" id="ding-'.$poster->id().'">顶</span></div>'.
-             */		'<p>时间: <time itemprop="startDate" datetime="2015-10-16T19:00-08:00">
+             */		'<p>时间: <time itemprop="startDate" datetime="2012-11-30T19:00-08:00">
                     '.$poster->humanDate().'</time><br>'.
             '<div itemprop="location">地点: '.$poster->place().'</div></p></div>'.
             '<div class="school">'.$poster->schoolName().
