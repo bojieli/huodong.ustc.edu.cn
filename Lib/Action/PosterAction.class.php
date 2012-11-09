@@ -53,10 +53,12 @@ class PosterAction extends PublicAction {
                 );
         $schools =  array_merge($school_all,$schools);
         $schools = json_encode($schools);
-        $this->assign('schools', $schools);
+       
+		$this->assign('schools', $schools);
         $this->assign('sid', $sid);
         $this->assign('keyword', $keyword);
         $this->assign('stat', D('Poster')->get_stat($condition));
+		$this->assign('msg_num',D('Msg')->getUnreadMsgNum());
         $this->assign('order', empty($_GET['order']) ? 'new' : $_GET['order']);
         $this->display();
     }

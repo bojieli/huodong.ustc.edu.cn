@@ -43,25 +43,23 @@ class MsgModel extends Model {
         }
         //$tids=array('to_uid'=>$tids);
         //dump($tids);
-        $m=0;
         foreach($tids as $row => $val)
         {
             $msg[$val['to_uid']]=$this->showMsgFt($val['to_uid']);
-            $co=array(
-                    'uid'=>$val['to_uid'],
-                    'to_uid'=> $_G['uid'],
-                    'status' => 0
-                    );
-            $m+=$this->where($co)->count();
         }
-        //dump($this->getLastsql());
-        //die;
-        //dump($msg);
-        return array($msg,$tids,$m);
-        //echo 1233;
-        //return $msg;
+        return array($msg,$tids);
     }
-    public function showMsgFt($to_uid)
+    public function getUnreadMsgNum(){
+		global $_G;
+		$co['to_uid']=$_G['uid'];
+		$co['status']=0;       
+        $m=$this->where($co)->count();
+		$con['to_uid']=$_G['uid'];
+		$con['status']=0;       
+        $n=M('Msg_sys')->where($con)->count();
+		return array('total_num'=>$m+$n,'dialog_num'=>$m,'sys_num'=>$n);
+	}
+	public function showMsgFt($to_uid)
     {
         global $_G;
         $uid = $_G['uid'];

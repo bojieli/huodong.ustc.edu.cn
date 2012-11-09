@@ -31,7 +31,7 @@ class MsgAction extends PublicAction {
         }
         //die;
 		if(!empty($tid)){$this->redirect("/Msg");}
-		$this->assign('msg_num',array($sys_msg[1],$show[2],$sys_msg[1]+$show[2]));
+		$this->assign('msg_num',D('Msg')->getUnreadMsgNum());
         $this->assign('info',$show[0]);
         $this->assign('tid',$tid_info);
         $this->assign('sys',$sys_msg[0]);
