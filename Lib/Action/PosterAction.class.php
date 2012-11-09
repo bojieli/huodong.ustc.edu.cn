@@ -58,6 +58,7 @@ class PosterAction extends PublicAction {
         $elements = [];
         foreach ($posters as $poster)
            $php_poster.= $this->poster2html($poster);
+		//dump($posters);
 		$this->assign('php_poster',$php_poster);
 		$this->assign('schools', $schools);
         $this->assign('sid', $sid);
@@ -317,11 +318,11 @@ class PosterAction extends PublicAction {
             ($poster->thumbUrl() ? '<img class="haibao" itemprop="photo" height="'.$poster->thumbHeight().'" id="poster-'.$poster->id().'" src="'.$poster->thumbUrl().'" onclick="loadComments('.$poster->id().')" />' : '').
             '<div class="detail"><div class="hot">'.
             '<span class="ding" id="ding-'.$poster->id().'"><span class="iconding"></span><span class="rate">'.$poster->getRate().'</span></span></div>'.
-			'<meta itemprop="name" content="'.$poster->name().'" />'.
+			'<meta itemprop="summary" content="'.$poster->name().'" />'.
             /*		热度：<span class="rate">'.$poster->getRate().'</span>'.
                     '<span class="ding" id="ding-'.$poster->id().'">顶</span></div>'.
-             */		'<p>时间: <time itemprop="startDate" datetime="2012-11-30T19:00-08:00">
-                    '.$poster->humanDate().'</time><br>'.
+             */		'<p>时间: <time itemprop="startDate" datetime="'.date('c',$poster->start_time).'">
+                    '.$poster->humanDate().'</time><time itemprop="endDate" datetime="'.date('c',$poster->end_time).'"></time><br>'.
             '<div itemprop="location">地点: '.$poster->place().'</div></p></div>'.
             '<div class="school">'.$poster->schoolName().
             '</div></div></li>';
