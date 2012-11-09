@@ -5,7 +5,7 @@
 <link href="/static/css1.css" type="text/css" rel="stylesheet" />
 <script src="/static/jquery.js" type="text/javascript"></script>
 <link href="/static/shetuanxianshi.css" type="text/css" rel="stylesheet" />
-<title>抽奖成功用户名单</title>
+<title>美丽邂逅获奖名单</title>
 <style>
 .table-addresslist{
 	margin:15px auto;
@@ -663,13 +663,15 @@ window.onscroll = onScroll;
 
 <div id="stmain" style="width:auto;">
 	<div class="stcon1">
-    	<div class="stcylb"><a href="/mlxh/">美丽邂逅 秒杀成功名单</a></div>
+    	<div class="stcylb"><a href="/mlxh/">美丽邂逅 获奖名单</a></div>
 	</div>
     <p style="color:#F00; text-align:center">支持排序功能，点击各列标题即可实现以各列值大小排序，再次点击则反向排序，默认以秒杀时间排序！</p>
 	<table class="table-addresslist sortable" rowclass="row1,row2"  border="0"  cellpadding="0" cellspacing="1"  >
 	<tr >
     	<td class="td1" width="40">序</td>	
-		<td class="td1" width="180" align="center">秒杀时间</td>
+		<td class="td1" width="180" align="center">操作时间</td>
+		<td class="td1" width="50" align="center">原因</td>
+		<td class="td1" width="50" align="center">UID</td>
 		<td class="td1" width="80" align="center">姓名</td>
 		<td class="td1" width="50" align="center">学历</td>
 		<td class="td1" align="center">学院</td>
@@ -678,6 +680,8 @@ window.onscroll = onScroll;
 	<tr>
         <td align="center">{$kid}</td>
 		<td align="center">{$member.time|date="m月d日 H:i:s",###}</td>
+		<td align="center"><?=$member[action]=='miaosha'?'秒杀':'抽奖' ?></td>
+		<td align="center">{$member.uid}</td>
 		<td align="center" class="<if condition="$member[gender] eq 1">boyname<else />girlname</if>">{$member.realname}</td>
 		<td align="center">{$member.education}</td>
 		<td align="right">{$member.dept}</td>

@@ -55,6 +55,7 @@ class MlxhAction extends PublicAction {
             $this->error("为保护隐私，登录用户才能查看抽奖用户列表");
         
         $members = M('mlxh_log')->where(array('action'=>'choujiang-gotit'))->select();
+        $members = array_merge($members, M('mlxh_log')->where(array('action'=>'miaosha'))->select());
         $this->showUserList($members);
     }
 
@@ -153,11 +154,14 @@ class MlxhAction extends PublicAction {
         $num = 56;
         $count = M('mlxh_log')->where(array('action'=>'choujiang'))->count();
         $uids = array();
-        while ($num > 0) {
+        while ($num >= 0) {
             $r = rand(0, $count-1);
             $row = M('mlxh_log')->where(array('action'=>'choujiang'))->limit("$r,1")->select();
             $row = $row[0];
             if (M('mlxh_log')->where(array('action'=>'choujiang-gotit', 'uid'=>$row['uid']))->count() > 0) {
+                continue;
+            }
+            if (M('mlxh_log')->where(array('action'=>'miaosha', 'uid'=>$row['uid']))->count() > 0) {
                 continue;
             }
             $uids[] = $row['uid'];
