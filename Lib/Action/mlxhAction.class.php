@@ -49,6 +49,15 @@ class MlxhAction extends PublicAction {
         $this->showUserList($members);
     }
 
+    function choujiangUsers() {
+        $this->headnav();
+        if (CURRENT_USER == 0)
+            $this->error("为保护隐私，登录用户才能查看抽奖用户列表");
+        
+        $members = M('mlxh_log')->where(array('action'=>'choujiang-gotit'))->select();
+        $this->showUserList($members);
+    }
+
     function allUsers() {
         $this->headnav();
         if (CURRENT_USER == 0 || ! D('User')->isDeveloper(CURRENT_USER) && $_GET['token'] != 'mlxhlog')
@@ -137,5 +146,17 @@ class MlxhAction extends PublicAction {
         }
         echo json_encode(array('status'=>true, 'msg'=>$msg));
         exit();
+    }
+
+    function doChoujiang() {
+        $num = 56;
+        $count = M('mlxh_log')->where(array('action'=>'choujiang'))->count();
+        for ($i=0; $i<$num; $i++) {
+            $r = rand() % $count;
+            $row = M('mlxh_log')->where(array('action'=>'choujiang'))->limit("$count,1")->find();
+            $row['action'] = 'choujiang-gotit';
+            M('mlxh_log')->where(array('uid'=>$row['uid']))->save($row);
+            $count--;
+        }
     }
 }
