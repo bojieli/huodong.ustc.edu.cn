@@ -153,9 +153,10 @@ class MlxhAction extends PublicAction {
         $count = M('mlxh_log')->where(array('action'=>'choujiang'))->count();
         for ($i=0; $i<$num; $i++) {
             $r = rand() % $count;
-            $row = M('mlxh_log')->where(array('action'=>'choujiang'))->limit("$count,1")->find();
+            $row = M('mlxh_log')->where(array('action'=>'choujiang'))->limit("$r,1")->find();
+            var_dump($row);
             $row['action'] = 'choujiang-gotit';
-            M('mlxh_log')->where(array('uid'=>$row['uid']))->save($row);
+            $this->savelog($row);
             $count--;
         }
     }
