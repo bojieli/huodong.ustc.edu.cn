@@ -165,6 +165,8 @@ class MlxhAction extends PublicAction {
             $o = M('mlxh_log');
             $o->create($row);
             $o->add();
+            print_r($row);
+            flush();
         }
     }
 }
