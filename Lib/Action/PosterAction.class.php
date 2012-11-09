@@ -271,8 +271,10 @@ class PosterAction extends PublicAction {
         $order = "publish_time";
         if (!empty($_GET['order'])) {
             switch ($_GET['order']) {
-                case 'new': $order = 'publish_time DESC'; break;
-                case 'near': $order = 'end_time asc'; $cond[] = "end_time > '".time()."'"; break;
+                case 'near':
+                    $order = 'end_time asc';
+                    $cond[] = "end_time > '".time()."'"; 
+                    break;
                 case 'follow': 
                     $gid_result = M('User_group')->query("SELECT DISTINCT gid FROM ustc_user_group where uid = '".CURRENT_USER."'");
                     $gid_condition = "(";
@@ -281,9 +283,15 @@ class PosterAction extends PublicAction {
                         $gid_condition .=$v['gid'].",";
                     }
                     $gid_condition .= "-1)";
-                    $cond[] = "gid IN $gid_condition";$order = 'publish_time DESC'; break;
-                    //$cond[] = "EXISTS (SELECT * FROM ustc_user_group AS ug WHERE ug.uid = '".CURRENT_USER."' AND gid = ug.gid)"; break;
-                case 'hot': $order = 'rate_total DESC'; $cond[] = "end_time > '".time()."'"; break;
+                    $cond[] = "gid IN $gid_condition";$order = 'publish_time DESC'; 
+                    break;
+                case 'hot': 
+                    $order = 'rate_total DESC'; $cond[] = "end_time > '".time()."'";
+                    break;
+                default:
+                case 'new': 
+                    $order = 'publish_time DESC';
+                    break;
             }
         }
         $keyword = isset($_GET['keyword']) ? $_GET['keyword'] : '';
