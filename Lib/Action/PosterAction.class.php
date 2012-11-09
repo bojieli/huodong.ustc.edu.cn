@@ -251,6 +251,7 @@ class PosterAction extends PublicAction {
     private function parseInput() {
         $start = is_numeric($_GET['start']) ? $_GET['start'] : 0;
         $num = is_numeric($_GET['num']) ? $_GET['num'] : 0;
+
         $cond = [];
         if (!empty($_GET['start_time'])) {
             $today_epoch = floor(time()/86400)*86400;
@@ -268,42 +269,37 @@ class PosterAction extends PublicAction {
                 case 'month': $cond[] = 'publish_time BETWEEN ('.$today_epoch.' '.($today_epoch+86400*30).')';break;
             }
         }
-        $order = "publish_time";
-        if (!empty($_GET['order'])) {
-            switch ($_GET['order']) {
-                case 'near':
-                    $order = 'end_time asc';
-                    $cond[] = "end_time > '".time()."'"; 
-                    break;
-                case 'follow': 
-                    $gid_result = M('User_group')->query("SELECT DISTINCT gid FROM ustc_user_group where uid = '".CURRENT_USER."'");
-                    $gid_condition = "(";
-                    foreach($gid_result as $v)
-                    {
-                        $gid_condition .=$v['gid'].",";
-                    }
-                    $gid_condition .= "-1)";
-                    $cond[] = "gid IN $gid_condition";$order = 'publish_time DESC'; 
-                    break;
-                case 'hot': 
-                    $order = 'rate_total DESC'; $cond[] = "end_time > '".time()."'";
-                    break;
-                default:
-                case 'new': 
-                    $order = 'publish_time DESC';
-                    break;
-            }
-        }
-        $keyword = isset($_GET['keyword']) ? $_GET['keyword'] : '';
+        $keyword = isset($_GET['keyword']) ? addslashes($_GET['keyword']) : '';
         if(!empty($keyword))
-        {
             $cond[] = "(name like '%$keyword%' or place like '%$keyword%' or description like '%$keyword%')";
-        }
-        $sid = isset($_GET['sid']) ? $_GET['sid'] : '';
+        $sid = is_numeric($_GET['sid']) ? $_GET['sid'] : 1;
         if(!empty($sid))
-        {
             $cond[] = "(sid = $sid)";
+
+        switch ($_GET['order']) {
+            case 'near':
+                $order = 'end_time asc';
+                $cond[] = "end_time > '".time()."'"; 
+                break;
+            case 'follow': 
+                $gid_result = M('User_group')->query("SELECT DISTINCT gid FROM ustc_user_group where uid = '".CURRENT_USER."'");
+                $gid_condition = "(";
+                foreach($gid_result as $v)
+                {
+                    $gid_condition .=$v['gid'].",";
+                }
+                $gid_condition .= "-1)";
+                $cond[] = "gid IN $gid_condition";$order = 'publish_time DESC'; 
+                break;
+            case 'hot': 
+                $order = 'rate_total DESC'; $cond[] = "end_time > '".time()."'";
+                break;
+            default:
+            case 'new': 
+                $order = 'publish_time DESC';
+                break;
         }
+
         return [$start, $num, implode(' AND ', $cond), $order];
     }
 
