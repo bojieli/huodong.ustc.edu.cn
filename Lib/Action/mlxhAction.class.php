@@ -3,7 +3,7 @@ class MlxhAction extends PublicAction {
     function isTheDay() {
         date_default_timezone_set('Asia/Chongqing');
         $t = localtime(time(), true);
-        return $t['tm_mon']+1 == 10 || ($t['tm_mon']+1 == 11 && $t['tm_mday'] <= 8);
+        return $t['tm_mon']+1 == 10 || ($t['tm_mon']+1 == 11 && $t['tm_mday'] <= 10);
     }
 
     function index() {
