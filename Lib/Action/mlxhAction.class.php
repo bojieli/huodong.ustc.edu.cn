@@ -51,8 +51,8 @@ class MlxhAction extends PublicAction {
 
     function choujiangUsers() {
         $this->headnav();
-        if (CURRENT_USER == 0)
-            $this->error("为保护隐私，登录用户才能查看抽奖用户列表");
+        //if (CURRENT_USER == 0)
+        //    $this->error("为保护隐私，登录用户才能查看抽奖用户列表");
         
         $members = M('mlxh_log')->where(array('action'=>'choujiang-gotit'))->select();
         $members = array_merge($members, M('mlxh_log')->where(array('action'=>'miaosha'))->select());

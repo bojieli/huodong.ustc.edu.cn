@@ -123,6 +123,7 @@ body{
 </object>
     </div>
     <div id="mlxh_content">
+    <!--
     <if condition="empty($theday)">
       <span id="daojishi">秒杀和抽奖将于11月1日开始，请耐心等待 :)</span>
     <elseif condition="$_G['uid'] == 0" />
@@ -130,17 +131,19 @@ body{
       <a id="mlxh_login" class="button" href="/User/login">登录</a>
       <span id="daojishi">需要注册或登录才能秒杀、抽奖及查看结果</span>
     <elseif condition="empty($miaoshaguole)" />
-      <!--<a id="mlxh_miaosha" class="button disabled" style="cursor:pointer">秒杀</a>-->
+      <a id="mlxh_miaosha" class="button disabled" style="cursor:pointer">秒杀</a>
       <a id="mlxh_choujiang" class="button" style="cursor:pointer">抽奖</a>
       <span id="daojishi">载入中……</span>
     <else />
       <span id="daojishi">恭喜你，秒杀成功！ <a target="_blank" href="/mlxh/miaoshaUsers"> 查看结果</a></span>
     </if>
-<if condition="!empty($_G[uid])">
+    -->
+    <span id="daojishi">活动已结束，谢谢参与！</span>
+<!--<if condition="!empty($_G[uid])">-->
   <div>
     <span><a target="_blank" href="/mlxh/choujiangUsers" style="color:red;font-size:16px">查看秒杀及抽奖成功者名单</a></span>
  </div>
-</if>  
+<!--</if>-->
     </div>
     
     <div style="font-size:14px; color:#96F; position:absolute; top:610px; right:0px;">技术支持：
