@@ -61,8 +61,7 @@ function getwindowH(){
 getwindowH();
 //-->
 </script>
-<script type="text/javascript">  
-        const AUTO_CLOSE_DELAY_SECONDS = 5;
+<script type="text/javascript">
         function init() {  
             if (window.webkitNotifications) {  
                 window.webkitNotifications.requestPermission();  
@@ -79,8 +78,7 @@ $(window).bind('focus',function(){
 			},100);
 					  });
 	$(window).bind('blur',function(){localStorage.state='blur';});
-};
-const AUTO_CLOSE_DELAY_SECONDS = 5; 
+}; 
 function init() {  
             if (window.webkitNotifications) {  
                 window.webkitNotifications.requestPermission();  
@@ -88,7 +86,7 @@ function init() {
         };	
 function notify(msg,name,img_url){  
             var icon = img_url;  
-            var title = name+"[" + new Date().toLocaleTimeString() + "]--" + AUTO_CLOSE_DELAY_SECONDS + "秒后关闭";  
+            var title = name+"[" + new Date().toLocaleTimeString() + "]--" + 5 + "秒后关闭";  
             var body = msg;
             if (window.webkitNotifications) {  
                 if (window.webkitNotifications.checkPermission() == 0) {  
@@ -105,7 +103,7 @@ function notify(msg,name,img_url){
 						};
 						setTimeout(function() {  
                             event.currentTarget.cancel();  
-                        },AUTO_CLOSE_DELAY_SECONDS * 1000);  
+                        },5*1000);  
                     }  
                     popup.show();  
                 } else {  
@@ -114,7 +112,8 @@ function notify(msg,name,img_url){
                 }
 			}
         };
-function gundong(){
+function gundong()
+{
 e=document.getElementById("xinxixq");
 e.scrollTop=e.scrollHeight;
 };
