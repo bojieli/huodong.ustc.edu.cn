@@ -154,7 +154,7 @@ class MlxhAction extends PublicAction {
         $num = 56;
         $count = M('mlxh_log')->where(array('action'=>'choujiang'))->count();
         $uids = array();
-        while ($num >= 0) {
+        while ($num > 0) {
             $r = rand(0, $count-1);
             $row = M('mlxh_log')->where(array('action'=>'choujiang'))->limit("$r,1")->select();
             $row = $row[0];
