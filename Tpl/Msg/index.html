@@ -202,7 +202,12 @@ function checkMsg()
 		}, 'json');
     return false;
 };
+function key_sumit() 
+{
+   if (event.keyCode == 13){sendMsg();return false;}
+}
 setInterval("checkMsg()",5000);
+document.onkeydown = key_sumit;
 </script>
 
 
