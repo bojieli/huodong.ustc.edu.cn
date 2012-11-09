@@ -68,9 +68,18 @@ class MlxhAction extends PublicAction {
         foreach ($members as $key => $member) {
             $user = M('user')->find($member['uid']);
             if (!empty($user)) {
-                  $HOST = $_SERVER['HTTP_HOST'];
-                  $realname = $user['realname'];
-                  $msg = "$realname 您好:
+                  doSendEmail($user['email'], $user['realname']);
+            }
+        }
+    }
+
+    function doSendEmail($email='', $realname='') {
+        if (empty($email))
+            $email = $_GET['email'];
+        if (empty($realname))
+            $realname = $_GET['realname'];
+        $HOST = $_SERVER['HTTP_HOST'];
+        $msg = "$realname 您好:
 
   恭喜您在美丽邂逅抢票网站抢票成功！非常感谢您对我们活动的支持，现通知您领取门票，具体事项如下：
 
@@ -84,9 +93,7 @@ class MlxhAction extends PublicAction {
 
                                                                     美丽邂逅项目组
 ";
-                SendMail($user['email'], "美丽邂逅取票通知", $msg);
-            }
-        }
+               SendMail($email, "美丽邂逅取票通知", $msg);
     }
 
     function allUsers() {
