@@ -53,7 +53,14 @@ class ClubAction extends PublicAction {
                 );
         $schools =  array_merge($school_all,$schools);
         $schools = json_encode($schools);
+		
+		list($start, $num, $filter,$keyword,$sid) = $this->parseInput();
+        $clubs = D('Club')->getClub(0, 8, $filter,$keyword,$sid);
+        $elements = [];
+        foreach ($clubs as $club)
+            $php_club.= $this->club2html($club);
 
+        $this->assign('php_club', $php_club);
         $this->assign('schools', $schools);
         $this->assign('keyword', $keyword);
         $this->assign('sid', $sid);
@@ -662,14 +669,19 @@ class ClubAction extends PublicAction {
 
     private function club2html($club) {
         return '<li class="hide">'.
-            '<div class="celldiv"><a target="_blank" href="/Club/intro?gid='.$club->gid().'">'.
-            '<p class="title">'.$club->name().'</p></a>'.
+            '<div class="celldiv">
+			<div itemscope itemtype="http://data-vocabulary.org/Organization">
+			<a target="_blank" href="/Club/intro?gid='.$club->gid().'" itemprop="url">'.
+            '<p class="title" itemprop="name">'.$club->name().'</p>
+			</a>'.
             $this->clubLogoThumbHtml($club).
             '<div class="intro">'.$club->shortdesc().'</div>'.
             '<div class="detail"><div class="hot">注册会员：'.$club->memberCount().'人'.
             $this->apply2html($club->gid()).
             '</div></div>'.
-            '<div class="school">'.$club->schoolName($club->gid()).'</div></div></li>';
+            '<div class="school">'.$club->schoolName($club->gid()).'</div>
+			</div>
+			</div></li>';
     }
 
     private function clubLogoThumbHtml($club) {

@@ -17,7 +17,7 @@
 var  loadflag = 2;
 var  nomoreflag = 0;
 	var loadmore = (function() {
-		var posterCounter = 0;
+		var posterCounter = 8;
 		var ajaxLock = false;
 		var noMore = false;
 		return function(loadnum) {
@@ -170,6 +170,7 @@ window.onresize=function(){
 </div><!--topcon-->
 <div id="content">
   <ul style="min-height: 600px; ">
+  {$php_club}
   </ul>
 			
 <div id="haibao-onmoreloading">已经到底了 ^_^ </div>			
