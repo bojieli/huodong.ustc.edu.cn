@@ -69,24 +69,20 @@ class MsgAction extends PublicAction {
     {
         global $_G;
         if(!D('User')->checkLogin()){$this->error('未登陆');}
-        
 		$num=$this->_post('num');
         $uid=$_G['uid'];
         $re=D('Msg')->ajaxCheck($uid);
-        if($re[2]['uid']==''){$this->error($info);};
+        if($re[2]['uid']!=''){
         $info['tid']=$re[2]['uid'];
 		$info['name']=D('User')->getRealname($re[2]['uid']);
 		$info['msg']=$re[2]['msg'];
         $info['img_url']=D('User')->getAvatar($re[2]['uid'],$size='small');
-		$info['num'] = $re[0];
-        //dump($info);
-        //die;
-		$this->success($info);
-    }
-    public function test()
-    {
-        $tid=5;
-        D('Msg')->readedMsg('',$tid);
+		}
+		else{$info['tid']='';}
+		$info['duihua_num'] = $re[0];
+		$info['sys_num'] = $re[1];
+        $this->success($info);
+		
     }
     public function ajax_read()
     {

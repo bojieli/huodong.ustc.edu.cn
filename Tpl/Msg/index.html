@@ -66,10 +66,8 @@ getwindowH();
             if (window.webkitNotifications) {  
                 window.webkitNotifications.requestPermission();  
             }  
-        }  
-          
+        }       
 </script> 
-
 <script type="text/javascript">
 if(window.localStorage){
 $(window).bind('focus',function(){
@@ -127,12 +125,14 @@ function msg_append()
     var vDay = d.getDate();
     var h = d.getHours(); 
     var m = d.getMinutes();
-	var vtime = vYear+'年'+vMon+'月'+vDay+'日  '+h+':'+m;
+	var s = d.getSeconds();
+	var vtime = vYear+'年'+vMon+'月'+vDay+'日  '+h+':'+m+':'+s;
 	ts_url=$("#sent_msg").attr("action");
 	ts=ts_url.substr(14);
 	var duihua_tid='#ajax_'+ts;
+	var duihua_tid2='.'+ts+'_tid';
 	$(duihua_tid).children('.activitydetail').children('span').text(tmp);
-	$("tbody").append('<tr><td><div class="sharp1 color5"><div class="content"> <p style="font-size:16px; font-family:Microsoft YaHei; color:#F0F; text-align:left; margin:0 ;">'+tmp+'</p> <p style="font-size:12px; color:#999;font-family:Microsoft YaHei; text-align:right;margin:5px 0px 0 0;">'+vtime+'</p></div></div> </td> </tr>');
+	$(duihua_tid2).children('table').children('tbody').append('<tr><td><div class="sharp1 color5"><b class="b1"></b><b class="b2"></b><b class="b3"></b><b class="b4"></b><div class="content"> <p style="font-size:16px; font-family:Microsoft YaHei; color:#F0F; text-align:left; margin:0 ;">'+tmp+'</p> <p style="font-size:12px; color:#999;font-family:Microsoft YaHei; text-align:right;margin:5px 0px 0 0;">'+vtime+'</p></div><b class="b5"></b><b class="b6"></b><b class="b7"></b><b class="b8"></b></div></td></tr>');
 	e=document.getElementById("xinxixq");
     e.scrollTop=e.scrollHeight;
 	//$('.activitynotice').scrollTop(10*$('.activitynotice').height());
@@ -146,7 +146,8 @@ function msg_append2(msg)
     var vDay = d.getDate();
     var h = d.getHours(); 
     var m = d.getMinutes();
-	var vtime = vYear+'年'+vMon+'月'+vDay+'日  '+h+':'+m;
+    var s = d.getSeconds();
+	var vtime = vYear+'年'+vMon+'月'+vDay+'日  '+h+':'+m+':'+s;
 	var tid_tmp =d.getTime();
 	//ts_url=$("#sent_msg").attr("action");
 	//ts=ts_url.substr(14);
@@ -154,7 +155,12 @@ function msg_append2(msg)
 	//alert(duihua_tid);
 	//$(duihua_tid).children('.activitydetail').children('span').text(msg);
 	//$("tbody").append('<tr><td><div class="sharp color2"><canvas id="mycanvas'+tid_tmp+'"height="10" width="10" style="float:right;margin-right:8px;"><\/canvas><script type="text\/javascript">var c1=document.getElementById("mycanvas'+tid_tmp+'"); var cxt=c1.getContext("2d"); cxt.fillStyle="#FFF5FA";cxt.strokeStyle="#FFF5FA";cxt.moveTo(0,0); cxt.lineTo(10,10);cxt.lineTo(10,0);cxt.lineTo(0,0);cxt.fill();cxt.stroke();<\/script><div class="content"><p style="font-size:16px; font-family:Microsoft YaHei; color:#03F; text-align:left; margin:0 ;">'+tmp+'<\/p><p style="font-size:12px; color:#999;font-family:Microsoft YaHei; text-align:right;margin:5px 0px 0 0;">'+vtime+'<\/p><\/div><\/td> <\/tr>');
-	$("tbody").append('<tr><td><div class="sharp color2"><div class="content"><p style="font-size:16px; font-family:Microsoft YaHei; color:#03F; text-align:left; margin:0 ;">'+tmp+'<\/p><p style="font-size:12px; color:#999;font-family:Microsoft YaHei; text-align:right;margin:5px 0px 0 0;">'+vtime+'<\/p><\/div><\/td> <\/tr>');
+	//$("tbody").append('<tr><td><div class="sharp color2"><div class="content"><p style="font-size:16px; font-family:Microsoft YaHei; color:#03F; text-align:left; margin:0 ;">'+tmp+'<\/p><p style="font-size:12px; color:#999;font-family:Microsoft YaHei; text-align:right;margin:5px 0px 0 0;">'+vtime+'<\/p><\/div><\/td> <\/tr>');
+	//$("tbody").append('<tr><td><div class="sharp color2"><b class="b1"></b><b class="b2"></b><b class="b3"></b><b class="b4"></b><div class="content"><p style="font-size:16px; font-family:Microsoft YaHei; color:#03F; text-align:left; margin:0 ;">'+tmp+'<\/p><p style="font-size:12px; color:#999;font-family:Microsoft YaHei; text-align:right;margin:5px 0px 0 0;">'+vtime+'<\/p><b class="b5"></b><b class="b6"></b><b class="b7"></b><b class="b8"></b></div></td></tr>');
+	ts_url=$("#sent_msg").attr("action");
+	ts=ts_url.substr(14);
+	var duihua_tid2='.'+ts+'_tid';
+	$(duihua_tid2).children('table').children('tbody').append('<tr><td><div class="sharp color2"><b class="b1"></b><b class="b2"></b><b class="b3"></b><b class="b4"></b><div class="content"> <p style="font-size:16px; font-family:Microsoft YaHei; color:#03F; text-align:left; margin:0 ;">'+tmp+'</p> <p style="font-size:12px; color:#999;font-family:Microsoft YaHei; text-align:right;margin:5px 0px 0 0;">'+vtime+'</p></div><b class="b5"></b><b class="b6"></b><b class="b7"></b><b class="b8"></b></div></td></tr>');
 	e=document.getElementById("xinxixq");
     e.scrollTop=e.scrollHeight;
 	//$('.activitynotice').scrollTop(10*$('.activitynotice').height());
@@ -180,22 +186,28 @@ function checkMsg()
 	$.post(url,{num:mm}, function (data) {
 		if(data.status==1)
 		{
-		 if(data.info=='') return false;
-		 ms=data.info.msg;
-		 if(ms=='') return false;
-		 $(".duihua_num").text(data.info.num);
-		 var duihua_tid='#ajax_'+data.info.tid;
-		 name=data.info.name;
-		 //alert(data.info.msg);
-		 $(duihua_tid).children('.activitydetail').children('span').text(ms);
-		 msg_append2(ms);
-		 img_url=data.info.img_url;
-         if(localStorage.getItem("state")=="blur"){
-				notify(ms,name,img_url);	
+		 if(data.info.tid!='')
+			{
+				ms=data.info.msg;
+				 var duihua_tid='#ajax_'+data.info.tid;
+				 name=data.info.name;
+				 //alert(data.info.msg);
+				 $(duihua_tid).children('.activitydetail').children('span').text(ms);
+				 msg_append2(ms);
+				 img_url=data.info.img_url;
+				 if(localStorage.getItem("state")=="blur"){
+						notify(ms,name,img_url);	
+					}
+				 var audio = document.createElement("audio");
+					audio.src = "static/audio/msg.wav";
+				 audio.play();
 			}
-		 var audio = document.createElement("audio");
-			audio.src = "static/audio/msg.wav";
-		 audio.play();
+		$(".duihua_num").text(data.info.duihua_num);
+		 $(".sys_num").text(data.info.sys_num);
+		 all_num=parseInt(data.info.duihua_num)+parseInt(data.info.sys_num);
+		 $(".all_num").text(all_num);
+		 setTimeout("checkMsg()",5000);
+		 return true;
 		}
     return false;
 		}, 'json');
@@ -205,7 +217,8 @@ function key_sumit()
 {
    if (event.keyCode == 13){sendMsg();return false;}
 }
-setInterval("checkMsg()",5000);
+//setInterval("checkMsg()",5000);
+checkMsg();
 document.onkeydown = key_sumit;
 </script>
 
@@ -233,7 +246,7 @@ document.getElementById("mainbody2").style.height=hhh-92+'px';
   <div style="width:100%;margin:0px;"> 
     <span class="sys_num" style="color:#F0C; margin-left:20px;display:none">{$msg_num['sys_num']}</span>
     <span class="duihua_num" name="num" style="color:#F0C; margin-left:20px;display:none">{$msg_num['dialog_num']}</span>
-    <span class="all_num" style="color:#F0C; margin-left:20px;">{$msg_num['total_num']}</span>封
+    <span class="all_num" style="color:#F0C; margin-left:20px;margin-right:4px">{$msg_num['total_num']}</span>封
             未读 <!--| 共10封 | 
             选择显示<select>
             		<option>------</option>
@@ -277,7 +290,7 @@ document.getElementById("leftscroll").style.height=hhh-140+"px";
 						<img src="static/images/del.png" alt="删除" style="width:15px;height:15px;"/>
 					</div>
 					<br>
-						<span style="font-size:16px;">{$vo['realname']} {$vo['school']} <if condition="$vo.gender eq 1">男生<else />女生</if> </span>
+						<span style="font-size:16px;">{$vo['realname']} {$vo['school']} <if condition="$vo.gender eq 1">男<else />女</if> </span>
 					</div>
 					<input name="tid" class="input_tid" type="hidden" value="{$key}"/>
 					<div class="activitydetail">
@@ -305,6 +318,7 @@ document.getElementById("leftscroll").style.height=hhh-140+"px";
 						<span style="font-size:16px;">{$vk.name}</span>
 					</div>
 					<input name="sys_key" class="sys_key" type="hidden" value="{$vk.pid}"/>
+					<input name="read_status" class="read_status" type="hidden" value="{$vk.status}"/>
 					<div class="activitydetail">
 						<span>主题：{$vk.title}</span>
 					</div>            
@@ -335,7 +349,7 @@ document.getElementById("mainright").style.height=hhh-140+"px";
 	</script>
 	   <volist name="sys" id="vd">
 		<notempty name="vd.gid">
-			<div id="huodong11" class="{$vd.pid}_sys" style="display: none; "><!--包含活动信息输出框-->
+			<div class="{$vd.pid}_sys huodong11" style="display: none; "><!--包含活动信息输出框-->
 			{$vd.msg}
 			<br>
 			<div style="font-size:12px; color:#999;font-family:Microsoft YaHei; text-align:right; margin:10px;">
@@ -346,7 +360,7 @@ document.getElementById("mainright").style.height=hhh-140+"px";
 			<!--活动信息输出框-->
 	   </volist>
 	<volist name="info" id="tmp">
-		<div id="duihua11" class="{$key}_tid" style="display:none; "><!--对话详情框-->
+		<div class="{$key}_tid duihua11" style="display:none; "><!--对话详情框-->
 			<table width="665" cellpadding="0" cellspacing="0" border="0" align="left" style="margin:0px 0px 0px 10px;">
 				<tbody>
 		
@@ -357,10 +371,10 @@ document.getElementById("mainright").style.height=hhh-140+"px";
 							  <!--风格二，只需要变换一个CLASS就可以换一种颜色-->
 							
 							<div class="sharp color2" style="border:0px">
-								<canvas id="{$key}mycanvas"height="10" width="10" style="margin-left:8px">
-								</canvas>
+								<!--canvas id="{$key}mycanvas"height="10" width="10" style="margin-left:8px">
+								</canvas-->
 								
-								<!--b class="b1"></b><b class="b2"></b><b class="b3"></b><b class="b4"></b--> 
+								<b class="b1"></b><b class="b2"></b><b class="b3"></b><b class="b4"></b> 
 								<div class="content">
 								<p style="font-size:16px; font-family:Microsoft YaHei; color:#03F; text-align:left;margin:0;">
 								{$vo.msg}
@@ -370,7 +384,7 @@ document.getElementById("mainright").style.height=hhh-140+"px";
 								</p>
 								</div>
 								<!--b class="b5"></b><b class="b6"></b><b class="b7"></b><b class="b8"></b-->    
-								<script type="text/javascript">
+								<!--script type="text/javascript">
 								var c=document.getElementById("{$key}mycanvas");
 								var cxt=c.getContext("2d");
 								cxt.fillStyle='#F0FBEB';
@@ -383,7 +397,8 @@ document.getElementById("mainright").style.height=hhh-140+"px";
 								cxt.lineTo(0,0);
 								cxt.fill();
 								cxt.stroke();
-								</script>
+								</script-->
+								<b class="b5"></b><b class="b6"></b><b class="b7"></b><b class="b8"></b>    
 							</div>
 						 </td>
 					 </tr>
@@ -392,7 +407,7 @@ document.getElementById("mainright").style.height=hhh-140+"px";
 						 <td>
 							  <!--风格五，只需要变换一个CLASS就可以换一种颜色-->
 							<div class="sharp1 color5"style="border-radius:5px">
-								<!--b class="b1"></b><b class="b2"></b><b class="b3"></b><b class="b4"></b--> 
+								<b class="b1"></b><b class="b2"></b><b class="b3"></b><b class="b4"></b> 
 								<div class="content">
 								  <p style="font-size:16px; font-family:Microsoft YaHei; color:#F0F; text-align:left; margin:0 ;">
 								  {$vo.msg}
@@ -402,9 +417,9 @@ document.getElementById("mainright").style.height=hhh-140+"px";
 								  </p>
 								</div>
 								
-								<canvas id="mycanvas{$key}"height="10" width="10" style="float:right;margin-right:8px;">
-								</canvas>
-								<script type="text/javascript">
+								<!--canvas id="mycanvas{$key}"height="10" width="10" style="float:right;margin-right:8px;">
+								</canvas-->
+								<!--script type="text/javascript">
 								var c1=document.getElementById('mycanvas{$key}');
 								var cxt=c1.getContext("2d");
 								cxt.fillStyle='#FFF5FA';
@@ -417,8 +432,8 @@ document.getElementById("mainright").style.height=hhh-140+"px";
 								cxt.lineTo(0,0);
 								cxt.fill();
 								cxt.stroke();
-								</script>
-								<!--b class="b5"></b><b class="b6"></b><b class="b7"></b><b class="b8"></b-->    
+								</script-->
+								<b class="b5"></b><b class="b6"></b><b class="b7"></b><b class="b8"></b>    
 							</div>
 						 </td>
 					 </tr>

@@ -63,10 +63,10 @@ class MsgModel extends Model {
     {
         global $_G;
         $uid = $_G['uid'];
-        $re=$this->where('(uid='.$uid.'&&to_uid='.$to_uid.')||(uid='.$to_uid.'&&to_uid='.$uid.')')->select();	
+        $re=$this->where('(uid='.$uid.'&&to_uid='.$to_uid.')||(uid='.$to_uid.'&&to_uid='.$uid.')')->order('time')->select();	
                 foreach($re as $row =>$val)
                 {
-                $re[$row]['humanDate']=date("Y年n月j日 H:i", $val['time']);
+                $re[$row]['humanDate']=date("Y年n月j日 H:i:s", $val['time']);
                 }
                 //$this->openDialog($uid,$to_uid);
 				return $re;
@@ -128,10 +128,11 @@ class MsgModel extends Model {
                     $uid = $_G['uid'];
 					$syscon['tid']=$uid;
 					$syscon['status']=array('neq',-1);
-                    $pids=M('Msg_sys')->field('pid')->where($syscon)->select();
-                    foreach($pids as $pid){
+                    $pids=M('Msg_sys')->field('pid,status')->where($syscon)->select();
+                    foreach($pids as $pid_row =>$pid){
 					$msg[]=M('Msg_sys_content')->where(array('pid'=>$pid['pid']))->find();
-                    }
+					$msg[$pid_row]['status']=$pid['status'];
+					}
 					foreach($msg as $row =>$val)
                     {
                         $msg[$row]['humanDate']=date("Y年n月j日 H:i", $val['time']);
