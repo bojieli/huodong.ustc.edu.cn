@@ -54,7 +54,7 @@ class MsgModel extends Model {
 		$co['to_uid']=$_G['uid'];
 		$co['status']=0;       
         $m=$this->where($co)->count();
-		$con['to_uid']=$_G['uid'];
+		$con['tid']=$_G['uid'];
 		$con['status']=0;       
         $n=M('Msg_sys')->where($con)->count();
 		return array('total_num'=>$m+$n,'dialog_num'=>$m,'sys_num'=>$n);
@@ -85,32 +85,57 @@ class MsgModel extends Model {
 
                 $this->data($data)->add();      
                 }
-                public function sentMsgForSys($time,$title,$msg,$tid,$gid){
-                    $data=array(
+                public function sentMsgForSys($time,$title,$msg,$tids,$gid){
+                    if($tids=='ALL')
+					{
+						$tids2=M('User_group')->field('uid')->where(array('gid'=>$gid))->select();
+						foreach($tids2 as $ch){
+						   $tids_tmp[]=$ch['uid'];
+						}
+						$tids=$tids_tmp;
+					}
+					foreach($tids as $val)
+					{
+						$vals.=$val.';';
+					}
+					$data=array(
                             'time'=>$time,
                             'title'=>$title,
                             'msg'=>$msg,
-                            'tid'=>$tid?$tid:0,
+                            'tid'=>$vals,
+                            'gid'=>$gid,
+                            );
+                    M('Msg_sys_content')->data($data)->add();
+					$pid=M('Msg_sys_content')->field('pid')->where($data)->find()['pid'];
+					 foreach($tids as $tid)
+					{
+						if(!empty($tid)){
+						$this->sentMsgForSysToPer($pid,$tid,$gid);
+						}
+					}
+                }
+				public function sentMsgForSysToPer($pid,$tid,$gid){
+					$data=array(                          
+                            'pid'=>$pid,
+							'tid'=>$tid,
                             'gid'=>$gid,
                             'status'=>0
                             );
-                    M('Msg_sys')->data($data)->add();      
-                }
-                public function showSysMsg(){
+                    M('Msg_sys')->data($data)->add();
+				}
+				public function showSysMsg(){
                     global $_G;
                     $uid = $_G['uid'];
-                    //$con['tid']=$_G['uid'];
-                    //$gids=M('Msg_sys')->field('gid')->where($con)->group('gid')->select();
-                    //foreach($gids as $row => $val)
-                    //{
-                    $msg=M('Msg_sys')->where(array('tid'=>$uid))->select();
-                    foreach($msg as $row =>$val)
+					$syscon['tid']=$uid;
+					$syscon['status']=array('neq',-1);
+                    $pids=M('Msg_sys')->field('pid')->where($syscon)->select();
+                    foreach($pids as $pid){
+					$msg[]=M('Msg_sys_content')->where(array('pid'=>$pid['pid']))->find();
+                    }
+					foreach($msg as $row =>$val)
                     {
                         $msg[$row]['humanDate']=date("Y年n月j日 H:i", $val['time']);
                     }
-
-
-
                     $con = array(
                             'tid'=>$uid,
                             'status'=>0
@@ -156,6 +181,16 @@ public function readedMsg($id,$tid){
                     };
                     return false;    
                 }
+public function readedMsgForSys($pid){
+	global $_G;
+	$uid=$_G['uid'];
+	$date=array(
+			'status'=>1
+			);
+	$con['pid']=$pid;
+	$con['tid']=$uid;
+	M('Msg_sys')->where($con)->data($date)->save();
+}
 public function closeDialog($uid,$tid){
 				if(empty($uid)||empty($tid)){return 'uid or tid is empty';};
 				$data=array('status'=>0);
@@ -210,6 +245,37 @@ public function addSomeTids($rt){
 				}
 				return $rt;
 }
-
+public function posterMsg($aid){
+	$poster = M('Poster')->find($aid);
+	$poster['Start_time']=date('n月j日 H:i:s',$poster['start_time']);
+	$poster['End_time']=date('n月j日 H:i:s',$poster['end_time']);
+	$title=$poster['name'];
+	$msg='
+	<table width="635" cellpadding="0" cellspacing="0" border="0" align="left" style="margin:0px 0px 0px 40px; color:#000;">
+        <tbody>
+          <tr>
+            <td colspan="3" align="center" style="color: #09C; font-size:18px;">'.$title.'</td>
+          </tr>
+          <tr height="23" valign="bottom">
+            <td colspan="2" align="center">
+			<img style="width:250px;height:350px;margin-top:10px" src="/upload/poster/thumb/thumb_'.$poster['poster'].'" alt="海报" class="poster_img" />
+			</td>
+          </tr>
+            <td height="30px" style="font-size:14px">活动链接：</td>
+            <td><span style="color: #09F;"><a href="/Poster/singlePage?aid='.$aid.'">http://huodong.ustc.edu.cn/Poster/singlePage?aid='.$aid.'</a></span><div style="float:right;font-size:12px; font-weight:normal;"></div></td>
+            <td></td>          
+          </tr>
+          <tr height="20px">
+            <td style="font-size:14px">活动时间：</td>
+            <td>'.$poster['Start_time'].'-'.$poster['End_time'].'</td>       
+          </tr>
+          <tr height="20px">
+            <td style="font-size:14px">活动地点：</td>
+            <td>'.$poster['place'].'</td>       
+          </tr>
+        </tbody>
+    </table>';
+return array($title,$msg);
+}
 }//
 ?>

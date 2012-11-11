@@ -88,7 +88,6 @@ class PosterAction extends PublicAction {
 
     public function insert() {
         $gid = $this->getInputGid();
-
         if (!(A('Club')->isManager($gid))) {
             $this->assign('jumpUrl', "/");
             $this->error("抱歉，只有会长和部长级别的会员才能发布海报");
@@ -119,16 +118,18 @@ class PosterAction extends PublicAction {
 		$poster['sid'] = M('Club')->result_first("SELECT sid FROM ustc_club where gid = $gid");
         $obj = M('Poster');
         $re=$obj->create($poster);
-		
 		$qrid=$this->_post('qrid');
 		$obj->add();
-        if($qrid!=0){
-			$aid=$obj->where($re)->find()['aid'];
+        $aid=$obj->where($re)->find()['aid'];
+		if($qrid!=0){
 			M('Qr')->where(array('id'=>$qrid))->data(array('aid'=>$aid,'status'=>2,'status_time'=>time()))->save();
         }
 		D('Club')->incPosterCount($gid);
-
-        $this->assign('jumpUrl', "/");
+		
+		list($title,$msg)=D('Msg')->posterMsg($aid);
+		D('Msg')->sentMsgForSys(time(),$title,$msg,$tids='ALL',$gid);
+		
+		$this->assign('jumpUrl', "/");
         $this->success("海报发布成功！");
     }
 

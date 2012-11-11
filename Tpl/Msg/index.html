@@ -295,15 +295,17 @@ document.getElementById("leftscroll").style.height=hhh-140+"px";
 			<volist name="sys" id="vk">
 				<notempty name="vk.gid">
 				<div class="activity" style="background-color: rgb(230, 230, 250); background-position: initial initial; background-repeat: initial initial; ">
-					<img src="/static/Tooolove_files/TA.png">
-					<div class=" activitytitle">来自<span style="color:#F8C; ">活动：{$vk.name}</span><br>
-						<span style="font-size:16px;">{$vk.title}</span>
+					<img src="/upload/ueditor/{$vk.logo}">
+					<div class=" activitytitle">来自<span style="color:#F8C; ">活动：</span>
+						<div class="close_sys" style="float:right">
+							<img src="static/images/del.png" alt="删除" style="width:15px;height:15px;"/>
+						</div><br>
+						<span style="font-size:16px;">{$vk.name}</span>
 					</div>
-					<input name="sys_key" class="sys_key" type="hidden" value="{$key}"/>
-					<!--div class="activitydetail">
-						<span>
-						</span>
-					</div-->            
+					<input name="sys_key" class="sys_key" type="hidden" value="{$vk.pid}"/>
+					<div class="activitydetail">
+						<span>主题：{$vk.title}</span>
+					</div>            
 				</div>
 				</notempty>
 			</volist>
@@ -331,12 +333,13 @@ document.getElementById("mainright").style.height=hhh-140+"px";
 	</script>
 	   <volist name="sys" id="vd">
 		<notempty name="vd.gid">
-			<div id="huodong11" class="{$key}_sys" style="display: none; "><!--包含活动信息输出框-->
+			<div id="huodong11" class="{$vd.pid}_sys" style="display: none; "><!--包含活动信息输出框-->
 			{$vd.msg}
+			<br>
+			<div style="font-size:12px; color:#999;font-family:Microsoft YaHei; text-align:right; margin:10px;">
+		    推送时间：{$vd.humanDate}
 			</div>
-			<p style="font-size:12px; color:#999;font-family:Microsoft YaHei; text-align:left; margin:5px 0px 0 0;">
-			{$vo.humanDate}
-			</p>
+			</div>
 		</notempty>	
 			<!--活动信息输出框-->
 	   </volist>

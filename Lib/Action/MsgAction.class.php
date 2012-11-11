@@ -3,6 +3,8 @@ class MsgAction extends PublicAction {
 
     public function index(){
         if(!D('User')->checkLogin()){$this->error('未登陆');}
+		//$tids=array(5,99);
+		//D('Msg')->sentMsgForSys(time(),'啦啦啦','轻武器协会',$tids,$gid=9);
 		$this->show();
         $this->display();
     }
@@ -15,26 +17,28 @@ class MsgAction extends PublicAction {
 		$show=$model->showMsgFromMe($tid);//对话消息
         //dump($show);
         //die;
-        //$model->sentMsgForSys(time(),'科考学会邀请你加入','1385545465465454684654',3,3);
         $sys_msg=$model->showSysMsg();//系统消息
-        //dump($sys_msg);
-        //die;
+        
+       //die;
         foreach($show[1] as $raw => $val)
         {
             $tid_info[$val['to_uid']]=D('User')->getInfo($val['to_uid']);
             //dump($tid_info[$val['to_uid']]);
 			$tid_info[$val['to_uid']]['last_dialog'] = $show[0][$val['to_uid']][count($show[0][$val['to_uid']])-1];
         }
-        foreach($sys_msg as $raw1 => $val1)
+        foreach($sys_msg[0] as $raw1 => $val1)
         {
             $sys_msg[0][$raw1]['name']=M('Club')->field('name')->where(array('gid'=>$val1['gid']))->find()['name'];
+            $sys_msg[0][$raw1]['logo']=M('Club')->field('logo')->where(array('gid'=>$val1['gid']))->find()['logo'];
         }
-        //die;
+        //dump($sys_msg[0]);
+		//die;
 		if(!empty($tid)){$this->redirect("/Msg");}
 		$this->assign('msg_num',D('Msg')->getUnreadMsgNum());
         $this->assign('info',$show[0]);
         $this->assign('tid',$tid_info);
-        $this->assign('sys',$sys_msg[0]);
+        //dump($sys_msg[0]);
+		$this->assign('sys',$sys_msg[0]);
 
         /*foreach($sys_msg[1] as $raw => $val)
           {
@@ -94,6 +98,17 @@ class MsgAction extends PublicAction {
         }
         $this->error($info);
     }
+	public function ajax_readForSys()
+    {
+        $pid=$this->_post('pid');
+        $info=0;
+        if(D('Msg')->readedMsgForSys($pid));
+        {
+            $info=1;
+            $this->success($info);
+        }
+        $this->error($info);
+    }
 	public function ajax_dialog()
 	{
 		$status =$this->_post('status');
@@ -105,5 +120,15 @@ class MsgAction extends PublicAction {
 		if($status=='open')
 			D('Msg')->openDialog($uid,$tid);
 	}
-}//
+	public function close_sys()
+	{
+		global $_G;
+		$uid=$_G['uid'];
+		$pid=$this->_post('pid');
+		$con['pid']=$pid;
+		$con['tid']=$uid;
+		$data['status']=-1;
+		M('Msg_sys')->where($con)->data($data)->save();
+	}
+}
 ?>
