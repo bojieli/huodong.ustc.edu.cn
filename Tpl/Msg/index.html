@@ -295,7 +295,9 @@ document.getElementById("leftscroll").style.height=hhh-140+"px";
 			<volist name="sys" id="vk">
 				<notempty name="vk.gid">
 				<div class="activity" style="background-color: rgb(230, 230, 250); background-position: initial initial; background-repeat: initial initial; ">
-					<img src="/upload/clublogo/thumb/thumb_{$vk.logo}">
+					<a href="/Club/intro?gid={$vk.gid}" target="_blank">
+					<img src="/upload/clublogo/thumb/thumb_{$vk.logo}" alt="{$vk.name}">
+					</a>
 					<div class=" activitytitle">来自<span style="color:#F8C; ">活动：</span>
 						<div class="close_sys" style="float:right">
 							<img src="static/images/del.png" alt="删除" style="width:15px;height:15px;"/>

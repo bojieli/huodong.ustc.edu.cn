@@ -30,6 +30,7 @@ class MsgAction extends PublicAction {
         {
             $sys_msg[0][$raw1]['name']=M('Club')->field('name')->where(array('gid'=>$val1['gid']))->find()['name'];
             $sys_msg[0][$raw1]['logo']=M('Club')->field('logo')->where(array('gid'=>$val1['gid']))->find()['logo'];
+            //$sys_msg[0][$raw1]['gid']=M('Club')->field('gid')->where(array('gid'=>$val1['gid']))->find()['gid'];
         }
         //dump($sys_msg[0]);
 		//die;
