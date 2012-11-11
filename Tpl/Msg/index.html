@@ -117,7 +117,7 @@ e.scrollTop=e.scrollHeight;
 };
 function msg_append()
 {
-	var tmp=$('#area').val();
+	var tmp=htmlspecialchars($('#area').val());
 	if(tmp==''){alert('输入点东西吧！^_^');return false;};
 	var d = new Date();
     var vYear = d.getFullYear();
@@ -213,9 +213,33 @@ function checkMsg()
 		}, 'json');
     return false;
 };
+ function htmlspecialchars(str)  
+{  
+	var s = "";
+	if (str.length == 0) return "";
+	for   (var i=0; i<str.length; i++)
+	{
+		switch (str.substr(i,1))
+		{
+			case "<": s += "&lt;"; break;
+			case ">": s += "&gt;"; break;
+			case "&": s += "&amp;"; break;
+			case " ":
+				if(str.substr(i + 1, 1) == " "){
+					s += " &nbsp;";
+					i++;
+				} else s += " ";
+				break;
+			case "\"": s += "&quot;"; break;
+			case "\n": s += "<br>"; break;
+			default: s += str.substr(i,1); break;
+		}
+	}
+	return s;
+};
 function key_sumit() 
 {
-   if (event.keyCode == 13){sendMsg();return false;}
+   if (event.ctrlKey && event.keyCode == 13){sendMsg();return false;}
 }
 //setInterval("checkMsg()",5000);
 checkMsg();
@@ -449,7 +473,7 @@ document.getElementById("mainright").style.height=hhh-140+"px";
  
  <div class="activitymsg" style="display:none"><!--回复框-->
       <form action="/Msg/create/t/" method="post" id="sent_msg" style="border:0;">
-	  <textarea id="area" class="textkuang" name="s"></textarea>
+	  <textarea id="area" class="textkuang" name="s" title="发送快捷键Ctrl + Enter"></textarea>
       <input id="send" type="submit" onclick="sendMsg();return false;" value="发送" onmouseover="this.style.backgroundColor=&#39;#FF9&#39;" onmouseout="this.style.backgroundColor=&#39;#B0C4DE&#39;"/>
 	  </form>
  </div><!--回复框-->
