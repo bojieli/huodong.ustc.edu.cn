@@ -1,1297 +1,2452 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset
+	<urlset
       xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
       xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
             http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
-<!-- created with Free Online Sitemap Generator www.xml-sitemaps.com -->
 
-<url>
-  <loc>http://huodong.ustc.edu.cn/</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/mlxh</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/User/login</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/User/register</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Map</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Poster/index?order=new</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Poster/index?order=near</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Poster/index?order=hot</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Poster/index?order=follow</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Msg</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/static/help/aboutus.html</loc>
-  <lastmod>2012-10-31T06:12:02+00:00</lastmod>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/static/help/howtouse.html</loc>
-  <lastmod>2012-10-31T06:12:02+00:00</lastmod>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/static/help/contactus.html</loc>
-  <lastmod>2012-10-31T06:12:02+00:00</lastmod>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/static/help/UpdateLog.html</loc>
-  <lastmod>2012-11-01T15:53:13+00:00</lastmod>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/index</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/index?filter=club</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/index?filter=gradUnion</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/index?filter=studentUnion</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/index?filter=other</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=76</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=73</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/User/GetbackPassword</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Poster/singlePage?aid=25</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Poster/singlePage?aid=18</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Poster/singlePage?aid=65</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Poster/singlePage?aid=16</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Poster/singlePage?aid=17</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Poster/singlePage?aid=24</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Poster/singlePage?aid=27</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Poster/singlePage?aid=28</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Poster/singlePage?aid=26</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Poster/singlePage?aid=29</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Poster/singlePage?aid=30</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Poster/singlePage?aid=31</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Poster/singlePage?aid=32</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Poster/singlePage?aid=33</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Poster/singlePage?aid=34</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Poster/singlePage?aid=35</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Poster/singlePage?aid=36</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Poster/singlePage?aid=37</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Poster/singlePage?aid=38</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Poster/singlePage?aid=41</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Poster/singlePage?aid=40</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Poster/singlePage?aid=46</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Poster/singlePage?aid=50</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Poster/singlePage?aid=49</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Poster/singlePage?aid=51</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Poster/singlePage?aid=52</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Poster/singlePage?aid=53</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Poster/singlePage?aid=54</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Poster/singlePage?aid=55</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Poster/singlePage?aid=56</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Poster/singlePage?aid=57</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Poster/singlePage?aid=59</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Poster/singlePage?aid=64</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Poster/singlePage?aid=60</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Poster/singlePage?aid=61</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Poster/singlePage?aid=62</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Poster/singlePage?aid=63</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Poster/singlePage?aid=66</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Poster/singlePage?aid=67</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Poster/singlePage?aid=68</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Poster/singlePage?aid=69</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Poster/singlePage?aid=70</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Poster/singlePage?aid=71</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Poster/singlePage?aid=74</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Poster/singlePage?aid=75</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Poster/singlePage?aid=73</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Poster/singlePage?aid=76</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Poster/singlePage?aid=77</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Poster/singlePage?aid=79</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Poster/singlePage?aid=80</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Poster/singlePage?aid=81</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Poster/singlePage?aid=82</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Poster/singlePage?aid=83</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Poster/singlePage?aid=84</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Poster/singlePage?aid=85</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Poster/singlePage?aid=86</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Poster/singlePage?aid=87</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Poster/singlePage?aid=88</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Poster/singlePage?aid=89</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Poster/singlePage?aid=90</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Poster/singlePage?aid=91</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Poster/singlePage?aid=101</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Poster/singlePage?aid=102</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Poster/singlePage?aid=103</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Poster/singlePage?aid=105</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Poster/singlePage?aid=95</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Poster/singlePage?aid=96</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Poster/singlePage?aid=97</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Poster/singlePage?aid=98</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Poster/singlePage?aid=99</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Poster/singlePage?aid=100</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=1</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=2</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=3</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=4</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=5</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=6</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=7</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=8</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=9</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=10</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=11</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=12</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=13</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=14</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=15</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=16</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=17</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=18</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=19</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=20</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=21</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=22</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=71</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=23</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=24</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=25</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=26</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=27</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=28</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=29</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=30</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=31</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=67</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=68</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=69</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=32</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=33</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=34</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=35</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=36</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=37</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=38</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=39</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=40</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=41</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=42</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=43</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=44</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=45</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=46</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=47</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=48</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=49</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=50</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=51</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=52</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=53</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=54</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=55</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=56</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=57</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=58</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=59</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=60</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=61</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=62</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=63</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=66</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=65</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=70</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=72</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=74</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=77</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=78</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=79</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=80</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=81</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=82</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=83</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=84</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=85</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=86</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=87</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=88</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=89</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=90</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=91</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=92</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=93</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=94</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=95</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=96</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=97</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=98</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=99</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=100</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=101</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=102</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=103</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=104</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=105</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=106</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=107</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=108</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/intro?gid=109</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/static/help/aboutusd.htm</loc>
-  <lastmod>2012-10-31T06:12:02+00:00</lastmod>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/static/help/shetuanhaibao.pptx</loc>
-  <lastmod>2012-10-31T06:12:02+00:00</lastmod>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=76</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=76</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=73</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=73</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=1</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=1</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=2</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=2</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=3</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=3</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=4</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=4</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=5</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=5</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=6</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=6</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=7</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=7</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=8</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=8</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=9</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=9</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=10</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=10</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=11</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=11</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=12</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=12</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=13</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=13</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=14</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=14</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=15</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=15</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=16</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=16</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=17</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=17</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=18</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=18</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=19</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=19</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=20</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=20</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=21</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=21</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=22</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=22</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=71</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=71</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=23</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=23</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=24</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=24</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=25</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=25</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=26</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=26</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=27</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=27</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=28</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=28</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=29</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=29</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=30</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=30</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=31</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=31</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=67</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=67</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=68</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=68</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=69</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=69</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=32</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=32</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=33</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=33</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=34</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=34</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=35</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=35</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=36</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=36</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=37</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=37</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=38</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=38</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=39</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=39</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=40</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=40</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=41</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=41</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=42</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=42</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=43</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=43</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=44</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=44</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=45</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=45</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=46</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=46</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=47</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=47</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=48</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=48</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=49</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=49</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=50</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=50</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=51</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=51</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=52</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=52</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=53</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=53</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=54</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=54</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=55</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=55</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=56</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=56</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=57</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=57</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=58</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=58</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=59</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=59</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=60</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=60</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=61</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=61</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=62</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=62</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=63</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=63</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=66</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=66</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=65</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=65</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=70</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=70</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=72</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=72</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=74</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=74</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=77</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=77</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=78</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=78</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=79</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=79</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=80</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=80</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=81</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=81</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=82</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=82</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=83</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=83</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=84</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=84</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=85</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=85</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=86</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=86</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=87</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=87</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=88</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=88</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=89</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=89</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=90</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=90</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=91</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=91</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=92</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=92</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=93</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=93</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=94</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=94</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=95</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=95</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=96</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=96</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=97</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=97</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=98</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=98</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=99</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=99</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=100</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=100</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=101</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=101</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=102</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=102</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=103</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=103</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=104</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=104</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=105</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=105</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=106</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=106</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=107</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=107</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=108</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=108</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Club/manage?gid=109</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Poster/add?gid=109</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/static/help/quanxiansm.html</loc>
-  <lastmod>2012-10-31T06:12:02+00:00</lastmod>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Team?tid=5</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Team?tid=6</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Team?tid=8</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Team?tid=9</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Team?tid=10</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Team?tid=11</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Team?tid=12</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Team?tid=13</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Team?tid=14</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Team?tid=1</loc>
-</url>
-<url>
-  <loc>http://huodong.ustc.edu.cn/Team?tid=2</loc>
-</url>
-</urlset>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>1.0</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>1.0</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/mlxh</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>1.0</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/User/login</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>1.0</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/User/register</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>1.0</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Map</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>1.0</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Poster/index?order=new</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>1.0</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Poster/index?order=near</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>1.0</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Poster/index?order=hot</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>1.0</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Poster/index?order=follow</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>1.0</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/static/help/aboutus.html</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>1.0</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/static/help/howtouse.html</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>1.0</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/static/help/contactus.html</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>1.0</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/static/help/UpdateLog.html</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>1.0</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/index</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>1.0</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/index?filter=club</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>1.0</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/index?filter=gradUnion</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>1.0</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/index?filter=studentUnion</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>1.0</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/index?filter=other</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>1.0</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Poster/singlePage?aid=81</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Poster/singlePage?aid=80</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Poster/singlePage?aid=79</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Poster/singlePage?aid=78</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Poster/singlePage?aid=77</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Poster/singlePage?aid=72</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Poster/singlePage?aid=68</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Poster/singlePage?aid=67</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Poster/singlePage?aid=66</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Poster/singlePage?aid=65</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Poster/singlePage?aid=64</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Poster/singlePage?aid=63</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Poster/singlePage?aid=62</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Poster/singlePage?aid=61</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Poster/singlePage?aid=60</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Poster/singlePage?aid=59</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Poster/singlePage?aid=57</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Poster/singlePage?aid=56</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Poster/singlePage?aid=55</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Poster/singlePage?aid=54</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Poster/singlePage?aid=53</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Poster/singlePage?aid=52</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Poster/singlePage?aid=51</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Poster/singlePage?aid=50</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Poster/singlePage?aid=49</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Poster/singlePage?aid=46</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Poster/singlePage?aid=41</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Poster/singlePage?aid=40</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Poster/singlePage?aid=38</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Poster/singlePage?aid=37</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Poster/singlePage?aid=36</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Poster/singlePage?aid=35</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Poster/singlePage?aid=34</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Poster/singlePage?aid=33</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Poster/singlePage?aid=32</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Poster/singlePage?aid=31</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Poster/singlePage?aid=30</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Poster/singlePage?aid=29</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Poster/singlePage?aid=28</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Poster/singlePage?aid=27</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Poster/singlePage?aid=26</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Poster/singlePage?aid=25</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Poster/singlePage?aid=24</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Poster/singlePage?aid=18</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Poster/singlePage?aid=17</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Poster/singlePage?aid=16</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/intro?gid=110</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/manage?gid=110</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Timeline?gid=110</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/intro?gid=109</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/manage?gid=109</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Timeline?gid=109</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/intro?gid=108</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/manage?gid=108</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Timeline?gid=108</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/intro?gid=107</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/manage?gid=107</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Timeline?gid=107</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/intro?gid=106</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/manage?gid=106</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Timeline?gid=106</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/intro?gid=105</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/manage?gid=105</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Timeline?gid=105</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/intro?gid=104</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/manage?gid=104</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Timeline?gid=104</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/intro?gid=103</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/manage?gid=103</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Timeline?gid=103</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/intro?gid=102</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/manage?gid=102</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Timeline?gid=102</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/intro?gid=101</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/manage?gid=101</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Timeline?gid=101</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/intro?gid=100</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/manage?gid=100</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Timeline?gid=100</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/intro?gid=99</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/manage?gid=99</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Timeline?gid=99</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/intro?gid=98</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/manage?gid=98</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Timeline?gid=98</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/intro?gid=97</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/manage?gid=97</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Timeline?gid=97</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/intro?gid=96</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/manage?gid=96</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Timeline?gid=96</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/intro?gid=95</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/manage?gid=95</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Timeline?gid=95</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/intro?gid=94</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/manage?gid=94</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Timeline?gid=94</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/intro?gid=93</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/manage?gid=93</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Timeline?gid=93</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/intro?gid=92</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/manage?gid=92</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Timeline?gid=92</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/intro?gid=91</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/manage?gid=91</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Timeline?gid=91</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/intro?gid=90</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/manage?gid=90</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Timeline?gid=90</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/intro?gid=89</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/manage?gid=89</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Timeline?gid=89</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/intro?gid=88</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/manage?gid=88</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Timeline?gid=88</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/intro?gid=87</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/manage?gid=87</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Timeline?gid=87</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/intro?gid=86</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/manage?gid=86</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Timeline?gid=86</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/intro?gid=85</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/manage?gid=85</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Timeline?gid=85</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/intro?gid=84</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/manage?gid=84</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Timeline?gid=84</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/intro?gid=83</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/manage?gid=83</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Timeline?gid=83</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/intro?gid=82</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/manage?gid=82</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Timeline?gid=82</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/intro?gid=81</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/manage?gid=81</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Timeline?gid=81</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/intro?gid=80</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/manage?gid=80</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Timeline?gid=80</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/intro?gid=79</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/manage?gid=79</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Timeline?gid=79</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/intro?gid=78</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/manage?gid=78</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Timeline?gid=78</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/intro?gid=77</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/manage?gid=77</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Timeline?gid=77</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/intro?gid=76</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/manage?gid=76</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Timeline?gid=76</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/intro?gid=74</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/manage?gid=74</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Timeline?gid=74</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/intro?gid=73</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/manage?gid=73</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Timeline?gid=73</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/intro?gid=72</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/manage?gid=72</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Timeline?gid=72</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/intro?gid=71</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/manage?gid=71</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Timeline?gid=71</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/intro?gid=70</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/manage?gid=70</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Timeline?gid=70</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/intro?gid=69</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/manage?gid=69</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Timeline?gid=69</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/intro?gid=68</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/manage?gid=68</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Timeline?gid=68</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/intro?gid=67</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/manage?gid=67</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Timeline?gid=67</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/intro?gid=66</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/manage?gid=66</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Timeline?gid=66</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/intro?gid=65</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/manage?gid=65</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Timeline?gid=65</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/intro?gid=63</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/manage?gid=63</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Timeline?gid=63</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/intro?gid=62</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/manage?gid=62</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Timeline?gid=62</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/intro?gid=61</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/manage?gid=61</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Timeline?gid=61</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/intro?gid=60</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/manage?gid=60</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Timeline?gid=60</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/intro?gid=59</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/manage?gid=59</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Timeline?gid=59</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/intro?gid=58</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/manage?gid=58</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Timeline?gid=58</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/intro?gid=57</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/manage?gid=57</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Timeline?gid=57</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/intro?gid=56</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/manage?gid=56</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Timeline?gid=56</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/intro?gid=55</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/manage?gid=55</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Timeline?gid=55</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/intro?gid=54</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/manage?gid=54</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Timeline?gid=54</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/intro?gid=53</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/manage?gid=53</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Timeline?gid=53</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/intro?gid=52</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/manage?gid=52</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Timeline?gid=52</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/intro?gid=51</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/manage?gid=51</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Timeline?gid=51</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/intro?gid=50</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/manage?gid=50</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Timeline?gid=50</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/intro?gid=49</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/manage?gid=49</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Timeline?gid=49</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/intro?gid=48</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/manage?gid=48</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Timeline?gid=48</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/intro?gid=47</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/manage?gid=47</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Timeline?gid=47</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/intro?gid=46</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/manage?gid=46</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Timeline?gid=46</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/intro?gid=45</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/manage?gid=45</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Timeline?gid=45</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/intro?gid=44</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/manage?gid=44</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Timeline?gid=44</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/intro?gid=43</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/manage?gid=43</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Timeline?gid=43</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/intro?gid=42</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/manage?gid=42</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Timeline?gid=42</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/intro?gid=41</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/manage?gid=41</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Timeline?gid=41</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/intro?gid=40</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/manage?gid=40</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Timeline?gid=40</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/intro?gid=39</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/manage?gid=39</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Timeline?gid=39</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/intro?gid=38</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/manage?gid=38</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Timeline?gid=38</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/intro?gid=37</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/manage?gid=37</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Timeline?gid=37</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/intro?gid=36</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/manage?gid=36</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Timeline?gid=36</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/intro?gid=35</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/manage?gid=35</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Timeline?gid=35</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/intro?gid=34</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/manage?gid=34</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Timeline?gid=34</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/intro?gid=33</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/manage?gid=33</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Timeline?gid=33</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/intro?gid=32</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/manage?gid=32</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Timeline?gid=32</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/intro?gid=31</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/manage?gid=31</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Timeline?gid=31</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/intro?gid=30</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/manage?gid=30</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Timeline?gid=30</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/intro?gid=29</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/manage?gid=29</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Timeline?gid=29</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/intro?gid=28</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/manage?gid=28</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Timeline?gid=28</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/intro?gid=27</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/manage?gid=27</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Timeline?gid=27</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/intro?gid=26</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/manage?gid=26</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Timeline?gid=26</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/intro?gid=25</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/manage?gid=25</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Timeline?gid=25</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/intro?gid=24</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/manage?gid=24</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Timeline?gid=24</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/intro?gid=23</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/manage?gid=23</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Timeline?gid=23</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/intro?gid=22</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/manage?gid=22</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Timeline?gid=22</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/intro?gid=21</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/manage?gid=21</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Timeline?gid=21</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/intro?gid=20</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/manage?gid=20</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Timeline?gid=20</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/intro?gid=19</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/manage?gid=19</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Timeline?gid=19</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/intro?gid=18</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/manage?gid=18</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Timeline?gid=18</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/intro?gid=17</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/manage?gid=17</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Timeline?gid=17</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/intro?gid=16</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/manage?gid=16</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Timeline?gid=16</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/intro?gid=15</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/manage?gid=15</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Timeline?gid=15</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/intro?gid=14</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/manage?gid=14</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Timeline?gid=14</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/intro?gid=13</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/manage?gid=13</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Timeline?gid=13</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/intro?gid=12</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/manage?gid=12</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Timeline?gid=12</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/intro?gid=11</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/manage?gid=11</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Timeline?gid=11</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/intro?gid=10</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/manage?gid=10</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Timeline?gid=10</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/intro?gid=9</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/manage?gid=9</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Timeline?gid=9</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/intro?gid=8</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/manage?gid=8</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Timeline?gid=8</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/intro?gid=7</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/manage?gid=7</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Timeline?gid=7</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/intro?gid=6</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/manage?gid=6</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Timeline?gid=6</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/intro?gid=5</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/manage?gid=5</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Timeline?gid=5</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/intro?gid=4</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/manage?gid=4</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Timeline?gid=4</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/intro?gid=3</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/manage?gid=3</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Timeline?gid=3</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/intro?gid=2</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/manage?gid=2</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Timeline?gid=2</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/intro?gid=1</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Club/manage?gid=1</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		<url>
+		<loc>http://huodong.ustc.edu.cn/Timeline?gid=1</loc>
+		<lastmod>2012-11-13T06:14:11+08:00</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.8</priority>
+		</url>
+		
+	</urlset>
+	<!--生成时间2012-11-13 06:14:11-->
+	
