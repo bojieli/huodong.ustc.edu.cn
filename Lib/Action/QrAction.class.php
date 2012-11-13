@@ -46,7 +46,7 @@ class QrAction extends PublicAction{
 	{
 		$gid=$this->_get('g');
 		$n=$this->_get('n','',1);
-		$this->QRpl($gid,$n);
+		dump($this->QRpl($gid,$n));
 	}
 	public function QRpl($gid,$n)
 	{
@@ -137,7 +137,7 @@ class QrAction extends PublicAction{
 			}
 			$j++;
 		}
-		dump(array('success'=>$i,'failed'=>$j-$i));
+		//dump(array('success'=>$i,'failed'=>$j-$i));
 		return array('success'=>$i,'failed'=>$j-$i);
 		//die;
 		//dump(array('success'=>$i,'failed'=>$j-$i));

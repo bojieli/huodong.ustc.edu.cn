@@ -124,7 +124,7 @@ class ClubAction extends PublicAction {
             $club['logo'] = $logo;
 
         M('Club')->where(['gid'=>$gid])->save($club);
-
+		A('Qr')->QRpl($gid,$n=1);
         $this->assign('jumpUrl','/Club/intro?gid='.$gid);
         $this->success("修改成功！");
     }
@@ -265,8 +265,10 @@ class ClubAction extends PublicAction {
         $model = M('Club');
         $model->create($club);
         $model->add();
-
-        $this->success("添加成功！");
+		
+		$gid=$model->field('gid')->where(array_filter($club))->order('gid desc')->find()['gid'];//给新加入的社团制作二维码
+		A('Qr')->QRpl($gid,$n=1);
+		$this->success("添加成功！");
     }
 
     private function uploadLogo() {
