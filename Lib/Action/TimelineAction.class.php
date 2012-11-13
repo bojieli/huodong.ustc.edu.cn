@@ -2,6 +2,7 @@
 class TimelineAction extends PublicAction{
 	public function index(){
 		$gid=$this->_get('gid');
+		$this->assign('club',D('Club')->getInfo($gid));
 		$this->assign('gid',$gid);
 		$this->display();
 	}
