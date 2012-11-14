@@ -1,5 +1,5 @@
 <div class="hdmeitou">
-  <span>{$poster.school}-&gt;{$poster.clubName}-&gt;{$poster.name}</span>
+  <span><a href="/Poster/index?sid={$poster.sid}">{$poster.school}</a>-&gt;<a href="{$poster.clubName}">{$poster.clubName}</a>-&gt;<a href="/Poster/singlePage?aid={$poster.aid}">{$poster.name}</a></span>
   <empty name="singlePage">
   <div class="closehb">X</div>
   </empty>
@@ -9,7 +9,7 @@
 </notempty>
   <div itemscope itemtype="http://data-vocabulary.org/Event">
   <div class="photocome">
-     <a href="{$poster.origPoster}" target="_blank"><img itemprop="photo" src="{$poster.largePoster}" alt="点击查看原图" title="点击查看原图" /></a>
+     <a href="{$poster.origPoster}" target="_blank"><img itemprop="photo" src="{$poster.largePoster}" alt="{$poster.name}" title="点击查看原图" /></a>
   </div>
     <div class="hb_footer">
        <div class="fenxiangl">
