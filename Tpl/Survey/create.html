@@ -1,45 +1,192 @@
 <include file="header" />
+<style>
+.bordered { border: 3px dashed #CCC; padding-top: 10px; }
+</style>
 <h1>创建调查问卷</h1>
 
-<form id="createSurvey" method="post">
-<div id="form">
-</div>
-<button type="submit">创建问卷</button>
+<form id="createSurvey" class="form-horizontal">
+  <input type="hidden" name="gid" value="{$_REQUEST.gid}" />
+  <div class="control-group">
+    <label class="control-label">问卷标题</label>
+    <div class="controls">
+      <input type="text" class="input-xlarge" name="title" />
+    </div>
+  </div>
+  <div class="control-group">
+    <label class="control-label">说明</label>
+    <div class="controls">
+      <textarea name="help_text" class="input-xlarge"></textarea>
+    </div>
+  </div>
+  <div class="control-group">
+    <label class="control-label">仅会员可参加</label>
+    <div class="controls">
+      <input type="checkbox" name="member_only" />
+    </div>
+  </div>
+  <div class="control-group">
+    <label class="control-label">栏目</label>
+    <div class="controls">
+      <div class="sections"></div>
+      <div><button class="btn newsection">添加栏目</button></div>
+    </div>
+  </div>
+  <div class="control-group">
+    <div class="controls">
+      <button type="submit" class="btn btn-primary">创建问卷</button>
+    </div>
+  </div>
 </form>
+
+<div id="defaultSection" style="display:none">
+  <form class="form-horizontal bordered">
+    <div class="control-group">
+      <label class="control-label">栏目标题</label>
+      <div class="controls">
+        <input type="text" class="input-xlarge" name="title" />
+      </div>
+    </div>
+    <div class="control-group">
+      <label class="control-label">说明</label>
+      <div class="controls">
+        <textarea name="help_text" class="input-xlarge"></textarea>
+      </div>
+    </div>
+    <div class="control-group">
+      <label class="control-label">栏目</label>
+      <div class="controls">
+        <div class="questions"></div>
+        <div><button class="btn newquestion">添加问题</button></div>
+      </div>
+    </div>
+  </form>
+</div>
+
+<div id="defaultQuestion" style="display:none">
+  <form class="form-horizontal well">
+    <div class="control-group">
+      <label class="control-label">问题</label>
+      <div class="controls">
+        <input type="text" name="title" class="input-xlarge" />
+      </div>
+    </div>
+    <div class="control-group">
+      <label class="control-label">类型</label>
+      <div class="controls">
+        <select name="type">
+          <option value="radio">单项选择</option>
+          <option value="checkbox">多项选择</option>
+          <option value="select">下拉选单</option>
+          <option value="text">单行文本</option>
+          <option value="textarea">多行文本</option>
+        </select>
+        必填？<input type="checkbox" name="required" />
+      </div>
+    </div>
+    <div class="control-group">
+      <label class="control-label">选项</label>
+      <div class="controls">
+        <div class="options"></div>
+        <div><button class="btn newoption">添加选项</button></div>
+      </div>
+    </div>
+  </form>
+</div>
+
+<div id="defaultOption" style="display:none">
+  <div><input type="text" class="input-xlarge" name="option" /></div>
+</div>
 
 <script>
 $(function(){
-    $('#createSurvey').submit(function(){
-        $(this).ajax({
-            url: "/Survey/do_submit",
+    $('#createSurvey').submit(function(e){
+        e.preventDefault();
+
+        var survey = {};
+        var inputs = 'input[type=text],textarea,input:checkbox:checked,input:radio:checked';
+        var t = $(this).children('.control-group').children('.controls');
+        t.children(inputs).each(function(){
+            survey[$(this).attr('name')] = $(this).val();
+        });
+        t.children('select').children('option:selected').each(function(){
+            survey[$(this).parent().attr('name')] = $(this).val();
+        });
+        survey.sections = [];
+        $(this).find('.sections>form').each(function(){
+            survey.sections.push(getSection(this, inputs));
+        });
+
+        console.log(survey);
+        $.ajax({
+            url: "/Survey/do_create",
+            dataType: "json",
             type: "POST",
-            success: function() {
-                location.href = "/Survey";
+            data: {
+                gid: $(this).children('[name=gid]').val(),
+                form: $.toJSON(survey)
+            },
+            success: function(obj) {
+                if (obj.status) {
+                    location.href = "/Survey/response?gid={$_REQUEST.gid}&survey=" + obj.survey;
+                } else {
+                    alert('问卷创建失败');
+                }
+            },
+            error: function() {
+                alert('内部错误');
             }
         });
     });
-
-    var form = [];
-    form.append(new Section('第一部分', '#form'));
-    form[0].append(new Question('问题1', '#form'));
+    
+    $('.newsection').live('click', function(e){
+        e.preventDefault();
+        $(this).parent().parent().find('.sections').append($('#defaultSection').html());
+    });
+    
+    $('.newquestion').live('click', function(e){
+        e.preventDefault();
+        questions = $(this).parent().parent().find('.questions');
+        if (questions.html().length == 0)
+            questions.append($('#defaultQuestion').html());
+        else {
+            clone = questions.children(':last').clone(true, true); // deep clone
+            questions.append(clone);
+        }
+    });
+    
+    $('.newoption').live('click', function(e){
+        e.preventDefault();
+        $(this).parent().parent().find('.options').append($('#defaultOption').html());
+    });
 });
 
-function Section(title, container) {
+function getSection(dom, inputs) {
+    var section = {};
+    $(dom).children().children().children(inputs).each(function(){
+        section[$(this).attr('name')] = $(this).val();
+    });
+    $(dom).children().children().children('select').children('option:selected').each(function(){
+        section[$(this).parent().attr('name')] = $(this).val();
+    });
+    section.questions = [];
+    $(dom).find('.questions>form').each(function(){
+        section.questions.push(getQuestion(this, inputs));
+    });
+    return section;
 }
 
-function Question(title, container) {
-    this.container = container;
-    this.title = title;
-    this.help_text = '';
-    this.type = 'radio';
-    this.required = true;
-    this.options = [];
-
-    modify: function() {
-    },
-    save: function() {
-    },
-    remove: function() {
-    }
+function getQuestion(dom, inputs) {
+    var question = {};
+    $(dom).children().children().children(inputs).each(function(){
+        question[$(this).attr('name')] = $(this).val();
+    });
+    $(dom).children().children().children('select').children('option:selected').each(function(){
+        question[$(this).parent().attr('name')] = $(this).val();
+    });
+    question.options = [];
+    $(dom).find('.options input').each(function(){
+        question.options.push($(this).val());
+    });
+    return question;
 }
 </script>
