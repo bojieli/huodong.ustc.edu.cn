@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Application xmlns:fx="http://ns.adobe.com/mxml/2009" 
+				xmlns:s="library://ns.adobe.com/flex/spark" 
+				xmlns:mx="library://ns.adobe.com/flex/mx" minWidth="0" minHeight="0" creationComplete="init()">
+	
+	<fx:Script>
+		<![CDATA[
+			
+			import flash.external.*;
+			
+			import mx.controls.Alert;
+			
+			import mx.core.FlexGlobals;
+			
+			private var sound: Sound;
+			
+			private var channel: SoundChannel;
+			
+			private var pauseSound: uint;
+			
+			private var playerState: Number;
+			
+			private var soundState: Number;
+			
+			private var param: Object;
+			
+			protected function init(): void {
+				
+				this.asCallback();
+				
+				this.callback();
+				
+			}
+			
+			protected function callback(): void {
+				
+				this.param = FlexGlobals.topLevelApplication.parameters;
+				
+				ExternalInterface.call(this.param['callback'], this.param['param']);
+								
+			}
+			
+			protected function addSound(url:String): void {
+				
+				if (this.soundState == 0) {
+										
+					this.channel.stop();
+					
+				}
+				
+				this.sound = new Sound(new URLRequest(url));
+				
+				this.channel = this.sound.play();
+				
+				this.playerState = 0;
+				
+				this.soundState = 0;
+				
+			}
+			
+			protected function asCallback(): void {
+				
+				ExternalInterface.addCallback('asFunationAddSound', this.addSound);
+				
+				ExternalInterface.addCallback('asFunationPause', this.pause);
+				
+				ExternalInterface.addCallback('asFunctionPlay', this.play);
+				
+				ExternalInterface.addCallback('asFunctionStop', this.stop);
+				
+				ExternalInterface.addCallback('asFunationGetSoundPercentage', this.getSoundPercentage);
+				
+				ExternalInterface.addCallback('asFunationGetSoundDate', this.getSoundDate);
+				
+				ExternalInterface.addCallback('asFunationGetNowSoundDate', this.getNowSoundDate);
+				
+				ExternalInterface.addCallback('asFunationGetBytePercentage', this.getBytePercentage);
+				
+				ExternalInterface.addCallback('asFunctionSetSoundVolume', this.setSoundVolume);
+				
+				ExternalInterface.addCallback('asFunctionGetSoundVolume', this.getSoundVolume);
+				
+			}
+			
+			protected function getSoundVolume(): Number {
+				
+				return this.channel.soundTransform.volume;
+				
+			}
+			
+			protected function setSoundVolume(n: Number): void {
+			
+				this.channel.soundTransform = new SoundTransform(n, 0);
+				
+			}
+			
+			protected function getBytePercentage(): Number {
+				
+				return sound.bytesLoaded / sound.bytesTotal;
+				
+			}
+			
+			protected function getSoundPercentage(): Number {
+			
+				return this.channel.position / (this.sound.length / (sound.bytesLoaded / sound.bytesTotal));
+				
+			}
+			
+			protected function getSoundDate(): String {
+				
+				return this.formatDate(this.channel.position).toString();
+				
+			}
+			
+			protected function getNowSoundDate(): String {
+				
+				return this.formatDate(this.channel.position).toString();
+				
+			}
+			
+			protected function play(): Number {
+				
+				if (this.playerState == 0) {
+					
+					this.pause();
+					
+				} else {
+					
+					this.channel = this.sound.play(pauseSound);
+					
+					this.playerState = 0;
+				
+				}
+				
+				return this.playerState;
+				
+			}
+			
+			protected function pause(): void {
+			
+				this.pauseSound = this.channel.position;
+				
+				this.stop();
+				
+				this.playerState = 1;
+				
+			}
+			
+			protected function stop(): void {
+				
+				this.channel.stop();
+				
+			}
+			
+			protected function formatDate(num:Number): String {
+				
+				var total: int = int(num / 1000);
+				
+				var second: int = total % 60;
+				
+				total = (total - second) / 60;
+				
+				var minute: int = total % 60;
+				
+				total = (total - minute) / 60;
+				
+				var hour: int = total;
+				
+				var returnValue: String = "";
+				
+				if(hour != 0) {
+					
+					returnValue = String(hour) + ":";
+				
+				}
+				
+				if(minute < 10) {
+					
+					returnValue += "0";
+				
+				}
+				
+				returnValue += String(minute) + ":";
+				
+				if(second < 10) {
+					
+					returnValue += "0";
+				
+				}
+				
+				returnValue += String(second);
+				
+				return returnValue;
+				
+			}
+			
+		]]>
+	</fx:Script>
+	
+</s:Application>

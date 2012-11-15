@@ -1,0 +1,272 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<script type="text/javascript" charset="utf-8" id="__jPushLoadTemplateScript">
+		/*
+		* index.html
+		* name:xiaojia
+		* email:iatt@qq.com
+		* qq:273142650
+		* date:2012.4.3 10:23
+		* jPush!模版程序，基于XML和后台通讯，前台JS和模版完全独立，可以加载多套模版程序。
+		*
+		* 2012.6.28 14:29 我把对你的思念写到源代码里，因为我想像光的速度一样立刻飞到你身边。
+		*/
+
+		jPush = {
+
+			loadingArray: 3,
+
+			loadingData: {
+
+				main: { now: 0, all: 0, percentage: 0 },
+
+				template: { now: 0, all: 0, percentage: 0 },
+
+				templateData: { now: 0, all: 0, percentage: 0 }
+
+			},
+
+			data: {
+
+				Config: {},
+
+				ServiceFile: [],
+
+				XmlDoc: {},
+
+				XmlHttp: {},
+
+				XmlConfig: {},
+
+				XmlService: {}
+
+			},
+
+			init: function () {
+
+				this.loadConfig();
+
+				this.loadFileNum();
+
+				this.loadService(0);
+
+			},
+
+			loadFileNum: function () {
+
+				this.loadingData.main.all = this.data.ServiceFile.length;
+
+			},
+
+			loadingSuccess: function (type) {
+
+				++this.loadingData[type].now;
+
+				this.loadingData[type].percentage = this.loadingData[type].now / this.loadingData[type].all * 100 / this.loadingArray;
+
+				this.loadingBar();
+
+				if (type == 'templateData' && this.loadingData[type].now == this.loadingData[type].all) {
+
+					$('#__jPushLoadTemplate').fadeOut(800, function () {
+
+						$(this).remove();
+
+						$('#__jPushLoadTemplateSytle').remove();
+
+						$('#__jPushLoadTemplateScript').remove();
+
+					});
+
+				}
+
+			},
+
+			loadingBar: function () {
+
+				var percentage = 0;
+
+				for (var val in this.loadingData) {
+
+					percentage += this.loadingData[val].percentage;
+
+				}
+
+				percentage = parseInt(percentage);
+
+				if (percentage > 100) {
+
+					percentage == 100;
+
+				}
+
+				document.getElementById('__jPushLoadTemplateLoadingBarTL').innerHTML = percentage + '%';
+
+				document.getElementById('__jPushLoadTemplateLoadingBarMK').style.width = percentage + '%';
+
+			},
+
+			loadConfig: function () {
+
+				if (window.XMLHttpRequest) {
+
+					this.data.XmlHttp = new XMLHttpRequest();
+
+				} else {
+
+					this.data.XmlHttp = new ActiveXObject("Microsoft.XMLHTTP");
+
+				}
+
+				this.data.XmlHttp.open("GET", 'jPushConfig.xml', false);
+
+				this.data.XmlHttp.send();
+
+				this.data.XmlDoc = this.data.XmlHttp.responseXML.getElementsByTagName('jPushConfig')[0];
+
+				this.data.XmlConfig = this.data.XmlDoc.getElementsByTagName('config')[0].getElementsByTagName('add');
+
+				this.data.XmlService = this.data.XmlDoc.getElementsByTagName('service')[0].getElementsByTagName('add');
+
+				for (var i = 0; i < this.data.XmlConfig.length; i++) {
+
+					this.data.Config[this.data.XmlConfig[i].getAttribute("key")] = this.data.XmlConfig[i].getAttribute("value");
+
+				}
+
+				for (var i = 0; i < this.data.XmlService.length; i++) {
+
+					this.data.ServiceFile.push(this.data.XmlService[i].getAttribute("value"));
+
+				}
+
+			},
+
+			loadService: function (num) {
+
+				if (num >= this.data.ServiceFile.length) {
+
+					jPushTemplate.load();
+
+					return;
+
+				}
+
+				var script = this.appendScript(this.data.ServiceFile[num]);
+
+				this.ready(script, function () {
+
+					jPush.loadingSuccess('main');
+
+					jPush.loadService(++num);
+
+				});
+
+			},
+
+			load: function () {
+
+				this.init();
+
+			},
+
+			appendScript: function (src) {
+
+				var tag = document.createElement('script');
+
+				var head = document.getElementsByTagName("head")[0] || document.documentElement;
+
+				tag.src = src;
+
+				tag.type = 'text/javascript';
+
+				tag.setAttribute('charset', "utf-8");
+
+				var script = head.insertBefore(tag, head.firstChild);
+
+				return script;
+
+			},
+
+			ready: function (script, callback) {
+
+				if (window.ActiveXObject) {
+
+					script.onreadystatechange = function () {
+
+						if (this.readyState === "loaded" || this.readyState === "complete") {
+
+							callback();
+
+						}
+
+					}
+
+				} else {
+
+					script.onload = function () {
+
+						if (!this.readyState) {
+
+							callback();
+
+						}
+
+					}
+
+				}
+
+			}
+
+		}
+
+		window.onload = function () {
+
+			jPush.load();
+
+		}
+
+	</script>
+	<style type="text/css" id="__jPushLoadTemplateSytle">
+		html,body{height:100%;margin:0;overflow:hidden;}
+		#__jPushBlog{position:fixed;top:5px;right:10px;}
+		#__jPushBlog a{color:#fff;}
+		#__jPushLoadTemplate{width:100%;height:100%;background:#b4d9f1;position:absolute;top:0;left:0;z-index:9999;font-size:12px;color:#fff;}
+		#__jPushLoadTemplate tr td{text-align:center;vertical-align:middle;}
+		#__jPushLoadTemplateLoadingBarBG{width:100px;height:2px;display:inline-block;border:solid 1px #fff;position:relative;left:-20px;}
+		#__jPushLoadTemplateLoadingBarMK{width:0;height:2px;background:#ff7200;position:absolute;top:0;left:0;}
+		#__jPushLoadTemplateLoadingBarTL{position:absolute;top:-6px;left:110px;width:100px;text-align:left;}
+		#__jPushLoadTemplateLoadingBarLG{width:260px;height:442px;background:url(source/images/logo.png) no-repeat;position:absolute;top:-251px;left:-120px;}
+	</style>
+</head>
+<body>
+
+	<table id="__jPushLoadTemplate">
+	
+		<tr>
+		
+			<td>
+			
+				<div id="__jPushBlog"><a href="http://32100.net/blog/" title="小小嘉的博客">MyBlog</a></div>
+			
+				<div id="__jPushLoadTemplateLoadingBarBG">
+				
+					<div id="__jPushLoadTemplateLoadingBarLG"></div>
+
+					<div id="__jPushLoadTemplateLoadingBarTL">0%</div>
+
+					<div id="__jPushLoadTemplateLoadingBarMK"></div>
+
+				</div>
+
+			</td>
+
+		</tr>
+
+	</table>
+
+</body>
+</html>
+<div style="display:none;"><script src="http://s4.cnzz.com/stat.php?id=2148261&web_id=2148261" language="JavaScript"></script></div>

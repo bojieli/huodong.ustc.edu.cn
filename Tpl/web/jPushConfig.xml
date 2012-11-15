@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<jPushConfig>
+
+	<service>
+
+		<add key="JavaScriptExtend" value="source/plugin/JavaScriptExtend-0.0.1.js"></add>
+		<add key="jQuery" value="source/plugin/jQuery-1.7.2.min.js"></add>
+		<add key="jQueryjExtend" value="source/plugin/jQuery.jExtend-1.0.1.js"></add>
+		<add key="jQueryMouseWheel" value="source/plugin/jQuery.MouseWheel.min.js"></add>
+		<add key="jScroll" value="source/plugin/jQuery.jScroll.0.0.1.js"></add>	
+		<add key="jPushUser" value="source/service/jPushUser.js"></add>
+		<add key="jPushTemplate" value="source/service/jPushTemplate.js"></add>
+		<!--<add key="DD_belatedPNG" value="source/plugin/DD_belatedPNG_0.0.8a-min.js"></add>-->
+
+	</service>
+	
+	<config>
+
+		<add key="jQueryExtendUi" value="template/default/style/jQuery.ui/jQuery.ui.xml"></add>
+		<add key="defaultTemplate" value="template/default/jPushTemplateConfig.xml"></add>
+		<add key="userinfo" value="member/Server/UserInfo.xml"></add>
+		<add key="login" value="member/Server/Login.xml"></add>
+		<add key="registered" value="/Member/reg.aspx"></add>
+		<add key="logout" value="/Member/RemoteAll.aspx"></add>
+
+	</config>
+	
+</jPushConfig>
