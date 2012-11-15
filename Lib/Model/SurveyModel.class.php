@@ -32,6 +32,8 @@ class SurveyModel extends Model {
     function create($gid, $form) {
         $survey['gid'] = $gid;
         $survey['creater'] = CURRENT_USER;
+        if (empty($form['title']))
+            return false;
         $survey['title'] = $form['title'];
         $survey['help_text'] = $form['help_text'];
         $survey['member_only'] = $form['member_only'] ? true : false;
@@ -40,11 +42,13 @@ class SurveyModel extends Model {
         if (!$surveyid)
             return false;
 
-        $this->addQuestion($surveyid, $form);
+        if (0 == $this->addQuestion($surveyid, $form))
+            return false;
         return $surveyid;
     }
 
     private function addQuestion($surveyid, $form) {
+        $qcount = 0;
         foreach ($form['sections'] as $i => $section) {
             $sec['survey'] = $surveyid;
             $sec['section'] = $i;
@@ -61,8 +65,11 @@ class SurveyModel extends Model {
                 $q['type'] = $question['type'];
                 $q['required'] = $question['required'] ? true : false;
                 $q['options'] = json_encode($question['options']);
+                M('survey_question')->add($q);
+                $qcount++;
             }
         }
+        return $qcount;
     }
 
     function update($survey, $form) {

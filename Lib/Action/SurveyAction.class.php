@@ -17,7 +17,8 @@ class SurveyAction extends PublicAction {
 
     function do_create() {
         $this->assertPriv('manager');
-        D('Survey')->create($_REQUEST['gid'], json_decode($_POST['form']));
+        $survey = D('Survey')->create($_REQUEST['gid'], json_decode($_POST['form'], true));
+        echo json_encode(array('survey'=>$survey, 'status'=>($survey > 0))); 
     }
 
     function response() {
