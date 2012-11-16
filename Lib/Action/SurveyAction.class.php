@@ -24,24 +24,29 @@ class SurveyAction extends PublicAction {
     function response() {
         $this->assertPriv();
         $form = D('Survey')->getForm($_REQUEST['survey']);
+        $this->assign($form);
         $this->headnav();
         $this->display();
     }
 
     function do_response() {
         $this->assertPriv();
-        D('Survey')->response($_REQUEST['survey'], json_decode($_POST['form']));
+        $num = D('Survey')->response($_REQUEST['survey'], json_decode($_POST['form']));
+        echo json_encode(array('num'=>$survey, 'status'=>($num > 0))); 
     }
 
     function update() {
         $this->assertPriv('manager');
+        $form = D('Survey')->getForm($_REQUEST['survey']);
+        $this->assign($form);
         $this->headnav();
         $this->display();
     }
 
     function do_update() {
         $this->assertPriv('manager');
-        D('Survey')->update($_REQUEST['survey'], json_decode($_POST['form']));
+        $status = D('Survey')->update($_REQUEST['survey'], json_decode($_POST['form']));
+        echo json_encode(array('status'=>$status)); 
     }
 
     function result() {
@@ -73,7 +78,7 @@ class SurveyAction extends PublicAction {
         if (!empty($_REQUEST['survey']) && is_numeric($_REQUEST['survey'])) {
             $this->sid = $_REQUEST['survey'];
             $this->survey = M('Survey')->find($this->sid);
-            if (empty($this->survey))
+            if (!$this->survey)
                 $this->error("您所查找的调查问卷不存在");
             if ($this->survey['member_only'] && ! D('Club')->isMember(CURRENT_USER, $this->gid))
                 $this->error("组织成员才有权进行此操作");

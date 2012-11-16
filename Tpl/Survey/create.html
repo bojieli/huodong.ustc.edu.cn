@@ -116,7 +116,6 @@ $(function(){
             survey.sections.push(getSection(this, inputs));
         });
 
-        console.log(survey);
         $.ajax({
             url: "/Survey/do_create",
             dataType: "json",

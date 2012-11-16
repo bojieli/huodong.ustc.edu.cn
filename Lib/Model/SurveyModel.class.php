@@ -83,7 +83,21 @@ class SurveyModel extends Model {
         $this->addQuestion($survey, $form);
     }
 
+    function check_response($survey, $form) {
+        $questions = M('survey_question')->where(array('survey'=>$survey))->find();
+        if (empty($questions))
+            return false;
+        foreach ($questions as $question) {
+            if ($question['required'] && !isset($form[$question['section']][$question['question']]))
+                return false;
+        }
+        return true;
+    }
+
     function response($survey, $form) {
+        if (!$check_response($survey, $form))
+            return false;
+
         $response['survey'] = $survey;
         $response['uid'] = CURRENT_USER;
         $response['submit_time'] = time();
