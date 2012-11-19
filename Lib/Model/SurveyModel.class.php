@@ -130,7 +130,7 @@ class SurveyModel extends Model {
     }
 
     function getResult($surveyid) {
-        $this->getForm($surveyid, true);
+        return $this->getForm($surveyid, true);
     }
 
     function getForm($surveyid, /*INTERNAL*/ $getresult=false) {
@@ -142,21 +142,19 @@ class SurveyModel extends Model {
                 $q['options'] = json_decode($q['options']);
 
                 if ($getresult) {
-                    $responses = M('survey_response_field')->field('content')->where(array('survey'=>$surveyid, 'section'=>$i, 'question'=>$j))->select();
-                    $q['responses'] = array();
-                    foreach ($responses as $response) {
-                        $q['responses'][] = $responses['content'];
+                    $arr = M('survey_response_field')->field('content')->where(array('survey'=>$surveyid, 'section'=>$i, 'question'=>$j))->select();
+                    $responses = array();
+                    foreach ($arr as $response) {
+                        $responses[] = $response['content'];
                     }
+                    $q['response_count'] = count($responses);
 
                     $q['stats'] = array();
                     foreach ($q['options'] as $key => $option) {
                         $q['stats'][$option] = 0;
                     }
-                    foreach ($q['responses'] as $content) {
-                        if (isset($q['options'][$content])) // select question
-                            $q['stats'][$q['option'][$content]] ++;
-                        else // text question
-                            $q['stats'][$content] ++;
+                    foreach ($responses as $content) {
+                        $q['stats'][$content] ++;
                     }
                 }
             }

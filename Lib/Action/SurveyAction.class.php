@@ -59,7 +59,7 @@ class SurveyAction extends PublicAction {
     function result() {
         $this->assertPriv('manager');
         $result = D('Survey')->getResult($_REQUEST['survey']);
-        $this->assign('result', $result);
+        $this->assign($result);
         $this->headnav();
         $this->display();
     }
