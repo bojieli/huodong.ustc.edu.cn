@@ -84,9 +84,10 @@ class SurveyModel extends Model {
     }
 
     function check_response($survey, $form) {
-        $questions = M('survey_question')->where(array('survey'=>$survey))->find();
+        $questions = M('survey_question')->where(array('survey'=>$survey))->select();
         if (empty($questions))
             return false;
+
         foreach ($questions as $question) {
             if ($question['required'] && !isset($form[$question['section']][$question['question']]))
                 return false;
@@ -94,28 +95,38 @@ class SurveyModel extends Model {
         return true;
     }
 
+    function isSubmited($survey) {
+        return (M('survey_response')->where(array('survey'=>$survey, 'uid'=>CURRENT_USER))->count() > 0);
+    }
+
     function response($survey, $form) {
-        if (!$check_response($survey, $form))
-            return false;
+        if ($this->isSubmited($survey))
+            throw new Exception("您已经参与过此调查，每人只能参与一次");
+        if (! $this->check_response($survey, $form))
+            throw new Exception("您填写的问卷有问题，请检查所有必填问题均已正确填写");
 
         $response['survey'] = $survey;
         $response['uid'] = CURRENT_USER;
         $response['submit_time'] = time();
         $id = M('survey_response')->add($response);
         if (!$id)
-            return false;
+            throw new Exception("调查保存失败，请联系管理员");
 
-        foreach ($sections as $i => $section) {
+        foreach ($form as $i => $section) {
             foreach ($section as $j => $content) {
                 $row['response'] = $id;
                 $row['survey'] = $survey;
                 $row['section'] = $i;
                 $row['question'] = $j;
-                $row['content'] = $content;
-                M('survey_response_field')->add($row);
+                // multiple select questions may have multiple answers
+                $contentarr = is_array($content) ? $content : array($content);
+                foreach ($contentarr as $value) {
+                    $row['content'] = $value;
+                    M('survey_response_field')->add($row);
+                }
             }
         }
-        return true;
+        return $id;
     }
 
     function getResult($surveyid) {

@@ -23,6 +23,8 @@ class SurveyAction extends PublicAction {
 
     function response() {
         $this->assertPriv();
+        if (D('Survey')->isSubmited($_REQUEST['survey']))
+            $this->error('您已经参与过此调查，每人只能参与一次');
         $form = D('Survey')->getForm($_REQUEST['survey']);
         $this->assign($form);
         $this->headnav();
@@ -31,8 +33,13 @@ class SurveyAction extends PublicAction {
 
     function do_response() {
         $this->assertPriv();
-        $num = D('Survey')->response($_REQUEST['survey'], json_decode($_POST['form']));
-        echo json_encode(array('num'=>$survey, 'status'=>($num > 0))); 
+        try {
+            $num = D('Survey')->response($_REQUEST['survey'], json_decode($_POST['form']));
+        } catch(Exception $e) {
+            echo json_encode(array('status'=>false, 'info'=>$e->getMessage()));
+            exit();
+        }
+        echo json_encode(array('status'=>true, 'num'=>$num));
     }
 
     function update() {

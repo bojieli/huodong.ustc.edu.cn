@@ -151,7 +151,7 @@ label {
           </notempty>
           <div class="row-fluid">
             <volist name="sec.question" id="q" key="j">
-            <div class="question">
+            <div class="question" <notempty name="q.required">required="required"</notempty>>
               <p class="qtext">{$q.title} <notempty name="q.required"><strong>(*)</strong></notempty></p>
               <div class="qinput">
               <switch name="q.type">
@@ -204,10 +204,26 @@ $(function(){
         $(this).find('section').each(function(){
             var section = [];
             $(this).find('.question').each(function(){
-                section.push($(this).find(inputs).val());
+                var input = $(this).find(inputs);
+                if (input.length <= 1)
+                    var val = input.val();
+                else {
+                    var val = [];
+                    input.each(function(){
+                        val.push($(this).val()); 
+                    });
+                }
+                if ($(this).attr('required') && typeof val == "null") {
+                    alert('请补全所有必填问题');
+                    return;
+                }
+                section.push(val);
             });
             response.push(section);
         });
+
+        if (!confirm('确定要提交问卷吗？'))
+            return;
 
         $.ajax({
             url: "/Survey/do_response",
@@ -222,7 +238,7 @@ $(function(){
                 if (obj.status) {
                     alert('问卷提交成功，感谢您参与此次问卷调查！');
                 } else {
-                    alert('问卷提交失败，请确保您填写了所有必填项目，谢谢');
+                    alert(obj.info);
                 }
             },
             error: function() {
