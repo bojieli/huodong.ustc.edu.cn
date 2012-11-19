@@ -40,7 +40,7 @@ $(function(){
         	<div class="stglbasicinfo">
             	<table width="100%" border="0" cellspacing="0" cellpadding="0"><tr>
                 	<td width="220" align="center" valign="top">
-			   <img class="stglimagesize" id="avatar" src="/{$user_info.big_avatar}" />
+			   <img class="stglimagesize" id="avatar" src="/{$user_info.big_avatar}" title="<if condition='$user_info.isonline eq 1'>在线中...<else />离线</if>" alt="{$user_info.realname}"/>
                            <if condition="!empty($user_info['uid']) && $user_info['uid'] == CURRENT_USER">
 			   <br/><a class="stgleximage" id="edit_avatar" href="/User/avatar">更改头像</a>                        
 			   </if>

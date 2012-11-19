@@ -98,7 +98,7 @@ class UserAction extends PublicAction {
             cookie('auth', $user->authcode("$setarr[password]\t$setarr[uid]", 'ENCODE'), C('COOKIE_EXPIRE'));
             cookie('loginuser', $passport['username'], C('COOKIE_EXPIRE'));
             //dump($_COOKIE);
-
+			D('User')->change_online_status(1,$passport['uid']);//0->离线;1->在线;2->隐身
             // registerVerify should not jump back
             if (!empty($_POST['referer']) && !strstr($_POST['referer'], '/User/'))
                 $this->assign('jumpUrl', $_POST['referer']);
@@ -184,6 +184,7 @@ class UserAction extends PublicAction {
             $user=D('User');
             $passport=$user->delsession($_G[uid]);//清除session
             cookie(null);//清空cookie
+			D('User')->change_online_status(0);
             // jump to last page
             if (!empty($_SERVER['HTTP_REFERER']) && !strstr($_SERVER['HTTP_REFERER'], '/User/home'))
                 $jumpUrl = $_SERVER['HTTP_REFERER'];
