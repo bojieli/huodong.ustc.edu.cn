@@ -1,6 +1,6 @@
 <include file="header" />
 <style>
-.bordered { border: 3px dashed #CCC; padding-top: 10px; }
+.bordered { border: 3px dashed #CCC; padding-top: 10px; padding-right: 30px;}
 .sections label.control-label { width: 50px; }
 .sections .controls { margin-left: 70px; }
 </style>
@@ -79,6 +79,7 @@
 
 <div id="defaultQuestion" style="display:none">
   <form class="form-horizontal well">
+    <div class="pull-right question-remove"><i class="icon-remove"></i></div>
     <div class="control-group">
       <label class="control-label">问题</label>
       <div class="controls">
@@ -109,7 +110,10 @@
 </div>
 
 <div id="defaultOption" style="display:none">
-  <div><input type="text" class="input-xlarge" name="option" /></div>
+  <div class="option">
+    <input type="text" class="input-xlarge" name="option" />
+    <span><i class="icon-move"></i> <i class="icon-remove"></i></span>
+  </div>
 </div>
 
 <script>
@@ -154,25 +158,39 @@ $(function(){
     
     $('.newsection').live('click', function(e){
         e.preventDefault();
-        $(this).parent().parent().find('.sections').append($('#defaultSection').html());
+        var sections = $(this).parent().parent().find('.sections');
+        sections.append($('#defaultSection').html());
+
+        var questions = sections.children(':last').find('.questions');
+        questions.sortable();
+        questions.append($('#defaultQuestion').html());
+        questions.children(':last').find('.options').sortable();
     });
     $('.newsection').click();
     
     $('.newquestion').live('click', function(e){
         e.preventDefault();
-        questions = $(this).parent().parent().find('.questions');
-        if (questions.html().length == 0)
+        var questions = $(this).parent().parent().find('.questions');
+        if (questions.children().length == 0) {
             questions.append($('#defaultQuestion').html());
-        else {
-            clone = questions.children(':last').clone(true, true); // deep clone
+        } else {
+            var orig = questions.children(':last');
+            var clone = orig.clone(true, true); // deep clone
+            clone.find('select').val(orig.find('select').val());
             questions.append(clone);
         }
+        questions.children(':last').find('.options').sortable();
     });
-    $('.newquestion').click();
     
     $('.newoption').live('click', function(e){
         e.preventDefault();
         $(this).parent().parent().find('.options').append($('#defaultOption').html());
+    });
+    $('.option .icon-remove').live('click', function(e){
+        $(this).parent().parent().remove();
+    });
+    $('.question-remove .icon-remove').live('click', function(e){
+        $(this).parent().parent().remove();
     });
 });
 
@@ -185,7 +203,7 @@ function getSection(dom, inputs) {
         section[$(this).parent().attr('name')] = $(this).val();
     });
     section.questions = [];
-    $(dom).find('.questions>form').each(function(){
+    $(dom).find('.questions form').each(function(){
         section.questions.push(getQuestion(this, inputs));
     });
     return section;
