@@ -13,19 +13,19 @@ class SurveyAction extends PublicAction {
     }
     
     function create() {
-        $this->assertPriv('manager');
+        $this->assertPriv('create', 'manager');
         $this->headnav();
         $this->display();
     }
 
     function do_create() {
-        $this->assertPriv('manager');
+        $this->assertPriv('do_create', 'manager');
         $survey = D('Survey')->create($_REQUEST['gid'], json_decode($_POST['form'], true));
         echo json_encode(array('survey'=>$survey, 'status'=>($survey > 0))); 
     }
 
     function response() {
-        $this->assertPriv();
+        $this->assertPriv('response');
         if (D('Survey')->isSubmited($_REQUEST['survey']))
             $this->error('您已经参与过此调查，每人只能参与一次');
         $form = D('Survey')->getForm($_REQUEST['survey']);
@@ -35,7 +35,7 @@ class SurveyAction extends PublicAction {
     }
 
     function do_response() {
-        $this->assertPriv();
+        $this->assertPriv('do_response');
         try {
             $num = D('Survey')->response($_REQUEST['survey'], json_decode($_POST['form']));
         } catch(Exception $e) {
@@ -46,7 +46,7 @@ class SurveyAction extends PublicAction {
     }
 
     function update() {
-        $this->assertPriv('manager');
+        $this->assertPriv('update', 'manager');
         $form = D('Survey')->getForm($_REQUEST['survey']);
         $this->assign($form);
         $this->headnav();
@@ -54,20 +54,20 @@ class SurveyAction extends PublicAction {
     }
 
     function do_update() {
-        $this->assertPriv('manager');
+        $this->assertPriv('do_update', 'manager');
         $status = D('Survey')->update($_REQUEST['survey'], json_decode($_POST['form']));
         echo json_encode(array('status'=>$status)); 
     }
 
     function result() {
-        $this->assertPriv('manager');
+        $this->assertPriv('result', 'manager');
         $result = D('Survey')->getResult($_REQUEST['survey']);
         $this->assign($result);
         $this->headnav();
         $this->display();
     }
 
-    private function assertPriv($priv='') {
+    private function assertPriv($goto, $priv='') {
         if (empty($_REQUEST['gid']) || !is_numeric($_REQUEST['gid']))
             $this->error("只有学生组织才能发起调查问卷");
         $this->gid = $_REQUEST['gid'];
@@ -90,6 +90,7 @@ class SurveyAction extends PublicAction {
                 $this->error("您所查找的调查问卷不存在");
             if ($this->survey['password'] != '') {
                 if (empty($_REQUEST['password'])) {
+                    $this->assign('goto', $goto);
                     $this->display('password');
                     exit();
                 }
