@@ -220,12 +220,11 @@ class Image {
             // 载入原图
             $createFun = 'ImageCreateFrom' . ($type == 'jpg' ? 'jpeg' : $type);
             $srcImg = $createFun($image);
-	    // 复制临时图片
-	    $copyImg = imagecreatetruecolor($srcWidth, $srcHeight);
-	    $bg = imagecolorallocate($copyImg, 255, 255, 255);
-	    imagefill($copyImg, 0, 0, $bg);
-	    imagecopy($copyImg, $srcImg, 0, 0, 0, 0, $srcWidth, $srcHeight);
-	    $srcImg = $copyImg;
+
+	        // 复制临时图片
+	        $copyImg = imagecreatetruecolor($srcWidth, $srcHeight);
+	        imagecopy($copyImg, $srcImg, 0, 0, 0, 0, $srcWidth, $srcHeight);
+	        $srcImg = $copyImg;
 
             // 复制图片
             if (function_exists("ImageCopyResampled"))
