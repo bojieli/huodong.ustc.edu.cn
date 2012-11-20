@@ -55,6 +55,7 @@ class SurveyModel extends Model {
     private function addQuestion($surveyid, $form) {
         $qcount = 0;
         foreach ($form['sections'] as $i => $section) {
+            $sec = array();
             $sec['survey'] = $surveyid;
             $sec['section'] = $i;
             $sec['title'] = $section['title'];
@@ -62,6 +63,7 @@ class SurveyModel extends Model {
             M('survey_section')->add($sec);
 
             foreach ($section['questions'] as $j => $question) {
+                $q = array();
                 $q['survey'] = $surveyid;
                 $q['section'] = $i;
                 $q['question'] = $j;
@@ -69,7 +71,9 @@ class SurveyModel extends Model {
                 $q['help_text'] = $question['help_text'];
                 $q['type'] = $question['type'];
                 $q['required'] = $question['required'] ? true : false;
-                $q['options'] = json_encode($question['options']);
+                if ($q['type'] != 'text' && $q['type'] != 'textarea') {
+                    $q['options'] = json_encode($question['options']);
+                }
                 M('survey_question')->add($q);
                 $qcount++;
             }

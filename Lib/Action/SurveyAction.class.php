@@ -94,7 +94,7 @@ class SurveyAction extends PublicAction {
                     $this->error("您输入的密码不正确");
             }
             if ($this->survey['need_login'] && CURRENT_USER == 0)
-                $this->error("需要登录才能使用调查问卷");
+                $this->error("需要登录才能填写调查问卷");
             if ($this->survey['member_only'] && ! D('Club')->isMember(CURRENT_USER, $this->gid))
                 $this->error("组织成员才有权进行此操作");
         }

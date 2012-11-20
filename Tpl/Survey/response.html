@@ -143,6 +143,7 @@ label {
       <form id="response">
         <input type="hidden" name="gid" value="{$_REQUEST.gid}" />
         <input type="hidden" name="survey" value="{$_REQUEST.survey}" />
+        <input type="hidden" name="password" value="{$_REQUEST.password}" />
         <volist name="sections" id="sec" key="i">
         <section id="section-{$i}">
           <div class="page-header"><h2>{$sec.title}</h2></div>
@@ -176,11 +177,11 @@ label {
                   </volist>
                   </select>
                 </case>
-                <case value="input">
+                <case value="text">
                   <input type="text" class="input-xlarge" />
                 </case>
                 <case value="textarea">
-                  <textarea class="input-xlarge"></textarea>
+                  <textarea class="input-xlarge" rows="5" style="width:500px"></textarea>
                 </case>
                 <default />内部错误
               </switch>
@@ -232,11 +233,13 @@ $(function(){
             data: {
                 gid: $(this).children('[name=gid]').val(),
                 survey: $(this).children('[name=survey]').val(),
+                password: $(this).children('[name=password]').val(),
                 form: $.toJSON(response),
             },
             success: function(obj) {
                 if (obj.status) {
                     alert('问卷提交成功，感谢您参与此次问卷调查！');
+                    location.href = '/';
                 } else {
                     alert(obj.info);
                 }
