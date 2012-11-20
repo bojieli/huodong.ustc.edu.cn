@@ -61,7 +61,7 @@ class SurveyModel extends Model {
             $sec['title'] = $section['title'];
             if (empty($sec['title']))
                 return false;
-            $sec['help_text'] = $sec['help_text'];
+            $sec['help_text'] = $section['help_text'];
             M('survey_section')->add($sec);
 
             foreach ($section['questions'] as $j => $question) {
