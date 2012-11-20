@@ -65,8 +65,6 @@ class SurveyAction extends PublicAction {
     }
 
     private function assertPriv($priv='') {
-        if (CURRENT_USER == 0)
-            $this->error("需要登录才能使用调查问卷");
         if (empty($_REQUEST['gid']) || !is_numeric($_REQUEST['gid']))
             $this->error("只有学生组织才能发起调查问卷");
         $this->gid = $_REQUEST['gid'];
@@ -87,8 +85,27 @@ class SurveyAction extends PublicAction {
             $this->survey = M('Survey')->find($this->sid);
             if (!$this->survey)
                 $this->error("您所查找的调查问卷不存在");
+            if ($this->survey['password'] != '') {
+                if (empty($_REQUEST['password'])) {
+                    $this->display('password');
+                    exit();
+                }
+                if (! $this->checkPassword($this->survey['password']))
+                    $this->error("您输入的密码不正确");
+            }
+            if ($this->survey['need_login'] && CURRENT_USER == 0)
+                $this->error("需要登录才能使用调查问卷");
             if ($this->survey['member_only'] && ! D('Club')->isMember(CURRENT_USER, $this->gid))
                 $this->error("组织成员才有权进行此操作");
         }
+    }
+
+    private function checkPassword($password) {
+        $passwords = explode(',', $password);
+        foreach ($passwords as $pass) {
+            if (trim($pass) == $_REQUEST['password'])
+                return true;
+        }
+        return false;
     }
 }

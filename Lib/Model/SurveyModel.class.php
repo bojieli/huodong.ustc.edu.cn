@@ -4,6 +4,8 @@
  {  title: string,
     help_text: string,
     member_only: bool,
+    need_login: bool,
+    password: string (optional),
     sections: [
         { title: string,
           help_text: string,
@@ -37,6 +39,9 @@ class SurveyModel extends Model {
         $survey['title'] = $form['title'];
         $survey['help_text'] = $form['help_text'];
         $survey['member_only'] = $form['member_only'] ? true : false;
+        $survey['need_login'] = $form['need_login'] ? true : false;
+        if (!empty($form['password']))
+            $survey['password'] = $form['password'];
         $survey['create_time'] = time();
         $surveyid = $this->add($survey);
         if (!$surveyid)
