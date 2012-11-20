@@ -118,6 +118,8 @@
 
 <script>
 $(function(){
+    var createSubmitting = false;
+    var toast;
     $('#createSurvey').submit(function(e){
         e.preventDefault();
 
@@ -135,6 +137,13 @@ $(function(){
             survey.sections.push(getSection(this, inputs));
         });
 
+        if (createSubmitting) {
+            $().toastmessage('showNoticeToast', '正在提交，请稍候……');
+            return;
+        }
+        createSubmitting = true;
+        toast = $().toastmessage('showNoticeToast', '正在提交，请稍候……');
+
         $.ajax({
             url: "/Survey/do_create",
             dataType: "json",
@@ -144,14 +153,18 @@ $(function(){
                 form: $.toJSON(survey)
             },
             success: function(obj) {
+                createSubmitting = false;
+                $().toastmessage('removeToast', toast);
                 if (obj.status) {
                     location.href = "/Survey/response?gid={$_REQUEST.gid}&survey=" + obj.survey;
                 } else {
-                    alert('问卷创建失败');
+                    $().toastmessage('showErrorToast', '问卷创建失败');
                 }
             },
             error: function() {
-                alert('内部错误');
+                createSubmitting = false;
+                $().toastmessage('removeToast', toast);
+                $().toastmessage('showErrorToast', '内部错误，请重新提交');
             }
         });
     });
