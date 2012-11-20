@@ -4,6 +4,9 @@ class SurveyAction extends PublicAction {
         if (CURRENT_USER == 0)
             $this->error("需要登录才能使用调查问卷");
         $list = M('Survey')->select();
+        foreach ($list as &$survey) {
+            $survey['clubname'] = D('Club')->getClubName($survey['gid']);
+        }
         $this->assign('surveys', $list);
         $this->headnav();
         $this->display();
