@@ -447,7 +447,7 @@ class UserModel extends Model {
             return $keyc . str_replace('=', '', base64_encode($result));
         }
     }
-	public function change_online_status($status,$uid){//0->离线;1->在线;2->隐身
+	/*public function change_online_status($status,$uid){//0->离线;1->在线;2->隐身
 			global $_G;
 			//dump($uid);
 			$uid = empty($_G['uid'])?$uid:$_G['uid'];
@@ -461,6 +461,6 @@ class UserModel extends Model {
 	public function get_online_status(){
 		global $_G;
 		return M('User')->field('isonline')->where(array('uid'=>$_G['uid']))->find()['isonline'];
-	}
+	}*/
 }
 ?>
