@@ -1,6 +1,8 @@
 <include file="header" />
 <style>
-.bordered { border: 3px dashed #CCC; padding-top: 10px; }
+.bordered { border: 3px dashed #CCC; padding-top: 10px; padding-right: 30px;}
+.sections label.control-label { width: 50px; }
+.sections .controls { margin-left: 70px; }
 </style>
 <h1>创建调查问卷</h1>
 
@@ -15,7 +17,20 @@
   <div class="control-group">
     <label class="control-label">说明</label>
     <div class="controls">
-      <textarea name="help_text" class="input-xlarge"></textarea>
+      <textarea name="help_text" class="input-xlarge" rows="5"></textarea>
+    </div>
+  </div>
+  <div class="control-group">
+    <label class="control-label">进入密码</label>
+    <div class="controls">
+      <input type="text" class="input-xlarge" name="password" />
+      <span class="help-block">输入密码才能参与调查，如需多个密码请用半角逗号隔开。如不需密码请留空</span>
+    </div>
+  </div>
+  <div class="control-group">
+    <label class="control-label">需要登录才能参加</label>
+    <div class="controls">
+      <input type="checkbox" checked="checked" name="need_login" />
     </div>
   </div>
   <div class="control-group">
@@ -25,10 +40,10 @@
     </div>
   </div>
   <div class="control-group">
-    <label class="control-label">栏目</label>
+    <label class="control-label">第1部分</label>
     <div class="controls">
       <div class="sections"></div>
-      <div><button class="btn newsection">添加栏目</button></div>
+      <div><button class="btn newsection">添加部分</button></div>
     </div>
   </div>
   <div class="control-group">
@@ -41,7 +56,7 @@
 <div id="defaultSection" style="display:none">
   <form class="form-horizontal bordered">
     <div class="control-group">
-      <label class="control-label">栏目标题</label>
+      <label class="control-label">标题</label>
       <div class="controls">
         <input type="text" class="input-xlarge" name="title" />
       </div>
@@ -53,7 +68,7 @@
       </div>
     </div>
     <div class="control-group">
-      <label class="control-label">栏目</label>
+      <label class="control-label">问题</label>
       <div class="controls">
         <div class="questions"></div>
         <div><button class="btn newquestion">添加问题</button></div>
@@ -64,6 +79,7 @@
 
 <div id="defaultQuestion" style="display:none">
   <form class="form-horizontal well">
+    <div class="pull-right question-remove"><i class="icon-remove"></i></div>
     <div class="control-group">
       <label class="control-label">问题</label>
       <div class="controls">
@@ -80,7 +96,7 @@
           <option value="text">单行文本</option>
           <option value="textarea">多行文本</option>
         </select>
-        必填？<input type="checkbox" name="required" />
+        &nbsp;必填？<input type="checkbox" name="required" />
       </div>
     </div>
     <div class="control-group">
@@ -94,7 +110,10 @@
 </div>
 
 <div id="defaultOption" style="display:none">
-  <div><input type="text" class="input-xlarge" name="option" /></div>
+  <div class="option">
+    <input type="text" class="input-xlarge" name="option" />
+    <span><i class="icon-move"></i> <i class="icon-remove"></i></span>
+  </div>
 </div>
 
 <script>
@@ -116,7 +135,6 @@ $(function(){
             survey.sections.push(getSection(this, inputs));
         });
 
-        console.log(survey);
         $.ajax({
             url: "/Survey/do_create",
             dataType: "json",
@@ -140,23 +158,39 @@ $(function(){
     
     $('.newsection').live('click', function(e){
         e.preventDefault();
-        $(this).parent().parent().find('.sections').append($('#defaultSection').html());
+        var sections = $(this).parent().parent().find('.sections');
+        sections.append($('#defaultSection').html());
+
+        var questions = sections.children(':last').find('.questions');
+        questions.sortable();
+        questions.append($('#defaultQuestion').html());
+        questions.children(':last').find('.options').sortable();
     });
+    $('.newsection').click();
     
     $('.newquestion').live('click', function(e){
         e.preventDefault();
-        questions = $(this).parent().parent().find('.questions');
-        if (questions.html().length == 0)
+        var questions = $(this).parent().parent().find('.questions');
+        if (questions.children().length == 0) {
             questions.append($('#defaultQuestion').html());
-        else {
-            clone = questions.children(':last').clone(true, true); // deep clone
+        } else {
+            var orig = questions.children(':last');
+            var clone = orig.clone(true, true); // deep clone
+            clone.find('select').val(orig.find('select').val());
             questions.append(clone);
         }
+        questions.children(':last').find('.options').sortable();
     });
     
     $('.newoption').live('click', function(e){
         e.preventDefault();
         $(this).parent().parent().find('.options').append($('#defaultOption').html());
+    });
+    $('.option .icon-remove').live('click', function(e){
+        $(this).parent().parent().remove();
+    });
+    $('.question-remove .icon-remove').live('click', function(e){
+        $(this).parent().parent().remove();
     });
 });
 
@@ -169,7 +203,7 @@ function getSection(dom, inputs) {
         section[$(this).parent().attr('name')] = $(this).val();
     });
     section.questions = [];
-    $(dom).find('.questions>form').each(function(){
+    $(dom).find('.questions form').each(function(){
         section.questions.push(getQuestion(this, inputs));
     });
     return section;

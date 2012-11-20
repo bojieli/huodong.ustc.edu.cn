@@ -1,8 +1,14 @@
 <include file="header" />
 <h1>调查问卷列表</h1>
-<ul>
+<table class="table table-striped">
 <volist name="surveys" id="vo">
-<li><a href="/Survey/response?survey={$vo.id}">{$vo.title}</a> <a href="/Survey/result?survey={$vo.id}">查看结果</a></li>
+<tr>
+<td><a href="/Club/intro?gid={$vo.gid}">{$vo.clubname}</a></td>
+<td><a href="/Survey/response?gid={$vo.gid}&survey={$vo.id}">{$vo.title}</a></td>
+<td><a href="/Survey/result?gid={$vo.gid}&survey={$vo.id}">查看结果</td></tr>
 </volist>
-</ul>
-<a href="/Survey/create?gid=1">新建调查问卷</a>
+</table>
+<form class="well" action="/Survey/create" method="get">
+组织ID: <input type="text" name="gid" class="input-small" />
+<p><button type="submit" class="btn">新建调查问卷</button>
+</form>

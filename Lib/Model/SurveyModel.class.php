@@ -4,6 +4,8 @@
  {  title: string,
     help_text: string,
     member_only: bool,
+    need_login: bool,
+    password: string (optional),
     sections: [
         { title: string,
           help_text: string,
@@ -37,6 +39,9 @@ class SurveyModel extends Model {
         $survey['title'] = $form['title'];
         $survey['help_text'] = $form['help_text'];
         $survey['member_only'] = $form['member_only'] ? true : false;
+        $survey['need_login'] = $form['need_login'] ? true : false;
+        if (!empty($form['password']))
+            $survey['password'] = $form['password'];
         $survey['create_time'] = time();
         $surveyid = $this->add($survey);
         if (!$surveyid)
@@ -50,13 +55,17 @@ class SurveyModel extends Model {
     private function addQuestion($surveyid, $form) {
         $qcount = 0;
         foreach ($form['sections'] as $i => $section) {
+            $sec = array();
             $sec['survey'] = $surveyid;
             $sec['section'] = $i;
             $sec['title'] = $section['title'];
-            $sec['help_text'] = $sec['help_text'];
+            if (empty($sec['title']))
+                return false;
+            $sec['help_text'] = $section['help_text'];
             M('survey_section')->add($sec);
 
             foreach ($section['questions'] as $j => $question) {
+                $q = array();
                 $q['survey'] = $surveyid;
                 $q['section'] = $i;
                 $q['question'] = $j;
@@ -64,7 +73,9 @@ class SurveyModel extends Model {
                 $q['help_text'] = $question['help_text'];
                 $q['type'] = $question['type'];
                 $q['required'] = $question['required'] ? true : false;
-                $q['options'] = json_encode($question['options']);
+                if ($q['type'] != 'text' && $q['type'] != 'textarea') {
+                    $q['options'] = json_encode($question['options']);
+                }
                 M('survey_question')->add($q);
                 $qcount++;
             }
@@ -83,29 +94,54 @@ class SurveyModel extends Model {
         $this->addQuestion($survey, $form);
     }
 
+    function check_response($survey, $form) {
+        $questions = M('survey_question')->where(array('survey'=>$survey))->select();
+        if (empty($questions))
+            return false;
+
+        foreach ($questions as $question) {
+            if ($question['required'] && !isset($form[$question['section']][$question['question']]))
+                return false;
+        }
+        return true;
+    }
+
+    function isSubmited($survey) {
+        return (M('survey_response')->where(array('survey'=>$survey, 'uid'=>CURRENT_USER))->count() > 0);
+    }
+
     function response($survey, $form) {
+        if ($this->isSubmited($survey))
+            throw new Exception("您已经参与过此调查，每人只能参与一次");
+        if (! $this->check_response($survey, $form))
+            throw new Exception("您填写的问卷有问题，请检查所有必填问题均已正确填写");
+
         $response['survey'] = $survey;
         $response['uid'] = CURRENT_USER;
         $response['submit_time'] = time();
         $id = M('survey_response')->add($response);
         if (!$id)
-            return false;
+            throw new Exception("调查保存失败，请联系管理员");
 
-        foreach ($sections as $i => $section) {
+        foreach ($form as $i => $section) {
             foreach ($section as $j => $content) {
                 $row['response'] = $id;
                 $row['survey'] = $survey;
                 $row['section'] = $i;
                 $row['question'] = $j;
-                $row['content'] = $content;
-                M('survey_response_field')->add($row);
+                // multiple select questions may have multiple answers
+                $contentarr = is_array($content) ? $content : array($content);
+                foreach ($contentarr as $value) {
+                    $row['content'] = $value;
+                    M('survey_response_field')->add($row);
+                }
             }
         }
-        return true;
+        return $id;
     }
 
     function getResult($surveyid) {
-        $this->getForm($surveyid, true);
+        return $this->getForm($surveyid, true);
     }
 
     function getForm($surveyid, /*INTERNAL*/ $getresult=false) {
@@ -117,21 +153,19 @@ class SurveyModel extends Model {
                 $q['options'] = json_decode($q['options']);
 
                 if ($getresult) {
-                    $responses = M('survey_response_field')->field('content')->where(array('survey'=>$surveyid, 'section'=>$i, 'question'=>$j))->select();
-                    $q['responses'] = array();
-                    foreach ($responses as $response) {
-                        $q['responses'][] = $responses['content'];
+                    $arr = M('survey_response_field')->field('content')->where(array('survey'=>$surveyid, 'section'=>$i, 'question'=>$j))->select();
+                    $responses = array();
+                    foreach ($arr as $response) {
+                        $responses[] = $response['content'];
                     }
+                    $q['response_count'] = count($responses);
 
                     $q['stats'] = array();
                     foreach ($q['options'] as $key => $option) {
                         $q['stats'][$option] = 0;
                     }
-                    foreach ($q['responses'] as $content) {
-                        if (isset($q['options'][$content])) // select question
-                            $q['stats'][$q['option'][$content]] ++;
-                        else // text question
-                            $q['stats'][$content] ++;
+                    foreach ($responses as $content) {
+                        $q['stats'][$content] ++;
                     }
                 }
             }

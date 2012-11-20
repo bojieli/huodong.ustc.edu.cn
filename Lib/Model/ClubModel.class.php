@@ -217,4 +217,12 @@ class ClubModel extends Model {
         return $club;
     }
 
+    public function getClubName($gid) {
+        if (!is_numeric($gid))
+            return null;
+        $club = $this->field('name')->find($gid);
+        if (empty($club))
+            return null;
+        return $club['name'];
+    }
 }
