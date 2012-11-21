@@ -75,9 +75,9 @@
 				filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#f47a20', endColorstr='#faa51a');
 			}
 		</style>
-		<script src="http://127.0.0.1:8888/socket.io/socket.io.js"></script>
+		<script src="/socket.io/socket.io.js"></script>
 		<script type="text/javascript">
-			var socket = io.connect('127.0.0.1:8888/');
+			var socket = io.connect('/');
 			//Comet
 			socket.on('user message', function(msg) {
 				msgbox(msg.msg);
