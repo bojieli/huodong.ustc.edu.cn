@@ -105,7 +105,7 @@ hr.soften {
 .question {
     font-size:14px; 
     color:#333;
-    border-bottom: 2px dashed #CCC;
+    border-bottom:1px solid #CCC;
 }
 .qtext { 
     font-size:16px; 
@@ -197,6 +197,8 @@ label {
 </div>
 <script>
 $(function(){
+    var responseSubmitting = false;
+    var toast;
     $('#response').submit(function(e){
         e.preventDefault();
 
@@ -215,7 +217,7 @@ $(function(){
                     });
                 }
                 if ($(this).attr('required') && typeof val == "null") {
-                    alert('请补全所有必填问题');
+                    $().toastmessage('showNoticeToast', '请补全所有必填问题');
                     return;
                 }
                 section.push(val);
@@ -225,6 +227,13 @@ $(function(){
 
         if (!confirm('确定要提交问卷吗？'))
             return;
+
+        if (responseSubmitting) {
+            $().toastmessage('showNoticeToast', '正在提交，请稍候……');
+            return;
+        }
+        responseSubmitting = true;
+        toast = $().toastmessage('showNoticeToast', '正在提交，请稍候……');
 
         $.ajax({
             url: "/Survey/do_response",
@@ -237,15 +246,19 @@ $(function(){
                 form: $.toJSON(response),
             },
             success: function(obj) {
+                responseSubmitting = false;
+                $().toastmessage('removeToast', toast);
                 if (obj.status) {
-                    alert('问卷提交成功，感谢您参与此次问卷调查！');
+                    $().toastmessage('showSuccessToast', '问卷提交成功，感谢您参与此次问卷调查！');
                     location.href = '/';
                 } else {
-                    alert(obj.info);
+                    $().toastmessage('showErrorToast', obj.info);
                 }
             },
             error: function() {
-                alert('内部错误');
+                responseSubmitting = false;
+                $().toastmessage('removeToast', toast);
+                $().toastmessage('showErrorToast', '内部错误，请重新提交');
             }
         });
     });
