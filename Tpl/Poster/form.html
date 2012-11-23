@@ -74,23 +74,145 @@
 		<style type="text/css">
 		.controls .file-box{ position:relative;width:340px} 
 		.controls .txt{ height:22px; border:1px solid #cdcdcd; width:180px;} 
-		.controls .btn{ background-color:#FFF; border:1px solid #CDCDCD;height:30px; width:70px; font-family:Microsoft Yahei, "Times New Roman", Times, serif;} 
-		.controls .file{ position:absolute; top:0; right:80px; height:32px; filter:alpha(opacity:0);opacity: 0;width:260px } 
-		</style>      
+		.controls .btn{ background-color:#FFF; border:1px solid #CDCDCD;height:22px; width:30px; font-family:Microsoft Yahei, "Times New Roman", Times, serif;} 
+		.controls .file{display:none;position:absolute; top:0; right:80px; height:32px; filter:alpha(opacity:0);opacity: 0;width:260px } 
+			#drop_zone {
+		  border: 2px dashed #BBB;
+		  margin:10px;
+		  position: relative;
+		  bottom:0px;
+		  right:0px;
+		  z-index: 8;
+		  width:500px;
+		  padding: 40px 5px;
+		  text-align: center;
+		  font-size: 20pt;
+		  color: #BBB;
+		  border-radius: 5px;
+		}
+		#drop_zone.hovering {
+		  -webkit-box-shadow: inset 0px 0px 50px #BBB;
+		  -moz-box-shadow: inset 0px 0px 50px #BBB;
+		  -o-box-shadow: inset 0px 0px 50px #BBB;
+		  box-shadow: inset 0px 0px 50px #BBB;
+		}
+		.drop_area {
+		display:none;
+		  position: absolute;
+		  bottom:-80px;
+		  left:-120px;
+		  z-index: 8;
+		  width:535px;
+		  margin: 0px 0px;
+		  padding: 0px;
+		  border: 1px solid #BBB;
+		  background: white url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAE8AAABPCAYAAACqNJiGAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyJpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNSBNYWNpbnRvc2giIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6NUVFREE2QTFENjc3MTFFMDg0RDg4QURBN0E4NTA4NTUiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6NUVFREE2QTJENjc3MTFFMDg0RDg4QURBN0E4NTA4NTUiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDpGNTQwMEVFNkQ1OTUxMUUwODREODhBREE3QTg1MDg1NSIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDo1RUVEQTZBMEQ2NzcxMUUwODREODhBREE3QTg1MDg1NSIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/Pu1CJBoAAAVwSURBVHja7FwNb9s2FLRlO4kbtFuwrViHYgP2/3/TsHVtsqUfadOlTuKv+bQ878rqUSfJdj76CASiTN6JIXgUec90/+TP309/fP7LtLdKxy9+2/vp51+vkX998nJ09P3T2XC0t/z44WyAzx5/czSfTa/7Z29Ohz88e15i/nr5x6gOb/ffPX02KwaDpcqd8tXhcf3w7s1g72C8HD86XDThNj4Vj9RfLpevepFapSK6oEPnYcjaDeffvf57iKGK/MU/5wX+kL+6nPQxtKswHh7p7enJcDGf901a4Em5UR+4Kj4FjwSpTT5dlPe4mvRUbhVfynY+mx1jHsENCCyPyjZfGXFVPS/P+DoMc6fPVZ7ptS3XJuU5df9TzHldZMtDkfMYrixbkwk+s6GcYjy8SY2lYWXgZdl63Ao+bSuXAcvTjcet4pGGh4+fzO2G83hVF8V/dff3D5aWxxVlVRgPj3SA+5vhz2Wj0V5vcPN5jlvBp239jHt1PRC4VXzItqts7c1ibxce/jaUMXxtKOMzy6cYD5+WAe9xswQ9bg+flnFbU26eHjzuHL7svGt6MOe9tFjMe7PZtBKTw2OOskYBD566xHwqfrFY9KfTcuPQwxX3dc9h7ib4kG0X2bK0+O3IedTx6in4XL0ct/KcFJ/mFW7vOTl82Xlnb0/X2sfG1/Ln7/9fDkwmF338GQHKeHVeh0d6T8sBlZv50M46/PredggiN/NhXlPwIdswBm6x8+DHeZt8G8p4rfMGmesxHh5ZFd7uTXZsGuS4Uz7De22z3YK3sc9xGx/jc20L2YZs76Cfh+G7Cz8PEtmFnwfszvw81TPr6ufV+Yib9POaPif8vPDz7rGfNx4frofqNv08SGL8qLcTP+/Jt0fh58VS5aEtVbzQY245oS5V2nAr+HSpoXKnOx4F/8VSJRea4+WA95r38HXLBI9beU7dMkrhzi1bPHzMeV1ly69fznsxDPQ+y0TBmxx4OcBLDS9OwHwK3nYFvNQwCeZiGMyt4svOwzeC7Ibzbm+vXuPD4agSk8NjuNvwB56XMV5iPhVfFMUSSwxbauC+7jnM3QQfsu0iWzW8VxWOSzEePleWhveacqeYNm1Vuble2Xle6JDDexyOU0OPaXjQCx1yeC/HreDTtn7GvcLy0snjVvEh266y9cJ2TcJ7dfg6jBLWVPGcz7VJeU7d/1Rw6JDzXngPc8Dq1V5UYTw8EocOgV+boWpYU8DbMobNTN4hKGFNFR+yDWPgjhgDXjhuE6FH3tir3G1Cj7yxb8IdoceQ7T2VLb/dtunneWHNTft5alhzI35eG8+tjZ/XxnNr4+ep7Qs/L/y8B+LnsWe3TT/PvLNt+3nAepjw88LPe4B+nnlb2/bzrGwXfl6aDz8vdhj3qPOuEmkoZiiXKfhcPfWsRBM8z1lNz2Go+LLzLj6edzqHoeCRLleTbZdzGAq+7OSry/Wc1eYchoqPOS/mvFvsPDYz0zMZVYYj5h52FxR8amYCb3OYarQq+NTMxNW2eKrRquJDtiHbOyhblgYPZVW2jM/JjqWR41bwOdkBq0wJKj5kG7K9xc7zzlHkYhjKOYw0huGdo8jFCZRzGGkMwztHkYthKOcwKmMYl5NPx/s3piMqW96LE5RblsW8Z2WM8fBVZTAmjc+4U1yOO4fnMm6rF7fIcXv4mPM2aYayHHO/q+L99omHT+up3N5vn3j4KhNX4U75FHzZealT0DQpv8ViJmr69a0mid2OumQb+zaJzdC6FLINP+8O+HnsV23Tz8P8tQs/D9fw82KH8ZUZA7vw83K/fbJJPw9Y/hZY+Hkh2wfu5/EX/rbp56Wb7236eWk+/LyQbXTeV5H+FWAA7eqC0D2aO2cAAAAASUVORK5CYII=");
+		}
+		#output_area {
+		width:400px;
+		position: absolute;
+		bottom:0px;
+		left:290px;
+		text-align: left;
+		background:#ddd;
+		border-radius: 5px;
+		}
+		#output_area li {
+		  margin: 10px 0;
+		  list-style: none;
+		}
+		#drag_img{
+			position: relative;
+			right:30px;
+			cursor:pointer;
+		}
+		#close_drop{
+			width:20px;
+			float:right;
+			margin:5px;
+			font-size:30px;
+			position: relative;
+			z-index: 9;
+			cursor:pointer;
+		}
+		</style>		
       <div class="controls">
-      	<div class="file-box">             
-             <input type='text' name='textfield' id='textfield' class='txt' /> 
-             <input type='button' class='btn' value='浏览...' /> 
-             <input type="file" name="poster" class="file" id="poster" size="36" onchange="document.getElementById('textfield').value=this.value" /> 
-
-
+      	<div class="file-box">
+			 <input type='text' name='textfield' id='textfield' class='txt' />
+			 <img id="drag_img" src="/static/images/upload.gif" title="拖拽上传" onclick="javascript:document.getElementById('drop_area').style.display='inline'"/>
+             <!--input type='button' class='btn' value='浏览...' /-->
+			 <a class="btn" href="javascript:document.getElementById('poster').click()">上传
+             <input type="file" name="poster" class="file" id="poster" size="36" onchange="document.getElementById('textfield').value=this.value" />
+			 </a>
+			<div class="drop_area" id="drop_area">
+				  <img src="/static/images/del.png" alt="取消" id="close_drop" onclick="javascript:document.getElementById('drop_area').style.display='none'"/>
+				  <div id="drop_zone">将文件拖拽到这里(本功能还在开发中)</div>
+			</div>
+			<div id="output_area"></div>
 		</div> 
+		<script type="text/javascript">
+var output = document.getElementById('output_area');
+    var dropZone = document.getElementById('drop_zone');
+    var dropArea = document.getElementById('drop_area');
+	if (!(('draggable' in dropZone) && ('ondragenter' in dropZone)
+          && ('ondragleave' in dropZone) && ('ondragover' in dropZone)
+          && window.File)) {
+      document.getElementById('demo_area').style.display = 'none';
+    } else {
+
+      function handleFileDragEnter(e) {
+        e.stopPropagation();
+        e.preventDefault();
+        this.classList.add('hovering');
+      }
+
+      function handleFileDragLeave(e) {
+        e.stopPropagation();
+        e.preventDefault();
+        this.classList.remove('hovering');
+      }
+
+      function handleFileDragOver(e) {
+        e.stopPropagation();
+        e.preventDefault();
+        e.dataTransfer.dropEffect = 'copy';
+      }
+
+      function handleFileDrop(e) {
+        e.stopPropagation();
+        e.preventDefault();
+        this.classList.remove('hovering');
+
+        var files = e.dataTransfer.files;
+        var outputStr = [];
+        var fname = [];
+		
+		for (var i = 0, f; f = files[i]; i++) {
+          var lastModified = f.lastModifiedDate;
+          var lastModifiedStr = lastModified ? lastModified.toLocaleDateString() + ' ' + lastModified.toLocaleTimeString()
+                                             : 'n/a';
+          outputStr += '<li><strong>' + f.name + '</strong> ('
+                       + (f.type || 'n/a') + ')<br>大小：' + f.size
+                       + '字节<br>修改时间：' + lastModifiedStr + '</li>';
+		  fname+=f.name;
+        }
+		dropArea.style.display = "none";
+		output.innerHTML = '<ul>' + outputStr + '</ul>';
+		document.getElementById('textfield').value = "C:\\fakepath\\"+fname;
+      }
+
+      dropZone.addEventListener('dragenter', handleFileDragEnter, false);
+      dropZone.addEventListener('dragleave', handleFileDragLeave, false);
+      dropZone.addEventListener('dragover', handleFileDragOver, false);
+      dropZone.addEventListener('drop', handleFileDrop, false);
+    }
+</script>
 		<!--        <input type="file" id="poster" name="poster" value="选择海报"/>    -->
-	<empty name="new">
-	<p class="help-block">如果需要重新上传海报，请在此重新上传，否则请留空</p>
-	</empty>
-	<p class="help-block">图片大小不大于<span style="color:red">8MB</span>，支持的文件格式：jpg、jpeg、png、gif</p>
-	<p class="help-block"><span style="color:red">为保证海报的清晰度，还请上传 <span style="color:#333"><strong>宽度大于1000px</strong></span> 的海报图，无需担心浏览速度，系统后台会自动处理和生成各种大小的压缩图片！<br/>完全相同的海报只能发一个，内容相似的海报最多只能发两个，不符合上述规定的海报，会被管理员删除重复的</span></p>
+		<empty name="new">
+		<p class="help-block">如果需要重新上传海报，请在此重新上传，否则请留空</p>
+		</empty>
+		<p class="help-block">图片大小不大于<span style="color:red">8MB</span>，支持的文件格式：jpg、jpeg、png、gif</p>
+		<p class="help-block"><span style="color:red">为保证海报的清晰度，还请上传 <span style="color:#333"><strong>宽度大于1000px</strong></span> 的海报图，无需担心浏览速度，系统后台会自动处理和生成各种大小的压缩图片！<br/>完全相同的海报只能发一个，内容相似的海报最多只能发两个，不符合上述规定的海报，会被管理员删除重复的</span></p>
       </div>
     </div>
 	
