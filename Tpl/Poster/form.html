@@ -72,11 +72,42 @@
       <label class="control-label" for="poster" >上传海报</label>
       
 		<style type="text/css">
-		.controls .file-box{ position:relative;width:340px} 
-		.controls .txt{ height:22px; border:1px solid #cdcdcd; width:180px;} 
-		.controls .btn{ background-color:#FFF; border:1px solid #CDCDCD;height:22px; width:30px; font-family:Microsoft Yahei, "Times New Roman", Times, serif;} 
-		.controls .file{display:none;position:absolute; top:0; right:80px; height:32px; filter:alpha(opacity:0);opacity: 0;width:260px } 
-			#drop_zone {
+		.controls .file-box{
+			position:relative;
+			width:340px;
+		} 
+		.controls .txt{ 
+			height:22px;
+			border:1px solid #cdcdcd; 
+			width:206px;
+		} 
+		.controls .btn{ 
+			z-index:3;
+			cursor:pointer;
+			position:absolute; 
+			top:10px
+			background-color:#FFF;
+			margin-right:0px;
+			border:1px solid #CDCDCD;
+			height:32px; 
+			width:50px; 
+			font-family:Microsoft Yahei, "Times New Roman", Times, serif;
+		} 
+		.controls .file{
+			z-index:4;
+			position:absolute; 
+			top:0; 
+			right:70px; 
+			height:30px; 
+			cursor:pointer;
+			filter:alpha(opacity:0);
+			opacity: 0;
+			width:48px 
+		}
+		
+		
+		
+		#drop_zone {
 		  border: 2px dashed #BBB;
 		  margin:10px;
 		  position: relative;
@@ -124,6 +155,7 @@
 		#drag_img{
 			position: relative;
 			right:30px;
+			z-index: 6;
 			cursor:pointer;
 		}
 		#close_drop{
@@ -140,10 +172,8 @@
       	<div class="file-box">
 			 <input type='text' name='textfield' id='textfield' class='txt' />
 			 <img id="drag_img" src="/static/images/upload.gif" title="拖拽上传" onclick="javascript:document.getElementById('drop_area').style.display='inline'"/>
-             <!--input type='button' class='btn' value='浏览...' /-->
-			 <a class="btn" href="javascript:document.getElementById('poster').click()">上传
-             <input type="file" name="poster" class="file" id="poster" size="36" onchange="document.getElementById('textfield').value=this.value" />
-			 </a>
+             <input type='button' class='btn' value='浏览...' />
+             <input type="file" name="poster" class="file" id="poster" size="1" onchange="document.getElementById('textfield').value=this.value" />
 			<div class="drop_area" id="drop_area">
 				  <img src="/static/images/del.png" alt="取消" id="close_drop" onclick="javascript:document.getElementById('drop_area').style.display='none'"/>
 				  <div id="drop_zone">将文件拖拽到这里(本功能还在开发中)</div>
