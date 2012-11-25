@@ -1,0 +1,185 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="keywords" content="大学海报,海报墙,社团,社团管理,大学活动,活动搜索,活动筛选,搜索海报,搜索社团,筛选海报,筛选社团,邮件通知,短信通知,申请加入,瀑布流,评价分享,时间轴" />
+<meta name="description" content="大学活动的集中展示平台,大学海报的集中发布与分享平台,大学社团的集中展示与集中管理平台。更便捷、更简单、更高效、更美观、更流畅、更快速……" />
+<title>毕业了，那些想说的话 - 百度俱乐部 - 大学活动</title>
+
+<link href="/static/css1.css" rel="stylesheet" type="text/css" />
+<script src="/static/jquery.js" type="text/javascript"></script>
+<script src="/static/setwaterfall.js" type="text/javascript"></script>
+<script src="/static/jsjq1.js" type="text/javascript"></script>
+<script>
+<!--
+var  loadflag = 2;
+var  nomoreflag = 0;
+	var loadmore = (function() {
+		var posterCounter = 0;
+		var ajaxLock = false;
+		var noMore = false;
+		return function(loadnum) {
+			 loadflag = 1;
+			if (!ajaxLock && !noMore) {
+				ajaxLock = true;
+				$.getJSON(
+					"/Activity/ajaxGet",
+					{start: posterCounter, num: loadnum, act_id: "<?=$act_id?>" }
+				).done(function( obj ){
+					loadflag = 0;					
+					if (obj.length == 0){
+						noMore = true;
+						nomoreflag = 1;
+					};
+					posterCounter += obj.length;
+					var html = obj.join("");
+					$("#content ul").append(html);
+					$(".hide").animate({opacity:1},1000); 
+					$("#content ul li").setwaterfall();
+					ajaxLock = false;
+				});
+			}
+		}
+	})();
+	
+	$(document).ready(function(){
+		loadmore(1);
+		cycleload();
+		$(window).scroll(function () {
+		  if( loadflag==0	){
+			var clienth = document.documentElement.clientHeight;
+			var scrollh = document.documentElement.scrollHeight;
+			var scrollt = document.documentElement.scrollTop + document.body.scrollTop;
+			if((clienth + scrollt + 20 > lowestcollheight) || (clienth + scrollt + 250 > scrollh)) {
+				 loadmore(4);
+			};
+		  }
+		});
+		
+		
+		$(".ding").live({
+		mouseenter:function(){
+			$(this).addClass("dinghover");
+		},
+		mouseleave:function(){
+			$(this).removeClass("dinghover");
+		}
+		});		
+	});
+	
+	function cycleload(){
+		if( loadflag==0	){
+			var clienth = document.documentElement.clientHeight;
+			var scrollh = document.documentElement.scrollHeight;
+			var scrollt = document.documentElement.scrollTop + document.body.scrollTop;
+			if ((clienth + scrollt + 10 > lowestcollheight) || (clienth + scrollt + 250 > scrollh) > scrollh) {
+				 loadmore(2);
+			};
+		};
+			if( loadflag == 1 ){
+				$("#haibao-onloading").css('display','block');
+				$("#haibao-onloading").animate({opacity:1},200);
+				};
+			if( loadflag == 0 || nomoreflag == 1){ $("#haibao-onloading").css('display','none');}
+			if( nomoreflag == 1 ) $("#haibao-onmoreloading").css('display','block');
+			setTimeout("cycleload()",100);		
+		};
+-->
+</script>
+<script>
+function like(id)
+{
+	$.post('/Likes/add?type=picture&id='+id, {}, function (res) {
+		if(res.status==0) {
+			alert(res.info);
+		}
+		else
+		{
+			alert(res.info);
+			var rate = $("#rate_"+id).html();
+			$("#rate_"+id).html(parseInt(rate)+1);
+
+		}
+	},'json');
+}
+</script>
+</head>
+
+<body>
+<include file="Public:headnav" />
+<div class="hdmeitou" style="text-align:center; height:50px; line-height:48px;">
+  <span><a href="/Club/intro?gid=65" target="_blank">百度俱乐部</a>-&gt;<a href="/Poster/singlePage?aid={$poster.aid}" target="_blank" style="font-size:35px; color:red;">"毕业了，那些想说的话"投票</a>，快来支持你喜欢的毕业留言</span>
+</div>
+
+<div id="content">
+  <ul style="min-height: 600px; ">
+	<li style="background: #FF9;">
+    	<div class="celldiv shetuan">
+    	<p class="title">大学海报介绍</p>
+        <div class="intro">
+        <p style=" text-align:center;"><img style="width:240px; border:1px solid #000;" src="/static/images/dxhbQR.png"/></p>
+		<p><a href="/static/help/aboutus.html" onmouseover="this.style.color='#00F'" onmouseout="this.style.color='#c2c2c2'">1、关于我们</a></p>
+		<p><a href="/static/help/howtouse.html" onmouseover="this.style.color='#00F'" onmouseout="this.style.color='#c2c2c2'">2、使用介绍</a></p>
+		<p><a href="/static/help/contactus.html" onmouseover="this.style.color='#00F'" onmouseout="this.style.color='#c2c2c2'">3、联系我们</a></p>
+        <p><a href="/static/help/UpdateLog.html" onmouseover="this.style.color='#00F'" onmouseout="this.style.color='#c2c2c2'">4、系统更新日志</a></p>
+		<p><a href="" style="color:#F00;" onmouseover="this.style.color='#00F'" onmouseout="this.style.color='#F00'">5、毕业招聘季 即将推出!</a></p>
+		<p>加油每一天！Day day up ！</p>
+        </div>
+        </div>
+	</li>  
+    {$php_poster}
+  </ul>
+</div>
+
+<!--以下为大图显示弹出框的代码及css js -->
+<div id="backbg1"></div><!--可点击自身消失-->
+<div id="bigPicCon" ><img src="/static/images/dxhbQR.png"/></div>
+<style>
+#bigPicCon{
+position:fixed;
+top:0px;
+left:0px;
+padding-top:100px;
+text-align:center;
+vertical-align:middle;
+display:none;
+}
+#bigPicCon img{
+border:20px solid rgba(0,0,0,0.8);
+}
+</style>
+<script type="text/javascript">
+<!--
+getwindowWH();//调用函数获取数值
+$("#bigPicCon").css("width",www+"px");
+$("#bigPicCon").css("height",hhh+"px");
+$("#bigPicCon").css("line-height",hhh-1+"px");
+
+window.onresize=function(){
+getwindowWH();//调用函数获取数值
+$("#bigPicCon").css("width",www+"px");
+$("#bigPicCon").css("height",hhh+"px");
+$("#bigPicCon").css("line-height",hhh-1+"px");
+}
+  
+/*弹出短信选择框*/
+$(".picture").live('click',function(){
+	$("#bigPicCon").show(300);
+	$("#backbg1").css("display","block");	
+	});
+
+$("#bigPicCon").click(function(){	 
+	$("#bigPicCon").hide(300);
+	$("#backbg1").css("display","none");
+	});
+$("#backbg1").click(function(){	 
+	$("#bigPicCon").hide(300);
+	$("#backbg1").css("display","none");	
+	});
+//-->
+</script>
+
+<div id="haibao-onmoreloading">已经到底了 ^_^ </div>
+<div id="haibao-onloading"></div>
+</body>
+</html>

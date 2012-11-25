@@ -1,0 +1,14 @@
+<include file="Public:bootstrapHeader" />
+<form class="form-horizontal" action="/Activity/postPic/?id={$activity[act_id]}" method="post" enctype="multipart/form-data">
+  <fieldset>
+    <div class="control-group">
+      <label class="control-label"></label>
+      <div class="controls">
+	<h2>上传照片</h2>
+	  </div>
+    </div>
+	<?php $new = true; ?>
+    <include file="form" />
+ </fieldset>
+</form>
+<include file="Public:bootstrapFooter" />

@@ -1,0 +1,155 @@
+<div class="hdmeitou">
+  <span>{$poster.school}-&gt;{$poster.clubName}-&gt;{$poster.name}</span>
+  <empty name="singlePage">
+  <div class="closehb">X</div>
+  </empty>
+</div>
+<notempty name="singlePage">
+<div id="mainding">
+</notempty>
+  <div itemscope itemtype="http://data-vocabulary.org/Event">
+  <div class="photocome">
+     <a href="{$poster.origPoster}" target="_blank"><img itemprop="photo" src="{$poster.largePoster}" alt="点击查看原图" title="点击查看原图" /></a>
+  </div>
+    <div class="hb_footer">
+       <div class="fenxiangl">
+<script>
+<!--
+$(".like").live('click', function(event){
+	// div.hot > span.ding, div.hot > span.rate [class:ding id:ding-id]
+	dom = $("#"+event.target.id).parent().children('.rate');
+	if (dom.attr("clicked"))
+		return;
+	dom.attr("clicked", true);
+	dom.html(Number(dom.html()) + 5);
+	$.ajax({
+		url: "/Poster/like",
+		data: {aid: event.target.id.substr(5)}
+	});
+});
+-->
+</script>
+	    热度：<span class="rate">{$poster.rate}</span>
+	    <!--<span class="like" id="ding-{$poster.aid}">顶</span>-->
+	    <span class="dymian"><a itemprop="url" target="_blank" href="/Club/intro?gid={$poster.gid}">查看 {$poster.clubName} 的简介</a></span>
+	    <span class="dymian"><a itemprop="url" target="_blank" href="/Poster/singlePage?aid={$poster.aid}">在单独页面内打开</a></span>
+	    <if condition="$poster['canModify'] == true">
+	    <span class="dymian"><a href="/Poster/modify?aid={$poster.aid}">修改海报</a></span>
+	    <span class="dymian"><a href="/Poster/delete?aid={$poster.aid}" onclick="return confirm('被删除的海报是不可恢复的。您真的要删除此海报吗？');">删除海报</a></span>
+            </if>
+       </div>
+       <div class="fenxiangr" id="fenxiangr">
+       <notempty name="singlePage">
+ 	  <div class="bshare-custom icon-medium-plus"><span class="share1">分享到：</span><a title="分享到新浪微博" class="bshare-sinaminiblog" href="javascript:void(0);"></a><a title="分享到人人网" class="bshare-renren" href="javascript:void(0);"></a><a title="分享到豆瓣" class="bshare-douban" href="javascript:void(0);"></a><a title="分享到腾讯微博" class="bshare-qqmb" href="javascript:void(0);"></a><a title="分享到QQ空间" class="bshare-qzone" href="javascript:void(0);"></a><a title="更多平台" class="bshare-more bshare-more-icon more-style-addthis"></a></div><script type="text/javascript" src="/static/buttonLite.js"></script><script type="text/javascript" src="/static/bshareC0.js"></script>
+       </notempty>
+       <empty name="singlePage">
+         <div>
+			 <span class="share1">
+				 <a href="/Poster/singlePage?aid={$poster.aid}#fenxiangr" target="_blank">转发与分享：</a>
+				 <span style="color:#F00; font-size:12px">支持 人人、微博、腾讯、豆瓣等平台...</span>
+			 </span>
+		 </div>
+       </empty>
+       </div>
+    </div><!--hbfooter-->
+	<span itemprop="summary" style="display:none">{$poster.name}</span>
+	<time itemprop="startDate" datetime="{$poster.start_time1}">
+	<br/><span class="hbbeizhu"><strong>时间：</strong>{$poster.humanDate}</span>
+	</time>
+	<time itemprop="endDate" datetime="{$poster.end_time1}"></time>
+    <span class="hbbeizhu" itemprop="location"><strong>地点：</strong>{$poster.place}</span><br/>&nbsp;
+    <style type="text/css">
+	.descrip-tittle{
+	font-family:Microsoft Yahei, "Times New Roman", Times, serif;
+	font-size:25px;
+	color:#99F;
+	margin-bottom:5px;
+	font-weight:bold;
+	background:#DDDDDD;
+	line-height:40px;
+	vertical-align:middle;
+	border-bottom:2px solid #9bc;
+	}
+	</style>
+    <p class="descrip-tittle"> 活动介绍</p>
+    <div class="hbbeizhu" itemprop="description">{$poster.description}</div>
+	</div>
+    <div class="post_reply" style="border-top:2px solid #9BC">
+          <div class="add_reply">
+	  <if condition="CURRENT_USER != 0">
+	  <script>
+	    function reload(aid) {
+	    	$.ajax({
+			type: "GET",
+			url: "/Poster/reloadComments",
+			data: {aid: aid}
+		}).done(function(obj) {
+			$('#huifulist').html(obj);
+		});
+	    }
+	    function reply(aid) {
+	    	$.ajax({
+			type: "POST",
+			url: "/Poster/reply",
+			data: {aid: aid, content: $('#content-'+aid).val()}
+	    	}).done(function(obj) {
+			$('#content-'+aid).val('');
+			reload(aid);			
+		});
+	    }
+	    function gotoReply(aid, msg) {
+	    	$('#content-'+aid).val(msg);
+		setFocus(document.getElementById('content-'+aid));
+	    }
+	    
+	    function myFocus(sel, start, end) {
+	      if (sel.setSelectionRange) {
+	       sel.focus();
+	       sel.setSelectionRange(start,end);
+	      }
+	      else if (sel.createTextRange) {
+	        var range = sel.createTextRange();
+	        range.collapse(true);
+	        range.moveEnd('character', end);
+	        range.moveStart('character', start);
+	        range.select();
+	      }
+	    }
+	    function setFocus (sel) {
+	      length=sel.value.length;
+	      myFocus(sel, length, length);
+	    }
+	  </script>
+          <form id="replyForm" class="clear_fix">
+              <textarea id="content-{$poster.aid}" name="content" autocomplete="none" onclick="if(this.value == '回复。。。') this.value = '';" class="dxhb-blur" onfocus="this.className='dxhb-focus'" onblur="this.className='dxhb-blur'">回复。。。</textarea>
+          </form>
+          <button class="reply_submit" onclick="reply({$poster.aid});">回复</button>
+          <else />
+	  <p class="hferror">请 <a href="/User/login">登录</a> 或 <a href="/User/register">注册</a> 后才能回复</p>
+	  </if>
+	  </div>
+          <div class="huifulist" id="huifulist">
+
+            <volist name="comments" id="comment">
+            <div class="hflistcell">
+              <table border="0" cellspacing="0" cellpadding="0" width="100%">
+              	<tr>
+                  <td width="60" align="center"><img class="hftouxiang" src="/{$comment.author.small_avatar}"></td>
+                    <td valign="top">
+                    	<div class="hfcontent">
+                        	<a href="{$comment.author.homepage}" class="<?=$comment['author']['gender'] ? 'boy' : 'girl' ?>name" target="_blank">{$comment.author.realname}</a>
+                            <span>{$comment.content}</span> 
+                            <a class="hfpointer" onclick="gotoReply({$poster.aid}, '回复{$comment.author.realname}: ');">回复</a>                                   
+                        </div>
+                    </td>
+                    <td width="150" align="center" valign="top"><!--<a href="" class="hfpointer">回复</a>--><br/><span class="time11">{$comment.time|date="Y-m-d H:i:s",###}</span></td>
+                </tr>
+              </table>
+            </div><!--回复cell-->
+            </volist>
+
+          </div><!--回复list-->
+     </div><!--post-reply-->     
+<notempty name="singlePage">
+  </div><!--mainding-->
+</notempty>

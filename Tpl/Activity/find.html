@@ -1,0 +1,62 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="keywords" content="大学海报,海报墙,社团,社团管理,大学活动,活动搜索,活动筛选,搜索海报,搜索社团,筛选海报,筛选社团,邮件通知,短信通知,申请加入,瀑布流,评价分享,时间轴" />
+<meta name="description" content="大学活动的集中展示平台,大学海报的集中发布与分享平台,大学社团的集中展示与集中管理平台。更便捷、更简单、更高效、更美观、更流畅、更快速……" />
+<title>{$activity.name} - {$activity.clubName} - 大学海报</title>
+
+<link href="/static/css1.css" rel="stylesheet" type="text/css" />
+<script src="/static/jquery.js" type="text/javascript"></script>
+
+</head>
+
+<body>
+<include file="Public:header" />
+<include file="Public:headnav" />
+<?php $singlePage = true; ?>
+<include file="loadComments" />
+
+
+<style type="text/css">
+	#content ul li { position:relative;display:inline-block;}
+</style>
+<script type="text/javascript">
+function likes(type,id) {
+	var obj = this;
+	$.get('/Likes/add?type='+type+'&id='+id,function(ret){
+		switch(ret.status){
+				case 0: break;
+				case 1: $(obj).text(ret.data);
+					break;
+				default:break;
+		}
+	},'json');
+}
+</script>
+<div style="width:1100px;margin:0 auto;background-color:#F5F4F2;" id="content">
+	<if condition="$activity[enable_post]">
+	<div><a href="/Activity/postPic?id={$activity[act_id]}" >我也要上传 </a></div>
+	</if>
+	<ul>
+	<volist name="activity[picture]" id="vo">
+		
+		<li class="hide" style="opacity: 1; width:250px">
+			<div class="celldiv" itemscope="" itemtype="http://data-vocabulary.org/Event">
+				<img class="haibao" itemprop="photo" width="230" src="{$vo[path]}thumb/thumb_{$vo[name]}" onclick="" <if condition="!empty($vo[path])"> alt="{$vo[description]}" title="{$vo[description]}"</if>>
+					<div class="detail">
+						<div class="hot">
+							<span class="ding"><a class="iconding" href="/Likes/add?type=picture&id={$vo[pid]}"></a><span class="rate">{$vo[likes]}</span></span>
+						</div>
+						<p><a href="#">{$vo[realname]}</a>上传于<time itemprop="startDate" datetime="<php>echo date('Y-m-d H-i-s',$vo[time]);</php>"><php>echo date('Y-m-d H:i:s',$vo[time]);</php></time></p>
+						<p><if condition="$_G[uid]==$vo[uid]"><a href="/Activity/edit?type=pic&id={$vo[pid]}">编辑</a></if>
+							<if condition="$_G[uid]==$vo[uid] || $_G[isadmin]"><a href="/Activity/delete?type=pic&id={$vo[pid]}">删除</a></if>
+						</p>
+					</div>
+			</div>
+		</li>
+	</volist>
+	</ul>
+</div>
+</body>
+</html>
