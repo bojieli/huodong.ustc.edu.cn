@@ -133,7 +133,7 @@ function like(id)
 
 <!--以下为大图显示弹出框的代码及css js -->
 <div id="backbg1"></div><!--可点击自身消失-->
-<div id="bigPicCon" ><img src="/static/images/dxhbQR.png"/></div>
+<div id="bigPicCon" ><img id="bigimage" src="/static/images/dxhbQR.png"/></div>
 <style>
 #bigPicCon{
 position:fixed;
@@ -164,8 +164,11 @@ $("#bigPicCon").css("line-height",hhh-1+"px");
   
 /*弹出短信选择框*/
 $(".picture").live('click',function(){
+	var source = $(this).attr('src');
+	$("#bigimage").attr('src',source);
+	//alert($("#bigPicCon")..attr('src'));
 	$("#bigPicCon").show(300);
-	$("#backbg1").css("display","block");	
+	$("#backbg1").css("display","block");
 	});
 
 $("#bigPicCon").click(function(){	 
