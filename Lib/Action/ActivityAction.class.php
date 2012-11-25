@@ -125,9 +125,7 @@ class ActivityAction extends PublicAction{
 	}
 	
 	public function postPic() {
-		dump("ok");
 		$id=$this->getActID();
-		dump("ok");
 		if(!$this->allowPost($id)) {
 				$this->error('没有权限！');
 		}
@@ -138,7 +136,6 @@ class ActivityAction extends PublicAction{
 			$this->assign('activity',$act);
 			$this->display();
 		}else {
-			dump("ok");
 			$picInfo = $this->uploadPic();
 			
 			global $_G;
@@ -214,7 +211,6 @@ class ActivityAction extends PublicAction{
 		
 	}
 	private function uploadPic() {
-		dump("ok");
 		import("ORG.Net.UploadFile");
         $upload = new UploadFile();
         $upload->maxSize = 8 * 1024 * 1024;
