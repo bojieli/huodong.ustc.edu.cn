@@ -14,7 +14,7 @@ class LikesAction extends PublicAction {
 			
 		);
 		if(D('Likes')->where($where)->count() != 0) {
-					$this->error('不能重复添加！');
+					$this->error('不能重复投票！');
 		} else {
 					$data = $where;
 					$data['like_or_dislike']=1;
@@ -23,7 +23,7 @@ class LikesAction extends PublicAction {
 		switch($arg[type]) {
 			case 'picture':
 				D('Activity')->likesPic($arg[id]);
-				$this->success('添加成功！');
+				$this->success('投票成功！');
 				
 				break;
 			default:break;
