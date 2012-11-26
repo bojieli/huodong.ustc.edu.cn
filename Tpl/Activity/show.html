@@ -162,6 +162,9 @@ vertical-align:middle;
   height:100%;
   vertical-align:middle;
 }
+.picture{
+cursor:pointer;
+}
 </style>
 <script type="text/javascript">
 <!--
@@ -182,15 +185,18 @@ $(".picture").live('click',function(){
 	//alert($("#bigPicCon")..attr('src'));
 	$("#bigPicCon").show(300);
 	$("#backbgP").css("display","block");
+	$("body").css("overflow","hidden");
 	});
 
 $("#bigPicCon").click(function(){	 
 	$("#bigPicCon").hide(300);
 	$("#backbgP").css("display","none");
+	$("body").css("overflow","auto");
 	});
 $("#backbgP").click(function(){	 
 	$("#bigPicCon").hide(300);
-	$("#backbgP").css("display","none");	
+	$("#backbgP").css("display","none");
+	$("body").css("overflow","auto");
 	});
 //-->
 </script>
