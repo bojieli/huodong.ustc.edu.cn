@@ -111,35 +111,56 @@ function like(id)
   <span><a href="/Club/intro?gid=65" target="_blank">百度俱乐部</a>-&gt;<a href="/Poster/singlePage?aid={$poster.aid}" target="_blank" style="font-size:35px; color:red;">"毕业了，想说的那些话"投票</a>，快来支持你喜欢的毕业留言</span>
 </div>
 
+<div id="main" style="background:#fff;">
 <div id="content">
   <ul style="min-height: 600px; ">
 	<li style="background: #FF9;">
     	<div class="celldiv shetuan">
     	<p class="title">活动介绍</p>
         <div class="intro">
-        <p style=" text-align:center;"><img style="width:240px; border:1px solid #000;" src="/upload/poster/thumb/large_509f132eb3004.jpg"/></p>
+        <p style=" text-align:center;"><a href="/Poster/singlePage?aid={$poster.aid}" target="_blank"><img style="width:240px; border:1px solid #000;" src="/upload/poster/thumb/large_509f132eb3004.jpg"/></a></p>
         </div>
         </div>
 	</li>  
     {$php_poster}
   </ul>
 </div>
+</div>
 
 <!--以下为大图显示弹出框的代码及css js -->
-<div id="backbg1"></div><!--可点击自身消失-->
-<div id="bigPicCon" ><img id="bigimage" src="/static/images/dxhbQR.png"/></div>
+<div id="backbgP"></div><!--可点击自身消失-->
+<div id="bigPicCon" ><img id="bigimage" src="/static/images/dxhbQR.png"/><div id="ctrHeight"></div></div>
 <style>
+#backbgP{
+  position:fixed;
+  z-index:10001;
+  top:0px;
+  left:0px;
+  width:100%;
+  height:100%;
+  background:rgba(90, 100, 185, 0.85);
+  display:none;
+}
 #bigPicCon{
 position:fixed;
 top:0px;
 left:0px;
-padding-top:100px;
 text-align:center;
 vertical-align:middle;
 display:none;
+overflow:auto;
+z-index:11000;
 }
 #bigPicCon img{
-border:20px solid rgba(0,0,0,0.8);
+border:30px solid rgb(0,0,0);
+border:30px solid rgba(0,0,0,0.8);
+vertical-align:middle;
+}
+#bigPicCon #ctrHeight{
+  display:inline-block;
+  width:1px;
+  height:100%;
+  vertical-align:middle;
 }
 </style>
 <script type="text/javascript">
@@ -147,13 +168,11 @@ border:20px solid rgba(0,0,0,0.8);
 getwindowWH();//调用函数获取数值
 $("#bigPicCon").css("width",www+"px");
 $("#bigPicCon").css("height",hhh+"px");
-$("#bigPicCon").css("line-height",hhh-1+"px");
 
 window.onresize=function(){
 getwindowWH();//调用函数获取数值
 $("#bigPicCon").css("width",www+"px");
 $("#bigPicCon").css("height",hhh+"px");
-$("#bigPicCon").css("line-height",hhh-1+"px");
 }
   
 /*弹出短信选择框*/
@@ -162,16 +181,16 @@ $(".picture").live('click',function(){
 	$("#bigimage").attr('src',source);
 	//alert($("#bigPicCon")..attr('src'));
 	$("#bigPicCon").show(300);
-	$("#backbg1").css("display","block");
+	$("#backbgP").css("display","block");
 	});
 
 $("#bigPicCon").click(function(){	 
 	$("#bigPicCon").hide(300);
-	$("#backbg1").css("display","none");
+	$("#backbgP").css("display","none");
 	});
-$("#backbg1").click(function(){	 
+$("#backbgP").click(function(){	 
 	$("#bigPicCon").hide(300);
-	$("#backbg1").css("display","none");	
+	$("#backbgP").css("display","none");	
 	});
 //-->
 </script>
