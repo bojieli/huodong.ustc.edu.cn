@@ -108,22 +108,16 @@ function like(id)
 <body>
 <include file="Public:headnav" />
 <div class="hdmeitou" style="text-align:center; height:50px; line-height:48px;">
-  <span><a href="/Club/intro?gid=65" target="_blank">百度俱乐部</a>-&gt;<a href="/Poster/singlePage?aid={$poster.aid}" target="_blank" style="font-size:35px; color:red;">"毕业了，那些想说的话"投票</a>，快来支持你喜欢的毕业留言</span>
+  <span><a href="/Club/intro?gid=65" target="_blank">百度俱乐部</a>-&gt;<a href="/Poster/singlePage?aid={$poster.aid}" target="_blank" style="font-size:35px; color:red;">"毕业了，想说的那些话"投票</a>，快来支持你喜欢的毕业留言</span>
 </div>
 
 <div id="content">
   <ul style="min-height: 600px; ">
 	<li style="background: #FF9;">
     	<div class="celldiv shetuan">
-    	<p class="title">大学海报介绍</p>
+    	<p class="title">活动介绍</p>
         <div class="intro">
-        <p style=" text-align:center;"><img style="width:240px; border:1px solid #000;" src="/static/images/dxhbQR.png"/></p>
-		<p><a href="/static/help/aboutus.html" onmouseover="this.style.color='#00F'" onmouseout="this.style.color='#c2c2c2'">1、关于我们</a></p>
-		<p><a href="/static/help/howtouse.html" onmouseover="this.style.color='#00F'" onmouseout="this.style.color='#c2c2c2'">2、使用介绍</a></p>
-		<p><a href="/static/help/contactus.html" onmouseover="this.style.color='#00F'" onmouseout="this.style.color='#c2c2c2'">3、联系我们</a></p>
-        <p><a href="/static/help/UpdateLog.html" onmouseover="this.style.color='#00F'" onmouseout="this.style.color='#c2c2c2'">4、系统更新日志</a></p>
-		<p><a href="" style="color:#F00;" onmouseover="this.style.color='#00F'" onmouseout="this.style.color='#F00'">5、毕业招聘季 即将推出!</a></p>
-		<p>加油每一天！Day day up ！</p>
+        <p style=" text-align:center;"><img style="width:240px; border:1px solid #000;" src="/upload/poster/thumb/large_509f132eb3004.jpg"/></p>
         </div>
         </div>
 	</li>  
@@ -133,7 +127,7 @@ function like(id)
 
 <!--以下为大图显示弹出框的代码及css js -->
 <div id="backbg1"></div><!--可点击自身消失-->
-<div id="bigPicCon" ><img src="/static/images/dxhbQR.png"/></div>
+<div id="bigPicCon" ><img id="bigimage" src="/static/images/dxhbQR.png"/></div>
 <style>
 #bigPicCon{
 position:fixed;
@@ -164,8 +158,11 @@ $("#bigPicCon").css("line-height",hhh-1+"px");
   
 /*弹出短信选择框*/
 $(".picture").live('click',function(){
+	var source = $(this).attr('src');
+	$("#bigimage").attr('src',source);
+	//alert($("#bigPicCon")..attr('src'));
 	$("#bigPicCon").show(300);
-	$("#backbg1").css("display","block");	
+	$("#backbg1").css("display","block");
 	});
 
 $("#bigPicCon").click(function(){	 
