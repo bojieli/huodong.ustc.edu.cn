@@ -90,7 +90,7 @@ class ActivityAction extends PublicAction{
 	public function find() {
 		$act_id = $this->getActID();
 		$actDB = D('Activity');
-		$act = $actDB->getActivityByID($act_id,'likes');
+		$act = $actDB->getActivityByID($act_id,'likes desc');
 		if(empty($act)) {
 			$this->error('活动不存在！');
 		}
@@ -131,7 +131,7 @@ class ActivityAction extends PublicAction{
 		}
 		//dump($_POST);
 		if(!$_POST[submit]) {
-			$act = D('Activity')->getActivityByID($id,0);
+			$act = D('Activity')->getActivityByID($id,1,"likes desc");
 			//dump($act);
 			$this->assign('activity',$act);
 			$this->display();
@@ -237,7 +237,7 @@ class ActivityAction extends PublicAction{
 	
 	public function getPicArt() {
 		$id = $this->getActID();
-		$info = D('Activity')->getActivityByID($id);
+		$info = D('Activity')->getActivityByID($id,1,"likes desc");
 		$this->assign('activity',$info);
 		$this->display('Activity:find');
 	}

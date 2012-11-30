@@ -5,7 +5,7 @@ class ActivityModel extends Model {
 
 	
 	
-	public function getActivityByID($id,$order="act_id desc",$all=1) {
+	public function getActivityByID($id,$all=1,$order="act_id desc") {
 		$where = array(
 			'act_id' => $id,
 		);
