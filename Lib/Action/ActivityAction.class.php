@@ -65,7 +65,7 @@ class ActivityAction extends PublicAction{
 		$start = $this->_get('start');
 		$num = $this->_get('num');
 		$act_id = $this->_get('act_id');
-		$pictures = D('Activity')->getPicture($act_id,$start,$num,$order="like desc");
+		$pictures = D('Activity')->getPicture($act_id,$start,$num,$order="likes desc");
 		//dump($pictures);
         $elements = [];
         foreach ($pictures as $picture)
