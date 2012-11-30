@@ -20,10 +20,10 @@ class ActivityModel extends Model {
 	
 	}
 
-	public function getPicture($act_id,$start, $num)
+	public function getPicture($act_id,$start,$num,$order)
 	{
 		import("ORG.Util.Image");
-		$pictures = M('Activity_picture')->where(array("act_id"=>$act_id))->limit("$start,$num")->select();
+		$pictures = M('Activity_picture')->where(array("act_id"=>$act_id))->order($order)->limit("$start,$num")->select();
 		//echo M('Activity_picture')->getLastSql();
 		//dump($pictures);
 		$results = array();

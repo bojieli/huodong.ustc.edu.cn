@@ -65,7 +65,7 @@ class ActivityAction extends PublicAction{
 		$start = $this->_get('start');
 		$num = $this->_get('num');
 		$act_id = $this->_get('act_id');
-		$pictures = D('Activity')->getPicture($act_id,$start, $num);
+		$pictures = D('Activity')->getPicture($act_id,$start,$num,$order="like desc");
 		//dump($pictures);
         $elements = [];
         foreach ($pictures as $picture)
@@ -90,7 +90,7 @@ class ActivityAction extends PublicAction{
 	public function find() {
 		$act_id = $this->getActID();
 		$actDB = D('Activity');
-		$act = $actDB->getActivityByID($act_id,'likes desc');
+		$act = $actDB->getActivityByID($act_id);
 		if(empty($act)) {
 			$this->error('活动不存在！');
 		}
@@ -131,7 +131,7 @@ class ActivityAction extends PublicAction{
 		}
 		//dump($_POST);
 		if(!$_POST[submit]) {
-			$act = D('Activity')->getActivityByID($id,1,"likes desc");
+			$act = D('Activity')->getActivityByID($id);
 			//dump($act);
 			$this->assign('activity',$act);
 			$this->display();
