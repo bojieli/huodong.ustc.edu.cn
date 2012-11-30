@@ -90,7 +90,7 @@ class ActivityAction extends PublicAction{
 	public function find() {
 		$act_id = $this->getActID();
 		$actDB = D('Activity');
-		$act = $actDB->getActivityByID($act_id);
+		$act = $actDB->getActivityByID($act_id,'likes');
 		if(empty($act)) {
 			$this->error('活动不存在！');
 		}

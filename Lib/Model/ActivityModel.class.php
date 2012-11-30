@@ -4,11 +4,13 @@
 class ActivityModel extends Model {
 
 	
-	public function getActivityByID($id,$all=1) {
+	
+	public function getActivityByID($id,$order="act_id desc",$all=1) {
 		$where = array(
 			'act_id' => $id,
 		);
-		$info = $this->join(C('DB_PREFIX').'poster on '.C('DB_PREFIX').'poster.aid = '.C('DB_PREFIX').'activity.poster_id')->where($where)->find();
+		$info = $this->join(C('DB_PREFIX').'poster on '.C('DB_PREFIX').'poster.aid = '.C('DB_PREFIX').'activity.poster_id')
+			->order($order)->where($where)->find();
 		//$info = $this->where($where)->find();
 		if(!empty($info[act_id]) && $all) {
 			$info[picture]=D('activity_picture')->join(C('DB_PREFIX').'user on '.C('DB_PREFIX').'user.uid='.C('DB_PREFIX').'activity_picture.uid')->where('act_id='.$info[act_id])->order('time desc')->select();
