@@ -234,11 +234,10 @@ class UserAction extends PublicAction {
         $User=D('User');
         if(!$User->is_loginname_existed($mail)){$this->error("用户名不存在");}
         $uid=$User->getUidWithMail($mail);
-        //dump($uid);
         if($uid!=''&&$uid!=0)
         {
             $status=$User->getBackPassWithEmail($uid);
-            if($status==0){$this->error('系统忙，请稍后再试！');}	
+			if($status==0){$this->error('系统忙，请稍后再试！');}	
             $info['realname']=$User->getRealname($uid);
             $info['email']=$mail;
             $info['mail_md5']=$User->getMailPwInfo($uid)['mail_md5'];			
