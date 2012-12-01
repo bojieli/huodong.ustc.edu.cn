@@ -237,7 +237,7 @@ class UserAction extends PublicAction {
 		if($uid!=''&&$uid!=0)
         {
             $status=$User->getBackPassWithEmail($uid);
-			dump($status);die;
+			//dump($status);die;
 			if($status==0){$this->error('系统忙，请稍后再试！');}	
             $info['realname']=$User->getRealname($uid);
             $info['email']=$mail;
