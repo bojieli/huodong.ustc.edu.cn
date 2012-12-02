@@ -365,6 +365,7 @@ class PosterAction extends PublicAction {
                 'author' => CURRENT_USER,
                 'time' => time(),
                 'content' => nl2br(htmlspecialchars($_POST['content'])),
+                'reply' => is_numeric($_REQUEST['reply']) ? $_REQUEST['reply'] : 0,
                 );
         if ($comment['content'] == '')
             $this->error('评论内容不能为空');

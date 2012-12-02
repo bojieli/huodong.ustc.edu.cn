@@ -91,13 +91,18 @@ $(".like").live('click', function(event){
 	    	$.ajax({
 			    type: "POST",
 			    url: "/Poster/reply",
-			    data: {aid: aid, content: $('#content-'+aid).val()}
+			    data: {
+                    aid: aid, 
+                    content: $('#content-'+aid).val(),
+                    reply: $('#reply-'+aid).val(),
+                }
 	    	}).done(function(obj) {
 	    		$('#content-'+aid).val('');
 	    		reload(aid);			
 	    	});
 	    }
-	    function gotoReply(aid, msg) {
+	    function gotoReply(aid, msg, cid) {
+            $('#reply-'+aid).val(cid);
 	    	$('#content-'+aid).val(msg);
     		setFocus(document.getElementById('content-'+aid));
 	    }
@@ -130,6 +135,7 @@ $(".like").live('click', function(event){
 	    }
 	  </script>
           <form id="replyForm" class="clear_fix">
+              <input type="hidden" id="reply-{$poster.aid}" name="reply" value="" />
               <textarea id="content-{$poster.aid}" name="content" autocomplete="none" onclick="if(this.value == '回复。。。') this.value = '';" class="dxhb-blur" onfocus="this.className='dxhb-focus'" onblur="this.className='dxhb-blur'">回复。。。</textarea>
           </form>
           <button class="reply_submit" onclick="reply({$poster.aid});">回复</button>
