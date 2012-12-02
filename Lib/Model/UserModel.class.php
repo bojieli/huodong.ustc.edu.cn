@@ -79,13 +79,14 @@ class UserModel extends Model {
         //echo 1213;
         $str=$uid.'@'.time().'@'.mt_rand();
         $mail_md5=md5(md5(($str)));
-        if(D('User_password')->field('uid')->find($uid))
+		if(D('User_password')->field('uid')->where(array('uid'=>$uid))->find())
         {
             $data=array(
                     'mail_md5'=>$mail_md5,
                     'mail_time'=>time(),
                     );
-            return D('User_password')->where(array('uid'=>$uid))->data($data)->save();
+            
+			return D('User_password')->where(array('uid'=>$uid))->data($data)->save();
         }
         else
         {
@@ -94,9 +95,9 @@ class UserModel extends Model {
                     'mail_md5'=>$mail_md5,
                     'mail_time'=>time(),
                     );
-            return D('User_password')->data($data)->add();
+            D('User_password')->data($data)->add();
         }
-        return 0;
+		return 0;
     }
     function getMailPwInfo($uid)	{
         return M('User_password')->find($uid);
@@ -110,7 +111,7 @@ class UserModel extends Model {
     function changePassword($pw)
     {   
         global $_G;
-        $user=$this->find($uid);
+        $user=$this->find($_G['uid']);
         $password = md5(md5($pw).$user[salt]);
         $cond = array('uid'=>$_G[uid],'password'=>$password);
         $this->save($cond);

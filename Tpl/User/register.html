@@ -187,7 +187,7 @@
                 <tr>
                 	<td align="right" valign="middle" width="150px" height="58px"><em>*</em>验证码</td>
                     <td class="zc1tablerect" width="300px"  valign="middle" align="left">
-					<img id="ajaxCheckImg" src="/User/ajaxVerify" />
+					<img id="ajaxCheckImg" src="/User/ajaxVerify" style="cursor:pointer"/>
                     	<div class="zc1school">
                         	<input id="check" type="text" name="check" class="regist-input-box dxhb-blur" onfocus="this.className='dxhb-focus regist-input-box'" onblur="this.className='dxhb-blur regist-input-box'"/><span id="checkCode"></span>
                         </div>                        
@@ -270,8 +270,16 @@ $(function(){
 			$("#checkPassword2").html('<img src="/static/check_right.gif">');
 		}
 	});	
+	$('#ajaxCheckImg').click(function(){
+			var timenow =new Date().getTime();
+			$(this).attr("src","/User/ajaxVerify/"+timenow);
+	});
 	$('#check').blur(function(){
-		$.post("/User/ajaxCheckCode",{check: $(this).val()},
+		if($(this).val()==""){
+			$("#checkCode").html('<font color="#FF0000"  size="1">验证码不能为空！</font>');
+		}
+		else{
+			$.post("/User/ajaxCheckCode",{check: $(this).val()},
 				function(data){
 					if(data.status==1)
 					{
@@ -280,11 +288,10 @@ $(function(){
 					}
 					else
 					{
-						
-						$("#ajaxCheckImg").attr("src","/User/ajaxVerify");
 						$("#checkCode").html('<font color="#FF0000"  size="1">验证码错误</font>');
 					}
-		},"json");
+				},"json");
+		}
 	});	
 });
 

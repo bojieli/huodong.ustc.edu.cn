@@ -307,8 +307,8 @@ class UserAction extends PublicAction {
             {   
                 $this->error('两次密码不一致');
             }   
-            $user=D('User');
-            $user->changepassword($_POST[password_new]);
+            $user=D('User');            
+			$user->changepassword($_POST[password_new]);
             $user->delsession($uid);//清除session
             cookie(null);//清空cookie
             $this->assign('jumpUrl','/User/login');
