@@ -22,6 +22,7 @@ class UserAction extends PublicAction {
         $this->assign('avatar_path', C("AVATAR_PATH"));
         $this->assign('clubs', D('User')->getClubs($uid));
         $this->assign('applies', D('User')->getApplies($uid));
+		$this->assign('msg_num',D('Msg')->getUnreadMsgNum());
         $this->headnav();
         $this->display();
 
