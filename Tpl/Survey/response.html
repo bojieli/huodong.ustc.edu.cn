@@ -250,6 +250,8 @@ $(function(){
                 $().toastmessage('removeToast', toast);
                 if (obj.status) {
                     $().toastmessage('showSuccessToast', '问卷提交成功，感谢您参与此次问卷调查！');
+                    if (obj.num % 10 == 1)
+                        alert("恭喜！您是第 " + obj.num + " 位参与问卷调查的，请发送您的联系方式到 wgw@ustc.edu.cn，我们将为您送上答谢礼物");
                     location.href = '/';
                 } else {
                     $().toastmessage('showErrorToast', obj.info);
