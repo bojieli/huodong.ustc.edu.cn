@@ -23,5 +23,8 @@ $mailconfig = array(
 $smsconfig = array(
 	'update_week' => 1
 	);
-return array_merge($config, $newconfig, $mailconfig,$smsconfig);
+$timerconfig = array(
+	'timer_time' => 2 //hour
+);
+return array_merge($config, $newconfig, $mailconfig,$smsconfig,$timerconfig);
 ?>
