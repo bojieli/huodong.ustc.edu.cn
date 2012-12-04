@@ -38,17 +38,18 @@ class TimerAction extends PublicAction{
 	public function sms2text($aid){
 		$aid=$this->_get('aid');
 		$poster = M('Poster')->find($aid);
+		dump($poster);die;
 		$time=$this->humanDate($poster['start_time'],$poster['end_time']);
 		$place=$poster['place'];
 		$name=$poster['name'];
 		$clubname=D('Club')->getClubName($poster['gid']);
 		$link="http://".$_SERVER['HTTP_HOST']."Poster/singlePage?aid=".$poster['aid'];
 		$content="亲，".$name."就要开始了，求围观！
-		时间:".$time."
-		地点:".$place."
-		承办:".$clubname."
-		详情:".$link;
-		//echo $content;
+时间:".$time."
+地点:".$place."
+承办:".$clubname."
+详情:".$link;
+		echo $content;
 	    D('Sms')->sentMsg($content,15655170201);
 		//return $content;
 	}
