@@ -78,7 +78,6 @@ public function delTimer_Poster($aid){
 public function checkTimer(){
 	$con['time']=array('ELT',time());
 	$con['status']=0;
-	dump($con);die;
 	return M('Timer')->where($con)->select();
 }
 public function changeStatus($id,$status){

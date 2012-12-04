@@ -46,7 +46,6 @@ class TimerAction extends PublicAction{
 	}
 	public function check(){
 		$re=D('Timer')->checkTimer();
-		dump($re);die;
 		if($re){
 			foreach($re as $key => $val){
 				D('Sms')->sentMsg($this->sms2text($val['aid']),D('Sms')->getUserMobile($val['uid']));
