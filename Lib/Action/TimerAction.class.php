@@ -42,12 +42,12 @@ class TimerAction extends PublicAction{
 		$place=$poster['place'];
 		$name=$poster['name'];
 		$clubname=D('Club')->getClubName($poster['gid']);
-		$link="http://".$_SERVER['HTTP_HOST']."Poster/singlePage?aid=".$poster['aid'];
+		//$link="http://".$_SERVER['HTTP_HOST']."Poster/singlePage?aid=".$poster['aid'];
 		$content="亲，".$name."就要开始了，求围观！
 时间:".$time."
 地点:".$place."
 承办:".$clubname."
-详情:".$link;
+【活动平台】";
 		echo $content;die;
 	    D('Sms')->sentMsg($content,15655170201);
 		//return $content;
