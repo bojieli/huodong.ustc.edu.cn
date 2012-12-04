@@ -3,27 +3,36 @@ class TimerAction extends PublicAction{
 	public function index(){
 		$this->display();
 	}
-	public function init(){
+	public function add(){
 		global $_G;
 		$uid=$_G['uid'];
 		if(empty($uid)){$this->error('未登录');}
-		$aid=$this->_post('aid');
+		$aid=$this->_post('aid')?$this->_post('aid'):$this->_get('aid');
 		if(empty($aid)){$this->error('非法操作');}
-	}
-	public function add(){
-		$this->init();
-		D('Timer')->InsertTimer_Poster($aid);
+		$re=D('Timer')->InsertTimer_Poster($aid);
+		if($re==0){$this->error('活动时间已过');}
+		if($re==2){$this->error('已添加');}
+		else{$this->success('提醒成功');}
 	}
 	public function update(){
-		$this->init();
+		global $_G;
+		$uid=$_G['uid'];
+		if(empty($uid)){$this->error('未登录');}
+		$aid=$this->_post('aid')?$this->_post('aid'):$this->_get('aid');
+		if(empty($aid)){$this->error('非法操作');}
 		$time=$this->_post('time');
 		//$type=$this->_post('type');
 		D('Timer')->updateTimer_Poster($aid,$time,$type);
 	}
 	public function del(){
-		$this->init();
-		$n=delTimer_Poster($aid);
-		if($n!=false){$this->success("成功删除".$n.'条');}
+		global $_G;
+		$uid=$_G['uid'];
+		if(empty($uid)){$this->error('未登录');}
+		$aid=$this->_post('aid')?$this->_post('aid'):$this->_get('aid');
+		if(empty($aid)){$this->error('非法操作');}
+		$n=D('Timer')->delTimer_Poster($aid);
+		if($n==false){$this->error("无此提醒");}
+		else{$this->success("成功删除".$n.'条');}
 	}
 	public function show_conf(){
 		$conf=D('Timer')->getConf();
@@ -34,6 +43,16 @@ class TimerAction extends PublicAction{
 	public function update_conf(){
 		//$type=$this->_post('type');
 		D('Timer')->changeConf($sms,$email);
+	}
+	public function check(){
+		$re=D('Timer')->checkTimer();
+		if($re){
+			foreach($re as $key => $val){
+				D('Sms')->sentMsg($this->sms2text($val['aid']),D('Sms')->getUserMobile($val['uid']));
+				D('Timer')->changeStatus($val['id'],1);
+			}
+		}
+		return 0;
 	}
 	public function sms2text($aid){
 		$aid=$this->_get('aid');
@@ -48,9 +67,7 @@ class TimerAction extends PublicAction{
 地点:".$place."
 承办:".$clubname."
 【活动平台】";
-		echo $content;
-	    D('Sms')->sentMsg($content,15655170201);
-		//return $content;
+		return $content;
 	}
 	public function humanDate($start,$end){
         $str = date("n月j日H:i", $start);

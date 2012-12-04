@@ -338,7 +338,8 @@ class PosterAction extends PublicAction {
 						'<div itemprop="location">地点: '.$poster->place().'</div>
 					</p>
 				</div>'.
-				'<div class="school">'.$poster->schoolName().'</div>
+				'<img class="clock" id="clock-'.$poster->id().'" style="width:20px;height:20px;cursor:pointer;float:left" src="/static/images/clock.png" alt="提醒我" title="提醒我"/>
+				 <div class="school">'.$poster->schoolName().'</div>
 			</div>
 	    </li>
 			';
