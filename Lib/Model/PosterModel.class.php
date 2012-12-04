@@ -17,7 +17,9 @@ class PosterModel extends Model {
 		}
 		return $re;
 	}
-
+	public function getPosterStartTime($aid){
+		return M()->field('start_time')->where(array('aid'=>$aid))->find();
+	}
     public function id() {
         return $this->aid;
     }
