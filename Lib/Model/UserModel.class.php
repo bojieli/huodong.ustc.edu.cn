@@ -70,7 +70,10 @@ class UserModel extends Model {
         }
         return false;
     }
-    function getUidWithMail($mail)
+    function getUserMail($uid){
+		return M('User')->field('email')->where(['uid'=>$uid])->find()['email'];
+	}
+ 	function getUidWithMail($mail)
     {
         return M('User')->field('uid')->where(array('email'=>$mail))->find()['uid'];
     }
