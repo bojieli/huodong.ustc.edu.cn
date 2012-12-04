@@ -48,7 +48,7 @@ class TimerAction extends PublicAction{
 地点:".$place."
 承办:".$clubname."
 【活动平台】";
-		echo $content;die;
+		echo $content;
 	    D('Sms')->sentMsg($content,15655170201);
 		//return $content;
 	}
