@@ -16,9 +16,9 @@ class TimerAction extends PublicAction{
 		if($re==0){$this->error('活动时间已过');}
 		if($re==2){$this->error('已添加');}
 		else{
-		if(empty($mobile)&&!empty($email)) $this->success('提醒成功，到时间会提醒您，提醒方式：邮件，建议:填写手机号即可使用短信提醒');
-		if(!empty($mobile)&&empty($email)) $this->success('提醒成功，到时间会提醒您，提醒方式：短信，建议:填写邮箱号即可实现短信、邮件双提醒');
-		if(!empty($mobile)&&!empty($email)) $this->success('提醒成功，到时间会提醒您，提醒方式：短信、邮件');
+		if(empty($mobile)&&!empty($email)) $this->success('提醒成功，活动前两个时会提醒您，提醒方式：邮件，建议:填写手机号即可使用短信提醒');
+		if(!empty($mobile)&&empty($email)) $this->success('提醒成功，活动前两个时会提醒您，提醒方式：短信，建议:填写邮箱号即可实现短信、邮件双提醒');
+		if(!empty($mobile)&&!empty($email)) $this->success('提醒成功，活动前两个时会提醒您，提醒方式：短信、邮件');
 		}
 	}
 	public function update(){
