@@ -81,7 +81,7 @@ public function checkTimer(){
 	return M('Timer')->where($con)->select();
 }
 public function changeStatus($id,$status){
-	M('Timer')->where(['id'=>$id])->add(array('status',$status))->save();
+	M('Timer')->where(['id'=>$id])->data(array('status',$status))->save();
 }
 public function isAdd($aid){
 	global $_G;
