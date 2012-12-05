@@ -64,8 +64,9 @@ class TimerAction extends PublicAction{
 				if($email) SendMail($email,"来自活动平台的提醒",$this->email2text($val['aid']), true);
 				D('Timer')->changeStatus($val['id'],1);
 			}
+			return $re;
 		}
-		return 0;
+		return "正常运行中...";
 	}
 	public function sms2text($aid){
 		$poster = M('Poster')->find($aid);
