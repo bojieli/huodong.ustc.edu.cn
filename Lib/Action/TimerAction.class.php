@@ -52,6 +52,9 @@ class TimerAction extends PublicAction{
 		D('Timer')->changeConf($sms,$email);
 	}
 	public function check(){
+		// only allowed to be accessed by crontab
+		if ($_SERVER['REMOTE_ADDR'] != $_SERVER['SERVER_ADDR'])
+			return 0;
 		$re=D('Timer')->checkTimer();
 		if($re){
 			foreach($re as $key => $val){
@@ -71,10 +74,10 @@ class TimerAction extends PublicAction{
 		$name=$poster['name'];
 		$clubname=D('Club')->getClubName($poster['gid']);
 		//$link="http://".$_SERVER['HTTP_HOST']."Poster/singlePage?aid=".$poster['aid'];
-		$content="亲，".$name."就要开始了，求围观！
-时间:".$time."
-地点:".$place."
-承办:".$clubname."
+		$content="亲，$name 就要开始了，求围观！
+时间: $time
+地点: $place
+承办: $clubname
 【活动平台】";
 		return $content;
 	}
