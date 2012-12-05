@@ -107,7 +107,7 @@ class SurveyModel extends Model {
     }
 
     function isSubmited($survey) {
-        return (CURRENT_USER == 0 || (M('survey_response')->where(array('survey'=>$survey, 'uid'=>CURRENT_USER))->count() > 0));
+        return (CURRENT_USER > 0 && (M('survey_response')->where(array('survey'=>$survey, 'uid'=>CURRENT_USER))->count() > 0));
     }
 
     function response($survey, $form) {
