@@ -53,8 +53,11 @@ class TimerAction extends PublicAction{
 	}
 	public function check(){
 		// only allowed to be accessed by crontab
-		if ($_SERVER['REMOTE_ADDR'] != $_SERVER['SERVER_ADDR'])
+		if ($_SERVER['REMOTE_ADDR'] != $_SERVER['SERVER_ADDR']) {
+			echo $_SERVER['REMOTE_ADDR']."\n";
+			echo $_SERVER['SERVER_ADDR']."\n";
 			return 0;
+		}
 		$re=D('Timer')->checkTimer();
 		if($re){
 			foreach($re as $key => $val){
@@ -64,7 +67,7 @@ class TimerAction extends PublicAction{
 				if($email) SendMail($email,"来自活动平台的提醒",$this->email2text($val['aid']), true);
 				D('Timer')->changeStatus($val['id'],1);
 			}
-			echo count($re);
+			echo "Timers count: ".count($re)."\n";
 			return 1;
 		}
 		echo "正常运行中...";
