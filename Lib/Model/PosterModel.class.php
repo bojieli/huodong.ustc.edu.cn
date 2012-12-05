@@ -17,10 +17,13 @@ class PosterModel extends Model {
 		}
 		return $re;
 	}
-	public function getPosterStartTime($aid){
+	public function getPosterStartTime($aid){//ltx
 		return M('Poster')->field('start_time')->where(array('aid'=>$aid))->find()['start_time'];
 	}
-    public function id() {
+    public function isOutOfStartTime($aid){
+		return ($this->getPosterStartTime($aid)<time());
+	}
+	public function id() {
         return $this->aid;
     }
 

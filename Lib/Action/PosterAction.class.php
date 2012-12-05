@@ -315,7 +315,11 @@ class PosterAction extends PublicAction {
     }
 
     private function poster2html($poster) {
-        return '
+        $clockStat=D('Timer')->clockInput($poster->id());
+		if($clockStat==0) $clock_img='';
+		else if($clockStat==1) $clock_img='<img class="clock" id="'.$clockStat.'clock-'.$poster->id().'" style="width:20px;height:20px;cursor:pointer;float:left" src="/static/images/clock1.png" alt="提醒我" title="提醒我"/>';				
+			else $clock_img='<img class="clock" id="'.$clockStat.'clock-'.$poster->id().'" style="width:20px;height:20px;cursor:pointer;float:left" src="/static/images/clock2.png" alt="已提醒" title="已提醒"/>';
+		return '
 		<li class="hide">
 			<div class="celldiv" itemscope itemtype="http://data-vocabulary.org/Event">
 			'.
@@ -337,8 +341,8 @@ class PosterAction extends PublicAction {
 						'<time itemprop="endDate" datetime="'.date('c',$poster->end_time).'"></time><br>'.
 						'<div itemprop="location">地点: '.$poster->place().'</div>
 					</p>
-				</div>'.
-				'<img class="clock" id="clock-'.$poster->id().'" style="width:20px;height:20px;cursor:pointer;float:left" src="/static/images/clock.png" alt="提醒我" title="提醒我"/>
+				</div>
+				'.$clock_img.'
 				 <div class="school">'.$poster->schoolName().'</div>
 			</div>
 	    </li>

@@ -39,7 +39,7 @@ class TimerAction extends PublicAction{
 		if(empty($aid)){$this->error('非法操作');}
 		$n=D('Timer')->delTimer_Poster($aid);
 		if($n==false){$this->error("无此提醒");}
-		else{$this->success("成功删除".$n.'条');}
+		else{$this->success("成功取消".$n.'条提醒');}
 	}
 	public function show_conf(){
 		$conf=D('Timer')->getConf();

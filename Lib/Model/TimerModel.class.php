@@ -89,5 +89,10 @@ public function isAdd($aid){
 	return M('Timer')->where(['uid'=>$uid,'aid'=>$aid])->count();
 	
 }
+public function clockInput($aid){
+	if(D('Poster')->isOutOfStartTime($aid)) return 0;
+	else if($this->isAdd($aid)) return 2;
+		 else return 1;
+}
 }
 ?>
