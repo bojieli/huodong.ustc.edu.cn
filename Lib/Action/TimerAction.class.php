@@ -24,7 +24,7 @@ class TimerAction extends PublicAction{
 	public function update(){
 		global $_G;
 		$uid=$_G['uid'];
-		if(empty($uid)){$this->error('未登录');}
+		if(empty($uid)){$this->error('请登录');}
 		$aid=$this->_post('aid')?$this->_post('aid'):$this->_get('aid');
 		if(empty($aid)){$this->error('非法操作');}
 		$time=$this->_post('time');
@@ -34,7 +34,7 @@ class TimerAction extends PublicAction{
 	public function del(){
 		global $_G;
 		$uid=$_G['uid'];
-		if(empty($uid)){$this->error('未登录');}
+		if(empty($uid)){$this->error('请登录');}
 		$aid=$this->_post('aid')?$this->_post('aid'):$this->_get('aid');
 		if(empty($aid)){$this->error('非法操作');}
 		$n=D('Timer')->delTimer_Poster($aid);
