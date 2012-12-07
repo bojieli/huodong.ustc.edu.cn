@@ -79,7 +79,7 @@ public function checkTimer(){
 	$con['time']=array('ELT',time()+2*3600);
 	$con['status']=0;
 	$re=M('Timer')->where($con)->select();
-	dump(M('Timer')->getLastSql());
+	//dump(M('Timer')->getLastSql());
 	return $re;
 }
 public function changeStatus($id,$status){
