@@ -63,7 +63,7 @@ class UserAction extends PublicAction {
                 $this->error('密码或用户名不能为空');
             }
             $is_md5=0;
-			if($this->_post('is_md5')=='13f3a94d0f6a7b5b6d55f8ffd442af74')
+			if(preg_match('/^\w{32}$/', $this->_post('is_md5')))
 			$is_md5=1;
 			$post=array(
                     'username'=>$username,
@@ -195,7 +195,7 @@ class UserAction extends PublicAction {
                 $this->error('两次密码不一致');
             }   
             $is_md5=0;
-			if($this->_post('is_md5')=='13f3a94d0f6a7b5b6d55f8ffd442af74')
+			if(preg_match('/^\w{32}$/', $this->_post('is_md5')))
 			$is_md5=1;
 			$user=D('User');
             $re=$user->changePassword_direct($uid,$_POST['password_new'],$is_md5);
@@ -228,7 +228,7 @@ class UserAction extends PublicAction {
         if($_POST['submit'])
         {
             $is_md5=0;
-			if($this->_post('is_md5')=='13f3a94d0f6a7b5b6d55f8ffd442af74')
+			if(preg_match('/^\w{32}$/', $this->_post('is_md5')))
 			$is_md5=1;
 			$passport=D('User')->getpassport($uid,$_POST['password'],'uid',$is_md5);
             //dump($passport);
