@@ -96,5 +96,9 @@ public function clockInput($aid){
 	else if($this->isAdd($aid)) return 2;
 		 else return 1;
 }
+public function startTimeForTimer($aid){
+	$start_time=D('Poster')->getPosterStartTime($aid);
+	M('Timer')->where(['aid'=>$aid])->data(['time'=>$start_time,'status'=>0])->save();
+}
 }
 ?>

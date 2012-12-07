@@ -184,6 +184,7 @@ class PosterAction extends PublicAction {
         }
 		else{M('Qr')->where(array('aid'=>$aid))->data(array('aid'=>'','status'=>1,'status_time'=>time()))->save();}
 		//For二维码
+		D('Timer')->startTimeForTimer($aid);//更新活动通知时间
 		M('Poster')->where(['aid'=>$aid])->save($poster);
         $this->assign('jumpUrl', "/Poster/singlePage?aid=$aid");
         $this->success("海报修改成功！");
