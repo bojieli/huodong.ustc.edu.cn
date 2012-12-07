@@ -70,6 +70,7 @@ class TimerAction extends PublicAction{
 			echo "Timers count: ".count($re)."\n";
 			return 1;
 		}
+		echo date('c')."<br />";
 		echo "正常运行中...";
 		return 1;
 	}
