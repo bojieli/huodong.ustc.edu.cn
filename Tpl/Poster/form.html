@@ -54,7 +54,7 @@
       </div>
     </div>
 	<div class="control-group">
-	 <label class="control-label" for="place">选择活动二维码</label>
+	 <label class="control-label" for="qrid">选择活动二维码</label>
 	 <div class="controls">
 	<select name="qrid" id="qrid">
 	<option value="0">
@@ -66,6 +66,7 @@
 	</option>
 	</volist>
 	</select>
+	<span class="qr_text"><a href="/Qr/QRapply?gid={$Think.get.gid}" target="_blank">生成新的二维码</a></span>
 	</div>
 	</div>
     <div class="control-group">
@@ -264,7 +265,7 @@ var output = document.getElementById('output_area');
 		<p class="help-block">显示在海报大图页面的活动介绍</p>
       </div>
     </div>
-    <div class="form-actions">
+	<div class="form-actions">
       <button type="submit" class="btn btn-primary">发布</button>
       <button class="btn" onclick="window.history.go(-1);">取消</button>
     </div>
