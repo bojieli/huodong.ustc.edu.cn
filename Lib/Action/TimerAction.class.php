@@ -53,11 +53,12 @@ class TimerAction extends PublicAction{
 	}
 	public function check(){
 		// only allowed to be accessed by crontab
-		/*if ($_SERVER['REMOTE_ADDR'] != $_SERVER['SERVER_ADDR']) {
+		if ($_SERVER['REMOTE_ADDR'] != $_SERVER['SERVER_ADDR']) {
 			echo $_SERVER['REMOTE_ADDR']."\n";
 			echo $_SERVER['SERVER_ADDR']."\n";
+			echo "<br />".date('c');
 			return 0;
-		}*/
+		}
 		$re=D('Timer')->checkTimer();
 		if($re){
 			foreach($re as $key => $val){
@@ -70,7 +71,6 @@ class TimerAction extends PublicAction{
 			echo "Timers count: ".count($re)."\n";
 			return 1;
 		}
-		echo date('c')."<br />";
 		echo "正常运行中...";
 		return 1;
 	}
