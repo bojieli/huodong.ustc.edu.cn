@@ -53,10 +53,6 @@ class UserAction extends PublicAction {
     {
         $this->display();
     }
-	public function login2()
-	{
-		$this->display();
-	}
     public function do_login() {
         global $_G;
 
@@ -66,13 +62,15 @@ class UserAction extends PublicAction {
             if(empty($username)||empty($pw)){
                 $this->error('密码或用户名不能为空');
             }
-            $post=array(
+            $is_md5=0;
+			if($this->_post('is_md5')=='13f3a94d0f6a7b5b6d55f8ffd442af74')
+			$is_md5=1;
+			$post=array(
                     'username'=>$username,
                     'password'=>$pw,
                     );
             $user=D('User');
-            $passport=$user->getpassport($post[username],$post[password]);
-            //dump($passport);
+            $passport=$user->getpassport($post[username],$post[password],'email',$is_md5);
             if(!is_array($passport)){
                 $this->error('登录失败，请检查用户名和密码');
             }
@@ -93,14 +91,10 @@ class UserAction extends PublicAction {
                     'username' => addslashes($passport['username']),
                     'password' => md5("$passport[uid]|$_G[timestamp]"),//本地密码随机生成
 
-                    );
-            //dump($setarr);
+                    );         
             $user->insertsession($setarr);
             cookie('auth', $user->authcode("$setarr[password]\t$setarr[uid]", 'ENCODE'), C('COOKIE_EXPIRE'));
             cookie('loginuser', $passport['username'], C('COOKIE_EXPIRE'));
-            //dump($_COOKIE);
-			//D('User')->change_online_status(1,$passport['uid']);//0->离线;1->在线;2->隐身
-            // registerVerify should not jump back
             if (!empty($_POST['referer']) && !strstr($_POST['referer'], '/User/'))
                 $this->assign('jumpUrl', $_POST['referer']);
             else
@@ -112,70 +106,6 @@ class UserAction extends PublicAction {
             $this->display('User:login');
         }
     }
-
-	public function do_login2() {
-        global $_G;
-
-        if($_POST[submit]){
-            $username=trim($_POST[email]);
-            $pw=$_POST[password];
-            if(empty($username)||empty($pw)){
-                $this->error('密码或用户名不能为空');
-            }
-            $post=array(
-                    'username'=>$username,
-                    'password'=>$pw,
-                    );
-            $user=D('User');
-            $passport=$user->getpassport($post[username],$post[password]);
-            //dump($passport);
-            if(!is_array($passport)){
-                $this->error('登录失败，请检查用户名和密码');
-            }
-
-            $info = D('User')->getInfo($passport['uid']);
-            if ($info['status'] == 'locked')
-                $this->error("您的帐号已被锁定，请联系管理员解锁");
-            else if ($info['status'] == 'inactive')
-			{
-				if($info['sid']!=1)
-				{
-					$this->assign('jumpUrl','/User/registerToVerify?uid='.$info['uid']);
-					 $this->error("您还没有激活，请首先激活账号");
-				}
-                $this->error("您还没有激活，请首先点击邮件中的链接激活");
-			}
-            else if ($info['status'] != 'active')
-                $this->error("账户状态发生未知错误，请联系管理员");
-
-            global $_G;
-
-            $_G[timestamp]=empty($_G[timestamp])? time():$_G[timestamp];
-            $setarr = array(
-                    'uid' => $passport['uid'],
-                    'username' => addslashes($passport['username']),
-                    'password' => md5("$passport[uid]|$_G[timestamp]"),//本地密码随机生成
-
-                    );
-            //dump($setarr);
-            $user->insertsession($setarr);
-            cookie('auth', $user->authcode("$setarr[password]\t$setarr[uid]", 'ENCODE'), 3600);
-            cookie('loginuser', $passport['username'], 3600);
-            //dump($_COOKIE);
-
-            // registerVerify should not jump back
-            if (!empty($_POST['referer']) && !strstr($_POST['referer'], '/User/'))
-                $this->assign('jumpUrl', $_POST['referer']);
-            else
-                $this->assign('jumpUrl','/User/home?uid='.$passport['uid']);
-            D('User')->loginLog($passport['uid']);
-            $this->success('登陆成功');
-        }
-        else{
-            $this->display('User:login2');
-        }
-    }
-
     public function logout(){
         global $_G;
         if(empty($_G['uid'])) {
@@ -238,7 +168,6 @@ class UserAction extends PublicAction {
 		if($uid!=''&&$uid!=0)
         {
             $status=$User->getBackPassWithEmail($uid);
-			//dump($status);die;
 			if($status==0){$this->error('系统忙，请稍后再试！');}	
             $info['realname']=$User->getRealname($uid);
             $info['email']=$mail;
@@ -257,16 +186,19 @@ class UserAction extends PublicAction {
         if(time()-$info['mail_time']>3*24*3600){$this->error('密码重置失效，请重新找回密码！');}
         if($_POST['submit'])
         {  
-            if(empty($_POST[password_new]))
+            if(empty($_POST['password_new']))
             {   
                 $this->error('新密码不能为空');
             }   
-            if($_POST[password_new2]!=$_POST[password_new])
+            if($_POST['password_new2']!=$_POST['password_new'])
             {   
                 $this->error('两次密码不一致');
             }   
-            $user=D('User');
-            $re=$user->changePassword_direct($uid,$_POST[password_new]);
+            $is_md5=0;
+			if($this->_post('is_md5')=='13f3a94d0f6a7b5b6d55f8ffd442af74')
+			$is_md5=1;
+			$user=D('User');
+            $re=$user->changePassword_direct($uid,$_POST['password_new'],$is_md5);
             $user->delPw($uid);//删掉验证成功的邮箱验证码记录
             $user->delsession($uid);//清除session
             cookie(null);//清空cookie
@@ -293,23 +225,26 @@ class UserAction extends PublicAction {
         if(empty($uid)) {
             $this->error('没有登录');
         }   
-        if($_POST[submit])
+        if($_POST['submit'])
         {
-            $passport=D('User')->getpassport($uid,$_POST[password],'uid');
+            $is_md5=0;
+			if($this->_post('is_md5')=='13f3a94d0f6a7b5b6d55f8ffd442af74')
+			$is_md5=1;
+			$passport=D('User')->getpassport($uid,$_POST['password'],'uid',$is_md5);
             //dump($passport);
             if(!is_array($passport)){
                 $this->error('原密码错误');
             }   
-            if(empty($_POST[password_new]))
+            if(empty($_POST['password_new']))
             {   
                 $this->error('新密码不能为空');
             }   
-            if($_POST[password_new2]!=$_POST[password_new])
+            if($_POST['password_new2']!=$_POST['password_new'])
             {   
                 $this->error('两次密码不一致');
             }   
             $user=D('User');            
-			$user->changepassword($_POST[password_new]);
+			$user->changepassword($_POST['password_new'],$is_md5);
             $user->delsession($uid);//清除session
             cookie(null);//清空cookie
             $this->assign('jumpUrl','/User/login');

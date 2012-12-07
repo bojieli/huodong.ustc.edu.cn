@@ -89,7 +89,8 @@ class UserModel extends Model {
                     'mail_time'=>time(),
                     );
             
-			return D('User_password')->where(array('uid'=>$uid))->data($data)->save();
+			D('User_password')->where(array('uid'=>$uid))->data($data)->save();
+			return 1;
         }
         else
         {
@@ -99,6 +100,7 @@ class UserModel extends Model {
                     'mail_time'=>time(),
                     );
             D('User_password')->data($data)->add();
+			return 1;
         }
 		return 0;
     }
@@ -111,19 +113,21 @@ class UserModel extends Model {
     function delPw($uid){
         return M('User_password')->where(array('uid'=>$uid))->delete();
     }
-    function changePassword($pw)
+    function changePassword($pw,$is_md5=0)
     {   
         global $_G;
         $user=$this->find($_G['uid']);
-        $password = md5(md5($pw).$user[salt]);
-        $cond = array('uid'=>$_G[uid],'password'=>$password);
+        if($is_md5==0)$pw=md5($pw);
+		$password = md5($pw.$user[salt]);
+        $cond = array('uid'=>$_G['uid'],'password'=>$password);
         $this->save($cond);
         return true;
     }
-    function changePassword_direct($uid,$pw)
+    function changePassword_direct($uid,$pw,$is_md5=0)
     {   
         $user=$this->find($uid);
-        $password = md5(md5($pw).$user[salt]);
+        if($is_md5==0)$pw=md5($pw);
+		$password = md5($pw.$user[salt]);
         $cond = array('password'=>$password);
         $this->where(array('uid'=>$uid))->save($cond);
         return true;
@@ -168,7 +172,7 @@ class UserModel extends Model {
         $session->add($data);
         //echo $session->getLastSql();
     }
-    public function getpassport($username,$pw,$type='email'){
+    public function getpassport($username,$pw,$type='email',$is_md5=0){
         $user = array();
         if ($type == 'uid')
             $user = $this->where(array('uid'=>$username))->select();
@@ -179,8 +183,8 @@ class UserModel extends Model {
             return -1;
         }
         $user=$user[0];
-        $passwordmd5=preg_match('/^\w{32}$/', $pw) ? $pw : md5($pw);
-        if($user['password'] != md5($passwordmd5.$user['salt'])){
+		if($is_md5==0)$pw=md5($pw);
+        if($user['password'] != md5($pw.$user['salt'])){
             return -2;
         }
         //dump($res);
