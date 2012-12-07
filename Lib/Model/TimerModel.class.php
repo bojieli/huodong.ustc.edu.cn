@@ -76,7 +76,7 @@ public function delTimer_Poster($aid){
 	return M('Timer')->where($con)->delete();
 }
 public function checkTimer(){
-	$con['time']=array('ELT',time()+C('timer_time')*3600);
+	$con['time']=array('ELT',time()+2*3600);
 	$con['status']=0;
 	$re=M('Timer')->where($con)->select();
 	dump(M('Timer')->getLastSql());
