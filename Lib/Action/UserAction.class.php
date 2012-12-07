@@ -311,13 +311,17 @@ class UserAction extends PublicAction {
         if($_SESSION['verify'] != md5($_POST['check'])) {
             $this->error('验证码错误');
         }
-        $_POST[student_no] = strtoupper($_POST[student_no]);
+        $is_md5=0;
+		if(preg_match('/^\w{32}$/', $this->_post('is_md5')))
+		$is_md5=1;
+		$_POST[student_no] = strtoupper($_POST[student_no]);
         $_POST['sid'] = 1; // currently force USTC
         $_POST['register_time']=time();
         $_POST['status'] = 'inactive'; // need email activate
 
         $_POST['salt'] = substr(uniqid(rand()), -6);
-        $_POST['password'] = md5(md5($_POST[password]).$_POST[salt]);
+		if($is_md5==0) $_POST['password']=md5($_POST['password']);
+		$_POST['password'] = md5($_POST['password'].$_POST['salt']);
 
         $User->create();
         $User->add();
@@ -397,14 +401,18 @@ class UserAction extends PublicAction {
         if($_SESSION['verify'] != md5($_POST['check'])) {
             $this->error('验证码错误');
         }
-        $_POST['student_no'] = strtoupper($_POST['student_no']);
+        $is_md5=0;
+		if(preg_match('/^\w{32}$/', $this->_post('is_md5')))
+		$is_md5=1;
+		$_POST['student_no'] = strtoupper($_POST['student_no']);
         $_POST['sid'] = $sid; // currently force USTC
         $_POST['register_time']=time();
         $_POST['status'] = 'inactive'; // need email activate
 
         $_POST['salt'] = substr(uniqid(rand()), -6);
-        $_POST['password'] = md5(md5($_POST[password]).$_POST[salt]);
-
+        if($is_md5==0) $_POST['password']=md5($_POST['password']);
+		$_POST['password'] = md5($_POST['password'].$_POST['salt']);
+		//$_POST['password'] = md5(md5($_POST[password]).$_POST[salt]);
         $User->create();
         $uid = $User->add();
 
