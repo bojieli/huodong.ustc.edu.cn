@@ -4,8 +4,8 @@
  <div id="header">
   <div class="head-1160">
       <div class="logo"><a href="/"><span>大学活动<span style="font-size:10px; color:#FFF; line-height:22px; vertical-align:text-bottom;">Beta</span></span></a></div>
-      <div class="nav"><a href="/"><span <if condition="$here == PosterAction">class="here1"</if>>海报墙</span></a></div>
-      <div class="nav"><a href="/Club/"><span <if condition="$here == ClubAction">class="here1"</if>>学生团体</span></a></div>
+      <div class="nav"><a href="/"><span <if condition="$here == 'PosterAction'">class="here1"</if>>海报墙</span></a></div>
+      <div class="nav"><a href="/Club/"><span <if condition="$here == 'ClubAction'">class="here1"</if>>学生团体</span></a></div>
       <div class="nav"><a href="/Activity/show?act_id=1"><span class="here1" style="color:#F00" title="毕业了，想说的那些话投票">毕业留言</span></a></div>
       <div class="nav"><a href="/Web" target="_blank"><span class="here1" style="color:#FFF">开放平台</span></a></div>
       <if condition="!empty($_G[uid])">
@@ -13,9 +13,6 @@
       <div class="nav"><a href="/User/home"><span <if condition="$here == UserAction">class="here1"</if>>个人信息管理</span></a></div>
       -->
       </if>
-      <notempty name="theday">
-      <div class="nav"><a href="/mlxh"><span  <if condition="$here == MlxhAction">class="here1"</if> style="color:#F00">美丽邂逅</span></a></div>
-      </notempty>
 
       <div class="login1">
       <if condition="!empty($_G[uid])">
