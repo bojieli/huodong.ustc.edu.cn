@@ -144,9 +144,8 @@ td.ratio {
       <notempty name="help_text">
         <p class="lead">{$help_text}</p>
       </notempty>
+      <div class="well" style="font-size:20px">共有<span style="color:red;font-weight:bold">{$response_count}</span>人参与了此调查</div>
       <div class="result">
-        <input type="hidden" name="gid" value="{$_REQUEST.gid}" />
-        <input type="hidden" name="survey" value="{$_REQUEST.survey}" />
         <volist name="sections" id="sec" key="i">
         <section id="section-{$i}">
           <div class="page-header"><h2>{$sec.title}</h2></div>
@@ -158,7 +157,7 @@ td.ratio {
             <div class="question" <notempty name="q.required">required="required"</notempty>>
               <p class="qtext">{$q.title} <notempty name="q.required"><strong>(*)</strong></notempty></p>
               <table class="table table-condensed qresult">
-              <volist name="q.stats" id="count">
+              <volist name="q.stats" id="count" key="k">
                 <?php $inputelem='' ?>
                 <switch name="q.type">
                   <case value="radio" break="0">

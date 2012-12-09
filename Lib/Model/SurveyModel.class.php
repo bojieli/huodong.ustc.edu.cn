@@ -147,6 +147,7 @@ class SurveyModel extends Model {
     function getForm($surveyid, /*INTERNAL*/ $getresult=false) {
         $survey = $this->find($surveyid);
         $survey['sections'] = M('survey_section')->where(array('survey'=>$surveyid))->select();
+        $survey['response_count'] = M('survey_response')->where(array('survey'=>$surveyid))->count();
         foreach ($survey['sections'] as $i => &$sec) {
             $sec['question'] = M('survey_question')->where(array('survey'=>$surveyid, 'section'=>$i))->select();
             foreach ($sec['question'] as $j => &$q) {
