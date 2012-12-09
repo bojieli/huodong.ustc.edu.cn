@@ -15,9 +15,9 @@
       </if>
 
       <div class="login1">
-      <if condition="!empty($_G[uid])">
+      <if condition="!empty($_G['uid'])">
       <span><a href="/User/home" target="_blank"><img id="avatar_small" src="/{$user_info.small_avatar}" /></a>
-      <a href="/User/home" target="_blank">欢迎您，{$_G[realname]}</a>
+      <a href="/User/home" target="_blank">欢迎您，{$_G.realname}</a>
       <a href="#" id="logout">退出</a></span>
       <else />
       <span><a href="/User/login">登录</a> | <a href="/User/register">注册</a></span>
