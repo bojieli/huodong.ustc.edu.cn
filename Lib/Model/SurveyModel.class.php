@@ -156,7 +156,7 @@ class SurveyModel extends Model {
                     $arr = M('survey_response_field')->field('content')->where(array('survey'=>$surveyid, 'section'=>$i, 'question'=>$j))->select();
                     $responses = array();
                     foreach ($arr as $response) {
-                        $responses[] = $response['content'];
+                        $responses[] = trim($response['content']); // trim leading and trailing spaces
                     }
                     $q['response_count'] = count($responses);
 
@@ -166,6 +166,9 @@ class SurveyModel extends Model {
                     }
                     foreach ($responses as $content) {
                         $q['stats'][$content] ++;
+                    }
+                    if ($q['type'] == "text" || $q['type'] == 'textarea') {
+                        arsort($q['stats']);
                     }
                 }
             }

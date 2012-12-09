@@ -123,6 +123,11 @@ td.ratio {
 .progress {
     margin: 0;
 }
+.duplicate {
+    margin-left:20px;
+    font-weight:bold;
+    float:right;
+}
 </style>
 
 <div class="container">
@@ -154,27 +159,30 @@ td.ratio {
               <p class="qtext">{$q.title} <notempty name="q.required"><strong>(*)</strong></notempty></p>
               <table class="table table-condensed qresult">
               <volist name="q.stats" id="count">
-                <?php $input='' ?>
+                <?php $inputelem='' ?>
                 <switch name="q.type">
                   <case value="radio" break="0">
-                    <?php $input = $input ? $input : '<input type="radio"/>' ?>
+                    <?php $inputelem = $inputelem ? $inputelem : '<input type="radio"/>' ?>
                   </case>
                   <case value="checkbox" break="0">
-                    <?php $input = $input ? $input : '<input type="checkbox"/>' ?>
+                    <?php $inputelem = $inputelem ? $inputelem : '<input type="checkbox"/>' ?>
                   </case>
-                  <case value="select" break="1">
-                    <?php $input = $input ? $input : '<select style="width:20px;height:14px;padding:0;margin:0"></select>' ?>
-
+                  <case value="select" break="0">
+                    <?php $inputelem = $inputelem ? $inputelem : '<select style="width:20px;height:14px;padding:0;margin:0"></select>' ?>
+		          </case>
+                  <case value="text" break="1">
                     <tr>
-                      <td class="input">{$input}</td>
-                      <td class="option"><?=$key?$key:'未选择'?></td><td class="count">{$count}</td>
+                      <td class="input"><?=$inputelem?></td>
+                      <td class="option"><?=$key?htmlspecialchars($key):'未选择'?></td><td class="count">{$count}</td>
                       <td class="ratio"><div class="progress"><div class="bar" style="width: <?=$count/$q[response_count]*100 ?>%"></div></div></td>
                     </tr>
                   </case>
-                  <case value="text" break="0"></case>
                   <case value="textarea">
-                    <tr rowspan="3"><div class="well">{$key}</div>
-                    <if condition="count gt 1"><p class="duplicate">有{$count}人回答了同样的内容</p></if>
+                    <tr><div class="well"><?=nl2br(htmlspecialchars($key))?>
+                    <if condition="strlen(trim($key))==0"><p class="duplicate">有{$count}人未回答此题</p>
+                    <elseif condition="$count gt 1" /><p class="duplicate">有{$count}人回答了相同的内容</p>
+                    </if>
+                    </div>
                     </tr>
                   </case>
                   <default />内部错误
