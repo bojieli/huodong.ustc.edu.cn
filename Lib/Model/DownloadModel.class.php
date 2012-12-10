@@ -2,16 +2,16 @@
 class DownloadModel extends Model {
       function getInfo(){
 		$con['status']=array('neq',6);
-		return M()->where($con)->order('id desc')->select();
+		return M('Download')->where($con)->order('id desc')->select();
 	  }
 	  function delFile($id){
-		M()->where(array('id'=>$id))->data(array('status'=>6))->save();
+		M('Download')->where(array('id'=>$id))->data(array('status'=>6))->save();
 		$filename=$this->getUrlById($id);
 		$path = C('AVATAR_PATH').'/'.$uid.'/'.$filename;
 		if (!unlink($path))
-			alert("Á´½ÓÒÑ²»´æÔÚ£¡".$path);
+			return "é“¾æŽ¥å·²ä¸å­˜åœ¨ï¼".$path;
 		else
-			alert("É¾³ý³É¹¦£¡");
+			return "åˆ é™¤æˆåŠŸï¼";
 	
 	  }
 	  function isUserFile($id){
@@ -23,21 +23,21 @@ class DownloadModel extends Model {
 			return 0;
 	  }
 	  function getUrlById($id){
-	  return M()->field('url')->where(array('id'=>$id))->find()['url'];
+	  return M('Download')->field('url')->where(array('id'=>$id))->find()['url'];
 	  }
 	  function getFilenameById($id){
-	  return M()->field('filename')->where(array('id'=>$id))->find()['filename'];
+	  return M('Download')->field('filename')->where(array('id'=>$id))->find()['filename'];
 	  }
 	  function InsertTask($url,$status,$filename,$size){
 	  global $_G;
 	  $data=array(
-		'url'=>$url;
-		'status'=>$status;
-		'uid'=>$_G['uid'];
-		'filename'=>$filename;
-		'size'=>$size;
+		'url'=>$url,
+		'status'=>$status,
+		'uid'=>$_G['uid'],
+		'filename'=>$filename,
+		'size'=>$size
 	  );
-	  M()->data($data)->add();
+	  M('Download')->data($data)->add();
 	  }
 }
 ?>
