@@ -251,7 +251,7 @@ public function addSomeTids($rt){
 }
 public function posterMsg($aid){
 	$poster = M('Poster')->find($aid);
-	$poster['Start_time']=date('n月j日 H:i:s',$poster['start_time']);
+	$poster['Start_time'] = date('n月j日 H:i:s',$poster['start_time']);
 	$poster['End_time']=date('n月j日 H:i:s',$poster['end_time']);
 	$title=$poster['name'];
 	$msg='
