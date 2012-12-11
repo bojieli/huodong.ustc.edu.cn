@@ -252,7 +252,7 @@ public function addSomeTids($rt){
 public function posterMsg($aid){
 	$poster = M('Poster')->find($aid);
 	$poster['Start_time'] = date('n月j日 H:i:s',$poster['start_time']);
-	$poster['End_time']=date('n月j日 H:i:s',$poster['end_time']);
+	$poster['End_time'] = date('n月j日 H:i:s',$poster['end_time']);
 	$title=$poster['name'];
 	$msg='
 	<table width="635" cellpadding="0" cellspacing="0" border="0" align="left" style="margin:0px 0px 0px 40px; color:#000;">
