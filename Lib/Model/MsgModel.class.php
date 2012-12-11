@@ -23,7 +23,7 @@ class MsgModel extends Model {
             $tmp[$i+$j]=$val2['uid'];
             $j++;
         }
-		//echo $tid;
+		//dump($tmp);
 		 if(!empty($mytid)){
 				 D('Msg')->openDialog($_G['uid'],$mytid);
 				 $tmp[]=$mytid;
@@ -36,7 +36,7 @@ class MsgModel extends Model {
 		//dump($tips);
 		$tips=array_unique($tips);
 		//dump($tips);
-		//die;
+		///die;
 		foreach($tips as $k => $v)
         {
             $tids[]['to_uid'] = $v;
@@ -213,10 +213,13 @@ public function hideSomeTids($tips){
 				global $_G;
 				$uid=$_G['uid'];
 				$res=M('Msg_dialog')->field('tid')->where('uid='.$uid.'&&status=0')->select();
+				//dump($res);
 				foreach($res as $val)
 				{
 					$rt[]=$val['tid'];
 				}
+				//dump($tips);
+				//dump($rt);
 				foreach($tips as $value)
 				{
 					if(in_array($value,$rt)==false)
@@ -259,7 +262,7 @@ public function posterMsg($aid){
           </tr>
           <tr height="23" valign="bottom">
             <td colspan="2" align="center">
-			<img style="width:250px;height:350px;margin-top:10px" src="/upload/poster/thumb/thumb_'.$poster['poster'].'" alt="海报" class="poster_img" />
+			<img style="width:250px;margin-top:10px" src="/upload/poster/thumb/thumb_'.$poster['poster'].'" alt="海报" class="poster_img" />
 			</td>
           </tr>
             <td height="30px" style="font-size:14px">活动链接：</td>
@@ -277,6 +280,33 @@ public function posterMsg($aid){
         </tbody>
     </table>';
 return array($title,$msg);
+}
+public function commentMsg($cid,$content,$aid){
+	if($cid!=0)
+	{
+		$re=M('Poster_comment')->where(['cid'=>$cid])->find();
+		$postername=M('Poster')->field('name')->where(['aid'=>$re['aid']])->find()['name'];
+		return 
+		$content.'<br>
+		<div class="add_msg">
+		来自海报:<a href="/Poster/singlePage?aid='.$re['aid'].'">'.$postername.'</a>
+		<div class="add_content">
+		回复您的评论:<a href="/Poster/singlePage?aid='.$re['aid'].'">'.$re['content'].'</a>
+		</div>
+		</div>
+		';
+	}
+	else
+	{
+		$postername=M('Poster')->field('name')->where(['aid'=>$aid])->find()['name'];
+		return
+		$content.'<br>
+		<div class="add_msg">
+		来自海报:<a href="/Poster/singlePage?aid='.$aid.'">'.$postername.'</a>
+		</div>
+		';
+	}
+	
 }
 }//
 ?>

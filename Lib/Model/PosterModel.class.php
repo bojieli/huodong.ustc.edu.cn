@@ -17,6 +17,9 @@ class PosterModel extends Model {
 		}
 		return $re;
 	}
+	public function getPosterAuthorByAid($aid){
+		return M('Poster')->field('author')->where(['aid'=>$aid])->find()['author'];
+	}
 	public function getPosterStartTime($aid){//ltx
 		return M('Poster')->field('start_time')->where(array('aid'=>$aid))->find()['start_time'];
 	}
@@ -157,4 +160,7 @@ class PosterModel extends Model {
     public function canModify() {
         return A('Club')->isManager($this->gid);
     }
+	public function getAuthorByCid($cid){	
+		return M('Poster_comment')->field('author')->where(['cid'=>$cid])->find()['author'];
+	}
 }

@@ -365,19 +365,28 @@ class PosterAction extends PublicAction {
             $this->error("抱歉，您需要登录后才能评论。现在跳转到登录页面……");
         }
         D('Poster')->addCommentCount($aid);
-
-        $comment = array(
+		$time=time();
+        $content=nl2br(htmlspecialchars($_POST['content']));
+		$reply=is_numeric($_REQUEST['reply']) ? $_REQUEST['reply'] : 0;
+		$comment = array(
                 'aid' => $aid,
                 'author' => CURRENT_USER,
-                'time' => time(),
-                'content' => nl2br(htmlspecialchars($_POST['content'])),
-                'reply' => is_numeric($_REQUEST['reply']) ? $_REQUEST['reply'] : 0,
+                'time' => $time,
+                'content' => $content,
+                'reply' => $reply,
                 );
         if ($comment['content'] == '')
             $this->error('评论内容不能为空');
         $obj = M('poster_comment');
         $obj->create($comment);
         $obj->add();
+		if($reply!=0)//发信息提醒
+			$tid=D('Poster')->getAuthorByCid($reply);
+		else
+			$tid=D('Poster')->getPosterAuthorByAid($aid);
+		D('Msg')->openDialog(CURRENT_USER,$tid);
+		$msg=D('Msg')->commentMsg($reply,$content,$aid);
+		D('Msg')->sentMsg($time,$msg,$tid);
     }
 
     public function like() {
