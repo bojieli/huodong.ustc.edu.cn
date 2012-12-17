@@ -129,8 +129,34 @@ function like(id)
 
 <!--以下为大图显示弹出框的代码及css js -->
 <div id="backbgP"></div><!--可点击自身消失-->
-<div id="bigPicCon" ><div style="background:rgba(255,255,255,0.4); font-size:18px; border-radius:0 0 3px 3px; display:inline-block; vertical-align:middle;"><img id="bigimage" src="/static/images/dxhbQR.png"/><br/><span id="description"></span></div><div id="ctrHeight"></div></div>
+<div id="bigPicCon" ><div style="background:rgba(255,255,255,0.4); font-size:18px; border-radius:0 0 3px 3px; display:inline-block; vertical-align:middle;"><img id="bigimage" src="/static/images/dxhbQR.png"/>
+	<br/>
+        <span class="dingn"><span class="icond"></span>asdadsad</span>
+		<span id="description"></span>
+	
+</div>
+	<div id="ctrHeight"></div></div>
 <style>
+.dingn{
+	float:right;
+	margin-right:3px;
+	color:#CCC;	
+	font-size:16px;
+	font-family:simsun;
+	}
+ .dingn .icond{	
+	width:20px;
+	height:15px;
+	margin-bottom:-2px;
+	background: url(/static/images/iconsHaiBao.png) no-repeat  0px -90px;
+	display:-moz-inline-box;
+	display:inline-block;
+	cursor: pointer; 
+	}
+.dingn .icond:hover{
+	background-position:-71px -90px;
+}
+
 #backbgP{
   position:fixed;
   z-index:10001;
