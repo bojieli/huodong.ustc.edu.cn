@@ -129,9 +129,9 @@ function like(id)
 
 <!--以下为大图显示弹出框的代码及css js -->
 <div id="backbgP"></div><!--可点击自身消失-->
-<div id="bigPicCon" ><div id="bigPicCon2" style="background:rgba(255,255,255,0.4); font-size:18px; border-radius:0 0 3px 3px; display:inline-block; vertical-align:middle;"><img id="bigimage" src="/static/images/dxhbQR.png"/>
+<div id="bigPicCon" style="background:rgba(90, 100, 185, 0.85);" ><div id="bigPicCon2" style="background:rgba(255,255,255,0.4); font-size:18px;  display:inline-block; vertical-align:middle;"><img id="bigimage" src="/static/images/dxhbQR.png"/>
 	<br/>
-        <span class="dingn"><span class="icond"></span>asdadsad</span>
+        <span class="dingn"><span class="icond"></span></span>
 		<span id="description"></span>
 	
 </div>
@@ -178,7 +178,13 @@ display:none;
 overflow:auto;
 z-index:12000;
 }
+#bigPicCon2{
+	padding: 0px;
+	border-radius:5px;
+}
 #bigPicCon img{
+	margin-top: 5px;
+margin-left: 5px;
 border:30px solid rgb(0,0,0);
 border:30px solid rgba(0,0,0,0.92);
 vertical-align:middle;
@@ -189,6 +195,7 @@ vertical-align:middle;
 }
 #bigPicCon #ctrHeight{
   display:inline-block;
+  
   width:1px;
   height:100%;
   vertical-align:middle;
@@ -224,17 +231,19 @@ $(".picture").live('click',function(){
 	},'json');
 });
 /*
-$("#bigPicCon2").click(function(){	 
-	$("#bigPicCon").hide(300);
-	$("#backbgP").css("display","none");
-	$("body").css("overflow","auto");
-	});
-*/
 $("#backbgP").click(function(){	 
 	$("#bigPicCon").hide(300);
 	$("#backbgP").css("display","none");
 	$("body").css("overflow","auto");
 	});
+*/
+$("#bigPicCon img").click(function(){	 
+	$("#bigPicCon").hide(300);
+	$("#backbgP").css("display","none");
+	$("body").css("overflow","auto");
+	});
+
+
 //-->
 </script>
 
