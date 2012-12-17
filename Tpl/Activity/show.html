@@ -129,7 +129,7 @@ function like(id)
 
 <!--以下为大图显示弹出框的代码及css js -->
 <div id="backbgP"></div><!--可点击自身消失-->
-<div id="bigPicCon" ><img id="bigimage" src="/static/images/dxhbQR.png"/><div id="ctrHeight"></div></div>
+<div id="bigPicCon" ><img id="bigimage" src="/static/images/dxhbQR.png"/><div id="description"></div><div id="ctrHeight"></div></div>
 <style>
 #backbgP{
   position:fixed;
@@ -185,13 +185,18 @@ $("#bigPicCon").css("height",hhh+"px");
   
 /*弹出短信选择框*/
 $(".picture").live('click',function(){
-	var source = $(this).attr('src');
-	$("#bigimage").attr('src',source);
-	//alert($("#bigPicCon")..attr('src'));
-	$("#bigPicCon").show(300);
-	$("#backbgP").css("display","block");
-	$("body").css("overflow","hidden");
-	});
+	var pid = $(this).attr('id');
+	$.get('/Activity/ajaxGetDesc?pid='+pid, function(data) {
+		if(data.status==1)
+		{
+			$("#bigimage").attr('src',data.pic);
+			$("#description").html(data.description);
+			$("#bigPicCon").show(300);
+			$("#backbgP").css("display","block");
+			$("body").css("overflow","hidden");
+		}
+	},'json');
+});
 
 $("#bigPicCon").click(function(){	 
 	$("#bigPicCon").hide(300);
