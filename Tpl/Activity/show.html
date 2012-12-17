@@ -129,7 +129,7 @@ function like(id)
 
 <!--以下为大图显示弹出框的代码及css js -->
 <div id="backbgP"></div><!--可点击自身消失-->
-<div id="bigPicCon" ><div style="background:rgba(255,255,255,0.4); font-size:18px; border-radius:0 0 3px 3px; display:inline-block; vertical-align:middle;"><img id="bigimage" src="/static/images/dxhbQR.png"/>
+<div id="bigPicCon" ><div id="bigPicCon2" style="background:rgba(255,255,255,0.4); font-size:18px; border-radius:0 0 3px 3px; display:inline-block; vertical-align:middle;"><img id="bigimage" src="/static/images/dxhbQR.png"/>
 	<br/>
         <span class="dingn"><span class="icond"></span>asdadsad</span>
 		<span id="description"></span>
@@ -139,7 +139,7 @@ function like(id)
 <style>
 .dingn{
 	float:right;
-	margin-right:3px;
+	margin-right:0px;
 	color:#444;	
 	font-size:16px;
 	font-family:simsun;
@@ -182,7 +182,7 @@ z-index:12000;
 border:30px solid rgb(0,0,0);
 border:30px solid rgba(0,0,0,0.92);
 vertical-align:middle;
-cursor:pointer;
+
 }
 #bigPicCon img:hover{
   cursor:pointer;
@@ -224,7 +224,7 @@ $(".picture").live('click',function(){
 	},'json');
 });
 
-$("#bigPicCon").click(function(){	 
+$("#bigPicCon2").click(function(){	 
 	$("#bigPicCon").hide(300);
 	$("#backbgP").css("display","none");
 	$("body").css("overflow","auto");
