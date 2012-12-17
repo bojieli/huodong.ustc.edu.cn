@@ -72,11 +72,34 @@ class ActivityAction extends PublicAction{
             $elements[] = $this->picture2html($picture);
         echo json_encode($elements);
     }
+
+    public function ajaxGetDesc()
+    {
+    	$pid=$this->_get('pid');
+    	$picture = M('Activity_picture')->where(array('pid' =>$pid))->select();
+    	if($picture)
+    	{
+    		$result['status']=1;
+    		foreach ($picture as $key => $value) {
+    			$result['pic']=$value['path'].'thumb/large_'.$value['name'];
+    			$result['description']=$value['title']."<br>".$value['description'];
+    		}
+    		echo json_encode($result);
+    	}
+    	else
+    	{
+    		$result['status']=1;
+    		echo json_encode($result);
+    	}
+    	
+    }
 	private function picture2html($picture) {
         return '<li class="hide"><div class="celldiv" itemscope itemtype="http://data-vocabulary.org/Event">'.
-            ($picture['path'] ? '<img alt="'.$picture['description'].'" class="picture" itemprop="photo" height="'.$picture['height'].'" src="'.$picture['path'].'"  />' : '').
+            ($picture['path'] ? '<img id="'.$picture['pid'].'" alt="'.$picture['description'].'" class="picture" itemprop="photo" height="'.$picture['height'].'" src="'.$picture['path'].'"  />' : '').
             '<div class="detail"><div class="hot">'.
-            '<span class="ding"><span class="iconding" onclick="like('.$picture['pid'].');return false;"></span><span id = "rate_'.$picture['pid'].'"   class="rate">'.$picture['likes'].'</span></span></div></div></div></li>';
+            '<span class="ding"><span class="iconding" onclick="like('.$picture['pid'].');return false;"></span><span id = "rate_'.$picture['pid'].'"   class="rate">'.$picture['likes'].'</span></span></div>
+            <p>'.$picture['title'].'</p>
+            </div></div></li>';
     }
 	public function show()
 	{
