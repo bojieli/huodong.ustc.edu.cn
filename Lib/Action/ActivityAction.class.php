@@ -95,7 +95,7 @@ class ActivityAction extends PublicAction{
     }
 	private function picture2html($picture) {
         return '<li class="hide"><div class="celldiv" itemscope itemtype="http://data-vocabulary.org/Event">'.
-            ($picture['path'] ? '<img id="'.$picture['pid'].'" alt="'.$picture['description'].'" class="picture" itemprop="photo" height="'.$picture['height'].'" src="'.$picture['path'].'"  />' : '').
+            ($picture['path'] ? '<img id="'.$picture['pid'].'" class="picture" itemprop="photo" height="'.$picture['height'].'" src="'.$picture['path'].'"  />' : '').
             '<div class="detail"><div class="hot">'.
             '<span class="ding"><span class="iconding" onclick="like('.$picture['pid'].');return false;"></span><span id = "rate_'.$picture['pid'].'"   class="rate">'.$picture['likes'].'</span></span></div>
             <p>'.$picture['title'].'</p>
