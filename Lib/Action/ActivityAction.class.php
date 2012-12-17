@@ -120,8 +120,6 @@ class ActivityAction extends PublicAction{
 			}
 		}
 
-		dump($activity);
-
 		$this->assign('act_id', $act_id);
 		$this->assign('activity', $activity);
 		$this->display();
