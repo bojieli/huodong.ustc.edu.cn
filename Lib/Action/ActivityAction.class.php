@@ -104,10 +104,26 @@ class ActivityAction extends PublicAction{
 	public function show()
 	{
 		$act_id = $this->_get('act_id');
-		//dump($act_id);
-		//$picturces = M('Activity_picture')->where(array('act_id'=>$act_id))->select();
-		//dump($picturses);
+		$activity = M('Activity')->find($act_id);
+		if($activity['poster_id'])
+		{
+			$poster = M('Poster')->field('gid,aid,name')->find($activity['poster_id']);
+			$club_id = $poster['gid'];
+			$activity['post_name'] = $poster['name'];
+			$activity['poster_url'] = "/Poster/singlePage?aid=".$poster['aid'];
+			if($club_id)
+			{
+				$club_name = M('Club')->field('name')->find($club_id);
+				$club_name = $club_name['name'];
+				$activity['club_name'] = $club_name;
+				$activity['club_url'] = "/Club/intro?gid=".$club_id;
+			}
+		}
+
+		dump($activity);
+
 		$this->assign('act_id', $act_id);
+		$this->assign('activity', $activity);
 		$this->display();
 	}
 	public function find() {
