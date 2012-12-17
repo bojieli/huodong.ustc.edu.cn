@@ -129,19 +129,18 @@ class ActivityAction extends PublicAction{
 		if(!$this->allowPost($id)) {
 				$this->error('没有权限！');
 		}
-		//dump($_POST);
-		if(!$_POST[submit]) {
+		if(!$_POST['submit']) {
 			$act = D('Activity')->getActivityByID($id);
 			//dump($act);
 			$this->assign('activity',$act);
 			$this->display();
 		}else {
 			$picInfo = $this->uploadPic();
-			
 			global $_G;
 			$data=array(
 				'name' => $picInfo[savename],
 				'path' => '/upload/picture/',
+				'title' => empty($_POST['title']) ? '':$_POST['title'],
 				'description' => empty($_POST[desc]) ? '':$_POST[desc],
 				'uid' => $_G[uid],
 				'time' => time(),
