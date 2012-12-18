@@ -471,7 +471,7 @@ getwindowWH();//调用函数获取数值
 				<a href="/Sms/history?gid={$club.gid}" title="{$club['name']}" style=" color:#06C; margin-left:50px;">全部短信记录</a>
 				</span></notempty>
 				<span style="position:absolute;left:490px;top:135px;color:#8E8E90">
-				还可输入<span id="counter" style="color:#F00">200</span>字
+				还可输入<span id="counter" style="color:#F00"></span>字
 				</span>
 				<span style="position:absolute;left:20px;top:135px;color:#8E8E90">
 				还剩<span id="sms_num" style="color:#F00">{$sms_num}</span>条短信
@@ -516,12 +516,12 @@ function mbStringLength(s) {
       } 
 function tmp(){    
 		var area=$("#edit");
-		var max = 200;
-		$('#counter').text(200-mbStringLength(area.val()));
+		var max = 600;
+		$('#counter').text(max-mbStringLength(area.val()));
 		var limit=$('#counter').text();
 		if(max>0){ 
             if(limit<0){ 
-				 area.val(area.val().substr(0,66));    //截断textarea的文本重新赋值             
+				 area.val(area.val().substr(0,area.val().length-1));    //截断textarea的文本重新赋值             
             } 
         } 
 }

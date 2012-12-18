@@ -1,21 +1,28 @@
 <?php
 class SmsModel extends Model {
-	public function sentMsg($msg,$mobile)//单独发短信
+	public function sentMsg($msg_top,$mobile)//单独发短信
 	{
+		$msgs=split_sms($msg_top,'utf8');
 		$url="http://umess.ustc.edu.cn/uMessApi.php?wsdl";//接口地址
         $client=new SoapClient($url,array('encoding'=>'UTF-8'));
 		$client->wsCsLogin('huodong','hzbjlsjr2012');
-		$client->wsSendSms($msg,$mobile);
+		foreach($msgs as $msg)
+		{
+			$client->wsSendSms($msg,$mobile);
+		}
 	}
-    public function sentSms($msg,$mobiles,$gid)
+	public function sentSms($msg_top,$mobiles,$gid)
     {
         global $_G;
         $uid= $_G['uid'];
-        //dump($msg);
         //$msg=iconv('UTF-8','GBK',$msg);
         //print_r($msg);
         //echo mb_strlen($msg);
-        //die;
+
+		$msgs=split_sms($msg_top,'utf8');
+		//echo json_encode($msgs);
+		//echo $msgs[0];
+		//die;
         $url="http://umess.ustc.edu.cn/uMessApi.php?wsdl";//接口地址
         $client=new SoapClient($url,array('encoding'=>'UTF-8'));
         //dump($client);
@@ -23,10 +30,9 @@ class SmsModel extends Model {
         //远程调用
         $client->wsClientSetCharset('UTF-8');
         $client->wsCsLogin('huodong','hzbjlsjr2012');
-        $messageId=$client->wsCreateMessage($messageTitle='',$msg,$messageFromAddress="",$messageFromName="",$messageContentFormat="plaintext");
-        //die;
-        if ($messageId == 'soap_fault')
-            return 'soap_fault';
+        foreach($msgs as $msg){
+		$messageIds[]=$client->wsCreateMessage($messageTitle='',$msg,$messageFromAddress="",$messageFromName="",$messageContentFormat="plaintext");
+        }//die;
         $i=0;
         $j=0;
         //dump($mobiles);
@@ -34,26 +40,28 @@ class SmsModel extends Model {
         foreach($mobiles as  $tid1 => $mobile1){
             $tids.=$tid1.';';
         }
-        $pid=$this->sms_md5($msg,$uid,$tids,$gid);
+        $pid=$this->sms_md5($msg_top,$uid,$tids,$gid);
         $failed_user = "";
         foreach($mobiles as  $tid => $mobile)
         {
-
-            $client->wsMessageAddReceiver($messageId,'mobile',$mobile,'sms',$messagePriority=1,$sendTime=null);
-            $re=$client->wsMessageSend($messageId);
-            if($re)
-            {
-                $i++;
-                $status='done';
-                $this->smsLog($uid,$tid,$pid,$gid,$status);
-            }
-            else
-            {
-                $j++;
-                $failed_user.=D('User')->getRealname($tid)." ";
-                $status='failed';
-                $this->smsLog($uid,$tid,$pid,$gid,$status);
-            }
+			foreach($messageIds as $messageId)
+			{
+				$client->wsMessageAddReceiver($messageId,'mobile',$mobile,'sms',$messagePriority=1,$sendTime=null);
+				$re=$client->wsMessageSend($messageId);
+			}
+			if($re)
+			{
+				$i++;
+				$status='done';
+				$this->smsLog($uid,$tid,$pid,$gid,$status);
+			}
+			else
+			{
+				$j++;
+				$failed_user.=D('User')->getRealname($tid)." ";
+				$status='failed';
+				$this->smsLog($uid,$tid,$pid,$gid,$status);
+			}
         }
 
         $client->wsMessageClose($messageId);
@@ -156,9 +164,9 @@ class SmsModel extends Model {
         $data=array('sms_num'=>$this->getSmsNum($gid)-$de);
         return M('club')->where(array('gid'=>$gid))->data($data)->save();
     }
-    public function canSent($gid,$n)
+    public function canSent($gid,$i,$n)
     {
-        if($this->getSmsNum($gid)-$n<0)
+        if($this->getSmsNum($gid)-$i*$n<0)
             return 0;
         else 
             return 1;

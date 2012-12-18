@@ -313,4 +313,19 @@ function sendFile($fileName, $fancyName = '', $forceDownload = true, $speedLimit
     }
     return true;
 }
+function split_sms($msg,$type='utf8'){
+		$len_re=strlen($msg);
+		$i=0;
+		$num_re=0;
+		while(1){
+		$msg_tmp=mb_strcut($msg,$num_re==0?0:($num_re),$len_re-$num_re>200?200:$len_re-$num_re,$type);
+		if($msg_tmp=='')break;
+		$per_re=strlen($msg_tmp);
+		$num_re+=$per_re;
+		$tmp[$i]=$msg_tmp;
+		$i++;
+		if($num_re-$len_re>=0){break;}
+		};
+		return $tmp;
+}
 ?>

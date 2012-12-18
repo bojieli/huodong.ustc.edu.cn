@@ -87,7 +87,7 @@ class SmsAction extends PublicAction {
         $this->assign('member',$member);
         $this->display();
     }
-    public function sent(){
+	public function sent(){
         if(!D('User')->checkLogin()){$this->error('未登陆');}
         global $_G;
         $uid= $_G['uid'];
@@ -96,11 +96,10 @@ class SmsAction extends PublicAction {
         $to_tmp = trim($this->_post('tid'));
         $to_all=explode(";",$to_tmp);
         $msg = $this->_post('s');
-        //echo $msg;
-        //$msg = iconv('UTF-8','GB2312//IGNORE',$msg);
+		//$msg = iconv('UTF-8','GB2312//IGNORE',$msg);
         //echo $msg;
         //echo 123;
-        //return 0;
+        //die;
         $Model = D('Sms');
 
         $i=0;
@@ -117,12 +116,13 @@ class SmsAction extends PublicAction {
             $info[0]="未填写内容或未指明发送对象";
             $this->error($info);
         };
-        if(!$Model->canSent($gid,$i)){
+        $n=count(split_sms($msg,'utf8'));
+		if(!$Model->canSent($gid,$i,$n)){
             $info[1]=$Model->getSmsNum($gid);
             $info[0]="剩余短信条数不足";
             $this->error($info);
         }
-        $re=$Model->sentSms($msg,$mobiles,$gid);
+		$re=$Model->sentSms($msg,$mobiles,$gid);
         $Model->deSmsNum($gid,$re['done']);
         $info[0] = $re['done'].'条发送成功'.' -- '.$re['failed'].'条发送失败。';
         if($re['failed'])
