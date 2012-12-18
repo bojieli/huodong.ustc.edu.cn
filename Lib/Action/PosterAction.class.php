@@ -321,7 +321,7 @@ class PosterAction extends PublicAction {
 		else{
 				if($clockStat==1) $clock_img='<img class="clock" id="'.$clockStat.'clock-'.$poster->id().'" style="width:20px;height:20px;cursor:pointer;float:left" src="/static/images/clock1.png" alt="提醒我" title="提醒我"/>';				
 				else $clock_img='<img class="clock" id="'.$clockStat.'clock-'.$poster->id().'" style="width:20px;height:20px;cursor:pointer;float:left" src="/static/images/clock2.png" alt="已提醒" title="已提醒"/>';
-				$hot_img='<img src="/static/images/hot.png" alt="新功能" />';
+				$hot_img='<img src="/static/images/hot.png" title="新功能" alt="新功能" />';
 				$clock_img.=$hot_img;
 			}
 		return '
