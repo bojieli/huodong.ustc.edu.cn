@@ -131,7 +131,7 @@ function like(id)
 <div id="backbgP"></div><!--可点击自身消失-->
 <div id="bigPicCon" style="background:rgba(90, 100, 185, 0.85);" ><div id="bigPicCon2" style="background:rgba(255,255,255,0.4); font-size:18px;  display:inline-block; vertical-align:middle;"><img id="bigimage" src="/static/images/dxhbQR.png"/>
 	<br/>
-        <span class="dingn"><span class="icond"></span></span>
+        <span class="dingn"><span class="icond" id="big_image_ajax_like"></span></span>
 		<span id="description"></span>
 	
 </div>
@@ -222,11 +222,17 @@ $(".picture").live('click',function(){
 	$.get('/Activity/ajaxGetDesc?pid='+pid, function(data) {
 		if(data.status==1)
 		{
+			$("#big_image_ajax_like").unbind();
 			$("#bigimage").attr('src',data.pic);
 			$("#description").html(data.description);
 			$("#bigPicCon").show(300);
 			$("#backbgP").css("display","block");
 			$("body").css("overflow","hidden");
+			
+			$("#big_image_ajax_like").click(function (){
+				like(pid);
+			})
+
 		}
 	},'json');
 });
