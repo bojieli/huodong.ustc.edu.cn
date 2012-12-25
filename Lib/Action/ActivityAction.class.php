@@ -141,8 +141,8 @@ class ActivityAction extends PublicAction{
             $this->error('您没有权限');
 		}
 		$pictures = M('Activity_picture')->where(array("act_id"=>$act_id))->select();
-		dump($pictures);
-		$this->assign('act_id', $act_id);
+		$this->assign('activity', $activity);
+		$this->assign('pictures', $pictures);
 		$this->display();
 	}
 	public function find() {
