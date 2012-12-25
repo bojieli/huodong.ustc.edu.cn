@@ -17,9 +17,8 @@
 <div id="content">
 	<volist name="pictures" id="pics">
 		<div>{$key}</div>
-		<div>{$pics}</div>
 		<ul style="min-height: 600px; ">
-		<volist name="pics" id="picture">
+		<volist name="pics[$key]" id="picture">
 			{$picture['info']}
 		</volist>
 		</ul>
