@@ -1,4 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -17,13 +17,17 @@
 <div id="content">
 <volist name="pictures" id="picture">
 	<div><p>{$picture['title']}<p>
-		<input type="text" name="reward" id="reward"/>
-		<select name="level">
-		  <option value ="10">一等奖</option>
-		  <option value ="9">二等奖</option>
-		  <option value="8">三等奖</option>
-		  <option value="7">四等奖</option>
-		</select>
+		<form action="/Activity/award" target="_blank" method="post">
+			<input type="hidden" name="pid" value="{$picture['pid']}"/>
+			<input type="text" name="reward" id="reward"/>
+			<select name="level">
+			  <option value ="10">一等奖</option>
+			  <option value ="9">二等奖</option>
+			  <option value="8">三等奖</option>
+			  <option value="7">四等奖</option>
+			</select>
+			<input type="submit" value="确定">
+		</form>
 	</div>
 </volist>
 </div>
