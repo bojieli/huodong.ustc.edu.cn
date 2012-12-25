@@ -16,7 +16,15 @@
 <div id="main" style="background:#fafafa;">
 <div id="content">
 <volist name="pictures" id="picture">
-	<div>{$picture['title']}</div>
+	<div><p>{$picture['title']}<p>
+		<input type="text" name="reward" id="reward"/>
+		<select name="level">
+		  <option value ="10">一等奖</option>
+		  <option value ="9">二等奖</option>
+		  <option value="8">三等奖</option>
+		  <option value="7">四等奖</option>
+		</select>
+	</div>
 </volist>
 </div>
 </div>
