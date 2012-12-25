@@ -17,9 +17,10 @@
 <div id="content">
 	<volist name="pictures" id="pics">
 		<div>{$key}</div>
+		<div>{$pics}</div>
 		<ul style="min-height: 600px; ">
 		<volist name="pics" id="picture">
-			<php>print_r($pics)</php>
+			{$picture['info']}
 		</volist>
 		</ul>
 	</volist>
