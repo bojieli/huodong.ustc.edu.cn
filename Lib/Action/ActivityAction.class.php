@@ -170,6 +170,23 @@ class ActivityAction extends PublicAction{
 		M('Activity_picture')->where(array('pid' => $pid))->save($data);
 		$this->success('设置成功');
 	}
+	public function show_award()
+	{
+		$act_id = $this->_get('act_id');
+		$activity = M('Activity')->find($act_id);
+		$pictures = M('Activity_picture')->where(array("act_id"=>$act_id))->order('level desc')->select();
+		$result = array();
+		foreach ($pictures as $key => $picture) {
+			$reward = $picture['reward'];
+			$info = $this->picture2html($picture);
+			$result[$reward][]=$info;
+		}
+		dump($result);
+		$this->assign('act_id', $act_id);
+		$this->assign('activity', $activity);
+		$this->assign('pictures', $result);
+		$this->display();
+	}
 	public function find() {
 		$act_id = $this->getActID();
 		$actDB = D('Activity');
