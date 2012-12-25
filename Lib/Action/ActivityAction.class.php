@@ -101,6 +101,14 @@ class ActivityAction extends PublicAction{
             <p>'.$picture['title'].'</p>
             </div></div></li>';
     }
+    private function picture2html2($picture) {
+        return '<li class="show"><div class="celldiv" itemscope itemtype="http://data-vocabulary.org/Event">'.
+            ($picture['path'] ? '<img id="'.$picture['pid'].'" class="picture" itemprop="photo" height="'.$picture['height'].'" src="'.$picture['path'].'"  />' : '').
+            '<div class="detail"><div class="hot">'.
+            '<span class="ding"><span id = "rate_'.$picture['pid'].'"   class="rate">'.$picture['likes'].'</span></span></div>
+            <p>'.$picture['title'].'</p>
+            </div></div></li>';
+    }
 	public function show()
 	{
 		$act_id = $this->_get('act_id');
@@ -172,16 +180,30 @@ class ActivityAction extends PublicAction{
 	}
 	public function show_award()
 	{
+		import("ORG.Util.Image");
 		$act_id = $this->_get('act_id');
 		$activity = M('Activity')->find($act_id);
 		$pictures = M('Activity_picture')->where(array("act_id"=>$act_id))->order('level desc')->select();
 		$result = array();
 		foreach ($pictures as $key => $picture) {
 			$reward = $picture['reward'];
-			$info = $this->picture2html($picture);
+			if(empty($reward))
+			{
+				$reward="优秀作品";
+			}
+			$path = $picture['path'].'thumb/thumb_'.$picture['name'];
+			$picture['path'] = $path;
+			$info = Image::getImageInfo('.'.$path);
+				if ($info['width'] <= 250)
+					$picture['height'] = $info['height'];
+				else if ($info['width'] <= 500)
+					$picture['height'] = ceil($info['height'] * 250 / $info['width']);
+				else
+					$picture['height'] = ceil($info['height'] / 2);
+			$info = $this->picture2html2($picture);
 			$result[$reward][]=$info;
 		}
-		dump($result);
+		
 		$this->assign('act_id', $act_id);
 		$this->assign('activity', $activity);
 		$this->assign('pictures', $result);
