@@ -23,24 +23,6 @@
 		</volist>
 		</ul>
 	</volist>
-	<ul style="min-height: 600px; ">
-
-    </ul>
-<volist name="pictures" id="picture">
-	<div><p>{$picture['title']}<p>
-		<form action="/Activity/award" target="_blank" method="post">
-			<input type="hidden" name="pid" value="{$picture['pid']}"/>
-			<input type="text" name="reward" id="reward"/>
-			<select name="level">
-			  <option value ="10">一等奖</option>
-			  <option value ="9">二等奖</option>
-			  <option value="8">三等奖</option>
-			  <option value="7">四等奖</option>
-			</select>
-			<input type="submit" value="确定">
-		</form>
-	</div>
-</volist>
 </div>
 </div>
 
