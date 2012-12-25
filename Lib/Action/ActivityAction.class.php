@@ -145,6 +145,31 @@ class ActivityAction extends PublicAction{
 		$this->assign('pictures', $pictures);
 		$this->display();
 	}
+	public function award()
+	{
+		global $_G;
+		if(!D('User')->checkLogin())
+        {
+            $this->assign('jumpUrl','/User/login');
+            $this->error('您尚未登录');
+        }
+        $uid = $_G['uid'];
+
+		$reward = $this->_post('reward');
+		$level = $this->_post('level');
+		$pid = $this->_post('pid');
+		$picture = M('Activity_picture')->find($pid);
+		$act_id = $picture['act_id'];
+		$activity = M('Activity')->find($act_id);
+		if($uid!=$activity['uid'])
+		{
+            $this->error('您没有权限');
+		}
+		$data['reward'] = $reward;
+		$data['level'] = $level;
+		M('Activity_picture')->where(array('pid' => $pid))->save($data);
+		$this->success('设置成功');
+	}
 	public function find() {
 		$act_id = $this->getActID();
 		$actDB = D('Activity');
