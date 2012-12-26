@@ -29,9 +29,10 @@
 <include file="Public:headnav" />
 
 <div id="main" style="background:#fafafa;">
-<div id="content" style="width:1000px; margin:0 auto;background:#F5F4F2">
-	<volist name="pictures" id="pics">
-		<div class="ac_award_ul">
+<div id="content" style="width:1200px; margin:0 auto;background:#F5F4F2">
+	<volist name="pictures" id="pics" key="index">
+    
+		<div id="key{$index}">
 		<div class="ac_award_tittle">{$key}</div>
 		<ul style="margin-bottom:15px;">
 		<volist name="pics" id="picture">
