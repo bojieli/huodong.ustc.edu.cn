@@ -102,7 +102,7 @@ class ActivityAction extends PublicAction{
             </div></div></li>';
     }
     private function picture2html2($picture) {
-        return '<li class="show"><div class="celldiv" itemscope itemtype="http://data-vocabulary.org/Event">'.
+        return '<li class="show" style="position:static; margin:10px;"><div class="celldiv" itemscope itemtype="http://data-vocabulary.org/Event">'.
             ($picture['path'] ? '<img id="'.$picture['pid'].'" class="picture" itemprop="photo" height="'.$picture['height'].'" src="'.$picture['path'].'"  />' : '').
             '<div class="detail"><div class="hot">'.
             '<span class="ding"><span id = "rate_'.$picture['pid'].'"   class="rate">'.$picture['likes'].'</span></span></div>
