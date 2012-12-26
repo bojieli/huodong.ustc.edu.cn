@@ -8,16 +8,30 @@
 
 <link href="/static/css1.css" rel="stylesheet" type="text/css" />
 <script src="/static/jquery.js" type="text/javascript"></script>
+<style>
+.ac_award_tittle{
+	margin:20px auto 10px auto;
+	padding-bottom:5px;
+	text-align:center;
+	font-size:28px;
+	font-weight:bold;
+	color:#F00;
+	background:#FFC;
+	border-bottom:#9C3 dotted 1px;
+	}
+</style>
+
+
 </head>
 
 <body>
 <include file="Public:headnav" />
 
 <div id="main" style="background:#fafafa;">
-<div id="content">
+<div id="mainding">
 	<volist name="pictures" id="pics">
-		<div>
-		<div>{$key}</div>
+		<div >
+		<div class="ac_award_tittle">{$key}</div>
 		<ul style="min-height: 600px; ">
 		<volist name="pics" id="picture">
 			{$picture}
