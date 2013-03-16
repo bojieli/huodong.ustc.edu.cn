@@ -275,7 +275,7 @@ class UserAction extends PublicAction {
         {
             $this->error("邮箱不能为空");
         }
-        if (!preg_match("/^[a-zA-Z0-9+_-]+$/", $_POST['email'])) {
+        if (!preg_match("/^[a-zA-Z0-9+_-.]+$/", $_POST['email'])) {
             $this->error("请输入有效的邮箱地址");
         }
         $_POST['email']=trim($_POST['email']).'@mail.ustc.edu.cn';
@@ -741,7 +741,7 @@ class UserAction extends PublicAction {
     public function ajaxCheckEmail()
     {
         $email = empty($_POST[email])?$_GET[email]:$_POST[email];
-		if(!preg_match("/^[a-zA-Z0-9+_-]+$/", $email))
+		if(!preg_match("/^[a-zA-Z0-9+_-.]+$/", $email))
 			$this->error("邮箱格式错误，无需输入邮箱后缀",0);
 		$email .="@mail.ustc.edu.cn";
         //$this->error("邮箱错误",1);
