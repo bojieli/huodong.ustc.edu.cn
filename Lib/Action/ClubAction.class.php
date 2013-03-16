@@ -132,7 +132,37 @@ class ClubAction extends PublicAction {
     public function addOwner() {
         $this->display();
     }
-
+    public function addMember(){
+		$this->display();
+	}
+	public function creatMember(){
+		
+		$filename = $this->uploadxls();
+		if (!$filename) {
+            $this->error("您必须上传xls文件。请注意最大文件大小的限制。");
+        }
+		require_once "Common/Excel/reader.php";
+		$xl_reader= new Spreadsheet_Excel_Reader();
+		$url='upload/xls/'.$filename;
+		$xl_reader->read($url);
+		dump($xl_reader);
+	}
+	public function uploadxls() {
+        import("ORG.Net.UploadFile");
+        $upload = new UploadFile();
+        $upload->maxSize = 8 * 1024 * 1024;
+        $upload->allowExts = ['xls'];
+        $upload->savePath = './upload/xls/';
+        $upload->saveRule = 'uniqid';
+		 if(!$upload->upload()) {// 上传错误 提示错误信息 
+			$this->error($upload->getErrorMsg()); 
+		}
+		else{
+			$info = $upload->getUploadFileInfo();
+            //dump($info);
+			return $info[0]["savename"];
+        }
+    }
     public function addOwnerSubmit() {
         $uid = $_REQUEST['owner'];
         $gid = $_REQUEST['gid'];
