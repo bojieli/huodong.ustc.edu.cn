@@ -271,7 +271,7 @@ class UserModel extends Model {
         $user_info['avatar'] = $this->getAvatar($uid);
         $user_info['small_avatar'] = $this->getAvatar($uid, "small");
         $user_info['big_avatar'] = $this->getAvatar($uid, "big");
-        return $user_info;
+		return $user_info;
     }
 
     public function isDeveloper($uid) {

@@ -141,12 +141,35 @@ class ClubAction extends PublicAction {
 		if (!$filename) {
             $this->error("您必须上传xls文件。请注意最大文件大小的限制。");
         }
-		require_once "Common/Excel/reader.php";
-		$xl_reader= new Spreadsheet_Excel_Reader();
-		$url='upload/xls/'.$filename;
-		$xl_reader->read($url);
-		dump($xl_reader);
-	}
+		require_once "Common/PHPExcel.php";
+		$filePath = 'upload/xls/'.$filename;
+		$PHPExcel = new PHPExcel();
+		/**默认用excel2007读取excel，若格式不对，则用之前的版本进行读取*/
+		$PHPReader = new PHPExcel_Reader_Excel2007();
+		if(!$PHPReader->canRead($filePath)){
+			$PHPReader = new PHPExcel_Reader_Excel5();
+			if(!$PHPReader->canRead($filePath)){
+				echo 'no Excel';
+				return ;
+			}
+		}
+		$PHPExcel = $PHPReader->load($filePath);
+		/**读取excel文件中的第一个工作表*/
+		$sheet = $PHPExcel->getSheet(0);
+		$highestRow = $sheet->getHighestRow(); // 取得总行数
+		 $highestColumn = $sheet->getHighestColumn(); // 取得总列数
+		 // 根据自己的数据表的大小修改
+		 $arr = array(1=>'A',2=>'B',3=>'C',4=>'D',5=>'E',6=>'F',7=>'G',8=>'H',9=>'I',10=>'J',11=>'K',12=>'L',13=>'M', 14=>'N',15=>'O',16=>'P',17=>'Q',18=>'R',19=>'S',20=>'T',21=>'U',22=>'V',23=>'W',24=>'X',25=>'Y',26=>'Z');
+		 // 每次读取一行，再在行中循环每列的数值
+		 for($row = 1; $row <= $highestRow; $row++){
+		  for($column = 1; $arr[$column] != 'D'; $column++){
+		   $val = $sheet->getCellByColumnAndRow($column, $row)->getValue();
+		   $list[$row][] = $val;
+		  }
+		 }
+		 $this->assign('list', $list);
+		 $this->display();
+			}
 	public function uploadxls() {
         import("ORG.Net.UploadFile");
         $upload = new UploadFile();
