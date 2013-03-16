@@ -108,7 +108,7 @@ function checkFeild(movPos)
 	}
 	else if(movPos==2)
 	{
-		if($.trim($('#dept').val())==0)
+		if($.trim($('#dept').val())=="")
 		{
 			$("#checkDept").html('<font color="#FF0000"  size="1">请选择学院</font>');
 			return false;
@@ -306,9 +306,10 @@ function mmove(){
                 <tr>
                 	<td align="right" valign="middle" width="150px" height="58px"><em>* </em>学院</td>
                     <td class="zc1tablerect" width="300px" valign="middle" align="left">
-                    	<div class="zc1fakesel">
+                    	<div class="zc1school">
                         	<strong>
-							<select name="dept" id="dept"  style="border:1px solid #CCC; border-radius:4px 0px 0px 4px; padding-right:0px; height:28px; margin-top:4px;">
+							<input type="text" name="dept" id="dept" size='20' class="regist-input-box dxhb-blur" onfocus="this.className='dxhb-focus regist-input-box'" onblur="this.className='dxhb-blur regist-input-box'"/>
+							<!--<select name="dept" id="dept"  style="border:1px solid #CCC; border-radius:4px 0px 0px 4px; padding-right:0px; height:28px; margin-top:4px;">
 							  <option value ="0">请选择学院</option>
 							  <option value ="少年班学院">少年班学院</option>
 							  <option value ="数学科学学院">数学科学学院</option>
@@ -332,8 +333,8 @@ function mmove(){
 							  <option value="合肥微尺度物质科学国家实验室（筹）">合肥微尺度物质科学国家实验室（筹）</option>
 							  <option value="火灾科学国家重点实验室">火灾科学国家重点实验室</option>
 							</select>
+							-->
                             </strong>
-							<br>
 							<span id="checkDept"></span>
                         </div>
                     </td>
@@ -392,7 +393,7 @@ function mmove(){
                 	<td align="right" valign="middle" width="150px" height="58px"><em id='telephone-em'></em>电话</td>
                     <td class="zc1tablerect" width="300px"  valign="middle" align="left">
                     	<div class="zc1school">
-                        	<input type="text" id = "telephone" name="telephone" size='20' class="regist-input-box dxhb-blur" onfocus="this.className='dxhb-focus regist-input-box'" onblur="this.className='dxhb-blur regist-input-box'"/><span id="checkTelephone"></span><span id="telephone-intro"></span>
+                        	<input type="text" id = "telephone" name="telephone" size='11' class="regist-input-box dxhb-blur" onfocus="this.className='dxhb-focus regist-input-box'" onblur="this.className='dxhb-blur regist-input-box'"/><span id="checkTelephone"></span><span id="telephone-intro"></span>
                         </div>                        
                     </td>
                 </tr>
@@ -469,7 +470,7 @@ function mmove(){
 $(function(){
 
 	$('#dept').blur(function(){												
-		if($.trim($(this).val())=="0"){
+		if($.trim($(this).val())==""){
 			$("#checkDept").html('<font color="#FF0000"  size="1">请选择学院</font>');
 		}
 		else {
@@ -592,7 +593,7 @@ $(function(){
 });
 
 function submituser(){
-	if($.trim($('#dept').val())==0)
+	if($.trim($('#dept').val())=="")
 	{
 		$("#checkDept").html('<font color="#FF0000"  size="1">请选择学院</font>');
 		$("#tj_err_total").html('<font color="#FF0000"  size="1">请于前面页面中 选择学院</font>');

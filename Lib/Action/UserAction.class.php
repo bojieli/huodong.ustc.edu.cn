@@ -57,7 +57,7 @@ class UserAction extends PublicAction {
         global $_G;
 
         if($_POST[submit]){
-            $username=$_POST[email]."@mail.ustc.edu.cn";
+            $username=$_POST[email];
             $pw=$_POST[password];
             if(empty($username)||empty($pw)){
                 $this->error('密码或用户名不能为空');
