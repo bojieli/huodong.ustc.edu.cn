@@ -135,14 +135,50 @@ class ClubAction extends PublicAction {
     public function addMember(){
 		$this->display();
 	}
+	public function uploadMember(){
+		    $gid=$this->_post('gid');
+			$filename = $this->uploadxls();
+			if (!$filename) {
+				$this->error("您必须上传xls文件。请注意最大文件大小的限制。");
+			}
+	        redirect('/Club/creatMember?f='.$filename.'&gid='.$gid,0,' ');
+	}
 	public function creatMember(){
-		
-		$filename = $this->uploadxls();
-		if (!$filename) {
-            $this->error("您必须上传xls文件。请注意最大文件大小的限制。");
-        }
-		require_once "Common/PHPExcel.php";
+		$filename=$this->_get('f');
+		if(!$filename)return 0;
+		$gid=$this->_get('gid');
 		$filePath = 'upload/xls/'.$filename;
+		$list=$this->readExcel($filePath);
+		 $this->assign('list', $list);
+		 $this->assign('gid',$gid);
+		 $this->display();
+			}
+	public function saveMember(){
+	    $gid=$this->_post('gid');
+	    $filename=$this->_post('filename');
+		$val=$this->_post('v');
+		$filePath = 'upload/xls/'.$filename;
+		$list=$this->readExcel($filePath);
+		$list[1]=$val;
+		foreach($val as $key => $value){
+		       if($value==''){
+			     foreach($list as $m =>$n){
+				    unset($list[$m][$key]);
+				  }
+			   }
+			}
+	    $data['content']=json_encode($list);
+	    $data['address_name']=$filename;
+	    $data['real_name']=$filename;
+	    $data['gid']=$gid;
+		M('club_address')->data($data)->add();
+		redirect('/Club/address?gid='.$gid,0,' ');
+	}
+	
+	public function readExcel($filePath){
+	require_once "Common/PHPExcel.php";
+		//$filePath = 'upload/xls/'.$filename;
+		if(!file_exists($filePath)) $this->error('文件不存在');
 		$PHPExcel = new PHPExcel();
 		/**默认用excel2007读取excel，若格式不对，则用之前的版本进行读取*/
 		$PHPReader = new PHPExcel_Reader_Excel2007();
@@ -162,14 +198,13 @@ class ClubAction extends PublicAction {
 		 $arr = array(1=>'A',2=>'B',3=>'C',4=>'D',5=>'E',6=>'F',7=>'G',8=>'H',9=>'I',10=>'J',11=>'K',12=>'L',13=>'M', 14=>'N',15=>'O',16=>'P',17=>'Q',18=>'R',19=>'S',20=>'T',21=>'U',22=>'V',23=>'W',24=>'X',25=>'Y',26=>'Z');
 		 // 每次读取一行，再在行中循环每列的数值
 		 for($row = 1; $row <= $highestRow; $row++){
-		  for($column = 1; $arr[$column] != 'D'; $column++){
+		  for($column = 1; $arr[$column] != $highestColumn; $column++){
 		   $val = $sheet->getCellByColumnAndRow($column, $row)->getValue();
 		   $list[$row][] = $val;
 		  }
 		 }
-		 $this->assign('list', $list);
-		 $this->display();
-			}
+		 return $list;
+	}
 	public function uploadxls() {
         import("ORG.Net.UploadFile");
         $upload = new UploadFile();
@@ -814,8 +849,10 @@ class ClubAction extends PublicAction {
             $this->error("只有会长和部长才有权限查看通讯录");
         }
         $address = D('Address');
-        $members = $address->createAddress($gid);
-        $this->assign("club", $club);
+        $members = $address->createAddress($gid);     
+		$this->assign("excel", D('Club')->showMember($gid));
+		//dump(D('Club')->showMember($gid));
+		$this->assign("club", $club);
         $this->assign("members", $members);
         $this->display();
     }

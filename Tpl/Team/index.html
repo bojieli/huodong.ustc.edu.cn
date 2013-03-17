@@ -646,31 +646,30 @@ if ($team['member_count'] > 20) {
 </div><!--stmain--> 
 <div id="backbg1" class="bg123"></div><!--可点击自身消失-->
 <div id="alert-cont-box">
- <div class="alert-title">上传文档</div>
- <div id="sendMssage-result" class="alert-cont">
-<style type="text/css">
-	.controls .file-box{ position:relative; width:340px} 
-	.controls .txt{ height:22px; border:1px solid #cdcdcd; width:180px;height:28px;} 
-	.controls .btn{ background-color:#FFF; border:1px solid #CDCDCD;height:30px; width:70px; font-family:Microsoft Yahei, "Times New Roman", Times, serif; margin-left:10px;} 
-	.controls .file{ position:absolute; top:0; right:80px; height:32px; width:260px; filter:alpha(opacity:0);opacity: 0; } 
-</style>      
-    <div class="controls" style="width:400px; margin:0px auto;">
-     <p style="color:#F00">点击黑色半透明背景，可取消上传操作</p><br/>
-     <div class="file-box">
-         <form action="/Team/uploadSubmit" method="post" enctype="multipart/form-data">
-	     <input type='hidden' name='tid' value="{$team.tid}">	     
-         <input type='text' name='textfield' id='textfield' class='txt' /> 
-         <input type='button' class='btn' value='浏览...' /> 
-         <input type="file" name="attachment" class="file" id="attachment" size="36" onchange="document.getElementById('textfield').value=this.value" /> 
-     </div>
-    </div>     
-  </div>
-  
-    <div id="confirm-alert" class="dxhb-button alert-button" style="position:relative;">提 交
-    <input type='submit' value="提  交" style=" position:absolute; top:-5px; left:-5px; width:104px; height:40px;opacity:0;	filter:alpha(opacity=0);"  />
-    </div>
+	 <div class="alert-title">上传文档</div>
+	 <form action="/Team/uploadSubmit" method="post" enctype="multipart/form-data">
+		<div id="sendMssage-result" class="alert-cont">
+		<style type="text/css">
+			.controls .file-box{ position:relative; width:340px} 
+			.controls .txt{ height:22px; border:1px solid #cdcdcd; width:180px;height:28px;} 
+			.controls .btn{ background-color:#FFF; border:1px solid #CDCDCD;height:30px; width:70px; font-family:Microsoft Yahei, "Times New Roman", Times, serif; margin-left:10px;} 
+			.controls .file{ position:absolute; top:0; right:80px; height:32px; width:260px; filter:alpha(opacity:0);opacity: 0; } 
+		</style>
+			<div class="controls" style="width:400px; margin:0px auto;">
+			<p style="color:#F00">点击黑色半透明背景，可取消上传操作</p><br/>
+			<div class="file-box">
+			  <input type='hidden' name='tid' value="{$team.tid}">	     
+			  <input type='text' name='textfield' id='textfield' class='txt' /> 
+			  <input type='button' class='btn' value='浏览...' /> 
+			  <input type="file" name="attachment" class="file" id="attachment" size="36" onchange="document.getElementById('textfield').value=this.value" /> 
+			</div>
+			</div>     
+		</div>
+		<div id="confirm-alert" class="dxhb-button alert-button" style="position:relative;">提 交
+		<input type='submit' value="提  交" style=" position:absolute; top:-5px; left:-5px; width:104px; height:40px;opacity:0;	filter:alpha(opacity=0);"  />
+		</div>
+	</form>
 </div>
-</form>
 <script type="text/javascript">
 //<!--
 function alertUpload(){

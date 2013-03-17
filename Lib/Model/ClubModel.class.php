@@ -225,4 +225,11 @@ class ClubModel extends Model {
             return null;
         return $club['name'];
     }
+	public function showMember($gid){//导入的成员
+	  $info=M('club_address')->where(['gid'=>$gid])->select();
+	  foreach($info as $key => $val){
+		   $info[$key]['content']=json_decode($val['content'],true);
+	  }
+	  return $info;
+	}
 }

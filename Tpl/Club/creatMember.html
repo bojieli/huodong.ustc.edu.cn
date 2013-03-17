@@ -662,12 +662,44 @@ window.onscroll = onScroll;
 <include file="Public:headnav" />
 
 <div id="stmain" style="width:auto;">
+	<form action="/Club/saveMember"  method='post'>
+	
 	<table class="table-addresslist sortable" rowclass="row1,row2"  border="0"  cellpadding="0" cellspacing="1"  >
+	
+		<!--<th></th>
+		<volist name="list.1" id="theader">
+		<th>
+	    <select>
+		  <option value ="volvo">Volvo</option>
+		  <option value ="saab">Saab</option>
+		  <option value="opel">Opel</option>
+		  <option value="audi">Audi</option>
+		</select>
+		</th>
+		</volist>-->
 	
 	<tr >	
         <td class="td1" width="50" align="center">序</td>	
 		<volist name="list.1" id="theader">
-		<td class="td1" width="50" align="center">{$theader}</td>	
+		
+		<td class="td1" width="50" align="center">
+			<select name="v[]">
+			  <option value ="">---未选择---</option>
+			  <option value ="姓名">姓名</option>
+			  <option value ="学号">学号</option>
+			  <option value="电话">电话</option>
+			  <option value="邮箱">邮箱</option>
+			  <option value="受教育程度">受教育程度</option>
+			  <option value="学院">学院</option>
+			  <option value="专业">专业</option>
+			  <option value="个人网站">个人网站</option>
+			  <option value="个人爱好">个人爱好</option>
+			  <option value="QQ">QQ</option>
+			  <option value="其他">其他</option>
+			</select>
+			<div class="optionname">{$theader}
+			</div>
+		</td>	
 		</volist>
 	</tr>
 	
@@ -680,6 +712,12 @@ window.onscroll = onScroll;
 		</tr> 
 		</volist>
 	</table>
+	<div class="addrsumit" style="width:0px;margin:0 auto">
+	<input type="hidden" name="gid" value="{$Think.get.gid}"/>
+	<input type="hidden" name="filename" value="{$Think.get.f}"/>
+	<input type="submit" value="导入通讯录" />
+	</div>
+	</form>
 </div>
 
 </body>
