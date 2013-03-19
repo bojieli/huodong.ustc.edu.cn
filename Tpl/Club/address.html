@@ -716,7 +716,7 @@ window.onscroll = onScroll;
 	</eq> 
 	</volist>
 	</table>
-<volist name="excel" id="list">
+<volist name="excel" id="list" key="all">
 <div class="xls" style="width:auto;">
 	<table class="table-addresslist sortable" rowclass="row1,row2"  border="0"  cellpadding="0" cellspacing="1"  >
 	<tr >	
@@ -726,8 +726,9 @@ window.onscroll = onScroll;
 		<td class="td1" width="50" align="center">
 			<div class="optionname">{$theader}
 			</div>
-		</td>	
+		</td>
 		</volist>
+		<td class="td1" width="50" align="center">状态</td>
 	</tr>
 		<volist name="list.content" id="member" offset="1" key="kid1">
 		<tr>
@@ -735,6 +736,7 @@ window.onscroll = onScroll;
 			<volist name="member" id="vo" key="kid2">
 			<td align="center">{$vo}</td>
 			</volist>
+			<td align="center">{$kind[$all-1][$kid1+1]}</td>
 		</tr> 
 		</volist>
 	</table>

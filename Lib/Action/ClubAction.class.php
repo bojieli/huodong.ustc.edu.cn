@@ -850,7 +850,25 @@ class ClubAction extends PublicAction {
         }
         $address = D('Address');
         $members = $address->createAddress($gid);     
-		$this->assign("excel", D('Club')->showMember($gid));
+		
+		$excel=D('Club')->showMember($gid);
+		foreach($excel as $key3 => $val3){
+			foreach($val3['content'][1] as $key => $val){
+				if($val=='邮箱') $re[$key3]['email']=$key;
+				if($val=='电话') $re[$key3]['telephone']=$key;
+			}
+			//dump($re);//dump($excel);die;
+			//dump($val3['content']);die;
+			foreach($val3['content'] as $key2 => $val2)
+			if($key2!=1)
+				$kind[$key3][$key2] = D('Club')->UserKind($gid,$val2[$re[$key3]['email']],$val2[$re[$key3]['telephone']]);
+		}
+		//dump($re);
+		//dump($excel);die;
+		//dump($kind);
+		$this->assign("kind", $kind);
+		$this->assign("excel", $excel);
+		
 		//dump(D('Club')->showMember($gid));
 		$this->assign("club", $club);
         $this->assign("members", $members);

@@ -70,12 +70,19 @@ class UserModel extends Model {
         }
         return false;
     }
+	function is_user_existed($email,$telephone){
+	  return $this->is_telephone_existed($telephone)||$this->is_loginname_existed($email);
+	}
     function getUserMail($uid){
 		return M('User')->field('email')->where(['uid'=>$uid])->find()['email'];
 	}
  	function getUidWithMail($mail)
     {
         return M('User')->field('uid')->where(array('email'=>$mail))->find()['uid'];
+    }
+	function getUidWithTel($telephone)
+    {
+        return M('User')->field('uid')->where(array('telephone'=>$telephone))->find()['uid'];
     }
     function getBackPassWithEmail($uid)
     {

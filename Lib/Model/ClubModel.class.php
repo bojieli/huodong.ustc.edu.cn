@@ -232,4 +232,11 @@ class ClubModel extends Model {
 	  }
 	  return $info;
 	}
+	public function UserKind($gid,$email,$telephone){
+	    $User=D('User');
+		if(!$User->is_user_existed($email,$telephone)) return 0;
+		$uid=$User->getUidWithMail($email)?$User->getUidWithMail($email):$User->getUidWithTel($telephone);
+		if(!$this->isMember($uid,$gid)) return 1;
+		return 2;
+	}
 }
