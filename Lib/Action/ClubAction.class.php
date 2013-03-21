@@ -78,7 +78,6 @@ class ClubAction extends PublicAction {
 		foreach($info[0]['content'] as $r1 => $v1)//去除表格中数据头尾的空白
 		    foreach($v1 as $r2 => $v2)
 			   $per2[$r1][$r2] = trim($info[0]['content'][$r1][$r2]);
-		//dump($re);die;
 		foreach($per2 as $key2 => $val2){
 			if($key2 > 1)
 			   foreach($val2 as $key3 => $val3){
@@ -86,6 +85,7 @@ class ClubAction extends PublicAction {
 					$per[$key2][UserInfoOption($info[0]['content'][1][$key3])]= $val3;
 			   }
 		}
+		dump($per);die;
 		foreach($per as $a => $b){
 			D('User')->where(['realname'=>$b['realname'],'email'=>$b['email']])->data($b)->save();
 		}
