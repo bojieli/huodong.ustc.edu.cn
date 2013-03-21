@@ -85,7 +85,7 @@ class ClubAction extends PublicAction {
 					$per[$key2][UserInfoOption($info[0]['content'][1][$key3])]= $val3;
 			   }
 		}
-		dump($per);die;
+		//dump($per);die;
 		foreach($per as $a => $b){
 			D('User')->where(['realname'=>$b['realname'],'email'=>$b['email']])->data($b)->save();
 		}
