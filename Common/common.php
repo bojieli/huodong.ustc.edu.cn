@@ -328,4 +328,26 @@ function split_sms($msg,$type='utf8'){
 		};
 		return $tmp;
 }
+function UserInfoOption($Chinese){
+  switch($Chinese){
+    case "姓名":return "realname";break;
+    case "性别":return "gender";break;
+    case "学号":return "student_no";break;
+    case "入学年":return "grade";break;
+    case "手机":return "telephone";break;
+    case "邮箱":return "email";break;
+    case "学历":return "education";break;
+    case "学院":return "dept";break;
+    case "个人网站":return "homepage";break;
+    case "个人爱好":return "hobby";break;
+    case "QQ":return "QQ";break;
+	default:return;
+  }
+}
+function UserGender($Chinese){
+	$man = array("男","男人","男生","man","Man","MAN","M","雄性","雄","male","Male","MALE","boy","Boy","BOY","B");
+	if (in_array($Chinese,$man))
+		return 1;
+	return 0;
+}
 ?>

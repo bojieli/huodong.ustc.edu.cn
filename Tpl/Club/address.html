@@ -657,6 +657,47 @@ window.onscroll = onScroll;
 
 //-->
 </script>
+<script type="text/javascript">
+$(document).ready(function(){
+	$(".actionkind").click(function(){
+		switch($(this).children('.action').text()) {
+		case '加入': k=1;
+		     break;
+		case '退出': k=2;
+		     break;
+		case '邀请': k=0;
+		     break;
+		default:
+            return; 
+		};
+		var ck = $(this);
+		var gid = {$club.gid};
+		var con = $(this).attr('id');
+		var ltx=con.split('|');
+		url = '/Club/doMember';
+		$.post(url,{gid:gid,k:k,sheet:ltx[0],row:ltx[1]}, function (data) {
+				if(data.status==1){
+				   switch(data.info){
+						case 0: ck.children('.action').text('已邀请');
+							 break;
+						case 1: ck.children('.action').text('已加入');
+							 break;
+						case 2: ck.children('.action').text('已退出');
+							 break;
+						default:
+							return false; 
+						};
+						return true;
+				}
+				else{
+				    alert(data.info);
+					return false;
+				}
+			}, 'json');
+		return false;
+	});
+});
+</script>
 </head>
 
 <body>	
@@ -729,6 +770,7 @@ window.onscroll = onScroll;
 		</td>
 		</volist>
 		<td class="td1" width="50" align="center">状态</td>
+		<td class="td1" width="50" align="center">操作</td>
 	</tr>
 		<volist name="list.content" id="member" offset="1" key="kid1">
 		<tr>
@@ -736,7 +778,24 @@ window.onscroll = onScroll;
 			<volist name="member" id="vo" key="kid2">
 			<td align="center">{$vo}</td>
 			</volist>
-			<td align="center">{$kind[$all-1][$kid1+1]}</td>
+			<td align="center">
+			<switch name="kind[$all-1][$kid1+1]">
+				<case value="0">未注册</case>
+				<case value="1">非会员</case>
+				<case value="2">会员</case>
+				<default />未知
+			</switch>
+			</td>
+			<td align="center">
+				<div class="actionkind" id="{$all-1}|{$kid1}" style="cursor:pointer">
+					<switch name="kind[$all-1][$kid1+1]">
+						<case value="0"><div class="action">邀请</div></case>
+						<case value="1"><div class="action">加入</div></case>
+						<case value="2"><div class="action">退出</div></case>
+						<default /><div class="action">未知</div>
+					</switch>
+				</div>
+			</td>
 		</tr> 
 		</volist>
 	</table>

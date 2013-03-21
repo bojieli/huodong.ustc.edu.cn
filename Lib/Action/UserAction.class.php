@@ -449,13 +449,54 @@ class UserAction extends PublicAction {
 		}
         
     }
-
+	public function addUsers($info,$gid){ //批量注册会员
+		if(empty($info)) return false;
+		 if(empty($info['email']))
+        {
+            $this->error("邮箱不能为空");
+        }
+		if (!preg_match("/^[\w\-\.\+\_]+@[\w\-\.]+(\.\w+)+$/", $info['email']))
+            $this->error("注册邮箱地址格式不对");
+		if(empty($info['realname']))
+            $this->error("真实姓名不能为空");
+		$info['register_time']=time();
+		$info['status'] = 'active'; 
+		$info['salt'] = substr(uniqid(rand()), -6);
+		$pwd = substr(md5(time().$info['salt'].$info['email']), -8);
+		$info['password']=md5($pwd);
+		$info['password'] = md5($info['password'].$info['salt']);
+		D("User")->add($info);
+		$info2 = D("User")->where(array('email'=>$info['email'],'password'=>$info['password']))->find();
+        if (empty($info2) || !is_numeric($info2['uid'])) {
+            $this->error('未知错误');
+        }
+		$this->sendPasswordEmail($info2,$pwd,$gid);
+		return true;
+	}
     private function sendVerifyEmail($info) {
         SendMail($info['email'], "欢迎注册校园活动平台",
                 $info['realname']."你好:\n\n".
                 "请点击下面的链接激活您在校园活动平台的帐号（如果下面的地址不能点击，请将其复制到浏览器地址栏中）:\n\n".
                 "http://".$_SERVER['HTTP_HOST']."/User/registerVerify?uid=".$info['uid']."&token=".md5($info['email'].$info['salt'].$info['register_time'])."\n\n".
                 "校园活动平台 http://".$_SERVER['HTTP_HOST']
+                );
+    }
+	private function sendPasswordEmail($info,$pwd,$gid) {
+        $clubname = D('Club')->getClubName($gid);
+		SendMail($info['email'], "欢迎注册校园活动平台",
+                $info['realname']."，您好:\n\n".
+                "为了方便社团管理和发布活动通知，<strong>".$clubname."</strong>已经将您注册为校园活动平台用户,您可以使用以下信息进行登录
+				<div>
+					<strong>注册邮箱：</strong>".$info['email']."
+				</div>
+				<div>
+					<strong>密码：</strong>".$pwd."
+				</div></ br>".
+                "
+				<div>登录：<a href='http://".$_SERVER['HTTP_HOST']."/User/login'>http://".$_SERVER['HTTP_HOST']."/User/login</a></div>
+				<div>".$clubname."主页：<a href='http://".$_SERVER['HTTP_HOST']."/Club/intro?gid=".$gid."'>http://".$_SERVER['HTTP_HOST']."/Club/intro?gid=".$gid."</a></div>
+				"."\n\n".
+                "校园活动平台 http://".$_SERVER['HTTP_HOST'],true
                 );
     }
 

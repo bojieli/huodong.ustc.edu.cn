@@ -167,14 +167,60 @@ class ClubAction extends PublicAction {
 				  }
 			   }
 			}
-	    $data['content']=json_encode($list);
+		foreach($list as $r1 => $v1)//去除表格中数据头尾的空白
+		    foreach($v1 as $r2 => $v2)
+			    $list2[$r1][$r2] = trim(xss_clean($list[$r1][$r2]));//防止xss攻击
+	    $data['content']=json_encode($list2);
 	    $data['address_name']=$filename;
 	    $data['real_name']=$filename;
 	    $data['gid']=$gid;
 		M('club_address')->data($data)->add();
 		redirect('/Club/address?gid='.$gid,0,' ');
 	}
-	
+	public function doMember(){
+	    $gid = $this->_post('gid');
+		$k = $this->_post('k');
+	    $sheet = $this->_post('sheet');
+	    $row = $this->_post('row')+1;
+		$club=D('Club');
+		$info=$club->showMember($gid);
+        //dump($info);
+		$per = $info[$sheet]['content'][$row];
+		foreach($info[$sheet]['content'][1] as $key => $val)
+				$re[UserInfoOption($val)] = $key;
+		switch($k)
+		{
+			case 0:
+			  foreach($re as $option => $value){
+				if($option=='gender') 
+					$per_info["gender"] = UserGender($per[$value]);
+				else
+					$per_info[$option] = $per[$value];
+			  }
+			  $per_info['sid'] = $club->getSidByGid($gid);
+			  //dump($per_info);die;
+			  A('User')->addUsers($per_info,$gid);
+			  $this->success(0);
+			  //$club->addMember($this->_post('gid'),$this->_post('uid'));
+			  break;  
+			case 1:
+			  $email= $per[$re['email']];
+			  $telephone= $per[$re['telephone']];
+			  $uid=D('User')->getUidWithMail($email)?D('User')->getUidWithMail($email):D('User')->getUidWithTel($telephone);
+			  $club->addMember($gid,$uid);
+			  $this->success(1);
+			  break;
+			case 2:
+			  $email= $per[$re['email']];
+			  $telephone= $per[$re['telephone']];
+			  $uid=D('User')->getUidWithMail($email)?D('User')->getUidWithMail($email):D('User')->getUidWithTel($telephone);
+			  $club->removeMember($gid,$uid);
+			  $this->success(2);
+			  break; 
+			default:
+			$this->error('非法操作');
+		}
+	}
 	public function readExcel($filePath){
 	require_once "Common/PHPExcel.php";
 		//$filePath = 'upload/xls/'.$filename;
@@ -209,7 +255,7 @@ class ClubAction extends PublicAction {
         import("ORG.Net.UploadFile");
         $upload = new UploadFile();
         $upload->maxSize = 8 * 1024 * 1024;
-        $upload->allowExts = ['xls'];
+        $upload->allowExts = ['xls','xlsx'];
         $upload->savePath = './upload/xls/';
         $upload->saveRule = 'uniqid';
 		 if(!$upload->upload()) {// 上传错误 提示错误信息 
@@ -221,7 +267,8 @@ class ClubAction extends PublicAction {
 			return $info[0]["savename"];
         }
     }
-    public function addOwnerSubmit() {
+    
+	public function addOwnerSubmit() {
         $uid = $_REQUEST['owner'];
         $gid = $_REQUEST['gid'];
         if (!(D('User')->isSchoolAdmin(CURRENT_USER)))
@@ -855,7 +902,7 @@ class ClubAction extends PublicAction {
 		foreach($excel as $key3 => $val3){
 			foreach($val3['content'][1] as $key => $val){
 				if($val=='邮箱') $re[$key3]['email']=$key;
-				if($val=='电话') $re[$key3]['telephone']=$key;
+				if($val=='手机') $re[$key3]['telephone']=$key;
 			}
 			//dump($re);//dump($excel);die;
 			//dump($val3['content']);die;

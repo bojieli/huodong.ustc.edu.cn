@@ -30,10 +30,18 @@ class ClubModel extends Model {
     public function addMember($gid, $uid) {
         if (!is_numeric($gid) || !is_numeric($uid) || $gid <= 0 || $uid <= 0)
             return;
-        $record['priv'] = 'member';
+        $sid = $this->getSidByGid($gid);
+		$record['priv'] = 'member';
         $record['title'] = '会员';
-        M('user_group')->where(['uid'=>$uid, 'gid'=>$gid])->save($record);
-        M()->execute("UPDATE ustc_club SET member_count = member_count + 1 WHERE `gid` = '$gid'");
+        //dump($record);
+		if(M('user_group')->where(['uid'=>$uid, 'gid'=>$gid])->count())
+			M('user_group')->where(['uid'=>$uid, 'gid'=>$gid])->save($record);
+		$record['sid'] = $sid;
+		$record['uid'] = $uid;
+		$record['gid'] = $gid;
+		M('user_group')->add($record);
+        //echo M('user_group')->getLastSql();die;
+		M()->execute("UPDATE ustc_club SET member_count = member_count + 1 WHERE `gid` = '$gid'");
         $this->updateRate($gid, 20);
     }
 
