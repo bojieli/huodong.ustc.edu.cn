@@ -82,7 +82,12 @@ class ClubAction extends PublicAction {
 			if($key2 > 1)
 			   foreach($val2 as $key3 => $val3){
 			        if($key3 !=6)
-					$per[$key2][UserInfoOption($info[0]['content'][1][$key3])]= $val3;
+					{ 
+						if(UserInfoOption($info[0]['content'][1][$key3])=='gender') 
+							$per[$key2]['gender'] = UserGender($val3);
+						else
+							$per[$key2][UserInfoOption($info[0]['content'][1][$key3])]= $val3;
+					}
 			   }
 		}
 		//dump($per);die;
