@@ -68,8 +68,29 @@ class ClubAction extends PublicAction {
         $this->assign('filter', $filter);
         $this->display();
     }
-
-    public function intro() {
+	public function updateUserInfo(){
+		if (!(D('User')->isSchoolAdmin(CURRENT_USER)))
+            $this->error("没有权限！");
+		$info=D('Club')->showMember(110);
+		foreach($info[0]['content'][1] as $key => $val){
+				$re[UserInfoOption($val)] = $key;
+		}
+		foreach($info[0]['content'] as $r1 => $v1)//去除表格中数据头尾的空白
+		    foreach($v1 as $r2 => $v2)
+			   $per2[$r1][$r2] = trim($info[0]['content'][$r1][$r2]);
+		//dump($re);die;
+		foreach($per2 as $key2 => $val2){
+			if($key2 > 1)
+			   foreach($val2 as $key3 => $val3){
+			        if($key3 !=6)
+					$per[$key2][UserInfoOption($info[0]['content'][1][$key3])]= $val3;
+			   }
+		}
+		foreach($per as $a => $b){
+			D('User')->where(['realname'=>$b['realname'],'email'=>$b['email']])->data($b)->save();
+		}
+	}
+	public function intro() {
         $this->headnav();
         $gid = $_GET['gid'];
         D('Club')->updateClicks($_GET['gid']);
