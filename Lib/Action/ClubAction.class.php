@@ -1076,7 +1076,61 @@ class ClubAction extends PublicAction {
         header("Content-Disposition: attachment; filename=".basename($filename)); 
         readfile($filename);
     }
-
+	public function createVcard()
+    {
+        global $_G;
+        $gid = $this->getInputGid();
+        //$gid = 110;
+		if(empty($_G[uid]))
+        {
+            $this->assign('jumpUrl','/User/login');
+            $this->error("您尚未登录");
+        }
+        if(!$this->isManager($gid)) {
+            $this->error("只有会长和部长才有权限生成手机通讯录");
+        }
+        $address = D('Address');
+        $members = $address->createAddress($gid);
+		//dump($members);die;
+		require_once "Common/vcard.php";
+		foreach($members as $key => $per){
+		$v = new vCard();
+		$v->setPhoneNumber($per['telephone'], "CELL");
+		$v->setName("", $per['realname'], "", "");
+		$v->setTitle($per['title']);
+		//$v->setBirthday("1960-07-31");
+		//$v->setAddress("", "", "Musterstrasse 20", "Musterstadt", "", "98765", "Deutschland");
+		$v->setEmail($per['email']);
+		$v->setQQ($per['qq']);
+		if($per['gender']) 
+			{
+				if($per['gender']==1)
+					$v->setSex('M');
+				if($per['gender']==0) 
+					$v->setSex('F');
+			}
+		if($per['student_no'])
+			$v->setNote('学号：'.$per['student_no']);
+		//$v->setNote("/upload/avatar/small_avatar_".pathinfo($per['avatar'])['extension']);
+		$v->setURL($per['homepage'], "WORK");
+		$photo = "/upload/avatar/small_".$per['avatar'];
+		//$photo = "sdad.bmp";
+		//echo file_exists($photo)."<br>";
+		if($per['avatar'])
+			{				
+				$type = pathinfo($photo)['extension'];
+				$v->setPhoto($type, $photo);
+			}
+		$output .= $v->getVCard();
+		}
+		$filename = D('Club')->getClubName($gid);
+		//dump($output);die;
+		Header("Content-Disposition: attachment; filename=$filename");
+		Header("Content-Length: ".strlen($output));
+		Header("Connection: close");
+		Header("Content-Type: text/x-vCard; name=$filename");
+		echo $output;
+    }
     private function sendJoinClubEmail($uid, $gid, $status) {
         $user = M('user')->field(array('email', 'realname'))->find($uid);
         extract($user);

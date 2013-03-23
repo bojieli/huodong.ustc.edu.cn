@@ -216,6 +216,10 @@ $showPager = function() use($club,$pageNow) {
                 	<td align="left"><a href="/Club/emailAddress?gid={$club.gid}" target='_blank' style="color:#088;">群邮件地址</a></td>
                     <td align="left"><a href="/Club/createAddressEmailUSTC?gid={$club.gid}" style="color:#088;">导出为科大邮件联系人</a></td>
                 </tr>
+				<tr>
+                	<td align="left"><a href="/Club/createVcard?gid={$club.gid}" target='_blank' style="color:#088;">导出为手机联系人</a></td>
+                </tr>
+				
                 <tr height="15px;"><td colspan="2" style="border-top:1px #CCF dotted"></td></tr>
 				<!--tr>
                 	<notempty name="club.iscorers"><td align="left"><a href="/Team/introAdd?gid={$club.gid}&type=department" target='_blank' style="color:#088;">创建部门</a></td></notempty>
