@@ -85,7 +85,7 @@ class TeamModel extends Model {
 	}
 	public function getMembers($tid)
 	{
-		$members = M()->query("SELECT ustc_user.uid,student_no,realname,telephone,email,title,priv FROM (ustc_user INNER JOIN ustc_user_team ON ustc_user.uid = ustc_user_team.uid) INNER JOIN ustc_priv ON ustc_user_team.priv = ustc_priv.priv_name WHERE ustc_user_team.tid='$tid' ORDER BY ustc_priv.priv_value desc");
+		$members = M()->query("SELECT ustc_user.uid,student_no,email,realname,telephone,email,title,priv FROM (ustc_user INNER JOIN ustc_user_team ON ustc_user.uid = ustc_user_team.uid) INNER JOIN ustc_priv ON ustc_user_team.priv = ustc_priv.priv_name WHERE ustc_user_team.tid='$tid' ORDER BY ustc_priv.priv_value desc");
 		return $members;
 	}
 

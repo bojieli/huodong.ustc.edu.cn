@@ -260,7 +260,7 @@ function Mselchoose(tbox,flag,num,item_id1,item_id2){
  <tr>
 	<td><select multiple size="20" name="list1" class="mem-select dxhb-blur" onfocus="this.className='mem-select dxhb-focus'" onblur="this.className='mem-select dxhb-blur'"> 
 		  <volist name="members" id="vo" key="index">
-		  <option realname="{$vo['realname']}" title="<notempty name='vo.telephone'>{$vo['telephone']}<else />未提供手机号</notempty>" clubindex="{$index}" xh="{$vo['student_no']}" value="{$vo['uid']}-{$vo['realname']}-{$vo['telephone']}">
+		  <option realname="{$vo['realname']}" title="<notempty name='vo.telephone'>手机:{$vo['telephone']}</notempty> <notempty name='vo.telephone'>邮箱：{$vo['email']}</notempty>" clubindex="{$index}" xh="{$vo['student_no']}" value="{$vo['uid']}-{$vo['realname']}-{$vo['telephone']}">
 			  <notempty name="vo.student_no">{$vo['student_no']}一</notempty>
 			  {$vo['realname']}
 			  <notempty name="vo.title">({$vo.title})</notempty>
