@@ -21,7 +21,8 @@ class SmsAction extends PublicAction {
 				$Model->reSmsNum($gid);
 			}
 			$club = D('Club')->getInfo($gid);
-			$re=$Model->getMember($gid);
+			$members=$Model->getMember($gid);
+			/*dump($re);die;
 			$members = array();
 			foreach($re as $row => $value)
 			{
@@ -30,7 +31,7 @@ class SmsAction extends PublicAction {
 				else
 					$value['info']=$value['realname'].'--'.$value['telephone'];
 				$members[] = $value;
-			}
+			}*/
 			$this->assign('club',$club);
 		}
 		if($tid)
@@ -64,7 +65,7 @@ class SmsAction extends PublicAction {
 		}
         $this->assign('sms_num',$Model->getSmsNum($gid));
 
-        //dump($members);
+        //dump($members);die;
         
         $this->assign('members',$members);
         $this->display();
@@ -84,7 +85,7 @@ class SmsAction extends PublicAction {
             else
                 $member[$value['uid']]=$value['realname'].'——'.$value['telephone'];
         }
-        $this->assign('member',$member);
+		$this->assign('member',$member);
         $this->display();
     }
 	public function sent(){
