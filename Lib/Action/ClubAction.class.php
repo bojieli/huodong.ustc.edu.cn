@@ -162,7 +162,7 @@ class ClubAction extends PublicAction {
 		$sid = $_REQUEST['sid'];
 		if($sid==''){ $this->error("没有权限！");}
 		$this->display();
-    }
+    }	
     public function addMember(){
 		$this->display();
 	}
@@ -311,6 +311,8 @@ class ClubAction extends PublicAction {
 		if($sid!=D('Club')->getSidByGid($gid)){
 			$this->error('对不起，您无权操作校外社团');
 		}
+		$per_owner = M('Club')->field('owner')->where(array('gid'=>$_REQUEST['gid']))->find()['owner'];
+		if($uid == $per_owner){$this->error("已是该协会会长");}
 		M('Club')->where(array('gid'=>$_REQUEST['gid']))->save($club);
         $priv = 'admin';
         $priv_pre = M('User_group')->result_first("SELECT priv FROM ustc_user_group where uid = $uid and gid = $gid");
@@ -350,7 +352,12 @@ class ClubAction extends PublicAction {
                     "http://".$_SERVER['HTTP_HOST']."/Club/?gid=$gid\n\n".
                     "校园活动平台 http://".$_SERVER['HTTP_HOST']."感谢您的支持"
                     );
-            $handle=array(
+		    
+			$data['priv'] = 'member';
+            $data['title'] = '前会长';
+			D('User')->where(['uid'=>$per_owner,'gid'=>$gid])->save($data);
+			
+			$handle=array(
 				'htime'=>time(),
 				'handle_uid'   => CURRENT_USER,
 				'ishandled'=>1
@@ -362,7 +369,7 @@ class ClubAction extends PublicAction {
 
         $this->success("设置会长成功！");
     }
-
+	
     public function refuseOwnerSubmit(){
         $uid = $_REQUEST['owner'];
         $gid = $_REQUEST['gid'];
