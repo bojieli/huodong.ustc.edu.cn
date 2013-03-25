@@ -11,23 +11,13 @@ class SmsModel extends Model {
 			$client->wsSendSms($msg,$mobile);
 		}
 	}
-	public function sentSms($msg_top,$mobiles,$gid)
+	public function sentSms($msg_top,$mobiles,$gid,$isadmin)
     {
         global $_G;
         $uid= $_G['uid'];
-        //$msg=iconv('UTF-8','GBK',$msg);
-        //print_r($msg);
-        //echo mb_strlen($msg);
-
 		$msgs=split_sms($msg_top,'utf8');
-		//echo json_encode($msgs);
-		//echo $msgs[0];
-		//die;
         $url="http://umess.ustc.edu.cn/uMessApi.php?wsdl";//接口地址
         $client=new SoapClient($url,array('encoding'=>'UTF-8'));
-        //dump($client);
-        //die;
-        //远程调用
         $client->wsClientSetCharset('UTF-8');
         $client->wsCsLogin('huodong','hzbjlsjr2012');
         foreach($msgs as $msg){
@@ -40,8 +30,10 @@ class SmsModel extends Model {
         foreach($mobiles as  $tid1 => $mobile1){
             $tids.=$tid1.';';
         }
-        $pid=$this->sms_md5($msg_top,$uid,$tids,$gid);
-        $failed_user = "";
+	   if($isadmin==0)
+			$pid=$this->sms_md5($msg_top,$uid,$tids,$gid);
+        
+		$failed_user = "";
         foreach($mobiles as  $tid => $mobile)
         {
 			foreach($messageIds as $messageId)
@@ -52,15 +44,19 @@ class SmsModel extends Model {
 			if($re)
 			{
 				$i++;
-				$status='done';
-				$this->smsLog($uid,$tid,$pid,$gid,$status);
+				if($isadmin==0){
+					$status='done';
+					$this->smsLog($uid,$tid,$pid,$gid,$status);
+				}
 			}
 			else
 			{
 				$j++;
 				$failed_user.=D('User')->getRealname($tid)." ";
-				$status='failed';
-				$this->smsLog($uid,$tid,$pid,$gid,$status);
+				if($isadmin==0){	
+					$status='failed';
+					$this->smsLog($uid,$tid,$pid,$gid,$status);
+				}
 			}
         }
 

@@ -156,7 +156,12 @@ class ClubAction extends PublicAction {
     }
 
     public function addOwner() {
-        $this->display();
+        //dump(D('User')->isSchoolAdmin(CURRENT_USER));die;
+		if (!(D('User')->isSchoolAdmin(CURRENT_USER)))
+            $this->error("没有权限！");
+		$sid = $_REQUEST['sid'];
+		if($sid==''){ $this->error("没有权限！");}
+		$this->display();
     }
     public function addMember(){
 		$this->display();
@@ -297,11 +302,16 @@ class ClubAction extends PublicAction {
 	public function addOwnerSubmit() {
         $uid = $_REQUEST['owner'];
         $gid = $_REQUEST['gid'];
-        if (!(D('User')->isSchoolAdmin(CURRENT_USER)))
+        $id = $_REQUEST['id'];
+        $sid = $_REQUEST['sid'];
+		if($sid==''){ $this->error("没有权限！");}
+		if (!(D('User')->isSchoolAdmin(CURRENT_USER)))
             $this->error("没有权限！");
-
         $club['owner'] = $_REQUEST['owner'];
-        M('Club')->where(array('gid'=>$_REQUEST['gid']))->save($club);
+		if($sid!=D('Club')->getSidByGid($gid)){
+			$this->error('对不起，您无权操作校外社团');
+		}
+		M('Club')->where(array('gid'=>$_REQUEST['gid']))->save($club);
         $priv = 'admin';
         $priv_pre = M('User_group')->result_first("SELECT priv FROM ustc_user_group where uid = $uid and gid = $gid");
         if($priv_pre)
@@ -340,7 +350,12 @@ class ClubAction extends PublicAction {
                     "http://".$_SERVER['HTTP_HOST']."/Club/?gid=$gid\n\n".
                     "校园活动平台 http://".$_SERVER['HTTP_HOST']."感谢您的支持"
                     );
-            M('Club_apply')->where(array('uid'=>$uid,'gid'=>$gid,'ishandled'=>0))->save(array('ishandled'=>1));
+            $handle=array(
+				'htime'=>time(),
+				'handle_uid'   => CURRENT_USER,
+				'ishandled'=>1
+				);
+			M('Club_apply')->where(['id'=>$id])->save($handle);
         }
 
 
@@ -351,10 +366,16 @@ class ClubAction extends PublicAction {
     public function refuseOwnerSubmit(){
         $uid = $_REQUEST['owner'];
         $gid = $_REQUEST['gid'];
+        $id = $_REQUEST['id'];
         if (!(D('User')->isSchoolAdmin(CURRENT_USER)))
             $this->error("没有权限！");
-        M('Club_apply')->where(array('uid'=>$uid,'gid'=>$gid,'ishandled'=>0))->save(array('ishandled'=>1));
-        $this->success("拒绝其成为会长成功！");
+        $handle=array(
+				'htime'=>time(),
+				'handle_uid'   => CURRENT_USER,
+				'ishandled'=>1
+				);
+		M('Club_apply')->where(['id'=>$id])->save($handle);
+		$this->success("拒绝其成为会长成功！");
     }
 
     public function introAdd() {

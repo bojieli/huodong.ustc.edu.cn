@@ -48,11 +48,21 @@ sort_flagR = 0; //right col 1 or 0 ; 1 stand for "sort by text", 0 stand for "so
     	no.text = fbox.options[i].text;		
 		z = fbox.options[i].getAttribute("clubindex");
 		no.setAttribute("clubindex",z);
+		z = fbox.options[i].getAttribute("realname");
+		no.setAttribute("realname",z);
+		z = fbox.options[i].getAttribute("xh");
+		no.setAttribute("xh",z);
+		z = fbox.options[i].getAttribute("title");
+		no.setAttribute("title",z);
+		
 		no.selected = fbox.options[i].selected;
     	tbox.options[tbox.options.length] = no;
     	fbox.options[i].value = ""; 
     	fbox.options[i].text = "";
 		fbox.options[i].setAttribute("clubindex","");
+		fbox.options[i].setAttribute("realname","");
+		fbox.options[i].setAttribute("title","");
+		fbox.options[i].setAttribute("xh","");
 		fbox.options[i].selected = false ;
     };
   };
@@ -72,6 +82,8 @@ function moveall(fbox,tbox,flag){
 		no.setAttribute("realname",z)		
     	z = fbox.options[i].getAttribute("xh");
 		no.setAttribute("xh",z)		
+    	z = fbox.options[i].getAttribute("title");
+		no.setAttribute("title",z)		
     	
 		tbox.options[tbox.options.length] = no; 
     	fbox.options[i].value = ""; 
@@ -137,7 +149,12 @@ if(flag){
 		z1 = temp_opts[y].getAttribute("realname");		
      	temp_opts[x].setAttribute("realname",z1);	
      	temp_opts[y].setAttribute("realname",z);	
-
+		
+		z = temp_opts[x].getAttribute("title");
+		z1 = temp_opts[y].getAttribute("title");		
+     	temp_opts[x].setAttribute("title",z1);	
+     	temp_opts[y].setAttribute("title",z);
+		
 		temp = temp_opts[x].selected; 
      	temp_opts[x].selected = temp_opts[y].selected; 
      	temp_opts[y].selected = temp; 
@@ -191,6 +208,11 @@ else{
 		z1 = temp_opts[y].getAttribute("realname");		
      	temp_opts[x].setAttribute("realname",z1);	
      	temp_opts[y].setAttribute("realname",z);
+		
+		z = temp_opts[x].getAttribute("title");
+		z1 = temp_opts[y].getAttribute("title");		
+     	temp_opts[x].setAttribute("title",z1);	
+     	temp_opts[y].setAttribute("title",z);
      		
 		temp = temp_opts[x].selected; 
      	temp_opts[x].selected = temp_opts[y].selected; 
@@ -206,6 +228,8 @@ else{
 	box.options[i].setAttribute("xh",z);
 	w = temp_opts[i].getAttribute("realname");
 	box.options[i].setAttribute("realname",w);
+	w = temp_opts[i].getAttribute("title");
+	box.options[i].setAttribute("title",w);
 	box.options[i].selected = temp_opts[i].selected; 
 //	alert("box: "+ z + " temp: " + z+ "boxselect: " + box.options[i].selected + "  " + box.options[i].text);
   };
@@ -260,12 +284,18 @@ function Mselchoose(tbox,flag,num,item_id1,item_id2){
  <tr>
 	<td><select multiple size="20" name="list1" class="mem-select dxhb-blur" onfocus="this.className='mem-select dxhb-focus'" onblur="this.className='mem-select dxhb-blur'"> 
 		  <volist name="members" id="vo" key="index">
-		  <option realname="{$vo['realname']}" title="<notempty name='vo.telephone'>手机:{$vo['telephone']}</notempty> <notempty name='vo.telephone'>邮箱：{$vo['email']}</notempty>" clubindex="{$index}" xh="{$vo['student_no']}" value="{$vo['uid']}-{$vo['realname']}-{$vo['telephone']}">
+		  <notempty name="vo.realname">
+		  <option realname="{$vo['realname']}" title="<notempty name='vo.telephone'>手机:{$vo['telephone']}</notempty> <notempty name='vo.telephone'>邮箱：{$vo['email']}</notempty>" clubindex="{$index}" xh="{$vo['student_no']}" value="{$vo['uid']};{$vo['realname']};{$vo['telephone']};{$vo['email']}">
+			  <empty name="admin">
 			  <notempty name="vo.student_no">{$vo['student_no']}一</notempty>
 			  {$vo['realname']}
 			  <notempty name="vo.title">({$vo.title})</notempty>
 			  
+			  <else />			  
+			  {$vo['realname']}({$vo.title})一{$vo.name}
+			  </empty>
 		  </option>
+		   </notempty>
 			</volist> 
 		</select>
     </td> 

@@ -27,13 +27,21 @@
 					case 'vice-manager': return 3;
 					case 'team-leader': return 3;
 					case 'member': return 4;
+					case 'remove': return 5;
 					default: return 5;
 					}
 					}()
 					+".png"
 				);
-				dom.children('.ajax_title_now').html(title);
-				$(".ajax_title_text").val(title);
+				if(priv=="remove") 
+				{
+					dom.children('.ajax_title_now').html("已退出");
+					$(".ajax_title_text").val("已退出");
+				}
+				else {
+					dom.children('.ajax_title_now').html(title);
+					$(".ajax_title_text").val(title);
+				}
 			}
 		},'json');
     }
@@ -100,7 +108,8 @@
 		$(".mss-input-1text").html('');
 		var touid = '';
 		$("#members_select option").each(function() {
-			touid +=$(this).val()+";"
+			var values = $(this).val().split(";");
+			touid +=values[0]+";"
 		 });
 		$.post("/Team/addMembers", { tid: {$team.tid}, touid: touid}, function (data) {
 			alert(data.info);
@@ -287,7 +296,7 @@ if ($team['member_count'] > 20) {
         <div class="stcyleft">
         	            
             <?php $showPager(); ?>
-			<volist name="members" id="member">
+			<volist name="Team_members" id="member">
             <div class="stcycell" id="stcy{$member.uid}">
             	<div class="stcycell1"><img width="90" height="90" src="/{$member.avatar}"></div>
                 <div class="stcycell2">
@@ -315,6 +324,8 @@ if ($team['member_count'] > 20) {
                        
                         <option priv="" title="" >------</option>
 						<option priv="inactive" title="待审核">待审核</option>
+						<option priv="" title="" >------</option>
+						<option priv="remove" title="退出该组织" style="color:#f00">退出该组织</option>
                 		</select>
             </div>
 		    </notempty>

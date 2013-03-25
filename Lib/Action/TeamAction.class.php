@@ -37,6 +37,7 @@ class TeamAction extends PublicAction {
 		$start = ($page-1)*$num;
 
 		$members = M()->query("SELECT * FROM (ustc_user INNER JOIN ustc_user_team ON ustc_user.uid = ustc_user_team.uid) INNER JOIN ustc_priv ON ustc_user_team.priv = ustc_priv.priv_name WHERE ustc_user_team.tid='$tid' ORDER BY ustc_priv.priv_value desc LIMIT $start,$num");
+		//dump($members);die;
 		foreach ($members as &$member) {
 			$member['avatar'] = D('user')->getAvatar($member[uid],'small');
 			$priv = D('Team')->getPrivName($tid,$member[uid]);
@@ -68,10 +69,10 @@ class TeamAction extends PublicAction {
 			}
 			
 			$club_members = M()->query("SELECT * FROM (ustc_user INNER JOIN ustc_user_group ON ustc_user.uid = ustc_user_group.uid) INNER JOIN ustc_priv ON ustc_user_group.priv = ustc_priv.priv_name WHERE ustc_user_group.gid='$gid' ".$condition_member." ORDER BY ustc_priv.priv_value desc");
-			$this->assign('club_members', $club_members);
+			$this->assign('members', $club_members);
 		}
-		$this->assign('members', $members);
-		
+		$this->assign('Team_members', $members);
+		//dump($members);die;
 		$inactive_members = M()->query("SELECT * FROM ustc_user AS u, ustc_user_team AS ut WHERE ut.tid='$tid' AND ut.priv = 'inactive' AND ut.uid = u.uid");
 
 		$attachments = M("Team_attachment")->where(array("tid"=>$tid))->select();
@@ -81,7 +82,7 @@ class TeamAction extends PublicAction {
 		$this->assign('pageNow', $page);
 		$this->assign('club', $club);
 		$this->assign('team', $team);
-
+		//dump($team);die;
 		$this->display();
 	}
 	public function introAdd(){
@@ -244,7 +245,6 @@ class TeamAction extends PublicAction {
 			$this->success("退出成功");
 		}
 	}
-	
 	public function changeTitle() {
 		if(!D('User')->checkLogin())
 		{
@@ -258,13 +258,13 @@ class TeamAction extends PublicAction {
 		$type = D('Team')->getTypeByTid($tid);
 		if($type=='department')
 		{
-			if (!in_array($priv, ['manager', 'vice-manager','member', 'inactive'])) {
+			if (!in_array($priv, ['manager', 'vice-manager','member', 'inactive','remove'])) {
 				$this->error("权限错误");
 			}
 		}
 		else
 		{
-			if (!in_array($priv, ['team-leader', 'vice-team-leader','member', 'inactive'])) {
+			if (!in_array($priv, ['team-leader', 'vice-team-leader','member', 'inactive','remove'])) {
 				$this->error("权限错误");
 			}
 		}
@@ -273,6 +273,12 @@ class TeamAction extends PublicAction {
 		if (D('Team')->isAdmin($tid)) {
 			$record['priv'] = $priv;
 			$record['title'] = $title;
+			if($priv=="remove")
+			{
+				D('Team')->removeMember($tid,$uid);
+				$this->success("退出成功");
+				return;
+			}
 			$priv_pre = M('User_team')->result_first("SELECT priv FROM ustc_user_team where uid = $uid and tid = $tid");
 			if(($priv_pre!='inactive')&&($priv=='inactive'))
 			{
@@ -282,6 +288,7 @@ class TeamAction extends PublicAction {
 			{
 				M('Team')->where(['tid'=>$tid])->setInc('member_count'); // 会员数加1 
 			}
+			//dump($record);die;
 			M('User_team')->where(['uid'=>$uid, 'tid'=>$tid])->save($record);
 			$this->success("设置权限成功");
 		} else
@@ -745,17 +752,43 @@ class TeamAction extends PublicAction {
 		$touid = $this->_request("touid");
 		
 		$uids = explode(";",$touid);
+		$i = 0;
 		foreach($uids as $uid)
 		{
 			if($uid)
 			{
 				D('Team')->addMember($tid,$uid);
+				$i++;
+			}
+		}
+		if($i)
+		$this->success("成功添加".$i."人");
+		return;
+	}
+	public function removeMember()
+	{
+		global $_G;
+		if(empty($_G[uid]))
+		{
+			$this->assign('jumpUrl','/User/login');
+			$this->error("您尚未登录");
+		}
+		$tid = $this->_request("tid");
+		if(!D('Team')->isAdmin($tid)){
+			$this->error("您没有足够权限");
+		}
+		$touid = $this->_request("touid");
+		$uids = explode(";",$touid);
+		foreach($uids as $uid)
+		{
+			if($uid)
+			{
+				D('Team')->removeMember($tid,$uid);
 				
 			}
 		}
-		$this->success("添加成功");
+		$this->success("移除成功");
 	}
-
 	public function deleteTeam()
 	{
 		global $_G;

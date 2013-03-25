@@ -30,9 +30,10 @@ $("#msn_selmem_tjsx").live('click',function(){
 	$(".mss-input-1text").html('');
 	var mobiles = '';
     $("#members_select option").each(function() {
-		var values = $(this).val().split("-");
+		var values = $(this).val().split(";");
+		//alert(values);
 		i =0;
-		if(values[2].toString()=='')
+		if(values[2]=='')
 		{
 			$(".mss-input-1text").append("<span class='NameWithBg' style='color:red' title='无手机号'>"+values[1]+"</span>   ");
 		}
@@ -197,7 +198,12 @@ getwindowWH();//调用函数获取数值
 </script>
 <include file="Public:headnav" />
 <div id="mainding" style="position:relative; overflow: scroll;">
-  <p class="mss-tittle"><notempty name="club"> {$club['school']['name']} - <a href="/Club/manage?gid={$club.gid}">{$club['name']}</a></notempty><notempty name="team"><a href="/Club/manage?gid={$team.gid}">{$team['club']}</a> - <a href="/Team?tid={$team.tid}">{$team['name']}</a></notempty> - 群发短信通知</p>
+  <p class="mss-tittle">
+<empty name="admin">
+<notempty name="club"> {$club['school']['name']} - <a href="/Club/manage?gid={$club.gid}">{$club['name']}</a></notempty><notempty name="team"><a href="/Club/manage?gid={$team.gid}">{$team['club']}</a> - <a href="/Team?tid={$team.tid}">{$team['name']}</a></notempty> - 群发短信通知</p>
+<else />
+{$school_name} - 群发短信通知</p>
+</empty>
 <include file="Public:selectMember" />
 <form action="/Sms/sent" id="SmsSend" method="post">
   <table border="0" cellpadding="0" cellspacing="0">
@@ -215,7 +221,11 @@ getwindowWH();//调用函数获取数值
 			</div>
 			<input type="hidden" name="tid" id="tid" value=""/>
 			<input type="hidden" id="tid_num" value=""/>
+			<empty name="admin">
 			<input type="hidden" name="gid" value="<notempty name="club">{$club.gid}</notempty><notempty name="team">{$team.gid}</notempty>"/>
+		    <else />
+			<input type="hidden" name='sid' value="$Think.get.sid"/>
+			</empty>
 		</td>
     </tr>
     <tr>
@@ -230,9 +240,11 @@ getwindowWH();//调用函数获取数值
 				<span style="position:absolute;left:490px;top:135px;color:#8E8E90">
 				还可输入<span id="counter" style="color:#F00"></span>字
 				</span>
+				<empty name="admin">
 				<span style="position:absolute;left:20px;top:135px;color:#8E8E90">
 				还剩<span id="sms_num" style="color:#F00">{$sms_num}</span>条短信
 				</span>
+				</empty>
 			</div>
 		</td>
     </tr>

@@ -97,26 +97,26 @@ getwindowWH();//调用函数获取数值
 }
 </style>
 <include file="Public:selectMember" />
-<form class="form-horizontal" id="EmailSend" action="/Club/sendEmailSubmit" method="post" enctype="multipart/form-data">
+<form class="form-horizontal" id="EmailSend" action="/Admin/sendEmailSubmit" method="post" enctype="multipart/form-data">
   <fieldset>
     <div class="">
       <label class="control-label" for="name"></label>
       <div class="controls">
-        <h2>{$club['school']['name']} - <a href="/Club/manage?gid={$club['gid']}">{$club['name']}</a> - 群发邮件</h2>
+        <h2>{$school_name} - 群发邮件</h2>
       </div>
     </div>
 	<div class="control-group">
       <label class="control-label" for="title">发邮件给</label>
       <div class="controls" style="position:relative;">
-	  <div id="msn_sel_mem" class="dxhb-button mss-button" >选择会员</div>
-	  <div id="msn_sel_all" class="dxhb-button mss-button" style=" position:absolute; left:150px; top:0px;">全部会员</div>
+	  <div id="msn_sel_mem" class="dxhb-button mss-button" >选择</div>
+	  <div id="msn_sel_all" class="dxhb-button mss-button" style=" position:absolute; left:150px; top:0px;">全部</div>
 		  <div class='mss-input-1text'>
-			<span  title='不包括待审核会员'>全部会员 (不含待审核会员)</span>
+			<span>全部</span>
 		  </div>
       </div>
     </div>
 	<input type="hidden" name="tid" id="tid" value="all"/>
-    <input type="hidden" id="gid" name="gid" value="{$_GET.gid}" />
+    <input type="hidden" id="sid" name="sid" value="{$Think.get.sid}" />
    <div class="control-group">
       <label class="control-label"  for="title" >邮件标题</label>
       <div class="controls">

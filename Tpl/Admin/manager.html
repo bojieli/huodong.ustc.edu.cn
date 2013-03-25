@@ -73,13 +73,31 @@
                 </div><!--onepanel-->
 
                 <div id="logrect">
-                    <div class="logname">处理日志</div>
-                    <div class="logcontentrect">
-                        <div class="logcontextlistodd"><span class="logtime">2012年7月10日</span> 批准申请成立三将发送了卡掉了</div>
-                        <div class="logcontextlistodd"><span class="logtime">2012年6月8日</span> 实现了网上萨拉分开打算看</div>
-                        <div class="logcontextlistodd"><span class="logtime">2011年12月10日</span> 发布了网上全校消息“我爱东方太阳升，太阳山上好个人，哇哈哈哈哈哈”</div>
-                        <div class="logcontextlistodd"><span class="logtime">2011年12月10日</span> 发布了网上全校消息"我爱东方太阳升，太阳山上好个人，哇哈哈哈哈哈"</div>
-                    </div>
+                    <div class="logname" style="border-bottom: 2px solid #9bc;height:29px">处理日志</div>
+                    <div class="logcontentrect" style="height: 273px;width:331px;overflow: auto;">
+                        <volist name="applies" id="apply" >
+						<div class="logcontextlistodd">
+							<span class="logtime">{$apply.humanDate2}</span>
+							<span class="logmsg" style="margin-left:5px">通过{$apply.applier.realname}的会长申请(<a href="/Club/intro?gid={$apply.club.gid}">{$apply.club.name}</a>)</span>
+						</div>
+						</volist>
+					</div>
+					<div class="toolarea">
+						<div class="sttttt" style="font-size: 20px;color: #000;margin: 0;font-weight: bold;height: 30px;border-bottom: 2px solid #9bc;">功能面板</div>
+						<div class="tools">
+							<table cellpadding="0" cellspacing="0" border="0" >            	
+								<tr >
+									<td align="left" width="200px" ><a target="_blank" href="/Admin/sendEmail?sid={$user_info.sid}"  style="color:#088;">群发邮件</a></td>
+									<td align="left"><a href="/Sms?sid={$user_info.sid}" style="color:#088;">群发短信</a></td>                    
+								</tr>
+								<tr >
+									<td align="left" width="200px" ><a target="_blank" href="/Club/addOwner?sid={$user_info.sid}"  style="color:#088;">添加会长</a></td>
+									
+								</tr>			
+								<tr height="15px;"><td colspan="2" style="border-top:1px #CCF dotted"></td></tr>
+							</table>  
+						</div>
+					</div>
                 </div>
         
     </div><!--main-->

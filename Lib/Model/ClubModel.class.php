@@ -156,6 +156,9 @@ class ClubModel extends Model {
         foreach($applies_tmp as $apply){
             $apply['applier'] = D('User')->getInfo($apply['uid']);
             $apply['club'] = M('Club')->find($apply['gid']);
+			$apply['handle_name'] = D('User')->getRealname($apply['handle_uid']); 
+            $apply['humanDate'] = date("Y年n月j日 H:i", $apply['time']);
+            $apply['humanDate2'] = date("Y年n月j日 H:i", $apply['htime']);
             $applies[] = $apply;
         }
         return $applies;

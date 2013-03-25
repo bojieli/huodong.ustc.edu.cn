@@ -10,8 +10,8 @@
 <title>负责人审核</title>
 </head>
 <script>
-function ajax_pass(uid, gid){
-		$.post("/Club/addOwnerSubmit/",{'owner': uid,'gid': gid },function(res){
+function ajax_pass(uid, gid ,id){
+		$.post("/Club/addOwnerSubmit/",{'owner': uid,'gid': gid,'id': id},function(res){
 			if(res.status==1){
 				alert(res.info);
 				$("#handle_div").html("<span>已通过</span>");
@@ -22,8 +22,8 @@ function ajax_pass(uid, gid){
 			}
 		},'json');
 }
-function ajax_refuse(uid, gid){
-		$.post("/Club/refuseOwnerSubmit/",{'owner': uid,'gid': gid },function(res){
+function ajax_refuse(uid, gid, id){
+		$.post("/Club/refuseOwnerSubmit/",{'owner': uid,'gid': gid,'id': id},function(res){
 			if(res.status==1){
 				alert(res.info);
 				$("#handle_div").html("<span>已拒绝</span>");
@@ -54,14 +54,26 @@ function ajax_refuse(uid, gid){
                                 <td  width="170" valign="top" align="center">
                                		 申请会长<br/><a href="/User/home?uid={$apply['applier']['uid']}" target="_blank"><img class="ghtoum" src="/{$apply['applier']['small_avatar']}" /></a><br/><span class="girlname">{$apply['applier']['realname']}</span>
                                 </td>
-                                <td  width="300" valign="top" align="left" class="ghspaceimage" >新会长个人信息：<br/>电话：{$apply['applier']['telephone']}<br/>学号：{$apply['applier']['student_no']}<br/>邮箱：{$apply['applier']['email']}
-                                </td>    
-                                <td align="center" valign="middle">
+                                <td  width="300" valign="top" align="left" class="ghspaceimage" >
+								新会长个人信息：<br/>
+								电话：{$apply['applier']['telephone']}<br/>
+								学号：{$apply['applier']['student_no']}<br/>
+								邮箱：{$apply['applier']['email']}
+                                <div class="applyTime" style="color:#c42328">
+								申请时间：{$apply.humanDate}
+								</div>
+								</td>    
+               
+								<td align="center" valign="middle">
 								<if condition="$apply['ishandled']">
-								<p>已处理</p>
+								<p>已处理
+								<span class="htime" style="color:#777;font-size:70%;margin-left:22px">
+								处理时间:{$apply.humanDate2}
+								</span>
+								</p>
 								<else />
 								<div id="handle_div">
-								<a href="javascript:void(0);" onclick="ajax_pass({$apply['applier']['uid']},{$apply['club']['gid']})">通过</a> | <a href="javascript:void(0);" onclick="ajax_refuse({$apply['applier']['uid']},{$apply['club']['gid']})">拒绝</a>
+								<a href="javascript:void(0);" onclick="ajax_pass({$apply['applier']['uid']},{$apply['club']['gid']},{$apply['id']})">通过</a> | <a href="javascript:void(0);" onclick="ajax_refuse({$apply['applier']['uid']},{$apply['club']['gid']},{$apply['id']})">拒绝</a>
 								</div>
 								</if>
                                 </td>               
