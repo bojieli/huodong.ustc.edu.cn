@@ -313,7 +313,13 @@ class ClubAction extends PublicAction {
 			$this->error('对不起，您无权操作校外社团');
 		}
 		$per_owner = M('Club')->field('owner')->where(array('gid'=>$gid))->find()['owner'];
-		if($uid - $per_owner==0){$this->error("已是该协会会长");}
+		if($uid - $per_owner==0){
+			$data2['priv'] = 'admin';
+			$data2['title'] = '会长';
+			D('User_group')->where(['uid'=>$per_owner,'gid'=>$gid])->save($data2);
+			$this->error("已是该协会会长");
+		
+		}
 		//die;
 	    M('Club')->where(array('gid'=>$_REQUEST['gid']))->save($club);
        

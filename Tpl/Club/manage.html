@@ -131,7 +131,7 @@ $showPager = function() use($club,$pageNow) {
             	<input id="{$member.uid}" class="ajax_title_text putin_out" value="{$member.title}" onfocus="this.className='ajax_title_text putin_on'" onblur="this.className='ajax_title_text putin_out'"/>
             </div>
 			<a class="title_set" href="javascript:void(0);">个性职称</a>
-			<if condition="($member[priv] != 'admin')">
+			<!--<if condition="($member[priv] != 'admin')">-->
 	    	<div class="stzhiwusz">设置权限：
                         <select onchange="ajaxChangeTitle({$member.uid}, this.options[this.selectedIndex].getAttribute('priv'), this.options[this.selectedIndex].getAttribute('title'))">
                         <option priv="" title="" selected="selected">------</option>
@@ -152,13 +152,12 @@ $showPager = function() use($club,$pageNow) {
 						<option priv="inactive" title="待审核">待审核</option>
                 	</select>
              </div>
-			  </if>
 		     </if>
 			
 		    <notempty name="club.isSchoolAdmin">
-		    <!--div class="stsetowner">
-		    <a href="/Club/addOwnerSubmit?gid={$club.gid}&owner={$member.uid}">设为会长</a>
-		    </div-->
+		    <div class="stsetowner">
+		    <a href="/Club/addOwnerSubmit?gid={$club.gid}&owner={$member.uid}&sid={$club.sid}">设为会长</a>
+		    </div>
 		    </notempty>
 
 		    </div>
