@@ -208,7 +208,11 @@ $(function(){
 				</script>
 		    </div>
 		   <!--<a href="tzyxx.html">通知与消息 <span style="color:#D00; font-size:18px;">17</span></a>-->
-			<div style="width:350px; height:30px;"> <if condition="$user_info.isschooladm eq 1"><a href="/Admin">管理学校社团</a></if>&nbsp;</div>
+			<div style="width:350px; height:30px;"> 
+			<if condition="$user_info.isschooladm eq 1">
+				<a href="/Admin" style="float:right;margin-right:67px;font-size:127%;color:#E11" title="供学校管理员使用">管理学校社团</a>
+			</if>
+			&nbsp;</div>
 			<div class="tttt">已加入社团</div>
             <table border="0" cellpadding="0" cellspacing="0" style="margin-top:10px;">
 	    <empty name="clubs">

@@ -45,7 +45,7 @@
                         <div class="existnamerect">
                             <div class="existnametext">{$user_info.school}已有社团</div>
                         </div>
-                        <div class="existcontentrect">
+                        <div class="existcontentrect" style="width: 801px;">
                             <table width="780px" border="0" align="center" cellpadding="2" cellspacing="0" bordercolor="#F00">
                                 <tr style="background-color:#CCC;" class="existheadrect">
                                     <th  align="center" class="existdiv">编号</th>
@@ -87,11 +87,13 @@
 						<div class="tools">
 							<table cellpadding="0" cellspacing="0" border="0" >            	
 								<tr >
-									<td align="left" width="200px" ><a target="_blank" href="/Admin/sendEmail?sid={$user_info.sid}"  style="color:#088;">群发邮件</a></td>
-									<td align="left"><a href="/Sms?sid={$user_info.sid}" style="color:#088;">群发短信</a></td>                    
+									<td align="left" height="40px;" width="200px" ><a target="_blank" href="/Admin/sendEmail?sid={$user_info.sid}"  style="color:#088;">群发邮件</a></td>
+									<td align="left" height="40px;"><a target="_blank" href="/Sms?sid={$user_info.sid}" style="color:#088;">群发短信</a></td>                    
 								</tr>
+								<tr height="15px;"><td colspan="2" style="border-top:1px #CCF dotted"></td></tr>
 								<tr >
-									<td align="left" width="200px" ><a target="_blank" href="/Club/addOwner?sid={$user_info.sid}"  style="color:#088;">添加会长</a></td>
+									<td align="left" height="40px;" width="200px" ><a target="_blank" href="/Club/addOwner?sid={$user_info.sid}"  style="color:#088;">添加会长</a></td>
+									<td align="left" height="40px;" width="200px" ><a target="_blank" href="/Club/introAdd"  style="color:#088;">添加社团</a></td>
 									
 								</tr>			
 								<tr height="15px;"><td colspan="2" style="border-top:1px #CCF dotted"></td></tr>

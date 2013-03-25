@@ -35,14 +35,18 @@ class ClubModel extends Model {
         $record['title'] = '会员';
         //dump($record);
 		if(M('user_group')->where(['uid'=>$uid, 'gid'=>$gid])->count())
+		{
 			M('user_group')->where(['uid'=>$uid, 'gid'=>$gid])->save($record);
-		$record['sid'] = $sid;
-		$record['uid'] = $uid;
-		$record['gid'] = $gid;
-		M('user_group')->add($record);
+		}
+		else
+		{	$record['sid'] = $sid;
+			$record['uid'] = $uid;
+			$record['gid'] = $gid;
+			M('user_group')->add($record);
+		}
         //echo M('user_group')->getLastSql();die;
 		M()->execute("UPDATE ustc_club SET member_count = member_count + 1 WHERE `gid` = '$gid'");
-        $this->updateRate($gid, 20);
+		$this->updateRate($gid, 20);
     }
 
     public function removeMember($gid, $uid) {

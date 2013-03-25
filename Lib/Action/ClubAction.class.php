@@ -644,7 +644,9 @@ class ClubAction extends PublicAction {
         $this->assign('jumpUrl', "/Club/manage?gid=$gid");
         if ($this->isManager($gid)) {
             if ($this->getPriv($gid, $uid) == 'inactive') {
-                D('Club')->addMember($gid, $uid);
+                //echo 13;
+				//die;
+				D('Club')->addMember($gid, $uid);
                 $this->sendJoinClubEmail($uid, $gid, true);
                 $this->success("已经通过此加入申请");
             } else
