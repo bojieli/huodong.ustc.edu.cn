@@ -311,10 +311,13 @@ class ClubAction extends PublicAction {
 		if($sid!=D('Club')->getSidByGid($gid)){
 			$this->error('对不起，您无权操作校外社团');
 		}
-		$per_owner = M('Club')->field('owner')->where(array('gid'=>$_REQUEST['gid']))->find()['owner'];
+		$per_owner = M('Club')->field('owner')->where(array('gid'=>$gid))->find()['owner'];
+		dump($per_owner);die;
 		if($uid == $per_owner){$this->error("已是该协会会长");}
+		
 		M('Club')->where(array('gid'=>$_REQUEST['gid']))->save($club);
-        $priv = 'admin';
+        
+		$priv = 'admin';
         $priv_pre = M('User_group')->result_first("SELECT priv FROM ustc_user_group where uid = $uid and gid = $gid");
         if($priv_pre)
         {
