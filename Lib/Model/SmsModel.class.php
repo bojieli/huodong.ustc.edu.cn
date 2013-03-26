@@ -39,29 +39,34 @@ class SmsModel extends Model {
 			foreach($messageIds as $messageId)
 			{
 				$client->wsMessageAddReceiver($messageId,'mobile',$mobile,'sms',$messagePriority=1,$sendTime=null);
-				$re=$client->wsMessageSend($messageId);
 			}
-			if($re)
+        }
+		foreach($messageIds as $messageId){
+			$re[]=$client->wsMessageSend($messageId);
+			     $client->wsMessageClose($messageId);
+			}
+		foreach($re as $st)
+		{
+			if($st)
 			{
-				$i++;
 				if($isadmin==0){
-					$status='done';
-					$this->smsLog($uid,$tid,$pid,$gid,$status);
+					foreach($mobiles as  $tid2 => $mobile2){
+						$this->smsLog($uid,$tid,$pid,$gid,'done');
+						$i++;
+					}
 				}
 			}
 			else
 			{
-				$j++;
-				$failed_user.=D('User')->getRealname($tid)." ";
-				if($isadmin==0){	
-					$status='failed';
-					$this->smsLog($uid,$tid,$pid,$gid,$status);
+				if($isadmin==0){
+					foreach($mobiles as  $tid3 => $mobile3){
+						$failed_user.=D('User')->getRealname($tid3)." ";
+						$this->smsLog($uid,$tid,$pid,$gid,'failed');
+						$j++;
+					}
 				}
 			}
-        }
-
-        $client->wsMessageClose($messageId);
-        //$re=$client->wsSendSms($msg,$mobile);
+		}
         return array('done'=>$i,'failed'=>$j,'info'=>$failed_user);
     }
     public function smsLog($uid,$tid,$pid,$gid,$status)

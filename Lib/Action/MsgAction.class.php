@@ -23,21 +23,28 @@ class MsgAction extends PublicAction {
         foreach($show[1] as $raw => $val)
         {
             $tid_info[$val['to_uid']]=D('User')->getInfo($val['to_uid']);
-            //dump($tid_info[$val['to_uid']]);
 			$tid_info[$val['to_uid']]['last_dialog'] = $show[0][$val['to_uid']][count($show[0][$val['to_uid']])-1];
+			$sort[$val['to_uid']]  = $tid_info[$val['to_uid']]['last_dialog']["time"];
         }
-        foreach($sys_msg[0] as $raw1 => $val1)
+		//dump($tid_info);die;
+		//排序
+		arsort($sort);
+		foreach($sort as $key => $value)
+			$tid_info2[$key] = $tid_info[$key];
+		
+		foreach($sys_msg[0] as $raw1 => $val1)
         {
             $sys_msg[0][$raw1]['name']=M('Club')->field('name')->where(array('gid'=>$val1['gid']))->find()['name'];
             $sys_msg[0][$raw1]['logo']=M('Club')->field('logo')->where(array('gid'=>$val1['gid']))->find()['logo'];
             //$sys_msg[0][$raw1]['gid']=M('Club')->field('gid')->where(array('gid'=>$val1['gid']))->find()['gid'];
         }
-        //dump($sys_msg[0]);
+        
+		//dump($sys_msg[0]);
 		//die;
 		if(!empty($tid)){$this->redirect("/Msg");}
 		$this->assign('msg_num',D('Msg')->getUnreadMsgNum());
         $this->assign('info',$show[0]);
-        $this->assign('tid',$tid_info);
+        $this->assign('tid',$tid_info2);
         //dump($sys_msg[0]);
 		$this->assign('sys',$sys_msg[0]);
 

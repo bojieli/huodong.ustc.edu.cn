@@ -190,7 +190,7 @@ class SmsAction extends PublicAction {
         if(!D('User')->checkLogin()){$this->error('未登陆');}
         if(!D('Club')->isManager($gid)){$this->error('无权限');}
         $gid=$this->_get('gid');
-        $re=M('Sms_md5')->where(array('gid'=>$gid))->order('time')->select();
+        $re=M('Sms_md5')->where(array('gid'=>$gid))->order('time desc')->select();
         //dump($re);
         foreach($re as $row => $value)
         {
