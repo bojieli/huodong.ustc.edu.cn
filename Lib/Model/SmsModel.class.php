@@ -189,7 +189,7 @@ class SmsModel extends Model {
         return M('Sms_md5')->where(array('gid'=>$gid))->count();
     }
 	public function getTidsName($pid){
-		tids = M('Sms_md5')->where(['pid'=>$pid])->find()['tids'];
+		$tids = M('Sms_md5')->where(['pid'=>$pid])->find()['tids'];
 		$tidArray=explode(";",$tids);
 		foreach($tidArray as $tid)
 			$nameString.=D('User')->getRealname($tid).' ';
