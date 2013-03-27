@@ -185,7 +185,7 @@ class SmsModel extends Model {
     {
 		return M('Sms')->where(['pid'=> $pid])->count();
     }
-    public function getPidNumCount($gid//社团发送短信总批次
+    public function getPidNumCount($gid)//社团发送短信总批次
         return M('Sms_md5')->where(array('gid'=>$gid))->count();
     }
 	public function getTidsName($pid){
