@@ -57,7 +57,11 @@
 <body>
 <include file="Public:headnav" />
 <div class="tt-con1">
-<div class="mss-history-titile"> {$school_name} - {$club_name} - 群短信发送记录 <span style="color:#F00; font-weight:normal; font-size:24px; font-family:Georgia, "Times New Roman", Times, serif">( {$allSmsNum} )</span></div>
+<div class="mss-history-titile"> {$school_name} - {$club_name} - 群短信发送记录 
+<span style="color:#F00; font-weight:normal; font-size:24px; font-family:Georgia, "Times New Roman", Times, serif">( {$allPidNum} )</span>
+短信总数
+<span style="color:#F00; font-weight:normal; font-size:24px; font-family:Georgia, "Times New Roman", Times, serif">( {$allSmsNum} )</span>
+</div>
 </div>
 <div id="mainding" class="mss-history-main"><br/>
     
@@ -67,7 +71,10 @@
     <span class="history-intro">发信人：{$vo['realname']}</span>
     <span class="history-intro">发送量：{$vo['pid_num']} 条</span>    
     </div>
-    <div class="history-list-cont">{$vo['msg']}</div>
+    <div class="names">
+	接收者：{$vo['nameString']}
+	</div>
+	<div class="history-list-cont">内容：{$vo['msg']}</div>
 </volist>
 
 </div><!--mainding-->

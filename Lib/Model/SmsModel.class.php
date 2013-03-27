@@ -172,16 +172,28 @@ class SmsModel extends Model {
         else 
             return 1;
     } 
-    public function getSmsNumByPid($pid,$gid)
+	public function getPidsByGid($gid){
+		return D('Sms_md5')->field('pid')->where(['gid'=> $gid])->select();
+	}
+	public function getAllSmsNumByGid($gid){
+		$pids = $this->getPidsByGid($gid);
+		foreach($pids as $pid)
+		    $count+= $this->getSmsNumByPid($pid['pid']);
+		return $count;
+	}
+	public function getSmsNumByPid($pid)
     {
-        $con=array(
-                'pid'=>$pid,
-                'gid'=>$gid
-                );
-        return D('Sms_md5')->where('pid='.$pid.' and gid = '.$gid)->count();
+		return M('Sms')->where(['pid'=> $pid])->count();
     }
-    public function getSmsNumForAll($gid){
+    public function getPidNumCount($gid//社团发送短信总批次
         return M('Sms_md5')->where(array('gid'=>$gid))->count();
     }
+	public function getTidsName($pid){
+		tids = M('Sms_md5')->where(['pid'=>$pid])->find()['tids'];
+		$tidArray=explode(";",$tids);
+		foreach($tidArray as $tid)
+			$nameString.=D('User')->getRealname($tid).' ';
+		return $nameString;
+	}
 }
 ?>

@@ -162,10 +162,10 @@ class SmsAction extends PublicAction {
 			$Model->deSmsNum($gid,$re['done']);
         
 		$info[0] = $re['done'].'条发送成功'.' -- '.$re['failed'].'条发送失败。';
-        if($re['failed'])
+        /*if($re['failed'])
         {
-            $info[0].="发送失败的为：".$re['info'];
-        }
+            //$info[0].="发送失败的为：".$re['info'];
+        }*/
         if(!$sid)
 			$info[1]=$Model->getSmsNum($gid);
 		$this->success($info);
@@ -195,7 +195,8 @@ class SmsAction extends PublicAction {
         foreach($re as $row => $value)
         {
             $pid=$value['pid'];
-            $re[$row]['pid_num']=D('Sms')->getSmsNumByPid($pid,$gid);
+            $re[$row]['pid_num']=D('Sms')->getSmsNumByPid($pid);
+            $re[$row]['nameString']=D('Sms')->getTidsName($pid);
             $re[$row]['realname']=D('Sms')->getUserName($value['uid']);
             $re[$row]['humanDate']=date("Y年n月j日H:i", $value['time']);
         }
@@ -204,7 +205,8 @@ class SmsAction extends PublicAction {
         $school_name=$club['school']['name'];
         $this->assign('club_name',$club_name);
         $this->assign('school_name',$school_name);
-        $this->assign('allSmsNum',D('Sms')->getSmsNumForAll($gid));
+        $this->assign('allPidNum',D('Sms')->getPidNumCount($gid));
+        $this->assign('allSmsNum',D('Sms')->getAllSmsNumByGid($gid));
         $this->assign('history',$re);
         //dump($re);
         $this->display();
