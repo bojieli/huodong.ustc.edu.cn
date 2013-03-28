@@ -68,16 +68,19 @@ function sendSms()
 	
 	var form = $("#SmsSend");
 	$.post($(form).attr('action'), $(form).serialize(), function (data) {
+	if(data.info[1]){
 	if($("#sms_num").text()<$("#tid_num").val())
 		{   
 		 //  alert('剩余短信条数不足');
-		   $("#sendMssage-result").html("<span style='color:green; font-size:20px; '>发送失败：<br/></span><span style='margin-left:40px; line-height:24px;'>剩余短信条数不足！</span>" );
-	       return false;
+			   $("#sendMssage-result").html("<span style='color:green; font-size:20px; '>发送失败：<br/></span><span style='margin-left:40px; line-height:24px;'>剩余短信条数不足！</span>" );
+			   return false;
 		} 
+	}
 		if (data.status == 1) {
 	//		alert(data.info[0]);
 			$("#tid").val('');
-			$("#sms_num").text(data.info[1]);
+			if(data.info[1])
+				$("#sms_num").text(data.info[1]);			
 			$(".mss-input-1text").html('');
 			$("#sendMssage-result").html("<span style='color:green; font-size:20px; '>发送成功：<br/></span><span style='margin-left:40px; line-height:24px;'>"+ data.info[0] +"</span>" );
 		} else if(data.status==0 ) {
@@ -202,7 +205,7 @@ getwindowWH();//调用函数获取数值
 <empty name="admin">
 <notempty name="club"> {$club['school']['name']} - <a href="/Club/manage?gid={$club.gid}">{$club['name']}</a></notempty><notempty name="team"><a href="/Club/manage?gid={$team.gid}">{$team['club']}</a> - <a href="/Team?tid={$team.tid}">{$team['name']}</a></notempty> - 群发短信通知</p>
 <else />
-{$school_name} - 群发短信通知</p>
+{$sname_admin} - 群发短信通知</p>
 </empty>
 <include file="Public:selectMember" />
 <form action="/Sms/sent" id="SmsSend" method="post">
@@ -258,6 +261,7 @@ getwindowWH();//调用函数获取数值
 </tr>
 </table>
 </div>
+<empty name="admin">
 <div id="rightbox" style="float:left;">
 <p style="text-align:center;padding:9px">群短信发送记录
 <span style="color:#F00; font-weight:normal; font-family:Georgia, 'Times New Roman', Times, serif">( {$allSmsNum} )</span>
@@ -298,6 +302,7 @@ getwindowWH();//调用函数获取数值
 </volist>
 </div>
 </div>
+</empty>
 <script type="text/javascript">
 var edit = document.getElementById("edit");
 		if(window.localStorage){
@@ -340,7 +345,7 @@ function tmp(){
 		if(i>1){
 		$('#smscfbox').show();
 		}else{
-		$('#smscfbox').hidden();
+		$('#smscfbox').hide();
 		}
 		var limit=$('#counter').text();
 		if(max>0){ 

@@ -17,7 +17,7 @@ class SmsAction extends PublicAction {
 			if(!$sid){$this->error('非法操作！');}
 			$members = A('Admin')->getClubManager($sid);
 			//dump($members);die;
-			$this->assign('school_name', M('school')->field('name')->where(['sid'=>$sid])->find()['name']);
+			$this->assign('sname_admin', M('school')->field('name')->where(['sid'=>$sid])->find()['name']);
 			$this->assign('admin',1);
 		}
 		else

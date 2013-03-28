@@ -49,22 +49,20 @@ class SmsModel extends Model {
 		{
 			if($st)
 			{
-				if($isadmin==0){
 					foreach($mobiles as  $tid2 => $mobile2){
-						$this->smsLog($uid,$tid,$pid,$gid,'done');
+						if($isadmin==0)
+							$this->smsLog($uid,$tid,$pid,$gid,'done');
 						$i++;
 					}
-				}
 			}
 			else
 			{
-				if($isadmin==0){
 					foreach($mobiles as  $tid3 => $mobile3){
 						$failed_user.=D('User')->getRealname($tid3)." ";
-						$this->smsLog($uid,$tid,$pid,$gid,'failed');
+						if($isadmin==0)
+							$this->smsLog($uid,$tid,$pid,$gid,'failed');
 						$j++;
 					}
-				}
 			}
 		}
         return array('done'=>$i,'failed'=>$j,'info'=>$failed_user);
