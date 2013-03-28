@@ -211,7 +211,7 @@ getwindowWH();//调用函数获取数值
 <tr height="40px">
 	<td width="90" align="right" valign="top" style="padding-top:3px;">发短信给：</td>
 	<td width="120" align="left" valign="top">
-	<div id="msn_sel_mem" class="dxhb-button mss-button" >选择会员</div>
+	<div id="msn_sel_mem" class="dxhb-button mss-button" style="margin:0;">选择会员</div>
 	</td>
 	<td width="475"> </td>
 </tr>
@@ -238,6 +238,9 @@ getwindowWH();//调用函数获取数值
 			
 			<span style="position:absolute;left:490px;top:135px;color:#8E8E90">
 			还可输入<span id="counter" style="color:#F00"></span>字
+			</span>
+			<span id="smscfbox" style="position:absolute;left:275px;top:135px;color:#8E8E90;display:none">
+			拆分为<span id="smscf" style="color:#F00"></span>条
 			</span>
 			<empty name="admin">
 			<span style="position:absolute;left:20px;top:135px;color:#8E8E90">
@@ -326,7 +329,19 @@ function mbStringLength(s) {
 function tmp(){    
 		var area=$("#edit");
 		var max = 600;
-		$('#counter').text(max-mbStringLength(area.val()));
+		var input = mbStringLength(area.val());
+		$('#counter').text(max-input);
+		var i=1;
+		while(input > 200){
+			i++;
+			input -= 200;
+		}
+		$('#smscf').text(i);
+		if(i>1){
+		$('#smscfbox').show();
+		}else{
+		$('#smscfbox').hidden();
+		}
 		var limit=$('#counter').text();
 		if(max>0){ 
             if(limit<0){ 
