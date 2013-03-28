@@ -206,55 +206,95 @@ getwindowWH();//调用函数获取数值
 </empty>
 <include file="Public:selectMember" />
 <form action="/Sms/sent" id="SmsSend" method="post">
-  <table border="0" cellpadding="0" cellspacing="0">
-  	<tr height="40px">
-        <td width="90" align="right" valign="top" style="padding-top:3px;">发短信给：</td>
-        <td width="120" align="left" valign="top">
-		<div id="msn_sel_mem" class="dxhb-button mss-button" >选择会员</div>
-		</td>
-        <td width="800"> </td>
-    </tr>
-    <tr>
-        <td width="90" align="right" valign="top" style="padding-top:3px; color:#CCC">已选会员</td>
-        <td colspan="2"  align="left" valign="top">
-			<div class='mss-input-1text' style="width:900px;">
-			</div>
-			<input type="hidden" name="tid" id="tid" value=""/>
-			<input type="hidden" id="tid_num" value=""/>
+<div id="leftbox" style="float:left">
+<table border="0" cellpadding="0" cellspacing="0">
+<tr height="40px">
+	<td width="90" align="right" valign="top" style="padding-top:3px;">发短信给：</td>
+	<td width="120" align="left" valign="top">
+	<div id="msn_sel_mem" class="dxhb-button mss-button" >选择会员</div>
+	</td>
+	<td width="475"> </td>
+</tr>
+<tr>
+	<td width="90" align="right" valign="top" style="padding-top:3px; color:#CCC">已选会员：</td>
+	<td colspan="2"  align="left" valign="top">
+		<div class='mss-input-1text' style="width:595px;">
+		</div>
+		<input type="hidden" name="tid" id="tid" value=""/>
+		<input type="hidden" id="tid_num" value=""/>
+		<empty name="admin">
+		<input type="hidden" name="gid" value="<notempty name="club">{$club.gid}</notempty><notempty name="team">{$team.gid}</notempty>"/>
+		<else />
+		<input type="hidden" name='sid' value="$Think.get.sid"/>
+		</empty>
+	</td>
+</tr>
+<tr>
+	<td width="90" align="right" valign="top" style="padding-top:10px;">短信内容：</td>
+	<td colspan="2"  align="left" valign="top">
+		<div class="inputarea" style="position:relative;">
+			<textarea id="edit" name="s" title="写满两行文字的长度约为一条短信 ！" class="mss-input-text" onfocus="this.className='dxhb-focus mss-input-text'" onblur="this.className='dxhb-blur mss-input-text'" style="float:left" ></textarea>
+			<!--span style=" color:#F00;"><br/>&nbsp;&nbsp;&nbsp;写满两行文字的长度<br/>&nbsp;&nbsp;&nbsp;约为一条短信 ！</span-->
+			
+			<span style="position:absolute;left:490px;top:135px;color:#8E8E90">
+			还可输入<span id="counter" style="color:#F00"></span>字
+			</span>
 			<empty name="admin">
-			<input type="hidden" name="gid" value="<notempty name="club">{$club.gid}</notempty><notempty name="team">{$team.gid}</notempty>"/>
-		    <else />
-			<input type="hidden" name='sid' value="$Think.get.sid"/>
+			<span style="position:absolute;left:20px;top:135px;color:#8E8E90">
+			还剩<span id="sms_num" style="color:#F00">{$sms_num}</span>条短信
+			</span>
 			</empty>
-		</td>
-    </tr>
-    <tr>
-        <td width="90" align="right" valign="top" style="padding-top:10px;">短信内容：</td>
-        <td colspan="2"  align="left" valign="top">
-            <div class="inputarea" style="position:relative;">
-				<textarea id="edit" name="s" title="写满两行文字的长度约为一条短信 ！" class="mss-input-text" onfocus="this.className='dxhb-focus mss-input-text'" onblur="this.className='dxhb-blur mss-input-text'" style="float:left" ></textarea>
-				<!--span style=" color:#F00;"><br/>&nbsp;&nbsp;&nbsp;写满两行文字的长度<br/>&nbsp;&nbsp;&nbsp;约为一条短信 ！</span-->
-				<notempty name="club"><span class="history">
-				<a href="/Sms/history?gid={$club.gid}" title="{$club['name']}" style=" color:#06C; margin-left:50px;">全部短信记录</a>
-				</span></notempty>
-				<span style="position:absolute;left:490px;top:135px;color:#8E8E90">
-				还可输入<span id="counter" style="color:#F00"></span>字
-				</span>
-				<empty name="admin">
-				<span style="position:absolute;left:20px;top:135px;color:#8E8E90">
-				还剩<span id="sms_num" style="color:#F00">{$sms_num}</span>条短信
-				</span>
-				</empty>
-			</div>
-		</td>
-    </tr>
-    <tr>
-       <td> </td>
-       <td colspan="2" align="left" valign="middle" style="height:70px;">
-       		<div  onclick="sendSms();return false;" class="dxhb-button mss-button" style="margin-left:518px;">发 送</div>
-       </td>
-    </tr>
-  </table>
+		</div>
+	</td>
+</tr>
+<tr>
+   <td> </td>
+   <td colspan="2" align="left" valign="middle" style="height:70px;">
+		<div  onclick="sendSms();return false;" class="dxhb-button mss-button" style="margin-left:518px;">发 送</div>
+   </td>
+</tr>
+</table>
+</div>
+<div id="rightbox" style="float:left;">
+<p style="text-align:center;padding:9px">群短信发送记录
+<span style="color:#F00; font-weight:normal; font-family:Georgia, 'Times New Roman', Times, serif">( {$allSmsNum} )</span>
+</p>
+<div class="smsArae" style="background:#fff;height: 500px;width:360px;overflow: auto;">
+<!--
+<notempty name="club">
+<span class="history">
+<a href="/Sms/history?gid={$club.gid}" title="{$club['name']}" style=" color:#06C; margin-left:50px;">全部短信记录</a>
+</span>
+</notempty>-->
+<volist name="history" id="vo">    
+    <div title="接收者:{$vo['nameString']}" class="history-area" style="padding:10px;background: #FFF5FA;margin:20px 10px;font-size:16px; font-family:Microsoft YaHei; color:#8E8E90; text-align:left; ">
+	<div class="history-list-title" style="color:#ddd;font-size:60%;border-bottom: 1px solid #ddd">
+	成功发出{$vo['pid_num']}条
+	<span class="sender" style="float:right">
+	发信人：{$vo['realname']}
+	</span>
+	</div>
+	<div class="history-list-cont">
+	{$vo['msg']}
+	</div>
+	<p style="font-size:12px; color:#999;font-family:Microsoft YaHei; text-align:right;margin:5px 0px 0 0;">
+    {$vo.humanDate}
+    </p>
+	</div>
+	<!--<div class="history-list-title">
+    {$vo['humanDate']}
+    <span class="history-intro">发信人：{$vo['realname']}</span>
+    <span class="history-intro">发送量：{$vo['pid_num']} 条</span>    
+    </div>
+	<div class="history-list-cont">
+	<div class="names">
+	<strong>接收者</strong>：{$vo['nameString']}
+	</div>
+	<div class="sms-cont"><strong>内容</strong>：{$vo['msg']}</div>
+	</div>-->
+</volist>
+</div>
+</div>
 <script type="text/javascript">
 var edit = document.getElementById("edit");
 		if(window.localStorage){

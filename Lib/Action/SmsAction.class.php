@@ -83,6 +83,7 @@ class SmsAction extends PublicAction {
 				}
 				$this->assign('sms_num',$Model->getSmsNum($gid));
 		}
+		$this->history($gid);
         $this->assign('members',$members);
         $this->display();
     }
@@ -184,12 +185,12 @@ class SmsAction extends PublicAction {
         $this->assign('tid_name',$name);
         $this->display('index');
     }
-    public function history(){
-        $gid=$this->_get('gid');
-        if(!$gid){$this->error('非法操作！');}
-        if(!D('User')->checkLogin()){$this->error('未登陆');}
-        if(!D('Club')->isManager($gid)){$this->error('无权限');}
-        $gid=$this->_get('gid');
+    public function history($gid){
+        //$gid=$this->_get('gid');
+        //if(!$gid){$this->error('非法操作！');}
+        //if(!D('User')->checkLogin()){$this->error('未登陆');}
+        //if(!D('Club')->isManager($gid)){$this->error('无权限');}
+		//$gid=$this->_get('gid');
         $re=M('Sms_md5')->where(array('gid'=>$gid))->order('time desc')->select();
         //dump($re);
         foreach($re as $row => $value)
@@ -209,7 +210,7 @@ class SmsAction extends PublicAction {
         $this->assign('allSmsNum',D('Sms')->getAllSmsNumByGid($gid));
         $this->assign('history',$re);
         //dump($re);
-        $this->display();
+        //$this->display();
 
     }
 }
