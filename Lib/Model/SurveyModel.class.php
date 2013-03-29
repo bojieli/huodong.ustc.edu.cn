@@ -178,4 +178,49 @@ class SurveyModel extends Model {
         unset($sec);
         return $survey;
     }
+
+    function getResponseList($surveyid) {
+        $survey = $this->find($surveyid);
+        $responses = M('survey_response')->where(array('survey'=>$surveyid))->select();
+        return $responses;
+    }
+
+    function getResponse($responseid) {
+        $response = M('survey_response')->find($responseid);
+        if (!isset($response['survey']))
+            return null;
+        $surveyid = $response['survey'];
+        $survey = $this->find($survey);
+        $survey['user'] = M('user')->find($response['uid']);
+        $survey['submit_time'] = $response['submit_time'];
+        $survey['responseid'] = $responseid;
+
+        $sections = M('survey_section')->where(array('survey'=>$surveyid))->select();
+        $ret = array();
+        foreach ($sections as $section) {
+            $ret[$section['section']] = array(
+                'title' => $section['title'],
+                'help_text' => $section['help_text'],
+                'questions' => array()
+            );
+        }
+
+        $questions = M('survey_question')->where(array('survey'=>$surveyid))->select();
+        foreach ($questions as $question) {
+            $ret[$question['section']]['questions'][$question['question']] = array(
+                'type' => $question['type'],
+                'title' => $question['title'],
+                'help_text' => $question['help_text'],
+                'required' => $question['required'],
+                'options' => json_decode($question['options'])
+            );
+        }
+
+        $response_fields = M('survey_response_field')->where(array('response'=>$responseid))->select();
+        foreach ($response_fields as $field) {
+            $ret[$field['section']]['questions'][$field['question']]['response'] = $field['content'];
+        }
+        $survey['sections'] = $ret;
+        return $survey;
+    }
 }

@@ -1,0 +1,13 @@
+<include file="header" />
+<h1>有效问卷列表</h1>
+<table class="table table-striped">
+<tr>
+<th>序号</th><th>提交时间</th><th></th>
+</tr>
+<volist name="responses" id="vo">
+<tr>
+<td>{$vo.id}</td>
+<td>{$vo.submit_time|date='Y-m-d H:i',###}</td>
+<td><a href="/Survey/show_response?gid={$_REQUEST.gid}&response={$vo.id}"><strong>查看问卷</strong></a></td></tr>
+</volist>
+</table>

@@ -1,0 +1,221 @@
+<include file="header" />
+<style>
+.bs-docs-sidenav {
+  width: 228px;
+  margin: 30px 0 0;
+  padding: 0;
+  background-color: #fff;
+  -webkit-border-radius: 6px;
+     -moz-border-radius: 6px;
+          border-radius: 6px;
+  -webkit-box-shadow: 0 1px 4px rgba(0,0,0,.065);
+     -moz-box-shadow: 0 1px 4px rgba(0,0,0,.065);
+          box-shadow: 0 1px 4px rgba(0,0,0,.065);
+}
+.bs-docs-sidenav > li > a {
+  display: block;
+  *width: 190px;
+  margin: 0 0 -1px;
+  padding: 8px 14px;
+  border: 1px solid #e5e5e5;
+}
+.bs-docs-sidenav > li:first-child > a {
+  -webkit-border-radius: 6px 6px 0 0;
+     -moz-border-radius: 6px 6px 0 0;
+          border-radius: 6px 6px 0 0;
+}
+.bs-docs-sidenav > li:last-child > a {
+  -webkit-border-radius: 0 0 6px 6px;
+     -moz-border-radius: 0 0 6px 6px;
+          border-radius: 0 0 6px 6px;
+}
+.bs-docs-sidenav > .active > a {
+  position: relative;
+  z-index: 2;
+  padding: 9px 15px;
+  border: 0;
+  text-shadow: 0 1px 0 rgba(0,0,0,.15);
+  -webkit-box-shadow: inset 1px 0 0 rgba(0,0,0,.1), inset -1px 0 0 rgba(0,0,0,.1);
+     -moz-box-shadow: inset 1px 0 0 rgba(0,0,0,.1), inset -1px 0 0 rgba(0,0,0,.1);
+          box-shadow: inset 1px 0 0 rgba(0,0,0,.1), inset -1px 0 0 rgba(0,0,0,.1);
+}
+/* Chevrons */
+.bs-docs-sidenav .icon-chevron-right {
+  float: right;
+  margin-top: 2px;
+  margin-right: -6px;
+  opacity: .25;
+}
+.bs-docs-sidenav > li > a:hover {
+  background-color: #f5f5f5;
+}
+.bs-docs-sidenav a:hover .icon-chevron-right {
+  opacity: .5;
+}
+.bs-docs-sidenav .active .icon-chevron-right,
+.bs-docs-sidenav .active a:hover .icon-chevron-right {
+  background-image: url(/bootstrap/docs/assets/img/glyphicons-halflings-white.png);
+  opacity: 1;
+}
+.bs-docs-sidenav.affix {
+  top: 40px;
+}
+.bs-docs-sidenav.affix-bottom {
+  position: absolute;
+  top: auto;
+  bottom: 270px;
+}
+
+/* Sections
+-------------------------------------------------- */
+
+/* padding for in-page bookmarks and fixed navbar */
+section {
+}
+section .lead {
+  color: #5a5a5a;
+}
+section .page-header {
+  color: #5a5a5a;
+  margin: 30px 0 0;
+}
+section .page-header:hover {
+  color: #5a5a5a;
+}
+section ul li {
+  margin-bottom: 5px;
+}
+
+/* Separators (hr) */
+.bs-docs-separator {
+  margin: 40px 0 39px;
+}
+
+/* Faded out hr */
+hr.soften {
+  height: 1px;
+  margin: 70px 0;
+  background-image: -webkit-linear-gradient(left, rgba(0,0,0,0), rgba(0,0,0,.1), rgba(0,0,0,0));
+  background-image:    -moz-linear-gradient(left, rgba(0,0,0,0), rgba(0,0,0,.1), rgba(0,0,0,0));
+  background-image:     -ms-linear-gradient(left, rgba(0,0,0,0), rgba(0,0,0,.1), rgba(0,0,0,0));
+  background-image:      -o-linear-gradient(left, rgba(0,0,0,0), rgba(0,0,0,.1), rgba(0,0,0,0));
+  border: 0;
+}
+
+.question {
+    font-size:14px; 
+    color:#333;
+    border-bottom:1px solid #CCC;
+}
+.qtext { 
+    font-size:16px; 
+    margin:10px 0 0px 0;
+}
+.qinput { 
+    margin:5px 0; 
+}
+.qinput input, .qinput select, .qinput textarea {
+    margin:0 0 0 30px;
+}
+.submit {
+    margin-top:30px;
+}
+label {
+    display: inline;
+    color: #333;
+}
+</style>
+
+<empty name="sections">
+<script>window.history.go(-1);</script>
+</empty>
+
+<div class="container">
+  <div class="row">
+    <div class="span3 bs-docs-sidenav">
+      <ul class="nav nav-list bs-docs-sidenav affix-top">
+        <volist name="sections" id="sec" key="i">
+          <li class="<?php if($i==1) echo 'active' ?>"><a href="#section-{$i}"><i class="icon-chevron-right"></i>{$sec.title}</a></li>
+        </volist>
+      </ul>
+    </div>
+    <div class="span9">
+      <h1><a href="/Survey/index?gid={$gid}">{$title}</a></h1>
+      <div class="well">
+        <button class="btn" onclick="location.href='/Survey/show_response?gid=<?=$gid?>&response=<?=$responseid-1 ?>'">上一问卷</a></button>
+        <button class="btn btn-primary" onclick="location.href='/Survey/show_response?gid=<?=$gid?>&response=<?=$responseid+1 ?>'">下一问卷</a></button>
+      </div>
+      <notempty name="user">
+        <p class="lead">第 {$responseid} 张答卷个人信息</p>
+        <table class="table">
+          <tr><td>姓名</td><td>{$user.realname}</td></tr>
+          <tr><td>性别</td><td><?=$user['gender'] ? '男' : '女' ?></td></tr>
+          <tr><td>E-mail</td><td>{$user.email}</td></tr>
+          <tr><td>学号</td><td>{$user.student_no}</td></tr>
+          <tr><td>学院</td><td>{$user.dept}</td></tr>
+          <tr><td>问卷提交时间</td><td>{$submit_time|date='Y-m-d H:i',###}</td></tr>
+        </table>
+      </notempty>
+      <empty name="user">
+        <p class="lead">第 {$responseid} 张答卷为匿名</p>
+      </empty>
+      <form id="response">
+        <volist name="sections" id="sec" key="i">
+        <section id="section-{$i}">
+          <div class="page-header"><h2>{$sec.title}</h2></div>
+          <notempty name="sec.help_text">
+            <p class="lead">{$sec.help_text}</p>
+          </notempty>
+          <div class="row-fluid">
+            <volist name="sec.questions" id="q" key="j">
+            <div class="question">
+              <p class="qtext">{$q.title} <notempty name="q.required"><strong>(*)</strong></notempty></p>
+              <div class="qinput">
+              <switch name="q.type">
+                <case value="radio">
+                  <volist name="q.options" id="option" key="k">
+                    <?php if($option == $q['response']) { ?>
+                    <input type="radio" checked="checked" /><strong>{$option}</strong>
+                    <?php } else { ?>
+                    <input type="radio" />{$option}
+                    <?php } ?>
+                  </volist>
+                </case>
+                <case value="checkbox">
+                  <volist name="q.options" id="option" key="k">
+                    <?php if($option == $q['response']) { ?>
+                    <input type="checkbox" checked="checked" /><strong>{$option}</strong>
+                    <?php } else { ?>
+                    <input type="checkbox" />{$option}
+                    <?php } ?>
+                  </volist>
+                </case>
+                <case value="select">
+                  <select>
+                  <volist name="q.options" id="option" key="k">
+                    <option <?php if($option == $q['response']) echo 'selected="selected"'; ?>>{$option}</option>
+                  </volist>
+                  </select>
+                </case>
+                <case value="text">
+                  <input type="text" class="input-xlarge" value="{$q.response}" />
+                </case>
+                <case value="textarea">
+                  <textarea class="input-xlarge" rows="5" style="width:500px">{$q.response}</textarea>
+                </case>
+                <default />内部错误
+              </switch>
+              </div>
+            </div>
+            </volist>
+          </div>
+        </section>
+        </volist>
+      </form>
+
+      <div class="well">
+        <button class="btn" onclick="location.href='/Survey/show_response?gid=<?=$gid?>&response=<?=$responseid-1 ?>'">上一问卷</a></button>
+        <button class="btn btn-primary" onclick="location.href='/Survey/show_response?gid=<?=$gid?>&response=<?=$responseid+1 ?>'">下一问卷</a></button>
+      </div>
+    </div>
+</div>
