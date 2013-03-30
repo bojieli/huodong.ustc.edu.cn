@@ -193,6 +193,7 @@ class ActivityAction extends PublicAction{
 		$act_id = $this->_post('act_id');
 		$data['register_form'] = json_encode($this->_post('checkbox'));
 		M('Activity')->where(['act_id'=>$act_id])->save($data);
+		$this->success("修改成功");
 	}
 //For 活动报名	
 	public function register(){

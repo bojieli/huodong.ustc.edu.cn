@@ -31,7 +31,13 @@ class ActivityModel extends Model {
 		return true;
 	}
 	public function getActIDByGid($gid){
-		return M('Activity')->where(['gid'=>$gid])->select();
+		return M('Activity')->field('act_id')->where(['gid'=>$gid])->select();
+	}
+	public function getActsByGid($gid){
+		$act_ids = $this->getActIDByGid($gid);
+		foreach($act_ids as $val)
+			$re[]=$this->getActivityByID($val['act_id'],0);
+		return $re;
 	}
 	public function getActivityByID($id,$all=1,$order="act_id desc") {
 		$where = array(
@@ -45,7 +51,6 @@ class ActivityModel extends Model {
 			$info[article]=D('activity_article')->join(C('DB_PREFIX').'user on '.C('DB_PREFIX').'user.uid='.C('DB_PREFIX').'activity_article.uid')->where('act_id='.$info[act_id])->order('time desc')->select();
 		}
 		return $info;
-	
 	}
 
 	public function getPicture($act_id,$start,$num,$order)
