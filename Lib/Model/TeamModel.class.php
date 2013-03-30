@@ -94,5 +94,7 @@ class TeamModel extends Model {
         global $_G;
         return md5(time().$_G[uid]);
     }
-
+	public function isTeamOwner($tid,$gid){//组织拥有集体		
+		return $gid==$this->getGidByTid($tid);
+	} 
 }

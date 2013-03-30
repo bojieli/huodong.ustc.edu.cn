@@ -60,7 +60,252 @@ class ActivityAction extends PublicAction{
         $this->assign('order', empty($_GET['order']) ? 'new' : $_GET['order']);
 		$this->display('Poster:index');
 	}
-	 public function ajaxGet() {
+//For 创建活动
+	public function introAdd(){
+		if (CURRENT_USER == 0) {
+			$this->error("您需要先登录");
+		}
+		global $_G;
+		$gid = $this->_request("gid");
+		$club = D('Club')->getInfo($gid);
+		if(!D('Club')->isCorer($gid))
+		{
+			$this->error("您没有权限");
+		}
+		$club_members = M()->query("SELECT * FROM (ustc_user INNER JOIN ustc_user_group ON ustc_user.uid = ustc_user_group.uid) INNER JOIN ustc_priv ON ustc_user_group.priv = ustc_priv.priv_name WHERE ustc_user_group.gid='$gid' ORDER BY ustc_priv.priv_value desc");
+		//dump($club_members);die;
+		$this->assign('members', $club_members);
+		$posters = D('Poster')->getPosterByGid($gid);
+		$this->assign('posters',$posters);
+		
+		$teams = M("Team")->where(array('type'=>'team','gid'=>$gid,'flag'=>1))->select();
+		$departments =M("Team")->where(array('type'=>'department','gid'=>$gid,'flag'=>1))->select();
+		$this->assign('teams', $teams);
+		$this->assign('departments', $departments);
+		//dump($posters);
+		$this->assign('club',$club);
+		$this->display();
+	}
+	public function introModify(){
+		if (CURRENT_USER == 0) {
+			$this->error("您需要先登录");
+		}
+		global $_G;
+		$gid = $this->_request("gid");
+		$act_id = $this->_request("act_id");
+		if(!D('Club')->isCorer($gid))
+		{
+			$this->error("您没有权限");
+		}
+		$club = D('Club')->getInfo($gid);
+		$act = D('Activity')->getActivityByID($act_id);
+		//dump($act);die;
+		$club_members = M()->query("SELECT * FROM (ustc_user INNER JOIN ustc_user_group ON ustc_user.uid = ustc_user_group.uid) INNER JOIN ustc_priv ON ustc_user_group.priv = ustc_priv.priv_name WHERE ustc_user_group.gid='$gid' ORDER BY ustc_priv.priv_value desc");
+		//dump($club_members);die;
+		$this->assign('members', $club_members);
+		$posters = D('Poster')->getPosterByGid($gid);
+		$this->assign('posters',$posters);
+		
+		$teams = M("Team")->where(array('type'=>'team','gid'=>$gid,'flag'=>1))->select();
+		$departments =M("Team")->where(array('type'=>'department','gid'=>$gid,'flag'=>1))->select();
+		$this->assign('teams', $teams);
+		$this->assign('departments', $departments);
+		//dump($posters);
+		$this->assign('club',$club);
+		$this->assign('act',$act);
+		$this->display();
+	}
+	public function creatActivity(){
+		$gid = $this->_post('gid');
+		$uid = $this->_post('uid');
+		$Activity = D('Activity');
+		if(!D('Club')->isCorer($gid, $uid_now = CURRENT_USER)){
+			$this->error('副部长及以上才有资格创建活动');
+		}
+		if(!D('Club')->isMember($uid,$gid)){
+			$this->error('会员才能成为本社团活动发起者');
+		}
+		$title = $this->_post('name');
+		if(!$title){
+			$this->error('活动标题不能为空哦~');
+		}
+		$shortdesc = $this->_post('shortdesc','');
+		$poster_id = $this->_post('poster_id');
+		if(!$poster_id&&!D('Poster')->isPosterOwner($poster_id,$gid)){
+			$this->error('所关联海报不属于本社团');
+		}
+		$tid = $this->_post('tid');
+		if(!$tid&&!D('Team')->isTeamOwner($tid,$gid)){
+			$this->error('所关联部门或组织不属于本社团');
+		}
+		$Activity->creatActivity($uid,$gid,$title,$poster_id,$tid,$shortdesc);
+		$this->success('成功创建');
+	}
+	public function modifyActivity(){
+		$gid = $this->_post('gid');
+		$act_id = $this->_post('act_id');
+		$uid = $this->_post('uid');
+		$Activity = D('Activity');
+		if(!D('Club')->isCorer($gid, $uid_now = CURRENT_USER)){
+			$this->error('副部长及以上才有资格修改活动');
+		}
+		if(!D('Club')->isMember($uid,$gid)){
+			$this->error('会员才能成为本社团活动发起者');
+		}
+		$title = $this->_post('name');
+		if(!$title){
+			$this->error('活动标题不能为空哦~');
+		}
+		$shortdesc = $this->_post('shortdesc','');
+		$poster_id = $this->_post('poster_id');
+		if(!$poster_id&&!D('Poster')->isPosterOwner($poster_id,$gid)){
+			$this->error('所关联海报不属于本社团');
+		}
+		$tid = $this->_post('tid');
+		if(!$tid&&!D('Team')->isTeamOwner($tid,$gid)){
+			$this->error('所关联部门或组织不属于本社团');
+		}
+		$Activity->ModifyActivity($uid,$gid,$title,$poster_id,$tid,$shortdesc,$act_id);
+		$this->success('成功修改');
+	}
+//For 活动信息展示
+	public function intro(){
+		$boxes = ['gender'=>'性别','student_no'=>'学号','realname'=>'真实姓名','telephone'=>'手机号','email'=>'邮箱','hobby'=>'爱好'];
+		$act_id = $this->_get('act_id');
+		$act = D('Activity')->getActivityByID($act_id);
+		$act['realname'] = D('User')->getRealname($act['uid']);
+		$act['checkbox_tmp'] = json_decode($act['register_form'],true);
+		foreach($boxes as $key => $val){
+			if(in_array($key,$act['checkbox_tmp']))
+				$checkbox .= '<input type="checkbox" name="checkbox[]" value="'.$key.'" checked="checked"/>'.$val."\n";
+			else
+				$checkbox .= '<input type="checkbox" name="checkbox[]" value="'.$key.'" />'.$val."\n";
+		}
+		$act['checkbox'] = $checkbox;
+		$club = D('Club')->getInfo($act['gid']);
+		$this->assign('club',$club);
+		$this->assign('act',$act);
+		//dump($act);
+		//dump($club);
+		$this->display();
+	}
+	public function reform($act_id){
+		$act_id = $this->_post('act_id');
+		$data['register_form'] = json_encode($this->_post('checkbox'));
+		M('Activity')->where(['act_id'=>$act_id])->save($data);
+	}
+//For 活动报名	
+	public function register(){
+		$act_id = $this->_get('act_id');
+		$act = D('Activity')->getActivityByID($act_id);
+		$club = D('Club')->getInfo($act['gid']);
+		if(empty($act_id)){
+			$this->error("非法操作");
+		}
+		//dump($act);die;
+		$this->assign('club',$club);
+		$this->assign('act',$act);
+		$this->display();
+	}
+	public function addUser() {
+		session_start();
+	   $User = D("Activity_register");
+		$telephone=trim($_POST['telephone']);
+        if(empty($_POST['act_id'])){
+			$this->error("非法操作");
+		}
+		if(empty($_POST['email']))
+        {
+            $this->error("邮箱不能为空");
+        }
+        if (!preg_match("/[a-zA-Z0-9+_-]+/", $_POST['email'])) {
+            $this->error("请输入有效的邮箱地址");
+        }
+        if(empty($_POST[student_no]))
+        {
+            $this->error("学号不能为空");
+        }
+        if(empty($_POST[realname]))
+        {
+            $this->error("真实姓名不能为空");
+        }
+       if(D('User')->is_loginname_existed($_POST['email']))
+        {
+            $this->error("该邮件已注册，可直接报名");
+        }
+        if($_SESSION['verify'] != md5($_POST['check'])) {
+            $this->error('验证码错误');
+        }
+        $_POST['student_no'] = strtoupper($_POST['student_no']);
+        $_POST['time']=time();
+		//dump($_POST);die;
+        $User->create();
+        $User->add();
+		$info = $User->where(array('email'=>$_POST['email']))->find();
+        if (empty($info) || !is_numeric($info['id']))
+            $this->error('未知错误，请重新注册');
+		$this->success('恭喜你，报名成功！');
+	}
+	public function address(){
+		$act_id = $this->_get('act_id');
+		$act = D('Activity')->getActivityByID($act_id);
+		$club = D('Club')->getInfo($act['gid']);
+		if(empty($act_id)){
+			$this->error("非法操作");
+		}
+		$members = D('Activity')->getAddress($act_id);
+		//dump($members);
+		$this->assign('club',$club);
+		$this->assign('act',$act);
+		$this->assign('members',$members);
+		$this->display();
+	}
+	 public function ajaxCheckEmail()
+    {
+        $email = empty($_POST[email])?$_GET[email]:$_POST[email];
+        //$this->error("邮箱错误",1);
+        if(isset($email))
+        {
+            $User = D('User');
+            if($User->is_loginname_existed($email))
+            {
+                $this->error("该邮箱已注册过，登录后你可以直接报名",1);
+            }
+            else
+            {
+                $this->success("success",1);
+            }
+
+        }
+        else
+            $this->error("邮箱错误",1);
+    }
+	public function ajaxCheckTelephone()
+    {
+        $telephone = $this->_request('telephone');
+        //$this->error("邮箱错误",1);
+        if(isset($telephone))
+        {
+			if(!preg_match('/^[1-9]\d{10}$/', trim($telephone)))
+				$this->error("请输入正确的手机号");
+            $User = D('User');
+            if($User->is_telephone_existed($telephone))
+            {
+                $this->error("该手机已注册，登录后你可以直接报名");
+            }
+            else
+            {
+                $this->success("success");
+            }
+        }
+		else
+		{
+			$this->error("请输入正确的手机号");
+		}
+        
+    }
+//end 活动报名
+	public function ajaxGet() {
         //list($start, $num, $cond, $order) = $this->parseInput();
 		$start = $this->_get('start');
 		$num = $this->_get('num');
@@ -72,7 +317,6 @@ class ActivityAction extends PublicAction{
             $elements[] = $this->picture2html($picture);
         echo json_encode($elements);
     }
-
     public function ajaxGetDesc()
     {
     	$pid=$this->_get('pid');

@@ -1,0 +1,265 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>报名 - {$act.title}</title>
+<link href="/static/css1.css" rel="stylesheet" type="text/css" />
+<link href="/static/zhuce.css" rel="stylesheet" type="text/css" />
+<script src="/static/jquery.js" type="text/javascript"></script>
+<style type="text/css">
+.regist-input-box{
+	  font-family:Microsoft Yahei, "Times New Roman", Times, serif;		  	  
+	  font-size:16px;	  
+	  outline:none;
+	  height:28px;
+	  line-height:24px;
+	  vertical-align:middle;
+	  padding:0px 5px;
+	  border-radius:4px;
+  }
+.regist-input-button{
+	 font-family:Microsoft Yahei, "Times New Roman", Times, serif;		 	  
+	  font-size:16px;	  
+	  width:60px;
+	  height:30px;
+	  line-height:24px;
+	  vertical-align:middle;
+	  padding:0px 3px;
+	  background:#06F;
+	  border-radius:6px;
+	  font-weight:bold;
+	  color:#FFF;
+	 }
+.regist-input-button:hover{
+	color:#666;
+	background:#FF3;
+}
+</style>
+
+</head>
+
+<body>
+<div id="header">
+  <div class="head-1160">
+      <div class="logo"><a href="/">大学活动</a></div><div id="zc1biaoyu"><a href="">大学生活原来可以这么精彩！</a></div>
+  </div><!--head-990-->
+</div><!--header-->
+<div id="zc1mainding">
+	<div class="zc1contentrect" style="padding-top:20px;">
+    	<div class="headTitle" style="font-size:22px;" title="{$act.shortdesc}">
+		{$act.title} - 报名页面
+		</div>
+		<div class="zc1content">
+		 <form id="registerform" name="registerform" action="/Activity/addUser" method="post">
+            <input type="hidden" name="register_referer" value="<?=$_SERVER['HTTP_REFERER']?>" />
+            <input type="hidden" name="act_id" value="{$Think.get.act_id}" />
+			<table style="margin:10px 78px" cellspacing="0" cellpadding="0" border="0" class="zc1table">
+                <tr>
+                	<td align="right" valign="middle" width="150px" height="58px"><em>*</em>性别</td>
+                    <td class="zc1tablerect" width="300px"  valign="middle" align="left">
+                    	<div class="zc1school">
+                        	<input type="radio" name="gender" checked value="1" />男
+							<input type="radio" name="gender"value="0" />女
+
+
+                        </div>                        
+                    </td>
+                </tr>
+                <tr>
+                	<td align="right" valign="middle" width="150px" height="58px"><em>*</em>学号</td>
+                    <td class="zc1tablerect" width="300px"  valign="middle" align="left">
+                    	<div class="zc1school">
+                        	<input type="text" name="student_no" id="student_no" size='20' class="regist-input-box dxhb-blur" onfocus="this.className='dxhb-focus regist-input-box'" onblur="this.className='dxhb-blur regist-input-box'"/><span id="checkStudent_no"></span>
+                        </div>                        
+                    </td>
+                </tr>
+				<tr>
+                	<td align="right" valign="middle" width="150px" height="58px"><em>*</em>真实姓名</td>
+                    <td class="zc1tablerect" width="300px"  valign="middle" align="left">
+                    	<div class="zc1school">
+                        	<input type="text" name="realname" id="realname" size='20' class="regist-input-box dxhb-blur" onfocus="this.className='dxhb-focus regist-input-box'" onblur="this.className='dxhb-blur regist-input-box'"/><span id="checkRealname"></span>
+                        </div>                        
+                    </td>
+                </tr>
+		
+                <tr>
+                	<td align="right" valign="middle" width="150px" height="58px"><em>*</em>手机号</td>
+                    <td class="zc1tablerect" width="300px"  valign="middle" align="left">
+                    	<div class="zc1school">
+                        	<input type="text" id = "telephone" name="telephone" size='20' class="regist-input-box dxhb-blur" onfocus="this.className='dxhb-focus regist-input-box'" onblur="this.className='dxhb-blur regist-input-box'"/><span id="checkTelephone"></span>
+                        </div>                        
+                    </td>
+                </tr>
+                <tr>
+                	<td align="right" valign="middle" width="150px" height="58px"><em>*</em>邮箱</td>
+                    <td class="zc1tablerect" width="300px"  valign="middle" align="left">
+                    	<div class="zc1school">
+                        	<input type="text" id="email" name="email"  class="regist-input-box dxhb-blur" onfocus="this.className='dxhb-focus regist-input-box'" onblur="this.className='dxhb-blur regist-input-box'"/><br><span id="checkMail"></span>
+                        </div>                        
+                    </td>
+                </tr>
+				<tr>
+                	<td align="right" valign="middle" width="150px" height="58px"><em></em>爱好</td>
+                    <td class="zc1tablerect" width="300px"  valign="middle" align="left">
+                    	<div class="zc1school">
+                        	<input type="text" id="hobby" name="hobby"  class="regist-input-box dxhb-blur" onfocus="this.className='dxhb-focus regist-input-box'" onblur="this.className='dxhb-blur regist-input-box'"/><br><span id="checkMail"></span>
+                        </div>                        
+                    </td>
+                </tr>				
+                <tr>
+                	<td align="right" valign="middle" width="150px" height="58px"><em>*</em>验证码</td>
+                    <td class="zc1tablerect" width="300px"  valign="middle" align="left">
+					<img id="ajaxCheckImg" src="/User/ajaxVerify" style="cursor:pointer"/>
+                    	<div class="zc1school">
+                        	<input id="check" type="text" name="check" class="regist-input-box dxhb-blur" onfocus="this.className='dxhb-focus regist-input-box'" onblur="this.className='dxhb-blur regist-input-box'"/><span id="checkCode"></span>
+                        </div>                        
+                    </td>
+                </tr>
+                <tr>
+                    <td class="zc1tablerect" valign="middle" align="left">
+                    </td>
+                	<td align="center" valign="middle" style="height:70px;"><a href="#" onclick="submituser();return false;" style="padding:5px 10px;" class="regist-input-button dxhb-button">现在报名</a></td>
+                </tr>
+            </table>
+		</form>
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+var check = {$act.register_form};
+$("tr").hide();
+$("tr:eq(6)").show();
+$("tr:eq(7)").show();
+for(var i in check){
+    $("#"+check[i]).parent().parent().parent().show();
+}
+</script>
+<script>
+$(function(){
+
+	$('#dept').blur(function(){												
+		if($.trim($(this).val())=="0"){
+			$("#checkDept").html('<font color="#FF0000"  size="1">请选择学院</font>');
+		}
+		else {
+			$("#checkDept").html('<img src="/static/check_right.gif">');
+		}
+	});
+
+	$('#student_no').blur(function(){												
+		if($.trim($(this).val())==""){
+			$("#checkStudent_no").html('<font color="#FF0000"  size="1">请填写学号</font>');
+		}
+		else {
+			$("#checkStudent_no").html('<img src="/static/check_right.gif">');
+		}
+	});
+
+	$('#realname').blur(function(){												
+		if($.trim($(this).val())==""){
+			$("#checkRealname").html('<font color="#FF0000"  size="1">请填写真实姓名</font>');
+		}
+		else {
+			$("#checkRealname").html('<img src="/static/check_right.gif">');
+		}
+	});
+
+	$('#email').blur(function(){												
+		if($.trim($(this).val())==""){
+			$("#checkMail").html('<font color="#FF0000"  size="1">邮箱不能为空</font>');
+		}
+		else {
+			$.post("/Activity/ajaxCheckEmail",{email: $(this).val()},
+				function(data){
+					if(data.status==1)
+					{
+						$("#checkMail").html('<img src="/static/check_right.gif">');
+						
+					}
+					else
+					{
+						$("#checkMail").html('<font color="#FF0000"  size="1">'+data.info+'</font>');
+					}
+			},"json");
+			
+		}
+	});	
+	$('#ajaxCheckImg').click(function(){
+			var timenow =new Date().getTime();
+			$(this).attr("src","/User/ajaxVerify/"+timenow);
+	});
+	$('#check').blur(function(){
+		if($(this).val()==""){
+			$("#checkCode").html('<font color="#FF0000"  size="1">验证码不能为空！</font>');
+		}
+		else{
+			$.post("/User/ajaxCheckCode",{check: $(this).val()},
+				function(data){
+					if(data.status==1)
+					{
+						$("#checkCode").html('<img src="/static/check_right.gif">');
+						
+					}
+					else
+					{
+						$("#checkCode").html('<font color="#FF0000"  size="1">验证码错误</font>');
+					}
+				},"json");
+		}
+	});	
+});
+
+function submituser(){
+	if($.trim($('#student_no').val())=="")
+	{
+		$("#checkStudent_no").html('<font color="#FF0000"  size="1">请填写学号</font>');
+		return false;
+	}
+	if($.trim($('#realname').val())=="")
+	{
+		$("#checkRealname").html('<font color="#FF0000"  size="1">请填写真实姓名</font>');
+		return false;
+	}
+	if($.trim($('#email').val())=="")
+	{
+		$("#checkMail").html('<font color="#FF0000"  size="1">邮箱不能为空</font>');
+		return false;
+	}
+	$.post("/User/ajaxCheckCode",{check: $("#check").val()},
+				function(data){
+					if(data.status!=1)
+					{	
+						$("#ajaxCheckImg").attr("src","/User/ajaxVerify");
+						$("#checkCode").html('<font color="#FF0000"  size="1">验证码错误</font>');
+						return false;
+					}
+					else
+					{	
+						
+						$.post("/Activity/ajaxCheckEmail",{email: $("#email").val()},
+							function(data){
+								if(data.status==1)
+								{
+									$("#checkMail").html('<img src="/static/check_right.gif">');
+									$('#registerform').get(0).submit();
+												
+								}
+								else
+								{
+									$("#checkMail").html('<font color="#FF0000"  size="1">'+data.info+'</font>');
+									return false;
+								}
+						},"json");
+						//$('#registerform').get(0).submit();
+						
+					}
+		},"json");
+
+	
+	
+	
+}
+</script>
+
+</body>
+</html>

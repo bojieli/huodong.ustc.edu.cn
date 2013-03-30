@@ -2,9 +2,37 @@
 
 
 class ActivityModel extends Model {
-
-	
-	
+	public function creatActivity($uid,$gid,$title,$poster_id,$tid,$shortdesc){
+		$register_form = '["gender","student_no","realname","telephone","email"]';//д╛хо
+		$con = array(
+			'uid'=>$uid,
+			'gid'=>$gid,
+			'title'=>$title,
+			'poster_id'=>$poster_id,
+			'tid' => $tid,
+			'shortdesc'=>$shortdesc,
+			'register_form'=>$register_form,
+			'time'=> time()
+		);
+		M('Activity')->add($con);
+		M('Activity')->field('act_id')->where($con)->find()['act_id'];
+		return true;
+	}
+	public function ModifyActivity($uid,$gid,$title,$poster_id,$tid,$shortdesc,$act_id){
+		$con = array(
+			'uid'=>$uid,
+			'gid'=>$gid,
+			'title'=>$title,
+			'poster_id'=>$poster_id,
+			'tid' => $tid,
+			'shortdesc'=>$shortdesc
+		);
+		M('Activity')->where(['act_id'=>$act_id])->save($con);
+		return true;
+	}
+	public function getActIDByGid($gid){
+		return M('Activity')->where(['gid'=>$gid])->select();
+	}
 	public function getActivityByID($id,$all=1,$order="act_id desc") {
 		$where = array(
 			'act_id' => $id,
@@ -63,8 +91,10 @@ class ActivityModel extends Model {
 	public function likesPic($pid) {
 		return M('activity_picture')->where('pid='.$pid)->setInc('likes');
 	}
-	
+	public function getAddress($act_id){
+	return M('Activity_register')->where(['act_id'=>$act_id])->select();
+	}
 }
-
+	
 
 ?>

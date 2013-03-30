@@ -1,0 +1,84 @@
+<include file="Public:bootstrapHeader" />
+<form class="form-horizontal" action="/Activity/creatActivity" method="post">
+  <fieldset>
+    <div class="control-group">
+      <label class="control-label" for="name"></label>
+      <div class="controls">
+        <h2>{$club.name} -> 创建活动</h2>
+	<p></p>
+      </div>
+    </div>
+    <div class="control-group">
+      <label class="control-label" for="name">活动名称</label>
+      <div class="controls">
+	  <input type='hidden' name='gid' value="{$club.gid}"/>
+        <input type="text" class="input-xlarge" id="name" name="name" value="" onKeyUp="if(this.value=='') $(this).parent().parent().addClass('error'); else $(this).parent().parent().removeClass('error');"/>
+      </div>
+    </div>
+	<div class="control-group">
+      <label class="control-label" for="uid">发起人</label>
+      <div class="controls">
+		<select name="uid" id="uid">
+		<volist name="members" id="vo">
+		<option value="{$vo.uid}" <if condition="$vo.uid == $_G['uid']">selected="selected"</if>>
+		{$vo.student_no} - {$vo.realname}
+		</option>
+		</volist>
+		</select> 
+      </div>
+    </div>
+    <div class="control-group">
+      <label class="control-label" for="poster_id">所关联海报</label>
+      <div class="controls">
+		  <select name="poster_id" id="poster_id">
+			<option>
+			------------ 不关联 ------------
+			</option>
+			<volist name="posters" id="poster">
+			<option value="{$poster.aid}">
+			{$poster.name} - {$poster.Publish_time}
+			</option>
+			</volist>
+		 </select>
+      </div>
+    </div>
+	<div class="control-group">
+      <label class="control-label" for="tid">所关联部门或项目组</label>
+      <div class="controls">
+		 <select name="tid" id="tid">
+			<option>
+			------------ 不关联 ------------
+			</option>
+			<volist name="departments" id="department">
+			<option style="color:red;text-align:center">			
+			------------- 部门 -------------
+			</option>
+			<option value="{$department.tid}">
+			{$department.name}
+			</option>
+			</volist>
+			<option style="color:blue;text-align:center">
+			------------ 项目组 ------------
+			</option>
+			<volist name="teams" id="team">
+			<option value="{$team.tid}">
+			{$team.name}
+			</option>
+			</volist>
+		 </select>
+      </div>
+    </div>
+	<div class="control-group">
+      <label class="control-label" for="shortdesc">简短介绍</label>
+	  <div class="controls">
+		<textarea class="input-xlarge" id="shortdesc" name="shortdesc" rows="5" onKeyUp="if(this.value=='' || this.value.length > 140) $(this).parent().parent().addClass('error'); else $(this).parent().parent().removeClass('error');"></textarea>
+		<p class="help-block">简短介绍，不超过140字</p>
+	  </div>
+    </div>
+    <div class="form-actions">
+      <button type="submit" class="btn btn-primary">保存更改</button>
+      <button class="btn" onclick="window.history.go(-1);">取消</button>
+    </div>
+  </fieldset>
+</form>
+<include file="Public:bootstrapFooter" />

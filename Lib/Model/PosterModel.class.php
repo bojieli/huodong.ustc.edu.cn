@@ -20,6 +20,9 @@ class PosterModel extends Model {
 	public function getPosterAuthorByAid($aid){
 		return M('Poster')->field('author')->where(['aid'=>$aid])->find()['author'];
 	}
+	public function getPosterOwnerByAid($aid){
+		return M('Poster')->field('gid')->where(['aid'=>$aid])->find()['gid'];
+	}
 	public function getPosterStartTime($aid){//ltx
 		return M('Poster')->field('start_time')->where(array('aid'=>$aid))->find()['start_time'];
 	}
@@ -163,4 +166,7 @@ class PosterModel extends Model {
 	public function getAuthorByCid($cid){	
 		return M('Poster_comment')->field('author')->where(['cid'=>$cid])->find()['author'];
 	}
+	public function isPosterOwner($aid,$gid){//海报拥有集体
+		return $gid==$this->getPosterOwnerByAid($aid);
+	} 
 }
