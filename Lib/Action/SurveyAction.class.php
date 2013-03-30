@@ -13,19 +13,19 @@ class SurveyAction extends PublicAction {
     }
     
     function create() {
-        $this->assertPriv('create', 'manager');
+        $this->assertPriv(__METHOD__, 'manager');
         $this->headnav();
         $this->display();
     }
 
     function do_create() {
-        $this->assertPriv('do_create', 'manager');
+        $this->assertPriv(__METHOD__, 'manager');
         $survey = D('Survey')->create($_REQUEST['gid'], json_decode($_POST['form'], true));
         echo json_encode(array('survey'=>$survey, 'status'=>($survey > 0))); 
     }
 
     function response() {
-        $this->assertPriv('response');
+        $this->assertPriv(__METHOD__);
         if (D('Survey')->isSubmited($_REQUEST['survey']))
             $this->error('您已经参与过此调查，每人只能参与一次');
         $form = D('Survey')->getForm($_REQUEST['survey']);
@@ -35,7 +35,7 @@ class SurveyAction extends PublicAction {
     }
 
     function do_response() {
-        $this->assertPriv('do_response');
+        $this->assertPriv(__METHOD__);
         try {
             $num = D('Survey')->response($_REQUEST['survey'], json_decode($_POST['form']));
         } catch(Exception $e) {
@@ -46,7 +46,7 @@ class SurveyAction extends PublicAction {
     }
 
     function update() {
-        $this->assertPriv('update', 'manager');
+        $this->assertPriv(__METHOD__, 'manager');
         $form = D('Survey')->getForm($_REQUEST['survey']);
         $this->assign($form);
         $this->headnav();
@@ -54,14 +54,30 @@ class SurveyAction extends PublicAction {
     }
 
     function do_update() {
-        $this->assertPriv('do_update', 'manager');
+        $this->assertPriv(__METHOD__, 'manager');
         $status = D('Survey')->update($_REQUEST['survey'], json_decode($_POST['form']));
         echo json_encode(array('status'=>$status)); 
     }
 
     function result() {
-        $this->assertPriv('result', 'manager');
+        $this->assertPriv(__METHOD__, 'manager');
         $result = D('Survey')->getResult($_REQUEST['survey']);
+        $this->assign($result);
+        $this->headnav();
+        $this->display();
+    }
+
+    function response_list() {
+        $this->assertPriv(__METHOD__, 'manager');
+        $result = D('Survey')->getResponseList($_REQUEST['survey']);
+        $this->assign('responses', $result);
+        $this->headnav();
+        $this->display();
+    }
+
+    function show_response() {
+        $this->assertPriv(__METHOD__, 'manager');
+        $result = D('Survey')->getResponse($_REQUEST['response']);
         $this->assign($result);
         $this->headnav();
         $this->display();
@@ -88,7 +104,7 @@ class SurveyAction extends PublicAction {
             $this->survey = M('Survey')->find($this->sid);
             if (!$this->survey)
                 $this->error("您所查找的调查问卷不存在");
-            if ($this->survey['password'] != '') {
+            if ($this->survey['password'] != '' && $priv != 'manager') {
                 if (empty($_REQUEST['password'])) {
                     $this->assign('goto', $goto);
                     $this->display('password');

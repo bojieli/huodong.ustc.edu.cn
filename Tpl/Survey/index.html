@@ -5,7 +5,9 @@
 <tr>
 <td><a href="/Club/intro?gid={$vo.gid}">{$vo.clubname}</a></td>
 <td><a href="/Survey/response?gid={$vo.gid}&survey={$vo.id}">{$vo.title}</a></td>
-<td><a href="/Survey/result?gid={$vo.gid}&survey={$vo.id}">查看结果</td></tr>
+<td><a href="/Survey/result?gid={$vo.gid}&survey={$vo.id}">查看统计</td>
+<td><a href="/Survey/response_list?gid={$vo.gid}&survey={$vo.id}">查看每张问卷</td>
+</tr>
 </volist>
 </table>
 <form class="well" action="/Survey/create" method="get">
