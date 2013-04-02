@@ -42,7 +42,7 @@ class UserModel extends Model {
     {
         global $_G;
         if(empty($_G['uid'])) {
-            return false;
+			return false;
         }
         else{
             return true;//已登录

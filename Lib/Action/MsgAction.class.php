@@ -2,7 +2,12 @@
 class MsgAction extends PublicAction {
 
     public function index(){
-        if(!D('User')->checkLogin()){$this->error('未登陆');}
+        if(!D('User')->checkLogin()){
+			$this->assign('jumpUrl', '/User/login');
+			$this->assign('waitSecond', 1);
+			$this->error("您尚未登录请先登录");
+		}
+		
 		//$tids=array(5,99);
 		//D('Msg')->sentMsgForSys(time(),'啦啦啦','轻武器协会',$tids,$gid=9);
 		$this->show();
@@ -10,7 +15,11 @@ class MsgAction extends PublicAction {
     }
 
     public function show(){
-        if(!D('User')->checkLogin()){$this->error('未登陆');}
+        if(!D('User')->checkLogin()){
+			$this->assign('jumpUrl', '/User/login');
+            $this->assign('waitSecond', 1);
+            $this->error("您尚未登录请先登录");
+		}
 		$tid = $this->_get('add');
 		//echo $tid;
 		$model = D('Msg');
