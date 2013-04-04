@@ -350,4 +350,40 @@ function UserGender($Chinese){
 		return 1;
 	return 0;
 }
+function Tpl($msgType,$fromUsername, $toUsername,$time,$flag=0,$n=1){
+		$head = "<xml>
+				 <ToUserName><![CDATA[".$fromUsername."]]></ToUserName>
+				 <FromUserName><![CDATA[".$toUsername."]]></FromUserName>
+				 <CreateTime>".$time."</CreateTime>
+				 <MsgType><![CDATA[".$msgType."]]></MsgType>";
+		$end = " <FuncFlag>".$flag."</FuncFlag>
+				</xml>";
+		switch($msgType){
+		case "text":
+		$form = '<Content><![CDATA[%s]]></Content>';break;
+		case "music":
+		$form = '<Music>
+				 <Title><![CDATA[%s]]></Title>
+				 <Description><![CDATA[%s]]></Description>
+				 <MusicUrl><![CDATA[%s]]></MusicUrl>
+				 <HQMusicUrl><![CDATA[%s]]></HQMusicUrl>
+				 </Music>';break;
+		case "news":
+		$item = '<item>
+				 <Title><![CDATA[%s]]></Title> 
+				 <Description><![CDATA[%s]]></Description>
+				 <PicUrl><![CDATA[%S]]></PicUrl>
+				 <Url><![CDATA[%s]]></Url>
+				 </item>';
+		$i = $n;
+		for(;$i>0;$i--)
+				$items .=$item;
+		$form='<ArticleCount>'.$n.'</ArticleCount>
+				 <Articles>'.$item.'
+			     </Articles>';		
+				break;
+		}
+		return $head.$form.$end;
+		
+	}
 ?>

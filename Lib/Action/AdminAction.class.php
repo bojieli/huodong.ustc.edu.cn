@@ -30,6 +30,7 @@ class AdminAction extends PublicAction {
         $this->display('manager');
 
     }
+
     public function applyManage()
     {
         global $_G;
