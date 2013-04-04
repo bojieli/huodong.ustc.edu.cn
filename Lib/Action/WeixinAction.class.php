@@ -60,7 +60,7 @@ public function responseMsg()
 						$msgType = "news";
 						$Title = "中国科学技术大学学生会简介";
 						$Description = "中国科大学生会是中国科学技术大学学生联合会的简称，它接受校党委的领导和团委的指导，依照法律、学校规章制度和自己的章程，独立自主地开展工作的学生群众组织。学生会的定位是：服务同学，服务大局，我们的宗旨是：自我服务，自我管理，自我教育。";
-						$PicUrl = "http://mmsns.qpic.cn/mmsns/sSYjQERK9NM6BMEWUY3j7H82ExC0RL73u2AQK3EyGwgFX5af7xCqZg/0";
+						$PicUrl = "http://huodong.ustc.edu.cn/static/weixin/xsh.jpg";
 						$Url = "http://stunion.ustc.edu.cn/";
 						$resultStr = sprintf(Tpl($msgType,$fromUsername, $toUsername,$time),$Title,$Description,$PicUrl,$Url);
 						break;
@@ -78,7 +78,7 @@ public function responseMsg()
 						$msgType = "news";
 						$Title = "校车查询";
 						$Description = "亲，别误了校车哦";
-						$PicUrl = "http://mp.weixin.qq.com/cgi-bin/getimgdata?msgid=10000053&mode=large&source=file&fileId=10000053";
+						$PicUrl = "http://huodong.ustc.edu.cn/static/weixin/school_bus.jpg";
 						$Url = "http://www.ustc.edu.cn/ggfw/xxcx/201207/t20120716_138067.html";
 						$resultStr = sprintf(Tpl($msgType,$fromUsername, $toUsername,$time),$Title,$Description,$PicUrl,$Url);
 						break;
@@ -86,7 +86,7 @@ public function responseMsg()
 						$msgType = "news";
 						$Title = "教学日历";
 						$Description = "亲~你可以订阅教学日历到你的Gmail";
-						$PicUrl = "http://mp.weixin.qq.com/cgi-bin/getimgdata?msgid=10000038&mode=large&source=file&fileId=10000038";
+						$PicUrl = "http://huodong.ustc.edu.cn/static/weixin/jxrl.jpg";
 						$Url = "http://www.teach.ustc.edu.cn/page.asp?post=1134";
 						$resultStr = sprintf(Tpl($msgType,$fromUsername, $toUsername,$time),$Title,$Description,$PicUrl,$Url);
 						break;						
