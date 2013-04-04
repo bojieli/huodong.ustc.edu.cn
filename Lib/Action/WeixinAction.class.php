@@ -60,7 +60,7 @@ public function responseMsg()
 						$msgType = "news";
 						$Title = "中国科学技术大学学生会简介";
 						$Description = "中国科大学生会是中国科学技术大学学生联合会的简称，它接受校党委的领导和团委的指导，依照法律、学校规章制度和自己的章程，独立自主地开展工作的学生群众组织。学生会的定位是：服务同学，服务大局，我们的宗旨是：自我服务，自我管理，自我教育。";
-						$PicUrl = "http://mmsns.qpic.cn/mmsns/sSYjQERK9NM6BMEWUY3j7H82ExC0RL73u2AQK3EyGwgFX5af7xCqZg/0"
+						$PicUrl = "http://mmsns.qpic.cn/mmsns/sSYjQERK9NM6BMEWUY3j7H82ExC0RL73u2AQK3EyGwgFX5af7xCqZg/0";
 						$Url = "http://stunion.ustc.edu.cn/";
 						$resultStr = sprintf(Tpl($msgType,$fromUsername, $toUsername,$time),$Title,$Description,$PicUrl,$Url);
 						break;
