@@ -81,7 +81,8 @@ public function responseMsg()
 						break;
 					case "东到西":
 						$msgType= "text";
-						$contentStr = $this->findBus(1);
+						//$contentStr = $this->findBus(1);
+						$contentStr = "test";
 						$resultStr = sprintf(Tpl($msgType,$fromUsername, $toUsername,$time),$contentStr);
 						break;
 					case "东区到南区":
