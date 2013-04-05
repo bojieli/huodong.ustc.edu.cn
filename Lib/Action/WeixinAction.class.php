@@ -79,7 +79,7 @@ public function responseMsg()
 						$contentStr = "亲~告诉我想要查询校车的始发校区和目地校区啦。"."\n"."例如：东区到西区";
 						$resultStr = sprintf(Tpl($msgType,$fromUsername, $toUsername,$time),$contentStr);
 						break;
-					case "东区到西区":
+					case "东到西":
 						$msgType= "text";
 						$contentStr = $this->findBus(1);
 						$resultStr = sprintf(Tpl($msgType,$fromUsername, $toUsername,$time),$contentStr);
