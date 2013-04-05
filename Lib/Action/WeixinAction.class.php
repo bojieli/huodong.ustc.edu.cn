@@ -3,8 +3,8 @@ define("TOKEN", "stunionweixin20130404");
 
 class WeixinAction extends PublicAction{
 public function index(){
-	//$this->valid();
-	$this->responseMsg();
+	$this->valid();
+	//$this->responseMsg();
 }
 public function valid()
 {
