@@ -154,8 +154,8 @@ public function findBus($way){
 		return "小信伤心地告诉你，你错过了".$name."末班车~";
 	$next = "最近一班 ".$name."的校车在".$bus[0]['time']."出发，千万不要错过了哦";
 	foreach($bus as $val)
-		$more .= $val['time'].$star[$val['star']]." ".$isCircle[$val['isCircle']]."(".$wayname[$way].")"."<br />";
-	return $next."<br />"."更多："."<br />".$more;
+		$more .= $val['time'].$star[$val['star']]." ".$isCircle[$val['isCircle']]."(".$wayname[$way].")"."\n";
+	return $next."\n"."更多："."\n".$more;
 }
 private function checkSignature()
 {
