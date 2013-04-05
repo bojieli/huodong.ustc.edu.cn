@@ -75,12 +75,40 @@ public function responseMsg()
 						$resultStr = sprintf(Tpl($msgType,$fromUsername, $toUsername,$time),$contentStr);
 						break;
 					case "校车":
-						$msgType = "news";
-						$Title = "校车查询";
-						$Description = "亲，别误了校车哦";
-						$PicUrl = "http://huodong.ustc.edu.cn/static/weixin/school_bus.jpg";
-						$Url = "http://www.ustc.edu.cn/ggfw/xxcx/201207/t20120716_138067.html";
-						$resultStr = sprintf(Tpl($msgType,$fromUsername, $toUsername,$time),$Title,$Description,$PicUrl,$Url);
+						$msgType= "text";
+						$contentStr = "亲~告诉我想要查询校车的始发校区和目地校区啦。
+						例如：东区到西区";
+						$resultStr = sprintf(Tpl($msgType,$fromUsername, $toUsername,$time),$contentStr);
+						break;
+					case "东区到西区":
+						$msgType= "text";
+						$contentStr = $this->findBus(1);
+						$resultStr = sprintf(Tpl($msgType,$fromUsername, $toUsername,$time),$contentStr);
+						break;
+					case "东区到南区":
+						$msgType= "text";
+						$contentStr = $this->findBus(2);
+						$resultStr = sprintf(Tpl($msgType,$fromUsername, $toUsername,$time),$contentStr);
+						break;
+					case "西区到东区":
+						$msgType= "text";
+						$contentStr = $this->findBus(3);
+						$resultStr = sprintf(Tpl($msgType,$fromUsername, $toUsername,$time),$contentStr);
+						break;
+					case "西区到南区":
+						$msgType= "text";
+						$contentStr = $this->findBus(4);
+						$resultStr = sprintf(Tpl($msgType,$fromUsername, $toUsername,$time),$contentStr);
+						break;					
+					case "南区到东区":
+						$msgType= "text";
+						$contentStr = $this->findBus(5);
+						$resultStr = sprintf(Tpl($msgType,$fromUsername, $toUsername,$time),$contentStr);
+						break;
+					case "南区到西区":
+						$msgType= "text";
+						$contentStr = $this->findBus(6);
+						$resultStr = sprintf(Tpl($msgType,$fromUsername, $toUsername,$time),$contentStr);
 						break;
 					case "教学日历":
 						$msgType = "news";
@@ -115,23 +143,38 @@ public function responseMsg()
         	exit;
         }
     }
-	private function checkSignature()
-	{
-        $signature = $_GET["signature"];
-        $timestamp = $_GET["timestamp"];
-        $nonce = $_GET["nonce"];	
-        		
-		$token = TOKEN;
-		$tmpArr = array($token, $timestamp, $nonce);
-		sort($tmpArr);
-		$tmpStr = implode( $tmpArr );
-		$tmpStr = sha1( $tmpStr );
-		
-		if( $tmpStr == $signature ){
-			return true;
-		}else{
-			return false;
-		}
+public function findBus($way){
+	$isCircle = array('直线','环线');
+	$star = array('','*');
+	$wayname = array(' ','东区到西区','东区到南区','西区到东区','西区到南区','南区到东区','南区到西区');
+	$name = $wayname[$way];
+	$con['way'] = $way;
+	$con['time']= array('gt',date("H:i:s"));
+	$bus = M('Bus')->where($con)->limit('5')->order('time')->select();
+	if(!$bus)
+		return "小信伤心地告诉你，你错过了".$name."末班车~";
+	$next = "最近一班".$name."校车在".$bus['time']."千万不要错过了哦";
+	foreach($bus as $val)
+		$more .= $val['time'].$star[$val['star']]." ".$isCircle[$val['isCircle']]."(".$wayname.")"."\n";
+	return $next."\n"."更多："."\n".$more;
+}
+private function checkSignature()
+{
+	$signature = $_GET["signature"];
+	$timestamp = $_GET["timestamp"];
+	$nonce = $_GET["nonce"];	
+			
+	$token = TOKEN;
+	$tmpArr = array($token, $timestamp, $nonce);
+	sort($tmpArr);
+	$tmpStr = implode( $tmpArr );
+	$tmpStr = sha1( $tmpStr );
+	
+	if( $tmpStr == $signature ){
+		return true;
+	}else{
+		return false;
 	}
+}
 }
 ?>
