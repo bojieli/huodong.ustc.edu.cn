@@ -39,6 +39,7 @@ public function responseMsg()
 			$postObj = simplexml_load_string($postStr, 'SimpleXMLElement', LIBXML_NOCDATA);
 			$fromUsername = $postObj->FromUserName;
 			$toUsername = $postObj->ToUserName;
+			$CreateTime = $postObj->CreateTime;
 			$keyword = trim($postObj->Content);
 		}
 		else {
@@ -52,7 +53,11 @@ public function responseMsg()
 			switch($response['type']){
 			case "func":
 				$func = $response['text1'];
-				$call = $this->$func($keyword);
+				$funcInfo = array(
+					'keyword'=>$keyword,
+					'CreateTime'=>$CreateTime
+				);
+				$call = $this->$func($funcInfo);
 				$msgType = $call[0];
 				$contentStr = $call[1];
 				$resultStr = sprintf(Tpl($msgType,$fromUsername, $toUsername,$time),$contentStr);
@@ -102,7 +107,9 @@ public function responseMsg()
  
     }
 
-public function findBus($keyword){
+public function findBus($funcInfo){
+	$keyword = $funcInfo['keyword'];
+	$CreateTime = $funcInfo['CreateTime'];
 	$isCircle = array('直线','环线');
 	$star = array(' ','*');
 	$wayname = array(' ','东区到西区','东区到南区','西区到东区','西区到南区','南区到东区','南区到西区');
@@ -111,7 +118,8 @@ public function findBus($keyword){
 			{$way = $key;break;}
 	$name = $keyword;
 	$con['way'] = $way;
-	$con['time']= array('gt',date("H:i:s"));
+	$time = $CreateTime ? date("H:i:s",$CreateTime) : date("H:i:s");
+	$con['time']= array('gt',$time);
 	$bus = M('Bus')->where($con)->limit('5')->order('time')->select();
 	if(!$bus)
 		return array("text","小信伤心地告诉你，你错过了".$name."末班车~");
