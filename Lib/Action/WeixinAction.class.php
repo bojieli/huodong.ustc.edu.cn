@@ -143,12 +143,14 @@ public function findBus($funcInfo){
 }
 public function USTCChineseMainSiteNews(){
 	$xml = simplexml_load_file('http://rss.ustc.edu.cn/rssfeed.php?sn=USTCChineseMainSiteNews');
-	foreach($xml->channel->item as $key=>$value){
-		$content[]['text1'] = (String)$value->title;
-		$content[]['text2'] = (String)$value->description;
-		$content[]['url1'] = '';
-		$content[]['url2'] = (String)$value->guid;
-		}
+	foreach($xml->channel->item as $key=>$value)
+		$content[]=array(
+			'text1' =>(String)$value->title,
+			'text2' =>(String)$value->description,
+			'url1' => '',
+			'url2' => (String)$value->guid
+		);
+	print_r($content);die;
 	return array('news',$content);
 }
 private function checkSignature()
