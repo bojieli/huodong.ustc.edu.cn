@@ -372,7 +372,7 @@ function Tpl($msgType,$fromUsername, $toUsername,$time,$content,$n = 5,$flag=0){
 		foreach($content as $val){
 		$item .= '<item>
 				 <Title><![CDATA['.$val['text1'].']]></Title> 
-				 <Description><![CDATA['.$val['text1'].']]></Description>
+				 <Description><![CDATA['.$val['text2'].']]></Description>
 				 <PicUrl><![CDATA['.$val['url1'].']]></PicUrl>
 				 <Url><![CDATA['.$val['url2'].']]></Url>
 				 </item>';
