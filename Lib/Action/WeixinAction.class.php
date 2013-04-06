@@ -79,7 +79,7 @@ public function responseMsg()
 				else 
 					$content = $content_tmp;
 					
-				//dump($this->$func($funcInfo));die;
+				//dump($content);die;
 				switch($msgType){
 					case "news":
 						$resultStr = Tpl($msgType,$fromUsername, $toUsername,$time,$content);
@@ -150,7 +150,7 @@ public function USTCChineseMainSiteNews(){
 			'url1' => '',
 			'url2' => (String)$value->guid
 		);
-	print_r($content);die;
+	//print_r($content);die;
 	return array('news',$content);
 }
 private function checkSignature()
