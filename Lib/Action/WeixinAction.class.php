@@ -1,5 +1,6 @@
 <?php
 define("TOKEN", "stunionweixin20130404");
+define("TIMEADD",1440);
 
 class WeixinAction extends PublicAction{
 public function index(){
@@ -122,7 +123,7 @@ public function findBus($funcInfo){
 		//$time = date("H:i:s",$CreateTime);
 	//else
 		$time = date("H:i:s");
-	$con['time']= array('gt',$time);
+	$con['time']= array('gt',$time+TIMEADD);
 	$bus = M('Bus')->where($con)->limit('5')->order('time')->select();
 	if(!$bus)
 		return array("text","小信伤心地告诉你，你错过了".$name."末班车~");
