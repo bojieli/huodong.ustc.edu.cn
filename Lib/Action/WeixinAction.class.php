@@ -69,7 +69,8 @@ public function responseMsg()
 				$func = $response['text1'];
 				$funcInfo = array(
 					'keyword'=>$keyword,
-					'CreateTime'=>$CreateTime
+					'CreateTime'=>$CreateTime,
+					'text2' =>$response['text2']
 				);
 				$call = $this->$func($funcInfo);
 				$msgType = $call[0];
@@ -141,8 +142,9 @@ public function findBus($funcInfo){
 		$more .= $val['time'].$star[$val['star']]." ".$isCircle[$val['isCircle']]."(".$wayname[$way].")"."\n";
 	return array("text",$next."\n"."更多："."\n".$more);
 }
-public function USTCChineseMainSiteNews(){
-	$xml = simplexml_load_file('http://rss.ustc.edu.cn/rssfeed.php?sn=USTCChineseMainSiteNews');
+public function USTCRSS($funcInfo){
+	$sn = $funcInfo['text2'];
+	$xml = simplexml_load_file('http://rss.ustc.edu.cn/rssfeed.php?sn='.$sn);
 	foreach($xml->channel->item as $key=>$value)
 		$content[]=array(
 			'text1' =>(String)$value->title,
@@ -150,7 +152,6 @@ public function USTCChineseMainSiteNews(){
 			'url1' => '',
 			'url2' => (String)$value->guid
 		);
-	//print_r($content);die;
 	return array('news',$content);
 }
 private function checkSignature()
