@@ -350,7 +350,7 @@ function UserGender($Chinese){
 		return 1;
 	return 0;
 }
-function Tpl($msgType,$fromUsername, $toUsername,$time,$flag=0,$n=1){
+function Tpl($msgType,$fromUsername, $toUsername,$time,$content,$n = 5,$flag=0){
 		$head = "<xml>
 				 <ToUserName><![CDATA[".$fromUsername."]]></ToUserName>
 				 <FromUserName><![CDATA[".$toUsername."]]></FromUserName>
@@ -360,24 +360,23 @@ function Tpl($msgType,$fromUsername, $toUsername,$time,$flag=0,$n=1){
 				</xml>";
 		switch($msgType){
 		case "text":
-		$form = '<Content><![CDATA[%s]]></Content>';break;
+		$form = '<Content><![CDATA['.$content[0]['text1'].']]></Content>';break;
 		case "music":
 		$form = '<Music>
-				 <Title><![CDATA[%s]]></Title>
-				 <Description><![CDATA[%s]]></Description>
-				 <MusicUrl><![CDATA[%s]]></MusicUrl>
-				 <HQMusicUrl><![CDATA[%s]]></HQMusicUrl>
+				 <Title><![CDATA['.$content[0]['text1'].']]></Title>
+				 <Description><![CDATA['.$content[0]['text2'].']]></Description>
+				 <MusicUrl><![CDATA['.$content[0]['url1'].']]></MusicUrl>
+				 <HQMusicUrl><![CDATA['.$content[0]['url2'].']]></HQMusicUrl>
 				 </Music>';break;
 		case "news":
-		$item = '<item>
-				 <Title><![CDATA[%s]]></Title> 
-				 <Description><![CDATA[%s]]></Description>
-				 <PicUrl><![CDATA[%s]]></PicUrl>
-				 <Url><![CDATA[%s]]></Url>
+		foreach($content as $val){
+		$item .= '<item>
+				 <Title><![CDATA['.$val['text1'].']]></Title> 
+				 <Description><![CDATA['.$val['text1'].']]></Description>
+				 <PicUrl><![CDATA['.$val['url1'].']]></PicUrl>
+				 <Url><![CDATA['.$val['url2'].']]></Url>
 				 </item>';
-		$i = $n;
-		for(;$i>0;$i--)
-				$items .=$item;
+				 }
 		$form='<ArticleCount>'.$n.'</ArticleCount>
 				 <Articles>'.$item.'
 			     </Articles>';		

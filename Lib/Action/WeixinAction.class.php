@@ -46,12 +46,25 @@ public function responseMsg()
 		else {
 			$keyword = $this->_get('k');
 		}
-		$time = time();                
+		$time = time();           
 		if(!empty($keyword))
 		{
 			$info = $this->getResponseByKeyword($keyword);
 			$response = $info[0];
 			switch($response['type']){
+			case "text":
+				$msgType= "text";
+				$response1[0]['text1'] = $response['text1'];
+				$resultStr = Tpl($msgType,$fromUsername, $toUsername,$time,$response1);
+				break;
+			case "news":
+				$msgType = "news";
+				$resultStr = Tpl($msgType,$fromUsername, $toUsername,$time,$info);
+				break;
+			case "music":
+				$msgType= "music";
+				$resultStr = Tpl($msgType,$fromUsername, $toUsername,$time,$info);
+				break;
 			case "func":
 				$func = $response['text1'];
 				$funcInfo = array(
@@ -60,29 +73,25 @@ public function responseMsg()
 				);
 				$call = $this->$func($funcInfo);
 				$msgType = $call[0];
-				$contentStr = $call[1];
-				$resultStr = sprintf(Tpl($msgType,$fromUsername, $toUsername,$time),$contentStr);
-				break;
-			case "news":
-				$msgType = "news";
-				$Title = $response['text1'];
-				$Description = $response['text2'];
-				$PicUrl = $response['url1'];
-				$Url = $response['url2'];
-				$resultStr = sprintf(Tpl($msgType,$fromUsername, $toUsername,$time),$Title,$Description,$PicUrl,$Url);
-				break;
-			case "text":
-				$msgType= "text";
-				$contentStr = $response['text1'];
-				$resultStr = sprintf(Tpl($msgType,$fromUsername, $toUsername,$time),$contentStr);
-				break;
-			case "music":
-				$msgType= "music";
-				$Title = $response['text1'];
-				$Description = $response['text2'];
-				$MusicUrl = $response['url1'];
-				$HQMusic = $response['url2'];
-				$resultStr = sprintf(Tpl($msgType,$fromUsername, $toUsername,$time),$Title,$Description,$MusicUrl,$HQMusic);
+				$content_tmp = $call[1];
+				if(is_string($content_tmp))
+					$content[0]['text1'] = $content_tmp;
+				else 
+					$content = $content_tmp;
+					
+				//dump($this->$func($funcInfo));die;
+				switch($msgType){
+					case "news":
+						$resultStr = Tpl($msgType,$fromUsername, $toUsername,$time,$content);
+						break;
+					case "text":
+						$contentStr[0]['text1']= $call[1];
+						$resultStr = Tpl($msgType,$fromUsername, $toUsername,$time,$content);
+						break;
+					case "music":
+						$resultStr = Tpl($msgType,$fromUsername, $toUsername,$time,$content,1);
+						break;
+				}
 				break;
 			/*case "教学日历":
 				$msgType = "news";
@@ -94,8 +103,8 @@ public function responseMsg()
 				break;*/
 			default:
 				$msgType= "text";
-				$contentStr = "微小信无能为力哈/调皮，主人下课后回复你。";
-				$resultStr = sprintf(Tpl($msgType,$fromUsername, $toUsername,$time),$contentStr);
+				$content[0]['text1'] = "微小信无能为力哈/调皮，主人下课后回复你。";
+				$resultStr = Tpl($msgType,$fromUsername, $toUsername,$time,$content);
 			}
 			if(empty($t))
 				echo $resultStr;
@@ -132,6 +141,16 @@ public function findBus($funcInfo){
 		$more .= $val['time'].$star[$val['star']]." ".$isCircle[$val['isCircle']]."(".$wayname[$way].")"."\n";
 	return array("text",$next."\n"."更多："."\n".$more);
 }
+public function USTCChineseMainSiteNews(){
+	$xml = simplexml_load_file('http://rss.ustc.edu.cn/rssfeed.php?sn=USTCChineseMainSiteNews');
+	foreach($xml->channel->item as $key=>$value){
+		$content[]['text1'] = (String)$value->title;
+		$content[]['text2'] = (String)$value->description;
+		$content[]['url1'] = '';
+		$content[]['url2'] = (String)$value->guid;
+		}
+	return array('news',$content);
+}
 private function checkSignature()
 {
 	$signature = $_GET["signature"];
@@ -151,7 +170,8 @@ private function checkSignature()
 	}
 }
 public function test(){
-	echo date("H:i:s",121212121);
+	dump(simplexml_load_file('http://rss.ustc.edu.cn/rssfeed.php?sn=USTCChineseMainSiteNews'));
+	//echo date("H:i:s",121212121);
 	//echo $this->findBus(1);
 }
 }
