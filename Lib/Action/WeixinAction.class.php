@@ -122,8 +122,8 @@ public function findBus($funcInfo){
 	//if($CreateTime>1000000)
 		//$time = date("H:i:s",$CreateTime);
 	//else
-		$time = date("H:i:s");
-	$con['time']= array('gt',$time+TIMEADD);
+		$time = date("H:i:s",time()+TIMEADD);
+	$con['time']= array('gt',$time);
 	$bus = M('Bus')->where($con)->limit('5')->order('time')->select();
 	if(!$bus)
 		return array("text","小信伤心地告诉你，你错过了".$name."末班车~");
