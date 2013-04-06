@@ -118,9 +118,9 @@ public function findBus($funcInfo){
 			{$way = $key;break;}
 	$name = $keyword;
 	$con['way'] = $way;
-	if($CreateTime>1000000)
-		$time = date("H:i:s",$CreateTime);
-	else
+	//if($CreateTime>1000000)
+		//$time = date("H:i:s",$CreateTime);
+	//else
 		$time = date("H:i:s");
 	$con['time']= array('gt',$time);
 	$bus = M('Bus')->where($con)->limit('5')->order('time')->select();
