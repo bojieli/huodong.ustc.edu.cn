@@ -118,7 +118,10 @@ public function findBus($funcInfo){
 			{$way = $key;break;}
 	$name = $keyword;
 	$con['way'] = $way;
-	$time = $CreateTime ? date("H:i:s",$CreateTime) : date("H:i:s");
+	if($CreateTime>1000000)
+		$time = date("H:i:s",$CreateTime);
+	else
+		$time = date("H:i:s");
 	$con['time']= array('gt',$time);
 	$bus = M('Bus')->where($con)->limit('5')->order('time')->select();
 	if(!$bus)
@@ -147,7 +150,8 @@ private function checkSignature()
 	}
 }
 public function test(){
-	echo $this->findBus(1);
+	echo date("H:i:s",121212121);
+	//echo $this->findBus(1);
 }
 }
 ?>
