@@ -372,7 +372,7 @@ function Tpl($msgType,$fromUsername, $toUsername,$time,$flag=0,$n=1){
 		$item = '<item>
 				 <Title><![CDATA[%s]]></Title> 
 				 <Description><![CDATA[%s]]></Description>
-				 <PicUrl><![CDATA[%S]]></PicUrl>
+				 <PicUrl><![CDATA[%s]]></PicUrl>
 				 <Url><![CDATA[%s]]></Url>
 				 </item>';
 		$i = $n;
