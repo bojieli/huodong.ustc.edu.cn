@@ -212,8 +212,18 @@ class SurveyModel extends Model {
     	return M('survey_question')->where(array('array'=>$surveyid))->select();
     }
 
+    function list2dict($arr, $key) {
+    	$ret = array();
+    	foreach ($arr as $d) {
+		$ret[$d[$key]] = $d;
+		unset($ret[$d[$key]][$key]);
+	}
+	return $ret;
+    }
+
     function getResponseTableInverse($surveyid) {
 	$responses = M('survey_response')->where(array('survey'=>$surveyid))->select();
+	$responses = $this->list2dict($responses, 'response');
 	$fields = M('survey_response_field')->where(array('survey'=>$surveyid))->select();
 	foreach ($fields as $field) {
 		$r = &$responses[$field['response']];
