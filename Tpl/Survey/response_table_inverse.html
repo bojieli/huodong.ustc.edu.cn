@@ -18,6 +18,8 @@
 	height:25px;
 	font-size:14px;
 	padding:0 4px;
+        word-break:keep-all;
+        white-space:nowrap;
 }
 .table-addresslist .row1 td{
 	background-color:#FFF;	
@@ -707,21 +709,23 @@ $(document).ready(function(){
 	<table class="table-addresslist sortable" rowclass="row1,row2" border="0" cellpadding="0" cellspacing="1">
 	<tr>
 		<td>部分号</td>
-		<td rowspan="3">提交时间</td>
+		<td></td>
 		<volist name="info" id="question">
 		<td>{$question.section}</td>
 		</volist>
 	</tr>
 	<tr>
 		<td>题号</td>
+		<td></td>
 		<volist name="info" id="question">
 		<td>{$question.question}</td>
 		</volist>
 	</tr>
 	<tr>
 		<th class="td1">问题</th>
+		<th class="td1">提交时间</th>
 		<volist name="info" id="question">
-		<th class="td1" style="max-width:150px">{$question.title}</td>
+		<th class="td1" style="max-width:150px">{$question.title}</th>
 		</volist>
 	</tr>
 	<volist name="table" id="response" key="k">
