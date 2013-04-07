@@ -711,21 +711,7 @@ $(document).ready(function(){
 		<th class="td1">问题</th>
 		<th class="td1">提交时间</th>
 		<volist name="info" id="question">
-		<th class="td1" style="max-width:150px">{$question.title}</th>
-		</volist>
-	</tr>
-	<tr class="rowx">
-		<td>部分号</td>
-		<td></td>
-		<volist name="info" id="question">
-		<td>{$question.section}</td>
-		</volist>
-	</tr>
-	<tr class="rowx">
-		<td>题号</td>
-		<td></td>
-		<volist name="info" id="question">
-		<td>{$question.question}</td>
+		<th class="td1">{$question.section}.{$question.question} {$question.title}</th>
 		</volist>
 	</tr>
 	<volist name="table" id="response" key="k">
