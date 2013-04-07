@@ -190,16 +190,23 @@ class SurveyModel extends Model {
 	$questions = M('survey_question')->where(array('survey'=>$surveyid))->select();
 	$responses = array();
 	foreach ($questions as $question) {
-		$responses[$question['question']] = array(
+		$responses[$question['section']][$question['question']] = array(
 			'question' => $question['title'],
 			'responses' => array()
 		);
 	}
 	$fields = M('survey_response_field')->where(array('survey'=>$surveyid))->select();
 	foreach ($fields as $field) {
-		$responses[$field['question']][$field['response']] = $field['content'];
+		$responses[$field['section']][$field['question']]['responses'][$field['response']] = $field['content'];
 	}
-	return $responses;
+	$flat = array();
+	foreach ($responses as $section => $questions)
+		foreach ($questions as $question => $response)
+			$flat[] = array_merge($response, array(
+				'section' => $section,
+				'question_no' => $question
+			));
+	return $flat;
     }
 
     function getResponse($responseid) {

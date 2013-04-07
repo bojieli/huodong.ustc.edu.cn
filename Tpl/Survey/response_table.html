@@ -711,20 +711,22 @@ $(document).ready(function(){
 	
 	<table class="table-addresslist sortable" rowclass="row1,row2"  border="0"  cellpadding="0" cellspacing="1">
 	<tr>
-		<th class="td1">序号</th>
+		<th class="td1">部分号</th>
+		<th class="td1">题号</th>
 	<volist name="info" id="response" key="k">
 		<th class="td1">{$k}</th>
 	</volist>
 	</tr>
 	<tr>
-		<td>提交时间</td>
+		<td colspan="2">提交时间</td>
 		<volist name="info" id="response">
 		<td>{$response.submit_time|date='Y-m-d H:i',###}</td>
 		</volist>
 	</tr>
-	<volist name="table" id="problem" key="k" mod="mod">
-	<tr<?php if($mod) echo ' class="row2"' ?>>
-		<th class="td1">{$k}</th>
+	<volist name="table" id="problem" key="k">
+	<tr<?php if($k % 2) echo ' class="row2"' ?>>
+		<td>{$problem.section}</td>
+		<td>{$problem.question_no}</td>
 		<td>{$problem.question}</td>
 		<volist name="problem.responses" id="response">
 		<td>{$response}</td>
