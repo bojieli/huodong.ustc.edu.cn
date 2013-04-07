@@ -722,7 +722,7 @@ $(document).ready(function(){
 		</volist>
 	</tr>
 	<volist name="table" id="problem" key="k">
-	<tr<?php if($k % 2) echo ' class="row2"' ?>>
+	<tr class="<?=$k%2 ? 'row1' : 'row2' ?>">
 		<td>{$problem.section}</td>
 		<td>{$problem.question_no}</td>
 		<td style="max-width:400px">{$problem.question}</td>

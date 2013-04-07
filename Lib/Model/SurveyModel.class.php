@@ -213,7 +213,7 @@ class SurveyModel extends Model {
     }
 
     function getResponseTableInverse($surveyid) {
-	$responses = M('survey_question')->where(array('survey'=>$surveyid))->select();
+	$responses = M('survey_response')->where(array('survey'=>$surveyid))->select();
 	$fields = M('survey_response_field')->where(array('survey'=>$surveyid))->select();
 	foreach ($fields as $field) {
 		$r = &$responses[$field['response']];
@@ -221,6 +221,7 @@ class SurveyModel extends Model {
 			$r['responses'] = array($field['content']);
 		else
 			$r['responses'][] = $field['content'];
+		unset($r);
 	}
 	return $responses;
     }

@@ -729,7 +729,7 @@ $(document).ready(function(){
 		</volist>
 	</tr>
 	<volist name="table" id="response" key="k">
-	<tr>
+	<tr class="<?=$k%2 ? 'row1' : 'row2' ?>">
 		<td>{$k}</td>
 		<td>{$response.submit_time|date='Y-m-d H:i',###}</td>
 		<volist name="response.responses" id="value">
