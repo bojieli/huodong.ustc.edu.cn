@@ -185,6 +185,23 @@ class SurveyModel extends Model {
         return $responses;
     }
 
+    function getResponseTable($surveyid) {
+    	$survey = $this->find($surveyid);
+	$questions = M('survey_question')->where(array('survey'=>$surveyid))->select();
+	$responses = array();
+	foreach ($questions as $question) {
+		$responses[$question['question']] = array(
+			'question' => $question['title'],
+			'responses' => array()
+		);
+	}
+	$fields = M('survey_response_field')->where(array('survey'=>$surveyid))->select();
+	foreach ($fields as $field) {
+		$responses[$field['question']][$field['response']] = $field['content'];
+	}
+	return $responses;
+    }
+
     function getResponse($responseid) {
         $response = M('survey_response')->find($responseid);
         if (!isset($response['survey']))
