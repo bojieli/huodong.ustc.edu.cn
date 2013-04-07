@@ -186,7 +186,6 @@ class SurveyModel extends Model {
     }
 
     function getResponseTable($surveyid) {
-    	$survey = $this->find($surveyid);
 	$questions = M('survey_question')->where(array('survey'=>$surveyid))->select();
 	$responses = array();
 	foreach ($questions as $question) {
@@ -207,6 +206,23 @@ class SurveyModel extends Model {
 				'question_no' => $question
 			));
 	return $flat;
+    }
+
+    function getQuestions($surveyid) {
+    	return M('survey_question')->where(array('array'=>$surveyid))->select();
+    }
+
+    function getResponseTableInverse($surveyid) {
+	$responses = M('survey_question')->where(array('survey'=>$surveyid))->select();
+	$fields = M('survey_response_field')->where(array('survey'=>$surveyid))->select();
+	foreach ($fields as $field) {
+		$r = &$responses[$field['response']];
+		if (!isset($r['responses']))
+			$r['responses'] = array($field['content']);
+		else
+			$r['responses'][] = $field['content'];
+	}
+	return $responses;
     }
 
     function getResponse($responseid) {

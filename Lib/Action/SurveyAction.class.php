@@ -90,6 +90,13 @@ class SurveyAction extends PublicAction {
 	$this->display();
     }
 
+    function response_table_inverse() {
+    	$this->assertPriv(__METHOD__, 'manager');
+	$this->assign('info', D('Survey')->getQuestions($_REQUEST['survey']));
+	$this->assign('table', D('Survey')->getResponseTableInverse($_REQUEST['survey']));
+	$this->display();
+    }
+
     private function inverse_matrix($m) {
     	$newm = array();
     	foreach ($m as $row) {

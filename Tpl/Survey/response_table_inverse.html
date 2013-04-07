@@ -705,31 +705,35 @@ $(document).ready(function(){
 
 <div id="stmain" style="width:auto;">
 	<div class="stcon1">
-    	<div class="stcylb"><a href="/Survey/">调查问卷结果</a></div>
+    	<div class="stcylb"><a href="/Survey/">调查问卷结果 (点击表头即可排序！)</a></div>
 	</div>
 	
-	<table class="table-addresslist" rowclass="row1,row2"  border="0"  cellpadding="0" cellspacing="1">
+	<table class="table-addresslist sortable" rowclass="row1,row2" border="0" cellpadding="0" cellspacing="1">
 	<tr>
-		<th class="td1">部分号</th>
-		<th class="td1">题号</th>
-		<th class="td1">问题</th>
-	<volist name="info" id="response" key="k">
-		<th class="td1">{$k}</th>
-	</volist>
-	</tr>
-	<tr>
-		<td colspan="3">提交时间</td>
-		<volist name="info" id="response">
-		<td>{$response.submit_time|date='Y-m-d H:i',###}</td>
+		<td>部分号</td>
+		<td rowspan="3">提交时间</td>
+		<volist name="info" id="question">
+		<td>{$question.section}</td>
 		</volist>
 	</tr>
-	<volist name="table" id="problem" key="k">
-	<tr<?php if($k % 2) echo ' class="row2"' ?>>
-		<td>{$problem.section}</td>
-		<td>{$problem.question_no}</td>
-		<td style="max-width:300px">{$problem.question}</td>
-		<volist name="problem.responses" id="response">
-		<td style="max-width:100px">{$response}</td>
+	<tr>
+		<td>题号</td>
+		<volist name="info" id="question">
+		<td>{$question.question}</td>
+		</volist>
+	</tr>
+	<tr>
+		<th class="td1">问题</th>
+		<volist name="info" id="question">
+		<th class="td1" style="max-width:150px">{$question.title}</td>
+		</volist>
+	</tr>
+	<volist name="table" id="response" key="k">
+	<tr>
+		<td>{$k}</td>
+		<td>{$response.submit_time|date='Y-m-d H:i',###}</td>
+		<volist name="response.responses" id="value">
+		<td>{$value}</td>
 		</volist>
 	</tr>
 	</volist>
