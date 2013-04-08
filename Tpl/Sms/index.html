@@ -7,7 +7,7 @@
 <script src="/static/jquery.js" type="text/javascript"></script>
 <script src="/static/jsjq1.js" type="text/javascript"></script>
 <script type="text/javascript">
-//<!--
+var rname;
 $(document).ready(function(){
 /*弹出短信选择框*/
 $("#msn_sel_mem").click(function(){	 
@@ -23,16 +23,20 @@ $("#backbg1").click(function(){
 	$("#msn_selmem_box").hide(300);
 	$("#backbg1").css("display","none");	
 	});
-
 $("#msn_selmem_tjsx").live('click',function(){
 	$("#msn_selmem_box").hide(300);
 	$("#backbg1").css("display","none");
 	$(".mss-input-1text").html('');
+    var len = $("#members_select option").length;
+	if(len >= 30){
+		alert("抱歉,您已经选择"+len+"人，超过了30人的限制，请重新选择。");
+		return;
+	}
+	var i =0;
 	var mobiles = '';
-    $("#members_select option").each(function() {
+	var rname = '';
+	$("#members_select option").each(function() {
 		var values = $(this).val().split(";");
-		//alert(values);
-		i =0;
 		if(values[2]=='')
 		{
 			$(".mss-input-1text").append("<span class='NameWithBg' style='color:red' title='无手机号'>"+values[1]+"</span>   ");
@@ -40,22 +44,21 @@ $("#msn_selmem_tjsx").live('click',function(){
 		else
 		{
 			$(".mss-input-1text").append("<span class='NameWithBg'  title='"+values[2]+"'>"+values[1]+"</span>   ");
-			mobiles +=values[0]+";"
+			mobiles += values[0]+";"
+			rname   += values[1]+' ';
 			i++;
 		}
      });
+	 ///alert(i);
 	 $("#tid_num").val(i);
 	 $("#tid").val(mobiles);
-	 
+	 $("#rname").val(rname);
 	});
 
 //发送控制
 $("#confirm-alert").click(function(){	
 	$("#backbg,#alertbox,#alert-cont-box").slideUp(300);								   
 });
-
-
-
 });//document.ready
 function sendSms()
 {
@@ -77,22 +80,29 @@ function sendSms()
 		} 
 	}
 		if (data.status == 1) {
-	//		alert(data.info[0]);
-			$("#tid").val('');
 			if(data.info[1])
 				$("#sms_num").text(data.info[1]);			
 			$(".mss-input-1text").html('');
 			$("#sendMssage-result").html("<span style='color:green; font-size:20px; '>发送成功：<br/></span><span style='margin-left:40px; line-height:24px;'>"+ data.info[0] +"</span>" );
-		} else if(data.status==0 ) {
-	//		alert('发送信息失败：' + data.info[0]);
+			var d = new Date();
+			var vYear = d.getFullYear();
+			var vMon = d.getMonth() + 1;
+			var vDay = d.getDate();
+			var h = d.getHours(); 
+			var m = d.getMinutes();
+			var vtime = vYear+'年'+vMon+'月'+vDay+'日  '+h+':'+m;
+			$("#history-finish").append('<div title="接收者:'+$("#rname").val()+'" class="history-area" style="padding:10px;background: #FFF5FA;margin:20px 10px;font-size:16px; font-family:Microsoft YaHei; color:#8E8E90; text-align:left; "><div class="history-list-title" style="color:#ddd;font-size:60%;border-bottom: 1px solid #ddd">成功发出'+$("#tid_num").val()+'条 <img src="static/check_green.gif" /><span class="sender" style="float:right">发信人：我</span></div><div class="history-list-cont">'+$('#edit').val()+'</div><p style="font-size:12px; color:#999;font-family:Microsoft YaHei; text-align:right;margin:5px 0px 0 0;">'+vtime+'</p></div>');
+			
+			$("#tid").val('');
+			$("#edit").val('');
+		} 
+		else if(data.status==0 ) {
 	        $("#sendMssage-result").html("<span style='color:green; font-size:20px; '>发送信息失败：<br/></span><span style='margin-left:40px; line-height:24px;'>"+ data.info[0] +"</span>" );
 		}
 		$("#alert-cont-box").slideDown(100);
 	}, 'json');
     return false;
 };
-
-
 //-->
 </script>
 <!--筛选列表的css样式表-->
@@ -215,8 +225,9 @@ getwindowWH();//调用函数获取数值
 	<td width="90" align="right" valign="top" style="padding-top:3px;">发短信给：</td>
 	<td width="120" align="left" valign="top">
 	<div id="msn_sel_mem" class="dxhb-button mss-button" style="margin:0;">选择会员</div>
+	
 	</td>
-	<td width="475"> </td>
+	<td width="475"><p style="color:#ddd">建议每次群发人数不要超过30人，以免页面响应时间过长。</p></td>
 </tr>
 <tr>
 	<td width="90" align="right" valign="top" style="padding-top:3px; color:#CCC">已选会员：</td>
@@ -225,6 +236,7 @@ getwindowWH();//调用函数获取数值
 		</div>
 		<input type="hidden" name="tid" id="tid" value=""/>
 		<input type="hidden" id="tid_num" value=""/>
+		<input type="hidden" id="rname" value=""/>
 		<empty name="admin">
 		<input type="hidden" name="gid" value="<notempty name="club">{$club.gid}</notempty><notempty name="team">{$team.gid}</notempty>"/>
 		<else />
@@ -267,14 +279,9 @@ getwindowWH();//调用函数获取数值
 <span style="color:#F00; font-weight:normal; font-family:Georgia, 'Times New Roman', Times, serif">( {$allSmsNum} )</span>
 </p>
 <div class="smsArae" style="background:#fff;height: 500px;width:360px;overflow: auto;">
-<!--
-<notempty name="club">
-<span class="history">
-<a href="/Sms/history?gid={$club.gid}" title="{$club['name']}" style=" color:#06C; margin-left:50px;">全部短信记录</a>
-</span>
-</notempty>-->
-<volist name="history" id="vo">    
-    <div title="接收者:{$vo['nameString']}" class="history-area" style="padding:10px;background: #FFF5FA;margin:20px 10px;font-size:16px; font-family:Microsoft YaHei; color:#8E8E90; text-align:left; ">
+<div id="history-finish"></div>
+<volist name="history" id="vo">
+	<div title="接收者:{$vo['nameString']}" class="history-area" style="padding:10px;background: #FFF5FA;margin:20px 10px;font-size:16px; font-family:Microsoft YaHei; color:#8E8E90; text-align:left; ">
 	<div class="history-list-title" style="color:#ddd;font-size:60%;border-bottom: 1px solid #ddd">
 	成功发出{$vo['pid_num']}条
 	<span class="sender" style="float:right">
@@ -288,17 +295,6 @@ getwindowWH();//调用函数获取数值
     {$vo.humanDate}
     </p>
 	</div>
-	<!--<div class="history-list-title">
-    {$vo['humanDate']}
-    <span class="history-intro">发信人：{$vo['realname']}</span>
-    <span class="history-intro">发送量：{$vo['pid_num']} 条</span>    
-    </div>
-	<div class="history-list-cont">
-	<div class="names">
-	<strong>接收者</strong>：{$vo['nameString']}
-	</div>
-	<div class="sms-cont"><strong>内容</strong>：{$vo['msg']}</div>
-	</div>-->
 </volist>
 </div>
 </div>
