@@ -83,6 +83,33 @@ class SurveyAction extends PublicAction {
         $this->display();
     }
 
+    function response_table() {
+    	$this->assertPriv(__METHOD__, 'manager');
+	$this->assign('info', D('Survey')->getResponseList($_REQUEST['survey']));
+	$this->assign('table', D('Survey')->getResponseTable($_REQUEST['survey']));
+	$this->display();
+    }
+
+    function response_table_inverse() {
+    	$this->assertPriv(__METHOD__, 'manager');
+	$this->assign('info', D('Survey')->getQuestions($_REQUEST['survey']));
+	$this->assign('table', D('Survey')->getResponseTableInverse($_REQUEST['survey']));
+	$this->display();
+    }
+
+    private function inverse_matrix($m) {
+    	$newm = array();
+    	foreach ($m as $row) {
+		foreach ($row as $key => $value) {
+			if (!isset($newm[$key]))
+				$newm[$key] = array($value);
+			else
+				$newm[$key][] = $value;
+		}
+	}
+	return $newm;
+    }
+
     private function assertPriv($goto, $priv='') {
         if (empty($_REQUEST['gid']) || !is_numeric($_REQUEST['gid']))
             $this->error("只有学生组织才能发起调查问卷");

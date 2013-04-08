@@ -185,6 +185,57 @@ class SurveyModel extends Model {
         return $responses;
     }
 
+    function getResponseTable($surveyid) {
+	$questions = M('survey_question')->where(array('survey'=>$surveyid))->select();
+	$responses = array();
+	foreach ($questions as $question) {
+		$responses[$question['section']][$question['question']] = array(
+			'question' => $question['title'],
+			'responses' => array()
+		);
+	}
+	$fields = M('survey_response_field')->where(array('survey'=>$surveyid))->select();
+	foreach ($fields as $field) {
+		$responses[$field['section']][$field['question']]['responses'][$field['response']] = $field['content'];
+	}
+	$flat = array();
+	foreach ($responses as $section => $questions)
+		foreach ($questions as $question => $response)
+			$flat[] = array_merge($response, array(
+				'section' => $section,
+				'question_no' => $question
+			));
+	return $flat;
+    }
+
+    function getQuestions($surveyid) {
+    	return M('survey_question')->where(array('array'=>$surveyid))->select();
+    }
+
+    function list2dict($arr, $key) {
+    	$ret = array();
+    	foreach ($arr as $d) {
+		$ret[$d[$key]] = $d;
+		unset($ret[$d[$key]][$key]);
+	}
+	return $ret;
+    }
+
+    function getResponseTableInverse($surveyid) {
+	$responses = M('survey_response')->where(array('survey'=>$surveyid))->select();
+	$responses = $this->list2dict($responses, 'id');
+	$fields = M('survey_response_field')->where(array('survey'=>$surveyid))->select();
+	foreach ($fields as $field) {
+		$r = &$responses[$field['response']];
+		if (!isset($r['responses']))
+			$r['responses'] = array($field['content']);
+		else
+			$r['responses'][] = $field['content'];
+		unset($r);
+	}
+	return $responses;
+    }
+
     function getResponse($responseid) {
         $response = M('survey_response')->find($responseid);
         if (!isset($response['survey']))
