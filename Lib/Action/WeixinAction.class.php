@@ -154,6 +154,18 @@ public function USTCRSS($funcInfo){
 		);
 	return array('news',$content);
 }
+public function HanHaiRSS(){
+	$sn = $funcInfo['text2'];
+	$xml = simplexml_load_file('http://bbs.ustc.edu.cn/cgi/bbsrss?board='.$sn);
+	foreach($xml->channel->item as $key=>$value)
+		$content[]=array(
+			'text1' =>(String)$value->title,
+			'text2' =>(String)$value->description,
+			'url1' => '',
+			'url2' => (String)$value->guid
+		);
+	return array('news',$content);
+}
 public function findFreeRoom($funcInfo){
 	$remote_server = "http://mis.teach.ustc.edu.cn/initkxjscx.do";
 	$html = request_by_curl($remote_server);
