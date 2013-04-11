@@ -154,6 +154,39 @@ public function USTCRSS($funcInfo){
 		);
 	return array('news',$content);
 }
+public function findFreeRoom($funcInfo){
+	$remote_server = "http://mis.teach.ustc.edu.cn/initkxjscx.do";
+	$html = request_by_curl($remote_server);
+	if(!$html) return;
+	$localtime = $html->find('#dqzc')[0];
+	$schoolweek = $localtime->value;
+	$build = array('一教'=>11,'二教'=>12,'五教'=>15,'三教'=>33);
+	$jxxq = $build[$funcInfo['text2']] ? $build[$funcInfo['text2']] : 11;
+	$data =[
+		'currentPage' => 1,
+		'dqzc'        => $schoolweek,//当前教学周
+		//'jc1'		  => ,        //当前节次
+		'jxxq'        => $jxxq,         //11->一教,12->二教,15->五教,33->三教,0->all
+		'rlbj'        => '',         //教室容量
+		'zc'          => $schoolweek, //教学周
+		'zr'          => date('N'),          //星期
+		'jc'          => jc_now(time()+TIMEADD),       //节次
+	];
+	$post_string =http_build_query($data);
+	$html->clear();
+	$html = request_by_curl($remote_server,$post_string);
+	if(!$html) return;
+	$table = $html->find('table#jcxxtablerq',0);
+	foreach($table->find('tr') as $key => $tr)
+		foreach($tr->children as $key2 => $td)
+			$re[$key][$key2] = $td->innertext;
+	$html->clear();
+	unset($re[0]);
+	foreach($re as $key3 =>$val)
+		$add .= "\n".$val[3].'	'.$val[6];
+	$content = $add;
+	return array('text',$content);
+}
 private function checkSignature()
 {
 	$signature = $_GET["signature"];
@@ -173,9 +206,18 @@ private function checkSignature()
 	}
 }
 public function test(){
-	dump(simplexml_load_file('http://rss.ustc.edu.cn/rssfeed.php?sn=USTCChineseMainSiteNews'));
-	//echo date("H:i:s",121212121);
-	//echo $this->findBus(1);
+	/*$data =[
+		'currentPage' => 1,
+		'dqzc'        => 7,
+		'jc1'=>'7,8',
+		'jxxq'=>15,
+		'rlbj'=>'<=100',
+		'zc'=>10,
+		'zr'=>3,
+		'jc'=>'3,4'
+	];
+	$this->findFreeRoom($data);*/
+	echo jc_now(time()+TIMEADD);
 }
 }
 ?>
