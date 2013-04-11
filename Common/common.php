@@ -391,7 +391,7 @@ function Tpl($msgType,$fromUsername, $toUsername,$time,$content,$n = 5,$flag=0){
 * $post_string = "app=request&version=beta";
 * request_by_curl('http://facebook.cn/restServer.php',$post_string);
 */
-function request_by_curl($remote_server,$post_string){
+function request_by_curl($remote_server,$type="html",$post_string){
 $ch = curl_init();
 curl_setopt($ch,CURLOPT_URL,$remote_server);
 curl_setopt($ch,CURLOPT_POSTFIELDS,'mypost='.$post_string);
@@ -400,7 +400,10 @@ curl_setopt($ch,CURLOPT_USERAGENT,"Taixing Lin");
 $data = curl_exec($ch);
 curl_close($ch);
 require_once('Common/simple_html_dom.php');
-return str_get_html($data);
+if($type=="html")
+	return str_get_html($data);
+else 
+	return simplexml_load_string($data);
 }
 function jc_now($time){
     define("WC",0);
@@ -416,6 +419,6 @@ function jc_now($time){
 		return $jc[3];
 	if($time < mktime(21,55,0)-WC)
 		return $jc[4];
-	return;
+	return $jc[0];
 }
 ?>

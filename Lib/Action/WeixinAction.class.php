@@ -156,19 +156,28 @@ public function USTCRSS($funcInfo){
 }
 public function HanHaiRSS($funcInfo){
 	$sn = $funcInfo['text2'];
-	$xml = simplexml_load_file('http://bbs.ustc.edu.cn/cgi/bbsrss?board='.$sn);
+	$xml = request_by_curl('http://bbs.ustc.edu.cn/cgi/bbsrss?board='.$sn,'xml');
 	foreach($xml->channel->item as $key=>$value)
 		$content[]=array(
 			'text1' =>(String)$value->title,
 			'text2' =>(String)$value->description,
 			'url1' => '',
-			'url2' => (String)$value->link
+			'url2' => (String)$value->guid
 		);
+	/*foreach($xml->find('item') as $key=>$value)
+		$content[]=array(
+			'text1' =>(String)$value->find('title',0)->plaintext,
+			'text2' =>strip_tags((String)$value->find('description',0)),
+			'url1' => '',
+			'url2' => (String)$value->find('link',0)
+		);*/
+	//dump($xml);die;
 	return array('news',$content);
 }
 public function findFreeRoom($funcInfo){
 	$remote_server = "http://mis.teach.ustc.edu.cn/initkxjscx.do";
 	$html = request_by_curl($remote_server);
+	//dump($html);
 	if(!$html) return;
 	$localtime = $html->find('#dqzc')[0];
 	$schoolweek = $localtime->value;
@@ -186,13 +195,14 @@ public function findFreeRoom($funcInfo){
 	];
 	$post_string =http_build_query($data);
 	$html->clear();
-	$html = request_by_curl($remote_server,$post_string);
+	$html = request_by_curl($remote_server,'html',$post_string);
 	if(!$html) return;
 	$table = $html->find('table#jcxxtablerq',0);
 	foreach($table->find('tr') as $key => $tr)
 		foreach($tr->children as $key2 => $td)
 			$re[$key][$key2] = $td->innertext;
 	$html->clear();
+	//dump($re);
 	unset($re[0]);
 	foreach($re as $key3 =>$val)
 		$add .= "\n".$val[3].'	'.$val[6];
