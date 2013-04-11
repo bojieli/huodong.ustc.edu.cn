@@ -154,7 +154,7 @@ public function USTCRSS($funcInfo){
 		);
 	return array('news',$content);
 }
-public function HanHaiRSS(){
+public function HanHaiRSS($funcInfo){
 	$sn = $funcInfo['text2'];
 	$xml = simplexml_load_file('http://bbs.ustc.edu.cn/cgi/bbsrss?board='.$sn);
 	foreach($xml->channel->item as $key=>$value)
@@ -162,7 +162,7 @@ public function HanHaiRSS(){
 			'text1' =>(String)$value->title,
 			'text2' =>(String)$value->description,
 			'url1' => '',
-			'url2' => (String)$value->guid
+			'url2' => (String)$value->link
 		);
 	return array('news',$content);
 }
