@@ -176,13 +176,20 @@ public function HanHaiRSS($funcInfo){
 }
 public function findFreeRoom($funcInfo){
 	$remote_server = "http://mis.teach.ustc.edu.cn/initkxjscx.do";
-	$html = request_by_curl($remote_server);
-	//dump($html);
-	if(!$html) return;
-	$localtime = $html->find('#dqzc')[0];
+	$data_tmp =[
+		'jxxq'        => 11,         //11->一教,12->二教,15->五教,33->三教,0->all
+		'zc'          => 7, //教学周
+		'zr'          => 1,          //星期
+		'jc'          => '6,7',    //节次
+	];
+	$post_string_tmp =http_build_query($data_tmp);
+	$teachhtml = request_by_curl($remote_server,'html',$post_string_tmp);
+	$localtime = $teachhtml->find('#dqzc',0);
 	$schoolweek = $localtime->value;
+	
 	$build = array('一教'=>11,'二教'=>12,'五教'=>15,'三教'=>33);
 	$jxxq = $build[$funcInfo['text2']] ? $build[$funcInfo['text2']] : 11;
+	$teachhtml->clear();
 	$add_time = 0;//
 	$i = 0;
 do{
@@ -207,7 +214,6 @@ do{
 		'jc'          => $jc,    //节次
 	];
 	$post_string =http_build_query($data);
-	$html->clear();
 	$html = request_by_curl($remote_server,'html',$post_string);
 	if(!$html) return;
 	$table = $html->find('table#jcxxtablerq',0);
@@ -254,9 +260,10 @@ public function test(){
 		'jc'=>'3,4'
 	];
 	$this->findFreeRoom($data);*/
-	$remote_server = "http://mis.teach.ustc.edu.cn/initkxjscx.do";
-	$html = request_by_curl($remote_server);
-	dump($html);
+	//$teachhtml = request_by_curl("http://www.teach.ustc.edu.cn/page.asp?post=1134");
+	//$em = $teachhtml->innertext;
+	//$em = $body -> children;
+	//dump($em);die;
 	echo jc_now(time()+TIMEADD);
 }
 }
