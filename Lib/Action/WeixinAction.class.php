@@ -254,6 +254,9 @@ public function test(){
 		'jc'=>'3,4'
 	];
 	$this->findFreeRoom($data);*/
+	$remote_server = "http://mis.teach.ustc.edu.cn/initkxjscx.do";
+	$html = request_by_curl($remote_server);
+	dump($html);
 	echo jc_now(time()+TIMEADD);
 }
 }
