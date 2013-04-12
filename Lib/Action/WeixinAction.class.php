@@ -272,8 +272,9 @@ public function test(){
 		'jc'          => '6,7',    //节次
 	];
 	$post_string_tmp =http_build_query($data_tmp);
-	$post_string_tmp = '';
+	//$post_string_tmp = '';
 	$teachhtml = request_by_curl($remote_server,'html',$post_string_tmp);
+	dump($teachhtml);
 	echo jc_now(time()+TIMEADD);
 }
 }
