@@ -419,6 +419,6 @@ function jc_now($time){
 		return $jc[3];
 	if($time < mktime(21,55,0)-WC)
 		return $jc[4];
-	return $jc[0];
+	return '0,0';
 }
 ?>

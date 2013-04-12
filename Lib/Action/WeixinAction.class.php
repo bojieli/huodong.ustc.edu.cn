@@ -4,7 +4,7 @@ define("TIMEADD",1440);
 
 class WeixinAction extends PublicAction{
 public function index(){
-	$this->valid();
+	//$this->valid();
 	$this->responseMsg();
 	//$this->responseMsg();
 }
@@ -183,6 +183,19 @@ public function findFreeRoom($funcInfo){
 	$schoolweek = $localtime->value;
 	$build = array('一教'=>11,'二教'=>12,'五教'=>15,'三教'=>33);
 	$jxxq = $build[$funcInfo['text2']] ? $build[$funcInfo['text2']] : 11;
+	$add_time = 0;//
+	$i = 0;
+do{
+	$i++;
+	$jc = jc_now(time()+TIMEADD+$add_time);
+	$today = date('N');
+	$nextday = date('N',mktime(0,0,0)+3600*24);
+	if($jc=='0,0'){
+		$jc = '1,2';
+		$zr = $nextday;
+	}
+	else 
+		$zr = $today;
 	$data =[
 		'currentPage' => 1,
 		'dqzc'        => $schoolweek,//当前教学周
@@ -190,8 +203,8 @@ public function findFreeRoom($funcInfo){
 		'jxxq'        => $jxxq,         //11->一教,12->二教,15->五教,33->三教,0->all
 		'rlbj'        => '',         //教室容量
 		'zc'          => $schoolweek, //教学周
-		'zr'          => date('N'),          //星期
-		'jc'          => jc_now(time()+TIMEADD),       //节次
+		'zr'          => $zr,          //星期
+		'jc'          => $jc,    //节次
 	];
 	$post_string =http_build_query($data);
 	$html->clear();
@@ -202,8 +215,10 @@ public function findFreeRoom($funcInfo){
 		foreach($tr->children as $key2 => $td)
 			$re[$key][$key2] = $td->innertext;
 	$html->clear();
-	//dump($re);
 	unset($re[0]);
+	if(empty($re))
+		$add_time += 2*3600;
+   }while(empty($re) && $i <= 5);
 	foreach($re as $key3 =>$val)
 		$add .= "\n".$val[3].'	'.$val[6];
 	$content = $add;
