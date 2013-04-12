@@ -264,6 +264,15 @@ public function test(){
 	//$em = $teachhtml->innertext;
 	//$em = $body -> children;
 	//dump($em);die;
+	$remote_server = "http://mis.teach.ustc.edu.cn/initkxjscx.do";
+	$data_tmp =[
+		'jxxq'        => 11,         //11->一教,12->二教,15->五教,33->三教,0->all
+		'zc'          => 7, //教学周
+		'zr'          => 1,          //星期
+		'jc'          => '6,7',    //节次
+	];
+	$post_string_tmp =http_build_query($data_tmp);
+	$teachhtml = request_by_curl($remote_server,'html',$post_string_tmp);
 	echo jc_now(time()+TIMEADD);
 }
 }
