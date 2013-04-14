@@ -40,16 +40,6 @@ class SmsAction extends PublicAction {
 					}
 					$club = D('Club')->getInfo($gid);
 					$members=$Model->getMember($gid);
-					/*dump($re);die;
-					$members = array();
-					foreach($re as $row => $value)
-					{
-						if($value['priv']!='member')
-							$value['info']=$value['realname'].'('.$value['title'].')'.'--'.$value['telephone'];
-						else
-							$value['info']=$value['realname'].'--'.$value['telephone'];
-						$members[] = $value;
-					}*/
 					$this->assign('club',$club);
 				}
 				if($tid)
@@ -127,12 +117,7 @@ class SmsAction extends PublicAction {
         $to_tmp = trim($this->_post('tid'));
         $to_all=explode(";",$to_tmp);
         $msg = $this->_post('s');
-		//$msg = iconv('UTF-8','GB2312//IGNORE',$msg);
-        //echo $msg;
-        //echo 123;
-        //die;
         $Model = D('Sms');
-
         $i=0;
         foreach ($to_all as $row =>$value)
         {
@@ -143,15 +128,15 @@ class SmsAction extends PublicAction {
             }			
         }
         if($i==''||$msg==''){
-            $info[1]=$Model->getSmsNum($gid);
-            $info[0]="未填写内容或未指明发送对象";
+			$info[]="未填写内容或未指明发送对象";
+            $info[]=$Model->getSmsNum($gid);
             $this->error($info);
         };
         $n=count(split_sms($msg,'utf8'));
 		if(!$sid){
 			if(!$Model->canSent($gid,$i,$n)){
-				$info[1]=$Model->getSmsNum($gid);
-				$info[0]="剩余短信条数不足";
+				$info[]="剩余短信条数不足";
+				$info[]=$Model->getSmsNum($gid);
 				$this->error($info);
 			}
 			$re=$Model->sentSms($msg,$mobiles,$gid,0);
@@ -186,16 +171,11 @@ class SmsAction extends PublicAction {
         $this->display('index');
     }
     public function history($gid){
-        //$gid=$this->_get('gid');
-        //if(!$gid){$this->error('非法操作！');}
-        //if(!D('User')->checkLogin()){$this->error('未登陆');}
-        //if(!D('Club')->isManager($gid)){$this->error('无权限');}
-		//$gid=$this->_get('gid');
         $re=M('Sms_md5')->where(array('gid'=>$gid))->order('time desc')->select();
-        //dump($re);
         foreach($re as $row => $value)
         {
             $pid=$value['pid'];
+			$re[$row]['status'] = D('Sms')->sms_status($pid);
             $re[$row]['pid_num']=D('Sms')->getSmsNumByPid($pid);
             $re[$row]['nameString']=D('Sms')->getTidsName($pid);
             $re[$row]['realname']=D('Sms')->getUserName($value['uid']);

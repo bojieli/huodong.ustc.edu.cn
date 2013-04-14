@@ -57,9 +57,16 @@ $("#msn_selmem_tjsx").live('click',function(){
 
 //发送控制
 $("#confirm-alert").click(function(){	
-	$("#backbg,#alertbox,#alert-cont-box").slideUp(300);								   
+	slideUp();								   
 });
 });//document.ready
+function slideUp(){
+	$("#backbg,#alertbox,#alert-cont-box").slideUp(300);
+}
+function backRun(){
+	$("#alert-cont-box").slideDown(100);
+	$("#sendMssage-result").html("<span style='color:green; font-size:20px; '>已经在后台执行，请耐心等待，后台处理完成后即可看到此条短信发送状态 ^_^ </span>" ); 
+}
 function sendSms()
 {
 	$("#backbg").css("display","block");
@@ -67,23 +74,35 @@ function sendSms()
 	var fixCenTop = parseInt(hhh/2)-130+"px";
 	$("#alertbox,#alert-cont-box").css("top",fixCenTop);
 	$("#alertbox,#alert-cont-box").css("left",fixCenLeft);	
-	$("#alertbox").slideDown(300);	
-	
-	var form = $("#SmsSend");
-	$.post($(form).attr('action'), $(form).serialize(), function (data) {
-	if(data.info[1]){
-	if($("#sms_num").text()<$("#tid_num").val())
-		{   
-		 //  alert('剩余短信条数不足');
-			   $("#sendMssage-result").html("<span style='color:green; font-size:20px; '>发送失败：<br/></span><span style='margin-left:40px; line-height:24px;'>剩余短信条数不足！</span>" );
-			   return false;
-		} 
+	$("#alertbox").slideDown(300);
+	//isOnline
+	if($('#isOnline').val()==0){
+		$("#alert-cont-box").slideDown(100);
+		$("#sendMssage-result").html("<span style='color:green; font-size:20px; '>发送失败：<br/></span><span style='margin-left:40px; line-height:24px;'>你已离线</span>" );
+		return false;
 	}
+	if($('#edit').val()==""||$('#tid_num').val()=='')
+	{
+		   $("#alert-cont-box").slideDown(100);
+		   $("#sendMssage-result").html("<span style='color:green; font-size:20px; '>发送失败：<br/></span><span style='margin-left:40px; line-height:24px;'>未填写内容或未指明发送对象</span>" );
+		   return false;
+	} 
+	var form = $("#SmsSend");
+	setTimeout('backRun();',1000);
+	$.post($(form).attr('action'), $(form).serialize(), function (data) {
+		if(data.info[1]){
+			if($("#sms_num").text()<$("#tid_num").val())
+				{   
+					   $("#alert-cont-box").slideDown(100);
+					   $("#sendMssage-result").html("<span style='color:green; font-size:20px; '>发送失败：<br/></span><span style='margin-left:40px; line-height:24px;'>剩余短信条数不足！</span>" );
+					   return false;
+				} 
+		   }
 		if (data.status == 1) {
 			if(data.info[1])
 				$("#sms_num").text(data.info[1]);			
 			$(".mss-input-1text").html('');
-			$("#sendMssage-result").html("<span style='color:green; font-size:20px; '>发送成功：<br/></span><span style='margin-left:40px; line-height:24px;'>"+ data.info[0] +"</span>" );
+			//$("#sendMssage-result").html("<span style='color:green; font-size:20px; '>发送成功：<br/></span><span style='margin-left:40px; line-height:24px;'>"+ data.info[0] +"</span>" );
 			var d = new Date();
 			var vYear = d.getFullYear();
 			var vMon = d.getMonth() + 1;
@@ -92,14 +111,17 @@ function sendSms()
 			var m = d.getMinutes();
 			var vtime = vYear+'年'+vMon+'月'+vDay+'日  '+h+':'+m;
 			$("#history-finish").append('<div title="接收者:'+$("#rname").val()+'" class="history-area" style="padding:10px;background: #FFF5FA;margin:20px 10px;font-size:16px; font-family:Microsoft YaHei; color:#8E8E90; text-align:left; "><div class="history-list-title" style="color:#ddd;font-size:60%;border-bottom: 1px solid #ddd">成功发出'+$("#tid_num").val()+'条 <img src="static/check_green.gif" /><span class="sender" style="float:right">发信人：我</span></div><div class="history-list-cont">'+$('#edit').val()+'</div><p style="font-size:12px; color:#999;font-family:Microsoft YaHei; text-align:right;margin:5px 0px 0 0;">'+vtime+'</p></div>');
-			
 			$("#tid").val('');
 			$("#edit").val('');
 		} 
 		else if(data.status==0 ) {
-	        $("#sendMssage-result").html("<span style='color:green; font-size:20px; '>发送信息失败：<br/></span><span style='margin-left:40px; line-height:24px;'>"+ data.info[0] +"</span>" );
+			 if($.isArray(data.info))
+				error = data.info[0];
+			 else 
+				error = data.info;
+				//$("#sendMssage-result").html("<span style='color:green; font-size:20px; '>发送信息失败：<br/></span><span style='margin-left:40px; line-height:24px;'>"+ error +"</span>" ); 
 		}
-		$("#alert-cont-box").slideDown(100);
+		//$("#alert-cont-box").slideDown(100);
 	}, 'json');
     return false;
 };
@@ -235,13 +257,15 @@ getwindowWH();//调用函数获取数值
 		<div class='mss-input-1text' style="width:595px;">
 		</div>
 		<input type="hidden" name="tid" id="tid" value=""/>
+		<input type="hidden" id="isOnline" value="1"/>
 		<input type="hidden" id="tid_num" value=""/>
 		<input type="hidden" id="rname" value=""/>
 		<empty name="admin">
-		<input type="hidden" name="gid" value="<notempty name="club">{$club.gid}</notempty><notempty name="team">{$team.gid}</notempty>"/>
+		<input type="hidden" name="gid"id="gid" value="<notempty name="club">{$club.gid}</notempty><notempty name="team">{$team.gid}</notempty>"/>
 		<else />
-		<input type="hidden" name='sid' value="$Think.get.sid"/>
+		<input type="hidden" name='sid' id="sid" value="{$Think.get.sid}"/>
 		</empty>
+		<input type="hidden" id='uid' value="{$_G['uid']}"/>
 	</td>
 </tr>
 <tr>
@@ -249,8 +273,6 @@ getwindowWH();//调用函数获取数值
 	<td colspan="2"  align="left" valign="top">
 		<div class="inputarea" style="position:relative;">
 			<textarea id="edit" name="s" title="短信不宜过长，最好控制在一条内，以节省短信条数" class="mss-input-text" onfocus="this.className='dxhb-focus mss-input-text'" onblur="this.className='dxhb-blur mss-input-text'" style="float:left" ></textarea>
-			<!--span style=" color:#F00;"><br/>&nbsp;&nbsp;&nbsp;写满两行文字的长度<br/>&nbsp;&nbsp;&nbsp;约为一条短信 ！</span-->
-			
 			<span style="position:absolute;left:473px;top:135px;color:#8E8E90">
 			还可输入<span id="counter" style="color:#F00"></span>字节
 			</span>
@@ -283,7 +305,7 @@ getwindowWH();//调用函数获取数值
 <volist name="history" id="vo">
 	<div title="接收者:{$vo['nameString']}" class="history-area" style="padding:10px;background: #FFF5FA;margin:20px 10px;font-size:16px; font-family:Microsoft YaHei; color:#8E8E90; text-align:left; ">
 	<div class="history-list-title" style="color:#ddd;font-size:60%;border-bottom: 1px solid #ddd">
-	成功发出{$vo['pid_num']}条
+	{$vo['status']}{$vo['pid_num']}条
 	<span class="sender" style="float:right">
 	发信人：{$vo['realname']}
 	</span>
@@ -300,16 +322,23 @@ getwindowWH();//调用函数获取数值
 </div>
 </empty>
 <script type="text/javascript">
-var edit = document.getElementById("edit");
-		if(window.localStorage){
-			edit.onblur = function(){
-				localStorage.setItem("msg", this.value);
-				textarea=this.value;
-			};
-			if(localStorage.getItem("msg")){
-				edit.value = localStorage.getItem("msg");	
-			}
+//离线缓存
+function savetext(){
+    var uid = $('#uid').val();
+	var sid = $('#sid').val()?$('#sid').val():0;
+	var gid = $('#gid').val()?$('#gid').val():0;
+	var item = 'u'+ uid + 'g' + gid +'s'+ sid;
+	var edit = document.getElementById("edit");
+	if(window.localStorage){
+	edit.onblur = function(){
+		localStorage.setItem(item, this.value);
+		textarea=this.value;
 		}
+	if(localStorage.getItem(item))
+		edit.value = localStorage.getItem(item);
+	};
+}
+savetext();
 function mbStringLength(s) {
         var totalLength = 0;
         var i;
@@ -350,7 +379,20 @@ function tmp(){
             } 
         } 
 }
-setInterval("tmp()",0);
+//离线状态判断
+var lineStatus = document.getElementById('line-status');
+var updateLineStatus = function(event) { 
+    if (navigator.onLine) {
+        $('.mss-button').css('background','#FC0');
+        $('#isOnline').val(1);
+    } else {
+        $('.mss-button').css('background','#ddd');
+		$('#isOnline').val(0);
+    }
+}
+document.body.addEventListener('online', updateLineStatus, false);
+document.body.addEventListener('offline', updateLineStatus, false);
+setInterval("tmp();updateLineStatus()",0);
 /*function countChar(textareaName,spanName)
 {  
   document.getElementById(spanName).innerHTML = 200 - mbStringLength(document.getElementById(textareaName).value);
@@ -368,7 +410,8 @@ setInterval("tmp()",0);
 <!--弹出框样式代码-->
 <div id="backbg"></div><!--不可点击自身消失-->
 <div id="backbg1"></div><!--可点击自身消失-->
-<div id="alertbox" style="text-align:center;"><img src="/static/images/loading1.gif" style="width:124px; margin:66px auto" /></div>
+<div id="alertbox" style="text-align:center;"><img src="/static/images/loading1.gif" style="width:124px; margin:66px auto" />
+</div>
 <div id="alert-cont-box">
 	<div class="alert-title">群短信发送结果</div>
     <div id="sendMssage-result" class="alert-cont"></div>

@@ -18,22 +18,26 @@ class SmsModel extends Model {
 		$msgs=split_sms($msg_top,'utf8');
         $url="http://umess.ustc.edu.cn/uMessApi.php?wsdl";//接口地址
         $client=new SoapClient($url,array('encoding'=>'UTF-8'));
-        $client->wsClientSetCharset('UTF-8');
+		$client->wsClientSetCharset('UTF-8');
         $client->wsCsLogin('huodong','hzbjlsjr2012');
         foreach($msgs as $msg){
 		$messageIds[]=$client->wsCreateMessage($messageTitle='',$msg,$messageFromAddress="",$messageFromName="",$messageContentFormat="plaintext");
         }//die;
         $i=0;
         $j=0;
-        //dump($mobiles);
-        //return 0;
+        $failed_user = "";
         foreach($mobiles as  $tid1 => $mobile1){
             $tids.=$tid1.';';
         }
 	   if($isadmin==0)
 			$pid=$this->sms_md5($msg_top,$uid,$tids,$gid);
         
-		$failed_user = "";
+		foreach($messageIds as $messageId){
+			foreach($mobiles as $tid4 => $mobile4){
+							if($isadmin==0)
+								$this->smsLog($uid,$tid4,$pid,$gid,'ing');
+				}
+		}
         foreach($mobiles as  $tid => $mobile)
         {
 			foreach($messageIds as $messageId)
@@ -51,7 +55,7 @@ class SmsModel extends Model {
 			{
 					foreach($mobiles as  $tid2 => $mobile2){
 						if($isadmin==0)
-							$this->smsLog($uid,$tid,$pid,$gid,'done');
+							$this->smsLog($uid,$tid2,$pid,'done');
 						$i++;
 					}
 			}
@@ -60,25 +64,35 @@ class SmsModel extends Model {
 					foreach($mobiles as  $tid3 => $mobile3){
 						$failed_user.=D('User')->getRealname($tid3)." ";
 						if($isadmin==0)
-							$this->smsLog($uid,$tid,$pid,$gid,'failed');
+							$this->smsLog($uid,$tid3,$pid,'failed');
 						$j++;
 					}
 			}
 		}
         return array('done'=>$i,'failed'=>$j,'info'=>$failed_user);
     }
-    public function smsLog($uid,$tid,$pid,$gid,$status)
+    public function smsLog($uid,$tid,$pid,$status)
     {
-        $data=array(
+		$data=array(
                 'uid'   =>$uid,
                 'tid'	=>$tid,
                 'pid'   =>$pid,
-                'gid'   =>$gid,
                 'time'  =>time(),
                 'status'=>$status?$status:'done'
                 );
-        M('sms')->data($data)->add();
+		$count = M('sms')->where(['uid'=>$uid,'tid'=>$tid,'pid'=>$pid])->count();
+        if($count > 0)
+			M('sms')->data(['time'=>time(),'status'=>$status])->save();
+	    else
+			M('sms')->data($data)->add();
     }
+	public function sms_status($pid){
+		if(M('Sms')->where(['pid'=> $pid,'status'=>'failed'])->count())
+			return '发送失败';
+		if(M('Sms')->where(['pid'=> $pid,'status'=>'ing'])->count())
+			return '正在发送';
+		return '成功发出';
+	}
     public function sms_md5($msg,$uid,$tids,$gid)
     {
 
