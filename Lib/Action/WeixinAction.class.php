@@ -38,8 +38,8 @@ public function responseMsg()
 					return;
 					}
 			$postObj = simplexml_load_string($postStr, 'SimpleXMLElement', LIBXML_NOCDATA);
-			$fromUserName = $postObj->fromUserName;
-			$toUserName = $postObj->ToUserName;
+			$FromUserName = $postObj->FromUserName;
+			$ToUserName = $postObj->ToUserName;
 			$CreateTime = $postObj->CreateTime;
 			$keyword = trim($postObj->Content);
 		}
@@ -55,15 +55,15 @@ public function responseMsg()
 			case "text":
 				$msgType= "text";
 				$response1[0]['text1'] = $response['text1'];
-				$resultStr = Tpl($msgType,$fromUserName, $toUserName,$time,$response1);
+				$resultStr = Tpl($msgType,$FromUserName, $ToUserName,$time,$response1);
 				break;
 			case "news":
 				$msgType = "news";
-				$resultStr = Tpl($msgType,$fromUserName, $toUserName,$time,$info);
+				$resultStr = Tpl($msgType,$FromUserName, $ToUserName,$time,$info);
 				break;
 			case "music":
 				$msgType= "music";
-				$resultStr = Tpl($msgType,$fromUserName, $toUserName,$time,$info);
+				$resultStr = Tpl($msgType,$FromUserName, $ToUserName,$time,$info);
 				break;
 			case "func":
 				$func = $response['text1'];
@@ -83,27 +83,27 @@ public function responseMsg()
 				//dump($content);die;
 				switch($msgType){
 					case "news":
-						$resultStr = Tpl($msgType,$fromUserName, $toUserName,$time,$content);
+						$resultStr = Tpl($msgType,$FromUserName, $ToUserName,$time,$content);
 						break;
 					case "text":
 						$contentStr[0]['text1']= $call[1];
-						$resultStr = Tpl($msgType,$fromUserName, $toUserName,$time,$content);
+						$resultStr = Tpl($msgType,$FromUserName, $ToUserName,$time,$content);
 						break;
 					case "music":
-						$resultStr = Tpl($msgType,$fromUserName, $toUserName,$time,$content,1);
+						$resultStr = Tpl($msgType,$FromUserName, $ToUserName,$time,$content,1);
 						break;
 				}
 				break;
 			default:
 				/*$content = $keyword."^".$CreateTime;//$CreateTime
 				//dump($content);
-				$content = urldecode($this->xiaojo($content,$fromUserName,$toUserName));
+				$content = urldecode($this->xiaojo($content,$FromUserName,$ToUserName));
 				$msgType= "text";
 				if(empty($content))
 					$content[0]['text1'] = "微小信无能为力哈/调皮，主人下课后回复你。";
 				else 
 					$content_xiaojo[0]['text1'] = $content;
-				$resultStr = Tpl($msgType,$fromUserName, $toUserName,$time,$content_xiaojo);*/
+				$resultStr = Tpl($msgType,$FromUserName, $ToUserName,$time,$content_xiaojo);*/
 			}
 			if(empty($t))
 				echo $resultStr;
@@ -114,7 +114,7 @@ public function responseMsg()
 			$msgType= "text";
 			$content[0]['text1'] = "亲~呼叫【主菜单】吧，中国科大微小信温馨提示。/调皮";
 			//dump($content);
-			$resultStr = Tpl($msgType,$fromUserName, $toUserName,$time,$content);
+			$resultStr = Tpl($msgType,$FromUserName, $ToUserName,$time,$content);
 			echo $resultStr;
 		}
 		return;
