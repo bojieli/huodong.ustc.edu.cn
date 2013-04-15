@@ -37,12 +37,12 @@ public function responseMsg()
 		}
 		$time = time();
 		$keyword = $this->keywordInit($keyword); //预处理
-		dump($keyword);
+		//dump($keyword);
 		if(!empty($keyword))
 		{
 			//dump(D('Weixin'));
 			$info = D('Weixin')->getResponseByKeyword($keyword);
-			dump($info);
+			//dump($info);
 			$response = $info[0];
 			switch($response['type']){
 			case "text":
@@ -114,7 +114,7 @@ public function responseMsg()
  
     }
 public function keywordInit($keyword){
-	$keyword = biaoqing($keyword);
+	$keyword = trim(biaoqing($keyword));
 	return $keyword;
 }
 public function findBus($funcInfo){
