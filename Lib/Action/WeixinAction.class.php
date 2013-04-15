@@ -46,7 +46,8 @@ public function responseMsg()
 		else {
 			$keyword = $this->_get('k');
 		}
-		$time = time();           
+		$time = time();  
+			//dump($keyword);
 		if(!empty($keyword))
 		{
 			$info = $this->getResponseByKeyword($keyword);
@@ -111,7 +112,11 @@ public function responseMsg()
 				dump($resultStr);
 		}
 		else{
-			echo "亲~呼叫【主菜单】吧，中国科大微小信温馨提示。/调皮";					
+			$msgType= "text";
+			$content[0]['text1'] = "亲~呼叫【主菜单】吧，中国科大微小信温馨提示。/调皮";
+			//dump($content);
+			$resultStr = Tpl($msgType,$fromUserName, $toUserName,$time,$content);
+			echo $resultStr;
 		}      
  
     }
@@ -226,7 +231,7 @@ public function xiaojo($yuanwen,$from,$to) //小九接口函数，该函数可�
    $yourpw = "";
    $yuanwen = $this->get_utf8_string($yuanwen);
    $yuanwen=urlencode($yuanwen);
-   dump($yuanwen);
+   //dump($yuanwen);
    $yourdb=urlencode($yourdb);
    $from=urlencode($from);
    $to=urlencode($to);
