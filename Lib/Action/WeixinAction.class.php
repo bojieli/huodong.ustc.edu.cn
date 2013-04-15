@@ -48,6 +48,12 @@ public function responseMsg()
 		}
 		$time = time();  
 			//dump($keyword);
+		$msgType= "text";
+		$content[0]['text1'] = "亲~呼叫【主菜单】吧，中国科大微小信温馨提示。/调皮";
+		//dump($content);
+		$resultStr = Tpl($msgType,$fromUserName, $toUserName,$time,$content);
+		echo $resultStr;
+		return;
 		if(!empty($keyword))
 		{
 			$info = $this->getResponseByKeyword($keyword);
@@ -117,7 +123,8 @@ public function responseMsg()
 			//dump($content);
 			$resultStr = Tpl($msgType,$fromUserName, $toUserName,$time,$content);
 			echo $resultStr;
-		}      
+		}
+		return;
  
     }
 
