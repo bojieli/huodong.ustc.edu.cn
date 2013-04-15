@@ -38,8 +38,8 @@ public function responseMsg()
 					return;
 					}
 			$postObj = simplexml_load_string($postStr, 'SimpleXMLElement', LIBXML_NOCDATA);
-			$fromUsername = $postObj->FromUserName;
-			$toUsername = $postObj->ToUserName;
+			$fromUserName = $postObj->fromUserName;
+			$toUserName = $postObj->ToUserName;
 			$CreateTime = $postObj->CreateTime;
 			$keyword = trim($postObj->Content);
 		}
@@ -55,15 +55,15 @@ public function responseMsg()
 			case "text":
 				$msgType= "text";
 				$response1[0]['text1'] = $response['text1'];
-				$resultStr = Tpl($msgType,$fromUsername, $toUsername,$time,$response1);
+				$resultStr = Tpl($msgType,$fromUserName, $toUserName,$time,$response1);
 				break;
 			case "news":
 				$msgType = "news";
-				$resultStr = Tpl($msgType,$fromUsername, $toUsername,$time,$info);
+				$resultStr = Tpl($msgType,$fromUserName, $toUserName,$time,$info);
 				break;
 			case "music":
 				$msgType= "music";
-				$resultStr = Tpl($msgType,$fromUsername, $toUsername,$time,$info);
+				$resultStr = Tpl($msgType,$fromUserName, $toUserName,$time,$info);
 				break;
 			case "func":
 				$func = $response['text1'];
@@ -83,29 +83,27 @@ public function responseMsg()
 				//dump($content);die;
 				switch($msgType){
 					case "news":
-						$resultStr = Tpl($msgType,$fromUsername, $toUsername,$time,$content);
+						$resultStr = Tpl($msgType,$fromUserName, $toUserName,$time,$content);
 						break;
 					case "text":
 						$contentStr[0]['text1']= $call[1];
-						$resultStr = Tpl($msgType,$fromUsername, $toUsername,$time,$content);
+						$resultStr = Tpl($msgType,$fromUserName, $toUserName,$time,$content);
 						break;
 					case "music":
-						$resultStr = Tpl($msgType,$fromUsername, $toUsername,$time,$content,1);
+						$resultStr = Tpl($msgType,$fromUserName, $toUserName,$time,$content,1);
 						break;
 				}
 				break;
-			/*case "教学日历":
-				$msgType = "news";
-				$Title = "教学日历";
-				$Description = "亲~你可以订阅教学日历到你的Gmail";
-				$PicUrl = "http://huodong.ustc.edu.cn/static/weixin/jxrl.jpg";
-				$Url = "http://www.teach.ustc.edu.cn/page.asp?post=1134";
-				$resultStr = sprintf(Tpl($msgType,$fromUsername, $toUsername,$time),$Title,$Description,$PicUrl,$Url);
-				break;*/
 			default:
+				$content = $keyword."^".$CreateTime;//$CreateTime
+				//dump($content);
+				$content = urldecode($this->xiaojo($content,$fromUserName,$toUserName));
 				$msgType= "text";
-				$content[0]['text1'] = "微小信无能为力哈/调皮，主人下课后回复你。";
-				$resultStr = Tpl($msgType,$fromUsername, $toUsername,$time,$content);
+				if(empty($content))
+					$content[0]['text1'] = "微小信无能为力哈/调皮，主人下课后回复你。";
+				else 
+					$content_xiaojo[0]['text1'] = $content;
+				$resultStr = Tpl($msgType,$fromUserName, $toUserName,$time,$content_xiaojo);
 			}
 			if(empty($t))
 				echo $resultStr;
@@ -164,14 +162,6 @@ public function HanHaiRSS($funcInfo){
 			'url1' => '',
 			'url2' => (String)$value->guid
 		);
-	/*foreach($xml->find('item') as $key=>$value)
-		$content[]=array(
-			'text1' =>(String)$value->find('title',0)->plaintext,
-			'text2' =>strip_tags((String)$value->find('description',0)),
-			'url1' => '',
-			'url2' => (String)$value->find('link',0)
-		);*/
-	//dump($xml);die;
 	return array('news',$content);
 }
 public function findFreeRoom($funcInfo){
@@ -229,6 +219,34 @@ do{
 		$add .= "\n".$val[3].'	'.$val[6];
 	$content = $add;
 	return array('text',$content);
+}
+public function xiaojo($yuanwen,$from,$to) //小九接口函数，该函数可通用于其他程序
+{
+   $yourdb = "";//私有库
+   $yourpw = "";
+   $yuanwen = $this->get_utf8_string($yuanwen);
+   $yuanwen=urlencode($yuanwen);
+   dump($yuanwen);
+   $yourdb=urlencode($yourdb);
+   $from=urlencode($from);
+   $to=urlencode($to);
+   $doc = new DOMDocument();
+   $doc->load("http://www.xiaojo.com/api3.php?chat=".$yuanwen."&db=".$yourdb."&pw=".$yourpw."&from=".$from."&to=".$to); //读取xml文件
+   $youdaos = $doc->getElementsByTagName( "weixen" ); //取得humans标签的对象数组
+	foreach( $youdaos as $youdao )
+	{
+	   $paragraphs = $youdao->getElementsByTagName( "responce" ); //取得name的标签的对象数组
+	   $paragraph = $paragraphs->item(0)->nodeValue; //取得node中的值，如<name> </name>
+	   $paragraph= $this->get_utf8_string($paragraph);
+	}
+   return $paragraph;
+ 
+}
+public function get_utf8_string($content) 
+{    
+	//  将一些字符转化成utf8格式   
+	$encoding = mb_detect_encoding($content, array('ASCII','UTF-8','GB2312','GBK','BIG5'));  
+	return  mb_convert_encoding($content, 'utf-8', $encoding);
 }
 private function checkSignature()
 {
