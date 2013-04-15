@@ -216,6 +216,7 @@ do{
    }while(empty($re) && $i <= 5);
 	foreach($re as $key3 =>$val)
 		$add .= "\n".$val[3].'	'.$val[6];
+	$head = $funcInfo['text2']."最近的空闲教室如下：\n";
 	$content = $add;
 	return array('text',$this->get_utf8_string($content));
 }
