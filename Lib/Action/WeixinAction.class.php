@@ -46,14 +46,7 @@ public function responseMsg()
 		else {
 			$keyword = $this->_get('k');
 		}
-		$time = time();  
-			//dump($keyword);
-		/*$msgType= "text";
-		$content[0]['text1'] = "亲~呼叫【主菜单】吧，中国科大微小信温馨提示。/调皮";
-		//dump($content);
-		$resultStr = Tpl($msgType,$fromUserName, $toUserName,$time,$content);
-		dump($resultStr);
-		return;*/
+		$time = time();
 		if(!empty($keyword))
 		{
 			$info = $this->getResponseByKeyword($keyword);
@@ -115,7 +108,7 @@ public function responseMsg()
 			if(empty($t))
 				echo $resultStr;
 			else
-				dump($resultStr);
+				echo($resultStr);
 		}
 		else{
 			$msgType= "text";
