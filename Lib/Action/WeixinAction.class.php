@@ -115,7 +115,7 @@ public function responseMsg()
 			if(empty($t))
 				echo $resultStr;
 			else
-				echo($resultStr);
+				dump($resultStr);
 		}
 		else{
 			$msgType= "text";
@@ -234,8 +234,8 @@ do{
 }
 public function xiaojo($yuanwen,$from,$to) //小九接口函数，该函数可通用于其他程序
 {
-   $yourdb = "";//私有库
-   $yourpw = "";
+   $yourdb = "stunionxiaojo";//私有库
+   $yourpw = "pnp9zg42m6mu";
    $yuanwen = $this->get_utf8_string($yuanwen);
    $yuanwen=urlencode($yuanwen);
    //dump($yuanwen);
