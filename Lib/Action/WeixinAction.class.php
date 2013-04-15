@@ -4,7 +4,7 @@ define("TIMEADD",1440);
 
 class WeixinAction extends PublicAction{
 public function index(){
-	//$this->valid();
+	$this->valid();
 	$this->responseMsg();
 	//$this->responseMsg();
 }
