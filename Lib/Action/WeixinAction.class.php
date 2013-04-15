@@ -17,17 +17,6 @@ public function valid()
 			exit;
         }
 }
-//Model
-public function getTidByKeyword($keyword){
-	return M('Keyword')->field('rid')->where(['keyword'=>$keyword])->find()['rid'];
-}
-public function getResponseByRid($rid){
-    return M('Response')->where(['rid'=>$rid])->select();
-}
-public function getResponseByKeyword($keyword){
-    return $this->getResponseByRid($this->getTidByKeyword($keyword));
-}
-//Model::end
 public function responseMsg()
    {
 		$t = $this->_get('t');
@@ -47,9 +36,11 @@ public function responseMsg()
 			$keyword = $this->_get('k');
 		}
 		$time = time();
+		$keyword = $this->keywordInit($keyword); //预处理
 		if(!empty($keyword))
 		{
-			$info = $this->getResponseByKeyword($keyword);
+			//dump(D('Weixin'));
+			$info = D('Weixin')->getResponseByKeyword($keyword);
 			$response = $info[0];
 			switch($response['type']){
 			case "text":
@@ -108,7 +99,7 @@ public function responseMsg()
 			if(empty($t))
 				echo $resultStr;
 			else
-				echo($resultStr);
+				dump($resultStr);
 		}
 		else{
 			$msgType= "text";
@@ -120,7 +111,10 @@ public function responseMsg()
 		return;
  
     }
-
+public function keywordInit($keyword){
+	$keyword = biaoqing($keyword);
+	return $keyword;
+}
 public function findBus($funcInfo){
 	$keyword = $funcInfo['keyword'];
 	$CreateTime = $funcInfo['CreateTime'];
