@@ -165,9 +165,8 @@ public function HanHaiRSS($funcInfo){
 }
 public function RSS($funcInfo){
 	$url = $funcInfo['text2'];
-	$xml = simplexml_load_file($url);
 	dump($url);
-	dump($xml);
+	$xml = simplexml_load_file($url);
 	$channel = $xml ->channel;
 	$content[]=array(
 			'text1' =>(String)$channel->image->title,
