@@ -215,10 +215,10 @@ do{
 		$add_time += 2*3600;
    }while(empty($re) && $i <= 5);
 	foreach($re as $key3 =>$val)
-		$add .= "\n".$val[3].'		'.$val[6];
+		$add .= "\n".$val[3].'    '.$this->get_utf8_string($val[6]);
 	$head = $funcInfo['text2']."最近的空闲教室如下：\n";
 	$content = $head.$add;
-	return array('text',$this->get_utf8_string($content));
+	return array('text',$content);
 }
 public function xiaojo($yuanwen,$from,$to) //小九接口函数，该函数可通用于其他程序
 {
