@@ -352,12 +352,12 @@ function UserGender($Chinese){
 }
 function Tpl($msgType,$fromUsername, $toUsername,$time,$content,$n = 5,$flag=0){
 		$head = "<xml>
-				 <ToUserName><![CDATA[".$fromUsername."]]></ToUserName>
-				 <FromUserName><![CDATA[".$toUsername."]]></FromUserName>
-				 <CreateTime>".$time."</CreateTime>
-				 <MsgType><![CDATA[".$msgType."]]></MsgType>";
-		$end = " <FuncFlag>".$flag."</FuncFlag>
-				</xml>";
+ <ToUserName><![CDATA[".$fromUsername."]]></ToUserName>
+ <FromUserName><![CDATA[".$toUsername."]]></FromUserName>
+ <CreateTime>".$time."</CreateTime>
+ <MsgType><![CDATA[".$msgType."]]></MsgType>";
+		$end = " \n <FuncFlag>".$flag."</FuncFlag>
+</xml>";
 		switch($msgType){
 		case "text":
 		$form = '<Content><![CDATA['.$content[0]['text1'].']]></Content>';break;
