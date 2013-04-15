@@ -37,10 +37,12 @@ public function responseMsg()
 		}
 		$time = time();
 		$keyword = $this->keywordInit($keyword); //预处理
+		dump($keyword);
 		if(!empty($keyword))
 		{
 			//dump(D('Weixin'));
 			$info = D('Weixin')->getResponseByKeyword($keyword);
+			dump($info);
 			$response = $info[0];
 			switch($response['type']){
 			case "text":
@@ -165,7 +167,7 @@ public function HanHaiRSS($funcInfo){
 }
 public function RSS($funcInfo){
 	$url = $funcInfo['text2'];
-	dump($url);
+	//dump($url);
 	$xml = simplexml_load_file($url);
 	$channel = $xml ->channel;
 	$content[]=array(
