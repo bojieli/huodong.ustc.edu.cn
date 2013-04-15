@@ -217,7 +217,7 @@ do{
 	foreach($re as $key3 =>$val)
 		$add .= "\n".$val[3].'	'.$val[6];
 	$content = $add;
-	return array('text',$content);
+	return array('text',$this->get_utf8_string($content));
 }
 public function xiaojo($yuanwen,$from,$to) //小九接口函数，该函数可通用于其他程序
 {
