@@ -163,6 +163,25 @@ public function HanHaiRSS($funcInfo){
 		);
 	return array('news',$content);
 }
+public function RSS($funcInfo){
+	$url = $funcInfo['text2'];
+	$xml = simplexml_load_file($url);
+	$channel = $xml ->channel;
+	$content[]=array(
+			'text1' =>(String)$channel->image->title,
+			'text2' =>(String)$channel->description,
+			'url1' => (String)$channel->image->url,
+			'url2' => (String)$channel->link
+		);
+	foreach($xml->channel->item as $key=>$value)
+		$content[]=array(
+			'text1' =>(String)$value->title,
+			'text2' =>(String)$value->description,
+			'url1' => '',
+			'url2' => (String)$value->link
+		);
+	return array('news',$content);
+}
 public function findFreeRoom($funcInfo){
 	$remote_server = "http://mis.teach.ustc.edu.cn/initkxjscx.do";
 	$data_tmp =[

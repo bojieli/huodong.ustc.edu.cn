@@ -93,5 +93,50 @@ class MapAction extends PublicAction{
 		fclose($file);
 		echo "We have ".$n." websites";
 	}
+	public function rss(){
+	$webroot='http://huodong.ustc.edu.cn/';
+		$posters=M('Poster')->field('name,aid,description,poster,publish_time')->order('publish_time desc')->limit(10)->select();
+	$focus = $posters[0];
+	$head ="<?xml version='1.0' encoding='utf-8'?>
+	".
+	'<rss version="2.0"
+		xmlns:content="http://purl.org/rss/1.0/modules/content/"
+		xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+		xmlns:dc="http://purl.org/dc/elements/1.1/"
+		xmlns:atom="http://www.w3.org/2005/Atom"
+		xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+		xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+	 <channel>
+        <title>今日海报焦点</title>
+        <image>
+            <title>'.$focus['name'].'</title>
+            <link>'.$webroot.'Poster/singlePage?aid='.$focus['aid'].'</link>
+            <url>'.$webroot.'upload/poster/thumb/thumb_'.$focus['poster'].'</url>
+        </image>
+        <description>'.trim(strip_tags($focus['description'])).'</description>
+        <link>'.$webroot.'Poster/singlePage?aid='.$focus['aid'].'</link>
+        <language>zh-cn</language>
+        <docs>'.$webroot.'Poster/singlePage?aid='.$focus['aid'].'</docs>
+        <generator>huodong.ustc.edu.cn</generator>';
+	unset($posters[0]);
+	foreach($posters as $poster){
+		$items .= 
+		'
+	<item>
+            <title>'.$poster['name'].'</title>
+            <link>'.$webroot.'Poster/singlePage?aid='.$poster['aid'].'</link>
+            <description>'.trim(strip_tags($poster['description'])).'</description>
+            <author>'.$poster['author'].'</author>
+            <pubDate>'.date('c',$poster['publish_time']).'</pubDate>
+            <comments>'.$webroot.'Poster/singlePage?aid='.$poster['aid'].'</comments>
+        </item>';
+		}
+	$end = '
+	</channel>
+	</rss>';
+	header("Content-type:text/xml");
+    echo $head.$items.$end;
+	}
 }
 ?>
