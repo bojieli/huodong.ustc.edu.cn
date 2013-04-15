@@ -102,7 +102,7 @@ public function responseMsg()
 				}
 				break;
 			default:
-				$content = $keyword."^".$CreateTime;//$CreateTime
+				/*$content = $keyword."^".$CreateTime;//$CreateTime
 				//dump($content);
 				$content = urldecode($this->xiaojo($content,$fromUserName,$toUserName));
 				$msgType= "text";
@@ -110,7 +110,7 @@ public function responseMsg()
 					$content[0]['text1'] = "微小信无能为力哈/调皮，主人下课后回复你。";
 				else 
 					$content_xiaojo[0]['text1'] = $content;
-				$resultStr = Tpl($msgType,$fromUserName, $toUserName,$time,$content_xiaojo);
+				$resultStr = Tpl($msgType,$fromUserName, $toUserName,$time,$content_xiaojo);*/
 			}
 			if(empty($t))
 				echo $resultStr;
