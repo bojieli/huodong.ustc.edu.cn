@@ -105,7 +105,8 @@ public function sentMsgForSys($time,$title,$msg,$tids,$gid){
 			'gid'=>$gid,
 			);
 	M('Msg_sys_content')->data($data)->add();
-	$pid=M('Msg_sys_content')->field('pid')->where($data)->find()['pid'];
+	//$pid=M('Msg_sys_content')->field('pid')->where($data)->find()['pid'];
+	$pid = mysql_insert_id();
 	 foreach($tids as $tid)
 	{
 		if(!empty($tid)){
