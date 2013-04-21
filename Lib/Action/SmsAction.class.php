@@ -134,7 +134,7 @@ class SmsAction extends PublicAction {
         };
         $n=count(split_sms($msg,'utf8'));
 		if(!$sid){
-			if(!$Model->canSent($gid,$i,$n)){
+			if($Model->canSent($gid,$i,$n)==0){
 				$info[]="剩余短信条数不足";
 				$info[]=$Model->getSmsNum($gid);
 				$this->error($info);
