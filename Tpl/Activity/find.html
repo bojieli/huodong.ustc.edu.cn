@@ -4,43 +4,131 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="keywords" content="大学海报,海报墙,社团,社团管理,大学活动,活动搜索,活动筛选,搜索海报,搜索社团,筛选海报,筛选社团,邮件通知,短信通知,申请加入,瀑布流,评价分享,时间轴" />
 <meta name="description" content="大学活动的集中展示平台,大学海报的集中发布与分享平台,大学社团的集中展示与集中管理平台。更便捷、更简单、更高效、更美观、更流畅、更快速……" />
-<title>{$activity.name} - {$activity.clubName} - 大学海报</title>
+<title>编辑 -{$activity['title']}</title>
 
 <link href="/static/css1.css" rel="stylesheet" type="text/css" />
 <script src="/static/jquery.js" type="text/javascript"></script>
+<script src="/static/setwaterfall.js" type="text/javascript"></script>
+<script src="/static/jsjq1.js" type="text/javascript"></script>
+<script>
+<!--
+var  loadflag = 2;
+var  nomoreflag = 0;
+	var loadmore = (function() {
+		var posterCounter = 0;
+		var ajaxLock = false;
+		var noMore = false;
+		return function(loadnum) {
+			 loadflag = 1;
+			if (!ajaxLock && !noMore) {
+				ajaxLock = true;
+				$.getJSON(
+					"/Activity/ajaxGet",
+					{start: posterCounter, num: loadnum, act_id: "<?=$act_id?>" }
+				).done(function( obj ){
+					loadflag = 0;					
+					if (obj.length == 0){
+						noMore = true;
+						nomoreflag = 1;
+					};
+					posterCounter += obj.length;
+					var html = obj.join("");
+					$("#content ul").append(html);
+					$(".hide").animate({opacity:1},1000); 
+					$("#content ul li").setwaterfall();
+					ajaxLock = false;
+				});
+			}
+		}
+	})();
+	
+	$(document).ready(function(){
+		loadmore(1);
+		cycleload();
+		$(window).scroll(function () {
+		  if( loadflag==0	){
+			var clienth = document.documentElement.clientHeight;
+			var scrollh = document.documentElement.scrollHeight;
+			var scrollt = document.documentElement.scrollTop + document.body.scrollTop;
+			if((clienth + scrollt + 20 > lowestcollheight) || (clienth + scrollt + 250 > scrollh)) {
+				 loadmore(4);
+			};
+		  }
+		});
+		
+		
+		$(".ding").live({
+		mouseenter:function(){
+			$(this).addClass("dinghover");
+		},
+		mouseleave:function(){
+			$(this).removeClass("dinghover");
+		}
+		});		
+	});
+	
+	function cycleload(){
+		if( loadflag==0	){
+			var clienth = document.documentElement.clientHeight;
+			var scrollh = document.documentElement.scrollHeight;
+			var scrollt = document.documentElement.scrollTop + document.body.scrollTop;
+			if ((clienth + scrollt + 10 > lowestcollheight) || (clienth + scrollt + 250 > scrollh) > scrollh) {
+				 loadmore(2);
+			};
+		};
+			if( loadflag == 1 ){
+				$("#haibao-onloading").css('display','block');
+				$("#haibao-onloading").animate({opacity:1},200);
+				};
+			if( loadflag == 0 || nomoreflag == 1){ $("#haibao-onloading").css('display','none');}
+			if( nomoreflag == 1 ) $("#haibao-onmoreloading").css('display','block');
+			setTimeout("cycleload()",100);		
+		};
+-->
+</script>
+<script>
+function like(id)
+{
+	$.post('/Likes/add?type=picture&id='+id, {}, function (res) {
+		if(res.status==0) {
+			alert(res.info);
+		}
+		else
+		{
+			alert(res.info);
+			var rate = $("#rate_"+id).html();
+			$("#rate_"+id).html(parseInt(rate)+1);
 
-</head>
-
-<body>
-<include file="Public:header" />
-<include file="Public:headnav" />
-<?php $singlePage = true; ?>
-<include file="loadComments" />
-
-
-<style type="text/css">
-	#content ul li { position:relative;display:inline-block;}
-</style>
-<script type="text/javascript">
-function likes(type,id) {
-	var obj = this;
-	$.get('/Likes/add?type='+type+'&id='+id,function(ret){
-		switch(ret.status){
-				case 0: break;
-				case 1: $(obj).text(ret.data);
-					break;
-				default:break;
 		}
 	},'json');
 }
 </script>
-<div style="width:1100px;margin:0 auto;background-color:#F5F4F2;" id="content">
-	<if condition="$activity[enable_post]">
-	<div><a href="/Activity/postPic?id={$activity[act_id]}" >我也要上传 </a></div>
-	</if>
-	<ul>
-	<volist name="activity[picture]" id="vo">
-		
+</head>
+
+<body>
+<include file="Public:headnav" />
+<div class="hdmeitou" style="text-align:center; height:50px; line-height:48px;">
+  <span>
+  <notempty name="activity.club_name">
+    <a href="{$activity['club_url']}" target="_blank">{$activity['club_name']}</a>-&gt;
+  </notempty>
+    <a href="{$activity['poster_url']}" target="_blank" style="font-size:35px; color:red;">{$activity['title']}</a>
+    <span>- 后台编辑</span>
+  </span>
+</div>
+
+<div id="main" style="background:#fafafa;">
+<div id="content">
+  <ul style="min-height: 600px; ">
+	<li style="background: #FF9;">
+    	<div class="celldiv shetuan">
+    	<p class="title">活动介绍</p>
+        <div class="intro">
+        <p style=" text-align:center;"><a href="/Poster/singlePage?aid={$activity['poster_id']}" target="_blank"><img style="width:240px;" src="/upload/poster/thumb/thumb_{$activity['poster']}"/></a></p>
+        </div>
+        </div>
+	</li>  
+   <volist name="activity[picture]" id="vo">
 		<li class="hide" style="opacity: 1; width:250px">
 			<div class="celldiv" itemscope="" itemtype="http://data-vocabulary.org/Event">
 				<img class="haibao" itemprop="photo" width="230" src="{$vo[path]}thumb/thumb_{$vo[name]}" onclick="" <if condition="!empty($vo[path])"> alt="{$vo[description]}" title="{$vo[description]}"</if>>
@@ -49,14 +137,144 @@ function likes(type,id) {
 							<span class="ding"><a class="iconding" href="/Likes/add?type=picture&id={$vo[pid]}"></a><span class="rate">{$vo[likes]}</span></span>
 						</div>
 						<p><a href="#">{$vo[realname]}</a>上传于<time itemprop="startDate" datetime="<php>echo date('Y-m-d H-i-s',$vo[time]);</php>"><php>echo date('Y-m-d H:i:s',$vo[time]);</php></time></p>
-						<p><if condition="$_G[uid]==$vo[uid]"><!--a href="/Activity/edit?type=pic&id={$vo[pid]}">编辑</a--></if>
+						<p><if condition="$_G[uid]==$vo[uid]"><a href="/Activity/edit?type=pic&id={$vo[pid]}">编辑</a></if>
 							<if condition="$_G[uid]==$vo[uid] || $_G[isadmin]"><a href="/Activity/delete?type=pic&id={$vo[pid]}">删除</a></if>
 						</p>
 					</div>
 			</div>
 		</li>
-	</volist>
-	</ul>
+</volist>
+  </ul>
 </div>
+</div>
+
+<!--以下为大图显示弹出框的代码及css js -->
+<!-- <div id="backbgP"></div><!--可点击自身消失--> -->
+<div id="bigPicCon" style="background:rgba(90, 100, 185, 0.85);" ><div id="bigPicCon2" style="background:rgba(255,255,255,0.4); font-size:18px;  display:inline-block; vertical-align:middle;"><img id="bigimage" title="点击图片关闭" src="/static/images/dxhbQR.png"/>
+	<br/>
+        <span class="dingn"><span class="icond" id="big_image_ajax_like"></span></span>
+		<span id="description"></span>
+	
+</div>
+	<div id="ctrHeight"></div></div>
+<style>
+.dingn{
+	float:right;
+	margin-right:0px;
+	color:#444;	
+	font-size:16px;
+	font-family:simsun;
+	}
+ .dingn .icond{	
+	width:20px;
+	height:15px;
+	margin-bottom:-2px;
+	background: url(/static/images/iconsHaiBao.png) no-repeat  0px -90px;
+	display:-moz-inline-box;
+	display:inline-block;
+	cursor: pointer; 
+	}
+.dingn .icond:hover{
+	background-position:-71px -90px;
+}
+
+#backbgP{
+  position:fixed;
+  z-index:10001;
+  top:0px;
+  left:0px;
+  width:100%;
+  height:100%;
+  background:rgba(90, 100, 185, 0.85);
+ /* background:rgba(0, 0, 0, 0.6);  */
+  display:none;
+}
+#bigPicCon{
+position:fixed;
+top:0px;
+left:0px;
+text-align:center;
+vertical-align:middle;
+display:none;
+overflow:auto;
+z-index:12000;
+}
+#bigPicCon2{
+	padding: 0px;
+	border-radius:5px;
+}
+#bigPicCon img{
+	margin-top: 5px;
+margin-left: 5px;
+border:30px solid rgb(0,0,0);
+border:30px solid rgba(0,0,0,0.92);
+vertical-align:middle;
+
+}
+#bigPicCon img:hover{
+   cursor:pointer;
+}
+#bigPicCon #ctrHeight{
+  display:inline-block;
+  
+  width:1px;
+  height:100%;
+  vertical-align:middle;
+}
+.picture{
+cursor:pointer;
+}
+</style>
+<script type="text/javascript">
+<!--
+getwindowWH();//调用函数获取数值
+$("#bigPicCon").css("width",www+"px");
+$("#bigPicCon").css("height",hhh+"px");
+
+window.onresize=function(){
+getwindowWH();//调用函数获取数值
+$("#bigPicCon").css("width",www+"px");
+$("#bigPicCon").css("height",hhh+"px");
+}
+  
+/*弹出短信选择框*/
+$(".picture").live('click',function(){
+	var pid = $(this).attr('id');
+	$.get('/Activity/ajaxGetDesc?pid='+pid, function(data) {
+		if(data.status==1)
+		{
+			$("#big_image_ajax_like").unbind();
+			$("#bigimage").attr('src',data.pic);
+			$("#description").html(data.description);
+			$("#bigPicCon").show(300);
+			$("#backbgP").css("display","block");
+			$("body").css("overflow","hidden");
+			
+			$("#big_image_ajax_like").click(function (){
+				like(pid);
+			})
+
+		}
+	},'json');
+});
+/*
+$("#backbgP").click(function(){	 
+	$("#bigPicCon").hide(300);
+	$("#backbgP").css("display","none");
+	$("body").css("overflow","auto");
+	});
+*/
+$("#bigPicCon img").click(function(){	 
+	$("#bigPicCon").hide(300);
+	$("#backbgP").css("display","none");
+	$("body").css("overflow","auto");
+	});
+
+
+//-->
+</script>
+
+<div id="haibao-onmoreloading">已经到底了 ^_^ </div>
+<div id="haibao-onloading"></div>
 </body>
 </html>

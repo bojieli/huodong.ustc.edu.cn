@@ -363,19 +363,7 @@ class ActivityAction extends PublicAction{
 		if($activity['poster_id'])
 		{
 			$activity['club_name']=D('Club')->getClubName($activity['gid']);
-			//$poster = M('Poster')->field('gid,aid,name')->find($activity['poster_id']);
-			//$club_id = $poster['gid'];
-			//$activity['post_name'] = $poster['name'];
-			//$activity['poster_url'] = "/Poster/singlePage?aid=".$poster['aid'];
-			//if($club_id)
-			//{
-				//$activity['club_name'] = M('Club')->field('name')->find($club_id)['name'];
-				//$club_name = $club_name['name'];
-				//$activity['club_name'] = $club_name;
-				//$activity['club_url'] = "/Club/intro?gid=".$club_id;
-			//}
 		}
-        //dump($activity['club_name']); 
 		$this->assign('act_id', $act_id);
 		$this->assign('activity', $activity);
 		$this->display();
@@ -392,7 +380,6 @@ class ActivityAction extends PublicAction{
 		$act_id = $this->_get('act_id');
 		$activity = M('Activity')->find($act_id);
 		$uid = $_G['uid'];
-		//dump($activity['uid']);die;
 		if($uid!=$activity['uid'])
 		{
             $this->error('您没有权限');
@@ -530,7 +517,13 @@ class ActivityAction extends PublicAction{
 			}
 		}
 	}
-	
+	public function edit(){
+	    $id=$this->getActID();
+		if(!$this->allowPost($id)) {
+				$this->error('没有权限或未激活');
+		}
+		//getPic($pid)
+	}
 	public function delete() {
 		$typeArr = array('pic','article');
 		$id = (empty($_GET[id]) || !is_numeric($_GET[id])) ? 0:$_GET[id];
@@ -613,16 +606,6 @@ class ActivityAction extends PublicAction{
 		$info = D('Activity')->getActivityByID($id,1,"likes desc");
 		$this->assign('activity',$info);
 		$this->display('Activity:find');
-	}
-	public function test() {
-	/*
-		$activity = D('Activity');
-		$res=$activity->getActivityByID(1);
-		dump($res);
-		echo $activity->getLastSql();
-		*/
-		global $_G;
-		dump($_G);
 	}
 	
 	private function getActID() {
