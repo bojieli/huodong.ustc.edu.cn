@@ -108,7 +108,7 @@ function like(id)
 <body>
 <include file="Public:headnav" />
 <div class="hdmeitou" style="text-align:center; height:50px; line-height:48px;">
-  <span><notempty name="activity.club_name"><a href="{$activity['club_url']}" target="_blank">{$activity['club_name']}</a>-&gt;</notempty><a href="{$activity['poster_url']}" target="_blank" style="font-size:35px; color:red;">"最美科大"投票</a></span>
+  <span><notempty name="activity.club_name"><a href="{$activity['club_url']}" target="_blank">{$activity['club_name']}</a>-&gt;</notempty><a href="{$activity['poster_url']}" target="_blank" style="font-size:35px; color:red;">{$activity['title']}</a></span>
 </div>
 
 <div id="main" style="background:#fafafa;">
@@ -118,7 +118,7 @@ function like(id)
     	<div class="celldiv shetuan">
     	<p class="title">活动介绍</p>
         <div class="intro">
-        <p style=" text-align:center;"><a href="/Poster/singlePage?aid=165" target="_blank"><img style="width:240px;" src="/upload/poster/thumb/thumb_50ceff1c54fd7.png"/></a></p>
+        <p style=" text-align:center;"><a href="/Poster/singlePage?aid={$activity['poster_id']}" target="_blank"><img style="width:240px;" src="/upload/poster/thumb/thumb_{$activity['poster']}"/></a></p>
         </div>
         </div>
 	</li>  

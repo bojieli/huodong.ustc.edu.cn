@@ -53,5 +53,11 @@ else $("input[name='chk_all']").removeAttr("checked");
 <a href="/Activity/address?act_id={$act.act_id}">已报名者通讯录</a>
 </div>
 </form>
+<p style="color:red">图片展</p>
+<a href="/Activity/postPic?id={$act.act_id}">上传图片</a><br />
+<a href="/Activity/show?act_id={$act.act_id}">图片展主页面</a><br />
+<a href="/Activity/admin?act_id={$act.act_id}">图片评选</a><br />
+<a href="/Activity/show_award?act_id={$act.act_id}">获奖结果页面</a>
+
 </div>
 <include file="Public:bootstrapFooter" />
