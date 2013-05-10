@@ -500,7 +500,7 @@ class ActivityAction extends PublicAction{
 	public function postPic() {
 		$id=$this->getActID();
 		if(!$this->allowPost($id)) {
-				$this->error('没有权限！');
+				$this->error('没有权限或未激活');
 		}
 		if(!$_POST['submit']) {
 			$act = D('Activity')->getActivityByID($id);
@@ -540,7 +540,7 @@ class ActivityAction extends PublicAction{
 				if($this->allowDel('pic',$id)) {
 					$status=D('Activity')->deletePic($id);
 				} else {
-					$this->error('没有权限！');
+					$this->error('没有权限!');
 				}
 				break;
 			case 'article':
@@ -632,6 +632,26 @@ class ActivityAction extends PublicAction{
 		}
 		return $id;
 	}
+	public function isAllowPost(){
+		global $_G;
+		if(!D('User')->checkLogin())
+		  {
+			$this->assign('jumpUrl','/User/login');
+			$this->error('您尚未登录');
+			}
+				 
+		 $act_id = $this->_get('act_id');
+		 $status = $this->_get('status');
+		 $activity = M('Activity')->find($act_id);
+	     $uid = $_G['uid'];
+		if($uid!=$activity['uid'])
+	           $this->error('您没有权限'); 
+		M('Activity')->where(['act_id'=>$act_id])->save(['enable_post'=>$status]);
+		if(M('Activity')->field('enable_post')->where(['act_id'=>$act_id])->find()['enable_post']==1)
+		  $this->success("激活成功");
+	    else 
+		  $this->success("取消激活成功");
+	}	
 }
 
 ?>

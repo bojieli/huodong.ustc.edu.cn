@@ -49,7 +49,7 @@ function likes(type,id) {
 							<span class="ding"><a class="iconding" href="/Likes/add?type=picture&id={$vo[pid]}"></a><span class="rate">{$vo[likes]}</span></span>
 						</div>
 						<p><a href="#">{$vo[realname]}</a>上传于<time itemprop="startDate" datetime="<php>echo date('Y-m-d H-i-s',$vo[time]);</php>"><php>echo date('Y-m-d H:i:s',$vo[time]);</php></time></p>
-						<p><if condition="$_G[uid]==$vo[uid]"><a href="/Activity/edit?type=pic&id={$vo[pid]}">编辑</a></if>
+						<p><if condition="$_G[uid]==$vo[uid]"><!--a href="/Activity/edit?type=pic&id={$vo[pid]}">编辑</a--></if>
 							<if condition="$_G[uid]==$vo[uid] || $_G[isadmin]"><a href="/Activity/delete?type=pic&id={$vo[pid]}">删除</a></if>
 						</p>
 					</div>

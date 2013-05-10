@@ -54,8 +54,11 @@ else $("input[name='chk_all']").removeAttr("checked");
 </div>
 </form>
 <p style="color:red">图片展</p>
-<a href="/Activity/postPic?id={$act.act_id}">上传图片</a><br />
+<a href="/Activity/postPic?id={$act.act_id}">上传图片</a>
+<span><a href="/Activity/isAllowPost?act_id={$act.act_id}&status=1">激活</a></span>
+<span><a href="/Activity/isAllowPost?act_id={$act.act_id}&status=0">取消激活</a></span><br />
 <a href="/Activity/show?act_id={$act.act_id}">图片展主页面</a><br />
+<a href="/Activity/find?id={$act.act_id}">图片删除</a><br />
 <a href="/Activity/admin?act_id={$act.act_id}">图片评选</a><br />
 <a href="/Activity/show_award?act_id={$act.act_id}">获奖结果页面</a>
 
