@@ -31,7 +31,7 @@ else $("input[name='chk_all']").removeAttr("checked");
 <div>活动海报
 <img src="/upload/poster/thumb/thumb_{$act.poster}" alt="活动海报" />
 </div>
-<div>负责部门:{$act.name}</div>
+<div>负责部门:{$act.club_name}</div>
 <div>简介:{$act.shortdesc}</div>
 <div>
 <a href="/Activity/introModify?gid={$act.gid}&act_id={$act.act_id}">修改</a>
@@ -53,10 +53,10 @@ else $("input[name='chk_all']").removeAttr("checked");
 <a href="/Activity/address?act_id={$act.act_id}">已报名者通讯录</a>
 </div>
 </form>
-<p style="color:red">图片展</p>
+<label class="control-label">图片展</label>
 <a href="/Activity/postPic?id={$act.act_id}">上传图片</a>
-<span><a href="/Activity/isAllowPost?act_id={$act.act_id}&status=1">激活</a></span>
-<span><a href="/Activity/isAllowPost?act_id={$act.act_id}&status=0">取消激活</a></span><br />
+<span style="color:rgb(43, 221, 28)"><a href="/Activity/isAllowPost?act_id={$act.act_id}&status=1">激活</a></span>
+<span style="color:red"><a href="/Activity/isAllowPost?act_id={$act.act_id}&status=0">取消激活</a></span><br />
 <a href="/Activity/show?act_id={$act.act_id}">图片展主页面</a><br />
 <a href="/Activity/find?id={$act.act_id}">图片删除</a><br />
 <a href="/Activity/admin?act_id={$act.act_id}">图片评选</a><br />
