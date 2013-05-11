@@ -364,6 +364,7 @@ class ActivityAction extends PublicAction{
 		{
 			$activity['club_name']=D('Club')->getClubName($activity['gid']);
 		}
+		//dump($activity);
 		$this->assign('act_id', $act_id);
 		$this->assign('activity', $activity);
 		$this->display();
@@ -449,11 +450,19 @@ class ActivityAction extends PublicAction{
 	}
 	public function find() {
 		$act_id = $this->getActID();
+	    if(!$this->allowPost($act_id)){
+		    $this->error('没有权限或未激活');
+		}	
 		$actDB = D('Activity');
-		$act = $actDB->getActivityByID($act_id);
-		if(empty($act)) {
+		$activity = $actDB->getActivityByID($act_id);
+		if(empty($activity)) {
 			$this->error('活动不存在！');
 		}
+		if($activity['poster_id'])
+		 {
+			 $activity['club_name']=D('Club')->getClubName($activity['gid']);
+		}
+
 		/*
 		dump($act);
 		echo $act[poster_id];
@@ -479,7 +488,7 @@ class ActivityAction extends PublicAction{
         $poster->clubName = $poster->clubName();
         //dump($poster);
 		$this->assign('poster', $poster->toArray());
-		$this->assign('activity',$act);
+		$this->assign('activity',$activity);
 		//dump($act);
 		$this->display();
 	}
@@ -518,11 +527,40 @@ class ActivityAction extends PublicAction{
 		}
 	}
 	public function edit(){
-	    $id=$this->getActID();
-		if(!$this->allowPost($id)) {
+	    $pid=$this->getActID();
+		$pic_info = D('Activity')->getPic($pid);
+		//dump($pic_info);die;
+		if(!$this->allowPost($pic_info['act_id'])) {
 				$this->error('没有权限或未激活');
 		}
-		//getPic($pid)
+		if(!$_POST['submit']) {
+		$activity = D('Activity')->getActivityByID($pic_info['act_id']);
+		//dump($activity);
+		$this->assign('activity',$activity);
+		$this->assign('pic_info',$pic_info);
+		$this->display();
+		}
+		else{
+			$picInfo = $this->uploadPic();
+			//dump($picInfo);die;
+			global $_G;
+			$data=array(
+				'title' => empty($_POST['title']) ? '':$_POST['title'],
+				'description' => empty($_POST[desc]) ? '':$_POST[desc],
+				'uid' => $_G[uid],
+				'time' => time(),
+			);
+			//dump($pid);die;
+			if(!empty($picInfo[savename]))
+			    $data['name'] = $picInfo[savename];
+			D('Activity')->updatePic($pid,$data);
+			if($_GET[batch] == 1) {
+				$this->ajaxReturn(1,'成功上传！',1);
+			} else {
+				$this->assign('jumpUrl','/Activity/find?id='.$pic_info['act_id']);
+				$this->success('成功上传');
+			}
+		}
 	}
 	public function delete() {
 		$typeArr = array('pic','article');
@@ -596,8 +634,7 @@ class ActivityAction extends PublicAction{
             $info = $upload->getUploadFileInfo();
             return $info[0];
         }
-		echo $upload->getErrorMsg();
-		die();
+		//echo $upload->getErrorMsg();
         return null;
 	}
 	

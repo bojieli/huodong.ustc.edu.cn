@@ -108,7 +108,12 @@ function like(id)
 <body>
 <include file="Public:headnav" />
 <div class="hdmeitou" style="text-align:center; height:50px; line-height:48px;">
-  <span><notempty name="activity.club_name"><a href="{$activity['club_url']}" target="_blank">{$activity['club_name']}</a>-&gt;</notempty><a href="{$activity['poster_url']}" target="_blank" style="font-size:35px; color:red;">{$activity['title']}</a></span>
+  <span><notempty name="activity.club_name">{$activity['club_name']}&gt;
+  </notempty><a href="{$activity['poster_url']}" style="font-size:35px; color:red;">{$activity['title']}</a></span>
+    <if condition="$_G['uid'] == $activity['uid']">
+   <span>&gt;<a href="/Activity/find?id={$activity['act_id']}" >后台编辑</a>
+   </span>
+   </if>
 </div>
 
 <div id="main" style="background:#fafafa;">

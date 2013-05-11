@@ -110,10 +110,10 @@ function like(id)
 <div class="hdmeitou" style="text-align:center; height:50px; line-height:48px;">
   <span>
   <notempty name="activity.club_name">
-    <a href="{$activity['club_url']}" target="_blank">{$activity['club_name']}</a>-&gt;
-  </notempty>
-    <a href="{$activity['poster_url']}" target="_blank" style="font-size:35px; color:red;">{$activity['title']}</a>
-    <span>- 后台编辑</span>
+    {$activity['club_name']}&gt;
+	</notempty>
+    <a href="/Activity/show?act_id={$activity['act_id']}" style="font-size:35px; color:red;">{$activity['title']}</a>
+		<span>&gt;后台编辑(<a style="color:green" href="/Activity/postPic?id={$activity['act_id']}">上传图片</a>)</span>
   </span>
 </div>
 

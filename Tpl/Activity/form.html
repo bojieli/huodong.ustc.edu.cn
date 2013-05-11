@@ -1,7 +1,7 @@
    <div class="control-group">
       <label class="control-label" for="name">活动名称</label>
       <div class="controls">
-        {$activity[name]}
+        <a href="/Activity/show?act_id={$activity['act_id']}">{$activity[name]}</a>
       </div>
     </div>
     
@@ -28,7 +28,8 @@
 		
 		
 	<p class="help-block">图片大小不大于<span style="color:red">8MB</span>，支持的文件格式：jpg、jpeg、png、gif</p>
-	<p class="help-block">如果上传的图片比较多，试试<a style="color:blue;font-weight:bolder;font-size:150%;" href="/Activity/postPic?id={$activity[act_id]}&batch=1">批量上传</a></p>
+	<p class="help-block">如果上传的图片比较多，试试
+	<a style="color:blue;font-weight:bolder;font-size:150%;" href="/Activity/postPic?id={$activity['act_id']}&batch=1">批量上传</a></p>
 	<!--p class="help-block"><span style="color:red">为保证海报的清晰度，还请上传 <span style="color:#333"><strong>宽度大于1000px</strong></span> 的海报图，无需担心浏览速度，系统后台会自动处理和生成各种大小的压缩图片！<br/>完全相同的海报只能发一个，内容相似的海报最多只能发两个，不符合上述规定的海报，会被管理员删除重复的</span></p-->
       </div>
 	
@@ -37,14 +38,16 @@
     </div>
 	
 	<div class="control-group">
-      <label class="control-label" for="name">标题</label>
+      <label class="control-label" for="name">图片标题</label>
       <div class="controls">
-        <input type="text" class="input-xxlarge"  name="title"  />
+        <input type="text" class="input-xxlarge"  name="title" />
       </div>
     </div>
 
     <div class="control-group">
-        <script type="text/javascript" charset="utf-8" src="/static/ueditor/editor_config.js"></script>
+	    <label class="control-label" for="name">图片介绍</label>
+        <div class="controls">
+		<script type="text/javascript" charset="utf-8" src="/static/ueditor/editor_config.js"></script>
         <script type="text/javascript" charset="utf-8" src="/static/ueditor/editor_all.js"></script>
 		<link rel="stylesheet" type="text/css" href="/static/ueditor/themes/default/ueditor.css"/>
 		<script type="text/plain" id="desc" name="desc" style="width:960px;text-align:left;">
@@ -54,8 +57,8 @@
 			editor_a.render('desc');
 		</script>
 		<!--textarea class="input-xlarge" id="description" name="description" rows="5" style="height:100px; width:600px;"></textarea-->
-		<p class="help-block">照片描述</p>
-     </div>
+     	</div>
+	 </div>
 	
 	
     <div class="form-actions">

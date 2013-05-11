@@ -82,7 +82,10 @@ class ActivityModel extends Model {
 		
 		$this->where('act_id='.$data[act_id])->setInc('picture_num');
 	}
-	
+	public function updatePic($pid,$data){
+			//dump($pid);die;
+	    M('activity_picture')->where(['pid'=>$pid])->save($data);
+	}
 	public function deletePic($pid) {
 		$pic = M('activity_picture')->where('pid='.$pid)->find();
 		
