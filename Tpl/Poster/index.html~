@@ -191,14 +191,28 @@ window.onresize=function(){
      	<p class="title">大学活动专版展示</p>
  	    <div class="zb_list" style="height:130px;position: relative;">         	
 	        <div class="zb_left" style="position: absolute;top: 5px;left: 5px;">
-	            <img style="width:80px;" src="/upload/poster/thumb/thumb_518cb57c71520.jpg"/>
+	            <img style="width:80px;" src="/upload/poster/thumb/thumb_51682e513ef26.jpg"/>
 	        </div>
 	        <div class="zb_right" style="position: absolute;top: 5px;right: 5px;width:147px;margin-top:10px">
-	            <p style="font-size:14px;color:red">“See You”2013毕业摄影大赛开始投票啦！</p>
+	            <p style="font-size:14px;color:red">“See You”毕业摄影大赛网上投票</p>
 	            <div class="cellcontent" style="font-size:14px">
-	                <div><a href="/Activity/show?act_id=6">★ 风景类</a></div>
-	                <div><a href="/Activity/show?act_id=7">★ 人物类</a></div>
-	                <div><a href="/Activity/show?act_id=8">★ 生活类</a></div>
+	                <div><a href="/Activity/show?act_id=6">★ 人物篇</a></div>
+	                <div><a href="/Activity/show?act_id=7">★ 风景篇</a></div>
+	                <div><a href="/Activity/show?act_id=8">★ 历史篇</a></div>
+	            <div>
+	        </div>
+	    </div>
+	    <br />
+	    <div class="zb_list" style="height:130px;position: relative;">         	
+	        <div class="zb_left" style="position: absolute;top: 5px;left: 5px;">
+	            <img style="width:80px;" src="/upload/poster/thumb/thumb_51682e513ef26.jpg"/>
+	        </div>
+	        <div class="zb_right" style="position: absolute;top: 5px;right: 5px;width:147px;margin-top:10px">
+	            <p style="font-size:14px;color:red">“See You”毕业摄影大赛网上投票</p>
+	            <div class="cellcontent" style="font-size:14px">
+	                <div><a href="/Activity/show?act_id=6">★ 人物篇</a></div>
+	                <div><a href="/Activity/show?act_id=7">★ 风景篇</a></div>
+	                <div><a href="/Activity/show?act_id=8">★ 历史篇</a></div>
 	            <div>
 	        </div>
 	    </div>
