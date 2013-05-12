@@ -1,0 +1,267 @@
+    <div class="control-group">
+       <label class="control-label" for="name">活动名称</label>
+	       <div class="controls">
+		        {$activity[name]}
+		   </div>
+	</div>
+
+	<if condition="!$_GET[batch]">
+    <div class="control-group">
+      <label class="control-label" for="poster" >替换图片</label>
+      
+		<style type="text/css">
+		.controls .file-box{ position:relative;width:340px} 
+		.controls .txt{ height:22px; border:1px solid #cdcdcd; width:180px;} 
+		.controls .btn{ background-color:#FFF; border:1px solid #CDCDCD;height:30px; width:70px; font-family:Microsoft Yahei, "Times New Roman", Times, serif;} 
+		.controls .file{ position:absolute; top:0; right:80px; height:32px; filter:alpha(opacity:0);opacity: 0;width:260px } 
+		</style>      
+	
+      <div class="controls">
+      	<div class="file-box">             
+             <input type='text' name='textfield' id='textfield' class='txt' /> 
+             <input type='button' class='btn' value='浏览...' /> 
+             <input type="file" name="poster" class="file" id="poster" size="36" onchange="document.getElementById('textfield').value=this.value" /> 
+
+
+		</div>
+		
+		
+	<p class="help-block">图片大小不大于<span style="color:red">8MB</span>，支持的文件格式：jpg、jpeg、png、gif</p>
+	<p class="help-block">如果上传的图片比较多，试试<a style="color:blue;font-weight:bolder;font-size:150%;" href="/Activity/postPic?id={$activity[act_id]}&batch=1">批量上传</a></p>
+	<!--p class="help-block"><span style="color:red">为保证海报的清晰度，还请上传 <span style="color:#333"><strong>宽度大于1000px</strong></span> 的海报图，无需担心浏览速度，系统后台会自动处理和生成各种大小的压缩图片！<br/>完全相同的海报只能发一个，内容相似的海报最多只能发两个，不符合上述规定的海报，会被管理员删除重复的</span></p-->
+      </div>
+	
+	
+	
+    </div>
+	
+	<div class="control-group">
+      <label class="control-label" for="name">照片标题</label>
+      <div class="controls">
+        <input type="text" class="input-xxlarge"  name="title" value="{$pic_info['title']}" />
+      </div>
+    </div>
+
+    <div class="control-group">
+	     <label class="control-label" for="desc">照片描述</label>
+         <div class="controls">
+		 <script type="text/javascript" charset="utf-8" src="/static/ueditor/editor_config.js"></script>
+         <script type="text/javascript" charset="utf-8" src="/static/ueditor/editor_all.js"></script>
+		 <link rel="stylesheet" type="text/css" href="/static/ueditor/themes/default/ueditor.css"/>
+		 <script type="text/plain" id="desc" name="desc" style="width:960px;text-align:left;">
+         {$pic_info['description']}
+		</script>
+		 <script type="text/javascript">
+			var editor_a = new baidu.editor.ui.Editor();
+			editor_a.render('desc');
+		 </script>
+		 </div>
+		<!--textarea class="input-xlarge" id="description" name="description" rows="5" style="height:100px; width:600px;"></textarea-->
+    </div>
+	
+	
+    <div class="form-actions">
+      <input type="submit" class="btn btn-primary" value="上传" name="submit"/>
+      <button class="btn" onclick="window.history.go(-1);">取消</button>
+    </div>
+	<else />
+		<!--批量上传-->
+		<script type="text/javascript" src="/static/swfupload/swfupload.js"></script>
+<script type="text/javascript">
+		var swfu;
+
+		window.onload = function () {
+			
+			swfu = new SWFUpload({
+				// Backend Settings
+				upload_url: "/Activity/postPic?id={$activity[act_id]}&batch=1",
+				post_params: {"desc":"","submit":"true"},
+
+				// File Upload Settings
+				file_size_limit : "8 MB",	// 8MB
+				file_types : "*.jpg;*.jpeg;*.png;*.gif",
+				file_types_description : "(JPG | PNG | GIF) Images",
+				file_upload_limit : "0",
+				file_post_name: "picture",
+				// Event Handler Settings - these functions as defined in Handlers.js
+				//  The handlers are not part of SWFUpload but are part of my website and control how
+				//  my website reacts to the SWFUpload events.
+				file_queue_error_handler : fileQueueError,
+				file_dialog_complete_handler : fileDialogComplete,
+				upload_progress_handler : uploadProgress,
+				upload_error_handler : uploadError,
+				upload_success_handler : uploadSuccess,
+				upload_complete_handler : uploadComplete,
+
+				// Button Settings
+				button_image_url : "/static/swfupload/images/SmallSpyGlassWithTransperancy_17x18.png",
+				button_placeholder_id : "spanButtonPlaceholder",
+				button_width: 180,
+				button_height: 18,
+				button_text : '<span class="button">Select Images <span class="buttonSmall">(8 MB Max)</span></span>',
+				button_text_style : '.button { font-family: Helvetica, Arial, sans-serif; font-size: 12pt; } .buttonSmall { font-size: 10pt; }',
+				button_text_top_padding: 0,
+				button_text_left_padding: 18,
+				button_window_mode: SWFUpload.WINDOW_MODE.TRANSPARENT,
+				button_cursor: SWFUpload.CURSOR.HAND,
+				
+				// Flash Settings
+				flash_url : "/static/swfupload/swfupload.swf",
+
+				custom_settings : {
+					upload_target : "divFileProgressContainer"
+				},
+				
+				// Debug Settings
+				debug: false
+			});
+		};
+		
+		
+		
+function fileQueueError(file, errorCode, message) {
+	try {
+		//var imageName = "error.gif";
+		var errorName = "";
+		if (errorCode === SWFUpload.errorCode_QUEUE_LIMIT_EXCEEDED) {
+			errorName = "You have attempted to queue too many files.";
+		}
+
+		if (errorName !== "") {
+			alert(errorName);
+			return;
+		}
+		alert(message);
+		/*
+		switch (errorCode) {
+		case SWFUpload.QUEUE_ERROR.ZERO_BYTE_FILE:
+			imageName = "zerobyte.gif";
+			break;
+		case SWFUpload.QUEUE_ERROR.FILE_EXCEEDS_SIZE_LIMIT:
+			imageName = "toobig.gif";
+			break;
+		case SWFUpload.QUEUE_ERROR.ZERO_BYTE_FILE:
+		case SWFUpload.QUEUE_ERROR.INVALID_FILETYPE:
+		default:
+			alert(message);
+			break;
+		}
+		*/
+		//addImage("images/" + imageName);
+
+	} catch (ex) {
+		this.debug(ex);
+	}
+
+}
+
+function fileDialogComplete(numFilesSelected, numFilesQueued) {
+	try {
+		if (numFilesQueued > 0) {
+			$('#divFileProgressContainer').html('<p>上传中...</p>');
+			this.startUpload();
+		}
+	} catch (ex) {
+		this.debug(ex);
+	}
+}
+
+function uploadProgress(file, bytesLoaded) {
+	
+	try {
+		var percent = Math.ceil((bytesLoaded / file.size) * 100);
+		
+		
+		if (percent === 100) {
+			
+			
+		} else {
+			
+		}
+		
+	} catch (ex) {
+		this.debug(ex);
+	}
+}
+
+function uploadSuccess(file, serverData) {
+	try {
+		var respons = JSON.parse(serverData);
+		if (respons.status) {
+			//alert('OK'+respons.info);
+			
+		} else {
+			
+			//alert(respons.info);
+
+		}
+
+
+
+	} catch (ex) {
+		this.debug(ex);
+	}
+}
+
+function uploadComplete(file) {
+	try {
+		/*  I want the next upload to continue automatically so I'll call startUpload here */
+		if (this.getStats().files_queued > 0) {
+			
+			this.startUpload();
+		} else {
+			$('#divFileProgressContainer').html('<p style="color:green;font-weight:bolder;">上传成功！</p>');
+		}
+	} catch (ex) {
+		this.debug(ex);
+	}
+}
+
+function uploadError(file, errorCode, message) {
+	var imageName =  "error.gif";
+	var progress;
+	try {
+		switch (errorCode) {
+		case SWFUpload.UPLOAD_ERROR.FILE_CANCELLED:
+			try {
+				
+			}
+			catch (ex1) {
+				this.debug(ex1);
+			}
+			break;
+		case SWFUpload.UPLOAD_ERROR.UPLOAD_STOPPED:
+			try {
+				
+			}
+			catch (ex2) {
+				this.debug(ex2);
+			}
+		case SWFUpload.UPLOAD_ERROR.UPLOAD_LIMIT_EXCEEDED:
+			imageName = "uploadlimit.gif";
+			break;
+		default:
+			alert(message);
+			break;
+		}
+
+		//addImage("images/" + imageName);
+
+	} catch (ex3) {
+		this.debug(ex3);
+	}
+
+}
+
+	</script>
+	<div class="control-group">
+      <label class="control-label" for="name">上传照片</label>
+      <div class="controls">
+		<span id="spanButtonPlaceholder"></span>
+		<div id="divFileProgressContainer"></div>
+      </div>
+	  
+    </div>
+	
+		<!---end 批量上传-->
+	</if>

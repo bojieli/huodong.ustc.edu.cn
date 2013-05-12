@@ -421,6 +421,18 @@ function jc_now($time){
 		return $jc[4];
 	return '0,0';
 }
+function xipai($var){
+	$n = count($var);
+	for($i=0;$i<$n;$i++){
+		$rand = mt_rand(0,$n-1);
+		if($rand != $i){
+			$tmp = $var[$i]; 
+			$var[$i] = $var[$rand];
+			$var[$rand] = $tmp;
+		}
+	}
+	return $var;
+}
 function biaoqing($content)
     {
 	    if(strstr($content,"/:")){

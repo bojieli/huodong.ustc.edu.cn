@@ -26,6 +26,29 @@ var loadmore = (function() {
 			 loadflag = 1;
 			if (!ajaxLock && !noMore) {
 				ajaxLock = true;
+				if(type == 'rand2'){
+				    for(i=0;i<loadnum;i++){
+			        //if(type=='rand2')
+					    //posterCounter = Math.floor(Math.random()*pic_num);
+				    $.getJSON(
+					    "/Activity/ajaxGet",
+					    {start: Math.floor(Math.random()*pic_num), num: 1, act_id: "<?=$act_id?>" }
+				    ).done(function( obj ){
+					    loadflag = 0;					
+					    if (obj.length == 0){
+						    noMore = true;
+						    nomoreflag = 1;
+					    };
+					    //if(type=='normal')
+						    //posterCounter += obj.length;
+					    var html = obj.join("");
+					    $("#content ul").append(html);
+					    $(".hide").animate({opacity:1},1000); 
+					    $("#content ul li").setwaterfall();
+					    ajaxLock = false;
+				    });
+				    }
+				}
 				 if(type == 'normal'){
 				    $.getJSON(
 					    "/Activity/ajaxGet",
@@ -57,29 +80,6 @@ var loadmore = (function() {
 						    noMore = true;
 						    nomoreflag = 1;
 					    };
-					    var html = obj.join("");
-					    $("#content ul").append(html);
-					    $(".hide").animate({opacity:1},1000); 
-					    $("#content ul li").setwaterfall();
-					    ajaxLock = false;
-				    });
-				    }
-				}
-				if(type == 'rand2'){
-				    for(i=0;i<loadnum;i++){
-			        //if(type=='rand2')
-					    //posterCounter = Math.floor(Math.random()*pic_num);
-				    $.getJSON(
-					    "/Activity/ajaxGet",
-					    {start: Math.floor(Math.random()*pic_num), num: 1, act_id: "<?=$act_id?>" }
-				    ).done(function( obj ){
-					    loadflag = 0;					
-					    if (obj.length == 0){
-						    noMore = true;
-						    nomoreflag = 1;
-					    };
-					    //if(type=='normal')
-						    //posterCounter += obj.length;
 					    var html = obj.join("");
 					    $("#content ul").append(html);
 					    $(".hide").animate({opacity:1},1000); 

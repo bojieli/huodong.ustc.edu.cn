@@ -313,6 +313,8 @@ class ActivityAction extends PublicAction{
 		$act_id = $this->_get('act_id');
 		$pictures = D('Activity')->getPicture($act_id,$start,$num,$order="likes desc");
 		//dump($pictures);
+		//$pictures = xipai($pictures);//随机打乱数组
+		//dump($pictures);
         $elements = [];
         foreach ($pictures as $picture)
             $elements[] = $this->picture2html($picture);
@@ -357,18 +359,15 @@ class ActivityAction extends PublicAction{
 	public function show()
 	{
 		$act_id = $this->_get('act_id');
-		//$activity = M('Activity')->find($act_id);
 		$activity = D('Activity')->getActivityByID($act_id);
-		//dump($activity);
 		if($activity['poster_id'])
 		{
 			$activity['club_name']=D('Club')->getClubName($activity['gid']);
 		}
-		//dump($activity);
 		$this->assign('act_id', $act_id);
 		$this->assign('activity', $activity);
 		$this->display();
-	}
+   }
 	public function admin()
 	{
 		global $_G;
@@ -505,6 +504,7 @@ class ActivityAction extends PublicAction{
 			$this->display();
 		}else {
 			$picInfo = $this->uploadPic();
+			if($picInfo==null){$this->error('上传错误');}
 			global $_G;
 			$data=array(
 				'name' => $picInfo[savename],
@@ -529,7 +529,7 @@ class ActivityAction extends PublicAction{
 	public function edit(){
 	    $pid=$this->getActID();
 		$pic_info = D('Activity')->getPic($pid);
-		//dump($pic_info);die;
+		 if($picInfo==null){$this->error('上传错误');}
 		if(!$this->allowPost($pic_info['act_id'])) {
 				$this->error('没有权限或未激活');
 		}
@@ -634,7 +634,8 @@ class ActivityAction extends PublicAction{
             $info = $upload->getUploadFileInfo();
             return $info[0];
         }
-		//echo $upload->getErrorMsg();
+		header('Content-Type: text/html; charset=UTF-8');
+		echo $upload->getErrorMsg();
         return null;
 	}
 	
