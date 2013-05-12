@@ -533,7 +533,7 @@ class ActivityAction extends PublicAction{
 				$this->error('没有权限或未激活');
 		}
 		if(!$_POST['submit']) {
-		 if($picInfo==null){$this->error('上传错误');}
+		// if($picInfo==null){$this->error('上传错误');}
 		$activity = D('Activity')->getActivityByID($pic_info['act_id']);
 		$this->assign('activity',$activity);
 		$this->assign('pic_info',$pic_info);
@@ -541,7 +541,7 @@ class ActivityAction extends PublicAction{
 		}
 		else{
 			$picInfo = $this->uploadPic();
-			//dump($picInfo);die;
+			if($picInfo==null){$this->error('上传错误');}
 			global $_G;
 			$data=array(
 				'title' => empty($_POST['title']) ? '':$_POST['title'],
