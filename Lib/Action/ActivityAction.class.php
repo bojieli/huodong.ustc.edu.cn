@@ -529,13 +529,12 @@ class ActivityAction extends PublicAction{
 	public function edit(){
 	    $pid=$this->getActID();
 		$pic_info = D('Activity')->getPic($pid);
-		 if($picInfo==null){$this->error('上传错误');}
 		if(!$this->allowPost($pic_info['act_id'])) {
 				$this->error('没有权限或未激活');
 		}
 		if(!$_POST['submit']) {
+		 if($picInfo==null){$this->error('上传错误');}
 		$activity = D('Activity')->getActivityByID($pic_info['act_id']);
-		//dump($activity);
 		$this->assign('activity',$activity);
 		$this->assign('pic_info',$pic_info);
 		$this->display();
