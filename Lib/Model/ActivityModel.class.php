@@ -52,7 +52,9 @@ class ActivityModel extends Model {
 		}
 		return $info;
 	}
-
+	public function getGidByID($act_id){
+		return M('Activity')->field('gid')->where(['act_id'=>$act_id])->find()['gid'];
+	}
 	public function getPicture($act_id,$start,$num,$order)
 	{
 		import("ORG.Util.Image");
@@ -100,7 +102,25 @@ class ActivityModel extends Model {
 		return M('activity_picture')->where('pid='.$pid)->setInc('likes');
 	}
 	public function getAddress($act_id){
-	return M('Activity_register')->where(['act_id'=>$act_id])->select();
+		return M('Activity_register')->where(['act_id'=>$act_id])->select();
+	}
+	public function change_priv($priv,$act_id,$type){
+		return M('Activity')->where(['act_id'=>$act_id])->save([$type.'_priv'=>$priv]);
+	}
+	public function get_priv($act_id,$type){
+		return M('Activity')->field($type.'_priv')->where(['act_id'=>$act_id])->find()[$type.'_priv'];
+	}
+	public function check_priv($act_id,$type){
+			$priv = $this->get_priv($act_id,$type);
+			$gid = $this->getGidByID($act_id);
+			//echo $act_id;die;
+			switch($priv){
+				case 0: return true;
+				case 1: return D('Club')->getPrivValue($gid)>=1;
+				case 2: return D('Club')->getPrivValue($gid)>=1;
+				case 3: return D('Club')->getPrivValue($gid) >1;
+				default: return false;
+	        }
 	}
 }
 	

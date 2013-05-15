@@ -181,7 +181,7 @@ class ClubModel extends Model {
         }
         return $clubs;
     }
-    private function getPrivValue($gid,$uid = CURRENT_USER)
+    public function getPrivValue($gid,$uid = CURRENT_USER)
     {
         return M()->result_first("SELECT up.priv_value FROM ustc_user_group As ug, ustc_priv As up WHERE ug.priv = up.priv_name AND ug.uid='$uid' AND ug.gid='$gid'");
     }
