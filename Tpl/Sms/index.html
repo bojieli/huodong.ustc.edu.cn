@@ -64,8 +64,9 @@ function slideUp(){
 	$("#backbg,#alertbox,#alert-cont-box").slideUp(300);
 }
 function backRun(){
+    if($("#alert-cont-box").css('display')=='none'){
 	$("#alert-cont-box").slideDown(100);
-	$("#sendMssage-result").html("<span style='color:green; font-size:20px; '>已经在后台执行，请耐心等待，后台处理完成后即可看到此条短信发送状态 ^_^ </span>" ); 
+	$("#sendMssage-result").html("<span style='color:green; font-size:20px; '>已经在后台执行，请耐心等待，后台处理完成后即可看到此条短信发送状态 ^_^ </span>" );}
 }
 function sendSms()
 {
@@ -90,14 +91,6 @@ function sendSms()
 	var form = $("#SmsSend");
 	setTimeout('backRun();',1000);
 	$.post($(form).attr('action'), $(form).serialize(), function (data) {
-		if(data.info[1]){
-			if($("#sms_num").text()<$("#tid_num").val())
-				{   
-					   $("#alert-cont-box").slideDown(100);
-					   $("#sendMssage-result").html("<span style='color:green; font-size:20px; '>发送失败：<br/></span><span style='margin-left:40px; line-height:24px;'>剩余短信条数不足！</span>" );
-					   return false;
-				} 
-		   }
 		if (data.status == 1) {
 			if(data.info[1])
 				$("#sms_num").text(data.info[1]);			
@@ -114,14 +107,15 @@ function sendSms()
 			$("#tid").val('');
 			$("#edit").val('');
 		} 
-		else if(data.status==0 ) {
+		else {
 			 if($.isArray(data.info))
 				error = data.info[0];
 			 else 
 				error = data.info;
-				//$("#sendMssage-result").html("<span style='color:green; font-size:20px; '>发送信息失败：<br/></span><span style='margin-left:40px; line-height:24px;'>"+ error +"</span>" ); 
+			 $("#alert-cont-box").slideDown(100);
+		     $("#sendMssage-result").html("<span style='color:green; font-size:20px; '>发送失败：<br/></span><span style='margin-left:40px; line-height:24px;'>"+ error +"</span>" ); 
+		     return false;
 		}
-		//$("#alert-cont-box").slideDown(100);
 	}, 'json');
     return false;
 };
