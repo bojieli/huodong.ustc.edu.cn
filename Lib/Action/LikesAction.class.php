@@ -3,10 +3,10 @@ class LikesAction extends PublicAction {
 	public function add() {
 		$arg = $this->getArg();
 		global $_G;
-		/*if(empty($_G[uid])) {
+		if(empty($_G[uid])) {
 			$this->assign('jumpUrl','/User/login');
 			$this->error('请先登录！');
-		}*/
+		}
 		if(!D('Activity')->check_priv($this->getActIDByID($arg[id]),'like'))
 				$this->error('无权限投票');
 		$where=array(
