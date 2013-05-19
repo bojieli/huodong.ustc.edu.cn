@@ -7,8 +7,22 @@ class LikesAction extends PublicAction {
 			$this->assign('jumpUrl','/User/login');
 			$this->error('请先登录！');
 		}
-		if(!D('Activity')->check_priv($this->getActIDByID($arg[id]),'like'))
-				$this->error('无权限投票');
+
+		$act_id = $this->getActIDByID($arg[id]);
+		$priv = D('Activity')->get_priv($act_id,'like');
+		$gid = D('Activity')->getGidByID($act_id);
+		$mypriv = D('Club')->getPrivValue($gid);
+		
+		switch($priv){
+			case 0: $st = 'right';break;
+		    case 1: $st = ($mypriv>=1) ? 'right':'无权限';break;
+            case 2: $st = ($mypriv>=1) ? 'right':'无权限';break;
+		    case 3: $st = ($mypriv >1) ? 'right':'无权限';break;
+		    case 6: $st = '投票已结束，感谢关注';break;
+		    default: $st = '无权限';break;
+	    }
+		if($st!='right')
+				$this->error($st);
 		$where=array(
 			'uid' =>$_G[uid],
 			'type'=>$arg[type],

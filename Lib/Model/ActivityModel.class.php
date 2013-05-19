@@ -110,18 +110,6 @@ class ActivityModel extends Model {
 	public function get_priv($act_id,$type){
 		return M('Activity')->field($type.'_priv')->where(['act_id'=>$act_id])->find()[$type.'_priv'];
 	}
-	public function check_priv($act_id,$type){
-			$priv = $this->get_priv($act_id,$type);
-			$gid = $this->getGidByID($act_id);
-			//echo $act_id;die;
-			switch($priv){
-				case 0: return true;
-				case 1: return D('Club')->getPrivValue($gid)>=1;
-				case 2: return D('Club')->getPrivValue($gid)>=1;
-				case 3: return D('Club')->getPrivValue($gid) >1;
-				default: return false;
-	        }
-	}
 }
 	
 
