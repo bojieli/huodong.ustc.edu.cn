@@ -89,6 +89,8 @@ class UserModel extends Model {
         //echo 1213;
         $str=$uid.'@'.time().'@'.mt_rand();
         $mail_md5=md5(md5(($str)));
+        echo $uid . " ";
+        echo $str . " ";
 		if(D('User_password')->field('uid')->where(array('uid'=>$uid))->find())
         {
             $data=array(
@@ -112,7 +114,7 @@ class UserModel extends Model {
 		return 0;
     }
     function getMailPwInfo($uid)	{
-        return M('User_password')->find($uid);
+        return M('User_password')->where(array('uid'=>$uid))->find();
     }
     function getPwByMd5($mail_md5){
         return M('User_password')->field('uid')->where(array('mail_md5'=>$mail_md5))->find()['uid'];
