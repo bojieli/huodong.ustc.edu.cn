@@ -28,10 +28,6 @@ $("#msn_selmem_tjsx").live('click',function(){
 	$("#backbg1").css("display","none");
 	$(".mss-input-1text").html('');
     var len = $("#members_select option").length;
-	if(len >= 30){
-		alert("抱歉,您已经选择"+len+"人，超过了30人的限制，请重新选择。");
-		return;
-	}
 	var i =0;
 	var mobiles = '';
 	var rname = '';
