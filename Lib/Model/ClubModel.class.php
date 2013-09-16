@@ -219,6 +219,9 @@ class ClubModel extends Model {
     {
         return $this->getPrivValue($gid,$uid)>=1;
     }
+	public function isVcardOwner($gid,$vid){
+	   return  M('Club_address')->where(['gid'=>$gid,'id'=>$vid])->count();		
+	}
     public function getInfo($gid) {
         if (!is_numeric($gid))
             return null;
@@ -240,11 +243,15 @@ class ClubModel extends Model {
             return null;
         return $club['name'];
     }
-	public function showMember($gid){//导入的成员
-	  $info=M('club_address')->where(['gid'=>$gid])->select();
-	  foreach($info as $key => $val){
+	public function showMember($gid,$vid){//导入的成员
+	if($vid=='')
+          $info=M('club_address')->where(['gid'=>$gid])->select();
+    else 
+		  $info=M('club_address')->where(['gid'=>$gid,'id'=>$vid])->select();
+	foreach($info as $key => $val){
 		   $info[$key]['content']=json_decode($val['content'],true);
 	  }
+	  //dump($info);die;
 	  return $info;
 	}
 	public function UserKind($gid,$email,$telephone){

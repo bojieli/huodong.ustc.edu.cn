@@ -205,8 +205,8 @@ class ClubAction extends PublicAction {
 	    $data['address_name']=$filename;
 	    $data['real_name']=$filename;
 	    $data['gid']=$gid;
-		M('club_address')->data($data)->add();
-		redirect('/Club/address?gid='.$gid,0,' ');
+	    $vid=M('club_address')->data($data)->add();
+		redirect('/Club/address?gid='.$gid.'&vid='.$vid,0,' ');
 	}
 	public function doMember(){
 	    $gid = $this->_post('gid');
@@ -965,36 +965,54 @@ class ClubAction extends PublicAction {
             $this->error("您尚未登录");
         }
         $gid = $this->getInputGid();
-        $club = $this->getData($gid);
-        if(!$this->isManager($gid)) {
-            $this->error("只有会长和部长才有权限查看通讯录");
+        $vid = $this->_get('vid');//excel
+		$club = $this->getData($gid);
+		//dump($club);
+        if(!$this->isManager($gid) && (D('Club')->isVcardOwner($gid,$vid) == 0 && empty($vid))) {
+            $this->error("无权访问改通讯录");
         }
-        $address = D('Address');
-        $members = $address->createAddress($gid);     
-		
-		$excel=D('Club')->showMember($gid);
+        if(empty($vid)){
+        	$address = D('Address');
+        	$members = $address->createAddress($gid);     
+		}
+		else{
+			$excel=D('Club')->showMember($gid,$vid);
+        }
 		foreach($excel as $key3 => $val3){
 			foreach($val3['content'][1] as $key => $val){
 				if($val=='邮箱') $re[$key3]['email']=$key;
 				if($val=='手机') $re[$key3]['telephone']=$key;
 			}
-			//dump($re);//dump($excel);die;
-			//dump($val3['content']);die;
 			foreach($val3['content'] as $key2 => $val2)
 			if($key2!=1)
 				$kind[$key3][$key2] = D('Club')->UserKind($gid,$val2[$re[$key3]['email']],$val2[$re[$key3]['telephone']]);
 		}
-		//dump($re);
-		//dump($excel);die;
-		//dump($kind);
+
 		$this->assign("kind", $kind);
 		$this->assign("excel", $excel);
-		
-		//dump(D('Club')->showMember($gid));
+//	dump($excel);die;	
 		$this->assign("club", $club);
         $this->assign("members", $members);
         $this->display();
     }
+	public function addrManage(){
+        global $_G;
+        if(empty($_G[uid]))
+        {
+            $this->assign('jumpUrl','/User/login');
+            $this->error("您尚未登录");
+        }
+        $gid = $this->getInputGid();
+        $club = $this->getData($gid);
+	   if(!$this->isManager($gid)) {
+            $this->error("只有会长和部长才有权限查看通讯录");
+        }
+		$club = $this->getData($gid);
+		$excel=D('Club')->showMember($gid);
+		$this->assign("excel", $excel);
+		$this->assign("club", $club);
+		$this->display();
+	}
     public function emailAddress()
     {
         global $_G;
@@ -1019,6 +1037,8 @@ class ClubAction extends PublicAction {
         $this->assign("email", $email_all);
         $this->display();
     }
+ /***********生成通讯录各种格式文件＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊
+ */
     public function createAddressFetion()
     {
         global $_G;
@@ -1031,8 +1051,26 @@ class ClubAction extends PublicAction {
         if(!$this->isManager($gid)) {
             $this->error("只有会长和部长才有权限查看通讯录");
         }
-        $address = D('Address');
-        $members = $address->createAddress($gid);
+        
+         $vid = $this->_get('vid');
+        if(!$this->isManager($gid)){
+            $this->error("部长以上可操作此手机通讯录");
+        }
+        if(!empty($vid) && D('Club')->isVcardOwner($gid,$vid) == 0){
+            $this->error("无权限操作此手机通讯录");
+        }
+         if(empty($vid)){
+            $address = D('Address');
+            $members = $address->createAddress($gid);
+        }
+        else{
+            $excel=D('Club')->showMember($gid,$vid);
+		    if(empty($excel))
+				$this->error("抱歉该通讯录不存在");
+			$members = $this->excel2Sql($excel[0]);
+        } 
+        
+        
         $filename="./upload/address_fetion".$gid.".csv";
         $file=fopen($filename,"w");
         if($file){
@@ -1066,8 +1104,25 @@ class ClubAction extends PublicAction {
             $this->error("只有会长和部长才有权限查看通讯录");
         }
         $club = $this->getData($gid);
-        $address = D('Address');
-        $members = $address->createAddress($gid);
+        
+        $vid = $this->_get('vid');
+        if(!$this->isManager($gid)){
+            $this->error("部长以上可操作此手机通讯录");
+        }
+        if(!empty($vid) && D('Club')->isVcardOwner($gid,$vid) == 0){
+            $this->error("无权限操作此手机通讯录");
+        }
+         if(empty($vid)){
+            $address = D('Address');
+            $members = $address->createAddress($gid);
+        }
+        else{
+            $excel=D('Club')->showMember($gid,$vid);
+		    if(empty($excel))
+				$this->error("抱歉该通讯录不存在");
+			$members = $this->excel2Sql($excel[0]);
+        } 
+        
         $filename="./upload/address_email_ustc".$gid.".csv";
         $file=fopen($filename,"w");
         if($file){
@@ -1097,11 +1152,26 @@ class ClubAction extends PublicAction {
             $this->assign('jumpUrl','/User/login');
             $this->error("您尚未登录");
         }
-        if(!$this->isManager($gid)) {
-            $this->error("只有会长和部长才有权限查看通讯录");
+        /***********/
+        $vid = $this->_get('vid');
+        if(!$this->isManager($gid)){
+            $this->error("部长以上可操作此手机通讯录");
         }
-        $address = D('Address');
-        $members = $address->createAddress($gid);
+        if(!empty($vid) && D('Club')->isVcardOwner($gid,$vid) == 0){
+            $this->error("无权限操作此手机通讯录");
+        }
+         if(empty($vid)){
+            $address = D('Address');
+            $members = $address->createAddress($gid);
+        }
+        else{
+            $excel=D('Club')->showMember($gid,$vid);
+		    if(empty($excel))
+				$this->error("抱歉该通讯录不存在");
+			$members = $this->excel2Sql($excel[0]);
+        } 
+        
+        /*************/
         $filename="./upload/address".$gid.".csv";
         $file=fopen($filename,"w");
         if($file){
@@ -1128,18 +1198,28 @@ class ClubAction extends PublicAction {
     {
         global $_G;
         $gid = $this->getInputGid();
-        //$gid = 110;
 		if(empty($_G[uid]))
         {
             $this->assign('jumpUrl','/User/login');
             $this->error("您尚未登录");
         }
-        if(!$this->isManager($gid)) {
-            $this->error("只有会长和部长才有权限生成手机通讯录");
+        $vid = $this->_get('vid');
+        if(!$this->isManager($gid)){
+            $this->error("部长以上可操作此手机通讯录");
         }
-        $address = D('Address');
-        $members = $address->createAddress($gid);
-		//dump($members);die;
+        if(!empty($vid) && D('Club')->isVcardOwner($gid,$vid) == 0){
+            $this->error("无权限操作此手机通讯录");
+        }
+        if(empty($vid)){
+            $address = D('Address');
+            $members = $address->createAddress($gid);
+        }
+        else{
+            $excel=D('Club')->showMember($gid,$vid);
+		    if(empty($excel))
+				$this->error("抱歉该通讯录不存在");
+			$members = $this->excel2Sql($excel[0]);
+        } 
 		require_once "Common/vcard.php";
 		foreach($members as $key => $per){
 		$v = new vCard();
@@ -1173,12 +1253,36 @@ class ClubAction extends PublicAction {
 		}
 		$filename = D('Club')->getClubName($gid);
 		//dump($output);die;
-		Header("Content-Disposition: attachment; filename=$filename");
+		Header("Content-Disposition: attachment; filename=$filename.vcf");
 		Header("Content-Length: ".strlen($output));
 		Header("Connection: close");
-		Header("Content-Type: text/x-vCard; name=$filename");
+		Header("Content-Type: text/x-vCard; name=$filename.vcf");
 		echo $output;
     }
+    private function excel2Sql($excel){
+		foreach($excel['content'][1] as $key => $val){
+		  $re[UserInfoOption($val)] = $key;
+		}
+		//dump($re);die;
+		foreach($excel['content'] as $r1 => $v1)//去除表格中数据头尾的空白
+		    foreach($v1 as $r2 => $v2)
+			   $per2[$r1][$r2] = trim($info[0]['content'][$r1][$r2]);
+		foreach($excel['content'] as $key2 => $val2){
+			if($key2 > 1)
+			   foreach($val2 as $key3 => $val3){
+			        if($key3 !=6)
+					{ 
+						if(UserInfoOption($excel['content'][1][$key3])=='gender') 
+							$per[$key2]['gender'] = UserGender($val3);
+						else
+							$per[$key2][UserInfoOption($excel['content'][1][$key3])]= $val3;
+					}
+			   }
+		}
+		//dump($per);die;
+    return $per;
+	}
+	/*************END*******************************/
     private function sendJoinClubEmail($uid, $gid, $status) {
         $user = M('user')->field(array('email', 'realname'))->find($uid);
         extract($user);
