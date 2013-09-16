@@ -187,8 +187,8 @@ function(){
 $(".ltx-checkbox").click(function(){
      $(this).children(".ltx-checkbox-checkmark").toggle();
      $(this).parent().parent().children(".file-selection").css("border","1px solid #4d90f0");
+     count=0;
      $(".ltx-checkbox-checkmark").each(function(){
-           count=0;
            if($(this).css("display")=='block'){
                  vids_tmp=vids_tmp+';'+$(this).attr("vid");
                  count++;
