@@ -254,6 +254,14 @@ class ClubModel extends Model {
 	  //dump($info);die;
 	  return $info;
 	}
+	public function delExcels($gid,$vids){
+	$count=0;
+	foreach($vids as $vid){
+	   M("Club_address")->where(['gid'=>$gid,'id'=>$vid])->delete();
+	   $count++;
+	 }
+	 return $count;
+	}
 	public function UserKind($gid,$email,$telephone){
 	    $User=D('User');
 		if(!$User->is_user_existed($email,$telephone)) return 0;

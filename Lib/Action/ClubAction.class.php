@@ -298,7 +298,30 @@ class ClubAction extends PublicAction {
 			return $info[0]["savename"];
         }
     }
-    
+    public function delxls(){
+        global $_G;
+        $gid = $this->getInputGid();
+		if(empty($_G[uid]))
+        {
+            $this->assign('jumpUrl','/User/login');
+            $this->error("您尚未登录");
+        }
+        if(!$this->isManager($gid)){
+            $this->error("部长以上可操作此手机通讯录");
+        }
+        if(!empty($vid) && D('Club')->isVcardOwner($gid,$vid) == 0){
+            $this->error("无权限操作此手机通讯录");
+        }
+        $vids=explode(";",trim($this->_post('vids')));
+        if($vids[0]=='')
+            unset($vids[0]);
+        //dump($vids); 
+        $num = D("Club")->delExcels($gid,$vids);
+        if($num>0)
+             $this->success("成功删除了".$num."个文档．");
+        else
+             $this->error("未删除文档．");
+    }
 	public function addOwnerSubmit() {
         $uid = $_REQUEST['owner'];
         $gid = $_REQUEST['gid'];
@@ -1037,6 +1060,7 @@ class ClubAction extends PublicAction {
         $this->assign("email", $email_all);
         $this->display();
     }
+    
  /***********生成通讯录各种格式文件＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊
  */
     public function createAddressFetion()
