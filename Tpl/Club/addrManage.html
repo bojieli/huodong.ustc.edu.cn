@@ -104,13 +104,13 @@ cursor:pointer;
                 </span>
             </div>
             <div class="file-selection">
-                <a href="/Club/address?gid=110&vid={$list.id}">
+                <a href="/Club/address?gid={$club.gid}&vid={$list.id}">
                     <img class="excel" src="/static/images/icon_spreadsheet.png" style="margin:5px"/>
                 </a>
             </div>
        </div>
 	        <div class="excel_name" style="width:130px">
-	            <a href="/Club/address?gid=110&vid={$list.id}">	{$list.address_name}</a>
+	            <a href="/Club/address?gid={$club.gid}&vid={$list.id}">	{$list.address_name}</a>
 	        </div>
         </div>
 	    </volist>
