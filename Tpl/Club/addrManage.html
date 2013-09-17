@@ -15,14 +15,16 @@
 	<div class="stcon1">
     	<div class="stcylb">
 			<span id="addr_title">
-				<a href="/Club/manage?gid={$club.gid}">{$club.name}-通讯录</a>
+				<a href="/Club/manage?gid={$club.gid}">{$club.name}</a>
+        <a href="/Club/addrManage?gid={$club.gid}">-通讯录</a>
 			</span>
 			<span id="action_toos" style="margin-left:145px">
 			    <span title="删除" class="drive-sprite-core-trash" onclick="sentVids()" style="display:none"></span> 
 			</span>
 		</div>
 	</div>
-<style type="text/css">.hd-image-container{
+<style type="text/css">
+.hd-image-container{
   position: relative;
   /*background-color: #f6ebae;*/
 }
