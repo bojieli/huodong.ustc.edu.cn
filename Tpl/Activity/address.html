@@ -705,11 +705,37 @@ $(document).ready(function(){
 
 <div id="stmain" style="width:auto;">
 	<div class="stcon1">
-    	<div class="stcylb"><a href="/Club/manage?gid={$club.gid}">{$act.title}-注册名单</a></div>
+    	<div class="stcylb"><a href="/Activity/intro?act_id={$act.act_id}">{$act.title}-注册名单</a></div>
 	</div>
     <!--span style="color:#000;float:right" id="uploadDOC" onclick="alertUpload()">上传新文件</span-->
 	<p style="color:#F00; text-align:center">支持通讯录排序功能，点击通讯录各列标题即可实现以各列值大小排序，再次点击则反向排序，默认以协会成员列表顺序排序！</p>
-	
+	<div id="export" style="text-align:center">
+  <select name="addrForm" id="addrForm" onchange="">
+
+    <option value="">请选择导出格式</option>
+    <option value ="createVcard">手机通讯录</option>
+    <option value ="createAddress">电子表格</option>
+    <option value ="createAddressFetion">飞信联系人</option>
+    <option value ="createAddressEmailUSTC">科大邮件联系人</option>
+
+  </select>
+  <span class="download_address">
+      <a href="">下载</a>
+  </span>
+  <script type="text/javascript">
+    $(document).ready(function(){
+       $('#addrForm').change(function(){
+       if($(this).children('option:selected').val()!='')
+       {   
+           url = '/Club/'+$(this).children('option:selected').val()+'?act_id={$act.act_id}';
+           $(".download_address").children("a").attr('href',url);
+       }
+       else
+           $(".download_address").children("a").attr('href','');
+       });
+    });
+    </script>
+  </div>
 	<table class="table-addresslist sortable" rowclass="row1,row2"  border="0"  cellpadding="0" cellspacing="1"  >
 	<tr >
     	<td class="td1" width="40">序</td>	

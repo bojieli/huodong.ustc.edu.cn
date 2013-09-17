@@ -3,7 +3,7 @@
 
 class ActivityModel extends Model {
 	public function creatActivity($uid,$gid,$title,$poster_id,$tid,$shortdesc){
-		$register_form = '["gender","student_no","realname","telephone","email"]';//д╛хо
+		$register_form = '["gender","student_no","realname","telephone","email"]';
 		$con = array(
 			'uid'=>$uid,
 			'gid'=>$gid,

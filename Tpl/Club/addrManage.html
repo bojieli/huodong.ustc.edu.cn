@@ -95,6 +95,17 @@ cursor:pointer;
                     <a href="/Club/address?gid=110">{$club.name}全体会员</a>
                 </div>
 	        </div>
+          <volist name="activitys" id="activity" key="all2">
+             <div class="filebox" style="float:left;margin:10px;">
+                
+                        <a href="/Activity/address?act_id={$activity.act_id}">
+                            <img class="excel" src="/static/images/icon_spreadsheet.png" style="margin:5px"/>
+                        </a>
+                <div class="excel_name" style="width:130px">
+                    <a href="/Activity/address?act_id={$activity.act_id}">{$activity.title}注册名单</a>
+                </div>
+            </div>
+          </volist>
 	     
 	    <volist name="excel" id="list" key="all">
         <div class="filebox" style="float:left;margin:10px">
