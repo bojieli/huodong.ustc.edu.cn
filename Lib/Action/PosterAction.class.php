@@ -58,7 +58,8 @@ class PosterAction extends PublicAction {
         $elements = [];
         foreach ($posters as $poster)
            $php_poster.= $this->poster2html($poster);
-		//dump($posters);
+		//dump($posters);die;
+       //die;
 		$this->assign('php_poster',$php_poster);
 		$this->assign('schools', $schools);
         $this->assign('sid', $sid);
@@ -204,14 +205,25 @@ class PosterAction extends PublicAction {
         $upload->thumbMaxWidth = '500,800';
         $upload->thumbMaxHeight = '2000,3200';
         $upload->thumbPrefix = 'thumb_,large_';
-
         if ($upload->upload()) {
             $info = $upload->getUploadFileInfo();
-            return $info[0]["savename"];
+            $savename = $info[0]["savename"];
+            $this->allToWebpForPoster($upload->thumbPath,$upload->thumbPrefix,$savename);
+            return $savename;
         }
         return null;
     }
-
+    private function allToWebpForPoster($path,$prefix,$savename){
+        $md5 = explode(".",$savename)[0];
+        $count=0;
+        foreach (explode(",",$prefix) as $key => $value) {
+             $sourceImg=$path.$value.$savename;
+             $destImg=$path."webp/".$value.$md5.".webp";
+             if(encode2Webp($sourceImg, $destImg)=='true')
+                $count++;
+        }
+        return count;
+    }
     private function parseTime($date, $hour = 0, $minute = 0, $second = 0) {
         $dates = explode('-', $date);
         $year = $dates[0];
@@ -317,6 +329,8 @@ class PosterAction extends PublicAction {
 
     private function poster2html($poster) {
         $clockStat=D('Timer')->clockInput($poster->id());
+        //$md5 = explode(".", $poster->poster)[0];
+        //$webp_url = "/upload/poster/thumb/webp/";
 		if($clockStat==0) $clock_img='';
 		else{
 				if($clockStat==1) $clock_img='<img class="clock" id="'.$clockStat.'clock-'.$poster->id().'" style="width:20px;height:20px;cursor:pointer;float:left" src="/static/images/clock1.png" alt="提醒我" title="提醒我参加活动"/>';				
@@ -328,8 +342,12 @@ class PosterAction extends PublicAction {
 		<li class="hide">
 			<div class="celldiv" itemscope itemtype="http://data-vocabulary.org/Event">
 			'.
-				($poster->thumbUrl() ? '<img alt="'.$poster->name().'" class="haibao" itemprop="photo" height="'.$poster->thumbHeight().'" id="poster-'.$poster->id().'" src="'.$poster->thumbUrl().'"onclick="loadComments('.$poster->id().')" />' : '').
-				'
+				($poster->thumbUrl() ? '
+                    <img alt="'.$poster->name().'" class="haibao" itemprop="photo" height="'.$poster->thumbHeight().'" id="poster-'.$poster->id().'" src="'.$poster->thumbUrl().'"onclick="loadComments('.$poster->id().')" />
+    
+                    ' : '').
+				
+                '
 				<div class="detail">
 					 <div class="hot">'.
 						'<span class="ding" id="ding-'.$poster->id().'">

@@ -433,6 +433,18 @@ function xipai($var){
 	}
 	return $var;
 }
+function encode2Webp($sourceImg, $destImg){
+        //echo file_exists($sourceImg);
+ 
+        if(!file_exists($sourceImg)){
+            echo $sourceImg . " does not exist <br />";
+            return -1;
+        }
+        
+        $cmd = "/usr/local/bin/cwebp " . $sourceImg. " -o ".$destImg." 2>&1";
+        shell_exec($cmd);
+        return true;
+    }
 function biaoqing($content)
     {
 	    if(strstr($content,"/:")){
