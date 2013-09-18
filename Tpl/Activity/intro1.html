@@ -1,0 +1,66 @@
+<include file="Public:bootstrapHeader" />
+<script language="javascript" type="text/javascript"> 
+$(document).ready(function (){  
+$("input[name='chk_all']").click(function () {
+if(this.checked)//判断全选按钮的状态 
+{
+$("input[name^='checkbox']").each(function (){
+$(this).attr("checked",true);
+})
+}
+else
+{
+$("input[name^='checkbox']").each(function (){
+$(this).attr("checked",false);
+})
+}
+});
+$("input[name^='checkbox']").each(function () { 
+$(this).click(function () { 
+if ($("input[name^='checkbox']:checked").length == $("input[name^='checkbox']").length) { 
+$("input[name='chk_all']").attr("checked", "checked"); 
+} 
+else $("input[name='chk_all']").removeAttr("checked"); 
+}); 
+}); 
+});
+</script>
+<div id="infoArea" style="margin: 0 auto;width: 800px;min-height: 810px;">
+<div>活动名称:{$act.title}</div>
+<div>发起人:{$act.realname}</div>
+<div>活动海报
+<img src="/upload/poster/thumb/thumb_{$act.poster}" alt="活动海报" />
+</div>
+<div>负责部门:{$act.club_name}</div>
+<div>简介:{$act.shortdesc}</div>
+<div>
+<a href="/Activity/introModify?gid={$act.gid}&act_id={$act.act_id}">修改</a>
+</div>
+<div>
+<a href="/Activity/register?act_id={$act.act_id}">活动报名</a>
+</div>
+<form  action="/Activity/reform" method="post">
+<div class="control-group">
+  <label class="control-label" for="uid">网上报名所需信息</label>
+  <div class="controls">
+	{$act.checkbox}
+	<input type="checkbox" name="chk_all"/>全部
+	<input type="hidden" name="act_id" value="{$act.act_id}"/>
+	<input type="submit" value="保存"/>
+  </div>
+</div>
+<div>
+<a href="/Activity/address?act_id={$act.act_id}">已报名者通讯录</a>
+</div>
+</form>
+<label class="control-label">图片展</label>
+<a href="/Activity/postPic?id={$act.act_id}">上传图片</a>
+<span style="color:rgb(43, 221, 28)"><a href="/Activity/isAllowPost?act_id={$act.act_id}&status=1">激活</a></span>
+<span style="color:red"><a href="/Activity/isAllowPost?act_id={$act.act_id}&status=0">取消激活</a></span><br />
+<a href="/Activity/show?act_id={$act.act_id}">图片展主页面</a><br />
+<a href="/Activity/find?id={$act.act_id}">图片删除</a><br />
+<a href="/Activity/admin?act_id={$act.act_id}">图片评选</a><br />
+<a href="/Activity/show_award?act_id={$act.act_id}">获奖结果页面</a>
+
+</div>
+<include file="Public:bootstrapFooter" />

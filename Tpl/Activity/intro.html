@@ -1,4 +1,5 @@
 <include file="Public:bootstrapHeader" />
+<link href="/static/activity_poster.css" type="text/css" rel="stylesheet" />
 <script language="javascript" type="text/javascript"> 
 $(document).ready(function (){  
 $("input[name='chk_all']").click(function () {
@@ -25,42 +26,127 @@ else $("input[name='chk_all']").removeAttr("checked");
 }); 
 });
 </script>
-<div id="infoArea" style="margin: 0 auto;width: 800px;min-height: 810px;">
-<div>活动名称:{$act.title}</div>
-<div>发起人:{$act.realname}</div>
-<div>活动海报
-<img src="/upload/poster/thumb/thumb_{$act.poster}" alt="活动海报" />
-</div>
-<div>负责部门:{$act.club_name}</div>
-<div>简介:{$act.shortdesc}</div>
-<div>
-<a href="/Activity/introModify?gid={$act.gid}&act_id={$act.act_id}">修改</a>
-</div>
-<div>
-<a href="/Activity/register?act_id={$act.act_id}">活动报名</a>
-</div>
-<form  action="/Activity/reform" method="post">
-<div class="control-group">
-  <label class="control-label" for="uid">网上报名所需信息</label>
-  <div class="controls">
-	{$act.checkbox}
-	<input type="checkbox" name="chk_all"/>全部
-	<input type="hidden" name="act_id" value="{$act.act_id}"/>
-	<input type="submit" value="保存"/>
+<div id="stglmain"> 
+   <div class="postermain">
+    <table cellpadding="0" cellspacing="0" border="0" width="1150">
+      <tr>
+        <td width="60%" align="left" valign="top">
+        	<div class="posterleftone">
+            <div class="posteroneleftimage"> 
+            	<a href="Poster.html">
+            		<img src="/upload/poster/thumb/thumb_{$act.poster}" alt="活动海报" style="height:400px;width:300px"/> 
+            	</a>
+            	<br>
+                <a href="/Activity/introModify?gid={$act.gid}&act_id={$act.act_id}">更改海报</a> 
+            </div>
+            <!--posteroneleftimage-->
+            <div class="posteroneright">
+	            <div class="posteronetitle">
+		            <h4 style="float:left; color:#666;">{$act.title}</h4>
+		            <span class="posterchange">
+		            	<a href="/Activity/introModify?gid={$act.gid}&act_id={$act.act_id}">修改</a>
+		            </span> 
+	            </div>
+              <!--posteronetitle-->
+              <div class="posterinfo"> <span style="color:#666;">时间：</span>{$act.start_time} - {$end_time}</div>
+              <!--posterinfo-->
+              <div class="posterinfo"> <span style="color:#666;">地点：</span>{$act.place} </div>
+              <div class="posterinfo"> <span style="color:#666;">发起人：</span><span class="boyname">{$act.realname}</span> </div>
+              <div class="posterinfo"> <span style="color:#666;">发起组织：</span>{$club.name}</div>
+              <div class="posterinfo"> <span style="color:#666;">活动简介：</span>{$act.shortdesc}</div>
+              <div class="posterinterest"> 已经有<span style="font-weight:bold; padding:0 10px;">100</span>人参加 </div>
+              <div class="posteract">
+                <div class="posterjoinrect">
+                  <div class="posterjoin">
+                  	<a href="/Activity/register?act_id={$act.act_id}">我要参加</a>
+                  </div>
+                </div>
+              </div>
+              <!--posteract--> 
+            </div>
+            <!--posteroneright-->
+            <div class="posterlefttwo">
+              <div class="posterlefttwotitle">
+                <h4>活动详情</h4>
+              </div>
+              <div class="posterlefttwotext">
+              	{$act.description}
+              </div>
+              <!--posterlefttwotext--> 
+            </div><!--posterlefttwo--> 
+            <div class="posterlefttwo">
+              <div>
+                <form action="/Activity/reform" method="post">
+                  <div class="control-group">
+                    <label class="posterlefttwotitle" for="uid">
+                    <h4 style="color:#000000;">报名所需信息</h4>
+                    </label>
+                    <div class="controls">
+                       {$act.checkbox}
+                      <div class="posterinput">
+                      	<input type="checkbox" name="chk_all"/>全部
+                      </div>
+                      <div class="posterinput">
+						<input type="hidden" name="act_id" value="{$act.act_id}"/>
+						<input type="submit" value="保存"/>
+                      </div>
+                    </div>
+                  </div>
+                </form>
+              </div>
+              <!--posterlefttwotext--> 
+            </div>
+            <!--posterlefttwo--> 
+            <div style="margin-top:50px;">
+              <div class="posterlefttwotitle">
+                <h4>管理员权限</h4>
+              </div>
+              <div class="posterlefttwotext">
+              	<ul>
+                	<li><a href="/Activity/address?act_id={$act.act_id}">已报名者通讯录</a> 
+                    </li>
+                    <li><a href="/Activity/postPic?id={$act.act_id}">
+                    	<span style="width:50px; margin-right:30px">上传图片</span>
+                    </a> 
+                    <a href="/Activity/isAllowPost?act_id={$act.act_id}&status=1">
+                    	<span style="width:50px; margin-right:30px">激活</span>
+                    </a> 
+                    <a href="/Activity/isAllowPost?act_id={$act.act_id}&status=0">
+                    	<span style="width:50px; margin-right:30px; color:#F99;">取消激活</span>
+                    </a> 
+                    </li>
+                     <li>
+                     	<a href="/Activity/find?id={$act.act_id}">
+                     		<span style="width:50px; margin-right:30px">图片删除</span>
+                     	</a> 
+                     	<a href="/Activity/admin?act_id={$act.act_id}">
+                     		<span style="width:50px; margin-right:30px">图片评选</span>
+                     	</a> 
+                    </li>
+                     <li><a href="/Activity/show?act_id={$act.act_id}">
+                     	<span style="width:50px; margin-right:30px">图片展主页面</span>
+                     </a> 
+                     <a href="/Activity/show_award?act_id={$act.act_id}">
+                     	<span style="width:50px; margin-right:30px">获奖结果页面</span>
+                     </a> 
+                    </li>
+                </ul>
+               
+              </div>
+              <!--posterlefttwotext--> 
+            </div><!--posterlefttwo--> 
+          </div>
+          <!--posterleftone-->
+      </td>
+        <td align="left" valign="top" style="background: #F5F4F2;">
+        	<div class="posterrightone">
+            	<div class="posterrighttitle"><h4>活动地图</h4></div>
+                <div class="posterrighttext"><iframe width="300" height="210" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="https://maps.google.com.hk/maps?f=q&amp;source=s_q&amp;hl=en&amp;geocode=&amp;q=%E4%B8%AD%E5%9B%BD%E7%A7%91%E5%AD%A6%E6%8A%80%E6%9C%AF%E5%A4%A7%E5%AD%A6%E8%A5%BF%E5%8C%BA%E4%BD%93%E8%82%B2%E5%9C%BA&amp;aq=&amp;sll=31.839504,117.258625&amp;sspn=0.019797,0.042272&amp;t=m&amp;brcurrent=3,0x0:0x0,0&amp;ie=UTF8&amp;hq=%E4%B8%AD%E5%9B%BD%E7%A7%91%E5%AD%A6%E6%8A%80%E6%9C%AF%E5%A4%A7%E5%AD%A6%E8%A5%BF%E5%8C%BA%E4%BD%93%E8%82%B2%E5%9C%BA&amp;hnear=&amp;ll=31.839504,117.258625&amp;spn=0.01276,0.021372&amp;z=14&amp;iwloc=A&amp;output=embed"></iframe><br /><small><a href="https://maps.google.com.hk/maps?f=q&amp;source=embed&amp;hl=en&amp;geocode=&amp;q=%E4%B8%AD%E5%9B%BD%E7%A7%91%E5%AD%A6%E6%8A%80%E6%9C%AF%E5%A4%A7%E5%AD%A6%E8%A5%BF%E5%8C%BA%E4%BD%93%E8%82%B2%E5%9C%BA&amp;aq=&amp;sll=31.839504,117.258625&amp;sspn=0.019797,0.042272&amp;t=m&amp;brcurrent=3,0x0:0x0,0&amp;ie=UTF8&amp;hq=%E4%B8%AD%E5%9B%BD%E7%A7%91%E5%AD%A6%E6%8A%80%E6%9C%AF%E5%A4%A7%E5%AD%A6%E8%A5%BF%E5%8C%BA%E4%BD%93%E8%82%B2%E5%9C%BA&amp;hnear=&amp;ll=31.839504,117.258625&amp;spn=0.01276,0.021372&amp;z=14&amp;iwloc=A" style="color:#0000FF;text-align:left">查看大图</a></small></div>
+            </div>
+        </td>
+      </tr>
+    </table>
   </div>
-</div>
-<div>
-<a href="/Activity/address?act_id={$act.act_id}">已报名者通讯录</a>
-</div>
-</form>
-<label class="control-label">图片展</label>
-<a href="/Activity/postPic?id={$act.act_id}">上传图片</a>
-<span style="color:rgb(43, 221, 28)"><a href="/Activity/isAllowPost?act_id={$act.act_id}&status=1">激活</a></span>
-<span style="color:red"><a href="/Activity/isAllowPost?act_id={$act.act_id}&status=0">取消激活</a></span><br />
-<a href="/Activity/show?act_id={$act.act_id}">图片展主页面</a><br />
-<a href="/Activity/find?id={$act.act_id}">图片删除</a><br />
-<a href="/Activity/admin?act_id={$act.act_id}">图片评选</a><br />
-<a href="/Activity/show_award?act_id={$act.act_id}">获奖结果页面</a>
 
 </div>
 <include file="Public:bootstrapFooter" />

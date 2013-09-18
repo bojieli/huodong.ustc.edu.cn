@@ -173,13 +173,14 @@ class ActivityAction extends PublicAction{
 		$boxes = ['gender'=>'性别','student_no'=>'学号','realname'=>'真实姓名','telephone'=>'手机号','email'=>'邮箱','hobby'=>'爱好'];
 		$act_id = $this->_get('act_id');
 		$act = D('Activity')->getActivityByID($act_id);
+		//dump($act);
 		$act['realname'] = D('User')->getRealname($act['uid']);
 		$act['checkbox_tmp'] = json_decode($act['register_form'],true);
 		foreach($boxes as $key => $val){
 			if(in_array($key,$act['checkbox_tmp']))
-				$checkbox .= '<input type="checkbox" name="checkbox[]" value="'.$key.'" checked="checked"/>'.$val."\n";
+				$checkbox .= '<div class="posterinput"><input type="checkbox" name="checkbox[]" value="'.$key.'" checked="checked"/>'.$val."</div>\n";
 			else
-				$checkbox .= '<input type="checkbox" name="checkbox[]" value="'.$key.'" />'.$val."\n";
+				$checkbox .= '<div class="posterinput"><input type="checkbox" name="checkbox[]" value="'.$key.'" />'.$val."</div>\n";
 		}
 		$act['checkbox'] = $checkbox;
 		$club = D('Club')->getInfo($act['gid']);

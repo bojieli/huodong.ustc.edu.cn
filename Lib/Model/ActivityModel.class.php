@@ -50,6 +50,7 @@ class ActivityModel extends Model {
 			$info[picture]=D('activity_picture')->join(C('DB_PREFIX').'user on '.C('DB_PREFIX').'user.uid='.C('DB_PREFIX').'activity_picture.uid')->where('act_id='.$info[act_id])->order('time desc')->select();
 			$info[article]=D('activity_article')->join(C('DB_PREFIX').'user on '.C('DB_PREFIX').'user.uid='.C('DB_PREFIX').'activity_article.uid')->where('act_id='.$info[act_id])->order('time desc')->select();
 		}
+		$info['gid']=$this->getGidByID($id);
 		return $info;
 	}
 	public function getGidByID($act_id){
