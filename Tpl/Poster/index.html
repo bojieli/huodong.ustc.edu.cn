@@ -38,20 +38,22 @@ var testWebp = function(callback){
         $(function(){
             testWebp(function(SUP){
                 var $img = $('img[data-img]');
+                m=0;
                 if(SUP){
                     //$('body').addClass('webp');
                     $img.each(function(i,o){
-                        var $o = $(o),
-                            src = $o.attr('data-img');
+                        var $o = $(o);
+                        src = $o.attr('data-img');
                         $o.attr('src',webSrc(src));
                         
                     });
-                }else{
+                }
+                else{
                     //$('body').addClass('nowebp');
                     $("#iswebp").val(0);
                     $img.each(function(i,o){
-                        var $o = $(o),
-                            src = $o.attr('data-img');
+                        var $o = $(o);
+                        src = $o.attr('data-img');
                         $o.attr('src',src);
                     });
                 }
@@ -64,7 +66,7 @@ var testWebp = function(callback){
 var  loadflag = 2;
 var  nomoreflag = 0;
 	var loadmore = (function() {
-		var posterCounter = 8;
+		var posterCounter = 7;
 		var ajaxLock = false;
 		var noMore = false;
 		return function(loadnum) {

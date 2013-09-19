@@ -59,8 +59,8 @@ class PosterAction extends PublicAction {
         $elements = [];
         foreach ($posters as $poster)
            $php_poster.= $this->poster2html($poster,$iswebp);
-		//dump($posters);die;
-       //die;
+		//dump($iswebp);die;
+        //die;
 		$this->assign('php_poster',$php_poster);
 		$this->assign('schools', $schools);
         $this->assign('sid', $sid);
