@@ -16,41 +16,7 @@
 <script>
 <!--
 
-var  loadflag = 2;
-		var  nomoreflag = 0;
-		var loadmore = (function() {
-		var posterCounter = 8;
-		var ajaxLock = false;
-		var noMore = false;
-		return function(loadnum) {
-			 loadflag = 1;
-			if (!ajaxLock && !noMore) {
-				iw=$("#iswebp").val();
-				ajaxLock = true;
-				//alert(iw);
-				$.getJSON(
-					"/Poster/ajaxGet",
-					{start: posterCounter, num: loadnum, order: '<?=$order?>', keyword: "<?=$keyword?>", sid: "<?=$sid?>",iw: iw}
-				).done(function( obj ){
-					loadflag = 0;					
-					if (obj.length == 0){
-						noMore = true;
-						nomoreflag = 1;
-					};
-					posterCounter += obj.length;
-					var html = obj.join("");
-					$("#content ul").append(html);
-					$(".hide").animate({opacity:1},1000); 
-					$("#content ul li").setwaterfall();
-					ajaxLock = false;
-				});
-			}
-		}
-	})();
-	
-
-	$(document).ready(function(){
-        var testWebp = function(callback){
+var testWebp = function(callback){
             var image = new Image();
             image.onerror = function() {
               callback(false);
@@ -97,9 +63,38 @@ var  loadflag = 2;
             });
         });
 
-
-	
-	function loadComments(aid) {
+        var  loadflag = 2;
+		var  nomoreflag = 0;
+		var loadmore = (function() {
+		var posterCounter = 8;
+		var ajaxLock = false;
+		var noMore = false;
+		return function(loadnum) {
+			 loadflag = 1;
+			if (!ajaxLock && !noMore) {
+				iw=$("#iswebp").val();
+				ajaxLock = true;
+				//alert(iw);
+				$.getJSON(
+					"/Poster/ajaxGet",
+					{start: posterCounter, num: loadnum, order: '<?=$order?>', keyword: "<?=$keyword?>", sid: "<?=$sid?>",iw: iw}
+				).done(function( obj ){
+					loadflag = 0;					
+					if (obj.length == 0){
+						noMore = true;
+						nomoreflag = 1;
+					};
+					posterCounter += obj.length;
+					var html = obj.join("");
+					$("#content ul").append(html);
+					$(".hide").animate({opacity:1},1000); 
+					$("#content ul li").setwaterfall();
+					ajaxLock = false;
+				});
+			}
+		}
+	})();
+function loadComments(aid) {
 		iw=$("#iswebp").val();
 		$.ajax({
 			url: "/Poster/loadComments",
@@ -108,33 +103,7 @@ var  loadflag = 2;
 			$("#outhaibao").html(html);
 		});
 	}
-
-
-		loadmore(1);
-		cycleload();
-		$(window).scroll(function () {
-		  if( loadflag==0	){
-			var clienth = document.documentElement.clientHeight;
-			var scrollh = document.documentElement.scrollHeight;
-			var scrollt = document.documentElement.scrollTop + document.body.scrollTop;
-			if((clienth + scrollt + 20 > lowestcollheight) || (clienth + scrollt + 250 > scrollh)) {
-				 loadmore(4);
-			};
-		  }
-		});
-		
-		
-		$(".ding").live({
-		mouseenter:function(){
-			$(this).addClass("dinghover");
-		},
-		mouseleave:function(){
-			$(this).removeClass("dinghover");
-		}
-		});		
-	});
-	
-	function cycleload(){
+function cycleload(){
 		if( loadflag==0	){
 			var clienth = document.documentElement.clientHeight;
 			var scrollh = document.documentElement.scrollHeight;
@@ -151,6 +120,28 @@ var  loadflag = 2;
 			if( nomoreflag == 1 ) $("#haibao-onmoreloading").css('display','block');
 			setTimeout("cycleload()",100);		
 		};
+	$(document).ready(function(){
+		loadmore(2);
+		cycleload();
+		$(window).scroll(function () {
+		  if( loadflag==0	){
+			var clienth = document.documentElement.clientHeight;
+			var scrollh = document.documentElement.scrollHeight;
+			var scrollt = document.documentElement.scrollTop + document.body.scrollTop;
+			if((clienth + scrollt + 20 > lowestcollheight) || (clienth + scrollt + 250 > scrollh)) {
+				 loadmore(4);
+			};
+		  }
+		});
+		$(".ding").live({
+		mouseenter:function(){
+			$(this).addClass("dinghover");
+		},
+		mouseleave:function(){
+			$(this).removeClass("dinghover");
+		}
+		});		
+	});
 -->
 	</script>
 
