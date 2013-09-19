@@ -60,12 +60,13 @@ var testWebp = function(callback){
                         $o.attr('src',src);
                     });
                 }
+                loadmore(1);
             });
         });
 
-        var  loadflag = 2;
-		var  nomoreflag = 0;
-		var loadmore = (function() {
+    var  loadflag = 2;
+	var  nomoreflag = 0;
+	var loadmore = (function() {
 		var posterCounter = 8;
 		var ajaxLock = false;
 		var noMore = false;
@@ -74,7 +75,6 @@ var testWebp = function(callback){
 			if (!ajaxLock && !noMore) {
 				iw=$("#iswebp").val();
 				ajaxLock = true;
-				//alert(iw);
 				$.getJSON(
 					"/Poster/ajaxGet",
 					{start: posterCounter, num: loadnum, order: '<?=$order?>', keyword: "<?=$keyword?>", sid: "<?=$sid?>",iw: iw}
@@ -120,8 +120,7 @@ function cycleload(){
 			if( nomoreflag == 1 ) $("#haibao-onmoreloading").css('display','block');
 			setTimeout("cycleload()",100);		
 		};
-	$(document).ready(function(){
-		loadmore(2);
+	$(document).ready(function(){		
 		cycleload();
 		$(window).scroll(function () {
 		  if( loadflag==0	){
