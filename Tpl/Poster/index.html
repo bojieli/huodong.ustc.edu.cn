@@ -16,11 +16,7 @@
 <script>
 <!--
 
-
-	
-
-	$(document).ready(function(){
-        var  loadflag = 2;
+var  loadflag = 2;
 		var  nomoreflag = 0;
 		var loadmore = (function() {
 		var posterCounter = 8;
@@ -51,6 +47,9 @@
 			}
 		}
 	})();
+	
+
+	$(document).ready(function(){
         var testWebp = function(callback){
             var image = new Image();
             image.onerror = function() {
