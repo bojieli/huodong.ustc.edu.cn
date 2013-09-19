@@ -20,7 +20,37 @@
 	
 
 	$(document).ready(function(){
-
+        var  loadflag = 2;
+		var  nomoreflag = 0;
+		var loadmore = (function() {
+		var posterCounter = 8;
+		var ajaxLock = false;
+		var noMore = false;
+		return function(loadnum) {
+			 loadflag = 1;
+			if (!ajaxLock && !noMore) {
+				iw=$("#iswebp").val();
+				ajaxLock = true;
+				//alert(iw);
+				$.getJSON(
+					"/Poster/ajaxGet",
+					{start: posterCounter, num: loadnum, order: '<?=$order?>', keyword: "<?=$keyword?>", sid: "<?=$sid?>",iw: iw}
+				).done(function( obj ){
+					loadflag = 0;					
+					if (obj.length == 0){
+						noMore = true;
+						nomoreflag = 1;
+					};
+					posterCounter += obj.length;
+					var html = obj.join("");
+					$("#content ul").append(html);
+					$(".hide").animate({opacity:1},1000); 
+					$("#content ul li").setwaterfall();
+					ajaxLock = false;
+				});
+			}
+		}
+	})();
         var testWebp = function(callback){
             var image = new Image();
             image.onerror = function() {
@@ -68,37 +98,7 @@
             });
         });
 
-var  loadflag = 2;
-	var  nomoreflag = 0;
-	var loadmore = (function() {
-		var posterCounter = 8;
-		var ajaxLock = false;
-		var noMore = false;
-		return function(loadnum) {
-			 loadflag = 1;
-			if (!ajaxLock && !noMore) {
-				iw=$("#iswebp").val();
-				ajaxLock = true;
-				//alert(iw);
-				$.getJSON(
-					"/Poster/ajaxGet",
-					{start: posterCounter, num: loadnum, order: '<?=$order?>', keyword: "<?=$keyword?>", sid: "<?=$sid?>",iw: iw}
-				).done(function( obj ){
-					loadflag = 0;					
-					if (obj.length == 0){
-						noMore = true;
-						nomoreflag = 1;
-					};
-					posterCounter += obj.length;
-					var html = obj.join("");
-					$("#content ul").append(html);
-					$(".hide").animate({opacity:1},1000); 
-					$("#content ul li").setwaterfall();
-					ajaxLock = false;
-				});
-			}
-		}
-	})();
+
 	
 	function loadComments(aid) {
 		iw=$("#iswebp").val();
