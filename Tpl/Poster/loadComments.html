@@ -1,55 +1,81 @@
 <div class="hdmeitou">
-  <span><a href="/Poster/index?sid={$poster.sid}" title="查看 {$poster.school} 所有海报">{$poster.school}</a>-&gt;<a href="/Club/intro?gid={$poster.gid}" title="进入 {$poster.clubName} 主页">{$poster.clubName}</a>-&gt;<a href="/Poster/singlePage?aid={$poster.aid}" title="在单独页面内打开">{$poster.name}</a></span>
+  <span><a href="/Poster/index?sid={$poster.sid}" title="查看 {$poster.school} 所有海报">{$poster.school}</a>-&gt;<a href="/Club/intro?gid={$poster.gid}" title="进入 {$poster.clubName} 主页">{$poster.clubName}</a>-&gt;<a href="/Poster/singlePage?iw={$iw}&aid={$poster.aid}" title="在单独页面内打开">{$poster.name}</a></span>
   <empty name="singlePage">
   <div class="closehb">X</div>
   </empty>
 </div>
+
 <notempty name="singlePage">
 <div id="mainding">
 </notempty>
-  <div itemscope itemtype="http://data-vocabulary.org/Event">
-  <div class="photocome">
-     <a href="{$poster.origPoster}" target="_blank"><img itemprop="photo" src="{$poster.largePoster}" alt="{$poster.name}" title="点击查看原图" /></a>
-  </div>
+
+	<div itemscope itemtype="http://data-vocabulary.org/Event">
+	<div class="photocome">
+	    <a href="{$poster.origPoster}" target="_blank">
+	     	<img itemprop="photo" src="{$poster.largePoster}" alt="{$poster.name}" title="点击查看原图" />
+	    </a>
+	</div>
     <div class="hb_footer">
-       <div class="fenxiangl">
-<script>
-<!--
-$(".like").live('click', function(event){
-	// div.hot > span.ding, div.hot > span.rate [class:ding id:ding-id]
-	dom = $("#"+event.target.id).parent().children('.rate');
-	if (dom.attr("clicked"))
-		return;
-	dom.attr("clicked", true);
-	dom.html(Number(dom.html()) + 5);
-	$.ajax({
-		url: "/Poster/like",
-		data: {aid: event.target.id.substr(5)}
-	});
-});
--->
-</script>
-	    热度：<span class="rate">{$poster.rate}</span>
-	    <!--<span class="like" id="ding-{$poster.aid}">顶</span>-->
-	    <span class="dymian"><a itemprop="url" target="_blank" href="/Club/intro?gid={$poster.gid}">查看 {$poster.clubName} 的简介</a></span>
-	    <span class="dymian"><a itemprop="url" target="_blank" href="/Poster/singlePage?aid={$poster.aid}">在单独页面内打开</a></span>
-	    <if condition="$poster['canModify'] == true">
-	    <span class="dymian"><a href="/Poster/modify?aid={$poster.aid}">修改海报</a></span>
-	    <span class="dymian"><a href="/Poster/delete?aid={$poster.aid}" onclick="return confirm('被删除的海报是不可恢复的。您真的要删除此海报吗？');">删除海报</a></span>
-        </if>
-       </div>
+	   <div class="fenxiangl">
+			<script>
+			<!--
+			$(".like").live('click', function(event){
+				// div.hot > span.ding, div.hot > span.rate [class:ding id:ding-id]
+				dom = $("#"+event.target.id).parent().children('.rate');
+				if (dom.attr("clicked"))
+					return;
+				dom.attr("clicked", true);
+				dom.html(Number(dom.html()) + 5);
+				$.ajax({
+					url: "/Poster/like",
+					data: {aid: event.target.id.substr(5)}
+				});
+			});
+			-->
+			</script>
+		    热度：<span class="rate">{$poster.rate}</span>
+		    <!--<span class="like" id="ding-{$poster.aid}">顶</span>-->
+		    <span class="dymian">
+		    	<a itemprop="url" target="_blank" href="/Club/intro?gid={$poster.gid}">查看 {$poster.clubName} 的简介
+		    	</a>
+		    </span>
+		    <span class="dymian">
+		    	<a itemprop="url" target="_blank" href="/Poster/singlePage?iw={$iw}&aid={$poster.aid}">在单独页面内打开
+		    	</a>
+		    </span>
+		    <if condition="$poster['canModify'] == true">
+		    <span class="dymian">
+		    	<a href="/Poster/modify?aid={$poster.aid}">修改海报
+		    	</a>
+		    </span>
+		    <span class="dymian">
+		    	<a href="/Poster/delete?aid={$poster.aid}" onclick="return confirm('被删除的海报是不可恢复的。您真的要删除此海报吗？');">删除海报
+		    	</a>
+		    </span>
+	        </if>
+	   </div>
        <div class="fenxiangr" id="fenxiangr">
-       <notempty name="singlePage">
- 	  <div class="bshare-custom icon-medium-plus"><span class="share1">分享到：</span><a title="分享到新浪微博" class="bshare-sinaminiblog" href="javascript:void(0);"></a><a title="分享到人人网" class="bshare-renren" href="javascript:void(0);"></a><a title="分享到豆瓣" class="bshare-douban" href="javascript:void(0);"></a><a title="分享到腾讯微博" class="bshare-qqmb" href="javascript:void(0);"></a><a title="分享到QQ空间" class="bshare-qzone" href="javascript:void(0);"></a><a title="更多平台" class="bshare-more bshare-more-icon more-style-addthis"></a></div><script type="text/javascript" src="/static/buttonLite.js"></script><script type="text/javascript" src="/static/bshareC0.js"></script>
-       </notempty>
-       <empty name="singlePage">
-         <div>
-			 <span class="share1">
-				 <a href="/Poster/singlePage?aid={$poster.aid}#fenxiangr" target="_blank">转发与分享：</a>
-				 <span style="color:#F00; font-size:12px">支持 人人、微博、腾讯、豆瓣等平台...</span>
-			 </span>
-		 </div>
-       </empty>
+	       <notempty name="singlePage">
+	 	  <div class="bshare-custom icon-medium-plus">
+	 	  	<span class="share1">分享到：</span>
+	 	  	<a title="分享到新浪微博" class="bshare-sinaminiblog" href="javascript:void(0);"></a>
+	 	  	<a title="分享到人人网" class="bshare-renren" href="javascript:void(0);"></a>
+	 	  	<a title="分享到豆瓣" class="bshare-douban" href="javascript:void(0);"></a>
+	 	  	<a title="分享到腾讯微博" class="bshare-qqmb" href="javascript:void(0);"></a>
+	 	  	<a title="分享到QQ空间" class="bshare-qzone" href="javascript:void(0);"></a>
+	 	  	<a title="更多平台" class="bshare-more bshare-more-icon more-style-addthis"></a>
+	 	  </div>
+	 	  <script type="text/javascript" src="/static/buttonLite.js"></script>
+	 	  <script type="text/javascript" src="/static/bshareC0.js"></script>
+	       </notempty>
+	       <empty name="singlePage">
+	         <div>
+				 <span class="share1">
+					 <a href="/Poster/singlePage?aid={$poster.aid}#fenxiangr" target="_blank">转发与分享：</a>
+					 <span style="color:#F00; font-size:12px">支持 人人、微博、腾讯、豆瓣等平台...</span>
+				 </span>
+			 </div>
+	       </empty>
        </div>
     </div><!--hbfooter-->
 	<span itemprop="summary" style="display:none">{$poster.name}</span>
@@ -146,7 +172,8 @@ $(".like").live('click', function(event){
           <div class="huifulist" id="huifulist">
             <include file="reloadComments" />
           </div><!--回复list-->
-     </div><!--post-reply-->     
+     </div><!--post-reply--> 
+
 <notempty name="singlePage">
   </div><!--mainding-->
 </notempty>
