@@ -111,6 +111,13 @@ class ActivityModel extends Model {
 	public function get_priv($act_id,$type){
 		return M('Activity')->field($type.'_priv')->where(['act_id'=>$act_id])->find()[$type.'_priv'];
 	}
+
+	public function getUserMobile($value,$act_id){
+        return M('activity_register')->field('telephone')->where(['act_id'=>$act_id,'uid'=>$value])->find()['telephone'];
+	}
+	public function getRealname($uid,$act_id){
+        return M('activity_register')->field('realname')->where(['act_id'=>$act_id,'uid'=>$uid])->find()['realname'];	
+	}
 }
 	
 

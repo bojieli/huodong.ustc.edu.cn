@@ -706,9 +706,15 @@ $(document).ready(function(){
 <div id="stmain" style="width:auto;">
 	<div class="stcon1">
     	<div class="stcylb">
+        <span id="addr_title">
          <a href="/Club/manage?gid={$club.gid}">{$club.name}</a>
          <a href="/Club/addrManage?gid={$club.gid}">-通讯录</a>
+       </span>
+       <span id="action_toos" style="margin-left:145px;font-size:20px;color:blue">
+          <span title="发短信" class="drive-sprite-core-trash" ><a href="/Sms?gid={$club.gid}&vid={$Think.get.vid}">发短信</a></span> 
+      </span>
       </div>
+      
 	</div>
 	<p style="color:#F00; text-align:center">支持通讯录排序功能，点击通讯录各列标题即可实现以各列值大小排序，再次点击则反向排序，默认以协会成员列表顺序排序！</p>
 	<div id="export" style="text-align:center">
@@ -717,9 +723,11 @@ $(document).ready(function(){
 	  <option value="">请选择导出格式</option>
 	  <option value ="createVcard">手机通讯录</option>
 	  <option value ="createAddress">电子表格</option>
-	  <option value ="createAddressFetion">飞信联系人</option>
+	  <option value ="createAddressFetion">飞信联系人</option>downloadSource
 	  <option value ="createAddressEmailUSTC">科大邮件联系人</option>
-
+   <notempty name="Think.get.vid">
+    <option value ="downloadSource" style="color:blue">原始上传文件</option>
+   </notempty>
 	</select>
 	<span class="download_address">
 	    <a href="">下载</a>

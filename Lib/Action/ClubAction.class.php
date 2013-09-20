@@ -198,10 +198,18 @@ class ClubAction extends PublicAction {
 				  }
 			   }
 			}
-		foreach($list as $r1 => $v1)//去除表格中数据头尾的空白
+        foreach($list as $key2 => $value2){
+               foreach ($value2 as $m2 => $n2) {
+                if($n2=='')
+                    unset($list[$key2][$m2]);
+               }
+            }
+		foreach($list as $r1 => $v1){//去除表格中数据头尾的空白
 		    foreach($v1 as $r2 => $v2)
 			    $list2[$r1][$r2] = trim(xss_clean($list[$r1][$r2]));//防止xss攻击
-	    $data['content']=json_encode($list2);
+	    }
+        //dump($list2);die;
+        $data['content']=json_encode($list2);
 	    $data['address_name']=$filename;
 	    $data['real_name']=$filename;
 	    $data['gid']=$gid;
@@ -253,7 +261,7 @@ class ClubAction extends PublicAction {
 		}
 	}
 	public function readExcel($filePath){
-	require_once "Common/PHPExcel.php";
+	   require_once "Common/PHPExcel.php";
 		//$filePath = 'upload/xls/'.$filename;
 		if(!file_exists($filePath)) $this->error('文件不存在');
 		$PHPExcel = new PHPExcel();
@@ -267,17 +275,33 @@ class ClubAction extends PublicAction {
 			}
 		}
 		$PHPExcel = $PHPReader->load($filePath);
-		/**读取excel文件中的第一个工作表*/
-		$sheet = $PHPExcel->getSheet(0);
+		$sheet = $PHPExcel->getActiveSheet();
 		$highestRow = $sheet->getHighestRow(); // 取得总行数
+        //dump($highestRow);die;
 		 $highestColumn = $sheet->getHighestColumn(); // 取得总列数
+
+
 		 // 根据自己的数据表的大小修改
-		 $arr = array(1=>'A',2=>'B',3=>'C',4=>'D',5=>'E',6=>'F',7=>'G',8=>'H',9=>'I',10=>'J',11=>'K',12=>'L',13=>'M', 14=>'N',15=>'O',16=>'P',17=>'Q',18=>'R',19=>'S',20=>'T',21=>'U',22=>'V',23=>'W',24=>'X',25=>'Y',26=>'Z');
-		 // 每次读取一行，再在行中循环每列的数值
-		 for($row = 1; $row <= $highestRow; $row++){
-		  for($column = 1; $arr[$column] != $highestColumn; $column++){
-		   $val = $sheet->getCellByColumnAndRow($column, $row)->getValue();
-		   $list[$row][] = $val;
+		 $arr = array('A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z');
+		 $i=0;
+         $j=0;
+         $k=0;
+        for($column = 0; $arr[$column] != $highestColumn && $arr[$column] != 'Z' && $j<=3; $column++){
+            $i=0;
+              for($row = 1; $row <= $highestRow ; $row++){
+                $val = trim($sheet->getCellByColumnAndRow($column, $row)->getValue());
+                if($val=='') $i++; 
+                if($i >= $highestRow) $j++;
+                //$k++;
+            }
+            $k++;
+          }
+         $highestColumn = $k - $j;
+         // 每次读取一行，再在行中循环每列的数值
+         for($row = 1; $row <= $highestRow; $row++){
+		  for($column = 0; $column < $highestColumn && $column <=26; $column++){
+		      $val = $sheet->getCellByColumnAndRow($column, $row)->getValue();
+		      $list[$row][] = $val;
 		  }
 		 }
 		 return $list;
@@ -1081,11 +1105,7 @@ class ClubAction extends PublicAction {
             $gid = D("Activity")->getGidByID($act_id);
         
         if(!$this->isManager($gid)) {
-            $this->error("只有会长和部长才有权限查看通讯录");
-        }
-         
-        if(!$this->isManager($gid)){
-            $this->error("部长以上可操作此手机通讯录");
+            $this->error("只有会长和部长才有权限操作此通讯录");
         }
         $vid = $this->_get('vid');
         if(!empty($vid) && D('Club')->isVcardOwner($gid,$vid) == 0){
@@ -1099,7 +1119,6 @@ class ClubAction extends PublicAction {
         }
         else{
             $excel=D('Club')->showMember($gid,$vid);
-            //dump($excel);die;
             if(empty($excel))
                 $this->error("抱歉该通讯录不存在");
             $members = $this->excel2Sql($excel[0]);
@@ -1232,7 +1251,42 @@ class ClubAction extends PublicAction {
 		Header("Content-Type: text/x-vCard; name=$filename.vcf");
 		echo $output;
     }
-    private function excel2Sql($excel){
+    public function downloadSource(){
+        global $_G;
+        if(empty($_G[uid]))
+        {
+            $this->assign('jumpUrl','/User/login');
+            $this->error("您尚未登录");
+        }
+        $act_id = $this->_get('act_id');
+        if(empty($act_id))
+            $gid = $this->getInputGid();
+        else
+            $gid = D("Activity")->getGidByID($act_id);
+        
+        if(!$this->isManager($gid)) {
+            $this->error("只有会长和部长才有权限操作此通讯录");
+        }
+        $vid = $this->_get('vid');
+        if(!empty($vid) && D('Club')->isVcardOwner($gid,$vid) == 0){
+            $this->error("无权限操作此手机通讯录");
+        }
+        $file = D('Club')->getXlsInfo($gid,$vid);
+        $filepath = "./upload/xls/".$file['real_name'];
+        if(!file_exists($filepath))
+        {
+            $this->error("文件不存在！");
+        }
+        $filename=realpath($filepath);  //文件名
+        $name = $file['real_name'];
+        Header( "Content-type:   application/octet-stream "); 
+        Header( "Accept-Ranges:   bytes "); 
+        Header( "Accept-Length: " .filesize($filename));
+        header( "Content-Disposition:   attachment;   filename= {$name}"); 
+        echo file_get_contents($filename);
+        readfile($filename); 
+    }
+    public function excel2Sql($excel){
 		foreach($excel['content'][1] as $key => $val){
 		  $re[UserInfoOption($val)] = $key;
 		}
@@ -1256,6 +1310,16 @@ class ClubAction extends PublicAction {
     return $per;
 	}
 	/*************END*******************************/
+    public function getRealname($mobile,$vid,$gid){
+        $excel=D('Club')->showMember($gid,$vid);
+        $members = $this->excel2Sql($excel[0]);
+        foreach ($members as $key => $value) {
+            if ($value['telephone'] == $mobile) {
+                return $value['realname'];
+            }
+        }
+        //dump($members);die;
+    }
     private function sendJoinClubEmail($uid, $gid, $status) {
         $user = M('user')->field(array('email', 'realname'))->find($uid);
         extract($user);

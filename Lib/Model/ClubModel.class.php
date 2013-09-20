@@ -254,6 +254,9 @@ class ClubModel extends Model {
 	  //dump($info);die;
 	  return $info;
 	}
+    public function getXlsInfo($gid,$vid){
+        return M('club_address')->field("id,gid,address_name,real_name")->where(['gid'=>$gid,'id'=>$vid])->find();
+    }
 	public function delExcels($gid,$vids){
 	$count=0;
 	foreach($vids as $vid){

@@ -5,6 +5,8 @@ class SmsAction extends PublicAction {
         $gid=$this->_get('gid');
 		$tid=$this->_get('tid');
 		$sid=$this->_get('sid');
+		$vid=$this->_get('vid');
+		$act_id=$this->_get('act_id');
 		if($sid)
 		{
 			 if(!D('User')->checkLogin()){$this->assign('jumpUrl', '/User/login');$this->error('您尚未登陆');}
@@ -22,13 +24,33 @@ class SmsAction extends PublicAction {
 		}
 		else
 		{
+			    if(empty($vid) && empty($act_id)){
+					$sms_type='';
+				}
+				else{
+
+				 if(!empty($vid)){
+						$sms_type="address";
+						$type_id=$vid;
+					}
+			        if (!empty($act_id)) {
+			        	$sms_type="activity";
+			        	$type_id =$act_id;
+			        }
+		        }
 				if($gid)
-				{
+				{   
 					if(!$gid){$this->error('非法操作！');}
 					if(!D('User')->checkLogin()){$this->error('未登陆');}
-					if(!D('Club')->isManager($gid)){$this->error('无权限');}
+					if(!D('Club')->isManager($gid)) {
+                    	$this->error("只有会长和部长才有权限操作此通讯录");}
+                    if(!empty($vid) && D('Club')->isVcardOwner($gid,$vid) == 0){
+            			$this->error("无权限操作此手机通讯录");
+                    }
+
 					$Model = D('Sms');
 					$tip=$Model->getSmsTip($gid);
+					//触发短信条数更新
 					if($Model->getUpdateTime($gid)==$Model->updateTime($gid))
 					{
 						if(!$tip)$Model->reSmsNum($gid);
@@ -38,42 +60,100 @@ class SmsAction extends PublicAction {
 						$Model->changeUpdateTime($gid);
 						$Model->reSmsNum($gid);
 					}
-					$club = D('Club')->getInfo($gid);
-					$members=$Model->getMember($gid);
-					$this->assign('club',$club);
+                     
+					if($vid){
+						$excel=D('Club')->showMember($gid,$vid);
+			            if(empty($excel))
+			                $this->error("抱歉该通讯录不存在");
+			            $re = A('Club')->excel2Sql($excel[0]);
+						$members = array();
+						foreach($re as $row => $value)
+						{
+							if($value['priv']!='member')
+								$value['info']=$value['realname'].'('.$value['title'].')'.'--'.$value['telephone'];
+							else
+								$value['info']=$value['realname'].'--'.$value['telephone'];
+							$members[] = $value;
+						}
+						$club=D('Club')->getInfo($gid);
+						//dump($gid);
+		        		$this->assign('club',$club);
 				}
-				if($tid)
+				else
 				{
-					if(!D('User')->checkLogin()){$this->error('未登陆');}
-					if(!D('Team')->isManager($tid)){$this->error('无权限');}
-					$gid = D('Team')->getGidByTid($tid);
-					$Model = D('Sms');
-					$tip=$Model->getSmsTip($gid);
-					if($Model->getUpdateTime($gid)==$Model->updateTime($gid))
-					{
-						if(!$tip)$Model->reSmsNum($gid);
-					}
-					else
-					{
-						$Model->changeUpdateTime($gid);
-						$Model->reSmsNum($gid);
-					}
-					$team = D('Team')->getInfo($tid);
-					$re=D('Team')->getMembers($tid);
-					$members = array();
-					foreach($re as $row => $value)
-					{
-						if($value['priv']!='member')
-							$value['info']=$value['realname'].'('.$value['title'].')'.'--'.$value['telephone'];
-						else
-							$value['info']=$value['realname'].'--'.$value['telephone'];
-						$members[] = $value;
-					}
-					$this->assign('team',$team);
+					$members=$Model->getMember($gid);
+					$club=D('Club')->getInfo($gid);
+					//dump($club);
+		        	$this->assign('club',$club);
 				}
-				$this->assign('sms_num',$Model->getSmsNum($gid));
+			}
+			if($tid)
+			{
+				if(!D('User')->checkLogin()){$this->error('未登陆');}
+				//if(!D('Team')->isManager($tid)){$this->error('无权限');}
+				$gid = D('Team')->getGidByTid($tid);
+				$Model = D('Sms');
+				$tip=$Model->getSmsTip($gid);
+				if($Model->getUpdateTime($gid)==$Model->updateTime($gid))
+				{
+					if(!$tip)$Model->reSmsNum($gid);
+				}
+				else
+				{
+					$Model->changeUpdateTime($gid);
+					$Model->reSmsNum($gid);
+				}
+				$team = D('Team')->getInfo($tid);
+				$re=D('Team')->getMembers($tid);
+				$members = array();
+				foreach($re as $row => $value)
+				{
+					if($value['priv']!='member')
+						$value['info']=$value['realname'].'('.$value['title'].')'.'--'.$value['telephone'];
+					else
+						$value['info']=$value['realname'].'--'.$value['telephone'];
+					$members[] = $value;
+				}
+				$this->assign('team',$team);
+			}
+			if($act_id)
+			{
+				if(!D('User')->checkLogin()){$this->error('未登陆');}
+				//if(!D('Team')->isManager($tid)){$this->error('无权限');}
+				$gid = D('Activity')->getGidByID($act_id);
+				if(!D('Club')->isManager($gid)) {
+                    	$this->error("只有会长和部长才有权限操作");}
+
+				$Model = D('Sms');
+				$tip=$Model->getSmsTip($gid);
+				if($Model->getUpdateTime($gid)==$Model->updateTime($gid))
+				{
+					if(!$tip)$Model->reSmsNum($gid);
+				}
+				else
+				{
+					$Model->changeUpdateTime($gid);
+					$Model->reSmsNum($gid);
+				}
+
+				$Activity = D('Activity')->getActivityByID($act_id);
+				$re=D('Activity')->getAddress($act_id);
+				$members = array();
+				foreach($re as $row => $value)
+				{
+					if($value['priv']!='member')
+						$value['info']=$value['realname'].'('.$value['title'].')'.'--'.$value['telephone'];
+					else
+						$value['info']=$value['realname'].'--'.$value['telephone'];
+					$members[] = $value;
+				}
+				$this->assign('activity',$Activity);
+			}
+			$this->assign('sms_num',$Model->getSmsNum($gid));
 		}
+
 		$this->history($gid);
+		//dump($members);die;
         $this->assign('members',$members);
         $this->display();
     }
@@ -101,6 +181,23 @@ class SmsAction extends PublicAction {
 		$uid= $_G['uid'];
         $gid = $_POST['gid'];
 		$sid = $_POST['sid'];
+		$vid = $this->_post('vid');
+		$act_id = $this->_post('act_id');
+		if(empty($vid) && empty($act_id)){
+
+			$sms_type='';
+		}
+		else{
+
+		 if(!empty($vid)){
+				$sms_type="address";
+				$type_id=$vid;
+			}
+	        if (!empty($act_id)) {
+	        	$sms_type="activity";
+	        	$type_id =$act_id;
+	        }
+        }
 		if($sid)
 		{
 			$user_info = D('User')->getInfo(CURRENT_USER);
@@ -114,19 +211,41 @@ class SmsAction extends PublicAction {
 		{
 				if(!D('Club')->isManager($gid)){$this->error('无权限');}
 		}
+
         $to_tmp = trim($this->_post('tid'));
         $to_all=explode(";",$to_tmp);
         $msg = $this->_post('s');
         $Model = D('Sms');
         $i=0;
-        foreach ($to_all as $row =>$value)
-        {
-            if($value)
-            {
-                $mobiles[$value]=$Model->getUserMobile($value);
-                $i++;
-            }			
+
+        if(empty($sms_type)){
+	        foreach ($to_all as $row =>$value)
+	        {
+	            if($value)
+	            {
+	                $mobiles[$value]=$Model->getUserMobile($value);
+	                $i++;
+	            }			
+	        }
         }
+        else{
+
+          if($sms_type=='address'){
+        	$mobiles=$to_all;
+        	$i=count($mobiles);
+        	}
+        	else{
+	               foreach ($to_all as $row =>$value)
+		        {
+		            if($value)
+		            {
+		                $mobiles[$value]=D("Activity")->getUserMobile($value,$type_id);
+		                $i++;
+		            }			
+		        }
+        	}
+        }
+
         if($i==''||$msg==''){
 			$info[]="未填写内容或未指明发送对象";
             $info[]=$Model->getSmsNum($gid);
@@ -139,10 +258,10 @@ class SmsAction extends PublicAction {
 				$info[]=$Model->getSmsNum($gid);
 				$this->error($info);
 			}
-			$re=$Model->sentSms($msg,$mobiles,$gid,0);
+			$re=$Model->sentSms($msg,$mobiles,$gid,0,$sms_type,$type_id);
 		}
 		else{
-			$re=$Model->sentSms($msg,$mobiles,$sid,1);
+			$re=$Model->sentSms($msg,$mobiles,$sid,1,$sms_type,$type_id);
 		}
         if(!$sid)
 			$Model->deSmsNum($gid,$re['done']);
@@ -188,6 +307,7 @@ class SmsAction extends PublicAction {
         $this->assign('school_name',$school_name);
         $this->assign('allPidNum',D('Sms')->getPidNumCount($gid));
         $this->assign('allSmsNum',D('Sms')->getAllSmsNumByGid($gid));
+        //dump($re);
         $this->assign('history',$re);
         //dump($re);
         //$this->display();

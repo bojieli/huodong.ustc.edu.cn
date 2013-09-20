@@ -11,7 +11,7 @@ class SmsModel extends Model {
 			$client->wsSendSms($msg,$mobile);
 		}
 	}
-	public function sentSms($msg_top,$mobiles,$gid,$isadmin)
+	public function sentSms($msg_top,$mobiles,$gid,$isadmin,$sms_type,$type_id)
 	{
 		global $_G;
 		$uid= $_G['uid'];
@@ -26,18 +26,34 @@ class SmsModel extends Model {
 		$i=0;
 		$j=0;
 		$failed_user = "";
-		foreach($mobiles as  $tid1 => $mobile1){
-			$tids.=$tid1.';';
+        if($sms_type=='address'){
+	        foreach ($mobiles as $n => $notempty) {
+	        	if($notempty!='')
+	        		$mobiles_tmp[]=$notempty;
+	        }
+	        $mobiles=$mobiles_tmp;
 		}
+		foreach($mobiles as  $tid1 => $mobile1){
+			if(empty($sms_type) || $sms_type == 'activity')
+				$tids.=$tid1.';';
+			if($sms_type == "address")
+				$tids.=$mobile1.';';
+		}
+        //dump($mobiles);die;
 		if($isadmin==0)
-			$pid=$this->sms_md5($msg_top,$uid,$tids,$gid);
+			$pid=$this->sms_md5($msg_top,$uid,$tids,$gid,$sms_type,$type_id);
 
 		foreach($messageIds as $messageId){
 			foreach($mobiles as $tid4 => $mobile4){
-				if($isadmin==0)
-					$this->smsLog($uid,$tid4,$pid,$gid,'ing');
+				if($isadmin==0){
+					if(empty($sms_type))
+						$this->smsLog($uid,$tid4,$pid,'ing');
+					if($sms_type== "address")
+						$this->smsLog($uid,$mobile4,$pid,'ing');
+				}
 			}
 		}
+
 		foreach($mobiles as  $tid => $mobile)
 		{
 			foreach($messageIds as $messageId)
@@ -45,17 +61,24 @@ class SmsModel extends Model {
 				$client->wsMessageAddReceiver($messageId,'mobile',$mobile,'sms',$messagePriority=1,$sendTime=null);
 			}
 		}
+
 		foreach($messageIds as $messageId){
 			$re[]=$client->wsMessageSend($messageId);
 			$client->wsMessageClose($messageId);
 		}
+
 		foreach($re as $st)
 		{
 			if($st)
 			{
 				foreach($mobiles as  $tid2 => $mobile2){
-					if($isadmin==0)
-						$this->smsLog($uid,$tid2,$pid,'done');
+					//echo $mobile2;die;
+					if($isadmin==0){
+						if(empty($sms_type) || $sms_type == 'activity')
+							$this->smsLog($uid,$tid2,$pid,'done');
+					    if($sms_type== "address")
+					    	$this->smsLog($uid,$mobile2,$pid,'done');
+					}
 					$i++;
 				}
 			}
@@ -63,8 +86,23 @@ class SmsModel extends Model {
 			{
 				foreach($mobiles as  $tid3 => $mobile3){
 					$failed_user.=D('User')->getRealname($tid3)." ";
-					if($isadmin==0)
-						$this->smsLog($uid,$tid3,$pid,'failed');
+					if($isadmin==0){
+						if(empty($sms_type) || $sms_type == 'activity'){
+							$this->smsLog($uid,$tid3,$pid,'failed');
+							if($sms_type=='activity')
+								$failed_user.=D('Activity')->getRealname($tid3,$type_id)." ";
+							else
+								$failed_user.=D('User')->getRealname($tid3)." ";
+						}
+					    if($sms_type== "address"){
+					    	$this->smsLog($uid,$mobile3,$pid,'failed');
+					    	$name = A('Club')->getRealname($mobile3,$type_id,$gid);
+					    	$name ? $name : "无名氏";
+					    	$failed_user.=$name." ";
+					    }
+					}else{
+					   $failed_user.=D('User')->getRealname($tid3)." ";
+					}
 					$j++;
 				}
 			}
@@ -78,11 +116,11 @@ class SmsModel extends Model {
 				'tid'	=>$tid,
 				'pid'   =>$pid,
 				'time'  =>time(),
-				'status'=>$status?$status:'done'
+				'status'=>$status
 			   );
 		$count = M('sms')->where(['uid'=>$uid,'tid'=>$tid,'pid'=>$pid])->count();
 		if($count > 0)
-			M('sms')->data(['time'=>time(),'status'=>$status])->save();
+			M('sms')->where(['uid'=>$uid,'tid'=>$tid,'pid'=>$pid])->data(['time'=>time(),'status'=>$status])->save();
 		else
 			M('sms')->data($data)->add();
 	}
@@ -93,7 +131,7 @@ class SmsModel extends Model {
 			return '正在发送';
 		return '成功发出';
 	}
-	public function sms_md5($msg,$uid,$tids,$gid)
+	public function sms_md5($msg,$uid,$tids,$gid,$sms_type,$type_id)
 	{
 
 		$md5=md5($uid."\t".trim($tids)."\t".trim($gid)."\t".trim($msg));
@@ -104,7 +142,9 @@ class SmsModel extends Model {
 				'tids'	=>$tids,
 				'gid'	=>$gid,
 				'time'  =>time(),
-				'md5'=>$md5
+				'md5'=>$md5,
+				'sms_type'=>$sms_type,
+				'type_id'=>$type_id,
 			   );
 		M('sms_md5')->data($data)->add();
 		$re=M('sms_md5')->field('pid')->where(array('md5'=>$md5))->order('time DESC')->find();
@@ -201,10 +241,29 @@ class SmsModel extends Model {
 		return M('Sms_md5')->where(array('gid'=>$gid))->count();
 	}
 	public function getTidsName($pid){
-		$tids = M('Sms_md5')->where(['pid'=>$pid])->find()['tids'];
+		$re = M('Sms_md5')->where(['pid'=>$pid])->find();
+		$tids = $re['tids'];
+		$gid = $re['gid'];
+		$sms_type = $re['sms_type'];
+		$type_id = $re['type_id'];
+        //dump($sms_type);
 		$tidArray=explode(";",$tids);
-		foreach($tidArray as $tid)
-			$nameString.=D('User')->getRealname($tid).' ';
+		foreach($tidArray as $tid){
+			if($sms_type == 'address'){
+				//dump($vid);
+				$nameString.=A('Club')->getRealname($tid,$type_id,$gid);
+			}
+			else 
+			{
+				if ($sms_type == 'activity') {
+				    $nameString.=D('Activity')->getRealname($tid,$type_id);
+				}
+				else{
+				       $nameString.=D('User')->getRealname($tid).' ';	
+				}
+			}
+		}
+		
 		return $nameString;
 	}
 }

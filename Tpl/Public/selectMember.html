@@ -35,16 +35,14 @@
 <!--以下为筛选代码以及js代码-->
 <script type="text/javascript"> 
 <!-- Begin 
-sortitems = 0;  // Automatically sort items within lists? (1 or 0) 
-sort_flagL = 0; //left col.1 or 0 ; 1 stand for "sort by text", 0 stand for "sort by clubindex" 
-sort_flagR = 0; //right col 1 or 0 ; 1 stand for "sort by text", 0 stand for "sort by clubindex" 
-
- function move(fbox,tbox,flag) { 
- 
+sortitems = 1;  // Automatically sort items within lists? (1 or 0) 
+sort_flagL = 2; //left; 1 stand for "sort by name", 0 stand for "sort by xh",2 stand for "define"
+sort_flagR = 2; //right; 1 stand for "sort by text", 0 stand for "sort by clubindex" for "define"
+function move(fbox,tbox,flag){ 
   for(var i=0; i<fbox.options.length; i++) { 
     if(fbox.options[i].selected && fbox.options[i].value != ""){ 
     	var no = new Option();
-		var z
+		var z='';
     	no.value = fbox.options[i].value; 
     	no.text = fbox.options[i].text;		
 		z = fbox.options[i].getAttribute("clubindex");
@@ -55,9 +53,10 @@ sort_flagR = 0; //right col 1 or 0 ; 1 stand for "sort by text", 0 stand for "so
 		no.setAttribute("xh",z);
 		z = fbox.options[i].getAttribute("title");
 		no.setAttribute("title",z);
-		
+		z='';
 		no.selected = fbox.options[i].selected;
     	tbox.options[tbox.options.length] = no;
+
     	fbox.options[i].value = ""; 
     	fbox.options[i].text = "";
 		fbox.options[i].setAttribute("clubindex","");
@@ -68,7 +67,20 @@ sort_flagR = 0; //right col 1 or 0 ; 1 stand for "sort by text", 0 stand for "so
     };
   };
   BumpUp(fbox); 
-  if (sortitems) SortD(tbox,flag); 
+  if(flag==2){
+	  	SortD(tbox,flag,1);
+	 // alert("hi");
+	}
+	  else{
+	  	var sort_flag = [['msel_Lxh','msel_Lmc'],['msel_Rxh','msel_Rmc']];
+	  	listname = tbox.name;
+	  	//alert(listname);
+	  	if(listname=="list2")	    
+	  	    stat = document.getElementById(sort_flag[1][flag]).stat;
+	  	else
+	  		stat = document.getElementById(sort_flag[1][flag]).stat;
+	    SortD(tbox,flag,stat);
+	 }
  };
 function moveall(fbox,tbox,flag){ 
   for(var i=0; i<fbox.options.length; i++){ 
@@ -96,17 +108,24 @@ function moveall(fbox,tbox,flag){
        }; 
   }; 
  BumpUp(fbox); 
- if (sortitems) SortD(tbox,flag); 
+ if (sortitems) SortD(tbox,flag,1); 
  };
 function BumpUp(box){ 
   for(var i=0; i<box.options.length; i++){ 
     if(box.options[i].value == ""){ 
        for(var j=i; j<box.options.length-1; j++){ 
-       	 box.options[j].value = box.options[j+1].value; 
-       	 box.options[j].text = box.options[j+1].text;
-		var z
-		z = box.options[j+1].getAttribute("clubindex");
-		box.options[j].setAttribute("clubindex",z)		 
+
+	       	box.options[j].value = box.options[j+1].value; 
+	       	box.options[j].text = box.options[j+1].text;
+			var z
+			z = box.options[j+1].getAttribute("clubindex");
+			box.options[j].setAttribute("clubindex",z);
+			z = box.options[j+1].getAttribute("xh");
+			box.options[j].setAttribute("xh",z);
+			z = box.options[j+1].getAttribute("realname");
+			box.options[j].setAttribute("realname",z);
+			z = box.options[j+1].getAttribute("title");
+			box.options[j].setAttribute("title",z);
 		
        };
        var ln = i; 
@@ -117,9 +136,40 @@ function BumpUp(box){
   	box.options.length -= 1; 
   	BumpUp(box); 
   }; 
-}; 
+ }; 
+function sortOpts(temp_opts,x,y){
+    temp = temp_opts[x].text; 
+	temp_opts[x].text = temp_opts[y].text; 
+ 	temp_opts[y].text = temp;
+	temp = temp_opts[x].value; 
+ 	temp_opts[x].value = temp_opts[y].value; 
+ 	temp_opts[y].value = temp;
+	
+	z = temp_opts[x].getAttribute("xh");
+	z1 = temp_opts[y].getAttribute("xh");		
+ 	temp_opts[x].setAttribute("xh",z1);	
+ 	temp_opts[y].setAttribute("xh",z);	
 
-function SortD(box,flag){ 
+ 	z = temp_opts[x].getAttribute("clubindex");
+	z1 = temp_opts[y].getAttribute("clubindex");		
+ 	temp_opts[x].setAttribute("clubindex",z1);	
+ 	temp_opts[y].setAttribute("clubindex",z);
+	
+	z = temp_opts[x].getAttribute("realname");
+	z1 = temp_opts[y].getAttribute("realname");		
+ 	temp_opts[x].setAttribute("realname",z1);	
+ 	temp_opts[y].setAttribute("realname",z);	
+	
+	z = temp_opts[x].getAttribute("title");
+	z1 = temp_opts[y].getAttribute("title");		
+ 	temp_opts[x].setAttribute("title",z1);	
+ 	temp_opts[y].setAttribute("title",z);
+	
+	temp = temp_opts[x].selected; 
+ 	temp_opts[x].selected = temp_opts[y].selected; 
+ 	temp_opts[y].selected = temp; 
+ };
+function SortD(box,flag,flag3){ 
  var temp_opts = new Array(); 
  var temp = new Object(); 
  var z
@@ -127,100 +177,58 @@ function SortD(box,flag){
  for(var i=0; i<box.options.length; i++)  { 
    temp_opts[i] = box.options[i]; 
  } 
-if(flag){
-  
- for(var x=0; x<temp_opts.length-1; x++)  { 
-   for(var y=(x+1); y<temp_opts.length; y++)  {	   
-     var e = temp_opts[x].attributes["realname"].value;
-	 var f = temp_opts[y].attributes["realname"].value;
-	 if(e.localeCompare(f)>=0){
-		temp = temp_opts[x].text; 
-    	temp_opts[x].text = temp_opts[y].text; 
-     	temp_opts[y].text = temp;
-		temp = temp_opts[x].value; 
-     	temp_opts[x].value = temp_opts[y].value; 
-     	temp_opts[y].value = temp;
-		
-		z = temp_opts[x].getAttribute("xh");
-		z1 = temp_opts[y].getAttribute("xh");		
-     	temp_opts[x].setAttribute("xh",z1);	
-     	temp_opts[y].setAttribute("xh",z);	
-		
-		z = temp_opts[x].getAttribute("realname");
-		z1 = temp_opts[y].getAttribute("realname");		
-     	temp_opts[x].setAttribute("realname",z1);	
-     	temp_opts[y].setAttribute("realname",z);	
-		
-		z = temp_opts[x].getAttribute("title");
-		z1 = temp_opts[y].getAttribute("title");		
-     	temp_opts[x].setAttribute("title",z1);	
-     	temp_opts[y].setAttribute("title",z);
-		
-		temp = temp_opts[x].selected; 
-     	temp_opts[x].selected = temp_opts[y].selected; 
-     	temp_opts[y].selected = temp; 
-	 }
-	/* if(temp_opts[x].text.localeCompare(temp_opts[y].text)>=0)  { 
-     	temp = temp_opts[x].text; 
-    	temp_opts[x].text = temp_opts[y].text; 
-     	temp_opts[y].text = temp;
-		
-     	temp = temp_opts[x].value; 
-     	temp_opts[x].value = temp_opts[y].value; 
-     	temp_opts[y].value = temp;
-		
-		//temp = temp_opts[x].attributes['index'].nodeValue;
-		//temp_opts[x].attributes['index'].nodeValue = temp_opts[y].attributes['index'].nodeValue; 
-     	//temp_opts[y].attributes['index'].nodeValue = temp;		
-			
-		z = temp_opts[x].getAttribute("xh");
-		z1 = temp_opts[y].getAttribute("xh");		
-     	temp_opts[x].setAttribute("xh",z1);	
-     	temp_opts[y].setAttribute("xh",z);	 
-		
-		temp = temp_opts[x].selected; 
-     	temp_opts[x].selected = temp_opts[y].selected; 
-     	temp_opts[y].selected = temp; 
-		     };
-			 */
-   };
- };
-} //sort by student_no
-else{
-   for(var x=0; x<temp_opts.length-1; x++)  { 
-   for(var y=(x+1); y<temp_opts.length; y++)  {
-	   var rrx = temp_opts[x].getAttribute("xh").toUpperCase();
-	   var rry = temp_opts[y].getAttribute("xh").toUpperCase();
-    // alert(rrx);return;
-	 if(rrx > rry)  { 
-     	temp = temp_opts[x].text; 
-    	temp_opts[x].text = temp_opts[y].text; 
-     	temp_opts[y].text = temp; 
-     	temp = temp_opts[x].value; 
-     	temp_opts[x].value = temp_opts[y].value; 
-     	temp_opts[y].value = temp;
-		
-		temp = temp_opts[x].getAttribute("xh");
-		z = temp_opts[y].getAttribute("xh");
-		temp_opts[x].setAttribute("xh",z);	
-     	temp_opts[y].setAttribute("xh",temp);
-
-		z = temp_opts[x].getAttribute("realname");
-		z1 = temp_opts[y].getAttribute("realname");		
-     	temp_opts[x].setAttribute("realname",z1);	
-     	temp_opts[y].setAttribute("realname",z);
-		
-		z = temp_opts[x].getAttribute("title");
-		z1 = temp_opts[y].getAttribute("title");		
-     	temp_opts[x].setAttribute("title",z1);	
-     	temp_opts[y].setAttribute("title",z);
-     		
-		temp = temp_opts[x].selected; 
-     	temp_opts[x].selected = temp_opts[y].selected; 
-     	temp_opts[y].selected = temp; 
-		     };
-   };
- };
+	if(flag==1){
+	 for(var x=0; x<temp_opts.length-1; x++)  { 
+	   for(var y=(x+1); y<temp_opts.length; y++)  {	   
+	     var e = temp_opts[x].attributes["realname"].value;
+		 var f = temp_opts[y].attributes["realname"].value;
+		 if(flag3){
+		 	if(e.localeCompare(f)<0)
+				sortOpts(temp_opts,x,y);
+		}
+		 else{
+		 	if(e.localeCompare(f)>=0)
+				sortOpts(temp_opts,x,y);
+	    }   
+	   };
+	 };
+	} //sort by student_no
+	else
+	{
+		if(flag==0){
+		   for(var x=0; x<temp_opts.length-1; x++)  { 
+		   for(var y=(x+1); y<temp_opts.length; y++)  {
+			   var rrx = temp_opts[x].getAttribute("xh").toUpperCase();
+			   var rry = temp_opts[y].getAttribute("xh").toUpperCase();
+		    	// alert(rrx);return;
+			    if(flag3){
+				 	if(rrx > rry)
+						sortOpts(temp_opts,x,y);
+				}
+				else{
+				 	if(rrx <= rry)
+						sortOpts(temp_opts,x,y);
+			   }
+		   };
+		 };
+		}
+		else{
+		  for(var x=0; x<temp_opts.length-1; x++)  { 
+		   for(var y=(x+1); y<temp_opts.length; y++)  {
+			   var rrx = temp_opts[x].getAttribute("clubindex");
+			   var rry = temp_opts[y].getAttribute("clubindex");
+		    	 //alert(rrx);
+			    if(flag3){
+				 	if(rrx - rry > 0)
+						sortOpts(temp_opts,x,y);
+				}
+				else{
+				 	if(rrx - rry <=0)
+						sortOpts(temp_opts,x,y);
+			   }
+		   };
+		 };
+		}
 	}
  for(var i=0; i<box.options.length; i++)  { 
  	box.options[i].value = temp_opts[i].value; 
@@ -231,10 +239,8 @@ else{
 	box.options[i].setAttribute("realname",w);
 	w = temp_opts[i].getAttribute("title");
 	box.options[i].setAttribute("title",w);
-	box.options[i].selected = temp_opts[i].selected; 
-//	alert("box: "+ z + " temp: " + z+ "boxselect: " + box.options[i].selected + "  " + box.options[i].text);
-  };
-};
+	box.options[i].selected = temp_opts[i].selected;};
+ };
 function MselAuto(fbox,flag1,tbox,flag2){
 	if(sortitems){
 		sortitems = 0 ;		
@@ -242,22 +248,60 @@ function MselAuto(fbox,flag1,tbox,flag2){
 		}
 	 else{
 		sortitems = 1 ;
-		SortD(fbox,flag1);
-		SortD(tbox,flag2);
 		document.getElementById("msel_auto").style.backgroundColor='#fafafa';
-		
+		document.getElementById("msel_Lxh").style.backgroundColor='#f0f0f0';
+		document.getElementById("msel_Lmc").style.backgroundColor='#f0f0f0';
+		document.getElementById("msel_Rxh").style.backgroundColor='#f0f0f0';
+		document.getElementById("msel_Rmc").style.backgroundColor='#f0f0f0';
+		document.getElementById("msel_Lxh").stat = 0;
+		document.getElementById("msel_Lmc").stat = 0;
+		document.getElementById("msel_Rxh").stat = 0;
+		document.getElementById("msel_Rmc").stat = 0;
+		SortD(fbox,flag1,1);
+	    SortD(tbox,flag2,1);
+	    sort_flagL=2;
+	    sort_flagR=2;
 		 }
+    //stat = document.getElementById("msel_auto").stat;
+	/*if(stat == 0)
+		stat=1;
+	else
+		stat=0;*/
+	//document.getElementById("msel_auto").stat = stat;	
 	};
-function Mselchoose(tbox,flag,num,item_id1,item_id2){
+function Mselchoose(tbox,fbox,flag,num,item_id1,item_id2){
 	//tbox 为要排列的序列的 select 框的 name
 	//flag 为tbox对应的排序规则对应的flag变量
 	//num 为 flag 对应的该改成的值 0 or 1
-	//item_id1 为对应点击的 button 的id, item_id2为点击button对应互斥button的id	
+	//item_id1 为对应点击的 button 的id, item_id2为点击button对应互斥button的id
+	    //alert(num);
+	    if(tbox.options.length==0)return;	
 		flag = num ;
-		document.getElementById(item_id1).style.backgroundColor='#fafafa';
-		document.getElementById(item_id2).style.backgroundColor='#f0f0f0';		
-		SortD(tbox,flag);		
+		listname= tbox.name;
+		if(listname=="list1"){
+			if (fbox.options.length==0)
+				sort_flagR = flag;
+			sort_flagL = flag;
 	}
+		else{
+			if (fbox.options.length==0)
+				sort_flagL = flag;
+		    sort_flagR = flag;
+		}
+		document.getElementById(item_id1).style.backgroundColor='#fafafa';
+		document.getElementById(item_id2).style.backgroundColor='#f0f0f0';
+		stat = document.getElementById(item_id1).stat;	
+		SortD(tbox,flag,stat);
+		if(stat == 0)
+			stat=1;
+		else
+			stat=0;
+		document.getElementById(item_id1).stat = stat;
+		sortitems = 0 ;		
+		document.getElementById("msel_auto").style.backgroundColor='#f0f0f0';
+	}
+
+
 	// End --> 
 </script>
 <div id="msn_selmem_box">
@@ -270,20 +314,25 @@ function Mselchoose(tbox,flag,num,item_id1,item_id2){
  </tr> 
   <tr  height="30px" valign="middle">
  	<td style="border:1px solid #CCC;" align="center">
-    	<input id="msel_Lxh" class="dxhb-button msel-button-sort" style=" width:120px; background:#fafafa;" type="button" value="学号排序" onclick="Mselchoose(this.form.list1,sort_flagL,0,'msel_Lxh','msel_Lmc')" >
-		<input id="msel_Lmc" class="dxhb-button msel-button-sort" style=" width:120px;  " type="button" value="名字拼音排序" onclick="Mselchoose(this.form.list1,sort_flagL,1,'msel_Lmc','msel_Lxh')" >		
+    	<input id="msel_Lxh" class="dxhb-button msel-button-sort" style=" width:120px; background:#f0f0f0;" type="button" value="学号排序" stat="1" onclick="Mselchoose(this.form.list1,this.form.list2,sort_flagL,0,'msel_Lxh','msel_Lmc')" >
+		
+		<input id="msel_Lmc" class="dxhb-button msel-button-sort" style=" width:120px;  " type="button" value="名字拼音排序" stat="1" onclick="Mselchoose(this.form.list1,this.form.list2,sort_flagL,1,'msel_Lmc','msel_Lxh')" >		
     </td>
+
     <td style="border:1px solid #CCC; border-left:0 solid #FFF; border-right:0 solid #FFF;" align="center">
-    	<input id="msel_auto" class="dxhb-button msel-button-sort" style=" width:96px; " type="button" value="自动排序" onclick="MselAuto(this.form.list1,sort_flagL,this.form.list2,sort_flagR)" >
+    	<input id="msel_auto" class="dxhb-button msel-button-sort" style=" width:96px;background-color: rgb(250, 250, 250); " type="button" value="默认排序" stat="1" onclick="MselAuto(this.form.list1,2,this.form.list2,2)" >
     </td>
+
     <td style="border:1px solid #CCC;" align="center">
-    	<input id="msel_Rxh" class="dxhb-button msel-button-sort" style=" width:120px; background:#fafafa;" type="button" value="学号排序" onclick="Mselchoose(this.form.list2,sort_flagR,0,'msel_Rxh','msel_Rmc')" >
-        <input id="msel_Rmc" class="dxhb-button msel-button-sort" style=" width:120px;  " type="button" value="名字拼音排序" onclick="Mselchoose(this.form.list2,sort_flagR,1,'msel_Rmc','msel_Rxh')" >
+    	<input id="msel_Rxh" class="dxhb-button msel-button-sort" style=" width:120px; background:#f0f0f0;" type="button" value="学号排序" stat="1" onclick="Mselchoose(this.form.list2,this.form.list1,sort_flagR,0,'msel_Rxh','msel_Rmc')" >
+        
+        <input id="msel_Rmc" class="dxhb-button msel-button-sort" style=" width:120px;  " type="button" value="名字拼音排序" stat="1" onclick="Mselchoose(this.form.list2,this.form.list1,sort_flagR,1,'msel_Rmc','msel_Rxh')" >
     </td>
  </tr>
   
  <tr>
-	<td><select multiple size="20" name="list1" class="mem-select dxhb-blur" onfocus="this.className='mem-select dxhb-focus'" onblur="this.className='mem-select dxhb-blur'"> 
+	<td>
+		<select multiple size="20" name="list1" class="mem-select dxhb-blur" onfocus="this.className='mem-select dxhb-focus'" onblur="this.className='mem-select dxhb-blur'"> 
 		  <volist name="members" id="vo" key="index">
 		  <notempty name="vo.realname">
 		  <option realname="{$vo['realname']}" title="<notempty name='vo.telephone'>手机:{$vo['telephone']}</notempty> <notempty name='vo.telephone'>邮箱：{$vo['email']}</notempty>" clubindex="{$index}" xh="{$vo['student_no']}" value="{$vo['uid']};{$vo['realname']};{$vo['telephone']};{$vo['email']}">
@@ -307,15 +356,22 @@ function Mselchoose(tbox,flag,num,item_id1,item_id2){
 		<input class="dxhb-button msel-button" type="button" value=">>" onclick="moveall(this.form.list1,this.form.list2,sort_flagR)" name="B3">
 		<input class="dxhb-button msel-button" type="button" value="<<" onclick="moveall(this.form.list2,this.form.list1,sort_flagL)" name="B4"> 
    </td> 
-   <td><select multiple size="20" name="list2"  id="members_select" class="mem-select dxhb-blur" onfocus="this.className='mem-select dxhb-focus'" onblur="this.className='mem-select dxhb-blur'" style="color:#690;">
+   <td>
+		<select multiple size="20" name="list2"  id="members_select" class="mem-select dxhb-blur" onfocus="this.className='mem-select dxhb-focus'" onblur="this.className='mem-select dxhb-blur'" style="color:#690;">
 		</select>
    </td>
 </tr> 
 </table> 
-<table><tr>
-	<td><input id="msn_selmem_tjsx" type="button" value="提交所选" class="dxhb-button mss-button" style="margin-left:300px;"/></td>
-    <td><div id="giveup_sel" >取消选择</div></td>
-</tr></table>
+<table>
+	<tr>
+		<td>
+			<input id="msn_selmem_tjsx" type="button" value="提交所选" class="dxhb-button mss-button" style="margin-left:300px;"/>
+		</td>
+	    <td>
+	    	<div id="giveup_sel" >取消选择</div>
+	    </td>
+	</tr>
+</table>
 
 </form> 
 </div>

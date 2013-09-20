@@ -33,5 +33,6 @@ class AddressModel extends Model {
         $info[student_no] = strtoupper($info[student_no]);
         return $info;
     }
+   
 }
 ?>

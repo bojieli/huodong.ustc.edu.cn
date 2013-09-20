@@ -445,6 +445,7 @@ function encode2Webp($sourceImg, $destImg){
         shell_exec($cmd);
         return true;
     }
+
 function biaoqing($content)
     {
 	    if(strstr($content,"/:")){
