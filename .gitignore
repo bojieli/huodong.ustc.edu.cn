@@ -2,6 +2,7 @@
 wordpress/
 .*
 *.swp
+*~
 upload/
 dbconfig.php
 sitemap.xml
