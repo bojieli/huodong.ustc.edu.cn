@@ -52,23 +52,16 @@
 
 <div id="stmain" style="width:auto;">
 	<form action="/Club/saveMember"  method='post'>
-	
-	<table class="table-addresslist" rowclass="row1,row2"  border="0"  cellpadding="0" cellspacing="1"  >
-	
-		<!--<th></th>
-		<volist name="list.1" id="theader">
-		<th>
-	    <select>
-		  <option value ="volvo">Volvo</option>
-		  <option value ="saab">Saab</option>
-		  <option value="opel">Opel</option>
-		  <option value="audi">Audi</option>
-		</select>
-		</th>
-		</volist>-->
-	
+	<div class="addrsumit" style="width:0px;margin:0 auto;margin-top:13px">
+	<input type="hidden" name="gid" value="{$Think.get.gid}"/>
+	<input type="hidden" name="firstline" value="{$firstline}"/>
+	<input type="hidden" name="filename" value="{$Think.get.f}"/>
+	<input type="submit" value="导入通讯录" />
+	</div>
+	<table class="table-addresslist" rowclass="row1,row2"  border="0"  cellpadding="0" cellspacing="1"  >	
 	<tr >	
-        <td class="td1" width="50" align="center">序</td>	
+        <td class="td1" width="50" align="center">序</td>
+        
 		<volist name="list.1" id="theader">
 		
 		<td class="td1" width="50" align="center">
@@ -86,26 +79,34 @@
 			  <option value="个人爱好">个人爱好</option>
 			  <option value="QQ">QQ</option>
 			</select>
+			<empty name="firstline">	
 			<div class="optionname">{$theader}
 			</div>
-		</td>	
+			</empty>
+		</td>
 		</volist>
 	</tr>
-	
-		<volist name="list" id="member" offset="1" key="kid1">
-		<tr>
-			<td align="center">{$kid1}</td>
-			<volist name="member" id="vo" key="kid2">
-			<td align="center">{$vo}</td>
+	    <empty name="firstline">
+			<volist name="list" id="member" offset="1" key="kid1">
+			<tr>
+				<td align="center">{$kid1}</td>
+				<volist name="member" id="vo" key="kid2">
+				<td align="center">{$vo}</td>
+				</volist>
+			</tr> 
 			</volist>
-		</tr> 
-		</volist>
+        <else />
+			<volist name="list" id="member" offset="0" key="kid1">
+			<tr>
+				<td align="center">{$kid1}</td>
+				<volist name="member" id="vo" key="kid2">
+				<td align="center">{$vo}</td>
+				</volist>
+			</tr> 
+			</volist>
+	    </empty>
+
 	</table>
-	<div class="addrsumit" style="width:0px;margin:0 auto">
-	<input type="hidden" name="gid" value="{$Think.get.gid}"/>
-	<input type="hidden" name="filename" value="{$Think.get.f}"/>
-	<input type="submit" value="导入通讯录" />
-	</div>
 	</form>
 </div>
 

@@ -244,7 +244,7 @@ class ActivityAction extends PublicAction{
         $User->create();
         $User->add();
 		$info = $User->where(array('email'=>$_POST['email']))->find();
-        if (empty($info) || !is_numeric($info['id']))
+        if (empty($info) || !is_numeric($info['uid']))
             $this->error('未知错误，请重新注册');
 		$this->success('恭喜你，报名成功！');
 	}

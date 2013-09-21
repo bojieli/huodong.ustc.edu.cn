@@ -205,6 +205,7 @@ class PHPExcel_IOFactory
 		$reader = self::createReaderForFile($pFilename);
 		$className = get_class($reader);
 		$classType = explode('_',$className);
+		//dump($classType);die;
 		unset($reader);
 		return array_pop($classType);
 	}	//	function identify()
@@ -222,7 +223,8 @@ class PHPExcel_IOFactory
 
 		// First, lucky guess by inspecting file extension
 		$pathinfo = pathinfo($pFilename);
-
+        //dump(pathinfo($pFilename));die;
+        //dump(strtolower($pathinfo['extension']));
 		$extensionType = NULL;
 		if (isset($pathinfo['extension'])) {
 			switch (strtolower($pathinfo['extension'])) {
@@ -254,6 +256,7 @@ class PHPExcel_IOFactory
 					$extensionType = 'HTML';
 					break;
 				case 'csv':
+				    $extensionType = 'CSV';
 					// Do nothing
 					// We must not try to use CSV reader since it loads
 					// all files including Excel files etc.
@@ -261,18 +264,27 @@ class PHPExcel_IOFactory
 				default:
 					break;
 			}
-
+            
+            //dump($extensionType);die;
 			if ($extensionType !== NULL) {
 				$reader = self::createReader($extensionType);
+				//dump($pFilename);die;
 				// Let's see if we are lucky
 				if (isset($reader) && $reader->canRead($pFilename)) {
+					//dump($reader);die;
 					return $reader;
+
 				}
 			}
-		}
 
+			if ($extensionType !== NULL) {
+				return  $extensionType;
+			}
+		}
+         
 		// If we reach here then "lucky guess" didn't give any result
 		// Try walking through all the options in self::$_autoResolveClasses
+		/*
 		foreach (self::$_autoResolveClasses as $autoResolveClass) {
 			//	Ignore our original guess, we know that won't work
 			if ($autoResolveClass !== $extensionType) {
@@ -282,6 +294,7 @@ class PHPExcel_IOFactory
 				}
 			}
 		}
+		*/
 
 		throw new Exception('Unable to identify a reader for this file');
 	}	//	function createReaderForFile()

@@ -170,7 +170,7 @@ class ClubAction extends PublicAction {
 		    $gid=$this->_post('gid');
 			$filename = $this->uploadxls();
 			if (!$filename) {
-				$this->error("您必须上传xls文件。请注意最大文件大小的限制。");
+				$this->error("您必须上传电子表格类文件。请注意最大文件大小的限制。");
 			}
 	        redirect('/Club/creatMember?f='.$filename.'&gid='.$gid,0,' ');
 	}
@@ -180,18 +180,43 @@ class ClubAction extends PublicAction {
 		$gid=$this->_get('gid');
 		$filePath = 'upload/xls/'.$filename;
 		$list=$this->readExcel($filePath);
+        $str = implode($list[1]);
+        $count = 0;
+        $keywords = ["姓名","名字","会员姓名"];
+        foreach ($keywords as $key => $value) {
+            $tmp = stripos($str, $value);
+            if(!empty($tmp))
+                 $count++;
+
+        }
+        if (!empty($str) && $count==0) {
+            $this->assign('firstline',1);
+        }
 		 $this->assign('list', $list);
 		 $this->assign('gid',$gid);
 		 $this->display();
 			}
 	public function saveMember(){
 	    $gid=$this->_post('gid');
+        $firstline=$this->_post('firstline');
 	    $filename=$this->_post('filename');
 		$val=$this->_post('v');
+
 		$filePath = 'upload/xls/'.$filename;
 		$list=$this->readExcel($filePath);
-		$list[1]=$val;
-		foreach($val as $key => $value){
+
+        if(!empty($firstline)){
+            $list_tmp[1]=$val;
+            foreach ($list as $keys => $values) {
+                $list_tmp[]=$values;
+            }
+            $list = $list_tmp;
+        }
+		else
+        {
+            $list[1]=$val;
+        }
+		  foreach($val as $key => $value){
 		       if($value==''){
 			     foreach($list as $m =>$n){
 				    unset($list[$m][$key]);
@@ -261,38 +286,27 @@ class ClubAction extends PublicAction {
 		}
 	}
 	public function readExcel($filePath){
-	   require_once "Common/PHPExcel.php";
-		//$filePath = 'upload/xls/'.$filename;
-		if(!file_exists($filePath)) $this->error('文件不存在');
-		$PHPExcel = new PHPExcel();
-		/**默认用excel2007读取excel，若格式不对，则用之前的版本进行读取*/
-		$PHPReader = new PHPExcel_Reader_Excel2007();
-		if(!$PHPReader->canRead($filePath)){
-			$PHPReader = new PHPExcel_Reader_Excel5();
-			if(!$PHPReader->canRead($filePath)){
-				echo 'no Excel';
-				return ;
-			}
-		}
+	   if(!file_exists($filePath)) $this->error('文件不存在');
+        vendor('PHPExcel.PHPExcel');
+        $inputFileType = PHPExcel_IOFactory::identify($filePath);
+        //$inputFileType = "OOCalc";
+        //dump($inputFileType);die;
+        $PHPReader = PHPExcel_IOFactory::createReader($inputFileType);
 		$PHPExcel = $PHPReader->load($filePath);
 		$sheet = $PHPExcel->getActiveSheet();
 		$highestRow = $sheet->getHighestRow(); // 取得总行数
-        //dump($highestRow);die;
 		 $highestColumn = $sheet->getHighestColumn(); // 取得总列数
-
-
 		 // 根据自己的数据表的大小修改
 		 $arr = array('A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z');
 		 $i=0;
          $j=0;
          $k=0;
-        for($column = 0; $arr[$column] != $highestColumn && $arr[$column] != 'Z' && $j<=3; $column++){
+        for($column = 0; $arr[$column] <= $highestColumn && $arr[$column] !='Z' && $j<=3; $column++){
             $i=0;
               for($row = 1; $row <= $highestRow ; $row++){
                 $val = trim($sheet->getCellByColumnAndRow($column, $row)->getValue());
                 if($val=='') $i++; 
                 if($i >= $highestRow) $j++;
-                //$k++;
             }
             $k++;
           }
@@ -310,7 +324,7 @@ class ClubAction extends PublicAction {
         import("ORG.Net.UploadFile");
         $upload = new UploadFile();
         $upload->maxSize = 8 * 1024 * 1024;
-        $upload->allowExts = ['xls','xlsx'];
+        $upload->allowExts = ["xlsx","xlsm","xltx","xltm","xls","xlt","ods","ots","slk","xml","gnumeric","htm","html","csv"];
         $upload->savePath = './upload/xls/';
         $upload->saveRule = 'uniqid';
 		 if(!$upload->upload()) {// 上传错误 提示错误信息 
@@ -318,7 +332,6 @@ class ClubAction extends PublicAction {
 		}
 		else{
 			$info = $upload->getUploadFileInfo();
-            //dump($info);
 			return $info[0]["savename"];
         }
     }
