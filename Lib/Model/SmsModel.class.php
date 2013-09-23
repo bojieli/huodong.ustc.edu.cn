@@ -144,7 +144,7 @@ class SmsModel extends Model {
 				'time'  =>time(),
 				'md5'=>$md5,
 				'sms_type'=>$sms_type,
-				'type_id'=>$type_id,
+				'type_id'=>$type_id?$type_id:0,
 			   );
 		M('sms_md5')->data($data)->add();
 		$re=M('sms_md5')->field('pid')->where(array('md5'=>$md5))->order('time DESC')->find();
