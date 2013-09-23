@@ -35,16 +35,16 @@ exit();
 
 function reply_cb($request, $w)//消息回复主函数
 {
-    $to = $request['ToUserName'];
-    $from = $request['FromUserName'];
+	$to = $request['ToUserName'];
+	$from = $request['FromUserName'];
 	$time = $w->get_creattime();
-    if ($w->get_msg_type() == "location") //大众接口
+	if ($w->get_msg_type() == "location") //大众接口
 	{
-		$lacation = "x@".(string)$request['Location_X']."@".(string)$request['Location_Y'];
-		$lacation = urlencode(str_replace('\.','\\\.',$lacation));
-		$lacation = urldecode(xiaojo($lacation,$from,$to));
-		return  $lacation;
-    }
+	$lacation = "x@".(string)$request['Location_X']."@".(string)$request['Location_Y'];
+	$lacation = urlencode(str_replace('\.','\\\.',$lacation));
+	$lacation = urldecode(xiaojo($lacation,$from,$to));
+	return  $lacation;
+	}
     else if ($w->get_msg_type() == "image")//返回图片地址
 	{ 
 		$PicUrl = $request['PicUrl'];
