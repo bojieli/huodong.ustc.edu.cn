@@ -251,12 +251,12 @@ class SmsModel extends Model {
 		foreach($tidArray as $tid){
 			if($sms_type == 'address'){
 				//dump($vid);
-				$nameString.=A('Club')->getRealname($tid,$type_id,$gid);
+				$nameString.=A('Club')->getRealname($tid,$type_id,$gid).' ';
 			}
 			else 
 			{
 				if ($sms_type == 'activity') {
-				    $nameString.=D('Activity')->getRealname($tid,$type_id);
+				    $nameString.=D('Activity')->getRealname($tid,$type_id).' ';
 				}
 				else{
 				       $nameString.=D('User')->getRealname($tid).' ';	
