@@ -85,8 +85,13 @@ class AnalyticsAction extends PublicAction {
        }
        unset($links);
        $json_arry = ['nodes'=>$nodes,'links'=>$link3];
+
+       $filename="./static/link.json";
+       $file=fopen($filename,"w");
+       fwrite($file,json_encode($json_arry));
+       fclose($file);
        //dump($json_arry[1]);die;
-        echo json_encode($json_arry);
+       echo json_encode($json_arry);
        
    }
 }
