@@ -26,6 +26,7 @@ var loadmore = (function() {
 			 loadflag = 1;
 			if (!ajaxLock && !noMore) {
 				ajaxLock = true;
+
 				 if(type == 'normal'){
 				    $.getJSON(
 					    "/Activity/ajaxGet",
@@ -123,7 +124,7 @@ var loadmore = (function() {
 		   tmp[i] = i;
 		return xipai(tmp);
 	}
-	function xipai(var_tmp){
+	function xipai(var_tmp){ //洗牌算法
 		num = var_tmp.length;
 		for(j=0;j<5;j++)
 			for(i=1;i<num;i++){
