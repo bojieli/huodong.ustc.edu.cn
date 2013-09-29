@@ -86,8 +86,9 @@ class AnalyticsAction extends PublicAction {
        unset($links);
        $json_arry = ['nodes'=>$nodes,'links'=>$link3];
 
-       $filename="./static/link.json";
+       $filename="./upload/json/link.json";
        $file=fopen($filename,"w");
+      // dump($file);die;
        fwrite($file,json_encode($json_arry));
        fclose($file);
        //dump($json_arry[1]);die;
