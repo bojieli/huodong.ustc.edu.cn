@@ -140,5 +140,43 @@ class AdminAction extends PublicAction {
         $this->assign('jumpUrl', '/Club/manage?gid='.$gid);
         $this->success("成功发送邮件给 ". count($emails) ." 人");
     }
+
+    public function freeSmsManage(){
+        global $_G;
+        if(!D('User')->checkLogin())
+        {
+            $this->assign('jumpUrl','/User/login');
+            $this->error('您尚未登录');
+        }
+
+        $user = D("User");
+        if(!$user->isDeveloper($uid))
+        {   
+            $this->error('您没有权限访问该页面');
+        }
+        $gid = $this->_get('gid');
+        $type = $this->_get('t',0);
+        //unset($gids);
+        if($type==0){
+            $gids[]['gid']=$gid;
+        }
+        else
+        {
+            if($type==1) {
+                $gids=M('Club')->field('gid')->select();
+                //dump($gids);die;
+            }
+            else
+                return;
+        }
+        
+        $i = 0;
+        foreach ($gids as $key => $value) {
+          D("Sms")->reSmsNum($value['gid']);
+          $i++;
+        }
+        echo "已更新".$i."个社团的免费短信条数";
+        
+    }
 }
 ?>

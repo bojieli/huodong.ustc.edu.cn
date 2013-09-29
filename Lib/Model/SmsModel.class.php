@@ -198,11 +198,14 @@ class SmsModel extends Model {
 		$data=array('sms_num'=>$this->smsNum($gid),'sms_tip'=>1);
 		return M('club')->where(array('gid'=>$gid))->data($data)->save();
 	}
-	public function smsNum($gid)
+	public function smsNum($gid)  //免费短信条数规则
 	{
+		$weight=C('sms_weight');
+		$minimum=C('sms_minimum');
 		$re=M('club')->field('member_count')->where(array('gid'=>$gid))->find();
-		return $re['member_count']*2+20;
+		return $re['member_count']*$weight+$minimum;
 	}
+	
 	public function getSmsNum($gid)
 	{
 		$re=M('club')->field('sms_num')->where(array('gid'=>$gid))->find();

@@ -21,7 +21,9 @@ $mailconfig = array(
 	'MAIL_PASSWORD' => 'hzbjlsjr0906'
 );
 $smsconfig = array(
-	'update_week' => 1
+	'update_week' => 1,
+	'sms_minimum' => 20,//保底短信条数
+	'sms_weight' => 2 //每增加一个会员所拥有的短信条数
 	);
 $timerconfig = array(
 	'timer_time' => 2 //hour

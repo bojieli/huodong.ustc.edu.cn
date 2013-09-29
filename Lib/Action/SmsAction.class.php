@@ -92,6 +92,7 @@ class SmsAction extends PublicAction {
 				if(!D('User')->checkLogin()){$this->error('未登陆');}
 				//if(!D('Team')->isManager($tid)){$this->error('无权限');}
 				$gid = D('Team')->getGidByTid($tid);
+
 				$Model = D('Sms');
 				$tip=$Model->getSmsTip($gid);
 				if($Model->getUpdateTime($gid)==$Model->updateTime($gid))
@@ -103,6 +104,7 @@ class SmsAction extends PublicAction {
 					$Model->changeUpdateTime($gid);
 					$Model->reSmsNum($gid);
 				}
+				
 				$team = D('Team')->getInfo($tid);
 				$re=D('Team')->getMembers($tid);
 				$members = array();
