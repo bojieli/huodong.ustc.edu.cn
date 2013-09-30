@@ -55,7 +55,7 @@ class UserAction extends PublicAction {
     }
     public function do_login() {
         global $_G;
-
+        //die;
         if($_POST[submit]){
             $username=$_POST[email];
             $pw=$_POST[password];
