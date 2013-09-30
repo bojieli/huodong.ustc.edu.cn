@@ -85,9 +85,10 @@ $(document).ready(function(){
 			$("#myemail").css("display","none");
 			can1press = false;
         }
-    }).keyup(function(){ //文本框输入文字时，显示Email提示层和常用Email
+    }).keyup(function(r){ //文本框输入文字时，显示Email提示层和常用Email
 		var press = $("#email").val();
-		if (press!="" || press!=null){
+		if (press!="" && press!=null){
+		//alert(r.which);
 		var emailtxt = "";
 		var emailvar = new Array("@mail.ustc.edu.cn","@ustc.edu.cn","@163.com","@126.com","@yahoo.com","@qq.com","@sina.com","@gmail.com","@hotmail.com","@foxmail.com","@yeah.net");
 		totalid = emailvar.length;
@@ -96,33 +97,35 @@ $(document).ready(function(){
 			for(var i=0; i<emailvar.length; i++) {
 			emailtxt = emailtxt + "<div class='newemail' style='width:170px; color:#6B6B6B; overflow:hidden;'><font color='#D33022'>" + press + "</font>" + emailvar[i] + "</div>"
 			}
-		} else {
-			emailbefor = press.split("@")[0];
-			emailafter = "@" + press.split("@")[1];
-			for(var i=0; i<emailvar.length; i++) {
-				 var theemail = emailvar[i];
-				 if(theemail.indexOf(emailafter) == 0)
-				 {
-				 emailtxt = emailtxt + "<div class='newemail' style='width:170px; color:#6B6B6B; overflow:hidden;'><font color='#D33022'>" + emailbefor + "</font>" + emailvar[i] + "</div>"
-			 }
+		} 
+		else{
+				emailbefor = press.split("@")[0];
+				emailafter = "@" + press.split("@")[1];
+				for(var i=0; i<emailvar.length; i++) {
+					 var theemail = emailvar[i];
+					 if(theemail.indexOf(emailafter) == 0)
+					 {
+					 	emailtxt = emailtxt + "<div class='newemail' style='width:170px; color:#6B6B6B; overflow:hidden;'><font color='#D33022'>" + emailbefor + "</font>" + emailvar[i] + "</div>"
+				 	}
+				}
 			}
-}
-$("#myemail").html(emailmy+emailtxt);
-if($("#myemail").html()){
- $("#myemail").css("display","block");
- $(".newemail").css("width",$("#myemail").width());
- can1press = true;
-} else {
- $("#myemail").css("display","none");
- can1press = false;
-}
-beforepress = press;
-}
-if (press=="" || press==null){
-    $("#myemail").html("");
-     $("#myemail").css("display","none");    
-}
-    })
+			$("#myemail").html(emailmy+emailtxt);
+			if($("#myemail").html()){
+			 $("#myemail").css("display","block");
+			 $(".newemail").css("width",$("#myemail").width());
+			 can1press = true;
+			} else {
+			 $("#myemail").css("display","none");
+			 can1press = false;
+			}
+			beforepress = press;
+			}
+			if (press=="" || press==null){
+			    $("#myemail").html("");
+			     $("#myemail").css("display","none");    
+			}
+			    })
+
 $(document).click(function(){ //文本框失焦时删除层
         if(can1press){
 $("#myemail").remove();
@@ -178,11 +181,15 @@ $(".newemail").eq(nowid).focus();
 }
 break;  
 case 13:
+$("#myemail").hide();
 var newhtml = $(".newemail").eq(nowid).html();
 newhtml = newhtml.replace(/<.*?>/g,"");
 $("#email").val(newhtml); 
 nowid=tmpid;
+break;
+case 9:
 $("#myemail").hide();
+//$("#myemail").hide();
 }
 } 
 });

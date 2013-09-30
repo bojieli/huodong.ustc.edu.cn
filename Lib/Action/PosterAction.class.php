@@ -67,7 +67,7 @@ class PosterAction extends PublicAction {
         $this->assign('keyword', $keyword);
         $this->assign('stat', D('Poster')->get_stat($condition));
 		$this->assign('msg_num',D('Msg')->getUnreadMsgNum());
-        $this->assign('order', empty($_GET['order']) ? 'new' : $_GET['order']);
+        $this->assign('order', empty($_GET['order']) ? 'smart' : $_GET['order']);
         $this->display();
     }
 
@@ -206,12 +206,15 @@ class PosterAction extends PublicAction {
         $upload->thumbMaxWidth = '500,800';
         $upload->thumbMaxHeight = '2000,3200';
         $upload->thumbPrefix = 'thumb_,large_';
+        //dump($upload->getUploadFileInfo());die;
         if ($upload->upload()) {
             $info = $upload->getUploadFileInfo();
             $savename = $info[0]["savename"];
             $this->allToWebpForPoster($upload->thumbPath,$upload->thumbPrefix,$savename);
             return $savename;
         }
+        header('Content-Type: text/html; charset=UTF-8');
+        echo $upload->getErrorMsg();
         return null;
     }
     private function allToWebpForPoster($path,$prefix,$savename){
@@ -290,11 +293,11 @@ class PosterAction extends PublicAction {
         $sid = is_numeric($_GET['sid']) ? $_GET['sid'] : 1;
         if(!empty($sid))
             $cond[] = "(sid = $sid)";
-
+        $nowtime = time();
         switch ($_GET['order']) {
             case 'near':
                 $order = 'end_time asc';
-                $cond[] = "end_time > '".time()."'"; 
+                $cond[] = "end_time > '".$nowtime."'"; 
                 break;
             case 'follow': 
                 $gid_result = M('User_group')->query("SELECT DISTINCT gid FROM ustc_user_group where uid = '".CURRENT_USER."'");
@@ -307,12 +310,19 @@ class PosterAction extends PublicAction {
                 $cond[] = "gid IN $gid_condition";$order = 'publish_time DESC'; 
                 break;
             case 'hot': 
-                $order = 'rate_total DESC'; $cond[] = "end_time > '".time()."'";
+                $order = 'rate_total DESC'; $cond[] = "end_time > '".$nowtime."'";
                 break;
-            default:
+            
             case 'new': 
                 $order = 'publish_time DESC';
                 break;
+        default:
+            case 'smart':
+                $order = '(`clicks`+5)/
+                POWER(
+                    ABS('.$nowtime.'-`publish_time`+3600*2)/(3600*10), 
+                    1.8 - 0.8*FLOOR('.$nowtime.'/`start_time`) + (2+(ABS(('.$nowtime.'-`end_time`))/(3600*24*30)))*FLOOR('.$nowtime.'/`end_time`)
+                    ) DESC';
         }
 
         return [$start, $num, implode(' AND ', $cond), $order];
@@ -334,7 +344,7 @@ class PosterAction extends PublicAction {
     private function poster2html($poster,$iswebp) {
         $clockStat=D('Timer')->clockInput($poster->id());
         $md5 = explode(".", $poster->poster)[0];
-        $webp_url = "./upload/poster/thumb/webp/";
+        $webp_url = "/upload/poster/thumb/webp/";
        // dump($poster->thumbUrl());die;
         if($poster->thumbUrl()=='')
             $img='';
