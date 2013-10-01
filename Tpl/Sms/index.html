@@ -105,7 +105,7 @@
 				var h = d.getHours(); 
 				var m = d.getMinutes();
 				var vtime = vYear+'年'+vMon+'月'+vDay+'日  '+h+':'+m;
-				$("#history-finish").append('<div title="接收者:'+$("#rname").val()+'" class="history-area" style="padding:10px;background: #FFF5FA;margin:20px 10px;font-size:16px; font-family:Microsoft YaHei; color:#8E8E90; text-align:left; "><div class="history-list-title" style="color:#ddd;font-size:60%;border-bottom: 1px solid #ddd">成功发出'+$("#tid_num").val()+'条 <img src="static/check_green.gif" /><span class="sender" style="float:right">发信人：我</span></div><div class="history-list-cont">'+$('#edit').val()+'</div><p style="font-size:12px; color:#999;font-family:Microsoft YaHei; text-align:right;margin:5px 0px 0 0;">'+vtime+'</p></div>');
+				$("#history-finish").append('<div title="接收者:'+$("#rname").val()+'" class="history-area" style="padding:10px;background: #FFF5FA;margin:20px 10px;font-size:16px; font-family:Microsoft YaHei; color:#8E8E90; text-align:left; "><div class="history-list-title" style="color:#ddd;font-size:60%;border-bottom: 1px solid #ddd">成功发出'+$("#tid_num").val()+'条 <img src="static/check_green.gif" /><span class="sender" style="float:right">发信人：我</span></div><div class="history-list-cont">'+$('#edit').val()+$('#huodong_sms').val()+'</div><p style="font-size:12px; color:#999;font-family:Microsoft YaHei; text-align:right;margin:5px 0px 0 0;">'+vtime+'</p></div>');
 				$("#tid").val('');
 				$("#edit").val('');
 			} 
@@ -228,6 +228,7 @@ getwindowWH();//调用函数获取数值
 //-->
 </script>
 <include file="Public:headnav" />
+<input type="hidden" id="huodong_sms" value="{$huodong_sms}"/>
 <div id="mainding" style="position:relative; overflow: scroll;">
   <p class="mss-tittle">
 <empty name="admin">
@@ -276,7 +277,7 @@ getwindowWH();//调用函数获取数值
 	<td width="90" align="right" valign="top" style="padding-top:10px;">短信内容：</td>
 	<td colspan="2"  align="left" valign="top">
 		<div class="inputarea" style="position:relative;">
-			<textarea id="edit" name="s" title="短信不宜过长，最好控制在一条内，以节省短信条数" class="mss-input-text" onfocus="this.className='dxhb-focus mss-input-text'" onblur="this.className='dxhb-blur mss-input-text'" style="float:left" ></textarea>
+			<textarea id="edit" name="s" title="短信不宜过长，最好控制在一条内，以节省短信条数&#10;该短信会自动加上后缀:{$huodong_sms}" class="mss-input-text" onfocus="this.className='dxhb-focus mss-input-text'" onblur="this.className='dxhb-blur mss-input-text'" style="float:left" ></textarea>
 			<span style="position:absolute;left:473px;top:135px;color:#8E8E90">
 			还可输入<span id="counter" style="color:#F00"></span>字节
 			</span>
@@ -362,8 +363,10 @@ function mbStringLength(s) {
       } 
 function tmp(){    
 		var area=$("#edit");
+		var huodong_sms = $("#huodong_sms").val();
 		var max = 600;
-		var input = mbStringLength(area.val());
+		var input = mbStringLength(area.val()+huodong_sms);
+		//alert(area.val()+huodong_sms);
 		$('#counter').text(max-input);
 		var i=1;
 		while(input > 200){

@@ -7,6 +7,7 @@ class SmsAction extends PublicAction {
 		$sid=$this->_get('sid');
 		$vid=$this->_get('vid');
 		$act_id=$this->_get('act_id');
+		$huodong_sms = C('huodong_sms');
 		if($sid)
 		{
 			 if(!D('User')->checkLogin()){$this->assign('jumpUrl', '/User/login');$this->error('您尚未登陆');}
@@ -155,7 +156,7 @@ class SmsAction extends PublicAction {
 		}
 
 		$this->history($gid);
-		//dump($members);die;
+		$this->assign('huodong_sms',$huodong_sms);
         $this->assign('members',$members);
         $this->display();
     }
@@ -185,6 +186,9 @@ class SmsAction extends PublicAction {
 		$sid = $_POST['sid'];
 		$vid = $this->_post('vid');
 		$act_id = $this->_post('act_id');
+		
+        $huodong_sms = C('huodong_sms');
+
 		if(empty($vid) && empty($act_id)){
 
 			$sms_type='';
@@ -253,7 +257,10 @@ class SmsAction extends PublicAction {
             $info[]=$Model->getSmsNum($gid);
             $this->error($info);
         };
+        $msg .= $huodong_sms;
+
         $n=count(split_sms($msg,'utf8'));
+        //dump(split_sms($msg,'utf8'));die;
 		if(!$sid){
 			if($Model->canSent($gid,$i,$n)==0){
 				$info[]="剩余短信条数不足";
@@ -309,7 +316,7 @@ class SmsAction extends PublicAction {
         $this->assign('school_name',$school_name);
         $this->assign('allPidNum',D('Sms')->getPidNumCount($gid));
         $this->assign('allSmsNum',D('Sms')->getAllSmsNumByGid($gid));
-        //dump($re);
+        
         $this->assign('history',$re);
         //dump($re);
         //$this->display();

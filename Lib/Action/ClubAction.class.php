@@ -635,19 +635,39 @@ class ClubAction extends PublicAction {
     }
 
     public function manage() {
+        //import(“ORG.Util.Page”);// 导入分页类
+
         $gid = $this->getInputGid();
+        
         $page = isset($_GET['page']) && is_numeric($_GET['page']) ? $_GET['page'] : 1;
         //$start = isset($_GET['start']) && is_numeric($_GET['start']) ? $_GET['start'] : 0;
         $num = isset($_GET['num']) && is_numeric($_GET['num']) ? $_GET['num'] : 20;
         $start = ($page-1)*$num;
+        
         $club = $this->getData($gid);
         $this->assign('club', $club);
+        
         if (!$this->isManager($gid)) {
             $start = 0;
             $num = 20;
         }
-
+        //$count = M()->query("SELECT count(*) FROM (ustc_user INNER JOIN ustc_user_group ON ustc_user.uid = ustc_user_group.uid) INNER JOIN ustc_priv ON ustc_user_group.priv = ustc_priv.priv_name WHERE ustc_user_group.gid='$gid'");
+        
+        //$Page = new Page($count,20);
         $members = M()->query("SELECT * FROM (ustc_user INNER JOIN ustc_user_group ON ustc_user.uid = ustc_user_group.uid) INNER JOIN ustc_priv ON ustc_user_group.priv = ustc_priv.priv_name WHERE ustc_user_group.gid='$gid' ORDER BY ustc_priv.priv_value desc LIMIT $start,$num");
+       // $members = M()->query("SELECT * FROM (ustc_user INNER JOIN ustc_user_group ON ustc_user.uid = ustc_user_group.uid) INNER JOIN ustc_priv ON ustc_user_group.priv = ustc_priv.priv_name WHERE ustc_user_group.gid='$gid' ORDER BY ustc_priv.priv_value desc LIMIT $Page->firstRow,$Page-
+       // >listRows");
+    
+       // if(count($member)>0)$count = count($member);
+
+       // $Page = new Page($count,20);
+
+        //$show = $Page->show();
+
+        //$this->assign('list',$list);// 赋值数据集
+        //$this->assign('members',$show);// 赋值分页输出
+        //$this->display(); // 输出模板
+
         foreach ($members as &$member) {
             $member['avatar'] = D('user')->getAvatar($member['uid'],'small');
             $member['school']=D('School')->result_first("select name from ustc_school where sid = ".$member['sid']);
@@ -659,15 +679,22 @@ class ClubAction extends PublicAction {
         unset($member);
         //$members = D('Club')->sortMemberByPriv($members);
         $this->assign('members', $members);
+        
         $inactive_members = M()->query("SELECT * FROM ustc_user AS u, ustc_user_group AS ug WHERE ug.gid='$gid' AND ug.priv = 'inactive' AND ug.uid = u.uid");
+        
         foreach($inactive_members as &$member){
             $member['school']=D('School')->result_first("select name from ustc_school where sid = ".$member['sid']);
         }
         unset($member);
-		$teams = M("Team")->where(array('type'=>'team','gid'=>$gid,'flag'=>1))->select();
-		$departments =M("Team")->where(array('type'=>'department','gid'=>$gid,'flag'=>1))->select();
-		$acts = D('Activity')->getActsByGid($gid);
-		//dump($acts);
+		
+        $teams = M("Team")->where(array('type'=>'team','gid'=>$gid,'flag'=>1))->select();
+		
+        $departments =M("Team")->where(array('type'=>'department','gid'=>$gid,'flag'=>1))->select();
+		
+        $acts = D('Activity')->getActsByGid($gid);
+		
+
+        //dump($acts);
 		$this->assign('acts', $acts);
 		$this->assign('teams', $teams);
 		$this->assign('departments', $departments);
