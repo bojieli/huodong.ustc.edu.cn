@@ -190,8 +190,16 @@ class ActivityAction extends PublicAction{
 		//dump($club);
 		$this->display();
 	}
-	public function reform($act_id){
+	public function reform(){
+		global $_G;
 		$act_id = $this->_post('act_id');
+		$activity = M('Activity')->find($act_id);
+		$uid = $_G['uid'];
+		//echo $uid;die;
+		if($uid!=$activity['uid'])
+		{
+            $this->error('您没有权限');
+		}
 		$data['register_form'] = json_encode($this->_post('checkbox'));
 		M('Activity')->where(['act_id'=>$act_id])->save($data);
 		$this->success("修改成功");
