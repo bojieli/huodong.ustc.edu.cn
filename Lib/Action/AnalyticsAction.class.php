@@ -95,4 +95,20 @@ class AnalyticsAction extends PublicAction {
        echo json_encode($json_arry);
        
    }
+   public function creatBad(){
+          //dump($_POST);die;
+          //echo $this->_post('status');die;
+              //return false;
+        $info = creatfilterlist("./static/pbc.txt");
+//echo $info;
+        //dump($info);die;
+        $json = json_encode($info);
+        echo $json;
+        //$this->success($json);
+       // $filename="./upload/json/bads.json";
+       // $file=fopen($filename,"w");
+       // fwrite($file,json_encode($json));
+       // fclose($file);
+       // echo "bads OK";
+  }
 }

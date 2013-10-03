@@ -462,6 +462,44 @@ function array_sort($arr, $keys, $type = 'desc') { //php按照指定键值对二
     return $new_array;
  }
 
+ function creatfilterlist($file_url){
+      if(!file_exists($file_url))
+        return false;
+      $fp = fopen($file_url,'rb');
+      while(!feof($fp)){
+        $word = iconv("GB2312","UTF-8", fgets($fp,999));
+        if(!empty($word))
+            $info .=trim($word).'|';
+        }
+fclose($fp);
+return $info;
+ }
+/*function filterSms($content){
+     //echo $content;die;
+     $bads = creatfilterlist("./static/pbc.txt");
+     //dump(array_fill(0,count($bads),'*'));die;
+     //echo count($bads);die;
+     $badword = array_combine($bads,array_fill(0,count($bads),'*'));
+     dump($badword[0]);die;
+     //dump($content.'qwqw');die;
+     $str = strtr($content, $badword);
+     echo $str;
+}
+*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 function biaoqing($content)
     {
 	    if(strstr($content,"/:")){

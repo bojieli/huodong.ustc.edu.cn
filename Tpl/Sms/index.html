@@ -274,10 +274,11 @@ getwindowWH();//调用函数获取数值
 	</td>
 </tr>
 <tr>
-	<td width="90" align="right" valign="top" style="padding-top:10px;">短信内容：</td>
+	<td width="90" align="right" valign="top" style="padding-top:10px;">短信内容：
+	</td>
 	<td colspan="2"  align="left" valign="top">
 		<div class="inputarea" style="position:relative;">
-			<textarea id="edit" name="s" title="短信不宜过长，最好控制在一条内，以节省短信条数&#10;该短信会自动加上后缀:{$huodong_sms}" class="mss-input-text" onfocus="this.className='dxhb-focus mss-input-text'" onblur="this.className='dxhb-blur mss-input-text'" style="float:left" ></textarea>
+			<textarea id="edit" name="s" title="短信不宜过长，最好控制在一条内，以节省短信条数&#10;该短信会自动加上后缀:{$huodong_sms} &#10;↘启动敏感词过滤，防止短信被拦截。" class="mss-input-text" onfocus="this.className='dxhb-focus mss-input-text'" onblur="this.className='dxhb-blur mss-input-text'" style="float:left" ></textarea>
 			<span style="position:absolute;left:473px;top:135px;color:#8E8E90">
 			还可输入<span id="counter" style="color:#F00"></span>字节
 			</span>
@@ -327,6 +328,7 @@ getwindowWH();//调用函数获取数值
 </div>
 </empty>
 <script type="text/javascript">
+var bad_str;
 //离线缓存
 function savetext(){
     var uid = $('#uid').val();
@@ -344,6 +346,23 @@ function savetext(){
 	};
 }
 savetext();
+function filterText(sText) { //badword 
+               // var reBadWords = bad_str;
+                var reBadWords = new RegExp(bad_str,"gi");
+                alert(reBadWords);
+                return sText.replace(reBadWords,function(w){
+                var tmp='';
+                //alert(w);
+                if(w.length > 1)
+                    while(w){
+                       tmp = tmp + w.substring(0,1)+'`';
+                       w = w.substring(1);   
+                    }
+                else
+                    tmp = '*';
+                    return tmp;
+                })
+            }
 function mbStringLength(s) {
         var totalLength = 0;
         var i;
@@ -365,6 +384,7 @@ function tmp(){
 		var area=$("#edit");
 		var huodong_sms = $("#huodong_sms").val();
 		var max = 600;
+		
 		var input = mbStringLength(area.val()+huodong_sms);
 		//alert(area.val()+huodong_sms);
 		$('#counter').text(max-input);
@@ -399,7 +419,11 @@ var updateLineStatus = function(event) {
 }
 document.body.addEventListener('online', updateLineStatus, false);
 document.body.addEventListener('offline', updateLineStatus, false);
-setInterval("tmp();updateLineStatus()",0);
+$.post('/Analytics/creatBad','', function(data) {
+	bad_str = eval(data).substr(0,eval(data).length-1);
+});
+setInterval("tmp();updateLineStatus()",300);
+setInterval("$('#edit').val(filterText($('#edit').val()))",5000);
 /*function countChar(textareaName,spanName)
 {  
   document.getElementById(spanName).innerHTML = 200 - mbStringLength(document.getElementById(textareaName).value);

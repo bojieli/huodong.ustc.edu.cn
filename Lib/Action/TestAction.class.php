@@ -4,9 +4,9 @@ class TestAction extends PublicAction
 	public function index(){
 		$this->display();
 	}
-	 public function ajax_get(){
-        base64String = $this->_post('data');
-        Image img = this.Base64ToImage(base64String);
+	/* public function ajax_get(){
+        $base64String = $this->_post('data');
+        Image img = this.Base64ToImage($base64String);
         img.Save(@"D:\ccc.jpg");//ƒ¦´æˆDÆ¬
 	 }
 	 public Image Base64ToImage(string base64String)
@@ -20,9 +20,9 @@ class TestAction extends PublicAction
         ms.Write(imageBytes, 0, imageBytes.Length);
         Image image = Image.FromStream(ms, true);
         return image;
-    }
+    }*/
 	
-	/*throws ServletException, IOException {
+	/*hrows ServletException, IOException {
 	String imgData = request.getParameter("img");
 	//System.out.println("imgData:"+imgData);
 
