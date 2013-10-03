@@ -87,11 +87,13 @@ $this->data($data)->add();
 public function sentMsgForSys($time,$title,$msg,$tids,$gid){
 	if($tids=='ALL')
 	{
-		$tids2=M('User_group')->field('uid')->where(array('gid'=>$gid))->select();
+		
+        $tids = D('Club')->getClubMembers($gid);
+		/*$tids2=M('User_group')->field('uid')->where(array('gid'=>$gid,'priv'=>'inactive'))->select();
 		foreach($tids2 as $ch){
 		   $tids_tmp[]=$ch['uid'];
 		}
-		$tids=$tids_tmp;
+		$tids=$tids_tmp;*/
 	}
 	foreach($tids as $val)
 	{

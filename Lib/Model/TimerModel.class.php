@@ -7,15 +7,16 @@ public function creatConf(){
 	$uid=$_G['uid'];
 	return M('Timer_conf')->where(['uid'=>$uid])->add(['uid'=>$uid]);
 }
-public function getConf(){
+public function getConf($uid){
 	global $_G;
-	$uid=$_G['uid'];
+	if(empty($uid))
+		$uid=$_G['uid'];
 	$re=M('Timer_conf')->field('uid')->where(['uid'=>$uid])->find()['uid'];
 	if(empty($re))
 	{
 		$this->creatConf();
 	}
-	return M('Timer_conf')->where(['uid'=>$uid])->find();
+	return M('Timer_conf')->field('uid',true)->where(['uid'=>$uid])->find();
 }
 public function changeConf($sms,$email){
 	global $_G;
@@ -32,28 +33,45 @@ public function changeConf($sms,$email){
 	};
 	M('Timer_conf')->where(['uid'=>$uid])->data($data)->save();
 }
-public function InsertTimer_Poster($aid){
+public function InsertTimer_Poster($aid,$aid_type){
 	global $_G;
 	$uid=$_G['uid'];
-	if($this->isAdd($aid)>=1){return 2;}
 	$start_time=D('Poster')->getPosterStartTime($aid);
 	if($start_time<time()){return 0;}
-	$conf=$this->getConf();
-	foreach($conf as $key => $val){
-		if($key!='uid'){
-		$conf_type[$key]=$val;
-		}
+    
+	switch ($aid_type) {
+		case 1:
+			$uids[] = $uid;
+			if($this->isAdd($aid)>=1){return 2;}
+			break;
+		case 2:
+			$gid = D('Poster')->getPosterOwnerByAid($aid);
+			$tids = D('Club')->getClubMembers($gid);
+			foreach ($tids as $tid) {
+    		if($this->isAdd($aid,$tid,$aid_type)==0)
+    			$uids[] = $tid;
+    		}
+			break;
+	    default:
+	    	return;
 	}
-	$type=json_encode($conf_type);
-	$data=array(
-		'uid'=>$uid,
-		'aid'=>$aid,
-		'type'=>$type,
-		'aid_type'=>1,
-		'time'=>$start_time,
-	);
 	
-	M('Timer')->data($data)->add();
+    unset($uid);
+    //dump($uids);die;
+	foreach ($uids as $key3 => $uid) {
+		//dump($uid);die;
+		$type = json_encode($this->getConf($uid));
+		if($aid_type == 2)
+			$type = json_encode(['email'=>1]);
+		$data[]=array(
+			'uid'=>$uid,
+			'aid'=>$aid,
+			'type'=>$type,
+			'aid_type'=>$aid_type,
+			'time'=>$start_time,
+		);
+	}
+	M('Timer')->addAll($data);
 	return 1;
 }
 public function updateTimer_Poster($aid,$time,$type){
@@ -76,19 +94,27 @@ public function delTimer_Poster($aid){
 	return M('Timer')->where($con)->delete();
 }
 public function checkTimer(){
-	$con['time']=array('ELT',time()+2*3600);
+	$con['time']=array('ELT',time()+C('timer_time'));
 	$con['status']=0;
+	$con['aid_type']=1;
 	$re=M('Timer')->where($con)->select();
-	//dump(M('Timer')->getLastSql());
+	$con2['time']=array('EGT',time());
+	$con2['status']=0;
+	$con2['aid_type']=2;
+	$re2=M('Timer')->where($con2)->select();
+	foreach ($re2 as $value) {
+		$re[count($re)] = $value; 
+	}
 	return $re;
 }
 public function changeStatus($id,$status){
 	M('Timer')->where(['id'=>$id])->data(array('status'=>$status))->save();
 }
-public function isAdd($aid){
+public function isAdd($aid,$uid,$aid_type=1){
 	global $_G;
-	$uid=$_G['uid'];
-	return M('Timer')->where(['uid'=>$uid,'aid'=>$aid])->count();
+	if(empty($uid))
+		$uid=$_G['uid'];
+	return M('Timer')->where(['uid'=>$uid,'aid'=>$aid,'aid_type'=>$aid_type])->count();
 	
 }
 public function clockInput($aid){

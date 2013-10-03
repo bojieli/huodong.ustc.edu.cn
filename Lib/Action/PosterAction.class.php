@@ -130,7 +130,7 @@ class PosterAction extends PublicAction {
 		
 		list($title,$msg)=D('Msg')->posterMsg($aid);
 		D('Msg')->sentMsgForSys(time(),$title,$msg,$tids='ALL',$gid);
-		
+		A('Timer')->addAfterPoster($aid);
 		$this->assign('jumpUrl', "/");
         $this->success("海报发布成功！");
     }

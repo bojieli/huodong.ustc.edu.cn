@@ -12,7 +12,7 @@ class TimerAction extends PublicAction{
 		$mobile=D('Sms')->getUserMobile($uid);
 		$email=D('User')->getUserMail($uid);
 		if(empty($mobile)&&empty($email)) $this->error('提醒失败，请在个人信息里完善手机号、邮箱号其中任意一种联系方式');
-		$re=D('Timer')->InsertTimer_Poster($aid);
+		$re=D('Timer')->InsertTimer_Poster($aid,1);
 		if($re==0){$this->error('活动时间已过');}
 		if($re==2){$this->error('已添加');}
 		else{
@@ -20,6 +20,9 @@ class TimerAction extends PublicAction{
 		if(!empty($mobile)&&empty($email)) $this->success('提醒成功，会提前两个小时会提醒您参加活动。'."\n".'提醒方式：短信，'."\n".'建议:填写邮箱号即可实现短信、邮件双提醒');
 		if(!empty($mobile)&&!empty($email)) $this->success('提醒成功，会提前两个小时会提醒您参加活动。'."\n".'提醒方式：短信、邮件');
 		}
+	}
+	public function addAfterPoster($aid){
+		D('Timer')->InsertTimer_Poster($aid,2);
 	}
 	public function update(){
 		global $_G;
@@ -60,10 +63,17 @@ class TimerAction extends PublicAction{
 			return 0;
 		}
 		$re=D('Timer')->checkTimer();
+		$i = 0;
 		if($re){
 			foreach($re as $key => $val){
-				$mobile=D('Sms')->getUserMobile($val['uid']);
-				if($mobile) D('Sms')->sentMsg($this->sms2text($val['aid']),$mobile);
+				if($val['aid_type']==2)
+					$i++;
+				if($i > C('timer_email'))
+					break;
+				if($val['aid_type']==1){
+					$mobile=D('Sms')->getUserMobile($val['uid']);
+					if($mobile) D('Sms')->sentMsg($this->sms2text($val['aid']),$mobile);
+				}
 				$email=D('User')->getUserMail($val['uid']);
 				if($email) SendMail($email,"来自活动平台的提醒",$this->email2text($val['aid']), true);
 				D('Timer')->changeStatus($val['id'],1);

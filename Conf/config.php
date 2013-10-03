@@ -27,7 +27,8 @@ $smsconfig = array(
 	'sms_weight' => 2 //每增加一个会员所拥有的短信条数
 	);
 $timerconfig = array(
-	'timer_time' => 2 //hour
+	'timer_time' => 2*3600,//hour
+	'timer_email'=> 10,
 );
 return array_merge($config, $newconfig, $mailconfig,$smsconfig,$timerconfig);
 ?>

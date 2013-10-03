@@ -243,6 +243,14 @@ class ClubModel extends Model {
             return null;
         return $club['name'];
     }
+    public function getClubMembers($gid){ //
+        $info = M('User_group')->field('uid')->where(array('gid'=>$gid,'priv'=>array('neq',inactive)))->select();
+        foreach ($info as $key => $value) {
+            $uids[] = $value['uid'];
+        }
+        //dump(array_values($info));die;
+        return $uids;
+    }
 	public function showMember($gid,$vid){//导入的成员
 	if($vid=='')
           $info=M('club_address')->where(['gid'=>$gid])->select();
