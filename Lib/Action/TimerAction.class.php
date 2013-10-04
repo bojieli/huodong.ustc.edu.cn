@@ -11,8 +11,6 @@ class TimerAction extends PublicAction{
 		if(empty($aid)){$this->error('非法操作');}
 		$mobile=D('Sms')->getUserMobile($uid);
 		$email=D('User')->getUserMail($uid);
-		//echo "1212";
-		//dump($conf);
 		if((empty($mobile)&&empty($email))){
 			$this->error('提醒失败，请在个人信息里完善手机号、邮箱号其中任意一种联系方式');
 		}	

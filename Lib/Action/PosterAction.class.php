@@ -55,6 +55,7 @@ class PosterAction extends PublicAction {
         $schools = json_encode($schools);
         list($start, $num, $cond, $order) = $this->parseInput();
 		$iswebp = is_numeric($_GET['iw']) ? $_GET['iw'] : -1;
+        //dump($cond);die;
         $posters = D('Poster')->getPoster(0,8,$cond,$order,$iswebp);
         $elements = [];
         foreach ($posters as $poster)
