@@ -11,14 +11,42 @@ class TimerAction extends PublicAction{
 		if(empty($aid)){$this->error('非法操作');}
 		$mobile=D('Sms')->getUserMobile($uid);
 		$email=D('User')->getUserMail($uid);
-		if(empty($mobile)&&empty($email)) $this->error('提醒失败，请在个人信息里完善手机号、邮箱号其中任意一种联系方式');
-		$re=D('Timer')->InsertTimer_Poster($aid,1);
-		if($re==0){$this->error('活动时间已过');}
-		if($re==2){$this->error('已添加');}
+		//echo "1212";
+		//dump($conf);
+		if((empty($mobile)&&empty($email))){
+			$this->error('提醒失败，请在个人信息里完善手机号、邮箱号其中任意一种联系方式');
+		}	
 		else{
-		if(empty($mobile)&&!empty($email)) $this->success('提醒成功，会提前两个小时会提醒您参加活动。'."\n".'提醒方式：邮件'."\n".'建议:填写手机号即可使用短信提醒');
-		if(!empty($mobile)&&empty($email)) $this->success('提醒成功，会提前两个小时会提醒您参加活动。'."\n".'提醒方式：短信，'."\n".'建议:填写邮箱号即可实现短信、邮件双提醒');
-		if(!empty($mobile)&&!empty($email)) $this->success('提醒成功，会提前两个小时会提醒您参加活动。'."\n".'提醒方式：短信、邮件');
+		
+		$re=D('Timer')->InsertTimer_Poster($aid,1);
+		
+		if($re==0){$this->error('活动时间已过');}
+		
+		if($re==2){$this->error('已添加');}
+		
+		if($re==3){$this->error('请先在防骚扰设置开启活动提醒功能');}
+		
+		if($re==4){$this->error('未知错误');}
+		
+		$conf = D('Timer')->getConf($uid)[1];
+		
+		if( (empty($mobile)&&!empty($email)) && ($conf['email']==1 && $conf['sms']==0) ) 
+			$this->success('提醒成功，会提前两个小时会提醒您参加活动。'."\n".'提醒方式：邮件'."\n".'建议:填写手机号即可使用短信提醒');
+		
+		if((!empty($mobile)&&empty($email)) &&  ($conf['email']==0 && $conf['sms']==1) ) 
+			$this->success('提醒成功，会提前两个小时会提醒您参加活动。'."\n".'提醒方式：短信，'."\n".'建议:填写邮箱号即可实现短信、邮件双提醒');
+		
+		if((!empty($mobile)&&!empty($email)) &&  ($conf['email']==1 && $conf['sms']==1) ) 
+			$this->success('提醒成功，会提前两个小时会提醒您参加活动。'."\n".'提醒方式：短信、邮件');
+		
+		
+		if((!empty($mobile)&&!empty($email)) &&  ($conf['email']==1 && $conf['sms']==0) ) 
+			$this->success('提醒成功，会提前两个小时会提醒您参加活动。'."\n".'提醒方式：邮件'."\n".'可在防骚扰设置里开启 短信 提醒');
+		
+		
+		if((!empty($mobile)&&!empty($email)) &&  ($conf['email']==0 && $conf['sms']==1) ) 
+			$this->success('提醒成功，会提前两个小时会提醒您参加活动。'."\n".'提醒方式：短信'."\n".'可在防骚扰设置里开启 邮件 提醒');
+		
 		}
 	}
 	public function addAfterPoster($aid){
@@ -34,25 +62,43 @@ class TimerAction extends PublicAction{
 		//$type=$this->_post('type');
 		D('Timer')->updateTimer_Poster($aid,$time,$type);
 	}
+	public function show_conf(){
+		global $_G;
+		$uid=$_G['uid'];
+		if(empty($_G['uid'])) {
+            $this->error('没有登录');
+        }
+		$conf=D('Timer')->getConf($uid);
+		//dump($conf);
+		foreach($conf as $aid_type => $val){
+			if($aid_type == 1){
+			if($val['email']==1)   $checkstat = 'checked="checked"';
+			$emailbox = '<input type="checkbox" name="checkbox['.$aid_type.'][email]" '.$checkstat.'/> 邮件';
+            unset($checkstat);
+			if($val['sms']==1)     $checkstat = 'checked="checked"';
+			$smsbox = '<input type="checkbox" name="checkbox['.$aid_type.'][sms]" '.$checkstat.'/> 短信';
+		    $time_conf[$aid_type] = $emailbox."\n".$smsbox;
+		   }
+		   if($aid_type == 2){
+		   	unset($checkstat);
+                 if($val['email']==1)
+				$checkstat = 'checked="checked"';
+			$emailbox2 = '<input type="checkbox" name="checkbox['.$aid_type.'][email]" '.$checkstat.'/> 邮件';
+		    //$smsbox2 = '<input type="hidden" name="checkbox['.$aid_type.'][sms]" value=0 />';
+		    $time_conf[$aid_type] = $emailbox2."\n".$smsbox2;
+		   }
+		}
+		return $time_conf;
+	}
 	public function del(){
 		global $_G;
 		$uid=$_G['uid'];
 		if(empty($uid)){$this->error('请登录');}
 		$aid=$this->_post('aid')?$this->_post('aid'):$this->_get('aid');
 		if(empty($aid)){$this->error('非法操作');}
-		$n=D('Timer')->delTimer_Poster($aid);
+		$n=D('Timer')->delTimer_Poster($aid,$aid_type=1);
 		if($n==false){$this->error("无此提醒");}
 		else{$this->success("成功取消".$n.'条提醒');}
-	}
-	public function show_conf(){
-		$conf=D('Timer')->getConf();
-		$this->assign('sms',$conf['sms']);
-		$this->assign('email',$conf['email']);
-		$this->display();
-	}
-	public function update_conf(){
-		//$type=$this->_post('type');
-		D('Timer')->changeConf($sms,$email);
 	}
 	public function check(){
 		// only allowed to be accessed by crontab
@@ -66,16 +112,29 @@ class TimerAction extends PublicAction{
 		$i = 0;
 		if($re){
 			foreach($re as $key => $val){
-				if($val['aid_type']==2)
-					$i++;
-				if($i > C('timer_email'))
-					break;
-				if($val['aid_type']==1){
-					$mobile=D('Sms')->getUserMobile($val['uid']);
-					if($mobile) D('Sms')->sentMsg($this->sms2text($val['aid']),$mobile);
+				$confs = json_decode($val['type']);
+				foreach ($confs as $key => $conf) {
+					switch ($key) {
+						case 'email':
+							if($conf == 1){
+								if($val['aid_type']==2)
+									$i++;
+								if($i > C('timer_email'))
+									break;
+								$email=D('User')->getUserMail($val['uid']);
+								if($email) SendMail($email,"来自活动平台的提醒",$this->email2text($val['aid']), true);
+								
+							}
+							break;
+						case 'sms':
+							if($conf == 1){
+								$mobile=D('Sms')->getUserMobile($val['uid']);
+								if($mobile) D('Sms')->sentMsg($this->sms2text($val['aid']),$mobile);
+							}
+						default:
+							break;
+					}
 				}
-				$email=D('User')->getUserMail($val['uid']);
-				if($email) SendMail($email,"来自活动平台的提醒",$this->email2text($val['aid']), true);
 				D('Timer')->changeStatus($val['id'],1);
 			}
 			echo "Timers count: ".count($re)."\n";

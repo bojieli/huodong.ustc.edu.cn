@@ -59,8 +59,6 @@ class PosterAction extends PublicAction {
         $elements = [];
         foreach ($posters as $poster)
            $php_poster.= $this->poster2html($poster,$iswebp);
-		//dump($iswebp);die;
-        //die;
 		$this->assign('php_poster',$php_poster);
 		$this->assign('schools', $schools);
         $this->assign('sid', $sid);
@@ -337,18 +335,17 @@ class PosterAction extends PublicAction {
             $elements[] = $this->poster2html($poster,$iswebp);
         echo json_encode($elements);
     }
-    private function isWebpExist($md5,$url,$prefix){
-         //dump(file_exists($url.$prefix.$md5.'.webp'));
-          return file_exists($url.$prefix.$md5.'.webp');
+    private function isWebpExist($md5,$prefix){
+          //echo file_exists($url.$prefix.$md5.'.webp');die;
+          return file_exists('./upload/poster/thumb/webp/'.$prefix.$md5.'.webp');
     }
     private function poster2html($poster,$iswebp) {
         $clockStat=D('Timer')->clockInput($poster->id());
         $md5 = explode(".", $poster->poster)[0];
         $webp_url = "/upload/poster/thumb/webp/";
-       // dump($poster->thumbUrl());die;
         if($poster->thumbUrl()=='')
             $img='';
-        else if($this->isWebpExist($md5,$webp_url,$prefix='thumb_'))
+        elseif($this->isWebpExist($md5,$prefix='thumb_'))
                 {    if ($iswebp==1) 
                         $img='<img alt="'.$poster->name().'" class="haibao" itemprop="photo" height="'.$poster->thumbHeight().'" id="poster-'.$poster->id().'" src="'.$webp_url.$prefix.$md5.'.webp'.'"onclick="loadComments('.$poster->id().')" />';
                      elseif ($iswebp==-1) 
@@ -357,9 +354,7 @@ class PosterAction extends PublicAction {
                             $img='<img alt="'.$poster->name().'" class="haibao" itemprop="photo" height="'.$poster->thumbHeight().'" id="poster-'.$poster->id().'" src="'.$poster->thumbUrl().'"onclick="loadComments('.$poster->id().')" />';
                  }
              else
-                
                 $img='<img alt="'.$poster->name().'" class="haibao" itemprop="photo" height="'.$poster->thumbHeight().'" id="poster-'.$poster->id().'" src="'.$poster->thumbUrl().'"onclick="loadComments('.$poster->id().')" />';
-		
         if($clockStat==0) 
             $clock_img='';
 		else
@@ -462,10 +457,7 @@ class PosterAction extends PublicAction {
 
         if($iswebp==1){
             $md5 = explode(".", $poster->poster)[0];
-            //dump($md5);
-            $webp_url="./upload/poster/thumb/webp/";
-
-            if($this->isWebpExist($md5,$webp_url,$prefix='large_')){
+            if($this->isWebpExist($md5,$prefix='large_')){
                 $poster->largePoster = "/upload/poster/thumb/webp/".$prefix.$md5.".webp";
             }
         }

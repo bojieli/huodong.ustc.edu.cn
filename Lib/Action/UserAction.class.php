@@ -858,4 +858,44 @@ class UserAction extends PublicAction {
         $this->assign('avatar_path', C("AVATAR_PATH"));
         $this->display();
     }
+
+    public function setting()
+    {
+        global $_G;
+        if(empty($_G['uid'])) {
+            $this->error('没有登录');
+        }
+        $time_conf = A('Timer')->show_conf();
+        $this->assign('time_conf',$time_conf);
+        $this->display();
+    }
+    public function updateSetting(){
+         global $_G;
+         if(empty($_G['uid'])) {
+            $this->error('没有登录');
+         }
+         $error = 0;
+         $checkbox = $_POST['checkbox'];
+         $init = array(1=>['email'=>0,'sms'=>0],2=>['email'=>0,'sms'=>0]);
+         //dump($init);die;
+         foreach ($checkbox as $key => $value) {
+             foreach ($value as $key2 => $value2) {
+                 if(!empty($value2))
+                    $init[$key][$key2]=1;
+             }
+         }
+         //dump($init);die;
+         foreach ($init as $aid_type => $conf) {
+            $stat = D('Timer')->changeConf($conf,$aid_type,$_G['uid']);
+            //dump($conf);
+            //echo M('Timer_conf')->getLastSql();die;
+            if($stat==false)
+                $error = 1;
+         }
+         if($error == 0)
+            $this->success("成功保存");
+        else
+            $this->error("出现错误");
+         
+    }
 }

@@ -98,204 +98,210 @@ $showPager = function() use($club,$pageNow) {
 ?>
 </notempty>
 <div id="stmain">
-<include file="introHeaderin" />
+	<include file="introHeaderin" />
 	<div class="stcon1">
-    	<div class="stcylb">成员列表<span class="stnotice1">（为保护隐私，普通成员无法看到除了社团管理者之外的会员的联系方式。非会员最多只能看到协会的20个会员）</span></div>
+    	<div class="stcylb">成员列表
+    		<span class="stnotice1">（为保护隐私，普通成员无法看到除了社团管理者之外的会员的联系方式。非会员最多只能看到协会的20个会员）
+    		</span>
+    	</div>
         <div class="stcyleft">
-<notempty name="club.ismanager">
-	<?php $showPager(); ?>
-</notempty>
-	    <volist name="members" id="member">
-            <div class="stcycell" id="stcy{$member.uid}">
-            	<div class="stcycell1"><img width="90" height="90" src="/{$member.avatar}"></div>
-                <div class="stcycell2">
-		<?php
-		$priv2num = function($priv) {
-			switch ($priv) {
-			case 'admin': return 1;
-			case 'vice-admin': return 2;
-			case 'manager': return 3;
-			case 'vice-manager': return 3;
-			case 'team-leader': return 3;
-			case 'member': return 4;
-			default: return 5;
-			}
-		};
-		$member['privlevel'] = $priv2num($member['priv']);
-		?>
-        <div class="stzhiwu">
-          	<img src="/static/images/aa{$member.privlevel}.png" />
-		    <div class="stzhiwumc ajax_title_now">{$member.title}</div>
-		  <if condition="($club['isadmin'])">
-          	<div class="stzhiwumc ajax_title">
-            	<input id="{$member.uid}" class="ajax_title_text putin_out" value="{$member.title}" onfocus="this.className='ajax_title_text putin_on'" onblur="this.className='ajax_title_text putin_out'"/>
-            </div>
-			<a class="title_set" href="javascript:void(0);">个性职称</a>
-			<!--<if condition="($member[priv] != 'admin')">-->
-	    	<div class="stzhiwusz">设置权限：
-                        <select onchange="ajaxChangeTitle({$member.uid}, this.options[this.selectedIndex].getAttribute('priv'), this.options[this.selectedIndex].getAttribute('title'))">
-                        <option priv="" title="" selected="selected">------</option>
-                        <option priv="" title="" style="color:#CCC">--等级2--</option>
-                         <option priv="vice-admin" title="副会长" style="color:#F0F">副会长</option>
-						<option priv="vice-admin" title="副社长" style="color:#F0F">副社长</option>
-						<option priv="vice-admin" title="副主席" style="color:#F0F">副主席</option>
-                        <option priv="" title="" style="color:#CCC">--等级3--</option>
-                        <option priv="manager" title="部长" style="color:#F93">部长</option>
-                        <option priv="vice-manager" title="副部长" style="color:#F93">副部长</option>
-                        <option priv="team-leader" title="项目组长" style="color:#F93">项目组长</option>
-                        <option priv="team-leader" title="活动负责人" style="color:#F93">活动负责人</option>
-                        
-                        <option priv="" title=""  style="color:#CCC">--等级4--</option>
-                        <option priv="member" title="会员" style="color:#09F;">普通会员</option>
-                       
-                        <option priv="" title=""  style="color:#CCC">--等级5--</option>
-						<option priv="inactive" title="待审核">待审核</option>
-                	</select>
-             </div>
-		     </if>
-			
-		    <notempty name="club.isSchoolAdmin">
-		    <div class="stsetowner">
-		    <a href="/Club/addOwnerSubmit?gid={$club.gid}&owner={$member.uid}&sid={$club.sid}">设为会长</a>
-		    </div>
-		    </notempty>
-
-		    </div>
-                    <div class="stcyxx"><span class="<?=$member['gender'] ? 'boy' : 'girl' ?>name">{$member.realname}</span>：  {$member.school}<br/>
-		    {$member.dept} {$member.grade}级 {$member.education} <notempty name="club.ismanager">
-		            <notempty name="member.student_no">
-			    学号: <span style="color:#999">{$member.student_no}</span>
-			    </notempty>
-			 </notempty><br/>
-
-		    <if condition="($member[priv] == 'admin' && $club[isin]) || ($member[priv] == 'manager' && $club[isin]) || $club[ismanager]">
-			    <notempty name="member.qq">
-			    QQ:  <span style="color:#999">{$member.qq}</span>
-			    </notempty>
-			    <notempty name="member.telephone">
-			    电话:  <span style="color:#999">{$member.telephone}</span>
-			    </notempty>
-			    <notempty name="member.email">
-			    Email:  <span style="color:#999">{$member.email}</span>
-			    </notempty>
-		    </if>
-		    
-		    </div>
-                </div><!--cell2-->
-            </div><!--ctcycell-->
-	    </volist>
-<notempty name="club.ismanager">
-	<?php $showPager(); ?>
-</notempty>
-        </div><!--stcy left-->
-        
-        <div class="stcyright">
-        <div class="sttttt">功能面板<span class="stxmz11"><span style="color:#CCC; font-size:14px">部长及以上权限可见 &nbsp;&nbsp;</span><a href="/static/help/quanxiansm.html" target='_blank'  style="color:#F00">权限说明</a></span></div>
-        <notempty name="club.ismanager">       
-        	<table cellpadding="0" cellspacing="0" border="0" >            	
-                <tr >
-                	<td align="left" width="200px" ><a target="_blank" href="/Club/sendEmail?gid={$club.gid}"  style="color:#088;">群发邮件</a></td>
-                    <td align="left"><a href="/Sms?gid={$club.gid}" style="color:#088;">群发短信</a></td>                    
-                </tr>
-                <tr height="15px;"><td colspan="2" style="border-top:1px #CCF dotted"></td></tr>
-                <tr>
-                    <td align="left"><a href="/Qr/QRapply?gid={$club.gid}" target='_blank' style="color:#088;">申请与管理二维码</a></td>
-					<td align="left"><a href="/Poster/add?gid={$club.gid}" target='_blank' style="color:#088;">发布海报</a></td>
-                </tr>  
-                <tr height="15px;"><td colspan="2" style="border-top:1px #CCF dotted"></td></tr>
-                <tr>
-                    <td align="left"><a href="/Survey" target='_blank' style="color:#088;">制作调查问卷</a></td>					
-					<td align="left"><a href="/Web" target='_blank' style="color:#088;">实验室</a></td>
-                </tr>
-                <tr>
-                	<td align="left"><a href="/Club/emailAddress?gid={$club.gid}" target='_blank' style="color:#088;">群邮件地址</a></td>
-                    <td align="left"><a href="/Club/addrManage?gid={$club.gid}" target='_blank' style="color:#088;">在线通讯录</a></td>					
-                </tr>
-                
-				<tr height="15px;"><td colspan="2" style="border-top:1px #CCF dotted"></td></tr>
-                 <!--		
-				<tr>
-                	<td align="left"><a href="/Club/createAddress?gid={$club.gid}" style="color:#088;">导出为excel会员通讯录</a></td>
-                    <td align="left"><a href="/Club/createAddressFetion?gid={$club.gid}" style="color:#088;">导出为飞信联系人</a></td>
-                </tr>
-               
-				<tr>
-                	<td align="left"><a href="/Club/createVcard?gid={$club.gid}" target='_blank' style="color:#088;">导出为手机联系人</a></td>
-                	<td align="left"><a href="/Club/createAddressEmailUSTC?gid={$club.gid}" style="color:#088;">导出为科大邮件联系人</a></td>
-                </tr>
+			<notempty name="club.ismanager">
+				<?php $showPager(); ?>
+			</notempty>
+		    <volist name="members" id="member">
+	            <div class="stcycell" id="stcy{$member.uid}">
+	            	<div class="stcycell1"><img width="90" height="90" src="/{$member.avatar}"></div>
+	                <div class="stcycell2">
+			<?php
+			$priv2num = function($priv) {
+				switch ($priv) {
+				case 'admin': return 1;
+				case 'vice-admin': return 2;
+				case 'manager': return 3;
+				case 'vice-manager': return 3;
+				case 'team-leader': return 3;
+				case 'member': return 4;
+				default: return 5;
+				}
+			};
+			$member['privlevel'] = $priv2num($member['priv']);
+			?>
+	        <div class="stzhiwu">
+	          	<img src="/static/images/aa{$member.privlevel}.png" />
+			    <div class="stzhiwumc ajax_title_now">{$member.title}</div>
+			  <if condition="($club['isadmin'])">
+	          	<div class="stzhiwumc ajax_title">
+	            	<input id="{$member.uid}" class="ajax_title_text putin_out" value="{$member.title}" onfocus="this.className='ajax_title_text putin_on'" onblur="this.className='ajax_title_text putin_out'"/>
+	            </div>
+				<a class="title_set" href="javascript:void(0);">个性职称</a>
+				<!--<if condition="($member[priv] != 'admin')">-->
+		    	<div class="stzhiwusz">设置权限：
+	                        <select onchange="ajaxChangeTitle({$member.uid}, this.options[this.selectedIndex].getAttribute('priv'), this.options[this.selectedIndex].getAttribute('title'))">
+	                        <option priv="" title="" selected="selected">------</option>
+	                        <option priv="" title="" style="color:#CCC">--等级2--</option>
+	                         <option priv="vice-admin" title="副会长" style="color:#F0F">副会长</option>
+							<option priv="vice-admin" title="副社长" style="color:#F0F">副社长</option>
+							<option priv="vice-admin" title="副主席" style="color:#F0F">副主席</option>
+	                        <option priv="" title="" style="color:#CCC">--等级3--</option>
+	                        <option priv="manager" title="部长" style="color:#F93">部长</option>
+	                        <option priv="vice-manager" title="副部长" style="color:#F93">副部长</option>
+	                        <option priv="team-leader" title="项目组长" style="color:#F93">项目组长</option>
+	                        <option priv="team-leader" title="活动负责人" style="color:#F93">活动负责人</option>
+	                        
+	                        <option priv="" title=""  style="color:#CCC">--等级4--</option>
+	                        <option priv="member" title="会员" style="color:#09F;">普通会员</option>
+	                       
+	                        <option priv="" title=""  style="color:#CCC">--等级5--</option>
+							<option priv="inactive" title="待审核">待审核</option>
+	                	</select>
+	             </div>
+			     </if>
 				
-                <tr height="15px;"><td colspan="2" style="border-top:1px #CCF dotted"></td></tr>
-				-->
-				<!--tr>
-                	<notempty name="club.iscorers"><td align="left"><a href="/Team/introAdd?gid={$club.gid}&type=department" target='_blank' style="color:#088;">创建部门</a></td></notempty>
-                    <td align="left"><a href="/Team/introAdd?gid={$club.gid}&type=team" target='_blank' style="color:#088;">创建项目组</a></td>
-                </tr-->   
-            </table>            
-            
-         </notempty> 
-         
-         <br/>  
-        <div class="sttttt">现有部门<span class="stxmz11" style="float:right;margin-left:0;"><span style="color:#CCC; font-size:14px">需为会员才可见！&nbsp;&nbsp;&nbsp;&nbsp;</span>
-        <notempty name="club.iscorers">
-        <a href="/Team/introAdd?gid={$club.gid}&type=department" target='_blank' style="color:#F00;">创建部门</a>
-        </notempty>
-        </span></div>
-        
-        <notempty name="departments"> 
-	    <volist name="departments" id="department">
-	        <p>
-			<a href="/Team?tid={$department.tid}" target="_blank" style="color:#088;">{$department.name}</a>
-	        </p>
-        </volist>
-		</notempty>
-        
-        <br/>
-        <div class="sttttt">现有项目组<span class="stxmz11" style="float:right; margin-left:0;"><span style="color:#CCC; font-size:14px">需为会员才可见！&nbsp;&nbsp;&nbsp;&nbsp;</span>
-        <notempty name="club.iscorers">
-        <a href="/Team/introAdd?gid={$club.gid}&type=team" target='_blank' style="color:#F00;">创建项目组</a>
-        </notempty>
-        </span></div>
-        
-		<notempty name="teams">		
-	    <volist name="teams" id="team">
-	        <p>
-			<a href="/Team?tid={$team.tid}" target="_blank" style="color:#088;">{$team.name}</a>
-	        </p>
-        </volist>
-		</notempty>
-        <br/>
-		
-		<div class="sttttt">现有活动<span class="stxmz11" style="float:right; margin-left:0;"><span style="color:#CCC; font-size:14px">需为会员才可见！&nbsp;&nbsp;&nbsp;&nbsp;</span>
-        <notempty name="club.iscorers">
-        <a href="/Activity/introAdd?gid={$club.gid}" target='_blank' style="color:#F00;">创建新活动</a>
-        </notempty>
-        </span>
-		</div>
-		<notempty name="acts">		
-	    <volist name="acts" id="act">
-	        <p>
-			<a href="/Activity/intro?act_id={$act.act_id}" target="_blank" style="color:#088;">{$act.title}</a>
-	        </p>
-        </volist>
-		</notempty>
-		
-		<br/>
-        <div class="sttttt">待审核会员：</div>
-	    <volist name="inactive" id="member">
-	        <p style="border-bottom:1px dotted #CCF;"><span class="<?=$member['gender'] ? 'boy':'girl'?>name">{$member.realname}</span> {$member.school}-{$member.dept} {$member.grade}级{$member.education}
-	        <notempty name="club.ismanager">
-	        <a href="/Club/joinVerify?gid={$club.gid}&uid={$member.uid}" class="stfjdel1">允许</a> / <a href="/Club/joinDeny?gid={$club.gid}&uid={$member.uid}" class="stfjdel1">拒绝</a>
-	        </notempty>
-	        </p>
-        </volist>
-            
-        </div><!--ctcy right-->
-        
-        
+			    <notempty name="club.isSchoolAdmin">
+			    <div class="stsetowner">
+			    <a href="/Club/addOwnerSubmit?gid={$club.gid}&owner={$member.uid}&sid={$club.sid}">设为会长</a>
+			    </div>
+			    </notempty>
+
+			    </div>
+	                    <div class="stcyxx"><span class="<?=$member['gender'] ? 'boy' : 'girl' ?>name">{$member.realname}</span>：  {$member.school}<br/>
+			    {$member.dept} {$member.grade}级 {$member.education} <notempty name="club.ismanager">
+			            <notempty name="member.student_no">
+				    学号: <span style="color:#999">{$member.student_no}</span>
+				    </notempty>
+				 </notempty><br/>
+
+			    <if condition="($member[priv] == 'admin' && $club[isin]) || ($member[priv] == 'manager' && $club[isin]) || $club[ismanager]">
+				    <notempty name="member.qq">
+				    QQ:  <span style="color:#999">{$member.qq}</span>
+				    </notempty>
+				    <notempty name="member.telephone">
+				    电话:  <span style="color:#999">{$member.telephone}</span>
+				    </notempty>
+				    <notempty name="member.email">
+				    Email:  <span style="color:#999">{$member.email}</span>
+				    </notempty>
+			    </if>
+			    
+			    </div>
+	                </div><!--cell2-->
+	            </div><!--ctcycell-->
+		    </volist>
+			<notempty name="club.ismanager">
+				<?php $showPager(); ?>
+			</notempty>
+        </div><!--stcy left-->      
+	    <div class="stcyright">
+	        <div class="sttttt">功能面板
+	        	<span class="stxmz11">
+	        		<span style="color:#CCC; font-size:14px">部长及以上权限可见 &nbsp;&nbsp;
+	        		</span>
+	        		<a href="/static/help/quanxiansm.html" target='_blank'  style="color:#F00">权限说明
+	        		</a>
+	        	</span>
+	        </div>
+	        <notempty name="club.ismanager">       
+	        	<table cellpadding="0" cellspacing="0" border="0" >            	
+	                <tr >
+	                	<td align="left" width="200px" ><a target="_blank" href="/Club/sendEmail?gid={$club.gid}"  style="color:#088;">群发邮件</a></td>
+	                    <td align="left"><a href="/Sms?gid={$club.gid}" style="color:#088;">群发短信</a></td>                    
+	                </tr>
+	                <tr height="15px;"><td colspan="2" style="border-top:1px #CCF dotted"></td></tr>
+	                <tr>
+	                    <td align="left"><a href="/Qr/QRapply?gid={$club.gid}" target='_blank' style="color:#088;">申请与管理二维码</a></td>
+						<td align="left"><a href="/Poster/add?gid={$club.gid}" target='_blank' style="color:#088;">发布海报</a></td>
+	                </tr>  
+	                <tr height="15px;"><td colspan="2" style="border-top:1px #CCF dotted"></td></tr>
+	                <tr>
+	                    <td align="left"><a href="/Survey" target='_blank' style="color:#088;">制作调查问卷</a></td>					
+						<td align="left"><a href="/Web" target='_blank' style="color:#088;">实验室</a></td>
+	                </tr>
+	                <tr>
+	                	<td align="left"><a href="/Club/emailAddress?gid={$club.gid}" target='_blank' style="color:#088;">群邮件地址</a></td>
+	                    <td align="left"><a href="/Club/addrManage?gid={$club.gid}" target='_blank' style="color:#088;">在线通讯录</a></td>					
+	                </tr>
+	                
+					<tr height="15px;"><td colspan="2" style="border-top:1px #CCF dotted"></td></tr>
+	            </table>            
+	            
+	         </notempty> 
+	         
+	         <br/>  
+	        <div class="sttttt">现有部门
+		        <span class="stxmz11" style="float:right;margin-left:0;">
+		    		<span style="color:#CCC; font-size:14px">需为会员才可见！&nbsp;&nbsp;&nbsp;&nbsp;
+		    		</span>
+			        <notempty name="club.iscorers">
+				        <a href="/Team/introAdd?gid={$club.gid}&type=department" target='_blank' style="color:#F00;">创建部门
+				        </a>
+			        </notempty>
+		        </span>
+	    	</div>
+	        
+	        <notempty name="departments"> 
+		    <volist name="departments" id="department">
+		        <p>
+				<a href="/Team?tid={$department.tid}" target="_blank" style="color:#088;">{$department.name}</a>
+		        </p>
+	        </volist>
+			</notempty>
+	        
+	        <br/>
+	        <div class="sttttt">现有项目组
+		        <span class="stxmz11" style="float:right; margin-left:0;">
+		    		<span style="color:#CCC; font-size:14px">需为会员才可见！&nbsp;&nbsp;&nbsp;&nbsp;
+		    		</span>
+			        <notempty name="club.iscorers">
+				        <a href="/Team/introAdd?gid={$club.gid}&type=team" target='_blank' style="color:#F00;">创建项目组
+				        </a>
+			        </notempty>
+		        </span>
+	    	</div>
+	        
+			<notempty name="teams">		
+		    <volist name="teams" id="team">
+		        <p>
+					<a href="/Team?tid={$team.tid}" target="_blank" style="color:#088;">{$team.name}
+					</a>
+		        </p>
+	        </volist>
+			</notempty>
+	        <br/>
+			
+			<div class="sttttt">现有活动
+				<span class="stxmz11" style="float:right; margin-left:0;">
+					<span style="color:#CCC; font-size:14px">需为会员才可见！&nbsp;&nbsp;&nbsp;&nbsp;
+					</span>
+			        <notempty name="club.iscorers">
+				        <a href="/Activity/introAdd?gid={$club.gid}" target='_blank' style="color:#F00;">创建新活动
+				        </a>
+			        </notempty>
+		        </span>
+			</div>
+			<notempty name="acts">		
+			    <volist name="acts" id="act">
+			        <p>
+						<a href="/Activity/intro?act_id={$act.act_id}" target="_blank" style="color:#088;">{$act.title}
+						</a>
+			        </p>
+		        </volist>
+			</notempty>
+			
+			<br/>
+	        <div class="sttttt">待审核会员：</div>
+		    <volist name="inactive" id="member">
+		        <p style="border-bottom:1px dotted #CCF;">
+		        	<span class="<?=$member['gender'] ? 'boy':'girl'?>name">{$member.realname}</span> {$member.school}-{$member.dept} {$member.grade}级{$member.education}
+			        <notempty name="club.ismanager">
+				        <a href="/Club/joinVerify?gid={$club.gid}&uid={$member.uid}" class="stfjdel1">允许
+				        </a> / 
+				        <a href="/Club/joinDeny?gid={$club.gid}&uid={$member.uid}" class="stfjdel1">拒绝
+				        </a>
+			        </notempty>
+		        </p>
+	        </volist>            
+	    </div><!--ctcyright-->
     </div><!--stcon1-->
-
-
 </div><!--stmain--> 
-
 </body>
 </html>
