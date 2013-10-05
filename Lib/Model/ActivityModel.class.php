@@ -31,9 +31,9 @@ class ActivityModel extends Model {
 		return true;
 	}
 	public function getActIDByGid($gid){
-		M('Activity')->field('act_id')->where('gid='.$gid)->select();
-		echo M('Activity')->getLastSql();
-		return M('Activity')->field('act_id')->where(['gid'=>$gid])->select();
+		//M('Activity')->field('act_id')->where('gid='.$gid)->select();
+		//echo M('Activity')->getLastSql();
+		return M('Activity')->field('act_id')->where('gid='.$gid)->select();
 	}
 	public function getActsByGid($gid){
 		$act_ids = $this->getActIDByGid($gid);
