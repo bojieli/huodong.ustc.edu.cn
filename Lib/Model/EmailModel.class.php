@@ -3,28 +3,40 @@ class EmailModel extends Model {
 	public function sendMails($address, $title, $message, $html = false){
 		SendMail($address, $title, $message, $html = false);
 	}
-	public function emailContentLog($title,$content,$uid,$gid){
-        $data=[
-        	'title'=>$title,
-        	'content'=>$content,
-        	'uid'=>$uid,
-        	'gid'=>$gid,
-        	'time'=>$time
-        ];
+	public function emailContentLog($title,$content,$uid,$gid,$email_type,$type_id)
+	{
+
+		$md5=md5($uid."\t".trim($tids)."\t".trim($gid)."\t".trim($title)."\t".trim($content));
+		//echo $md5;
+		$data=array(
+				'uid'   =>$uid,
+				'msg'   =>$msg,
+				'tids'	=>$tids,
+				'gid'	=>$gid,
+				'time'  =>time(),
+				'md5'=>$md5,
+				'email_type'=>$email_type,
+				'type_id'=>$type_id?$type_id:0,
+			   );
+		//M('email')->data($data)->add();
+		//$re=M('email')->field('pid')->where(array('md5'=>$md5))->order('time DESC')->find();
+		return M('email')->data($data)->add();
 	}
-	public function emailLogForTimer($uid,$tid,$pid,$status)
+	public function emailLogForTimer($uid,$pid,$status)
 	{
 		$data=array(
 				'uid'   =>$uid,
-				'aid'	=>$id,
+				'aid'	=>$pid,
+				'type'	=>json_encode(['email'=>1,'sms'=>0]),
 				'time'  =>time(),
+				'aid_type'=>3,
 				'status'=>$status
 			   );
-		$count = M('timer')->where(['uid'=>$uid,'tid'=>$tid,'pid'=>$pid])->count();
+		$count = M('timer')->where(['uid'=>$uid,'aid'=>$pid,''])->count();
 		if($count > 0)
-			M('sms')->where(['uid'=>$uid,'tid'=>$tid,'pid'=>$pid])->data(['time'=>time(),'status'=>$status])->save();
+			M('timer')->where(['uid'=>$uid,'aid'=>$pid])->data(['time'=>time(),'status'=>$status])->save();
 		else
-			M('sms')->data($data)->add();
+			M('timer')->data($data)->add();
 	}
 
 
@@ -37,25 +49,7 @@ class EmailModel extends Model {
 	}
 
 
-	public function sms_md5($msg,$uid,$tids,$gid,$sms_type,$type_id)
-	{
-
-		$md5=md5($uid."\t".trim($tids)."\t".trim($gid)."\t".trim($msg));
-		//echo $md5;
-		$data=array(
-				'uid'   =>$uid,
-				'msg'   =>$msg,
-				'tids'	=>$tids,
-				'gid'	=>$gid,
-				'time'  =>time(),
-				'md5'=>$md5,
-				'sms_type'=>$sms_type,
-				'type_id'=>$type_id?$type_id:0,
-			   );
-		M('sms_md5')->data($data)->add();
-		$re=M('sms_md5')->field('pid')->where(array('md5'=>$md5))->order('time DESC')->find();
-		return $re['pid'];
-	}
+	
 	public function getUserMobile($uid)
 	{
 		$re=M('user')->field('telephone')->where(array('uid'=>$uid))->find();
