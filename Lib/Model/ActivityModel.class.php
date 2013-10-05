@@ -35,7 +35,7 @@ class ActivityModel extends Model {
 	}
 	public function getActsByGid($gid){
 		$act_ids = $this->getActIDByGid($gid);
-		//dump($act_ids);//die;
+		dump($act_ids);//die;
 		foreach($act_ids as $val)
 			$re[]=$this->getActivityByID($val['act_id'],1);
 
