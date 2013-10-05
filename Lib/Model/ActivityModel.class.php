@@ -31,11 +31,12 @@ class ActivityModel extends Model {
 		return true;
 	}
 	public function getActIDByGid($gid){
+		echo $gid;
 		return M('Activity')->field('act_id')->where(['gid'=>$gid])->select();
 	}
 	public function getActsByGid($gid){
 		$act_ids = $this->getActIDByGid($gid);
-		dump($act_ids);//die;
+		//dump($act_ids);//die;
 		foreach($act_ids as $val)
 			$re[]=$this->getActivityByID($val['act_id'],1);
 
