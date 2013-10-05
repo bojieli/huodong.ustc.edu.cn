@@ -1,0 +1,97 @@
+
+<style type="text/css">
+#totop_item {
+display: none;
+width: 60px;
+height: 100px;
+position: fixed;
+right: 2px;
+bottom: 10px;
+-webkit-transition: opacity .4s ease-in-out;
+-moz-transition: opacity .4s ease-in-out;
+-o-transition: opacity .4s ease-in-out;
+opacity: 1;
+z-index: 1000000;
+}
+
+#totop {
+display: block;
+width: 60px;
+height: 50px;
+background: url(/static/images/totop.png) center center no-repeat;
+background-color: #444;
+background-color: rgba(0,0,0,.6);
+border-radius: 2px;
+box-shadow: 0 1px 3px rgba(0,0,0,.2);
+cursor: pointer;
+margin-bottom: 10px;
+}
+#totop_item .qr {
+display: block;
+width: 60px;
+height: 40px;
+border-radius: 2px;
+box-shadow: 0 1px 3px rgba(0,0,0,.2);
+cursor: pointer;
+background: url(/static/images/qrcode.png) center center no-repeat;
+background-color: #444;
+background-color: rgba(0,0,0,.6);
+}
+#totop_item .qr-popup {
+width: 290px;
+height: 315px;
+background: #fff;
+box-shadow: 0 1px 8px rgba(0,0,0,.1);
+position: absolute;
+left: -300px;
+bottom: 0px;
+border-radius: 2px;
+display: none;
+text-align: center;
+}
+#totop_item .qr-popup .code-link {
+display: block;
+margin: 10px;
+color: #777;
+}
+
+#totop_item .qr-popup .arr {
+width: 6px;
+height: 11px;
+background: url(/static/images/totop_arrow.png) 0 0 no-repeat;
+position: absolute;
+right: -6px;
+bottom: 14px;
+}
+</style>
+<div id="totop_item" class=""> 
+	<a id="totop" onclick="return false;" title="回到顶部"></a> 
+	<a class="qr"></a> 
+	<div class="qr-popup"> 
+		<a class="code-link"> 
+			<img class="code" src="/static/images/dxhbQR.png"> 
+		</a> 
+		<span>联系我们</span>
+		<div class="arr"></div> 
+	</div> 
+</div>
+<script type="text/javascript">
+function goTop()
+{
+    $(window).scroll(function(e) {
+        if($(window).scrollTop()>300)
+            $("#totop_item").fadeIn(1000);
+        else
+        	$("#totop_item").fadeOut(1000);
+    });
+};
+$(function(){
+    $("#totop").click(function(e) {
+            $('body,html').animate({scrollTop:0},1000);
+    });
+    goTop();
+    $(".qr").click(function(){
+  		$(".qr-popup").toggle();
+  	});
+});
+</script>
