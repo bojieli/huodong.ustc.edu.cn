@@ -4,7 +4,8 @@
 class TimerModel extends Model {
 public function creatConf($uid,$aid_types){
 	global $_G;
-	$uid=$_G['uid'];
+	if(empty($_G['uid']))
+		$uid=$_G['uid'];
 	if(count($aid_types) == 0)
 		return;
 	foreach ($aid_types as $key => $value) {
@@ -30,10 +31,11 @@ public function creatConf($uid,$aid_types){
 	    }
 		
 	}
+	//dump($data);die;
 	return M('Timer_conf')->addAll($data);
 }
 public function confInit($uid){
-	//echo $uid;
+	//echo $uid;die;
 	$re=M('Timer_conf')->field('aid_type')->where(['uid'=>$uid])->select();
 	$aid_type_init = [1,2];
 	foreach ($aid_type_init as $key => $value) {
@@ -41,6 +43,7 @@ public function confInit($uid){
 				continue;
 			$aid_types[]=$value;
 	}
+	//dump($aid_types);die;
 	$this->creatConf($uid,$aid_types);
 }
 public function getConf($uid){
@@ -48,6 +51,7 @@ public function getConf($uid){
 	if(empty($uid))
 		$uid=$_G['uid'];
 	$this->confInit($uid);
+	//echo $uid;die;
 	$re = M('Timer_conf')->field('uid',true)->where(['uid'=>$uid])->select();
 	foreach ($re as $key => $value) {
 		$confs[$value['aid_type']] = ['email'=>$value['email'],'sms'=>$value['sms']];
@@ -75,7 +79,7 @@ public function InsertTimer_Poster($aid,$aid_type){
 	$uid=$_G['uid'];
 	$start_time=D('Poster')->getPosterStartTime($aid);
 	if($start_time<time()){return 0;}
-    //echo 121313;
+    //echo $aid_type;die;
 	switch ($aid_type) {
 		case 1:
 			$uids[] = $uid;
@@ -88,16 +92,19 @@ public function InsertTimer_Poster($aid,$aid_type){
     		if($this->isAdd($aid,$tid,$aid_type)==0)
     			$uids[] = $tid;
     		}
+    		//dump($uids);die;
 			break;
 	    default:
 	    	return 4;
+	    	//break;
 	}
-	
+	//dump($uids);die;
     unset($uid);
    // $confs = $this->getConf($uid);
 	foreach ($uids as $key3 => $uid) {
 		$count = 0;
 		$confs = $this->getConf($uid);
+		//dump($confs);die;
 		//dump($confs);
 		foreach ($confs[$aid_type] as $key => $value) {
 			$count += $value;
