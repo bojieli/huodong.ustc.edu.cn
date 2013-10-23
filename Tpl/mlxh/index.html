@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="keywords" content="大学海报,海报墙,社团,社团管理,大学活动,活动搜索,活动筛选,搜索海报,搜索社团,筛选海报,筛选社团,邮件通知,短信通知,申请加入,瀑布流,评价分享,时间轴" />
 <meta name="description" content="大学活动的集中展示平台,大学海报的集中发布与分享平台,大学社团的集中展示与集中管理平台。更便捷、更简单、更高效、更美观、更流畅、更快速……" />
-<title>2012美丽邂逅</title>
+<title>2013美丽邂逅</title>
 <link href="/static/css1.css" rel="stylesheet" type="text/css" />
 <script type="text/javascript" src="/static/jquery.js"></script>
   
@@ -21,17 +21,12 @@ body{
 #landing{
         width: 1024px;
         height: 576px;
-        background: url("/static/mlxh/img/ml_big.jpg") no-repeat;
+        background: url("/static/mlxh/img/mlxh2013.jpg") no-repeat;
+	background-size: 1024px 576px;
         margin: 0 auto;
         margin-top: 10px;
         position: relative;
         text-align: left;
- }
- #mlxh_content{
-        position: absolute;
-        top:520px;
-        left:50px;
-        /*margin-left:-400px; */
  }
  #mlxh_resultcontent{
         position: absolute;
@@ -41,20 +36,28 @@ body{
 		font-family:Georgia, "Times New Roman", Times, serif;
         /*margin-left:-400px; */
  }
- #mlxh_resultcontent span{
+ #mlxh_resultcontent #daojishi {
 	 color:#FF0000;
 	  margin-left:30px;
 	  line-height:25px;
 	  vertical-align:middle;
 	  border-bottom:1px solid #FF0000;
 	 }
- #mlxh_resultcontent span a{
+ #mlxh_resultcontent #daojishi a{
 	 color:#FF0000;
 	 text-decoration:none;
 	 }
  #mlxh_resultcontent a:hover{
 	 color:#06F;
-	 }
+	}
+#mlxh_content {
+        position: absolute;
+        top:490px;
+        left:50px;
+	background: white;
+	border: 2px solid #e62589;
+	padding: 10px 20px 10px 0;
+}
 #mlxh_content a.button{
         text-decoration: none;
         text-align: center;
@@ -67,15 +70,16 @@ body{
         display: block;
         border:1px solid #e62589;
         float: left;
-        margin-left: 30px;
+        margin-left: 20px;
+        margin-right: 10px;
 }
-#mlxh_content span{
+#mlxh_content #daojishi {
 	font-family:Georgia, "Times New Roman", Times, serif;
         color:#e62589;
         font-size: 22px;
         font-style: italic;
-        margin-left: 30px;
-        padding: 3px;
+        padding: 3px 0 3px 20px;
+	float: left;
         font-weight:bold;
       }
 #mlxh_content a:link{
@@ -123,24 +127,24 @@ body{
 </object>
     </div>
     <div id="mlxh_content">
-    <!--
     <if condition="empty($theday)">
-      <span id="daojishi">秒杀和抽奖将于11月1日开始，请耐心等待 :)</span>
+      <div id="daojishi">秒杀和抽奖将于11月1日开始，请耐心等待 :)</div>
     <elseif condition="$_G['uid'] == 0" />
       <a id="mlxh_reg" class="button" href="/User/register">注册</a>
       <a id="mlxh_login" class="button" href="/User/login">登录</a>
-      <span id="daojishi">需要注册或登录才能秒杀、抽奖及查看结果</span>
+      <div id="daojishi">需要注册或登录才能秒杀、抽奖及查看结果</div>
     <elseif condition="empty($miaoshaguole)" />
       <a id="mlxh_miaosha" class="button disabled" style="cursor:pointer">秒杀</a>
       <a id="mlxh_choujiang" class="button" style="cursor:pointer">抽奖</a>
-      <span id="daojishi">载入中……</span>
+      <div id="daojishi">载入中……</div>
     <else />
-      <span id="daojishi">恭喜你，秒杀成功！ <a target="_blank" href="/mlxh/miaoshaUsers"> 查看结果</a></span>
+      <div id="daojishi">恭喜你，秒杀成功！ <a target="_blank" href="/mlxh/miaoshaUsers"> 查看结果</a></div>
     </if>
-    -->
+    <!--
     <p><span id="daojishi"></span></p>
     <p><a target="_blank" href="/mlxh/choujiangUsers" style="color:red;font-size:16px">查看秒杀及抽奖成功者名单</a></p>
     </div>
+    -->
     
     <div style="font-size:14px; color:#96F; position:absolute; top:610px; right:0px;">技术支持：
        <a href="/Club/intro?gid=76" style=" color:#96F; text-decoration:none;" >大学海报团队</a>
@@ -197,7 +201,7 @@ body{
     if ($('#mlxh_miaosha').html()) {
         intervalId = setInterval(refresh,1000);
         $('#mlxh_miaosha').attr("intervalId", intervalId);
-    } else {
+    } else if (!empty($theday)) {
         $('#daojishi').html("活动已结束，获奖用户取票邮件已发出，请注意查收");
     }
 
