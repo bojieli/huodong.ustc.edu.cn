@@ -133,12 +133,14 @@ body{
       <a id="mlxh_reg" class="button" href="/User/register">注册</a>
       <a id="mlxh_login" class="button" href="/User/login">登录</a>
       <div id="daojishi">需要注册或登录才能秒杀、抽奖及查看结果</div>
-    <elseif condition="empty($miaoshaguole)" />
+    <elseif condition="$miaoshaguole" />
+      <div id="daojishi">恭喜你，秒杀成功！ <a target="_blank" href="/mlxh/getTicketUsers"> 查看结果</a></div>
+    <elseif condition="$choujiangguole" />
+      <div id="daojishi">恭喜你，抽奖成功！ <a target="_blank" href="/mlxh/getTicketUsers"> 查看结果</a></div>
+    <else />
       <a id="mlxh_miaosha" class="button disabled" style="cursor:pointer">秒杀</a>
       <a id="mlxh_choujiang" class="button" style="cursor:pointer">抽奖</a>
       <div id="daojishi">载入中……</div>
-    <else />
-      <div id="daojishi">恭喜你，秒杀成功！ <a target="_blank" href="/mlxh/miaoshaUsers"> 查看结果</a></div>
     </if>
     <!--
     <p><span id="daojishi"></span></p>
@@ -188,7 +190,7 @@ body{
       leftM = Math.floor(leftM);
       var leftS = time_up-time_now-3600*leftH-60*leftM;
       return "距下次秒杀还有 "+leftH+"小时"+leftM+"分"+leftS+"秒";
-    }  
+    }
     function refresh(){
       if(!isTime){
         document.getElementById("daojishi").innerHTML = leftTime();
@@ -211,7 +213,23 @@ body{
         clearInterval($('#mlxh_miaosha').attr('intervalId'));
     }
 
+    var retry_wait_time = 0;
+    var retry_interval_id = 0;
+    function retrymiaosha() {
+        --retry_wait_time;
+        if (retry_wait_time <= 0) {
+            $('#mlxh_miaosha').removeClass('retry');
+            $('#daojishi').html("秒杀已经开始啦，赶快抢票吧");
+            clearInterval(retry_interval_id);
+        } else {
+            console.log(retry_wait_time);
+            $('#daojishi').html("抢票场面人山人海，请 " + retry_wait_time + " 秒后再试");
+        }
+    }
+
     $('#mlxh_miaosha').click(function(){
+        if ($(this).hasClass('retry'))
+            return;
         if ($(this).hasClass('disabled')) {
             $('#daojishi').html("秒杀还没有开始，再等一会儿吧 :)");
             return;
@@ -220,6 +238,11 @@ body{
             $('#daojishi').html("你已经秒杀成功啦！");
             return;
         }
+        do_miaosha();
+    });
+
+    function do_miaosha() {
+        $('#daojishi').html("载入中……");
         $.ajax({
             url: '/mlxh/miaosha',
             dataType: 'json',
@@ -230,7 +253,15 @@ body{
                     $('#mlxh_miaosha').addClass('done');
                     $('#mlxh_choujiang').addClass('done');
                 } else {
-                    $('#daojishi').html(obj.msg);
+                    if (obj.msg.substr(0,5) == "retry") {
+                        retry_wait_time = obj.msg.substr(6);
+                        $('#daojishi').html("抢票场面人山人海，请 " + retry_wait_time + " 秒后再试");
+                        $('#mlxh_miaosha').addClass('retry');
+                        clearInterval(retry_interval_id);
+                        retry_interval_id = setInterval(retrymiaosha, 1000);
+                    }
+                    else
+                        $('#daojishi').html(obj.msg);
                 }
             },
             error: function(e) {
@@ -238,11 +269,11 @@ body{
                 $('#daojishi').html("服务器错误，请重试");
             }
         });
-    });
+    }
 
     $('#mlxh_choujiang').click(function(){
         if ($(this).hasClass('disabled')) {
-            $('#daojishi').html("你已经提交过抽奖<br>请耐心等待11月9日的开奖！");
+            $('#daojishi').html("你已经提交过抽奖，我们会每天抽奖，请耐心等待开奖");
             return;
         }
         if ($(this).hasClass('done')) {
