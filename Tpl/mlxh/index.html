@@ -5,6 +5,7 @@
 <meta name="keywords" content="大学海报,海报墙,社团,社团管理,大学活动,活动搜索,活动筛选,搜索海报,搜索社团,筛选海报,筛选社团,邮件通知,短信通知,申请加入,瀑布流,评价分享,时间轴" />
 <meta name="description" content="大学活动的集中展示平台,大学海报的集中发布与分享平台,大学社团的集中展示与集中管理平台。更便捷、更简单、更高效、更美观、更流畅、更快速……" />
 <title>2013美丽邂逅</title>
+<link href="http://xinyuan.fm/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
 <link href="/static/css1.css" rel="stylesheet" type="text/css" />
 <script type="text/javascript" src="/static/jquery.js"></script>
   
@@ -148,15 +149,39 @@ body{
     </div>
     -->
     
-    <div style="font-size:14px; color:#96F; position:absolute; top:100px; right:0px;">技术支持：
+    </div>
+    <div style="width:100%;height:100px;font-size:20px; color:#96F; position:absolute; top:600px;">技术支持：
        <a href="/Club/intro?gid=76" style=" color:#96F; text-decoration:none;" >大学海报团队</a>
-       <a href="/" style="margin-left:15px; color:#96F; text-decoration:none;"  >网站首页</a>
-       <a href="/Club/intro?gid=73" style="margin-left:15px; color:#96F; text-decoration:none;"  >规则解释权归：共青团中国科学技术大学委员会、中国科学技术大学校研究生会</a>            
+        <a href="http://xinyuan.fm" id="wechat_xinyuanfm" target="_blank"><img src="http://xinyuan.fm/images/wechat-logo.jpg"></a>
     </div>
-      
-    </div>
+    
+    
     <script src="/static/mlxh/js/jquery.js"></script>
     <script src="/static/mlxh/js/bootstrap.min.js"></script>
+    <script type="text/javascript">
+    $(document).ready(function(){
+        $("#wechat_xinyuanfm").popover({
+            html : true ,
+            placement : 'top' ,
+            trigger : 'hover' ,
+            title : "微信扫描二维码进入微信抢票平台" ,
+            content : function(){
+              //return "<h2>test<h2>";
+              return '<div style="width:200px;height:200px"><img src="http://xinyuan.fm/images/index/qr.jpg"></div>' ;
+            },
+            delay : {show:200,hide:100}
+        });
+        $("#header .nav [href='/mlxh/']").popover({
+            html : true ,
+            placement : 'bottom' ,
+            trigger : 'hover' ,
+            title : "微信扫描二维码进入微信抢票平台" ,
+            content : function(){
+                return '<div style="width:200px;height:200px"><img src="http://xinyuan.fm/images/index/qr.jpg"></div>'
+            }
+        });
+    })
+    </script>
     <script type="text/javascript">
     $(document).ready(function(){
 <?php
