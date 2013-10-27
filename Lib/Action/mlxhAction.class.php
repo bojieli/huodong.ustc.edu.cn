@@ -3,7 +3,7 @@ class MlxhAction extends PublicAction {
     function isTheDay() {
         date_default_timezone_set('Asia/Chongqing');
         $t = localtime(time(), true);
-        return ($t['tm_mon']+1 == 10 && $t['tm_mday'] >= 27) || ($t['tm_mon']+1 == 11 && $t['tm_mday'] <= 5);
+        return ($t['tm_mon']+1 == 10 && $t['tm_mday'] >= 25) || ($t['tm_mon']+1 == 11 && $t['tm_mday'] <= 5);
     }
 
     function index() {
@@ -132,10 +132,10 @@ class MlxhAction extends PublicAction {
             $this->savelog('miaosha-after-end');
             $this->ajaxerror('今天的秒杀已经结束，明天再来吧 :(');
         }
-        //if ($daysec <= $starttime) {
-        //    $this->savelog('miaosha-shuapiao');
-        //    $this->ajaxerror('今天的秒杀还没有开始，请稍候');
-        //}
+        if ($daysec <= $starttime) {
+            $this->savelog('miaosha-shuapiao');
+            $this->ajaxerror('今天的秒杀还没有开始，请稍候');
+        }
 
         $log = M('mlxh_log');
         $log->startTrans();
@@ -222,7 +222,7 @@ class MlxhAction extends PublicAction {
         date_default_timezone_set('Asia/Chongqing');
         $time = time();
         $t = localtime($time, true);
-        $day = $t['tm_mon']+1 == 10 ? ($t['tm_mday'] - 27) : (31-27 + $t['tm_mday']);
+        $day = $t['tm_mon']+1 == 10 ? ($t['tm_mday'] - 25) : (31-25 + $t['tm_mday']);
         if ($day >= 10 || $day < 0) {
             echo "not the day";
             return;
