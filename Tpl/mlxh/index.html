@@ -153,6 +153,7 @@ body{
     <div style="width:100%;height:100px;font-size:20px; color:#96F; position:absolute; top:600px;">技术支持：
        <a href="/Club/intro?gid=76" style=" color:#96F; text-decoration:none;" >大学海报团队</a>
         <a href="http://xinyuan.fm" id="wechat_xinyuanfm" target="_blank"><img src="http://xinyuan.fm/images/wechat-logo.jpg"></a>
+       <a style="float:right;text-decoration:underline;font-style:normal;color:#96F; backgroung:#fafafa; padding:auto 10px;" href="/mlxh/getTicketUsers">查看获票名单</a>
     </div>
     
     
@@ -198,13 +199,12 @@ body{
             );
     var theTime =new Date(now.getFullYear(),now.getMonth(),now.getDay(),20,00,00);
     var isTime = false;
-    //var chakan = ' <a style="text-decoration:underline;font-style:normal;color:#f00; backgroung:#fafafa; padding:auto 10px;" href="/mlxh/miaoshaUsers">查看获票名单</a>';
 
     function leftTime(){
       var time_now = now.getHours()*3600+now.getMinutes()*60+now.getSeconds();
       var time_up = theTime.getHours()*3600+theTime.getMinutes()*60+theTime.getSeconds();
       if (time_now - time_up > 3600)
-        return "今天的秒杀已经结束<br>明天20:00再来吧 :)";
+        return "今天的秒杀已经结束，明天20:00再来吧 :)";
       if (time_now - time_up >= 0) {
         isTime = true;
         return "秒杀已经开始啦，赶快抢票吧";
