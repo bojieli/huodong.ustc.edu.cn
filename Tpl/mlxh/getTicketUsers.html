@@ -671,28 +671,28 @@ window.onscroll = onScroll;
     	<td class="td1" width="40">序</td>	
 		<td class="td1" width="180" align="center">操作时间</td>
 		<td class="td1" width="50" align="center">原因</td>
-		<td class="td1" width="50" align="center">UID</td>
 		<td class="td1" width="80" align="center">姓名</td>
 		<td class="td1" width="50" align="center">学历</td>
+		<td class="td1" align="center">学院</td>
         <if condition="1 == CURRENT_USER">
+		<td class="td1" width="50" align="center">UID</td>
 		<td class="td1" width="110" align="right">学号</td>
 		<td class="td1" width="200" align="right">Email</td>
         </if>
-		<td class="td1" align="center">学院</td>
 	</tr>
 	<volist name="members" id="member" key="kid"  mod="2">
 	<tr>
         <td align="center">{$kid}</td>
 		<td align="center">{$member.time|date="m月d日 H:i:s",###}</td>
 		<td align="center"><?=$member[action]=='miaosha'?'秒杀':'抽奖' ?></td>
-		<td align="center">{$member.uid}</td>
-		<td align="center" class="<if condition="$member[gender] eq 1">boyname<else />girlname</if>">{$member.realname}</td>
+		<td align="center" class="<if condition="$member[gender] eq 1">boyname<else />girlname</if>"><?=substr($member['realname'],0,3)?>同学</td>
 		<td align="center">{$member.education}</td>
+		<td align="right">{$member.dept}</td>
         <if condition="1 == CURRENT_USER">
+		<td align="center">{$member.uid}</td>
 		<td align="right">{$member.student_no}</td>
         <td align="right">{$member.email}</td>
         </if>
-		<td align="right">{$member.dept}</td>
 	</tr>
 	</volist>
 	</table>
