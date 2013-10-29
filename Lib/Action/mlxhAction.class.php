@@ -43,28 +43,10 @@ class MlxhAction extends PublicAction {
         $this->display();
     }
 
-    function miaoshaUsers() {
-        $this->headnav();
-        if (CURRENT_USER == 0)
-            $this->error("为保护隐私，登录用户才能查看秒杀用户列表");
-        
-        $members = M('mlxh_log')->where(array('action'=>'miaosha'))->select();
-        $this->showUserList($members);
-    }
-
-    function choujiangUsers() {
-        $this->headnav();
-        if (CURRENT_USER == 0)
-            $this->error("为保护隐私，登录用户才能查看抽奖用户列表");
-        
-        $members = M('mlxh_log')->where(array('action'=>'choujiang-gotit'))->select();
-        $this->showUserList($members);
-    }
-
     function getTicketUsers() {
         $this->headnav();
         if (CURRENT_USER == 0)
-            $this->error("为保护隐私，登录用户才能查看抽奖用户列表");
+            $this->error("为保护隐私，登录用户才能查看获票用户列表");
         
         $members = M('mlxh_log')->where("action='choujiang-gotit' OR action='miaosha'")->select();
         $this->showUserList($members);
