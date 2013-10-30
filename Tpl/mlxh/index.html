@@ -4,7 +4,8 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="keywords" content="大学海报,海报墙,社团,社团管理,大学活动,活动搜索,活动筛选,搜索海报,搜索社团,筛选海报,筛选社团,邮件通知,短信通知,申请加入,瀑布流,评价分享,时间轴" />
 <meta name="description" content="大学活动的集中展示平台,大学海报的集中发布与分享平台,大学社团的集中展示与集中管理平台。更便捷、更简单、更高效、更美观、更流畅、更快速……" />
-<title>2012美丽邂逅</title>
+<title>2013美丽邂逅</title>
+<link href="http://xinyuan.fm/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
 <link href="/static/css1.css" rel="stylesheet" type="text/css" />
 <script type="text/javascript" src="/static/jquery.js"></script>
   
@@ -21,17 +22,12 @@ body{
 #landing{
         width: 1024px;
         height: 576px;
-        background: url("/static/mlxh/img/ml_big.jpg") no-repeat;
+        background: url("http://xinyuan.fm/images/mlxh/mlxh2013.jpg") no-repeat;
+	    background-size: 1024px 576px;
         margin: 0 auto;
         margin-top: 10px;
         position: relative;
         text-align: left;
- }
- #mlxh_content{
-        position: absolute;
-        top:520px;
-        left:50px;
-        /*margin-left:-400px; */
  }
  #mlxh_resultcontent{
         position: absolute;
@@ -41,20 +37,28 @@ body{
 		font-family:Georgia, "Times New Roman", Times, serif;
         /*margin-left:-400px; */
  }
- #mlxh_resultcontent span{
+ #mlxh_resultcontent #daojishi {
 	 color:#FF0000;
 	  margin-left:30px;
 	  line-height:25px;
 	  vertical-align:middle;
 	  border-bottom:1px solid #FF0000;
 	 }
- #mlxh_resultcontent span a{
+ #mlxh_resultcontent #daojishi a{
 	 color:#FF0000;
 	 text-decoration:none;
 	 }
  #mlxh_resultcontent a:hover{
 	 color:#06F;
-	 }
+	}
+#mlxh_content {
+        position: absolute;
+        top:490px;
+        left:50px;
+	background: white;
+	border: 2px solid #e62589;
+	padding: 10px 20px 10px 0;
+}
 #mlxh_content a.button{
         text-decoration: none;
         text-align: center;
@@ -67,15 +71,16 @@ body{
         display: block;
         border:1px solid #e62589;
         float: left;
-        margin-left: 30px;
+        margin-left: 20px;
+        margin-right: 10px;
 }
-#mlxh_content span{
+#mlxh_content #daojishi {
 	font-family:Georgia, "Times New Roman", Times, serif;
         color:#e62589;
         font-size: 22px;
         font-style: italic;
-        margin-left: 30px;
-        padding: 3px;
+        padding: 3px 0 3px 20px;
+	float: left;
         font-weight:bold;
       }
 #mlxh_content a:link{
@@ -123,34 +128,56 @@ body{
 </object>
     </div>
     <div id="mlxh_content">
-    <!--
     <if condition="empty($theday)">
-      <span id="daojishi">秒杀和抽奖将于11月1日开始，请耐心等待 :)</span>
+      <div id="daojishi">秒杀和抽奖将于10月27日开始，请耐心等待 :)</div>
     <elseif condition="$_G['uid'] == 0" />
       <a id="mlxh_reg" class="button" href="/User/register">注册</a>
       <a id="mlxh_login" class="button" href="/User/login">登录</a>
-      <span id="daojishi">需要注册或登录才能秒杀、抽奖及查看结果</span>
-    <elseif condition="empty($miaoshaguole)" />
+      <div id="daojishi">需要注册或登录才能秒杀、抽奖及查看结果</div>
+    <elseif condition="$miaoshaguole" />
+      <div id="daojishi">恭喜你，秒杀成功！ <a target="_blank" href="/mlxh/getTicketUsers"> 查看结果</a></div>
+    <elseif condition="$choujiangguole" />
+      <div id="daojishi">恭喜你，抽奖成功！ <a target="_blank" href="/mlxh/getTicketUsers"> 查看结果</a></div>
+    <else />
       <a id="mlxh_miaosha" class="button disabled" style="cursor:pointer">秒杀</a>
       <a id="mlxh_choujiang" class="button" style="cursor:pointer">抽奖</a>
-      <span id="daojishi">载入中……</span>
-    <else />
-      <span id="daojishi">恭喜你，秒杀成功！ <a target="_blank" href="/mlxh/miaoshaUsers"> 查看结果</a></span>
+      <div id="daojishi">载入中……</div>
     </if>
-    -->
-    <p><span id="daojishi"></span></p>
-    <p><a target="_blank" href="/mlxh/choujiangUsers" style="color:red;font-size:16px">查看秒杀及抽奖成功者名单</a></p>
+    
+    </div>
+    <div style="width:100%;height:100px;font-size:20px; color:#96F; position:absolute; top:600px;">技术支持：
+       <a href="/Club/intro?gid=76" style=" color:#96F; text-decoration:none;" >大学海报团队</a>
+        <a href="http://xinyuan.fm" id="wechat_xinyuanfm" target="_blank"><img src="http://xinyuan.fm/images/wechat-logo.jpg"></a>
+       <a style="float:right;text-decoration:underline;font-style:normal;color:#96F; backgroung:#fafafa; padding:auto 10px;" href="/mlxh/getTicketUsers">查看获票名单</a>
     </div>
     
-    <div style="font-size:14px; color:#96F; position:absolute; top:610px; right:0px;">技术支持：
-       <a href="/Club/intro?gid=76" style=" color:#96F; text-decoration:none;" >大学海报团队</a>
-       <a href="/" style="margin-left:15px; color:#96F; text-decoration:none;"  >网站首页</a>
-       <a href="/Club/intro?gid=73" style="margin-left:15px; color:#96F; text-decoration:none;"  >规则解释权归：共青团中国科学技术大学委员会、中国科学技术大学校研究生会</a>            
-    </div>
-      
-    </div>
+    
     <script src="/static/mlxh/js/jquery.js"></script>
     <script src="/static/mlxh/js/bootstrap.min.js"></script>
+    <script type="text/javascript">
+    $(document).ready(function(){
+        $("#wechat_xinyuanfm").popover({
+            html : true ,
+            placement : 'top' ,
+            trigger : 'hover' ,
+            title : "微信扫描二维码进入微信抢票平台" ,
+            content : function(){
+              //return "<h2>test<h2>";
+              return '<div style="width:200px;height:200px"><img src="http://xinyuan.fm/images/index/qr.jpg"></div>' ;
+            },
+            delay : {show:200,hide:100}
+        });
+        $("#header .nav [href='/mlxh/']").popover({
+            html : true ,
+            placement : 'bottom' ,
+            trigger : 'hover' ,
+            title : "微信扫描二维码进入微信抢票平台" ,
+            content : function(){
+                return '<div style="width:200px;height:200px"><img src="http://xinyuan.fm/images/index/qr.jpg"></div>'
+            }
+        });
+    })
+    </script>
     <script type="text/javascript">
     $(document).ready(function(){
 <?php
@@ -167,13 +194,12 @@ body{
             );
     var theTime =new Date(now.getFullYear(),now.getMonth(),now.getDay(),20,00,00);
     var isTime = false;
-    //var chakan = ' <a style="text-decoration:underline;font-style:normal;color:#f00; backgroung:#fafafa; padding:auto 10px;" href="/mlxh/miaoshaUsers">查看获票名单</a>';
 
     function leftTime(){
       var time_now = now.getHours()*3600+now.getMinutes()*60+now.getSeconds();
       var time_up = theTime.getHours()*3600+theTime.getMinutes()*60+theTime.getSeconds();
       if (time_now - time_up > 3600)
-        return "今天的秒杀已经结束<br>明天20:00再来吧 :)";
+        return "今天的秒杀已经结束，明天20:00再来吧 :)";
       if (time_now - time_up >= 0) {
         isTime = true;
         return "秒杀已经开始啦，赶快抢票吧";
@@ -184,7 +210,7 @@ body{
       leftM = Math.floor(leftM);
       var leftS = time_up-time_now-3600*leftH-60*leftM;
       return "距下次秒杀还有 "+leftH+"小时"+leftM+"分"+leftS+"秒";
-    }  
+    }
     function refresh(){
       if(!isTime){
         document.getElementById("daojishi").innerHTML = leftTime();
@@ -197,7 +223,7 @@ body{
     if ($('#mlxh_miaosha').html()) {
         intervalId = setInterval(refresh,1000);
         $('#mlxh_miaosha').attr("intervalId", intervalId);
-    } else {
+    } else if (!empty($theday)) {
         $('#daojishi').html("活动已结束，获奖用户取票邮件已发出，请注意查收");
     }
 
@@ -207,7 +233,23 @@ body{
         clearInterval($('#mlxh_miaosha').attr('intervalId'));
     }
 
+    var retry_wait_time = 0;
+    var retry_interval_id = 0;
+    function retrymiaosha() {
+        --retry_wait_time;
+        if (retry_wait_time <= 0) {
+            $('#mlxh_miaosha').removeClass('retry');
+            $('#daojishi').html("秒杀已经开始啦，赶快抢票吧");
+            clearInterval(retry_interval_id);
+        } else {
+            console.log(retry_wait_time);
+            $('#daojishi').html("抢票场面人山人海，请 " + retry_wait_time + " 秒后再试");
+        }
+    }
+
     $('#mlxh_miaosha').click(function(){
+        if ($(this).hasClass('retry'))
+            return;
         if ($(this).hasClass('disabled')) {
             $('#daojishi').html("秒杀还没有开始，再等一会儿吧 :)");
             return;
@@ -216,6 +258,11 @@ body{
             $('#daojishi').html("你已经秒杀成功啦！");
             return;
         }
+        do_miaosha();
+    });
+
+    function do_miaosha() {
+        $('#daojishi').html("载入中……");
         $.ajax({
             url: '/mlxh/miaosha',
             dataType: 'json',
@@ -226,7 +273,15 @@ body{
                     $('#mlxh_miaosha').addClass('done');
                     $('#mlxh_choujiang').addClass('done');
                 } else {
-                    $('#daojishi').html(obj.msg);
+                    if (obj.msg.substr(0,5) == "retry") {
+                        retry_wait_time = obj.msg.substr(6);
+                        $('#daojishi').html("抢票场面人山人海，请 " + retry_wait_time + " 秒后再试");
+                        $('#mlxh_miaosha').addClass('retry');
+                        clearInterval(retry_interval_id);
+                        retry_interval_id = setInterval(retrymiaosha, 1000);
+                    }
+                    else
+                        $('#daojishi').html(obj.msg);
                 }
             },
             error: function(e) {
@@ -234,11 +289,11 @@ body{
                 $('#daojishi').html("服务器错误，请重试");
             }
         });
-    });
+    }
 
     $('#mlxh_choujiang').click(function(){
         if ($(this).hasClass('disabled')) {
-            $('#daojishi').html("你已经提交过抽奖<br>请耐心等待11月9日的开奖！");
+            $('#daojishi').html("你已经提交过抽奖，我们会每天抽奖，请耐心等待开奖");
             return;
         }
         if ($(this).hasClass('done')) {
