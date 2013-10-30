@@ -148,6 +148,7 @@ public function checkTimer(){
 	$con['status']=0;
 	$con['aid_type']=1;
 	$re=M('Timer')->where($con)->select();
+	//echo M('Timer')->getLastSql();
 	$con2['time']=array('EGT',time());
 	$con2['status']=0;
 	$con2['aid_type']=2;
@@ -155,6 +156,7 @@ public function checkTimer(){
 	foreach ($re2 as $value) {
 		$re[count($re)] = $value; 
 	}
+    //dump($re);die;
 	return $re;
 }
 public function changeStatus($id,$status){

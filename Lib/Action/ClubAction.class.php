@@ -102,8 +102,8 @@ class ClubAction extends PublicAction {
         $club = $this->getData($_GET['gid']);
         if (empty($club))
             $this->error('社团不存在！');
-
-        if(M('Club_apply')->where(array('uid'=>CURRENT_USER,'gid'=>$gid))->select())
+        $ishandled = M('Club_apply')->field('ishandled')->where(array('uid'=>CURRENT_USER,'gid'=>$gid))->select();
+        if($ishandled == 1)
         {
             $club['apply']=true;
         }
