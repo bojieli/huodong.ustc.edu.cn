@@ -131,11 +131,11 @@ class MlxhAction extends PublicAction {
 
         // check miaosha attempts
         $todaybegin = $time - $time % 86400;
-        $miaosha_attempt = $log->lock(true)->where("uid='".CURRENT_USER."' AND action='miaosha-attempt' AND time>'$todaybegin'")->order('time DESC')->find('time');
-        $random_wait_time = 3;
-        if (!empty($miaosha_attempt) && $miaosha_attempt['time'] + $random_wait_time > $time) {
+        $miaosha_attempt = $log->lock(true)->field('time')->where("uid='".CURRENT_USER."' AND action='miaosha-attempt' AND time>'$todaybegin'")->order('time DESC')->limit(1)->select();
+        $random_wait_time = 4;
+        if (count($miaosha_attempt) == 1 && $miaosha_attempt[0]['time'] + $random_wait_time > $time) {
             $this->savelog('miaosha-attempt');
-            $this->ajaxerror('retry '. ($miaosha_attempt['time'] + $random_wait_time - $time));
+            $this->ajaxerror('retry '. ($miaosha_attempt[0]['time'] + $random_wait_time - $time));
         }
 
         // check today's total number
