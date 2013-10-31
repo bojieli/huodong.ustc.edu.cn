@@ -231,9 +231,13 @@ class MlxhAction extends PublicAction {
             $uids[] = $row['uid'];
             $num--;
             $count--;
-            $row['action'] = 'choujiang-gotit';
+            $newrow = array(
+                'action' => 'choujiang-gotit',
+                'uid' => $row['uid'],
+                'time' => $time
+            );
             $o = M('mlxh_log');
-            $o->create($row);
+            $o->create($newrow);
             $o->add();
         }
 
