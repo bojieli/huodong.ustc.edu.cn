@@ -145,7 +145,7 @@ class MlxhAction extends PublicAction {
             $this->savelog('miaosha-used-up');
             $this->ajaxerror("今天已经有 $everyday_tickets 人秒杀了，明天再来吧 :)");
         } else {
-            if (mt_rand(0,4) == 0) {
+            if (mt_rand(0,19) == 0) {
                 $this->savelog('miaosha');
                 $this->ajaxsuccess('恭喜你，秒杀成功！');
             } else {
