@@ -140,7 +140,7 @@ class MlxhAction extends PublicAction {
 
         // check today's total number
         $count = $log->lock(true)->where("time > $todaybegin AND action='miaosha'")->count();
-        $everyday_tickets = 8;
+        $everyday_tickets = 9;
         if ($count >= $everyday_tickets) {
             $this->savelog('miaosha-used-up');
             $this->ajaxerror("今天已经有 $everyday_tickets 人秒杀了，明天再来吧 :)");
@@ -199,7 +199,7 @@ class MlxhAction extends PublicAction {
             return;
         }
 
-        $day_quota = array(2,4,2,2,2,2,1,1,1,1);
+        $day_quota = array(2,4,2,2,2,2,2,2,2,1);
 
         date_default_timezone_set('Asia/Chongqing');
         $time = time();
