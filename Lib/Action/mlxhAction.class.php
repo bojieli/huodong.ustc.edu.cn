@@ -48,7 +48,9 @@ class MlxhAction extends PublicAction {
         if (CURRENT_USER == 0)
             $this->error("为保护隐私，登录用户才能查看获票用户列表");
         
-        $members = M('mlxh_log')->where("action='choujiang-gotit' OR action='miaosha'")->select();
+        date_default_timezone_set('Asia/Chongqing');
+        $time = time();
+        $members = M('mlxh_log')->where("(action='choujiang-gotit' OR action='miaosha') AND time<'$time'")->select();
         $this->showUserList($members);
     }
 
