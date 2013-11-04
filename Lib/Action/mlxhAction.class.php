@@ -199,7 +199,7 @@ class MlxhAction extends PublicAction {
             return;
         }
 
-        $day_quota = array(2,4,2,2,2,2,2,2,2,1);
+        $day_quota = array(2,4,2,2,2,2,2,2,0,0);
 
         date_default_timezone_set('Asia/Chongqing');
         $time = time();
