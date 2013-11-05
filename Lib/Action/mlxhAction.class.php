@@ -142,7 +142,7 @@ class MlxhAction extends PublicAction {
 
         // check today's total number
         $count = $log->lock(true)->where("time > $todaybegin AND action='miaosha'")->count();
-        $everyday_tickets = 10;
+        $everyday_tickets = 8;
         if ($count >= $everyday_tickets) {
             $this->savelog('miaosha-used-up');
             $this->ajaxerror("今天已经有 $everyday_tickets 人秒杀了，明天再来吧 :)");
