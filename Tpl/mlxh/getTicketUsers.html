@@ -675,6 +675,7 @@ window.onscroll = onScroll;
 		<td class="td1" width="50" align="center">学历</td>
 		<td class="td1" align="center">学院</td>
         <if condition="1 == CURRENT_USER">
+		<td class="td1" width="80" align="center">真实姓名</td>
 		<td class="td1" width="50" align="center">UID</td>
 		<td class="td1" width="110" align="right">学号</td>
 		<td class="td1" width="200" align="right">Email</td>
@@ -689,6 +690,7 @@ window.onscroll = onScroll;
 		<td align="center">{$member.education}</td>
 		<td align="right">{$member.dept}</td>
         <if condition="1 == CURRENT_USER">
+		<td align="center">{$member.realname}</td>
 		<td align="center">{$member.uid}</td>
 		<td align="right">{$member.student_no}</td>
         <td align="right">{$member.email}</td>

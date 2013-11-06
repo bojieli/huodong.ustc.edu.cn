@@ -48,7 +48,9 @@ class MlxhAction extends PublicAction {
         if (CURRENT_USER == 0)
             $this->error("为保护隐私，登录用户才能查看获票用户列表");
         
-        $members = M('mlxh_log')->where("action='choujiang-gotit' OR action='miaosha'")->select();
+        date_default_timezone_set('Asia/Chongqing');
+        $time = time();
+        $members = M('mlxh_log')->where("(action='choujiang-gotit' OR action='miaosha') AND time<'$time'")->select();
         $this->showUserList($members);
     }
 
@@ -140,7 +142,7 @@ class MlxhAction extends PublicAction {
 
         // check today's total number
         $count = $log->lock(true)->where("time > $todaybegin AND action='miaosha'")->count();
-        $everyday_tickets = 9;
+        $everyday_tickets = 8;
         if ($count >= $everyday_tickets) {
             $this->savelog('miaosha-used-up');
             $this->ajaxerror("今天已经有 $everyday_tickets 人秒杀了，明天再来吧 :)");
@@ -199,7 +201,7 @@ class MlxhAction extends PublicAction {
             return;
         }
 
-        $day_quota = array(2,4,2,2,2,2,2,2,2,1);
+        $day_quota = array(2,4,2,2,2,2,2,2,0,0);
 
         date_default_timezone_set('Asia/Chongqing');
         $time = time();
