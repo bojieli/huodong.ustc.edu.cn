@@ -17,12 +17,19 @@ class SmsModel extends Model {
 		$uid= $_G['uid'];
 		$msgs=split_sms($msg_top,'utf8');
 		$url="http://umess.ustc.edu.cn/uMessApi.php?wsdl";//接口地址
-		$client=new SoapClient($url,array('encoding'=>'UTF-8'));
-		$client->wsClientSetCharset('UTF-8');
-		$client->wsCsLogin('huodong','hzbjlsjr2012');
-		foreach($msgs as $msg){
-			$messageIds[]=$client->wsCreateMessage($messageTitle='',$msg,$messageFromAddress="",$messageFromName="",$messageContentFormat="plaintext");
-		}//die;
+
+        $retval_on_exception = array('done'=>0, 'failed'=>count($mobiles), 'info'=>'Internal Error');
+        try {
+		    $client=new SoapClient($url,array('encoding'=>'UTF-8'));
+		    $client->wsClientSetCharset('UTF-8');
+		    $client->wsCsLogin('huodong','hzbjlsjr2012');
+		    foreach($msgs as $msg){
+		    	$messageIds[]=$client->wsCreateMessage($messageTitle='',$msg,$messageFromAddress="",$messageFromName="",$messageContentFormat="plaintext");
+		    }
+        } catch (Exception $e) {
+            return $retval_on_exception;
+        }
+
 		$i=0;
 		$j=0;
 		$failed_user = "";
@@ -58,13 +65,25 @@ class SmsModel extends Model {
 		{
 			foreach($messageIds as $messageId)
 			{
-				$client->wsMessageAddReceiver($messageId,'mobile',$mobile,'sms',$messagePriority=1,$sendTime=null);
+                try {
+				    $client->wsMessageAddReceiver($messageId,'mobile',$mobile,'sms',$messagePriority=1,$sendTime=null);
+                } catch (Exception $e) {
+                    $this->smsLog($uid, $tid, $pid, 'failed');
+                }
 			}
 		}
 
 		foreach($messageIds as $messageId){
-			$re[]=$client->wsMessageSend($messageId);
-			$client->wsMessageClose($messageId);
+            try {
+			    $re[]=$client->wsMessageSend($messageId);
+            } catch (Exception $e) {
+                return $retval_on_exception;
+            }
+            try {
+			    $client->wsMessageClose($messageId);
+            } catch (Exception $e) {
+                // do nothing
+            }
 		}
 
 		foreach($re as $st)
