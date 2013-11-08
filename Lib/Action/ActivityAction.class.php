@@ -176,6 +176,7 @@ class ActivityAction extends PublicAction{
 		//dump($act);
 		$act['realname'] = D('User')->getRealname($act['uid']);
 		$act['checkbox_tmp'] = json_decode($act['register_form'],true);
+		//dump(1212);
 		foreach($boxes as $key => $val){
 			if(in_array($key,$act['checkbox_tmp']))
 				$checkbox .= '<div class="posterinput"><input type="checkbox" name="checkbox[]" value="'.$key.'" checked="checked"/>'.$val."</div>\n";
@@ -195,12 +196,20 @@ class ActivityAction extends PublicAction{
 		$act_id = $this->_post('act_id');
 		$activity = M('Activity')->find($act_id);
 		$uid = $_G['uid'];
-		//echo $uid;die;
-		if($uid!=$activity['uid'])
+		$gid = D("Activity")->getGidByID($act_id);
+		if($uid!=$activity['uid'] && !D("Club")->isAdmins($gid))
 		{
             $this->error('您没有权限');
 		}
 		$data['register_form'] = json_encode($this->_post('checkbox'));
+		M('Activity')->where(['act_id'=>$act_id])->save($data);
+		//echo M('Activity')->getLastSql();die;
+		//dump($data);die;
+		//echo M('Activity')->where(['act_id'=>$act_id])->save($data);die;
+		/*if(M('Activity')->where(['act_id'=>$act_id])->save($data))
+			$this->success("修改成功");
+		else
+			$this->error("修改不成功");*/
 		M('Activity')->where(['act_id'=>$act_id])->save($data);
 		$this->success("修改成功");
 	}
@@ -219,11 +228,13 @@ class ActivityAction extends PublicAction{
 	}
 	public function addUser() {
 		session_start();
-	   $User = D("Activity_register");
-		$telephone=trim($_POST['telephone']);
+	    $User = D("Activity_register");
+	    $act = D('Activity')->getActivityByID($act_id);
+	    $register_form = $act["register_form"];
         if(empty($_POST['act_id'])){
 			$this->error("非法操作");
 		}
+		$telephone=trim($_POST['telephone']);/*
 		if(empty($_POST['email']))
         {
             $this->error("邮箱不能为空");
@@ -242,7 +253,7 @@ class ActivityAction extends PublicAction{
        if(D('User')->is_loginname_existed($_POST['email']))
         {
             $this->error("该邮件已注册，可直接报名");
-        }
+        }*/
         if($_SESSION['verify'] != md5($_POST['check'])) {
             $this->error('验证码错误');
         }
