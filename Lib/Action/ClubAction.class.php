@@ -634,6 +634,22 @@ class ClubAction extends PublicAction {
         $this->success("成功发送邮件给 ". count($emails) ." 人");
     }
 
+    public function checkMembership() {
+        $member = M('user')->where(array(
+            'student_no' => $_REQUEST['student_no'],
+            'name' => $_REQUEST['name'],
+            'email' => $_REQUEST['email'],
+        ))->find();
+        if (empty($member)) {
+            die('ERROR');
+        }
+        $count = M('user_group')->where(array('uid'=>$member['uid'], 'gid'=>$_REQUEST['gid']))->count();
+        if ($count == 1)
+            die('OK');
+        else
+            die('ERROR');
+    }
+
     public function manage() {
         //import(“ORG.Util.Page”);// 导入分页类
 
