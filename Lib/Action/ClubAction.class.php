@@ -637,7 +637,7 @@ class ClubAction extends PublicAction {
     public function checkMembership() {
         $member = M('user')->where(array(
             'student_no' => $_REQUEST['student_no'],
-            'name' => $_REQUEST['name'],
+            'realname' => $_REQUEST['name'],
             'email' => $_REQUEST['email'],
         ))->find();
         if (empty($member)) {
