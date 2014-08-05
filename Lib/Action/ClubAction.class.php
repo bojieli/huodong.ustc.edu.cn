@@ -645,7 +645,7 @@ class ClubAction extends PublicAction {
         }
         if (!is_numeric($_REQUEST['gid']))
             die('ERROR');
-        $priv = $this->getPriv($member['uid'], $_REQUEST['gid']);
+        $priv = $this->getPriv($_REQUEST['gid'], $member['uid']);
         if (!$priv)
             die('NOTJOIN');
         if ($priv == 'inactive')
