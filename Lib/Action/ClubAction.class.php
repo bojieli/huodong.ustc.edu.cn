@@ -641,13 +641,16 @@ class ClubAction extends PublicAction {
             'email' => $_REQUEST['email'],
         ))->find();
         if (empty($member)) {
-            die('ERROR');
+            die('NOTFOUND');
         }
-        $count = M('user_group')->where(array('uid'=>$member['uid'], 'gid'=>$_REQUEST['gid']))->count();
-        if ($count == 1)
-            die('OK');
-        else
+        if (!is_numeric($_REQUEST['gid']))
             die('ERROR');
+        $priv = $this->getPriv($member['uid'], $_REQUEST['gid']);
+        if (!$priv)
+            die('NOTJOIN');
+        if ($priv == 'inactive')
+            die('INACTIVE');
+        die('OK');
     }
 
     public function manage() {
