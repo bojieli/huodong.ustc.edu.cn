@@ -40,6 +40,9 @@ class SmsModel extends Model {
 	        }
 	        $mobiles=$mobiles_tmp;
 		}
+
+		$mobiles = array_unique($mobiles);
+
 		foreach($mobiles as  $tid1 => $mobile1){
 			if(empty($sms_type) || $sms_type == 'activity')
 				$tids.=$tid1.';';
