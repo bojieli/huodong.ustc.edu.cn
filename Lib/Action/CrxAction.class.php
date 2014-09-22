@@ -37,7 +37,7 @@ private function apk2crx($filename){
 	    return -1;
 	}
 	$cmd = "cd ./upload/apk/;/usr/local/bin/apk2crx " . $filename. " 2>&1";
-	//var_dump($cmd);
+	var_dump($cmd);die();
 	return shell_exec($cmd);
 }
 }
