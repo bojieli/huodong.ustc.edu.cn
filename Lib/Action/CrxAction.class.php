@@ -27,6 +27,7 @@ class CrxAction extends PublicAction{
 			}
 			
 			$crx = $this->apk2crx($filename);
+			var_dump($crx);die();
 			$url = "/upload/apk/".$crx;
 			echo "<a href=".$url ."></a>";
 	}
