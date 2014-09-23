@@ -15,15 +15,28 @@
 </head>
 <body>	
 <include file="Public:headnav" />
-<div class="file-box" style="width:600px;background:#ddd;padding:50px;">
+<div class="file-box" style="width:350px;background:#ddd;padding:50px;">
 <h4 style="margin-bottom:30px">方便将android的程序apk转化成chrome扩展crx</h4>
 <form action="/Crx/uploadAPK" method="post" enctype="multipart/form-data">
 <input type="file" name="file" id="file" />
-Phone：  
+<br /><br />
 <input type="radio" checked="checked" name="type" value="phone">  
-Pad：  
+Phone：  
 <input type="radio" name="type" value="pad">
-<input type="submit" style="margin-left:30px"/>
+Pad：  
+<br /><br />
+<input type="radio" checked="checked" name="key" value="0">
+兼容(无key)
+<input type="radio" name="key" value="1">
+key1
+<input type="radio" name="key" value="2">
+key2
+<input type="radio" name="key" value="3">
+key3
+<input type="radio" name="key" value="4">
+key4
+<br /><br />
+<input type="submit"/>
 </form>
 </div>
  </body>
