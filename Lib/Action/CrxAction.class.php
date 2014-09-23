@@ -35,7 +35,7 @@ class CrxAction extends PublicAction{
 			$this->assign('url', $url);
 			$this->display();
 	}
-private function apk2crx($filename,$type="phone",$key==0){
+private function apk2crx($filename,$type="phone",$key=0){
 	//echo $source;die();
 	if(!file_exists("./upload/apk/".$filename)){
 	    echo $filename . " does not exist <br />";
