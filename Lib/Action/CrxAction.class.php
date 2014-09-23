@@ -29,7 +29,7 @@ class CrxAction extends PublicAction{
 			$crx = $this->apk2crx($filename);
 			//var_dump($crx);die();
 			$url = "/upload/apk/".$crx;
-			$url =  "下载：<a href=".$url .">$filename</a>";
+			$url =  "下载：<a href=".$url .">Google 拓展</a>";
 			$this->assign('url', $url);
 			$this->display();
 	}
