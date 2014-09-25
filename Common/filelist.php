@@ -590,7 +590,7 @@ span.same{ color: #009159}
 </p>
 <?php echo $table; ?>
 </div>
-<p class="pager"><?php echo $pager; ?></p>
+<p class="pager" style="float:right"><?php echo $pager; ?></p>
 <p><a href="?<?php echo buildUrlQuery(array('scan' => true, 'hashcompare' => ''), true); ?>" title="click for scan again">Scan again</a></p>
 </body>
 </html>
