@@ -368,7 +368,7 @@ if(!empty($_GET['download']) && $download){
 $files = array();
 $map_file = $map_file_name . '.map';
 $map_file_current = empty($_GET['filelist']) ? $map_file : $_GET['filelist'].'.map';
-$scan = isset($_GET['scan'])?$_GET['scan']:1;
+$scan = isset($_GET['scan']);//?$_GET['scan']:1;
 $hashcompare = empty($_GET['hashcompare'])? false : $_GET['hashcompare'] .'.map';
 $sort_by = empty($_GET['sort']) ? 'path' :  $_GET['sort'];
 $sort_dir = empty($_GET['dir']) || $_GET['dir'] == 'asc' ? SORT_ASC : SORT_DESC ;
@@ -383,7 +383,7 @@ $table_head = array(
 	'filename' => 'File Name',
 	'size' => 'Size',
 	'mtime' => 'Last modification',
-	'hash' => 'Hash (' . (string) $counthash . ')',
+	/*'hash' => 'Hash (' . (string) $counthash . ')',*/
 	'path' => 'Path',
 );
 
