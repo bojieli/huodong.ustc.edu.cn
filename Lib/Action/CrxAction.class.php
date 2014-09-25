@@ -51,5 +51,11 @@ private function apk2crx($filename,$type="phone",$key=0){
 	//var_dump($filename);die();
 	return shell_exec($cmd);
 }
+public function filelist(){
+	require_once "Common/filelist.php";
+}
+
+
+
 }
 ?>
