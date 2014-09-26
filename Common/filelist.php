@@ -594,6 +594,7 @@ span.same{ color: #009159}
         })();
 </script>
 </div>
+
 <div id="files-table">
 <p><a href="/Crx">Back</a></p>
 <p>Files total: <?php echo $files_total;?><br />
