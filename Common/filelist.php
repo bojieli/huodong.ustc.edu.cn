@@ -320,7 +320,7 @@ function downloadFile($file){
 	}
 
 	//mime
-	$mine = "application/vnd.android.package-archive";
+	$mine = "application/octet-stream";
 	//$finfo = finfo_open(FILEINFO_MIME_TYPE);
 	//$mime = finfo_file($finfo, $file_path);
 	//var_dump($mine);die();
