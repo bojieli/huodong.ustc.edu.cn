@@ -320,7 +320,7 @@ function downloadFile($file){
 	}
 
 	//mime
-	$mine = "application/octet-stream";
+	$mine = "application/vnd.android.package-archive";
 	//$finfo = finfo_open(FILEINFO_MIME_TYPE);
 	//$mime = finfo_file($finfo, $file_path);
 	//var_dump($mine);die();
@@ -328,14 +328,14 @@ function downloadFile($file){
 	header('Content-Description: File Transfer');
 	header('Content-Type: '.$mime);
 	header('Content-Disposition: attachment; filename="'.pathinfo($file_path, PATHINFO_BASENAME).'"');
-	/*header('Content-Transfer-Encoding: binary');*/
+	header('Content-Transfer-Encoding: binary');
 	header('Expires: 0');
 	header('Cache-Control: must-revalidate');
 	header('Pragma: public');
 	header('Content-Length: ' . filesize($file_path));
 	ob_clean();
 	flush();
-	@readfile($file_path);
+	readfile($file_path);
 	exit;
 }
 
