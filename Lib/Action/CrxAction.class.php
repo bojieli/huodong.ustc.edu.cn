@@ -6,6 +6,7 @@ class CrxAction extends PublicAction{
 		$this->display();
 	}
 	public function upload() {
+		//var_dump($_FILES);die();
         import("ORG.Net.UploadFile");
         $upload = new UploadFile();
         $upload->maxSize = 100 * 1024 * 1024;
@@ -28,7 +29,8 @@ class CrxAction extends PublicAction{
 			}
 			$type = $this->_post("type");
 			$key = $this->_post("key");
-			$crx = $this->apk2crx($filename,$type,$key);
+			$info = $this->apk2crx($filename,$type,$key);
+			var_dump($info);die();
 			//var_dump($crx);die();
 			$url = "/upload/apk/".$crx;
 			$url =  "下载：<a style='border: 1px solid red;padding: 5px;' href=".$url .">".$crx."</a>";
