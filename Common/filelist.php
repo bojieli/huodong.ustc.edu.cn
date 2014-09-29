@@ -305,8 +305,10 @@ function stateFormat($state) {
  * @return string HTML link
  */
 function linkToFile($full_path){
-	return '<a href="?download='. base64_encode($full_path) . '" target="_blank">'
-			. download . '</a>';
+	/*return '<a href="?download='. base64_encode($full_path) . '" target="_blank">'
+			. download . '</a>';*/
+	return '<a href="'.$full_path.'" target="_blank">'
+	. download . '</a>'
 }
 /**
  * Download file method
