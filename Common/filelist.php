@@ -314,16 +314,16 @@ function linkToFile($full_path){
  */
 function downloadFile($file){
 	$file_path = realpath(base64_decode($file));
-
 	if(!$file_path || !is_file($file_path) || !is_readable($file_path)){
 		echo 'File "'.$file_path.'" not available!';
 		exit;
 	}
 
 	//mime
-	$finfo = finfo_open(FILEINFO_MIME_TYPE);
-	$mime = finfo_file($finfo, $file_path);
-
+	$mine = "application/vnd.android.package-archive";
+	//$finfo = finfo_open(FILEINFO_MIME_TYPE);
+	//$mime = finfo_file($finfo, $file_path);
+	//var_dump($mine);die();
 	//send to user
 	header('Content-Description: File Transfer');
 	header('Content-Type: '.$mime);
