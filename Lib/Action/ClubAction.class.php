@@ -699,7 +699,8 @@ class ClubAction extends PublicAction {
         $departments =M("Team")->where(array('type'=>'department','gid'=>$gid,'flag'=>1))->select();
 		
         $acts = D('Activity')->getActsByGid($gid);
-
+        $club = $this->getData($gid);
+-        $this->assign('club', $club);
         $this->assign('acts', $acts);
         $this->assign('teams', $teams);
         $this->assign('departments', $departments);
