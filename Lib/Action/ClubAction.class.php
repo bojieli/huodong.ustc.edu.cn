@@ -204,18 +204,20 @@ class ClubAction extends PublicAction {
 
 		$filePath = 'upload/xls/'.$filename;
 		$list=$this->readExcel($filePath);
-
+          //var_dump($list);die();
         if(!empty($firstline)){
             $list_tmp[1]=$val;
+            unset($list[1]);
             foreach ($list as $keys => $values) {
                 $list_tmp[]=$values;
             }
             $list = $list_tmp;
         }
-		else
+     else
         {
             $list[1]=$val;
         }
+      //  var_dump($list);die();
 		  foreach($val as $key => $value){
 		       if($value==''){
 			     foreach($list as $m =>$n){
