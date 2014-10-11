@@ -74,40 +74,26 @@
 </script>		
 </notempty>
 
-<notempty name="club.ismanager">
-<?php
-$showPager = function() use($club,$pageNow) {
-	if ($club['ismanager'])
-	if ($club['memberCount'] > 20) {
-?>
-<div class="pager">
- <table border="0" cellpadding="0" cellspacing="0" align="center" style="margin:0 auto;">
- <tr>
- <!--td style="color:#DDDDDD;" width="46"><<</td-->
-<?php	$num = floor(($club['memberCount'] + 19) / 20);
-	for ($page=1; $page<=$num; $page++) { ?>
-<td width="20" align="center"><if condition="$page eq $pageNow"><span class="nowpage"><?=$page?></span><else /><a href="/Club/manage?gid=<?=$club['gid']?>&page=<?=$page?>"><?=$page?></a></if></td>
-<?php	} ?>
- <!--td style="color:#DDDDDD;" width="46">>></td-->
- </tr>
- </table>
-</div>
-<?php
-	}
-};
-?>
-</notempty>
 <div id="stmain">
 	<include file="introHeaderin" />
 	<div class="stcon1">
     	<div class="stcylb">成员列表
-    		<span class="stnotice1">（为保护隐私，普通成员无法看到除了社团管理者之外的会员的联系方式。非会员最多只能看到协会的20个会员）
+    		<span class="stnotice1">（为保护隐私，普通成员无法看到除了社团管理者之外的会员的联系方式。非会员最多只能看到协会的10个会员）
     		</span>
     	</div>
         <div class="stcyleft">
-			<notempty name="club.ismanager">
-				<?php $showPager(); ?>
-			</notempty>
+        	<div style="margin:5px;height: 1.5em;">
+        			<div class="pager" >{$page}</div>
+       	
+			<span class="search_member" style="position:absolute;right:1.2em;top:0" >
+			<form method='get' action="/Club/manage">
+			        	<input type="text" name="keyword" class="searchcss_out" onfocus="this.className='searchcss_on'" onblur="this.className='searchcss_out'" value="">
+						<input type="hidden" name="gid" value="{$Think.get.gid}">
+			            <input type='submit' class="searchbutton" value='搜索' />
+			
+			</form>
+			</span>
+			</div>
 		    <volist name="members" id="member">
 	            <div class="stcycell" id="stcy{$member.uid}">
 	            	<div class="stcycell1"><img width="90" height="90" src="/{$member.avatar}"></div>
@@ -187,9 +173,7 @@ $showPager = function() use($club,$pageNow) {
 	                </div><!--cell2-->
 	            </div><!--ctcycell-->
 		    </volist>
-			<notempty name="club.ismanager">
-				<?php $showPager(); ?>
-			</notempty>
+			
         </div><!--stcy left-->      
 	    <div class="stcyright">
 	        <div class="sttttt">功能面板
