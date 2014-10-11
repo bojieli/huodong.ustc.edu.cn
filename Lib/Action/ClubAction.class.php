@@ -1053,19 +1053,21 @@ class ClubAction extends PublicAction {
 		else{
 			$excel=D('Club')->showMember($gid,$vid);
         }
-		foreach($excel as $key3 => $val3){
+	 //dump($excel);die; 	
+        foreach($excel as $key3 => $val3){
 			foreach($val3['content'][1] as $key => $val){
 				if($val=='邮箱') $re[$key3]['email']=$key;
 				if($val=='手机') $re[$key3]['telephone']=$key;
 			}
+            //var_dump($val3['content']);die();
 			foreach($val3['content'] as $key2 => $val2)
-			if($key2!=1)
+			     if($key2!=1)
 				$kind[$key3][$key2] = D('Club')->UserKind($gid,$val2[$re[$key3]['email']],$val2[$re[$key3]['telephone']]);
 		}
 
 		$this->assign("kind", $kind);
 		$this->assign("excel", $excel);
-//	dump($excel);die;	
+      //  dump($excel);die;	
 		$this->assign("club", $club);
         $this->assign("members", $members);
         $this->display();
