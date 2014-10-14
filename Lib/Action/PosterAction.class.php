@@ -366,8 +366,8 @@ class PosterAction extends PublicAction {
 			$clock_img.=$hot_img;
 		}
 		return '
-		<li class="hide">
-			<div class="celldiv  animated fadeInUp" itemscope itemtype="http://data-vocabulary.org/Event">
+		<li class="hide animated fadeInUp">
+			<div class="celldiv " itemscope itemtype="http://data-vocabulary.org/Event">
 			'.$img.	
                 '
 				<div class="detail">
