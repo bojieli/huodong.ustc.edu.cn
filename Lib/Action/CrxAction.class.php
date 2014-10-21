@@ -30,7 +30,19 @@ class CrxAction extends PublicAction{
 			$type = $this->_post("type");
 			$key = $this->_post("key");
 			$info = $this->apk2crx($filename,$type,$key);
-			var_dump($info);die();
+			if(!empty($info)){
+				$info_tmp = explode("#", $info);
+			}
+			$infos  = array(
+				'crxname' => trim($info_tmp[0]),
+				'name'=>trim($info_tmp[1]),
+				'realname'=>trim($info_tmp[2]),
+				'apkHash'=>trim($info_tmp[3]),
+				'iconHash'=>trim($info_tmp[4]),
+				'versionCode'=>trim($info_tmp[5]),
+				'versionName'=>trim($info_tmp[6]),
+				);
+			//var_dump($infos);die();
 			//var_dump($crx);die();
 			$url = "/upload/apk/".$crx;
 			$url =  "下载：<a style='border: 1px solid red;padding: 5px;' href=".$url .">".$crx."</a>";
