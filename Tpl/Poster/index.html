@@ -73,6 +73,7 @@ var testWebp = function(callback){
 		var noMore = false;
 		return function(loadnum) {
 			 loadflag = 1;
+			 console.log(ajaxLock);
 			if (!ajaxLock && !noMore) {
 				iw=$("#iswebp").val();
 				ajaxLock = true;
@@ -105,7 +106,6 @@ function loadComments(aid) {
 		});
 	}
 function cycleload(){
-
 		if( loadflag==0	){
 			var clienth = document.documentElement.clientHeight;
 			var scrollh = document.documentElement.scrollHeight;
@@ -122,7 +122,7 @@ function cycleload(){
 			if( nomoreflag == 1 ) $("#haibao-onmoreloading").css('display','block');
 			setTimeout("cycleload()",100);	
 		};
-	$(document).ready(function(){		
+	$(document).ready(function(){
 		cycleload();
 		$(window).scroll(function () {
 		  if( loadflag==0	){
