@@ -85,17 +85,6 @@ var loadmore = (function() {
 	$(document).ready(function(){
 		loadmore(1);
 		cycleload();
-		$(window).scroll(function () {
-			console.log("123");
-		  if( loadflag==0	){
-			var clienth = document.documentElement.clientHeight;
-			var scrollh = document.documentElement.scrollHeight;
-			var scrollt = document.documentElement.scrollTop + document.body.scrollTop;
-			if((clienth + scrollt + 20 > lowestcollheight) || (clienth + scrollt + 250 > scrollh)) {
-				 loadmore(4);
-			};
-		  }
-		});
 		
 		
 		$(".ding2").live({
@@ -128,10 +117,11 @@ var loadmore = (function() {
 		if( loadflag == 1 ){
 			$("#haibao-onloading").css('display','block');
 			$("#haibao-onloading").animate({opacity:1},200);
-			};
-			if( loadflag == 0 || nomoreflag == 1){ $("#haibao-onloading").css('display','none');}
-			if( nomoreflag == 1 ) $("#haibao-onmoreloading").css('display','block');
-			setTimeout("cycleload()",100);	
+		};
+		if( loadflag == 0 || nomoreflag == 1){ $("#haibao-onloading").css('display','none');}
+		if( nomoreflag == 1 ) $("#haibao-onmoreloading").css('display','block');
+		setTimeout("cycleload()",100);	
+			 
 		};
 </script>
 <script>

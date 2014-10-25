@@ -97,18 +97,7 @@ var loadmore = (function() {
 	$(document).ready(function(){
 	    var_tmp = creatVar(0,pic_num);
 		loadmore(1);
-		cycleload();/*
-		$(window).scroll(function () {
-		  if( loadflag==0	){
-			var clienth = document.documentElement.clientHeight;
-			var scrollh = document.documentElement.scrollHeight;
-			var scrollt = document.documentElement.scrollTop + document.body.scrollTop;
-			if((clienth + scrollt + 20 > lowestcollheight) || (clienth + scrollt + 250 > scrollh)) {
-				 loadmore(4);
-			};
-		  }
-		});*/
-		
+		cycleload();
 		
 		$(".ding").live({
 		mouseenter:function(){
