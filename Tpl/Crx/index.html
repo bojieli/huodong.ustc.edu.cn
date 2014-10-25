@@ -110,7 +110,7 @@ var loadmore = (function() {
 			var clienth = document.documentElement.clientHeight;
 			var scrollh = document.documentElement.scrollHeight;
 			var scrollt = document.documentElement.scrollTop + document.body.scrollTop;
-			var canload = (clienth + scrollt - 100 > lowestcollheight) || (clienth + scrollt - 100 > scrollh) ;
+			var canload = (clienth + scrollt - 100 > lowestcollheight)  ;
 			console.log(canload);
 			if (canload) {
 				 loadmore(2);
