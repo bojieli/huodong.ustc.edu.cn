@@ -105,7 +105,7 @@ var loadmore = (function() {
 		});	
 	});
 	function cycleload(){
-		console.log(loadflag);
+		
 		if( loadflag==0	){
 			var clienth = document.documentElement.clientHeight;
 			var scrollh = document.documentElement.scrollHeight;
@@ -114,6 +114,7 @@ var loadmore = (function() {
 				 loadmore(2);
 			};
 		};
+		console.log(loadflag);
 		if( loadflag == 1 ){
 			$("#haibao-onloading").css('display','block');
 			$("#haibao-onloading").animate({opacity:1},200);
