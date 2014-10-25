@@ -96,6 +96,10 @@ class CrxAction extends PublicAction{
 	}
    public function convertAllAPK(){
    			set_time_limit(0);
+   			$run = $this->_get("run");
+   			if(empty($run)){
+   				return;
+   			}
 			$path = "upload/apk";
 			$apks = glob($path."/*.apk", GLOB_BRACE);
 			foreach ($apks as $key => $apk) {
