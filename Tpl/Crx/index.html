@@ -55,7 +55,7 @@ var loadmore = (function() {
 		var keyword = "{$Think.get.keyword}";
 		var order = "{$Think.get.order}";
 		return function(loadnum) {
-			 loadflag = 1;
+			 loadflag = 0;
 			if (!ajaxLock && !noMore) {
 				ajaxLock = true;
 
@@ -64,7 +64,7 @@ var loadmore = (function() {
 					    "/Crx/ajaxGet",
 					    {start: posterCounter, num: loadnum, type: type_sb ,keyword : keyword,order:order}
 				    ).done(function( obj ){
-					    loadflag = 0;					
+					    loadflag = 0;				
 					    if (obj.length == 0){
 						    noMore = true;
 						    nomoreflag = 1;
@@ -77,58 +77,13 @@ var loadmore = (function() {
 					    ajaxLock = false;
 				    });
 				}
-				if(type == 'rand1'){
-				    for(i=0;i<loadnum;i++){
-				        start = var_tmp[k];
-				        k++;
-				    $.getJSON(
-					    "/Crx/ajaxGet",
-					    {start: start, num: 1}
-				    ).done(function( obj ){
-					    loadflag = 0;					
-					    if (obj.length == 0 || k >= pic_num){
-						    noMore = true;
-						    nomoreflag = 1;
-					    };
-					    var html = obj.join("");
-					    $("#content ul").append(html);
-					    $(".hide").animate({opacity:1},1000); 
-					    $("#content ul li").setwaterfall();
-					    ajaxLock = false;
-				    });
-				    }
-				}
-				if(type == 'rand2'){
-				    for(i=0;i<loadnum;i++){
-			        //if(type=='rand2')
-					    //posterCounter = Math.floor(Math.random()*pic_num);
-				    $.getJSON(
-					    "/Crx/ajaxGet",
-					    {start: Math.floor(Math.random()*pic_num), num: 1 }
-				    ).done(function( obj ){
-					    loadflag = 0;					
-					    if (obj.length == 0){
-						    noMore = true;
-						    nomoreflag = 1;
-					    };
-					    //if(type=='normal')
-						    //posterCounter += obj.length;
-					    var html = obj.join("");
-					    $("#content ul").append(html);
-					    $(".hide").animate({opacity:1},1000); 
-					    $("#content ul li").setwaterfall();
-					    ajaxLock = false;
-				    });
-				    }
-				}
 			}
 		}
 	})();
 	
 	$(document).ready(function(){
-	    var_tmp = creatVar(0,pic_num);
 		loadmore(1);
-		cycleload();/*
+		cycleload();
 		$(window).scroll(function () {
 		  if( loadflag==0	){
 			var clienth = document.documentElement.clientHeight;
@@ -138,7 +93,7 @@ var loadmore = (function() {
 				 loadmore(4);
 			};
 		  }
-		});*/
+		});
 		
 		
 		$(".ding2").live({
@@ -158,26 +113,8 @@ var loadmore = (function() {
 		}
 		});	
 	});
-	function creatVar(start,num){
-		tmp = [];
-		for(i=0;i<num;i++)
-		   tmp[i] = i;
-		return xipai(tmp);
-	}
-	function xipai(var_tmp){ //洗牌算法
-		num = var_tmp.length;
-		for(j=0;j<5;j++)
-			for(i=1;i<num;i++){
-			index = Math.floor(Math.random()*num);
-				if(index!=i){
-					tmp = var_tmp[i];
-					var_tmp[i] = var_tmp[index];
-					var_tmp[index] = tmp;
-				}
-			}
-		return var_tmp;
-	}
 	function cycleload(){
+		console.log(loadflag);
 		if( loadflag==0	){
 			var clienth = document.documentElement.clientHeight;
 			var scrollh = document.documentElement.scrollHeight;
@@ -186,13 +123,13 @@ var loadmore = (function() {
 				 loadmore(2);
 			};
 		};
-			if( loadflag == 1 ){
-				$("#haibao-onloading").css('display','block');
-				$("#haibao-onloading").animate({opacity:1},200);
-				};
+		if( loadflag == 1 ){
+			$("#haibao-onloading").css('display','block');
+			$("#haibao-onloading").animate({opacity:1},200);
+			};
 			if( loadflag == 0 || nomoreflag == 1){ $("#haibao-onloading").css('display','none');}
 			if( nomoreflag == 1 ) $("#haibao-onmoreloading").css('display','block');
-			setTimeout("cycleload()",100);		
+			setTimeout("cycleload()",100);	
 		};
 </script>
 <script>
