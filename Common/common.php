@@ -452,4 +452,23 @@ return $info;
 }
 */
 
+function count_order($order_tmp){
+      switch ($order_tmp) {
+            case 'new': 
+                $cond = '';
+                echo D("Crx")->countItem($cond);
+                break;
+             case 'good': 
+           $cond = '`likes`>`dislikes`';
+            echo M("Crx_addition")->where($cond)->count();
+            break;
+             case 'hot': 
+            $order = '';
+            echo D("Crx")->countItem($cond);
+            break;
+        }
+    
+}
+
+
 ?>
