@@ -55,7 +55,7 @@ var loadmore = (function() {
 		var keyword = "{$Think.get.keyword}";
 		var order = "{$Think.get.order}";
 		return function(loadnum) {
-			 loadflag = 0;
+			 loadflag = 1;
 			if (!ajaxLock && !noMore) {
 				ajaxLock = true;
 
