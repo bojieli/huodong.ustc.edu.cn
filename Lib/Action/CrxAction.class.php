@@ -289,7 +289,6 @@ public function vote(){
         Header( "Accept-Ranges:   bytes "); 
         Header( "Accept-Length: " .filesize($filename));
         header( "Content-Disposition:   attachment;   filename= {$name}"); 
-        echo file_get_contents($filename);
         readfile($filename); 
         D("Crx")->addDownload($id);
     }
