@@ -86,6 +86,7 @@ var loadmore = (function() {
 		loadmore(1);
 		cycleload();
 		$(window).scroll(function () {
+			console.log("123");
 		  if( loadflag==0	){
 			var clienth = document.documentElement.clientHeight;
 			var scrollh = document.documentElement.scrollHeight;
