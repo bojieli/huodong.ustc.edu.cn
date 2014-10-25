@@ -1,0 +1,83 @@
+<!DOCTYPE">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>apk2crx</title>
+<link href="/static/css1.css" rel="stylesheet" type="text/css" />
+<link href="/static/zhuce.css" rel="stylesheet" type="text/css" />
+<script src="/static/jquery.js" type="text/javascript"></script>
+<style type="text/css">
+.file-box{
+ width:700px;
+ margin:100px auto;
+}
+.file-box b{
+	padding-right: 10px;
+}
+input{
+
+}
+</style>
+</head>
+<body>	
+<include file="Public:headnav" />
+<div class="file-box" style="background:#ddd;padding:50px;">
+<h4 style="margin-bottom:20px">方便将android的程序apk转化成chrome扩展crx</h4>
+<form action="/Crx/uploadAPK" method="post" enctype="multipart/form-data">
+<input type="file" name="file" id="file" accept=".apk" />
+<br /><br />
+<input type="radio" checked="checked" name="type" value="phone">  
+Phone：  
+<input type="radio" name="type" value="pad">
+Pad：  
+<br /><br />
+<input type="radio" checked="checked" name="key" value="0">
+兼容(无key)
+<input type="radio" name="key" value="1">
+key1
+<input type="radio" name="key" value="2">
+key2
+<input type="radio" name="key" value="3">
+key3
+<input type="radio" name="key" value="4">
+key4
+<br /><br />
+<input type="submit" style="cursor:pointer;border:0px; background:#444; padding:5px 20px;font-size:12px; color:#FFF;"/>
+</form>
+<br />
+
+<a href="/Crx" target="_blank" style="padding:50px;color:blue">Google Chrome Extensions(已转化完成的)</a>
+</div>
+<div class="file-box" style="background:#ddd;padding:50px;">
+	Google Chrome 运行Android的apk程序步骤：<br /><br />
+	<b>Step1:</b>下载适合你系统的运行环境ARChon<br /><br />
+	<a style="color:blue" target="_blank" href="http://yun.baidu.com/share/link?shareid=4149832668&uk=2366196373">Baidu</a>
+	<a style="color:blue" target="_blank" href="https://github.com/vladikoff/chromeos-apk/blob/master/archon.md">GitHub</a>
+	<p style="float:right;color:red"><a target="_blank" href="help.html">怎么安装？</a></p>
+<br /><br />
+	<b>Step2:</b>启用 chrome://flags 里面"Native Client Mac, Windows, Linux, Chrome OS, Android"一项
+	(非常重要)
+<br /> <br />
+	<b>Step3:</b>使用此平台转化你喜欢的APK
+<br />   <br />
+	<b>Step4:</b>将其拖到chrome://extensions/页面完成安装
+<br /><br />
+	<a style="color:blue" target="_blank"  href="https://github.com/ustcltx/apk2crx">Welcome to Issues</a>
+</div>
+<div class="file-box" style="background:#ddd;padding:50px;">
+	<h3>更新日志</h3>
+	<li>修复了扩展使用同一个ID的严重bug</li>
+	<li>默认配置好扩展的图标</li>
+	<li>默认配置好扩展的名称</li>
+	<li>谷歌扩展列表</li>
+	<br />
+	<h3>功能展望</h3>
+	<li>默认配置好扩展的图标(完成)</li><br />
+	<h3>其他</h3>
+	
+	<li style="color:red" title="马化腾，你有种来咬我！">QQ</li>
+	<a href="/static/QQ/com.tencent.mqq.android.crx">com.tencent.mqq.android.crx</a><br />
+	<a href="/static/QQ/com.tencent.mqq.android(去升级).crx">com.tencent.mqq.android(去升级).crx</a>
+</div>
+ </body>
+</html>

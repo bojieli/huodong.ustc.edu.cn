@@ -1,0 +1,87 @@
+
+	<div class="cont">
+    	<div class="kuang">
+    		<a href="/Crx?order=new<if condition="$Think.get.keyword != ''">&keyword={$Think.get.keyword}</if><if condition="$Think.get.type != ''">&type={$Think.get.type}</if>">
+    			<div class="topbutton <if condition="$order == 'new'">here2</if>">最新发布
+    			</div>
+    		</a>
+    		<div class="topnum"><?php count_order("new"); ?></div>
+    	</div>
+    	<div class="kuang">
+    		<a href="/Crx?order=good<if condition="$Think.get.keyword != ''">&keyword={$Think.get.keyword}</if><if condition="$Think.get.type != ''">&type={$Think.get.type}</if>">
+    			<div class="topbutton <if condition="$order == 'near'">here2</if>">评价最佳
+    			</div>
+    		</a>
+    		<div class="topnum"><?php count_order("good"); ?></div>
+    	</div>
+    	<div class="kuang">
+    		<a href="/Crx?order=hot<if condition="$Think.get.keyword != ''">&keyword={$Think.get.keyword}</if><if condition="$Think.get.type != ''">&type={$Think.get.type}</if>">
+    			<div class="topbutton <if condition="$order == 'hot'">here2</if>">下载最多
+    			</div>
+    		</a>
+    		<div class="topnum"><?php count_order("new"); ?></div>
+    	</div>
+    	
+	<form method='get' action="/Crx">
+        <div class="kuang" style="width:230px;">
+        	<input type="text" name="keyword" class="searchcss_out" onfocus="this.className='searchcss_on'" onblur="this.className='searchcss_out'" value="{$Think.get.keyword}">
+			<input type="hidden" name="type" value="{$Think.get.type}">
+			<input type="hidden" name="order" value="{$Think.get.order}">
+            <input type='submit' class="searchbutton" style="float:left;" value='搜索'/>
+        </div>
+		</form>
+        <div class="kuang">
+        <a href="/Crx/create">
+        <div class="topbutton ">上传APK
+        </div>
+        </a>
+       </div>
+ <style type="text/css">
+  #school_div select{
+	  font-family:Microsoft Yahei, "Times New Roman", Times, serif;	
+	  color:#8e8e90;	  
+	  font-size:16px;	  
+	  outline:none;
+	  height:28px;
+	  line-height:24px;
+	  vertical-align:middle;
+	  padding:0px 0px 0px 5px;
+	  border-radius:4px 0px 0px 4px;
+	  border:1px solid #CCC;	
+	}
+#school_div select:hover{
+	border:1px solid RGB(116, 185, 239);	
+   }
+</style>
+        
+		<div class="ykuang" id="school_div"><span style="color:#F00;">选择设备：</span>
+			
+		</div>
+		<script>
+			var school_all= '{$schools}';
+			var school_id = "{$Think.get.type}" ;
+			 school_id = school_id?school_id : "all";
+			eval('option_array='+school_all);
+			
+			var selObj = document.createElement("select");
+			selObj.name = "school_url";
+			selObj.id = "school_url";
+			var box = document.getElementById('school_div');
+			box.appendChild(selObj);
+			var i=0;
+			//alert(value);
+			for(var p in option_array)
+			{
+				selObj.options[i] = new Option(option_array[p]['name'], option_array[p]['url']);
+				if(option_array[p]['type'].toString()===school_id.toString())
+				{
+					selObj.options[i].selected=true;
+				}
+				i=i+1;
+			}
+			$("#school_url").change(function(){
+				location.href = $("#school_url").val();
+			});
+		</script>
+		
+    </div>

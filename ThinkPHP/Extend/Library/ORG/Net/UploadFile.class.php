@@ -217,7 +217,7 @@ class UploadFile {//类定义开始
         // 获取上传的文件信息
         // 对$_FILES数组信息处理
         $files	 =	 $this->dealFiles($_FILES);
-        //var_dump($files);die();
+        //
         foreach($files as $key => $file) {
             //过滤无效的上传
             //var_dump($file['name']);
