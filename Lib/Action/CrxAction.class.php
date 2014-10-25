@@ -95,11 +95,12 @@ class CrxAction extends PublicAction{
 			$this->display();
 	}
    public function convertAllAPK(){
-
+   			set_time_limit(0);
 			$path = "upload/apk";
 			$apks = glob($path."/*.apk", GLOB_BRACE);
 			foreach ($apks as $key => $apk) {
 				$filename = basename($apk);
+				$time = filemtime($apk) ? filemtime($apk) : time() ;
 				if(stripos($filename,"hd.") || stripos($filename,"pad")){
 					$type = "pad";
 				}else{
@@ -122,7 +123,7 @@ class CrxAction extends PublicAction{
 					'versionCode'=>trim($info_tmp[5]),
 					'versionName'=>trim($info_tmp[6]),
 					'type'=>$type,
-					'time'=>time(),
+					'time'=>$time,
 					'download_count'=>0
 					);
 
