@@ -6,17 +6,17 @@ class CrxAction extends PublicAction{
 	$school_all[] = array(
                 'type' => "all",
                 'url' => "/Crx?type=all&sort=".$this->_get("sort")."&keyword=".$this->_get("keyword"),
-                'name' => '全部设备'
+                'name' => L('quanbushebei')
                 );
 	$school_all[] = array(
                 'type' => "phone",
                 'url' => "/Crx?type=phone&sort=".$this->_get("sort")."&keyword=".$this->_get("keyword"),
-                'name' => '手机'
+                'name' => L('shouji')
                 );
 	$school_all[] = array(
                 'type' => "pad",
                 'url' => "/Crx?type=pad&sort=".$this->_get("sort")."&keyword=".$this->_get("keyword"),
-                'name' => '平板'
+                'name' => L('pingban')
                 );
         	
         	$schools = json_encode($school_all);

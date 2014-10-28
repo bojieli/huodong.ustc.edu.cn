@@ -2,21 +2,21 @@
 	<div class="cont">
     	<div class="kuang">
     		<a href="/Crx?order=new<if condition="$Think.get.keyword != ''">&keyword={$Think.get.keyword}</if><if condition="$Think.get.type != ''">&type={$Think.get.type}</if>">
-    			<div class="topbutton <if condition="$order == 'new'">here2</if>">最新发布
+    			<div class="topbutton <if condition="$order == 'new'">here2</if>">{$Think.lang.zuixinfabu}
     			</div>
     		</a>
     		<div class="topnum"><?php count_order("new"); ?></div>
     	</div>
     	<div class="kuang">
     		<a href="/Crx?order=good<if condition="$Think.get.keyword != ''">&keyword={$Think.get.keyword}</if><if condition="$Think.get.type != ''">&type={$Think.get.type}</if>">
-    			<div class="topbutton <if condition="$order == 'near'">here2</if>">评价最佳
+    			<div class="topbutton <if condition="$order == 'near'">here2</if>">{$Think.lang.pingjiazuijia}
     			</div>
     		</a>
     		<div class="topnum"><?php count_order("good"); ?></div>
     	</div>
     	<div class="kuang">
     		<a href="/Crx?order=hot<if condition="$Think.get.keyword != ''">&keyword={$Think.get.keyword}</if><if condition="$Think.get.type != ''">&type={$Think.get.type}</if>">
-    			<div class="topbutton <if condition="$order == 'hot'">here2</if>">下载最多
+    			<div class="topbutton <if condition="$order == 'hot'">here2</if>">{$Think.lang.xiazaizuiduo}
     			</div>
     		</a>
     		<div class="topnum"><?php count_order("new"); ?></div>
@@ -27,12 +27,12 @@
         	<input type="text" name="keyword" class="searchcss_out" onfocus="this.className='searchcss_on'" onblur="this.className='searchcss_out'" value="{$Think.get.keyword}">
 			<input type="hidden" name="type" value="{$Think.get.type}">
 			<input type="hidden" name="order" value="{$Think.get.order}">
-            <input type='submit' class="searchbutton" style="float:left;" value='搜索'/>
+            <input type='submit' class="searchbutton" style="float:left;" value='{$Think.lang.sousuo}'/>
         </div>
 		</form>
         <div class="kuang">
         <a href="/Crx/create">
-        <div class="topbutton ">上传APK
+        <div class="topbutton ">{$Think.lang.shangchuanapk}
         </div>
         </a>
        </div>
@@ -54,7 +54,7 @@
    }
 </style>
         
-		<div class="ykuang" id="school_div"><span style="color:#F00;">选择设备：</span>
+		<div class="ykuang" id="school_div"><span style="color:#F00;">{$Think.lang.xuanzeshebei}：</span>
 			
 		</div>
 		<script>

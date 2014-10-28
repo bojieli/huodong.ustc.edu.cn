@@ -30,5 +30,10 @@ $timerconfig = array(
 	'timer_time' => 2*3600,//second
 	'timer_email'=> 10,
 );
-return array_merge($config, $newconfig, $mailconfig,$smsconfig,$timerconfig);
+$multiLang  = array(
+	'LANG_SWITCH_ON' => true,
+	'DEFAULT_LANG' => 'zh-cn',
+	'LANG_LIST'        => 'zh-cn,en-us,zh-tw',
+);
+return array_merge($config, $newconfig, $mailconfig,$smsconfig,$timerconfig,$multiLang);
 ?>
