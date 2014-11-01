@@ -244,11 +244,16 @@ private function crx2html($crx){
         if(empty($crx["versionName"])){
         	$crx["versionName"]=$crx["versionCode"];
         }
+        if(empty($crx["iconHash"])){
+        	$icon_url='/static/images/icon.png';
+        }else{
+        	$icon_url='/upload/apk/bak/'.$crx["iconHash"].'.png';
+        }
        return'
 	<li class="hide animated fadeInUp">	
 			<div class="celldiv" align="center" itemscope itemtype="http://data-vocabulary.org/Event">
 			'.$del.'
-			<img src="/upload/apk/bak/'.$crx["iconHash"].'.png" style="width:7em" />	
+			<img src="'.$icon_url.'" style="width:7em" />	
 
 				<div class="detail">					
 					<span itemprop="summary" >'.$crx["realname"].'</span>					
