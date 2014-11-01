@@ -234,10 +234,19 @@ private function crx2html($crx){
 	if($crx["type"]=="pad"){
 		$HD="HD";
 	}
-	return'
-	<li class="hide animated fadeInUp">
+	global $_G;
+        $user = D("User");
+        $user_info = $user->getInfo($_G['uid']);
+        if($user_info['isdeveloper'])
+        {	
+            $del = '<div style="position: absolute;right: 0.3em;top:0.3em"><a href="/Crx/del?id='.$crx['id'].'">X</a></div>';
+        }
+       return'
+	<li class="hide animated fadeInUp">	
 			<div class="celldiv" align="center" itemscope itemtype="http://data-vocabulary.org/Event">
-			<img src="/upload/apk/bak/'.$crx["iconHash"].'.png" style="width:7em">			
+			'.$del.'
+			<img src="/upload/apk/bak/'.$crx["iconHash"].'.png" style="width:7em" />	
+
 				<div class="detail">					
 					<span itemprop="summary" >'.$crx["realname"].'</span>					
 					<span itemprop="versionName" class="vname">('.$crx["versionName"].')   '.$HD.'</span>
@@ -252,10 +261,12 @@ private function crx2html($crx){
 						 	<span id = "like_'.$crx['id'].'"  class="rate">'.$crx['like'].'</span>
 						</span>
 					</div>
-					<span>
-					<a href='.$crx["url"].'><img src="/static/images/download.png"></a>
-					</span>
-					<span class="download_count">'.$crx["download_count"].'</span>	
+					<a href='.$crx["url"].'>
+						<span>
+						<img src="/static/images/download.png">
+						</span>
+						<span class="download_count">'.$crx["download_count"].'</span>	
+					</a>
 				</div>
 			</div>
 	</li>';
