@@ -241,6 +241,9 @@ private function crx2html($crx){
         {	
             $del = '<div style="position: absolute;right: 0.3em;top:0.3em"><a href="/Crx/del?id='.$crx['id'].'">X</a></div>';
         }
+        if(empty($crx["versionName"])){
+        	$crx["versionName"]=$crx["versionCode"];
+        }
        return'
 	<li class="hide animated fadeInUp">	
 			<div class="celldiv" align="center" itemscope itemtype="http://data-vocabulary.org/Event">
