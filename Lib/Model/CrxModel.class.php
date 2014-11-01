@@ -61,12 +61,20 @@ class CrxModel extends Model {
 	    public function getItemAddition($id){
 	    	return M("Crx_addition")->where(["id"=>$id])->find();
 	    }
+	     public function delItemAddition($id){
+	    	return M("Crx_addition")->where(["id"=>$id])->delete();
+	    }
 	    public function additionInit($id){
 	    	$data=[
 	    		'id'=>$id
 	    	];
 	    	M("Crx_addition")->create($data);
 	    	return M("Crx_addition")->add();
+	    }
+	    public function del($id){
+	    	$con=array('id' =>$id);
+	    	return M("Crx")->where($con)->delete();
+	    	
 	    }
 }
 ?>

@@ -292,6 +292,47 @@ public function vote(){
         readfile($filename); 
         D("Crx")->addDownload($id);
     }
+    public function del(){
+    	global $_G;
+        if(!D('User')->checkLogin())
+        {
+            $this->assign('jumpUrl','/User/login');
+            $this->error('您尚未登录');
+        }
+
+        $user = D("User");
+        $user_info = $user->getInfo($_G['uid']);
+        if(!$user_info['isdeveloper'])
+        {	
+            $this->error('您没有权限访问该页面');
+        }
+
+    	$id = $this->_get("id");
+    	$Item = D("Crx");
+    	$info = $Item->getItem($id);
+    	if(empty($info)){
+    		$this->success("文件不存在！","/Crx");
+    		return ;
+    	}
+    	if($info["type"]=="pad")
+        	$HD = "-HD";
+        	$url["crx"] = "./upload/apk/".$info["name"].".android-".$info["versionName"]."-".substr($info["apkHash"], 0,6).$HD.".crx";
+    	$url["apk"]= "./upload/apk/bak/".$info["apkHash"].$HD.".apk";
+    	$url["image"] = "./upload/apk/bak/".$info["iconHash"].".png";
+    	$url["pem"] = "./upload/apk/bak/".$info["apkHash"].$HD.".pem";
+    	foreach ($url as $key => $value) {
+    			if(!unlink($value)){
+    				echo "删除".$value."失败！"."<br />";  			
+    			}
+    	}
+    	$re = $Item->del($id);
+    	if($re !== false){
+    		$Item->delItemAddition($id);
+    		$this->success("删除".$re."条数据！","/Crx");
+    	}else{
+    		$this->error("删除数据失败！","/Crx");
+    	}
+    }
 
 
 }
