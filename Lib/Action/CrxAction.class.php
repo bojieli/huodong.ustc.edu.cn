@@ -280,11 +280,11 @@ public function ajaxGet() {
 	}
 	echo json_encode($elements);
     }
-
+/*
 public function filelist(){
 	require_once "Common/filelist.php";
 }
-
+*/
 private function crx2html($crx){
 	if($crx["type"]=="pad"){
 		$HD="HD";
