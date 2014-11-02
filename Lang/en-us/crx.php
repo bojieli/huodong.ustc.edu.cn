@@ -8,6 +8,7 @@
     'xuanzeshebei'=>'Select Device',
     'shouji'=>'Phone',
     'pingban'=>'Pad',
-    'quanbushebei'=>'ALL'
+    'quanbushebei'=>'ALL',
+    'jiacheng'=>"Guide"
 	);
 ?>

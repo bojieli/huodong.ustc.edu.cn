@@ -8,6 +8,7 @@
     'xuanzeshebei'=>'選擇設備',
     'shouji'=>'手機',
     'pingban'=>'平板',
-    'quanbushebei'=>'全部設備'
+    'quanbushebei'=>'全部設備',
+    'jiacheng'=>"教程"
 	);
 ?>

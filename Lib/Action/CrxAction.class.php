@@ -33,6 +33,9 @@ class CrxAction extends PublicAction{
 	public function create(){
 		$this->display();
 	}
+	public function course(){
+		$this->display();
+	}
 	public function upload() {
 		//var_dump($_FILES);die();
         import("ORG.Net.UploadFile");
