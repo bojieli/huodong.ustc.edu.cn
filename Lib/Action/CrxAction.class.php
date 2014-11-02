@@ -240,7 +240,7 @@ private function apk2crx($filename,$type="phone"){
 
          switch ($_GET['order']) {
             case 'new': 
-                $order = 'id';
+                $order = 'time desc,id desc';
                 break;
              case 'good': 
             $order = 'id';
@@ -253,7 +253,7 @@ private function apk2crx($filename,$type="phone"){
             break;
         default:
             case 'smart':
-                $order = 'id';
+                $order = 'id desc';
         }
 
          return [$start, $num, implode(' AND ', $cond), $order,$have_addition];
