@@ -88,13 +88,54 @@ class CrxAction extends PublicAction{
 				}
 				$re = $Item->getItemByHash($infos["apkHash"],$type);
 				$infos["id"]=$re["id"];
-			}
-			
-			$url = "/Crx/downloadCrx?id=".$infos["id"];
-			$url =  "下载：<a style='border: 1px solid red;padding: 5px;' href=".$url .">".$infos["realname"]."</a>";
-			$this->assign('url', $url);
-			$this->display();
+			}			
+			$this->redirect("/Crx/info?id=".$infos["id"]);
 	}
+   public function uploadHash(){
+   	$type = $this->_post("type");
+	$key = $this->_post("key");
+	$id = $this->_post("id");
+
+
+	$Item = D("Crx");
+	
+	$info_tmp = $Item->getItem($id);
+	$hash=$info_tmp["apkHash"];
+	$res = $Item->getItemByHash($hash,$type);
+	if(empty($res)){
+		$infos  = array(
+		'name'=>trim($info_tmp["name"]),
+		'realname'=>trim($info_tmp["realname"]),
+		'apkHash'=>trim($info_tmp["apkHash"]),
+		'iconHash'=>trim($info_tmp["iconHash"]),
+		'versionCode'=>trim($info_tmp["versionCode"]),
+		'versionName'=>trim($info_tmp["versionName"]),
+		'type'=>$type,
+		'time'=>time()
+		);
+	if(!$Item->create($infos)){
+		$this->error("存储APK失败！");
+	}
+	$re = $Item->getItemByHash($infos["apkHash"],$type);
+	$id=$re["id"];
+	}
+	
+	$info["id"] = $id;
+	$this->success($info);
+   }
+   public function info(){
+   	$id = $this->_get("id");
+   	$Item = D("Crx");
+	$info = $Item->getItem($id);
+	if(empty($info)){
+		$this->error("页面不存在");
+	}
+	$url = "/Crx/downloadCrx?id=".$id;
+	$url =  "下载：<a style='border: 1px solid red;padding: 5px;' href=".$url .">".$info["realname"]."</a>";
+	$this->assign('url', $url);
+	$this->display();
+
+   }
    public function convertAllAPK(){
    			set_time_limit(0);
    			$run = $this->_get("run");
@@ -256,7 +297,9 @@ private function crx2html($crx){
 			<img src="'.$icon_url.'" style="width:7em" />	
 
 				<div class="detail">					
-					<span itemprop="summary" >'.$crx["realname"].'</span>					
+					<a href="/Crx/info?id='.$crx["id"].'">
+						<span itemprop="summary" >'.$crx["realname"].'</span>
+					</a>				
 					<span itemprop="versionName" class="vname">('.$crx["versionName"].')   '.$HD.'</span>
 					 <div class="hot">
 						  <span class="cai" id="cai-'.$crx['id'].'">
@@ -352,7 +395,17 @@ public function vote(){
     		$this->error("删除数据失败！","/Crx");
     	}
     }
+    public function getIdByHash(){
+    	$hash = $this->_post("hash");
+    	$Item = D("Crx");
+    	$info["id"] = $Item->getItemByHash($hash,$type="phone")["id"];
 
+    	if(!empty($info["id"])){
+    		$this->success($info);
+    	}else{
+    		$this->success(["id"=>0]);
+    	}
+    }
 
 }
 ?>
