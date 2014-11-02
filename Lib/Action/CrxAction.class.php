@@ -59,12 +59,10 @@ class CrxAction extends PublicAction{
 				$this->error("您必须上传APK格式文件！");
 			}
 			$type = $this->_post("type");
-			$key = $this->_post("key");
-
 			
 
 
-			$info = $this->apk2crx($filename,$type,$key);
+			$info = $this->apk2crx($filename,$type);
 			//var_dump($info);die();
 			if(empty($info)){
 				$this->error("上传APK不合法！");
@@ -96,7 +94,6 @@ class CrxAction extends PublicAction{
 	}
    public function uploadHash(){
    	$type = $this->_post("type");
-	$key = $this->_post("key");
 	$id = $this->_post("id");
 
 
@@ -113,7 +110,7 @@ class CrxAction extends PublicAction{
 		$target = "./upload/apk/".$hash.".apk";
 		copy($source,$target);
 		$filename = $hash.".apk";
-		$res_tmp=$this->apk2crx($filename,$type,$key);
+		$res_tmp=$this->apk2crx($filename,$type);
 		if(empty($res_tmp)){
 			$this->error("APK不合法！");
 		}
@@ -166,7 +163,7 @@ class CrxAction extends PublicAction{
 				}else{
 					$type = "phone";
 				}
-				$info = $this->apk2crx($filename,$type,$key);
+				$info = $this->apk2crx($filename,$type);
 				if(empty($info)){
 					$this->error("上传APK不合法！");
 				}
@@ -198,7 +195,7 @@ class CrxAction extends PublicAction{
 
 
 }
-private function apk2crx($filename,$type="phone",$key=0){
+private function apk2crx($filename,$type="phone"){
 	//echo $source;die();
 	$url = "./upload/apk/".$filename;
 	if(!file_exists($url)){
@@ -215,10 +212,10 @@ private function apk2crx($filename,$type="phone",$key=0){
 	}
 
 	if ($type=="phone") {
-		$cmd = "cd ./upload/apk/;/usr/local/bin/apk2crx " .$filename. " ".$key." 2>&1";
+		$cmd = "cd ./upload/apk/;/usr/local/bin/apk2crx " .$filename. "  2>&1";
 	}
 	else{
-		$cmd = "cd ./upload/apk/;/usr/local/bin/apk2crx " .$filename. " ".$key." pad 2>&1";
+		$cmd = "cd ./upload/apk/;/usr/local/bin/apk2crx " .$filename. "  pad 2>&1";
 	}
 
 	//var_dump($filename);die();
