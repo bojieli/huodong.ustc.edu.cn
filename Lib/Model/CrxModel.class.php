@@ -6,6 +6,9 @@ class CrxModel extends Model {
 	public function getItemByHash($hash,$type="phone"){
 		return M("Crx")->where(["apkHash"=>$hash,"type"=>$type])->find();
 	}
+	public function countByHash($hash){
+		return M("Crx")->where(["apkHash"=>$hash])->count();
+	}
 	public function create($data){
 		M("Crx")->create($data);
 		return M("Crx")->add();

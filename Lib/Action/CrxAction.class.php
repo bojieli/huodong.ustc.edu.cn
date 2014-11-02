@@ -103,6 +103,17 @@ class CrxAction extends PublicAction{
 	$hash=$info_tmp["apkHash"];
 	$res = $Item->getItemByHash($hash,$type);
 	if(empty($res)){
+		if($info_tmp["type"]=="pad"){
+			$HD="-HD";
+		}
+		$source = "./upload/apk/bak/".$hash.$HD.".apk";
+		$target = "./upload/apk/".$hash.".apk";
+		copy($source,$target);
+		$filename = $hash.".apk";
+		$res_tmp=$this->apk2crx($filename,$type,$key);
+		if(empty($res_tmp)){
+			$this->error("APK不合法！");
+		}
 		$infos  = array(
 		'name'=>trim($info_tmp["name"]),
 		'realname'=>trim($info_tmp["realname"]),
@@ -380,7 +391,9 @@ public function vote(){
         	$HD = "-HD";
         	$url["crx"] = "./upload/apk/".$info["name"].".android-".$info["versionName"]."-".substr($info["apkHash"], 0,6).$HD.".crx";
     	$url["apk"]= "./upload/apk/bak/".$info["apkHash"].$HD.".apk";
-    	$url["image"] = "./upload/apk/bak/".$info["iconHash"].".png";
+    	if($Item->countByHash($info["apkHash"]) < 2){
+    		$url["image"] = "./upload/apk/bak/".$info["iconHash"].".png";
+    	}
     	$url["pem"] = "./upload/apk/bak/".$info["apkHash"].$HD.".pem";
     	foreach ($url as $key => $value) {
     			if(!unlink($value)){

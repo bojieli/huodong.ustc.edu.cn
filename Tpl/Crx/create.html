@@ -26,9 +26,14 @@ input{
 <div class="file-box" style="background:#ddd;padding:50px;">
 <h4 style="margin-bottom:20px">方便将android的程序apk转化成chrome扩展crx</h4>
 <form action="/Crx/uploadAPK" method="post" enctype="multipart/form-data">
+<input type="radio" checked="checked" name="type" value="phone">  
+Phone：  
+<input type="radio" name="type" value="pad">
+Pad：  
+<br /><br />
+<input type="hidden" name="key" value="0" id="key"/>
 <input type="file" name="file" id="file" accept=".apk" />
 <input type="hidden" id="hash">
- <div id="box"> </div>
  <script type="text/javascript">
         
             document.getElementById("file").addEventListener("change", function() {
@@ -50,8 +55,7 @@ input{
                         console.log("finished loading");
                         var hash = spark.end();
                         $("#hash").val(hash);
-                        box.innerText = 'MD5 hash:' + hash;
-                        
+                        $("#upload_button").fadeIn();
                     }
                 };
 
@@ -86,18 +90,13 @@ input{
 	}
 	function needUpload(){
 		var hash=$("#hash").val();
+		$("#upload_button").text("正在工作...");
 		getIdByHash(hash);
-		return false;
+		return true;
 	}
 	
 </script>
-<br /><br />
-<input type="radio" checked="checked" name="type" value="phone">  
-Phone：  
-<input type="radio" name="type" value="pad">
-Pad：  
-<br /><br />
-<input type="hidden" name="key" value="0" id="key"/>
+
 <!--
 <input type="radio" checked="checked" name="key" value="0">
 兼容(无key)
@@ -113,7 +112,7 @@ key4
 -->
 
 </form>
-<button onclick="return needUpload();return false;" style="cursor:pointer;border:0px; background:#444; padding:5px 20px;font-size:12px; color:#FFF;">上传</button>
+<button id="upload_button" onclick="needUpload();" style="display:none;cursor:pointer;border:0px; background:#444; padding:5px 20px;margin:1em 0;font-size:12px; color:#FFF;">上传</button>
 <br />
 
 <!--a href="/Crx" target="_blank" style="padding:50px;color:blue">Google Chrome Extensions(已转化完成的)</a-->
