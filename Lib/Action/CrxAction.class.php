@@ -359,8 +359,8 @@ public function vote(){
         $filename=realpath($filepath);  //文件名
         $name = $info['realname'].$HD.".crx";
         Header( "Content-type:   application/octet-stream "); 
-        Header( "Accept-Ranges:   bytes "); 
-        Header( "Accept-Length: " .filesize($filename));
+        Header( "Content-Length: " .filesize($filename));
+        Header( "Accept-Ranges:   bytes ");     
         header( "Content-Disposition:   attachment;   filename= {$name}"); 
         readfile($filename); 
         D("Crx")->addDownload($id);
