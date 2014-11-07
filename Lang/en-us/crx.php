@@ -37,6 +37,8 @@ $course =  array(
     );
     $create= array(
     'app-create-name' => "Online APK-CRX Converter", 
+     'upload'=>"Upload",
+     'working'=>"Working"
     );
     return array_merge($index,$course,$create);
 ?>

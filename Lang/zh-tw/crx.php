@@ -38,6 +38,8 @@ $course =  array(
     );
 $create= array(
     'app-create-name' => "一個將安卓程序APK轉成谷歌瀏覽器拓展CRX的在線轉化器", 
+    'upload'=>"上傳",
+    'working'=>"正在工作..."
     );
     return array_merge($index,$course,$create);
 ?>
