@@ -24,9 +24,9 @@ input{
 <body>	
 <include file="Public:headnav" />
 <div class="file-box" style="background:#ddd;padding:50px;">
-<a href="/Crx"><h4 style="color:blue">返回扩展瀑布流</h4></a>
+<a href="/Crx"><h4 style="color:blue">{$Think.lang.returnToMainPage}</h4></a>
 <br />
-<h4 style="margin-bottom:20px">方便将android的程序apk转化成chrome扩展crx</h4>
+<h4 style="margin-bottom:20px">apk2crx : {$Think.lang.app-create-name}</h4>
 <form action="/Crx/uploadAPK" method="post" enctype="multipart/form-data">
 <input type="radio" checked="checked" name="type" value="phone">  
 Phone：  
@@ -124,7 +124,7 @@ key4
 
 
 <div class="file-box" style="background:#ddd;padding:50px;">
-	
+	Chinese Only: 
 	<li style="color:red" title="马化腾，你有种来咬我！">QQ</li>
 	<a href="/static/QQ/com.tencent.mqq.android.crx">com.tencent.mqq.android.crx</a><br />
 	<a href="/static/QQ/com.tencent.mqq.android(去升级).crx">com.tencent.mqq.android(去升级).crx</a>

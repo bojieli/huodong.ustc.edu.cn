@@ -36,5 +36,8 @@ $course =  array(
     "how-to-install-archon"=>"怎么安装ARChon？",
     "why"=>"为什么？"
     );
-    return array_merge($index,$course);
+$create= array(
+    'app-create-name' => "一个将安卓程序APK转成谷歌浏览器拓展CRX的在线转化器", 
+    );
+    return array_merge($index,$course,$create);
 ?>

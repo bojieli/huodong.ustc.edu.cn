@@ -35,5 +35,8 @@ $course =  array(
     "how-to-install-archon"=>"How to install ARChon ? ",
     "why"=>"Why ? "
     );
-    return array_merge($index,$course);
+    $create= array(
+    'app-create-name' => "Online APK-CRX Converter", 
+    );
+    return array_merge($index,$course,$create);
 ?>
