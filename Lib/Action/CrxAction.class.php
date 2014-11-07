@@ -28,7 +28,7 @@ class CrxAction extends PublicAction{
 
 	$this->assign('count', $count);
 	$this->assign('schools', $schools);
-	$this->display();
+	$this->display("index");
 }
 	public function create(){
 		$this->display();
@@ -277,11 +277,11 @@ public function ajaxGet() {
 	}
 	echo json_encode($elements);
     }
-/*
 public function filelist(){
-	require_once "Common/filelist.php";
+	$this->index();
+	/*require_once "Common/filelist.php";*/
 }
-*/
+
 private function crx2html($crx){
 	if($crx["type"]=="pad"){
 		$HD="HD";

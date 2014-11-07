@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>apk2crx教程及常见问题</title>
+<title>{$Think.lang.jiacheng-long}</title>
 <link href="/static/css1.css" rel="stylesheet" type="text/css" />
 <link href="/static/zhuce.css" rel="stylesheet" type="text/css" />
 <script src="/static/jquery.js" type="text/javascript"></script>
@@ -24,47 +24,46 @@ input{
 <include file="Public:headnav" />
 
 <div class="file-box" style="background:#ddd;padding:50px;">
-	<a href="/Crx"><h4 style="color:blue">返回扩展瀑布流</h4></a>
+	<a href="/Crx"><h4 style="color:blue">{$Think.lang.returnToMainPage}</h4></a>
 	<br />
-	<h2>教程</h2>
+	<h2>{$Think.lang.jiacheng-long}</h2>
 	<br />
-	<h3>Google Chrome 运行Android的apk程序步骤：</h3><br /><br />
-	<b>Step1:</b>下载适合你系统的运行环境ARChon<br /><br />
+	<h3>{$Think.lang.jiaocheng-title}</h3><br /><br />
+	<b>Step 1:</b>{$Think.lang.course-step-1}<br /><br />
 	<a style="color:blue;margin-right:1em" target="_blank" href="http://yun.baidu.com/share/link?shareid=4149832668&uk=2366196373">Baidu</a>
 	<a style="color:blue" target="_blank" href="https://github.com/vladikoff/chromeos-apk/blob/master/archon.md">GitHub</a>
-	<p style="float:right;color:red"><a target="_blank" href="help.html#how-to-install-archon">怎么安装？</a></p>
+	<p style="float:right;color:red"><a target="_blank" href="{$Think.lang.help-url}#how-to-install-archon">{$Think.lang.how-to-install-archon}</a></p>
 <br /><br />
-	<b>Step2:</b>打开 chrome://flags/#enable-nacl，这一项 ，重启浏览器
-	(非常重要)
+	<b>Step 2:</b>{$Think.lang.course-step-2}
 <br /> <br />
-	<b>Step3:</b>使用此平台转化你喜欢的安卓APK并下载后缀名为.crx的文件
+	<b>Step 3:</b>{$Think.lang.course-step-3}
 <br />   <br />
-	<b>Step4:</b>将其拖到chrome://extensions/页面完成安装
-	<p style="float:right;color:red"><a target="_blank" href="help.html#why-crx-install">为什么？</a></p>
+	<b>Step 4:</b>{$Think.lang.course-step-4}
+	<p style="float:right;color:red"><a target="_blank" href="{$Think.lang.help-url}#why-crx-install">{$Think.lang.why}</a></p>
 <br /><br />
 	
 </div>
 
 <div class="file-box" style="background:#ddd;padding:50px;">
-<h2>常见问题</h2>
+<h2>{$Think.lang.faq}</h2>
 <br />
-<h3>我还是无法正常使用APK转化后的谷歌扩展，怎么办？</h3>
+<h3>{$Think.lang.faq-title}</h3>
 <br />
-<b>问题一：浏览器提示不支持WebGL</b>
-<p>解决方案：打开谷歌浏览器高级设置里面的 "使用硬件加速模式" 一项,重启浏览器,如果还是WebGL错误，那就打开chrome://flags/#ignore-gpu-blacklist 这一项</p>
+<b>{$Think.lang.faq-question-1}</b>
+<p>{$Think.lang.faq-answer-1}</p>
 <br />
-<b>问题二：扩展卡在图标页面</b>
-<p>解决方案：检查自己是否完成了教程步骤的第二步</p>
+<b>{$Think.lang.faq-question-2}</b>
+<p>{$Think.lang.faq-answer-2}</p>
 <br />
-<b>问题三：安装扩展提示"无法添加来自此网站的应用、扩展程序和用户脚本。"</b>
-<p>解决方案：扩展程序不能直接安装，需参照教程步骤的第四步。</p>
+<b>{$Think.lang.faq-question-3}</b>
+<p>{$Think.lang.faq-answer-3}</p>
 <br />
-<b>问题四：扩展打开后闪退</b>
-<p>解决方案：如果您能正常运行至少一个程序，说明只是这个程序本身的兼容性问题，可以期待下一个版本修复该问题。</p>
+<b>{$Think.lang.faq-question-4}</b>
+<p>{$Think.lang.faq-answer-4}</p>
 <br />
-<b>其他问题</b>
+<b>{$Think.lang.faq-question-other}</b>
 
-<p>解决方案：先检查自己是否完成教程步骤的每一步，或者将程序.crx后缀改成.zip，解压，在开发者模式中载入该文件夹，看是否正常运行。最后还是无法解决请向我反馈。<a style="color:blue" target="_blank"  href="https://github.com/ustcltx/apk2crx">我要反馈</a></p>
+<p>{$Think.lang.faq-answer-other}</p>
 
 </div>
 
