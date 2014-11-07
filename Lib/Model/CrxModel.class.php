@@ -26,7 +26,7 @@ class CrxModel extends Model {
 	}
 	 public function getCrx($start, $num, $cond = [], $order = '',$have_addition=false) {
 	 	if($have_addition==true){
-	 		return  M("Crx")->join(' ustc_crx_addition ON ustc_crx.id = ustc_crx_addition.id')->where($cond)->limit("$start,$num")->select();
+	 		return  M("Crx")->join(' ustc_crx_addition ON ustc_crx.id = ustc_crx_addition.id')->where($cond)->order($order)->limit("$start,$num")->select();
 	 	}
         		return M('Crx')->where($cond)->order($order)->limit("$start,$num")->select();
     	}

@@ -243,7 +243,7 @@ private function apk2crx($filename,$type="phone"){
                 $order = 'time desc,id desc';
                 break;
              case 'good': 
-            $order = 'id';
+            $order = '`likes`-`dislikes` desc';
              $cond[] = '`likes`>`dislikes`';
              $have_addition = true;
 
