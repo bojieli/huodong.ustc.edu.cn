@@ -41,6 +41,8 @@ class CrxAction extends PublicAction{
 		$info = shell_exec($cmd);
 		if(empty($info)){
 			echo "OK!!!";
+		}else{
+			echo $info;
 		}
 	}
 	public function upload() {
