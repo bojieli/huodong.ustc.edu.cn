@@ -12,7 +12,9 @@ $index = array(
     'quanbushebei'=>'全部设备',
     'jiaocheng'=>"教程",
     'it-work'=>"它工作正常吗？",
-    'vote-for-it'=>"请投票"
+    'vote-for-it'=>"请投票",
+    'translation-jobs'=>"翻译工作",
+    'information-bar'=>"信息栏"
     );
 /* For http://huodong.ustc.edu.cn/Crx/course */
 $course =  array(
