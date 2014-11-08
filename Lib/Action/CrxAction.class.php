@@ -39,11 +39,7 @@ class CrxAction extends PublicAction{
 	public function test(){
 		$cmd = "/usr/local/bin/checkcrx";
 		$info = shell_exec($cmd);
-		if(empty($info)){
-			echo "OK!!!";
-		}else{
-			echo $info;
-		}
+		echo $info;
 	}
 	public function upload() {
 		//var_dump($_FILES);die();
