@@ -161,8 +161,7 @@ class CrxAction extends PublicAction{
 	if(empty($info)){
 		$this->error("页面不存在");
 	}
-	$url = "/Crx/downloadCrx?id=".$id;
-	$url =  L("download")." : <a style='border: 1px solid red;padding: 5px;' href=".$url .">".$info["realname"]."</a>";
+	$url =  L("download")." : <span style='border: 1px solid red;padding: 5px;cursor:pointer' onclick='download_click(".$id.");return false;' >".$info["realname"]."</span>";
 	$this->assign('url', $url);
 	$this->display();
 

@@ -12,6 +12,20 @@
  margin:100px auto;
 }
 </style>
+<script type="text/javascript">
+function download_click(id){
+	if(id>0){
+		storeDS(id);
+		window.location.href = '/Crx/downloadCrx?id='+id;
+	}
+}
+function storeDS(id){
+	if(window.localStorage){
+		file = "app"+id;
+		 localStorage[file]=1;
+	}
+}
+</script>
 </head>
 <body>	
 <include file="Public:headnav" />
