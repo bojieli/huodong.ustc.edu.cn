@@ -1,4 +1,5 @@
 <?php
+/* For http://huodong.ustc.edu.cn/Crx */
 $index = array(
     'zuixinfabu'=>'Newest',
     'pingjiazuijia'=>'Favor',
@@ -10,8 +11,10 @@ $index = array(
     'pingban'=>'Pad',
     'quanbushebei'=>'ALL',
     'jiaocheng'=>"Guide",
-    'help-url'=>"help-en.html"
+    'it-work'=>"It work ? ",
+    'vote-for-it'=>"Vote for it !"
     );
+/* For http://huodong.ustc.edu.cn/Crx/course */
 $course =  array(
     'returnToMainPage' => "Return to the Homepage", 
     'jiacheng-long'=>"Tutorial & Guide",
@@ -35,10 +38,21 @@ $course =  array(
     "how-to-install-archon"=>"How to install ARChon ? ",
     "why"=>"Why ? "
     );
-    $create= array(
+/* For http://huodong.ustc.edu.cn/Crx/create */
+ $create= array(
     'app-create-name' => "Online APK-CRX Converter", 
      'upload'=>"Upload",
      'working'=>"Working"
     );
-    return array_merge($index,$course,$create);
+/* For http://huodong.ustc.edu.cn/Crx/help */
+$help  = array(
+    'help-1-1' => "1. Unzip the file", 
+    'help-1-2'=>'2. Go to chrome://extensions/ , enable Developer Mode，click on the Unpacked Extension button , navigate to the vladikoff-archon-xxx folder,hightlight it and click Open . ',
+    'why-install-archon-this-way'=>"Why do you need to install Google-Chrome Extension in this way ? ",
+    'help-2-1'=>"Perhaps for security reasons, Google-Chrome is unable to install third-party extensions directly . You must enable Developer Mode, drag and drop the Google-Chrome extensions into the chrome://extensions/ page in the browser and it will be installed in your browser. "
+    );
+      $info  = array(
+        'download' => "Download", 
+    );
+    return array_merge($index,$course,$create,$help,$info);
 ?>

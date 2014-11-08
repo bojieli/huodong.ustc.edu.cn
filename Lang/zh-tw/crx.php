@@ -1,4 +1,5 @@
 <?php
+/* For http://huodong.ustc.edu.cn/Crx */
 $index = array(
     'zuixinfabu'=>'最新發布',
     'pingjiazuijia'=>'評價最佳',
@@ -10,8 +11,10 @@ $index = array(
     'pingban'=>'平板',
     'quanbushebei'=>'全部設備',
     'jiaocheng'=>"教程",
-    'help-url'=>"help-tw.html"
+    'it-work'=>"它工作正常嗎？",
+    'vote-for-it'=>"請投票"
     );
+/* For http://huodong.ustc.edu.cn/Crx/course */
 $course =  array(
     'returnToMainPage' => "返回擴展瀑布流", 
     'jiacheng-long'=>"教程",
@@ -36,10 +39,21 @@ $course =  array(
     "how-to-install-archon"=>"怎麼安裝ARChon？",
     "why"=>"為什麼？"
     );
+/* For http://huodong.ustc.edu.cn/Crx/create */
 $create= array(
     'app-create-name' => "一個將安卓程序APK轉成谷歌瀏覽器拓展CRX的在線轉化器", 
     'upload'=>"上傳",
     'working'=>"正在工作..."
     );
-    return array_merge($index,$course,$create);
+/* For http://huodong.ustc.edu.cn/Crx/help */
+$help  = array(
+    'help-1-1' => "1、解壓下載到的壓縮包", 
+    'help-1-2'=>'2、在chrome://extensions/,勾上開發者模式，點擊"加載正在開發的擴展程序...",載入上步解壓後的文件夾',
+    'why-install-archon-this-way'=>"為什麼要這樣安裝谷歌擴展？",
+    'help-2-1'=>"或許處于安全考慮，谷歌瀏覽器是無法直接安裝非應用商店的擴展的。必須在開發者模式打開下，將crx文件拖到chrome://extensions/界面來完成安裝擴展。"
+    );
+    $info  = array(
+        'download' => "下載", 
+    );
+    return array_merge($index,$course,$create,$help,$info);
 ?>

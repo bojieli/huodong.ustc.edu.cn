@@ -41,6 +41,21 @@ class CrxAction extends PublicAction{
 		$info = shell_exec($cmd);
 		echo $info;
 	}
+	public function help(){
+		$this->display();
+	}
+	public function translate(){
+		$php  = array("common","crx");
+		$basepath = "Lang/en-us/";
+		foreach ($php as $key => $name) {
+			$url = $basepath.$name.".php";
+			if (file_exists($url)) {
+			    $info[$name] =  "Last Modified: " . date ("F d Y H:i:s.", filemtime($url));
+			}
+		}
+		$this->assign('file',$info);
+		$this->display();
+	}
 	public function upload() {
 		//var_dump($_FILES);die();
         import("ORG.Net.UploadFile");
@@ -147,7 +162,7 @@ class CrxAction extends PublicAction{
 		$this->error("页面不存在");
 	}
 	$url = "/Crx/downloadCrx?id=".$id;
-	$url =  "下载：<a style='border: 1px solid red;padding: 5px;' href=".$url .">".$info["realname"]."</a>";
+	$url =  L("download")." : <a style='border: 1px solid red;padding: 5px;' href=".$url .">".$info["realname"]."</a>";
 	$this->assign('url', $url);
 	$this->display();
 
@@ -326,7 +341,7 @@ private function crx2html($crx){
 						 	<span id = "like_'.$crx['id'].'"  class="rate">'.$crx['like'].'</span>
 						</span>
 					</div>
-					<div style="display:none" id="pj-'.$crx['id'].'">它工作正常吗？<b style="color:#2FA6C8;">请投票</b></div>
+					<div style="display:none" id="pj-'.$crx['id'].'">'.L("it-work").'<b style="color:#2FA6C8;">'.L("vote-for-it").'</b></div>
 					<div class="download_click" style="cursor: pointer;" onclick="download_click('.$crx['id'].');return false;">
 						<span>
 						<img src="/static/images/download.png" onload="checkDS('.$crx['id'].')">
@@ -368,6 +383,29 @@ public function vote(){
         header( "Content-Disposition:   attachment;   filename= {$name}"); 
         readfile($filename); 
         D("Crx")->addDownload($id);
+    }
+    private function downloadFile($filepath){
+     
+        if(!file_exists($filepath))
+        {
+            $this->error("文件不存在！");
+        }
+        $filename=realpath($filepath);  //文件名
+        $name = basename($filename,".php")."-".substr(md5_file($filename), 0,6).".php";
+        Header( "Content-type:   application/octet-stream "); 
+        Header( "Content-Length: " .filesize($filename));
+        Header( "Accept-Ranges:   bytes ");     
+        header( "Content-Disposition:   attachment;   filename= {$name}"); 
+        readfile($filename);
+    }
+    public function downloadT(){
+    	$php  = array("common.php","crx.php");
+    	$name = $this->_get("t");
+    	if(in_array($name,$php)){
+    		$basepath = "Lang/en-us/";
+	    	$url = $basepath.$name;
+	    	$this->downloadFile($url); 
+    	}
     }
     public function del(){
     	global $_G;
