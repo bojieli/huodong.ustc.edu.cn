@@ -137,6 +137,7 @@ function like(id)
 	}
 	dom.attr("clicked", true);
 	dom.attr('title','已点过');
+	cleanDS(id);	
 	$.get('/Crx/vote?vote=like&id='+id, {}, function (res) {
 		$("#like_"+id).html(parseInt(rate)+1);
 	},'json');
@@ -151,9 +152,41 @@ function dislike(id)
 	}
 	dom.attr("clicked", true);
 	dom.attr('title','已点过');
+	cleanDS(id)
 	$.get('/Crx/vote?vote=dislike&id='+id, {}, function (res) {
 			$("#dislike_"+id).html(parseInt(rate)+1);
 	},'json');
+}
+function download_click(id){
+	if(id>0){
+		storeDS(id);
+		window.location.href = '/Crx/downloadCrx?id='+id;
+	}
+}
+function storeDS(id){
+	if(window.localStorage){
+		file = "app"+id;
+		 localStorage[file]=1;
+	}
+}
+function checkDS(id){
+	if(window.localStorage){
+		file = "app"+id;
+		if(localStorage[file]==1){
+			$("#pj-"+id).parent().find(".download_click").fadeOut();
+			$("#pj-"+id).fadeIn();
+		}
+	}
+}
+function cleanDS(id){
+	file = "app"+id;
+	if(window.localStorage){
+		 localStorage[file]=0;
+	 }
+	$("#pj-"+id).html("感谢您的投票^_^").delay(1000).hide(600,function(){
+			$("#pj-"+id).parent().find(".download_click").fadeIn();
+	}); 
+	
 }
 </script>
 

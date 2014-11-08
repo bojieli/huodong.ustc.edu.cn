@@ -268,8 +268,6 @@ public function ajaxGet() {
 	//$infos = $Item->getAllItem();
 
 	foreach ($infos as $key => $info) {
-		$url = "/Crx/downloadCrx?id=".$info["id"];
-		$infos[$key]["url"] = $url;
 		$addition =  $Item->getItemAddition($info['id']);
 		 $infos[$key]["like"] = (empty($addition['likes'])) ? 0 : $addition['likes'];
 		 $infos[$key]["dislike"] =  (empty($addition['dislikes'])) ? 0 :  $addition['dislikes'];
@@ -323,12 +321,13 @@ private function crx2html($crx){
 						 	<span id = "like_'.$crx['id'].'"  class="rate">'.$crx['like'].'</span>
 						</span>
 					</div>
-					<a href='.$crx["url"].'>
+					<div style="display:none" id="pj-'.$crx['id'].'">它工作正常吗？<b style="color:#2FA6C8;">请投票</b></div>
+					<div class="download_click" style="cursor: pointer;" onclick="download_click('.$crx['id'].');return false;">
 						<span>
-						<img src="/static/images/download.png">
+						<img src="/static/images/download.png" onload="checkDS('.$crx['id'].')">
 						</span>
 						<span class="download_count">'.$crx["download_count"].'</span>	
-					</a>
+					</div>
 				</div>
 			</div>
 	</li>';
