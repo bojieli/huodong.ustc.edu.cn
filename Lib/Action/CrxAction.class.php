@@ -36,6 +36,10 @@ class CrxAction extends PublicAction{
 	public function course(){
 		$this->display();
 	}
+	public function test(){
+		$cmd = "/usr/local/bin/checkcrx";
+		echo shell_exec($cmd);
+	}
 	public function upload() {
 		//var_dump($_FILES);die();
         import("ORG.Net.UploadFile");
