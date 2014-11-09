@@ -57,7 +57,7 @@ class CrxAction extends PublicAction{
 		$this->display();
 	}
 	public function upload() {
-		var_dump($_FILES);die();
+		//var_dump($_FILES);die();
         import("ORG.Net.UploadFile");
         $upload = new UploadFile();
         $upload->maxSize = 100 * 1024 * 1024;
@@ -75,8 +75,8 @@ class CrxAction extends PublicAction{
     public function uploadAPK(){
 
 			$filename = $this->upload();
-			echo "网站正在修复BUG！";
-			var_dump($filename);die();
+			//echo "网站正在修复BUG！";
+			//var_dump($filename);die();
 			if (!$filename) {
 				$this->error("您必须上传APK格式文件！");
 			}
