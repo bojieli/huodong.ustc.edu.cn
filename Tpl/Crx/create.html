@@ -150,7 +150,9 @@ Pad：
                        return;
                     },
                     onError: function(event, name, error) {
-                        alert('error while uploading file ' + name);
+                    	 $("#progress_report_error").text('error while uploading file ' + name);
+                       	 $("#upload_button").text("{$Think.lang.upload}");
+                       	 $("#upload_button").fadeOut();
                     },
                     autostart: false,
             	      extraFields: {type:$('input[name=type]:checked').val()}, 
