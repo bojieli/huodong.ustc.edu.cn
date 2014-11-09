@@ -79,5 +79,10 @@ class CrxModel extends Model {
 	    	return M("Crx")->where($con)->delete();
 	    	
 	    }
+	    public function getKeyword($keyword){
+	    	$subQuery = "SELECT `name` FROM `ustc_crx` WHERE ( `name` LIKE '%".$keyword."%' ) UNION SELECT `realname` FROM `ustc_crx` WHERE ( `realname` LIKE '%".$keyword."%' ) order by name limit 10";
+	    	$info = M("Crx")->query($subQuery);
+		 return $info;
+	    }
 }
 ?>

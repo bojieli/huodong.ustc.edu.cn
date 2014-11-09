@@ -460,6 +460,19 @@ public function vote(){
     		$this->success(["id"=>0]);
     	}
     }
+    public function autocomplete(){
+    	$keyword = $this->_get("query");
+    	$Item = D("Crx");
+    	$q = $Item->getKeyword($keyword);
+    	$info["query"] = "Unit";
+    	foreach ($q as $key => $value) {
+	    	$info["suggestions"][] = array(
+	    		'value' => $value["name"],
+	    		'data' => $value["name"] 
+	    		);
+	 }
+    	echo json_encode($info);
+    }
 
 }
 ?>

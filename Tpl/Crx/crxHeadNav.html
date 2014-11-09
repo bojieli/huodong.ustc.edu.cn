@@ -1,4 +1,4 @@
-
+	
 	<div class="cont">
     	<div class="kuang">
     		<a href="/Crx?order=new<if condition="$Think.get.keyword != ''">&keyword={$Think.get.keyword}</if><if condition="$Think.get.type != ''">&type={$Think.get.type}</if>">
@@ -24,9 +24,9 @@
     	
 	<form method='get' action="/Crx">
         <div class="kuang" style="width:230px;">
-        	<input type="text" name="keyword" class="searchcss_out" onfocus="this.className='searchcss_on'" onblur="this.className='searchcss_out'" value="{$Think.get.keyword}">
-			<input type="hidden" name="type" value="{$Think.get.type}">
-			<input type="hidden" name="order" value="{$Think.get.order}">
+        	<input type="text" name="keyword" id="query" class="searchcss_out" onfocus="this.className='searchcss_on'" onblur="this.className='searchcss_out'" value="{$Think.get.keyword}" autocomplete="off">
+	<input type="hidden" name="type" value="{$Think.get.type}">
+	<input type="hidden" name="order" value="{$Think.get.order}">
             <input type='submit' class="searchbutton" style="float:left;" value='{$Think.lang.sousuo}'/>
         </div>
 		</form>
@@ -59,6 +59,13 @@
 #school_div select:hover{
 	border:1px solid RGB(116, 185, 239);	
    }
+.autocomplete-suggestions { overflow: auto; border: 1px solid #CBD3DD; background: #FFF; }
+
+.autocomplete-suggestion { overflow: hidden; padding: 5px 15px; white-space: nowrap; }
+
+.autocomplete-selected { background: #F0F0F0; }
+
+.autocomplete-suggestions strong { color: #029cca; font-weight: normal; }
 </style>
         
 		<div class="ykuang" id="school_div"><span style="color:#F00;">{$Think.lang.xuanzeshebei}：</span>
@@ -89,6 +96,13 @@
 			$("#school_url").change(function(){
 				location.href = $("#school_url").val();
 			});
+			$('#query').autocomplete({
+			    serviceUrl: '/Crx/autocomplete',
+			    onSelect: function (suggestion) {
+			        alert('You selected: ' + suggestion.value + ', ' + suggestion.data);
+			    }
+			});
 		</script>
+		
 		
     </div>
