@@ -75,8 +75,8 @@ class CrxAction extends PublicAction{
     public function uploadAPK(){
 
 			$filename = $this->upload();
-			//echo "网站正在修复BUG！";
-			//svar_dump($filename);die();
+			echo "网站正在修复BUG！";
+			var_dump($filename);die();
 			if (!$filename) {
 				$this->error("您必须上传APK格式文件！");
 			}
