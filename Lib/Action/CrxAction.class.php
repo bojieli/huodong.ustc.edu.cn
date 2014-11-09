@@ -57,7 +57,7 @@ class CrxAction extends PublicAction{
 		$this->display();
 	}
 	public function upload() {
-		//var_dump($_FILES);die();
+		var_dump($_FILES);die();
         import("ORG.Net.UploadFile");
         $upload = new UploadFile();
         $upload->maxSize = 100 * 1024 * 1024;
