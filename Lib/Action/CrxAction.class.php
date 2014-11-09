@@ -1,5 +1,4 @@
 <?php
-set_time_limit(0);
 class CrxAction extends PublicAction{
 	public function index(){
 
@@ -72,6 +71,9 @@ class CrxAction extends PublicAction{
 			return $info[0]["savename"];
         }
     }
+    public function uploadTest(){
+	dump($_POST);
+    }
     public function uploadAPK(){
 
 			$filename = $this->upload();
@@ -112,7 +114,9 @@ class CrxAction extends PublicAction{
 				$re = $Item->getItemByHash($infos["apkHash"],$type);
 				$infos["id"]=$re["id"];
 			}			
-			$this->redirect("/Crx/info?id=".$infos["id"]);
+			$info_upload["id"] = $infos["id"];
+			$this->success($info_upload);
+			/*$this->redirect("/Crx/info?id=".$infos["id"]);*/
 	}
    public function uploadHash(){
    	$type = $this->_post("type");
@@ -169,7 +173,6 @@ class CrxAction extends PublicAction{
 
    }
    public function convertAllAPK(){
-   			set_time_limit(0);
    			$run = $this->_get("run");
    			if(empty($run)){
    				return;
