@@ -171,7 +171,7 @@ class CrxAction extends PublicAction{
 	if(empty($info)){
 		$this->error("页面不存在");
 	}
-	$info["htime"]=date('F jS, Y h:i:s', $info["time"]);
+	$info["htime"]= tranTime($info["time"]);
 	$addition = $Item->getItemAddition($info["id"]);
 
 	if(strtolower(cookie('think_language'))=="zh-cn"){
