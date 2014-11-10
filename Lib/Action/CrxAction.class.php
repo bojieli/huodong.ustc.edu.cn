@@ -162,6 +162,7 @@ class CrxAction extends PublicAction{
    }
    public function info(){
    	$id = $this->_get("id");
+   	$c = $this->_get("c");
    	$Item = D("Crx");
 	$info = $Item->getItem($id);
 	if(empty($info)){
@@ -173,11 +174,14 @@ class CrxAction extends PublicAction{
 	}
 	$info["htime"]= $this->tranTime($info["time"]);
 	$addition = $Item->getItemAddition($info["id"]);
-
-	if(strtolower(cookie('think_language'))=="zh-cn"){
-		$pl = "duoshuo";
+	if(empty($c)){
+		if(strtolower(cookie('think_language'))=="zh-cn"){
+			$pl = "duoshuo";
+		}else{
+			$pl = "disqus";
+		}
 	}else{
-		$pl = "disqus";
+		$pl = $c;
 	}
 	if(!empty($addition)){
 		$info = array_merge($info,$addition);

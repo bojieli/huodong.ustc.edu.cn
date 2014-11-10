@@ -265,6 +265,20 @@ border-radius: 4px;
 	<div class="box-right">
 		<div class="box-contain" style="margin-right:0">
 			<div class="file-area" style="padding:2em">
+				<div class="comment-switch">
+				<eq name="pl" value="duoshuo">
+				<a href="__SELF__&c=disqus">
+					{$Think.lang.go-to-disqus}
+				</a>
+				<else/>
+				<a href="__SELF__&c=duoshuo">
+					{$Think.lang.go-to-duoshuo}
+				</a>
+				</eq>
+				
+				
+
+				</div>
 				<div class="comments-box" style="margin-top:1em;height:100%">
 					<eq name="pl" value="duoshuo">
 					<include file="Public:duoshuo" />

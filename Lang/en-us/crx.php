@@ -62,7 +62,9 @@ $help  = array(
          'apk-name'=>"APK Name",
          'version-name'=>"Version Name",
          'vote-title'=>"Result of Vote for Application Testing",
-           'all-versions'=>"All Versions"
+        'all-versions'=>"All Versions",
+         'go-to-disqus'=>"Switch to Disqus",
+        'go-to-duoshuo'=>"Switch to Duoshuo"
     );
     return array_merge($index,$course,$create,$help,$info);
 ?>

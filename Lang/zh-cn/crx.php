@@ -63,7 +63,9 @@ $help  = array(
         'apk-name'=>"APK名称",
         'version-name'=>"版本",
         'vote-title'=>"APP运行状况投票结果",
-        'all-versions'=>"所有版本"
+        'all-versions'=>"所有版本",
+        'go-to-disqus'=>"切换到Disqus评论",
+        'go-to-duoshuo'=>"切换到多说评论"
     );
     return array_merge($index,$course,$create,$help,$info);
 ?>
