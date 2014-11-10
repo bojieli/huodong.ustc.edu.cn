@@ -88,7 +88,7 @@ class CrxModel extends Model {
 	    	$con["name"]=$name;
 	    	$info = M("Crx")->where($con)->order("versionCode desc")->select();
 	    	foreach ($info as $key => $value) {
-	    		$info[$key]["htime"]=tranTime($value["time"]);
+	    		$info[$key]["htime"]=A("Crx")->tranTime($value["time"]);
 	    	}
 	    	return $info;
 	    }

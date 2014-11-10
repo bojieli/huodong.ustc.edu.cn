@@ -171,7 +171,7 @@ class CrxAction extends PublicAction{
 	if(empty($info)){
 		$this->error("页面不存在");
 	}
-	$info["htime"]= tranTime($info["time"]);
+	$info["htime"]= $this->tranTime($info["time"]);
 	$addition = $Item->getItemAddition($info["id"]);
 
 	if(strtolower(cookie('think_language'))=="zh-cn"){
@@ -495,6 +495,35 @@ public function vote(){
 	 }
     	echo json_encode($info);
     }
+    public function tranTime($time) {  
+    $rtime = date("m-d H:i",$time);  
+    $htime = date("H:i",$time);  
+      
+    $time = time() - $time;  
+  
+    if ($time < 60) {  
+        $str = L("ganggang");  
+    }  
+    elseif ($time < 60 * 60) {  
+        $min = floor($time/60);  
+        $str = $min." ".L('minutes-ago');  
+    }  
+    elseif ($time < 60 * 60 * 24) {  
+        $h = floor($time/(60*60));  
+        $str = $h.L("hours-ago")." ".$htime;  
+    }  
+    elseif ($time < 60 * 60 * 24 * 3) {  
+        $d = floor($time/(60*60*24));  
+        if($d==1)  
+           $str = L("yesterday")." ".$rtime;  
+        else  
+           $str = L("the-day-before")." ".$rtime;  
+    }  
+    else {  
+        $str = $rtime;  
+    }  
+    return $str;  
+}
 
 }
 ?>
