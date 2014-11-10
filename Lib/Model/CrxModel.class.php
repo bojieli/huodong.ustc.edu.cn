@@ -86,7 +86,11 @@ class CrxModel extends Model {
 	    }
 	    public function getSameNameApp($name){
 	    	$con["name"]=$name;
-	    	return M("Crx")->where($con)->order("versionCode desc")->select();
+	    	$info = M("Crx")->where($con)->order("versionCode desc")->select();
+	    	foreach ($info as $key => $value) {
+	    		$info[$key]["htime"]=date('F jS, Y h:i:s', $value["time"]);
+	    	}
+	    	return $info;
 	    }
 }
 ?>
