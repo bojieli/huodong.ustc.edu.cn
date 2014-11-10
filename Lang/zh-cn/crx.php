@@ -56,6 +56,14 @@ $help  = array(
     );
     $info  = array(
         'download' => "下载", 
+        'cixiazai'=>"次下载",
+        'ctime'=>"产生时间",
+        'application-details'=>"应用详情",
+        'product-name'=>"软件名称",
+        'apk-name'=>"APK名称",
+        'version-name'=>"版本",
+        'vote-title'=>"APP运行状况投票结果",
+        'all-versions'=>"所有版本"
     );
     return array_merge($index,$course,$create,$help,$info);
 ?>

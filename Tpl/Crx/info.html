@@ -164,7 +164,7 @@ border-radius: 4px;
 			</h1>
 			<div class="media-intro apk-view-intro">
 				<span class="pull-left hidden-sm hidden-xs">
-				{$info["download_count"]}次下载 ,转化时间&nbsp;{$info["htime"]}
+				{$info["download_count"]}&nbsp;{$Think.lang.cixiazai} ,{$Think.lang.ctime}&nbsp;{$info["htime"]}
 				</span>
 			</div>
 			<div class="media-btns">
@@ -198,18 +198,18 @@ border-radius: 4px;
 	<div class="box-left">
 		<div class="box-contain" style="margin-left:0">
 			<div class="box-info">
-				<div class="box-title">应用详情</div>
+				<div class="box-title">{$Think.lang.application-details}</div>
 				<div class="box-content">
-					<p>软件名称：{$info["realname"]}</p>
-					<p>APK名称：{$info["name"]}</p>
-					<p>版本：{$info["versionName"]}</p>
-					<p>转化时间：{$info["htime"]}</p>
+					<p>{$Think.lang.product-name}：{$info["realname"]}</p>
+					<p>{$Think.lang.apk-name}：{$info["name"]}</p>
+					<p>{$Think.lang.version-name}：{$info["versionName"]}</p>
+					<p>{$Think.lang.ctime}：{$info["htime"]}</p>
 				</div>
 			</div>
 		</div>
 		<div class="box-contain" style="margin-left:0">
 			<div class="box-info">
-				<div class="box-title">APP运行状况投票结果</div>
+				<div class="box-title">{$Think.lang.vote-title}</div>
 				<div class="box-content">
 					 
 					  <span class="unhappy">
@@ -238,7 +238,7 @@ border-radius: 4px;
 		</div>
 		<div class="box-contain" style="margin-left:0">
 			<div class="box-info">
-				<div class="box-title">历史版本</div>
+				<div class="box-title">{$Think.lang.all-versions}</div>
 				<div class="box-content">
 					<volist name="other" id="vo">
 					<div class="other-app" style="min-height:4em">
@@ -253,7 +253,7 @@ border-radius: 4px;
 						<span><a href="/Crx/info?id={$vo['id']}">{$vo.realname}</a><eq name="vo['type']" value="pad">&nbsp;For Pad</eq> &nbsp; {$vo.versionName}
 
 						<br />
-							<span class="apk-view-intro">{$vo["download_count"]}次下载 ,转化时间&nbsp;{$vo["htime"]}
+							<span class="apk-view-intro">{$vo["download_count"]}&nbsp;{$Think.lang.cixiazai} ,{$Think.lang.ctime}&nbsp;{$vo["htime"]}
 							</span>
 						</span>
 					</div>

@@ -55,6 +55,14 @@ $help  = array(
     );
       $info  = array(
         'download' => "Download", 
+        'cixiazai'=>"Downloads",
+        'ctime'=>"Formation Time",
+        'application-details'=>"Application Details",
+        'product-name'=>"Product Name",
+         'apk-name'=>"APK Name",
+         'version-name'=>"Version Name",
+         'vote-title'=>"Result of Vote for Application Testing",
+           'all-versions'=>"All Versions"
     );
     return array_merge($index,$course,$create,$help,$info);
 ?>
