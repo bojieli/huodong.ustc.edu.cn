@@ -6,12 +6,6 @@
 <link href="/static/css1.css" rel="stylesheet" type="text/css" />
 <link href="/static/zhuce.css" rel="stylesheet" type="text/css" />
 <script src="/static/jquery.js" type="text/javascript"></script>
-<style type="text/css">
-.file-box{
- width:300px;
- margin:100px auto;
-}
-</style>
 <script type="text/javascript">
 function download_click(id){
 	if(id>0){
@@ -26,13 +20,262 @@ function storeDS(id){
 	}
 }
 </script>
+<style type="text/css">
+body{
+	background-color: #e3e3e3;
+	font-family: "微软雅黑","Microsoft YaHei",Monaco,"Helvetica Neue",Helvetica,Arial,sans-serif;
+}
+.file-box{
+ width:970px;
+ margin:1em auto;
+}
+.page-header {
+background-color: #fafafa;
+border-bottom: 1px solid #e3e3e3;
+}
+.container {
+width: 970px;
+max-width: none !important;
+margin-right: auto;
+margin-left: auto;
+}
+.box-contain{
+	margin: 1em;
+	background-color: #fafafa;
+}
+.page-topbar {
+padding-top: 18px;
+padding-bottom: 18px;
+overflow: visible;
+}
+.apk-view-logo {
+margin-right: 15px;
+text-align: center;
+float: left
+}
+.page-topbar .apk-view-logo img {
+margin: 0;
+width: 90px;
+height: 90px;
+border: none;
+}
+.page-topbar .media-body {
+padding-left: 105px;
+overflow: visible;
+}
+.page-topbar h1.apk-view-title {
+color: #333333;
+font-size: 21px;
+line-height: 1.1;
+font-family: inherit;
+font-weight: normal;
+}
+.page-topbar h1>small {
+font-size: 75%;
+font-weight: 400;
+line-height: 1;
+color: #777;
+}
+.apk-view-intro {
+margin: 5px 0 0;
+font-size: 12px;
+color: #8d8d8d;
+}
+.media-btns{
+	margin-top: 0.3em;
+}
+.btn-success {
+color: #fff;
+background-color: #5BE1AC;
+border-color: #4cae4c;
+}
+.btn {
+display: inline-block;
+padding: 6px 12px;
+margin-bottom: 0;
+font-size: 14px;
+font-weight: 400;
+line-height: 1.42857143;
+text-align: center;
+white-space: nowrap;
+vertical-align: middle;
+cursor: pointer;
+-webkit-user-select: none;
+-moz-user-select: none;
+-ms-user-select: none;
+user-select: none;
+background-image: none;
+border: 1px solid transparent;
+border-radius: 4px;
+}
+.box-left{
+	float: left;
+	width: 42%;
+	
+
+}
+.box-right{
+	float:left;
+	width: 58%;
+}
+.box-title{
+	margin: 0 1em;
+	padding: 0.5em;
+	color: #111111;
+	border-bottom: 2px solid;
+	border-color: #eaedee;
+	border-color: rgba(0,39,59,.08);
+}
+.box-content{
+	padding: 1em;
+	color: #333;
+	min-height: 3em;
+}
+.happy img,.unhappy img{
+	width:3em;
+}
+.happy{
+	float: right;
+}
+.font-large-number{
+	font-size: 3.5em;
+}
+</style>
+
+
 </head>
 <body>	
 <include file="Public:headnav" />
-<div class="file-box" style="width:600px;background:#ddd;padding:50px;">
-<a href="/Crx"><h4 style="color:blue">{$Think.lang.returnToMainPage}</h4></a>
-<br />
-{$url}
+
+<div class="page-header">
+	<div class="container">
+		<div class="page-topbar">
+		<a class="apk-view-logo">
+		<notempty name="info['iconHash']">
+			<img src="/upload/apk/bak/{$info[iconHash]}.png" alt="{$info['realname']}">
+		<else />
+			<img src="/static/images/icon.png" alt="{$info['realname']}">
+		</notempty>
+		</a>
+
+		<div class="media-body">
+
+			<h1 class="media-heading apk-view-title">{$info["realname"]} &nbsp;<small>{$info["versionName"]}</small>
+			</h1>
+			<div class="media-intro apk-view-intro">
+				<span class="pull-left hidden-sm hidden-xs">
+				{$info["download_count"]}次下载 ,转化时间&nbsp;{$info["htime"]}
+				</span>
+			</div>
+			<div class="media-btns">
+				
+
+				<span class="btn btn-success" class="download_icon" style="cursor: pointer;" onclick="download_click({$info['id']});return false;">
+				<img src="/static/images/download2.png">
+				</span>
+				<a href="https://play.google.com/store/apps/details?id={$info['name']}">
+				<span class="google-play" style="float:right">
+					<img style="width:8em" src="/static/images/play_logo.png">
+				</span>
+				</a>
+				<a href="/Crx"><span style="float:right;margin-right:1em;color:#716A6A">{$Think.lang.returnToMainPage}</span></a>
+				
+				
+			</div>
+		</div>	
+		</div>
+	</div>
+</div>
+
+
+
+
+
+
+<div class="file-box" style="min-height:900px">
+
+<div class="file-area" >
+	<div class="box-left">
+		<div class="box-contain" style="margin-left:0">
+			<div class="box-info">
+				<div class="box-title">应用详情</div>
+				<div class="box-content">
+					<p>软件名称：{$info["realname"]}</p>
+					<p>APK名称：{$info["name"]}</p>
+					<p>版本：{$info["versionName"]}</p>
+					<p>转化时间：{$info["htime"]}</p>
+				</div>
+			</div>
+		</div>
+		<div class="box-contain" style="margin-left:0">
+			<div class="box-info">
+				<div class="box-title">APP运行状况投票结果</div>
+				<div class="box-content">
+					 
+					  <span class="unhappy">
+					  	<img src="/static/images/unhappy">
+					  	<span class="font-large-number">
+					  	<notempty name="info['dislikes']">
+					  	{$info["dislikes"]}
+					  	<else />
+					  	0
+					  	</notempty>
+					  	</span>
+					  </span>
+					  <span class="happy">
+					  	<img src="/static/images/happy">
+					  	<span class="font-large-number">
+					  	<notempty name="info['likes']">
+					  	{$info["likes"]}
+					  	<else />
+					  	0
+					  	</notempty>
+					  	</span>
+					  </span>
+					
+				</div>
+			</div>
+		</div>
+		<div class="box-contain" style="margin-left:0">
+			<div class="box-info">
+				<div class="box-title">历史版本</div>
+				<div class="box-content">
+					<volist name="other" id="vo">
+					<div class="other-app" style="min-height:4em">
+						<a class="apk-view-logo" href="/Crx/info?id={$vo['id']}">
+							<notempty name="vo['iconHash']">
+								<img src="/upload/apk/bak/{$vo['iconHash']}.png" alt="{$vo['realname']}" style="width:50px">
+							<else />
+								<img src="/static/images/icon.png" alt="{$vo['realname']}" style="width:50px">
+							</notempty>
+						</a>
+
+						<span><a href="/Crx/info?id={$vo['id']}">{$vo.realname}</a><eq name="vo['type']" value="pad">&nbsp;For Pad</eq> &nbsp; {$vo.versionName}
+
+						<br />
+							<span class="apk-view-intro">{$info["download_count"]}次下载 ,转化时间&nbsp;{$info["htime"]}
+							</span>
+						</span>
+					</div>
+					 </volist>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="box-right">
+		<div class="box-contain" style="margin-right:0">
+			<div class="file-area" style="padding:2em">
+				<div class="comments-box" style="margin-top:1em;height:100%">
+					<eq name="pl" value="duoshuo">
+					<include file="Public:duoshuo" />
+					<else/>
+					<include file="Public:disqus" />
+					</eq>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
 </div>
  </body>
 </html>

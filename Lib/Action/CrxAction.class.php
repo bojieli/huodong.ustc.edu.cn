@@ -167,8 +167,25 @@ class CrxAction extends PublicAction{
 	if(empty($info)){
 		$this->error("页面不存在");
 	}
-	$url =  L("download")." : <span style='border: 1px solid red;padding: 5px;cursor:pointer' onclick='download_click(".$id.");return false;' >".$info["realname"]."</span>";
-	$this->assign('url', $url);
+	$apk = $info["name"];
+	if(empty($info)){
+		$this->error("页面不存在");
+	}
+	$info["htime"]=date('F jS, Y h:i:s', $info["time"]);
+	$addition = $Item->getItemAddition($info["id"]);
+
+	if(strtolower(cookie('think_language'))=="zh-cn"){
+		$pl = "duoshuo";
+	}else{
+		$pl = "disqus";
+	}
+	if(!empty($addition)){
+		$info = array_merge($info,$addition);
+	}
+	/*dump($Item->getSameNameApp($info["name"]));*/
+	$this->assign('other',$Item->getSameNameApp($info["name"]));
+	$this->assign('info',$info);
+	$this->assign('pl',$pl);
 	$this->display();
 
    }
@@ -327,7 +344,7 @@ private function crx2html($crx){
 	<li class="hide animated fadeInUp">	
 			<div class="celldiv" align="center" itemscope itemtype="http://data-vocabulary.org/Event">
 			'.$del.'
-			<img src="'.$icon_url.'" style="width:7em" />	
+			<a href="/Crx/info?id='.$crx["id"].'"><img src="'.$icon_url.'" style="width:7em" /></a>	
 
 				<div class="detail">					
 					<a href="/Crx/info?id='.$crx["id"].'">

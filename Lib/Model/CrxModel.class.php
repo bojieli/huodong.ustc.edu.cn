@@ -84,5 +84,9 @@ class CrxModel extends Model {
 	    	$info = M("Crx")->query($subQuery);
 		 return $info;
 	    }
+	    public function getSameNameApp($name){
+	    	$con["name"]=$name;
+	    	return M("Crx")->where($con)->order("versionCode desc")->select();
+	    }
 }
 ?>
