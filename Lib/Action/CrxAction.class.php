@@ -96,7 +96,7 @@ class CrxAction extends PublicAction{
 				$infos = $info;
 			}else{
 				$info_tmp = explode("#", $info);
-				if( empty(trim($info_tmp[1])) || trim($info_tmp[2]) ){
+				if( empty(trim($info_tmp[1])) || empty(trim($info_tmp[2])) ){
 					$this->error("上传APK包名为空");
 				}
 				$infos  = array(
