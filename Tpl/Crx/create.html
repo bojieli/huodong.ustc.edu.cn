@@ -105,10 +105,16 @@ Pad：
 		}, "json");
 
 	}
-	function needUpload(){
+	function needUpload(lock){
 		var hash=$("#hash").val();
-		$("#upload_button").text("{$Think.lang.working}");
+                            $("#upload_button").css("background","rgb(179,179,179)");
+                            $("#upload_button").css("cursor","wait");
+		  $("#upload_button").text("{$Think.lang.working}");
 		getIdByHash(hash);
+                        if(lock==1){
+                            return false;
+                        }
+                        $("#upload_lock").val(lock);
 		return true;
 	}
 	
@@ -143,6 +149,8 @@ Pad：
                        if(data.status==0){
                        	 $("#progress_report_error").text(data.info);
                        	 $("#upload_button").text("{$Think.lang.upload}");
+                           $("#upload_button").css("background","#444");
+                            $("#upload_button").css("cursor","pointer");
                        	 $("#upload_button").fadeOut();
                        }else{
                        	window.location.href = "/Crx/info?id="+data.info.id;
@@ -152,6 +160,8 @@ Pad：
                     onError: function(event, name, error) {
                     	 $("#progress_report_error").text('error while uploading file ' + name);
                        	 $("#upload_button").text("{$Think.lang.upload}");
+                           $("#upload_button").css("background","#444");
+                            $("#upload_button").css("cursor","pointer");
                        	 $("#upload_button").fadeOut();
                     },
                     autostart: false,
@@ -174,7 +184,9 @@ key4
 -->
 
 <!--</form>-->
-<button id="upload_button" onclick="needUpload();" style="display:none;cursor:pointer;border:0px; background:#444; padding:5px 20px;margin:1em 0;font-size:12px; color:#FFF;">{$Think.lang.upload}</button>
+<input type="hidden" id="upload_lock" value="0">
+<button id="upload_button" onclick="needUpload(1);" style="display:none;cursor:pointer;border:0px; background:#444; padding:5px 20px;margin:1em 0;font-size:12px; color:#FFF;">{$Think.lang.upload}</button>
+
 <br />
 
 <!--a href="/Crx" target="_blank" style="padding:50px;color:blue">Google Chrome Extensions(已转化完成的)</a-->
