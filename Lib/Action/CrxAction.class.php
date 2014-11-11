@@ -96,6 +96,9 @@ class CrxAction extends PublicAction{
 				$infos = $info;
 			}else{
 				$info_tmp = explode("#", $info);
+				if( empty(trim($info_tmp[1])) || trim($info_tmp[2]) ){
+					$this->error("上传APK包名为空");
+				}
 				$infos  = array(
 				'name'=>trim($info_tmp[1]),
 				'realname'=>trim($info_tmp[2]),
@@ -106,7 +109,6 @@ class CrxAction extends PublicAction{
 				'type'=>$type,
 				'time'=>time()
 				);
-
 				$Item = D("Crx");
 				if(!$Item->create($infos)){
 					$this->error("存储APK失败！");
