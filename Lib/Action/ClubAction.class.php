@@ -1166,7 +1166,7 @@ class ClubAction extends PublicAction {
         $re=$this->createAddressParse();//生成通讯录权限预处理
         $gid=$re['gid'];
         $members=$re['members'];
-        $filename="./upload/address_fetion".$gid.".csv";
+        $filename="/tmp/address_fetion".$gid.".csv";
         $file=fopen($filename,"w");
         if($file){
             fwrite($file,iconv( "UTF-8", "gbk" ,"MobileNo,Name"));
@@ -1191,7 +1191,7 @@ class ClubAction extends PublicAction {
         $re=$this->createAddressParse();//生成通讯录权限预处理
         $gid=$re['gid'];
         $members=$re['members'];
-        $filename="./upload/address_email_ustc".$gid.".csv";
+        $filename="/tmp/address_email_ustc".$gid.".csv";
         $file=fopen($filename,"w");
         if($file){
             fwrite($file,iconv( "UTF-8", "gbk" ,"联系组,姓名,Email,手机"));
@@ -1217,7 +1217,7 @@ class ClubAction extends PublicAction {
         $re=$this->createAddressParse();//生成通讯录权限预处理
         $gid=$re['gid'];
         $members=$re['members'];
-        $filename="./upload/address".$gid.".csv";
+        $filename="/tmp/address".$gid.".csv";
         $file=fopen($filename,"w");
         if($file){
             fwrite($file,iconv( "UTF-8", "gbk" ,"姓名,学号,性别,职务,学历,入学年级,email,手机,QQ,主页"));
