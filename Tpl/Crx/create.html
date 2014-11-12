@@ -9,9 +9,14 @@
 <script src="/static/spark-md5.js" type="text/javascript"></script>
 <script src="/static/jquery.html5_upload.js" type="text/javascript"></script>
 <style type="text/css">
+body{
+    background-color: #e3e3e3;
+}
 .file-box{
  width:700px;
  margin:100px auto;
+ background-color: #fff;
+ padding: 2em;
 }
 .file-box b{
 	padding-right: 10px;
@@ -23,7 +28,7 @@ input{
 </head>
 <body>	
 <include file="Public:headnav" />
-<div class="file-box" style="background:#ddd;padding:50px;">
+<div class="file-box">
 <a href="/Crx"><h4 style="color:blue">{$Think.lang.returnToMainPage}</h4></a>
 <br />
 <h4 style="margin-bottom:20px">apk2crx : {$Think.lang.app-create-name}</h4>
@@ -195,7 +200,7 @@ key4
 
 
 
-<div class="file-box" style="background:#ddd;padding:50px;">
+<div class="file-box">
 	Chinese Only: 
 	<li style="color:red" title="马化腾，你有种来咬我！">QQ</li>
 	<a href="/static/QQ/com.tencent.mqq.android.crx">com.tencent.mqq.android.crx</a><br />

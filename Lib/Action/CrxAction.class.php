@@ -44,15 +44,28 @@ class CrxAction extends PublicAction{
 		$this->display();
 	}
 	public function translate(){
-		$php  = array("common","crx");
-		$basepath = "Lang/en-us/";
-		foreach ($php as $key => $name) {
-			$url = $basepath.$name.".php";
-			if (file_exists($url)) {
-			    $info[$name] =  "Last Modified: " . date ("F d Y H:i:s.", filemtime($url));
+		$files  = array("common","crx");
+		$langs = explode(",",C('LANG_LIST'));
+		$contributor["es-es"] = array(
+				"name"=>"Geronimo",
+				"website"=>"https://github.com/Vuelos"
+			);
+		foreach ($langs as $key => $lang) {
+			$basepath = "Lang/".$lang."/";
+			foreach ($files as $key2 => $file) {
+				$url = $basepath.$file.".php";
+				if (file_exists($url)) {
+				    $info[$lang][$file] =  "Last Modified: " . date ("F d Y H:i:s.", filemtime($url));
+				}
+			}
+			if(!empty($contributor[$lang])){
+				$info[$lang]["contributor"]= 'Contributed By : '.'<a href="https://github.com/Vuelos" target="_blank" style="font-weight:bold">'.$contributor[$lang]["name"].'</a>';
 			}
 		}
-		$this->assign('file',$info);
+		$this->assign('info',$info);
+		
+		$this->assign('files',$files);
+		$this->assign('langs',$langs);
 		$this->display();
 	}
 	public function upload() {
@@ -411,14 +424,17 @@ public function vote(){
         readfile($filename); 
         D("Crx")->addDownload($id);
     }
-    private function downloadFile($filepath){
+    private function downloadFile($filepath,$postfix){
      
         if(!file_exists($filepath))
         {
             $this->error("文件不存在！");
         }
+        if(!empty($postfix)){
+        	$postfix_name="-".$postfix;
+        }
         $filename=realpath($filepath);  //文件名
-        $name = basename($filename,".php")."-".substr(md5_file($filename), 0,6).".php";
+        $name = basename($filename,".php").$postfix_name."-".substr(md5_file($filename), 0,6).".php";
         Header( "Content-type:   application/octet-stream "); 
         Header( "Content-Length: " .filesize($filename));
         Header( "Accept-Ranges:   bytes ");     
@@ -428,10 +444,11 @@ public function vote(){
     public function downloadT(){
     	$php  = array("common.php","crx.php");
     	$name = $this->_get("t");
+    	$lang = $this->_get("lang");
     	if(in_array($name,$php)){
-    		$basepath = "Lang/en-us/";
+    		$basepath = "Lang/".$lang."/";
 	    	$url = $basepath.$name;
-	    	$this->downloadFile($url); 
+	    	$this->downloadFile($url,$lang); 
     	}
     }
     public function del(){

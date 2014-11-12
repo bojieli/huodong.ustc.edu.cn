@@ -7,16 +7,21 @@
 <link href="/static/zhuce.css" rel="stylesheet" type="text/css" />
 <script src="/static/jquery.js" type="text/javascript"></script>
 <style type="text/css">
+body{
+	background-color: #e3e3e3;
+}
 .file-box{
  width:700px;
  margin:100px auto;
+ background-color: #fff;
+ padding: 2em;
 }
 </style>
 </head>
 <body>	
 <include file="Public:headnav" />
 
-<div class="file-box" style="background:#ddd;padding:50px;" id="how-to-install-archon">
+<div class="file-box" id="how-to-install-archon">
 	<a href="/Crx"><h4 style="color:blue">{$Think.lang.returnToMainPage}</h4></a><br />
 	<h3>{$Think.lang.how-to-install-archon}</h3><br />
 	<p>{$Think.lang.help-1-1}</p>
@@ -25,7 +30,7 @@
 	<img  style="width:100%" src="/static/images/chrome_load.png" alt="">
 </div>
 
-<div class="file-box" style="background:#ddd;padding:50px;" id="why-crx-install">
+<div class="file-box" id="why-crx-install">
 	<h3>{$Think.lang.why-install-archon-this-way}</h3><br />
 	<p>{$Think.lang.help-2-1}</p>
 </div>
