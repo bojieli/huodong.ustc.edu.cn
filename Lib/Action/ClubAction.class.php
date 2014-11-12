@@ -1167,6 +1167,7 @@ class ClubAction extends PublicAction {
         $gid=$re['gid'];
         $members=$re['members'];
         $filename="/tmp/address_fetion".$gid.".csv";
+        ignore_user_abort(true);
         $file=fopen($filename,"w");
         if($file){
             fwrite($file,iconv( "UTF-8", "gbk" ,"MobileNo,Name"));
@@ -1185,6 +1186,10 @@ class ClubAction extends PublicAction {
         header ("Content-Length: " . filesize ($filename));  
         header("Content-Disposition: attachment; filename=".basename($filename,".csv")."-".substr(md5_file($filename), 0,6).".csv"); 
         readfile($filename);
+        if (file_exists($filename)) {
+            unlink($filename);
+        }
+
     }
     public function createAddressEmailUSTC()
     {
@@ -1192,6 +1197,7 @@ class ClubAction extends PublicAction {
         $gid=$re['gid'];
         $members=$re['members'];
         $filename="/tmp/address_email_ustc".$gid.".csv";
+        ignore_user_abort(true);
         $file=fopen($filename,"w");
         if($file){
             fwrite($file,iconv( "UTF-8", "gbk" ,"联系组,姓名,Email,手机"));
@@ -1210,6 +1216,9 @@ class ClubAction extends PublicAction {
         header ("Content-Length: " . filesize ($filename));  
         header("Content-Disposition: attachment; filename=".basename($filename,".csv")."-".substr(md5_file($filename), 0,6).".csv"); 
         readfile($filename);
+        if (file_exists($filename)) {
+            unlink($filename);
+        }
     }
     public function createAddress()
     {
@@ -1218,6 +1227,7 @@ class ClubAction extends PublicAction {
         $gid=$re['gid'];
         $members=$re['members'];
         $filename="/tmp/address".$gid.".csv";
+        ignore_user_abort(true);
         $file=fopen($filename,"w");
         if($file){
             fwrite($file,iconv( "UTF-8", "gbk" ,"姓名,学号,性别,职务,学历,入学年级,email,手机,QQ,主页"));
@@ -1238,6 +1248,9 @@ class ClubAction extends PublicAction {
         header ("Content-Length: " . filesize ($filename));  
         header("Content-Disposition: attachment; filename=".basename($filename,".csv")."-".substr(md5_file($filename), 0,6).".csv"); 
         readfile($filename);
+        if (file_exists($filename)) {
+            unlink($filename);
+        }
     }
 	public function createVcard()
     {
