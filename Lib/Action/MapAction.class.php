@@ -1,17 +1,30 @@
 <?php
 class MapAction extends PublicAction{
 	public function index(){
+		 $this->assign('apps',M('Crx')->field('id,name,realname,versionName')->order('id desc')->select());
 		  $this->assign('poster',M('Poster')->field('name,aid')->order('publish_time desc')->select());
 		  $this->assign('club',M('Club')->field('name,gid')->order('gid desc')->select());
 		  $this->display();
 	}
-	public function update(){
+	public function sitemap(){
 		$n=0;
 		$fqu='daily';
 		$webroot='http://huodong.ustc.edu.cn/';
-		$file=fopen("sitemap.xml","w") or exit("Unable to open file!");
+		//$file=fopen("sitemap.xml","w") or exit("Unable to open file!");
 		$posters=M('Poster')->field('name,aid')->order('publish_time desc')->select();
 		$clubs=M('Club')->field('name,gid')->order('gid desc')->select();
+		$apps=M('Crx')->field('id')->order('id desc')->select();
+	foreach ($apps as $app) {
+		$app_url.='
+		<url>
+		<loc>'.$webroot.'Crx/info?id='.$app['id'].'</loc>
+		<lastmod>'.date('c').'</lastmod>
+		<changefreq>'.$fqu.'</changefreq>
+		<priority>0.8</priority>
+		</url>'
+        ;
+		$n++;
+	}
 	foreach($posters as $poster){
 		$poster_url.='
 		<url>
@@ -46,6 +59,7 @@ class MapAction extends PublicAction{
 		';
 		$n=$n+3;
 	};
+
 	$add_websites=array(
 		'',
 		'Club',
@@ -66,6 +80,14 @@ class MapAction extends PublicAction{
 		'Club/index?filter=gradUnion',
 		'Club/index?filter=studentUnion',
 		'Club/index?filter=other',
+		'Crx',
+		'Crx?order=new',
+		'Crx?order=good',
+		'Crx?order=hot',
+		'Crx/create',
+		'Crx/course',
+		'Crx/help',
+		'Crx/translate'
 	);
 	foreach($add_websites as $add_website){
 		$add.='
@@ -88,10 +110,12 @@ class MapAction extends PublicAction{
 	</urlset>
 	<!--生成时间'.date('Y-m-d H:i:s').'-->
 	';
-		$content=$head.$add.$poster_url.$club_url.$end;
-		fputs($file,$content);
-		fclose($file);
-		echo "We have ".$n." websites";
+		$content=$head.$add.$poster_url.$club_url.$app_url.$end;
+		header("Content-type:text/xml");
+		echo $content;
+		//fputs($file,$content);
+		//fclose($file);
+		//echo "We have ".$n." websites";
 	}
 	public function rss(){
 	$webroot='http://huodong.ustc.edu.cn/';
