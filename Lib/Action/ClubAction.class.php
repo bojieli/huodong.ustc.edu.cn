@@ -1293,7 +1293,7 @@ class ClubAction extends PublicAction {
 		Header("Content-Disposition: attachment; filename=$filename.vcf");
 		Header("Content-Length: ".strlen($output));
 		Header("Connection: close");
-		Header("Content-Type: text/x-vCard; name=".basename($filename)."-".substr(md5_file($filename), 0,6).".vcf");
+		Header("Content-Type: text/x-vCard; name=".$filename."-".substr(md5($output), 0,6).".vcf");
 		echo $output;
     }
     public function downloadSource(){
