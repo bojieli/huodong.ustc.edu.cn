@@ -361,23 +361,23 @@ private function crx2html($crx){
         }
        return'
 	<li class="hide animated fadeInUp">	
-			<div class="celldiv" align="center" itemscope itemtype="http://data-vocabulary.org/Event">
+			<div class="celldiv" align="center" itemscope itemtype="http://schema.org/SoftwareApplication">
 			'.$del.'
 			<a href="/Crx/info?id='.$crx["id"].'"><img src="'.$icon_url.'" style="width:7em" /></a>	
 
 				<div class="detail">					
 					<a href="/Crx/info?id='.$crx["id"].'">
-						<span itemprop="summary" >'.$crx["realname"].'</span>
+						<span itemprop="name" >'.$crx["realname"].'</span>
 					</a>				
-					<span itemprop="versionName" class="vname">('.$crx["versionName"].')   '.$HD.'</span>
-					 <div class="hot">
+					<span itemprop="softwareVersion" class="vname">('.$crx["versionName"].')   '.$HD.'</span>
+					 <div class="hot" itemprop="aggregateRating" itemscope itemtype="http://schema.org/AggregateRating">
 						  <span class="cai" id="cai-'.$crx['id'].'">
 						  	<span class="iconding" onclick="dislike('.$crx['id'].');return false;"></span>
 						  	<span id = "dislike_'.$crx['id'].'"  class="rate">'.$crx['dislike'].'</span>
 						</span>
 						 
 						 <span class="ding2" id="ding-'.$crx['id'].'">
-						 	<span class="iconding" onclick="like('.$crx['id'].');return false;"></span>
+						 	<span itemprop="reviewCount" class="iconding" onclick="like('.$crx['id'].');return false;"></span>
 						 	<span id = "like_'.$crx['id'].'"  class="rate">'.$crx['like'].'</span>
 						</span>
 					</div>

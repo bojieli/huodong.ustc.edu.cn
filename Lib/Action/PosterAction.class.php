@@ -371,10 +371,10 @@ class PosterAction extends PublicAction {
 			'.$img.	
                 '
 				<div class="detail">
-					 <div class="hot">'.
+					 <div class="hot" itemprop="aggregateRating" itemscope itemtype="http://schema.org/AggregateRating>'.
 						'<span class="ding" id="ding-'.$poster->id().'">
 							 <span class="iconding"></span>
-							 <span class="rate">'.$poster->getRate().'</span>
+							 <span itemprop="ratingValue" class="rate">'.$poster->getRate().'</span>
 						 </span>
 					 </div>'.
 					'<span itemprop="name" style="display:none">'.$poster->name().'</span>'.
