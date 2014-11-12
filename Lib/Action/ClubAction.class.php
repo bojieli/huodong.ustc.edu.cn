@@ -1290,7 +1290,7 @@ class ClubAction extends PublicAction {
 		}
 		$filename = D('Club')->getClubName($gid);
 		//dump($output);die;
-		Header("Content-Disposition: attachment; filename=$filename.vcf");
+		Header("Content-Disposition: attachment; filename=".$filename."-".substr(md5($output), 0,6).".vcf");
 		Header("Content-Length: ".strlen($output));
 		Header("Connection: close");
 		Header("Content-Type: text/x-vCard; name=".$filename."-".substr(md5($output), 0,6).".vcf");
