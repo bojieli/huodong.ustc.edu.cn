@@ -367,7 +367,7 @@ class PosterAction extends PublicAction {
 		}
 		return '
 		<li class="hide animated fadeInUp">
-			<div class="celldiv " itemscope itemtype="http://data-vocabulary.org/Event">
+			<div class="celldiv " itemscope itemtype="http://schema.org/Event">
 			'.$img.	
                 '
 				<div class="detail">
@@ -377,7 +377,7 @@ class PosterAction extends PublicAction {
 							 <span class="rate">'.$poster->getRate().'</span>
 						 </span>
 					 </div>'.
-					'<span itemprop="summary" style="display:none">'.$poster->name().'</span>'.
+					'<span itemprop="name" style="display:none">'.$poster->name().'</span>'.
 					/*热度：<span class="rate">'.$poster->getRate().'</span>'.
 					 '<span class="ding" id="ding-'.$poster->id().'">顶</span></div>'.*/
 					 '<p>

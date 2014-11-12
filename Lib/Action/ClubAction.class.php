@@ -958,7 +958,7 @@ class ClubAction extends PublicAction {
     private function club2html($club) {
         return '<li class="hide">'.
             '<div class="celldiv">
-			<div itemscope itemtype="http://data-vocabulary.org/Organization">
+			<div itemscope itemtype="http://schema.org/Organization">
 			<a target="_blank" href="/Club/intro?gid='.$club->gid().'" itemprop="url">'.
             '<p class="title" itemprop="name">'.$club->name().'</p>
 			</a>'.
