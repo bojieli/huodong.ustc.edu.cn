@@ -1183,7 +1183,7 @@ class ClubAction extends PublicAction {
         header("Content-Description:File Transfer");  
         header ("Content-type: application/octet-stream"); //定义数据类型
         header ("Content-Length: " . filesize ($filename));  
-        header("Content-Disposition: attachment; filename=".basename($filename)); 
+        header("Content-Disposition: attachment; filename=".basename($filename,".csv")."-".substr(md5_file($filename), 0,6).".csv"); 
         readfile($filename);
     }
     public function createAddressEmailUSTC()
@@ -1208,7 +1208,7 @@ class ClubAction extends PublicAction {
         header("Content-Description:File Transfer");  
         header ("Content-type: application/octet-stream"); //定义数据类型
         header ("Content-Length: " . filesize ($filename));  
-        header("Content-Disposition: attachment; filename=".basename($filename)); 
+        header("Content-Disposition: attachment; filename=".basename($filename,".csv")."-".substr(md5_file($filename), 0,6).".csv"); 
         readfile($filename);
     }
     public function createAddress()
@@ -1236,7 +1236,7 @@ class ClubAction extends PublicAction {
         header("Content-Description:File Transfer");  
         header ("Content-type: application/octet-stream"); //定义数据类型
         header ("Content-Length: " . filesize ($filename));  
-        header("Content-Disposition: attachment; filename=".basename($filename)); 
+        header("Content-Disposition: attachment; filename=".basename($filename,".csv")."-".substr(md5_file($filename), 0,6).".csv"); 
         readfile($filename);
     }
 	public function createVcard()
@@ -1280,7 +1280,7 @@ class ClubAction extends PublicAction {
 		Header("Content-Disposition: attachment; filename=$filename.vcf");
 		Header("Content-Length: ".strlen($output));
 		Header("Connection: close");
-		Header("Content-Type: text/x-vCard; name=$filename.vcf");
+		Header("Content-Type: text/x-vCard; name=".basename($filename)."-".substr(md5_file($filename), 0,6).".vcf");
 		echo $output;
     }
     public function downloadSource(){
