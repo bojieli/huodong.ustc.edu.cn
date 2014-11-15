@@ -89,7 +89,7 @@ class CrxAction extends PublicAction{
     }
     public function uploadAPK(){
 
-    			//$this->error("转化工具正在更新，请稍后再来！");
+    			$this->error("转化工具正在更新，请稍后再来！");
 			$filename = $this->upload();
 			//echo "网站正在修复BUG！";
 			//var_dump($filename);die();
@@ -112,7 +112,7 @@ class CrxAction extends PublicAction{
 				
 				$info_tmp = (array)json_decode($info);
 				$info_tmp["names"] = (array)$info_tmp["names"];
-				//dump($info_tmp);die();
+				dump($info_tmp);die();
 				if( empty(trim($info_tmp["packageName"])) || empty(trim($info_tmp["names"]["en"])) ){
 					$this->error("上传APK包名为空");
 				}
