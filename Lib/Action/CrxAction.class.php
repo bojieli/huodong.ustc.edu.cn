@@ -88,7 +88,7 @@ class CrxAction extends PublicAction{
 	dump($_POST);
     }
     public function uploadAPK(){
-
+    			$this->error("转化工具正在更新，请稍后再来！");
 			$filename = $this->upload();
 			//echo "网站正在修复BUG！";
 			//var_dump($filename);die();
@@ -100,7 +100,7 @@ class CrxAction extends PublicAction{
 
 
 			$info = $this->apk2crx($filename,$type);
-			//var_dump($info);die();
+			
 			if(empty($info)){
 				$this->error("上传APK不合法！");
 			}
@@ -108,17 +108,20 @@ class CrxAction extends PublicAction{
 				$crx = $info["name"];
 				$infos = $info;
 			}else{
-				$info_tmp = explode("#", $info);
-				if( empty(trim($info_tmp[1])) || empty(trim($info_tmp[2])) ){
+				
+				$info_tmp = (array)json_decode($info);
+				$info_tmp["names"] = (array)$info_tmp["names"];
+				//dump($info_tmp);die();
+				if( empty(trim($info_tmp["packageName"])) || empty(trim($info_tmp["names"]["en"])) ){
 					$this->error("上传APK包名为空");
 				}
 				$infos  = array(
-				'name'=>trim($info_tmp[1]),
-				'realname'=>trim($info_tmp[2]),
-				'apkHash'=>trim($info_tmp[3]),
-				'iconHash'=>trim($info_tmp[4]),
-				'versionCode'=>trim($info_tmp[5]),
-				'versionName'=>trim($info_tmp[6]),
+				'name'=>trim($info_tmp["packageName"]),
+				'realname'=>trim($info_tmp["names"]["en"]),
+				'apkHash'=>trim($info_tmp["apkHash"]),
+				'iconHash'=>trim($info_tmp["iconHash"]),
+				'versionCode'=>trim($info_tmp["versionCode"]),
+				'versionName'=>trim($info_tmp["versionName"]),
 				'type'=>$type,
 				'time'=>time()
 				);
@@ -231,14 +234,14 @@ class CrxAction extends PublicAction{
 					$crx = $info["name"];
 					$infos = $info;
 				}else{
-					$info_tmp = explode("#", $info);
+					$info_tmp = json_decode($info);
 					$infos  = array(
-					'name'=>trim($info_tmp[1]),
-					'realname'=>trim($info_tmp[2]),
-					'apkHash'=>trim($info_tmp[3]),
-					'iconHash'=>trim($info_tmp[4]),
-					'versionCode'=>trim($info_tmp[5]),
-					'versionName'=>trim($info_tmp[6]),
+					'name'=>trim($info_tmp["packageName"]),
+					'realname'=>trim($info_tmp["names"]["en"]),
+					'apkHash'=>trim($info_tmp["apkHash"]),
+					'iconHash'=>trim($info_tmp["iconHash"]),
+					'versionCode'=>trim($info_tmp["versionCode"]),
+					'versionName'=>trim($info_tmp["versionName"]),
 					'type'=>$type,
 					'time'=>$time,
 					'download_count'=>0
