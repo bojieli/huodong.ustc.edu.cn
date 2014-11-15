@@ -89,7 +89,7 @@ class CrxAction extends PublicAction{
     }
     public function uploadAPK(){
 
-    			$this->error("转化工具正在更新，请稍后再来！");
+    			//$this->error("转化工具正在更新，请稍后再来！");
 			$filename = $this->upload();
 			//echo "网站正在修复BUG！";
 			//var_dump($filename);die();
