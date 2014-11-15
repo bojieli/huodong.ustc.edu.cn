@@ -91,8 +91,6 @@ class CrxAction extends PublicAction{
 
     			//$this->error("转化工具正在更新，请稍后再来！");
 			$filename = $this->upload();
-			//echo "网站正在修复BUG！";
-			//var_dump($filename);die();
 			if (!$filename) {
 				$this->error("您必须上传APK格式文件！");
 			}
