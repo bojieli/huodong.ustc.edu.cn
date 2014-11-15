@@ -110,7 +110,7 @@ class CrxAction extends PublicAction{
 				
 				$info_tmp = (array)json_decode($info);
 				$info_tmp["names"] = (array)$info_tmp["names"];
-				//dump($info_tmp);die();
+				dump($info_tmp);die();
 				if( empty(trim($info_tmp["packageName"])) || empty(trim($info_tmp["names"]["en"])) ){
 					$this->error("上传APK包名为空");
 				}
