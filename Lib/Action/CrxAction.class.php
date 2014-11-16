@@ -185,6 +185,7 @@ class CrxAction extends PublicAction{
    		$crxname = $this->getCrxName($info);
 
    		if(!file_exists($basepath.$crxname)){
+   			echo $crxname."<br />";
    			if($info["type"]=="pad")
         				$HD = "-HD";
         			$keyword = substr($info["apkHash"], 0,6).$HD.".crx";
@@ -192,7 +193,7 @@ class CrxAction extends PublicAction{
    			//echo $filenames[$key];
    			$like_names =array_filter($filenames, create_function('$v', "return strstr(\$v, '$keyword');"));
    			$oldname = basename($like_names[key($like_names)]);
- 			echo $oldname."<br />";
+ 			
    			$res = explode("-", $oldname);
    			$versionName = $res[1];
    			if($versionName){
