@@ -138,7 +138,8 @@ class CrxAction extends PublicAction{
    		dump($crxname);
    		$filepath = "./upload/apk/".$crxname;
    		$size = filesize($filepath);
-   		$Item-> where(array("id"=>$id))->setField('size',$size);
+   		$data["size"]=$size;
+   		$Item-> where(array("id"=>$id))->save();
    	}
    }
    private function getCrxName($info){
