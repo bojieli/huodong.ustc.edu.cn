@@ -191,10 +191,13 @@ class CrxAction extends PublicAction{
    			//$key = array_search("*".$keyword, $filenames);  
    			//echo $filenames[$key];
    			$like_names =array_filter($filenames, create_function('$v', "return strstr(\$v, '$keyword');"));
-   			$oldname = $like_names[key($like_names)];
-   			$newname=$basepath.$crxname;
-   			rename($oldname, $newname);
-   			echo basename($oldname)." => ".basename($newname)."<br />";
+   			$oldname = basename($like_names[key($like_names)]);
+ 			echo $oldname."<br />";
+   			$res = explode("-", $oldname);
+   			$versionName = $res[1];
+   			if($versionName){
+   				$Item-> where(array("id"=>$info["id"]))->setField('versionName',$versionName);
+   			}
    			$status += 1;
    		}
    	}
