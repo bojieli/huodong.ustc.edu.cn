@@ -185,18 +185,22 @@ class CrxAction extends PublicAction{
    		$crxname = $this->getCrxName($info);
 
    		if(!file_exists($basepath.$crxname)){
-   			echo $crxname."<br />";
+   			dump($info["id"]);
+   			//echo $crxname."<br />";
    			$add = 0;
    			if($info["type"]=="pad"){        				
    				$HD = "-HD";
    				$add = 1;
    			}
         			$keyword = substr($info["apkHash"], 0,6).$HD.".crx";
+        			//echo $keyword."<br />";
    			//$key = array_search("*".$keyword, $filenames);  
    			//echo $filenames[$key];
    			$like_names =array_filter($filenames, create_function('$v', "return strstr(\$v, '$keyword');"));
    			$oldname = basename($like_names[key($like_names)]);
- 			
+ 			if(empty($oldname)){
+ 				continue;
+ 			}
    			$res = explode("-", $oldname);
    			$num = count($res);
    			for ($x=1; $x<$num-($add+1); $x++) {
