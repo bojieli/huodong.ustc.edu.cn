@@ -92,5 +92,9 @@ class CrxModel extends Model {
 	    	}
 	    	return $info;
 	    }
+	    public function getAllFileSizeZero(){
+	    	$con["size"]= 0;
+	    	return M("Crx")->where($con)->getField('id',true);
+	    }
 }
 ?>

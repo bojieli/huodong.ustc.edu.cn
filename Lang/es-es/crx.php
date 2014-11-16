@@ -61,6 +61,7 @@ $help  = array(
         'product-name'=>"Product Name",
          'apk-name'=>"APK Name",
          'version-name'=>"Version Name",
+         'file-size'=>"File Size",
          'vote-title'=>"Result of Vote for Application Testing",
         'all-versions'=>"All Versions",
          'go-to-disqus'=>"Switch to Disqus",

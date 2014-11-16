@@ -109,8 +109,6 @@ class CrxAction extends PublicAction{
 			}
 			$type = $this->_post("type");
 			
-
-
 			$info = $this->apk2crx($filename,$type);
 			
 			if(empty($info)){
@@ -133,10 +131,17 @@ class CrxAction extends PublicAction{
 				'apkHash'=>trim($info_tmp["apkHash"]),
 				'iconHash'=>trim($info_tmp["iconHash"]),
 				'versionCode'=>trim($info_tmp["versionCode"]),
-				'versionName'=>trim($info_tmp["versionName"]),
+				'versionName'=>trim($info_tmp["versionName"]),				
 				'type'=>$type,
 				'time'=>time()
 				);
+				/*get file size*/
+				 if($type=="pad")
+        					$HD = "-HD";
+        				$crxname = $this->getCrxName($infos);
+        				$filepath = "./upload/apk/".$crxname;
+        				$infos["size"] = filesize($filepath);
+        			
 				$Item = D("Crx");
 				if(!$Item->create($infos)){
 					$this->error("存储APK失败！");
@@ -148,6 +153,27 @@ class CrxAction extends PublicAction{
 			$this->success($info_upload);
 			/*$this->redirect("/Crx/info?id=".$infos["id"]);*/
 	}
+   public function uploadFileSize(){
+   	$this->isdeveloper();
+   	$Item = D("Crx");
+   	$ids = $Item->getAllFileSizeZero();
+   	foreach ($ids as $id) {
+   		$info = $Item->getItem($id);
+   		$crxname = $this->getCrxName($info);
+   		$filepath = "./upload/apk/".$crxname;
+   		$size = filesize($filepath);
+   		$Item-> where(array("id"=>$id))->setField('size',$size);
+   	}
+   }
+   private function getCrxName($info){
+   	if(empty($info)){
+   		return null;
+   	}
+        	if($info["type"]=="pad")
+        		$HD = "-HD";
+        	return $info["name"].".android-".$info["versionName"]."-".substr($info["apkHash"], 0,6).$HD.".crx";
+
+   }
    public function uploadHash(){
    	$type = $this->_post("type");
 	$id = $this->_post("id");
@@ -203,6 +229,7 @@ class CrxAction extends PublicAction{
 		$this->error("页面不存在");
 	}
 	$info["htime"]= $this->tranTime($info["time"]);
+	$info["hsize"]= modifier_filesize($info["size"]);
 	$addition = $Item->getItemAddition($info["id"]);
 	if(empty($c)){
 		if(strtolower(cookie('think_language'))=="zh-cn"){
@@ -224,6 +251,7 @@ class CrxAction extends PublicAction{
 
    }
    public function convertAllAPK(){
+   			return;
    			$run = $this->_get("run");
    			if(empty($run)){
    				return;
@@ -422,10 +450,11 @@ public function vote(){
    public function downloadCrx(){
       
          $id = $this->_get("id");
-        $info = D("Crx")->getItem($id);
+         $info = $Item->getItem($id);
+        $crxname = $this->getCrxName($info);
         if($info["type"]=="pad")
         	$HD = "-HD";
-        $filepath = "./upload/apk/".$info["name"].".android-".$info["versionName"]."-".substr($info["apkHash"], 0,6).$HD.".crx";
+        $filepath = "./upload/apk/".$crxname;
         if(!file_exists($filepath))
         {
             $this->error("文件不存在！");
@@ -466,20 +495,24 @@ public function vote(){
 	    	$this->downloadFile($url,$lang); 
     	}
     }
-    public function del(){
-    	global $_G;
-        if(!D('User')->checkLogin())
-        {
-            $this->assign('jumpUrl','/User/login');
-            $this->error('您尚未登录');
-        }
+    private function isdeveloper(){
+    		global $_G;
+	        if(!D('User')->checkLogin())
+	        {
+	            $this->assign('jumpUrl','/User/login');
+	            $this->error('您尚未登录');
+	        }
 
-        $user = D("User");
-        $user_info = $user->getInfo($_G['uid']);
-        if(!$user_info['isdeveloper'])
-        {	
-            $this->error('您没有权限访问该页面');
-        }
+	        $user = D("User");
+	        $user_info = $user->getInfo($_G['uid']);
+	        if(!$user_info['isdeveloper'])
+	        {	
+	            $this->error('您没有权限访问该页面');
+	        }
+    }
+    public function del(){
+    
+    	$this->isdeveloper();
 
     	$id = $this->_get("id");
     	$Item = D("Crx");
@@ -490,7 +523,8 @@ public function vote(){
     	}
     	if($info["type"]=="pad")
         	$HD = "-HD";
-        	$url["crx"] = "./upload/apk/".$info["name"].".android-".$info["versionName"]."-".substr($info["apkHash"], 0,6).$HD.".crx";
+        	$crxname = $this->getCrxName($info);
+        	$url["crx"] = "./upload/apk/".$crxname;
     	$url["apk"]= "./upload/apk/bak/".$info["apkHash"].$HD.".apk";
     	if($Item->countByHash($info["apkHash"]) < 2){
     		$url["image"] = "./upload/apk/bak/".$info["iconHash"].".png";
