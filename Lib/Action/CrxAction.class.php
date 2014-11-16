@@ -135,6 +135,7 @@ class CrxAction extends PublicAction{
    	foreach ($ids as $id) {
    		$info = $Item->getItem($id);
    		$crxname = $this->getCrxName($info);
+   		dump($crxname);
    		$filepath = "./upload/apk/".$crxname;
    		$size = filesize($filepath);
    		$Item-> where(array("id"=>$id))->setField('size',$size);
