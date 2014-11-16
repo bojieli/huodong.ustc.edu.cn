@@ -109,8 +109,7 @@ class CrxAction extends PublicAction{
 			}
 			$type = $this->_post("type");
 			
-			$info = $this->apk2crx($filename,$type);
-			
+			$info = $this->apk2crx($filename,$type);	
 			if(empty($info)){
 				$this->error("上传APK不合法！");
 			}
@@ -119,35 +118,11 @@ class CrxAction extends PublicAction{
 				$infos = $info;
 			}else{
 				
-				$info_tmp = (array)json_decode($info);
-				$info_tmp["names"] = (array)$info_tmp["names"];
-				//dump($info_tmp);die();
-				if( empty(trim($info_tmp["packageName"])) || empty(trim($info_tmp["names"]["en"])) ){
-					$this->error("上传APK包名为空");
-				}
-				$infos  = array(
-				'name'=>trim($info_tmp["packageName"]),
-				'realname'=>trim($info_tmp["names"]["en"]),
-				'apkHash'=>trim($info_tmp["apkHash"]),
-				'iconHash'=>trim($info_tmp["iconHash"]),
-				'versionCode'=>trim($info_tmp["versionCode"]),
-				'versionName'=>trim($info_tmp["versionName"]),				
-				'type'=>$type,
-				'time'=>time()
-				);
-				/*get file size*/
-				 if($type=="pad")
-        					$HD = "-HD";
-        				$crxname = $this->getCrxName($infos);
-        				$filepath = "./upload/apk/".$crxname;
-        				$infos["size"] = filesize($filepath);
-        			
-				$Item = D("Crx");
-				if(!$Item->create($infos)){
+				$id = $this->mycreate($info,$type);
+				if(!$id){
 					$this->error("存储APK失败！");
 				}
-				$re = $Item->getItemByHash($infos["apkHash"],$type);
-				$infos["id"]=$re["id"];
+				$infos["id"]=$id;
 			}			
 			$info_upload["id"] = $infos["id"];
 			$this->success($info_upload);
@@ -193,9 +168,6 @@ class CrxAction extends PublicAction{
    				$add = 1;
    			}
         			$keyword = substr($info["apkHash"], 0,6).$HD.".crx";
-        			//echo $keyword."<br />";
-   			//$key = array_search("*".$keyword, $filenames);  
-   			//echo $filenames[$key];
    			$like_names =array_filter($filenames, create_function('$v', "return strstr(\$v, '$keyword');"));
    			$oldname = basename($like_names[key($like_names)]);
  			if(empty($oldname)){
@@ -216,13 +188,16 @@ class CrxAction extends PublicAction{
    	}
    	echo "Status : ".$status;
    }
+   /*
+	如果存在hash一样的apk就无需上传，类型不一样就用bak里的apk转
+   */
    public function uploadHash(){
    	$type = $this->_post("type");
 	$id = $this->_post("id");
-
-
+	if(empty($id)){
+		$this->error("ID为空！");
+	}
 	$Item = D("Crx");
-	
 	$info_tmp = $Item->getItem($id);
 	$hash=$info_tmp["apkHash"];
 	$res = $Item->getItemByHash($hash,$type);
@@ -234,29 +209,86 @@ class CrxAction extends PublicAction{
 		$target = "./upload/apk/".$hash.".apk";
 		copy($source,$target);
 		$filename = $hash.".apk";
-		$res_tmp=$this->apk2crx($filename,$type);
-		if(empty($res_tmp)){
-			$this->error("APK不合法！");
+		$info=$this->apk2crx($filename,$type);
+		$id = $this->mycreate($info,$type);
+		if(!$id){
+			$this->error("存储APK失败！");
 		}
-		$infos  = array(
-		'name'=>trim($info_tmp["name"]),
-		'realname'=>trim($info_tmp["realname"]),
-		'apkHash'=>trim($info_tmp["apkHash"]),
-		'iconHash'=>trim($info_tmp["iconHash"]),
-		'versionCode'=>trim($info_tmp["versionCode"]),
-		'versionName'=>trim($info_tmp["versionName"]),
-		'type'=>$type,
-		'time'=>time()
-		);
-	if(!$Item->create($infos)){
-		$this->error("存储APK失败！");
+	}else{
+		$id = $res["id"];
 	}
-	$re = $Item->getItemByHash($infos["apkHash"],$type);
-	$id=$re["id"];
+	$info_upload["id"] = $id;
+	$this->success($info_upload);
+   }
+   /*
+利用bak里apk重新生成Crx，数据库id不变
+   */
+   public function createNewCrx(){
+	$id = $this->_get("id");
+	if(empty($id)){
+		$this->error("ID为空！");
+	}
+	$Item = D("Crx");
+	$info = $Item->getItem($id);
+	if(empty($info)){
+		return false;
 	}
 	
-	$info["id"] = $id;
-	$this->success($info);
+	$hash = $info["apkHash"];
+	$type = $info["type"];
+	if($type=="pad"){
+		$HD="-HD";
+	}
+	$source = "./upload/apk/bak/".$hash.$HD.".apk";
+	if(!file_exists($source)){
+		$this->error("没有备份的源文件！");
+	}
+	$target = "./upload/apk/".$hash.$HD.".apk";
+	copy($source,$target);
+	$filename = basename($target);
+	$ltx=$this->apk2crx($filename,$type,/*enforce*/true);
+	//dump($ltx);die();
+	$res = $this->mycreate($ltx,$type,$id);
+	if($res==false){
+		$this->error("重新生成APK发生错误");
+	}else{
+		//$this->success("OK");
+		$this->redirect("/Crx/info?id=".$id);
+	}
+}
+   private function mycreate($ltx,$type,$id){
+   	//dump($ltx);die();
+   	if(empty($ltx)){
+		$this->error("APK不合法！");
+	}
+	$Item = D("Crx");
+	$info_tmp = (array)json_decode($ltx);
+	$info_tmp["names"] = (array)$info_tmp["names"];
+
+	if( empty(trim($info_tmp["packageName"])) || empty(trim($info_tmp["names"]["en"])) ){
+		$this->error("上传APK包名为空");
+	}
+	$infos  = array(
+	'name'=>trim($info_tmp["packageName"]),
+	'realname'=>trim($info_tmp["names"]["en"]),
+	'apkHash'=>trim($info_tmp["apkHash"]),
+	'iconHash'=>trim($info_tmp["iconHash"]),
+	'versionCode'=>trim($info_tmp["versionCode"]),
+	'versionName'=>trim($info_tmp["versionName"]),
+	'type'=>$type,
+	'time'=>time()
+	);
+	$crxname = $this->getCrxName($infos);
+	$filepath = "./upload/apk/".$crxname;
+	$infos["size"] = filesize($filepath);
+	if(empty($id)){
+		$id = $Item->create($infos);
+		return $id;
+	}else{	
+		//$infos["time"]=(int)$Item->getItem($id)["time"];
+		//dump($infos);die
+		return $Item->update($infos,$id);
+	}
    }
    public function info(){
    	$id = $this->_get("id");
@@ -340,7 +372,7 @@ class CrxAction extends PublicAction{
 
 
 }
-private function apk2crx($filename,$type="phone"){
+private function apk2crx($filename,$type="phone",$enforce=false){
 	//echo $source;die();
 	$url = "./upload/apk/".$filename;
 	if(!file_exists($url)){
@@ -349,13 +381,14 @@ private function apk2crx($filename,$type="phone"){
 	}else{
 		$hash = md5_file($url );
 	}
-	$Item = D("Crx");
-	$infos = $Item->getItemByHash($hash,$type);
-	if(!empty($infos)){
-			shell_exec("rm ".$url." 2>&1");
+	if($enforce==false){
+		$Item = D("Crx");
+		$infos = $Item->getItemByHash($hash,$type);
+		if(!empty($infos)){
+			unlink($url);
 			return $infos;
+		}
 	}
-
 	if ($type=="phone") {
 		$cmd = "cd ./upload/apk/;/usr/local/bin/apk2crx " .$filename. "  2>&1";
 	}

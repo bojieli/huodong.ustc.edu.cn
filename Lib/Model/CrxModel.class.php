@@ -13,6 +13,10 @@ class CrxModel extends Model {
 		M("Crx")->create($data);
 		return M("Crx")->add();
 	}
+	public function update($data,$id){
+		$con["id"]= $id;
+		return M("Crx")->where($con)->save($data); 
+	}
 	public function getAllItem(){
 		return M("Crx")->select();
 	}
