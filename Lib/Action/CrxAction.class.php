@@ -450,6 +450,7 @@ public function vote(){
    public function downloadCrx(){
       
          $id = $this->_get("id");
+         $Item = D("Crx");
          $info = $Item->getItem($id);
         $crxname = $this->getCrxName($info);
         if($info["type"]=="pad")
