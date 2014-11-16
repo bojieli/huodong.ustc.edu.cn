@@ -281,6 +281,7 @@ class CrxAction extends PublicAction{
 	'type'=>$type,
 	'time'=>time()
 	);
+	
 	$crxname = $this->getCrxName($infos);
 	$filepath = "./upload/apk/".$crxname;
 	$infos["size"] = filesize($filepath);
