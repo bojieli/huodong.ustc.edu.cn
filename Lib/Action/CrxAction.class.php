@@ -224,6 +224,7 @@ class CrxAction extends PublicAction{
 利用bak里apk重新生成Crx，数据库id不变
    */
    public function createNewCrx(){
+   	$this->isdeveloper();
 	$id = $this->_get("id");
 	if(empty($id)){
 		$this->error("ID为空！");
