@@ -203,6 +203,7 @@ class CrxAction extends PublicAction{
 			  	$versionNames[] = $res[$x];
 			} 
    			$versionName = implode("-", $versionNames);
+   			unset($versionNames);
    			if($versionName){
    				$Item-> where(array("id"=>$info["id"]))->setField('versionName',$versionName);
    			}
