@@ -174,6 +174,32 @@ class CrxAction extends PublicAction{
         	return $info["name"].".android-".$info["versionName"]."-".substr($info["apkHash"], 0,6).$HD.".crx";
 
    }
+   public function fixCrxName(){
+   	$this->isdeveloper();
+   	$Item = D("Crx");
+   	$infos = $Item->getAllItem();
+   	$basepath = "./upload/apk/";
+   	$filenames = glob($basepath."*.crx");
+   	$status = 0;
+   	foreach ($infos as $info) {
+   		$crxname = $this->getCrxName($info);
+
+   		if(!file_exists($basepath.$crxname)){
+   			if($info["type"]=="pad")
+        				$HD = "-HD";
+        			$keyword = substr($info["apkHash"], 0,6).$HD.".crx";
+   			//$key = array_search("*".$keyword, $filenames);  
+   			//echo $filenames[$key];
+   			$like_names =array_filter($filenames, create_function('$v', "return strstr(\$v, '$keyword');"));
+   			$oldname = $like_names[key($like_names)];
+   			$newname=$basepath.$crxname;
+   			rename($oldname, $newname);
+   			echo basename($oldname)." => ".basename($newname)."<br />";
+   			$status += 1;
+   		}
+   	}
+   	echo "Status : ".$status;
+   }
    public function uploadHash(){
    	$type = $this->_post("type");
 	$id = $this->_post("id");
