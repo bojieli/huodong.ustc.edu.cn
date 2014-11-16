@@ -49,7 +49,7 @@ var var_tmp;
  k=0;
 type="{$Think.get.sort}"?"{$Think.get.sort}":"normal";
 var loadmore = (function() {
-		var posterCounter = 0;
+		var posterCounter = 20;
 		var ajaxLock = false;
 		var noMore = false;
 		var type_sb = "{$Think.get.type}";
@@ -219,6 +219,7 @@ function cleanDS(id){
 		  </div>
 	 
 		</li>
+		{$php_crx}
 		</ul>
 	</div>
 </div>

@@ -27,6 +27,19 @@ class CrxAction extends PublicAction{
 
 	$this->assign('count', $count);
 	$this->assign('schools', $schools);
+
+	/*非ajax瀑布流*/
+	$infos = $Item->getCrx(0, 20, $cond, $order,$have_addition);
+
+	foreach ($infos as $key => $info){
+		$addition =  $Item->getItemAddition($info['id']);
+		 $infos[$key]["like"] = (empty($addition['likes'])) ? 0 : $addition['likes'];
+		 $infos[$key]["dislike"] =  (empty($addition['dislikes'])) ? 0 :  $addition['dislikes'];
+		$php_crx.= $this->crx2html( $infos[$key]);
+	}
+	//var_dump($php_crx);die();
+	$this->assign('php_crx',$php_crx);
+	
 	$this->display("index");
 }
 	public function create(){
