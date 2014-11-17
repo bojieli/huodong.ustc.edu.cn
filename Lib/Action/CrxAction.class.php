@@ -554,12 +554,13 @@ public function vote(){
         }
         $filename=realpath($filepath);  //文件名
         $name = $info['realname'].$HD.".crx";
+        D("Crx")->addDownload($id);
         Header( "Content-type:   application/octet-stream "); 
         Header( "Content-Length: " .filesize($filename));
         Header( "Accept-Ranges:   bytes ");     
         header( "Content-Disposition:   attachment;   filename= {$name}"); 
-        readfile($filename); 
-        D("Crx")->addDownload($id);
+        //readfile($filename); 
+        header("X-Accel-Redirect: /upload/apk/".$crxname);
     }
     private function downloadFile($filepath,$postfix){
      
