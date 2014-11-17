@@ -255,7 +255,6 @@ class CrxAction extends PublicAction{
 	if($res==false){
 		$this->error("重新生成APK发生错误");
 	}else{
-		//$this->success("OK");
 		$this->redirect("/Crx/info?id=".$id);
 	}
 }
@@ -281,7 +280,7 @@ class CrxAction extends PublicAction{
 	'type'=>$type,
 	'time'=>time()
 	);
-	
+
 	$crxname = $this->getCrxName($infos);
 	$filepath = "./upload/apk/".$crxname;
 	$infos["size"] = filesize($filepath);
