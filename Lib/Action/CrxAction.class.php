@@ -53,6 +53,12 @@ class CrxAction extends PublicAction{
 		$info = shell_exec($cmd);
 		echo $info;
 	}
+	public function check(){
+		echo ">>>>>>>>>Check Crx File\n";
+		$this->fixCrxName();
+		echo ">>>>>>>>>Clean\n";
+		$this->clean();
+	}
 	public function help(){
 		$this->display();
 	}
@@ -154,6 +160,7 @@ class CrxAction extends PublicAction{
    }
    public function fixCrxName(){
    	$this->isdeveloper();
+   	$ltx = $this->_get("ltx","strip_tags",0);
    	$Item = D("Crx");
    	$infos = $Item->getAllItem();
    	$basepath = "./upload/apk/";
@@ -164,6 +171,10 @@ class CrxAction extends PublicAction{
 
    		if(!file_exists($basepath.$crxname)){
    			dump($info["id"]);
+   			$status += 1;
+   			if($ltx==0){
+   				continue;
+   			}
    			//echo $crxname."<br />";
    			$add = 0;
    			if($info["type"]=="pad"){        				
@@ -186,10 +197,12 @@ class CrxAction extends PublicAction{
    			if($versionName){
    				$Item-> where(array("id"=>$info["id"]))->setField('versionName',$versionName);
    			}
-   			$status += 1;
    		}
    	}
-   	echo "Status : ".$status;
+   	if($status>0)
+   		echo "Crx Exist Status : ".$status."\n";
+   	else
+   		echo "Crx Exist Status : OK\n";
    }
    /*
 	如果存在hash一样的apk就无需上传，类型不一样就用bak里的apk转
@@ -702,7 +715,11 @@ private function scanBak(){
 		}
 
 	}
-	dump($del);
+	if(empty($del)){
+		echo "scan bak:OK\n";
+	}else{
+		dump($del);
+	}
 	return $del;
 }
 public function scanCrx(){
@@ -740,7 +757,11 @@ public function scanCrx(){
 			continue;
 		}
 	}
-	dump($del);
+	if(empty($del)){
+		echo "scan Crx:OK\n";
+	}else{
+		dump($del);
+	}
 	return $del;
 
 }
@@ -754,7 +775,7 @@ public function clean(){
 		$size += filesize($value2);
 	}
 	if($enable==0 || empty($del)){
-		echo "Total : ".count($del)." <br />Size : ".modifier_filesize($size);
+		echo "Total : ".count($del)." \nSize : ".modifier_filesize($size);
 		return;
 	}
 	foreach ($del as $key => $value) {
