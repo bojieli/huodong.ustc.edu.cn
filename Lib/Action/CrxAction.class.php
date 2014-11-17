@@ -677,5 +677,46 @@ public function vote(){
     return $str;  
 }
 
+public function scanBak(){
+	$apks = glob("./upload/apk/bak/*.apk");
+	foreach ($apks as $key => $apk) {
+		$url = $apk;
+		$basename =  basename($apk,".apk");
+		$res = explode("-",$basename);
+		$hash = $res[0];
+		if($res[1]=="HD"){
+			$type="pad";
+		}else{
+			$type="phone";
+		}
+		$info = D("Crx")->getItemByHash($hash,$type);
+		
+		if(empty($info["id"])){	
+			$del_urls['apk_url']="./upload/apk/bak/".$basename.".apk";
+			$del_urls['pem_url']="./upload/apk/bak/".$basename.".pem";
+			//$del_urls['crx_url']="./upload/apk/".$this->getCrxName($info);
+			foreach ($del_urls as $del_url) {
+				if(file_exists($del_url))
+					$del[] = $del_url;
+			}
+		}
+
+	}
+	dump($del);
+	return $del;
+}
+public function clean(){
+	$this->isdeveloper();
+	$enable = 0;
+	$enable = $this->_get("ltx","strip_tags",0);
+	$del = $this->scanBak();
+	if($enable==0 || empty($del)){
+		echo "Total :".count($del);
+		return;
+	}
+	foreach ($del as $key => $value) {
+		unlink($value);
+	}
+}
 }
 ?>
