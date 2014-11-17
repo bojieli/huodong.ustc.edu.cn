@@ -677,10 +677,10 @@ public function vote(){
     return $str;  
 }
 
-public function scanBak(){
+private function scanBak(){
 	$apks = glob("./upload/apk/bak/*.apk");
 	foreach ($apks as $key => $apk) {
-		$url = $apk;
+		//$url = $apk;
 		$basename =  basename($apk,".apk");
 		$res = explode("-",$basename);
 		$hash = $res[0];
@@ -705,12 +705,51 @@ public function scanBak(){
 	dump($del);
 	return $del;
 }
+public function scanCrx(){
+	$crxs = glob("./upload/apk/*.crx");
+	//dump($crxs);
+	foreach ($crxs as $key => $crx) {
+		$type = "phone";
+		$add = 0;
+		$basename =  basename($crx,".crx");
+		$res = explode("-",$basename);
+		$count = count($res);
+		if($count <3){
+			if(file_exists($crx))
+				$del[]=$crx;
+			continue;
+		}
+		//$del_urls['crx_url']=$crx;
+		//$name = $res[0];
+		$last=$res[$count-1];
+		if($last=="HD"){
+			$add = 1;
+			$type = "pad";
+		}
+		$hash = $res[$count-1-$add];
+		if(strlen($hash)!=6){
+			if(file_exists($crx))
+				$del[]=$crx;
+			continue;
+		}
+		$name = basename($res[0],".android");
+		
+		if(D("Crx")->getItemByShortHash($hash,$name,$type)==0){
+			if(file_exists($crx))
+				$del[]=$crx;
+			continue;
+		}
+	}
+	dump($del);
+	return $del;
+
+}
 public function clean(){
 	$this->isdeveloper();
 	$enable = 0;
 	$size = 0;
 	$enable = $this->_get("ltx","strip_tags",0);
-	$del = $this->scanBak();
+	$del = array_merge((array)$this->scanBak(),(array)$this->scanCrx());
 	foreach ($del as $key2 => $value2) {
 		$size += filesize($value2);
 	}

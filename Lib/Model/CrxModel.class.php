@@ -6,6 +6,12 @@ class CrxModel extends Model {
 	public function getItemByHash($hash,$type="phone"){
 		return M("Crx")->where(["apkHash"=>$hash,"type"=>$type])->find();
 	}
+	public function getItemByShortHash($hash,$name,$type="phone"){
+		$con["type"]=$type;
+		$con["hash"]=array('like',$hash."%");
+		$con["name"]=$name;
+		return M("Crx")->where($con)->count();
+	}
 	public function countByHash($hash){
 		return M("Crx")->where(["apkHash"=>$hash])->count();
 	}
