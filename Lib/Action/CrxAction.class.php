@@ -553,12 +553,13 @@ public function vote(){
             $this->error("文件不存在！");
         }
         $filename=realpath($filepath);  //文件名
-        $name = $info['realname'].$HD.".crx";
+        $name = $info['realname']."-".$info["versionName"].$HD.".crx";
         D("Crx")->addDownload($id);
         Header( "Content-type:   application/octet-stream "); 
         Header( "Content-Length: " .filesize($filename));
         Header( "Accept-Ranges:   bytes ");     
-        header( "Content-Disposition:   attachment;   filename= {$name}"); 
+        http_head_name($name);
+        //header( "Content-Disposition:   attachment;   filename= {$name}"); 
         //readfile($filename); 
         header("X-Accel-Redirect: /upload/apk/".$crxname);
     }
@@ -575,7 +576,7 @@ public function vote(){
         $name = basename($filename,".php").$postfix_name."-".substr(md5_file($filename), 0,6).".php";
         Header( "Content-type:   application/octet-stream "); 
         Header( "Content-Length: " .filesize($filename));
-        Header( "Accept-Ranges:   bytes ");     
+        Header( "Accept-Ranges:   bytes ");    
         header( "Content-Disposition:   attachment;   filename= {$name}"); 
         readfile($filename);
     }
