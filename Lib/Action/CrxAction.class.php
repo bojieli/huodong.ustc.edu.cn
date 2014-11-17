@@ -708,10 +708,14 @@ public function scanBak(){
 public function clean(){
 	$this->isdeveloper();
 	$enable = 0;
+	$size = 0;
 	$enable = $this->_get("ltx","strip_tags",0);
 	$del = $this->scanBak();
+	foreach ($del as $key2 => $value2) {
+		$size += filesize($value2);
+	}
 	if($enable==0 || empty($del)){
-		echo "Total :".count($del);
+		echo "Total : ".count($del)." <br />Size : ".modifier_filesize($size);
 		return;
 	}
 	foreach ($del as $key => $value) {
