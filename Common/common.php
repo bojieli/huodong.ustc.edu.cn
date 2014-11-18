@@ -463,8 +463,8 @@ function count_order($order_tmp){
             echo M("Crx_addition")->where($cond)->count();
             break;
              case 'hot': 
-            $order = '';
-            echo D("Crx")->countItem($cond);
+            $cond = '`download_count`>0';
+            echo M("Crx")->where($cond)->sum("download_count");
             break;
         }
     
