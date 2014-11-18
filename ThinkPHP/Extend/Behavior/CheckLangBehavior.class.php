@@ -72,12 +72,15 @@ class CheckLangBehavior extends Behavior {
                         $langSet = $lang_list;
                     }
                 }
-        }else{  // es-bo => es-es
-             foreach ($lang_lists as  $lang_list) {
-                    if(stristr($lang_list,explode("-", $langSet)[0])){
+        }else{ 
+            $first = explode("-", $langSet)[0];
+            if($first != "zh"){
+                foreach ($lang_lists as  $lang_list) {
+                    if(stristr($lang_list,$first)){
                         $langSet = $lang_list;
                     }
                 }
+            }
         }
 
 // 定义当前语言
