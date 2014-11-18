@@ -168,12 +168,12 @@ class TimerAction extends PublicAction{
           <tr height="23" valign="bottom">
             <td colspan="2" align="center">
 			<p style="text-align:center;">
-			<img style="margin-top:10px" src="http://'.$_SERVER['HTTP_HOST'].'/upload/poster/thumb/large_'.$poster['poster'].'" alt="海报" class="poster_img" />
+			<img style="margin-top:10px" src="'.C('SITE_ADDRESS').'/upload/poster/thumb/large_'.$poster['poster'].'" alt="海报" class="poster_img" />
 			</p>
 			</td>
           </tr>
             <td height="30px" style="font-size:14px">活动链接：</td>
-            <td><span style="color: #09F;"><a href="http://'.$_SERVER['HTTP_HOST'].'/Poster/singlePage?aid='.$aid.'">http://'.$_SERVER['HTTP_HOST'].'/Poster/singlePage?aid='.$aid.'</a></span><div style="float:right;font-size:12px; font-weight:normal;"></div></td>
+            <td><span style="color: #09F;"><a href="'.C('SITE_ADDRESS').'/Poster/singlePage?aid='.$aid.'"'.C('SITE_ADDRESS').'/Poster/singlePage?aid='.$aid.'</a></span><div style="float:right;font-size:12px; font-weight:normal;"></div></td>
             <td></td>          
           </tr>
           <tr height="20px">
