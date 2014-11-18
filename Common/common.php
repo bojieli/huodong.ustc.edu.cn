@@ -488,4 +488,36 @@ function http_head_name($filename){
         header('Content-Disposition: attachment; filename="' . $filename . '"'); 
         } 
 }
+function getPreferredLanguage() {  
+    $langs = array();  
+    if (isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {  
+        // break up string into pieces (languages and q factors)  
+        preg_match_all('/([a-z]{1,8}(-[a-z]{1,8})?)s*(;s*qs*=s*(1|0.[0-9]+))?/i',  
+                $_SERVER['HTTP_ACCEPT_LANGUAGE'], $lang_parse);  
+    }  
+    $langs = $lang_parse[1];
+    //dump($langs);
+    if($langs[0]=="zh"){
+        $lang = "zh";
+        unset($langs[0]);
+      foreach ($langs as $lang_tmp) { 
+            if(stristr($lang_tmp,"zh-")){
+                if($lang_tmp!="zh-cn"){
+                     $lang = "zh-tw";
+                }else{
+                    $lang = $lang_tmp;
+                }
+                break;
+            }
+        }  
+    }else{
+        $lang = $langs[0];
+        if(stristr($lang,"zh-")){
+                if($lang!="zh-cn"){
+                        $lang = "zh-tw";
+                }
+            }
+    }
+    return $lang;
+} 
 ?>

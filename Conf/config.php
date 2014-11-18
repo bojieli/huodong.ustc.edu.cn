@@ -35,7 +35,7 @@ $timerconfig = array(
 $multiLang  = array(
 	'LANG_SWITCH_ON' => true,
 	'LANG_AUTO_DETECT' => true,
-	'DEFAULT_LANG' => 'zh-cn',
+	'DEFAULT_LANG' => 'en-us',
 	'LANG_LIST'        => 'en-us,zh-cn,zh-tw,es-es',
 );
 return array_merge($config, $newconfig, $mailconfig,$smsconfig,$timerconfig,$multiLang);

@@ -55,15 +55,32 @@ class CheckLangBehavior extends Behavior {
             }elseif(cookie('think_language')){// 获取上次用户的选择
                 $langSet = cookie('think_language');
             }elseif(isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])){// 自动侦测浏览器语言
-                preg_match('/^([a-z\-]+)/i', $_SERVER['HTTP_ACCEPT_LANGUAGE'], $matches);
-                $langSet = $matches[1];
+                //preg_match('/^([a-z\-]+)/i', $_SERVER['HTTP_ACCEPT_LANGUAGE'], $matches);
+               // $langSet = $matches[1];
+                $langSet = getPreferredLanguage();
                 cookie('think_language',$langSet,3600);
             }
-            if(false === stripos(C('LANG_LIST'),$langSet)) { // 非法语言参数
+            if(false === stripos(C('LANG_LIST'),$langSet) && false === stripos(C('LANG_LIST'), explode("-", $langSet)[0])) { // 非法语言参数
                 $langSet = C('DEFAULT_LANG');
             }
         }
-        // 定义当前语言
+        $lang_lists = explode(",", C("LANG_LIST"));
+        if(!stristr($langSet,"-")){
+             
+                foreach ($lang_lists as  $lang_list) {
+                    if(stristr($lang_list,$langSet)){
+                        $langSet = $lang_list;
+                    }
+                }
+        }else{  // es-bo => es-es
+             foreach ($lang_lists as  $lang_list) {
+                    if(stristr($lang_list,explode("-", $langSet)[0])){
+                        $langSet = $lang_list;
+                    }
+                }
+        }
+
+// 定义当前语言
         define('LANG_SET',strtolower($langSet));
         // 读取项目公共语言包
         if (is_file(LANG_PATH.LANG_SET.'/common.php'))
