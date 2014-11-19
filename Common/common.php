@@ -490,11 +490,13 @@ function http_head_name($filename){
 }
 function getPreferredLanguage() {  
     $langs = array();  
-    if (isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {  
+    if ( ! isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {  
+        return "zh-cn";
+    }
         // break up string into pieces (languages and q factors)  
         preg_match_all('/([a-z]{1,8}(-[a-z]{1,8})?)s*(;s*qs*=s*(1|0.[0-9]+))?/i',  
-                $_SERVER['HTTP_ACCEPT_LANGUAGE'], $lang_parse);  
-    }  
+                strtolower($_SERVER['HTTP_ACCEPT_LANGUAGE']), $lang_parse);  
+  
     $langs = $lang_parse[1];
     //dump($langs);
     if($langs[0]=="zh"){
