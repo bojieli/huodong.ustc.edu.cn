@@ -133,6 +133,46 @@ class PosterAction extends PublicAction {
 		$this->assign('jumpUrl', "/");
         $this->success("海报发布成功！");
     }
+public function node_check(){
+    $id = $this->_get("id");
+    if(empty($id)){
+        echo 1;
+        exit();
+    }
+    if(D("Poster")->needUploadAuto($id)){
+        echo 1;
+    }else{
+        echo 0;
+    }
+    exit();
+}
+public function node_insert() {
+        $ltx="TjGYV3sDuT78Ey5v";
+        if($_POST["ltx"]!=$ltx){
+            return null;
+        }
+        $gid = 76;
+        $poster['author'] = 5;//ltx@mail.ustc.edu.cn
+        $poster['sid'] = 1;
+        
+        $poster['gid'] = $gid;
+        $poster['publish_time'] = time();
+        $poster['start_time'] = time() + 6*3600;
+        $poster['end_time'] = $poster['start_time'] + 3*24*3600;
+        $poster["name"]=$_POST["name"];
+        $poster['description'] = $_POST["id"]."@http://infopublish.ustc.edu.cn";
+        $poster['place']="中国科学技术大学";
+        //shell_exec('echo '.json_encode($_FILES).' >> /tmp/test.txt');
+        //die();
+        $image = $this->uploadPoster();
+        $poster['poster'] = $image;
+        
+        $obj = M('Poster');
+        $obj->create($poster);
+        $aid = $obj->add();
+        D('Club')->incPosterCount($gid);
+        
+    }
 
     public function modify() {
         $aid = $this->getInputAid();
@@ -442,7 +482,7 @@ class PosterAction extends PublicAction {
         $aid = $this->getInputAid();
         D('Poster')->addClick($aid);
         $poster = D('Poster')->getPosterById($aid);
-
+        //dump($poster);
         $iswebp = is_numeric($_GET['iw']) ? $_GET['iw'] : -1;
         
         if (empty($poster))
@@ -455,6 +495,7 @@ class PosterAction extends PublicAction {
         $poster->end_time1 = date('c',$poster->end_time);
         $poster->thumbPoster = $poster->thumbUrl();
         $poster->largePoster = $poster->thumbUrl(true);
+        $poster->description = $poster->description();
 
         if($iswebp==1){
             $md5 = explode(".", $poster->poster)[0];
