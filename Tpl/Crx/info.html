@@ -242,7 +242,7 @@ border-radius: 4px;
 		</div>
 		<notempty name="info['desc']">
 		<div class="box-contain" style="margin-left:0;padding:1em">
-	            <pre id="desc">
+	            <pre class="readmore">
 	            {$info["desc"]}
 	            </pre>
 		</div>
@@ -250,7 +250,7 @@ border-radius: 4px;
 		<div class="box-contain" style="margin-left:0">
 			<div class="box-info">
 				<div class="box-title">{$Think.lang.all-versions}</div>
-				<div class="box-content">
+				<div class="box-content readmore">
 					<volist name="other" id="vo">
 					<div class="other-app" style="min-height:4em">
 						<a class="apk-view-logo" href="/Crx/info?id={$vo['id']}">
@@ -304,7 +304,7 @@ border-radius: 4px;
 </div>
 <script src="/static/readmore.min.js"></script>
 <script>
-$('#desc').readmore({
+$('.readmore').readmore({
       moreLink: '<a href="#" class="readmore-button">展开</a>',
       lessLink: '<a href="#" class="readmore-button">收起</a>',
       maxHeight: 300,
