@@ -110,5 +110,8 @@ class CrxModel extends Model {
 	    	}
 	    	return $ids;
 	    }
+	    public function getDescByName($name){
+	    	return M("Crx_name")->field("description")->where(["name"=>$name])->find()["description"];
+	    }
 }
 ?>

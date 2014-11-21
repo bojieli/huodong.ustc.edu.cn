@@ -321,6 +321,7 @@ class CrxAction extends PublicAction{
 	}
 	$info["htime"]= $this->tranTime($info["time"]);
 	$info["hsize"]= modifier_filesize($info["size"]);
+	$info["desc"]= $Item->getDescByName($info["name"]);
 	$addition = $Item->getItemAddition($info["id"]);
 	if(empty($c)){
 		if(strtolower(cookie('think_language'))=="zh-cn"){
