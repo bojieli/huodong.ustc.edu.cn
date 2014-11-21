@@ -53,7 +53,7 @@ class CrxModel extends Model {
 	   public function addLike($id) {
 	        if (!is_numeric($id))
 	            return;
-	        if(empty(M("Crx_addition")->find($id))){
+	        if(! M("Crx_addition")->find($id) ){
 	        	$this->additionInit($id);
 	        }
 	        M()->execute("UPDATE ustc_crx_addition SET likes = likes+1 WHERE `id`='$id'");
@@ -61,7 +61,7 @@ class CrxModel extends Model {
 	   public function addDisLike($id) {
 	        if (!is_numeric($id))
 	            return;
-	        if(empty(M("Crx_addition")->find($id))){
+	        if( ! M("Crx_addition")->find($id)){
 	        	$this->additionInit($id);
 	        }
 	        M()->execute("UPDATE ustc_crx_addition SET dislikes = dislikes+1 WHERE `id`='$id'");
