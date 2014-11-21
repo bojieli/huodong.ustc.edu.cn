@@ -139,6 +139,10 @@ border-radius: 4px;
 .font-large-number{
 	font-size: 3.5em;
 }
+.readmore-button{
+	color: #92928A;
+	padding: 0.5em;
+}
 </style>
 
 
@@ -238,9 +242,9 @@ border-radius: 4px;
 		</div>
 		<notempty name="info['desc']">
 		<div class="box-contain" style="margin-left:0;padding:1em">
-            <pre>
-            {$info["desc"]}
-            </pre>
+	            <pre id="desc">
+	            {$info["desc"]}
+	            </pre>
 		</div>
 		</notempty>
 		<div class="box-contain" style="margin-left:0">
@@ -298,5 +302,18 @@ border-radius: 4px;
 	</div>
 </div>
 </div>
+<script src="/static/readmore.min.js"></script>
+<script>
+$('#desc').readmore({
+      moreLink: '<a href="#" class="readmore-button">展开</a>',
+      lessLink: '<a href="#" class="readmore-button">收起</a>',
+      maxHeight: 300,
+      afterToggle: function(trigger, element, expanded) {
+        if(! expanded) { // The "Close" link was clicked
+          $('html, body').animate( { scrollTop: element.offset().top }, {duration: 100 } );
+        }
+      }
+    });
+</script>
  </body>
 </html>
