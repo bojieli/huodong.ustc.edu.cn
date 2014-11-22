@@ -143,6 +143,10 @@ border-radius: 4px;
 	color: #92928A;
 	padding: 0.5em;
 }
+.fp{
+	font-size: 70%;
+	color: blue;
+}
 </style>
 
 
@@ -204,9 +208,12 @@ border-radius: 4px;
 				<div class="box-title">{$Think.lang.application-details}</div>
 				<div class="box-content">
 					<p>{$Think.lang.product-name}<b> : </b>{$info["realname"]}</p>
-					<p>{$Think.lang.apk-name}<b> : </b>{$info["name"]}</p>
+					<p>{$Think.lang.apk-name}<b> : </b><a style="color:blue" href="/Crx?keyword={$info['name']}">{$info["name"]}</a></p>
 					<p>{$Think.lang.version-name}<b> : </b>{$info["versionName"]}</p>
 					<p>{$Think.lang.file-size}<b> : </b>{$info["hsize"]}</p>
+					<notempty name="info['fp']">
+						<p title="{$Think.lang.view-all-the-same-signature-apks}">{$Think.lang.app-signature}<b> : </b><a href="/Crx?fp={$info['fp']}"><span class="fp">{$info["fp"]}</span></a></p>
+					</notempty>
 					<p>{$Think.lang.ctime}<b> : </b>{$info["htime"]}</p>
 				</div>
 			</div>

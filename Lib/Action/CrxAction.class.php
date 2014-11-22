@@ -30,7 +30,6 @@ class CrxAction extends PublicAction{
 
 	/*非ajax瀑布流*/
 	$infos = $Item->getCrx(0, 20, $cond, $order,$have_addition);
-
 	foreach ($infos as $key => $info){
 		$addition =  $Item->getItemAddition($info['id']);
 		 $infos[$key]["like"] = (empty($addition['likes'])) ? 0 : $addition['likes'];
@@ -322,6 +321,7 @@ class CrxAction extends PublicAction{
 	$info["htime"]= $this->tranTime($info["time"]);
 	$info["hsize"]= modifier_filesize($info["size"]);
 	$info["desc"]= $Item->getDescByName($info["name"]);
+	$info["fp"]= $Item->getFingerPrintById($id,$info["type"]);
 	$addition = $Item->getItemAddition($info["id"]);
 	if(empty($c)){
 		if(strtolower(cookie('think_language'))=="zh-cn"){
@@ -424,7 +424,18 @@ private function apk2crx($filename,$type="phone",$enforce=false){
  private function parseInput() {
         $start = is_numeric($_GET['start']) ? $_GET['start'] : 0;
         $num = is_numeric($_GET['num']) ? $_GET['num'] : 0;
-        $cond = [];
+         $cond = [];
+        $fp = $this->_get("fp");
+	if(!empty($fp)){
+		if(strlen($fp)!=32){
+			$this->error("非法操作！");
+		}else{
+			$cond[]='( id IN ('.implode(",",D("Crx")->getIDsByFingerPrint($fp)).'))';
+
+			//$cond[]="(fp='$fp')";
+		}
+	}
+       
          $keyword = isset($_GET['keyword']) ? addslashes($_GET['keyword']) : '';
         if(!empty($keyword))
             $cond[] = "(name like '%$keyword%' or realname like '%$keyword%' )";
@@ -451,7 +462,7 @@ private function apk2crx($filename,$type="phone",$enforce=false){
             case 'smart':
                 $order = 'id desc';
         }
-
+       // dump($cond);
          return [$start, $num, implode(' AND ', $cond), $order,$have_addition];
  }
 
@@ -461,7 +472,6 @@ public function ajaxGet() {
 
 	list($start, $num, $cond, $order,$have_addition) = $this->parseInput();
 	$infos = $Item->getCrx($start, $num, $cond, $order,$have_addition);
-	//$infos = $Item->getAllItem();
 
 	foreach ($infos as $key => $info) {
 		$addition =  $Item->getItemAddition($info['id']);

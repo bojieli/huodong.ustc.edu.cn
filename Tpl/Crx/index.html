@@ -55,16 +55,21 @@ var loadmore = (function() {
 		var type_sb = "{$Think.get.type}";
 		var keyword = "{$Think.get.keyword}";
 		var order = "{$Think.get.order}";
+		var fp = "{$Think.get.fp}";
+		if(posterCounter >=pic_num){
+			noMore = true;
+			nomoreflag = 1;
+		}
 		return function(loadnum) {
+
 			 loadflag = 1;
-			
 			if (!ajaxLock && !noMore) {
 				ajaxLock = true;
 
 				 if(type == 'normal'){
 				    $.getJSON(
 					    "/Crx/ajaxGet",
-					    {start: posterCounter, num: loadnum, type: type_sb ,keyword : keyword,order:order}
+					    {start: posterCounter, num: loadnum, type: type_sb ,keyword : keyword,order:order,fp:fp}
 				    ).done(function( obj ){
 					    loadflag = 0;				
 					    if (obj.length == 0){
@@ -79,15 +84,20 @@ var loadmore = (function() {
 					    ajaxLock = false;
 				    });
 				}
+			}else{
+				 $(".hide").animate({opacity:1},1000); 
+				 $("#content ul li").setwaterfall();
 			}
 		}
 	})();
 	
+	$(window).load(function(){
+			console.log("ok");
+			$("#content ul li").setwaterfall();
+	});
 	$(document).ready(function(){
 		loadmore(1);
 		cycleload();
-		
-		
 		$(".ding2").live({
 		mouseenter:function(){
 			$(this).addClass("dinghover");
@@ -105,6 +115,7 @@ var loadmore = (function() {
 		}
 		});	
 	});
+
 	function cycleload(){
 		
 		if( loadflag==0	){

@@ -6,6 +6,19 @@ class CrxModel extends Model {
 	public function getItemByHash($hash,$type="phone"){
 		return M("Crx")->where(["apkHash"=>$hash,"type"=>$type])->find();
 	}
+	public function getFingerPrintById($id,$type="phone"){
+		if($type=="pad"){
+			$id = $this->getItemByHash($hash,$type)["id"];
+		}
+		return M("Crx_hash")->where(["id"=>$id])->find()["fp"];
+	}
+	public function getIDsByFingerPrint($fp){
+		$res = M("Crx_hash")->field("id")->where(['fp'=>$fp])->select();
+		foreach ($res as $key => $value) {
+			$ids[]= $value['id'];
+		}
+		return $ids;
+	}
 	public function getItemByShortHash($hash,$name,$type="phone"){
 		$con["type"]=$type;
 		$con["hash"]=array('like',$hash."%");

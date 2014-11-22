@@ -65,7 +65,9 @@ $help  = array(
          'vote-title'=>"Result of Vote for Application Testing",
         'all-versions'=>"All Versions",
          'go-to-disqus'=>"Switch to Disqus",
-        'go-to-duoshuo'=>"Switch to Duoshuo"
+        'go-to-duoshuo'=>"Switch to Duoshuo",
+        'app-signature'=>"APK Signature",
+         'view-all-the-same-signature-apks'=>"View all the same signature apks",
     );
     return array_merge($index,$course,$create,$help,$info);
 ?>

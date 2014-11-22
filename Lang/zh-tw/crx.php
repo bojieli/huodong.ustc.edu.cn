@@ -66,7 +66,9 @@ $help  = array(
         'vote-title'=>"APP運行狀況投票結果",
         'all-versions'=>"所有版本",
         'go-to-disqus'=>"切換到Disqus評論",
-        'go-to-duoshuo'=>"切換到多說評論"
+        'go-to-duoshuo'=>"切換到多說評論",
+        'app-signature'=>"軟件簽名",
+        'view-all-the-same-signature-apks'=>"查看所有相同簽名的軟件",
     );
     return array_merge($index,$course,$create,$help,$info);
 ?>
