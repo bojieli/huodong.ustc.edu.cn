@@ -12,6 +12,8 @@ class CrxModel extends Model {
 			$hash = $this->getItem($id)["apkHash"];
 			if($type=="phone")
 				$type2 = "pad";
+			else                                
+				$type2 = "phone";
 			$id = $this->getItemByHash($hash,$type2)["id"];
 			$fp = M("Crx_hash")->where(["id"=>$id])->find()["fp"];
 		}
