@@ -19,6 +19,9 @@ function storeDS(id){
 		 localStorage[file]=1;
 	}
 }
+var disqus_config = function () { 
+  this.language = "<?php echo langForDisqus(cookie('think_language'));?>";
+};
 </script>
 <style type="text/css">
 body{
@@ -285,11 +288,11 @@ border-radius: 4px;
 			<div class="file-area" style="padding:2em">
 				<div class="comment-switch">
 				<eq name="pl" value="duoshuo">
-				<a href="__SELF__&c=disqus">
+				<a href="/Crx/info?id={$Think.get.id}&c=disqus">
 					{$Think.lang.go-to-disqus}
 				</a>
 				<else/>
-				<a href="__SELF__&c=duoshuo">
+				<a href="/Crx/info?id={$Think.get.id}&c=duoshuo">
 					{$Think.lang.go-to-duoshuo}
 				</a>
 				</eq>

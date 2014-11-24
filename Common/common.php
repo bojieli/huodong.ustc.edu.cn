@@ -522,4 +522,21 @@ function getPreferredLanguage() {
     }
     return $lang;
 } 
+function langForDisqus($lang){
+    switch ($lang) {
+        case 'zh-tw':
+            $lang="zh_TW";
+            break;
+        case 'es':
+            $lang="es_ES";
+            break;
+         case 'es-es':
+            $lang="es_ES";
+            break;
+        default:
+            $lang = explode("-", $lang)[0];
+            break;
+    }
+    return $lang;
+}
 ?>
