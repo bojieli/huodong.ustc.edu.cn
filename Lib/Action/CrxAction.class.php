@@ -321,7 +321,10 @@ class CrxAction extends PublicAction{
 	$info["htime"]= $this->tranTime($info["time"]);
 	$info["hsize"]= modifier_filesize($info["size"]);
 	$info["desc"]= $Item->getDescByName($info["name"]);
-	$info["fp"]= $Item->getFingerPrintById($id,$info["type"]);
+	$fp = $Item->getFingerPrintById($id,$info["type"]);
+	//dump($fp);
+	$info["fp"]= $fp["fp"];
+	$info["issuer"]=$fp["issuer"];
 	$addition = $Item->getItemAddition($info["id"]);
 	if(empty($c)){
 		if(strtolower(cookie('think_language'))=="zh-cn"){

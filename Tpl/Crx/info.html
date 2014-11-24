@@ -5,6 +5,9 @@
 <title>{$info["realname"]} - {$info["versionName"]} -apk2crx</title>
 <link href="/static/css1.css" rel="stylesheet" type="text/css" />
 <link href="/static/zhuce.css" rel="stylesheet" type="text/css" />
+<link rel="stylesheet" type="text/css" href="/static/tooltipster.css" />
+<link rel="stylesheet" type="text/css" href="/static/tooltipster-shadow.css" />
+
 <script src="/static/jquery.js" type="text/javascript"></script>
 <script type="text/javascript">
 function download_click(id){
@@ -215,7 +218,9 @@ border-radius: 4px;
 					<p>{$Think.lang.version-name}<b> : </b>{$info["versionName"]}</p>
 					<p>{$Think.lang.file-size}<b> : </b>{$info["hsize"]}</p>
 					<notempty name="info['fp']">
-						<p title="{$Think.lang.view-all-the-same-signature-apks}">{$Think.lang.app-signature}<b> : </b><a href="/Crx?fp={$info['fp']}"><span class="fp">{$info["fp"]}</span></a></p>
+						<p class="tooltip" title="{$info['issuer']}">{$Think.lang.app-signature}<b> : </b><a href="/Crx?fp={$info['fp']}"><span class="fp">{$info["fp"]}</span></a>
+						
+						</p>
 					</notempty>
 					<p>{$Think.lang.ctime}<b> : </b>{$info["htime"]}</p>
 				</div>
@@ -313,6 +318,7 @@ border-radius: 4px;
 </div>
 </div>
 <script src="/static/readmore.min.js"></script>
+<script type="text/javascript" src="/static/jquery.tooltipster.min.js"></script>
 <script>
 $('.readmore').readmore({
       moreLink: '<a href="#" class="readmore-button">展开</a>',
@@ -324,6 +330,11 @@ $('.readmore').readmore({
         }
       }
     });
+$(document).ready(function() {
+            $('.tooltip').tooltipster({
+            	 theme: 'tooltipster-shadow'
+            });
+        });
 </script>
  </body>
 </html>

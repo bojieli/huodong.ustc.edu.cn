@@ -7,7 +7,7 @@ class CrxModel extends Model {
 		return M("Crx")->where(["apkHash"=>$hash,"type"=>$type])->find();
 	}
 	public function getFingerPrintById($id,$type="phone"){
-		$fp = M("Crx_hash")->where(["id"=>$id])->find()["fp"];
+		$fp = M("Crx_hash")->where(["id"=>$id])->find();
 		if(empty($fp)){
 			$hash = $this->getItem($id)["apkHash"];
 			if($type=="phone")
@@ -15,7 +15,7 @@ class CrxModel extends Model {
 			else                                
 				$type2 = "phone";
 			$id = $this->getItemByHash($hash,$type2)["id"];
-			$fp = M("Crx_hash")->where(["id"=>$id])->find()["fp"];
+			$fp = M("Crx_hash")->where(["id"=>$id])->find();
 		}
 		return $fp;
 	}
@@ -133,5 +133,9 @@ class CrxModel extends Model {
 	    public function getDescByName($name){
 	    	return M("Crx_name")->field("description")->where(["name"=>$name])->find()["description"];
 	    }
+	    /*
+	     public function getDescByName($id){
+	    	return M("Crx_hash")->field("issuer")->where(["id"=>$id])->find()["issuer"];
+	    }*/
 }
 ?>
