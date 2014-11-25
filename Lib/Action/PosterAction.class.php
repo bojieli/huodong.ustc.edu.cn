@@ -417,7 +417,9 @@ public function node_insert() {
                                          .'<div class="detail">
 					 <div class="hot" itemprop="aggregateRating" itemscope itemtype="http://schema.org/AggregateRating">'.
 						'<span class="ding" id="ding-'.$poster->id().'">
-							 <span class="iconding"></span>
+							 <span class="heart pulse2">
+                                                                                            ♥
+                                                                                            </span>
 							 <span itemprop="ratingValue" class="rate">'.$poster->getRate().'</span>
 						 </span>
 					 </div>'.
