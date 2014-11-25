@@ -975,11 +975,11 @@ class ClubAction extends PublicAction {
     private function clubLogoThumbHtml($club) {
         if ($club->logoThumbUrl() != '')
             return '<a href="/Club/intro?gid='.$club->gid().'">'.
-                '<img id="club-'.$club->gid().'" '.
-                'class="clublogo" '.
-                'height="'.$club->logoThumbHeight().'" '.
+                '<div style="overflow:hidden"><img id="club-'.$club->gid().'" '.
+                'class="clublogo u-img" '.
+                'width=270px" '.
                 'src="'.$club->logoThumbUrl().' "'.
-                '/></a>';
+                '/></div></a>';
         else return '';
     }
 
