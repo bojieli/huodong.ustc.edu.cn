@@ -388,14 +388,14 @@ public function node_insert() {
             $img='';
         elseif($this->isWebpExist($md5,$prefix='thumb_'))
                 {    if ($iswebp==1) 
-                        $img='<img alt="'.$poster->name().'" class="haibao" itemprop="photo" height="'.$poster->thumbHeight().'" id="poster-'.$poster->id().'" src="'.$webp_url.$prefix.$md5.'.webp'.'"onclick="loadComments('.$poster->id().')" />';
+                        $img='<img alt="'.$poster->name().'" class="haibao u-img" itemprop="photo"  id="poster-'.$poster->id().'" src="'.$webp_url.$prefix.$md5.'.webp'.'"onclick="loadComments('.$poster->id().')" />';
                      elseif ($iswebp==-1) 
-                            $img='<img alt="'.$poster->name().'" class="haibao" itemprop="photo" height="'.$poster->thumbHeight().'" id="poster-'.$poster->id().'" data-img="'.$poster->thumbUrl().'"onclick="loadComments('.$poster->id().')" />';
+                            $img='<img alt="'.$poster->name().'" class="haibao u-img" itemprop="photo" id="poster-'.$poster->id().'" data-img="'.$poster->thumbUrl().'"onclick="loadComments('.$poster->id().')" />';
                          else 
-                            $img='<img alt="'.$poster->name().'" class="haibao" itemprop="photo" height="'.$poster->thumbHeight().'" id="poster-'.$poster->id().'" src="'.$poster->thumbUrl().'"onclick="loadComments('.$poster->id().')" />';
+                            $img='<img alt="'.$poster->name().'" class="haibao u-img" itemprop="photo"  id="poster-'.$poster->id().'" src="'.$poster->thumbUrl().'"onclick="loadComments('.$poster->id().')" />';
                  }
              else
-                $img='<img alt="'.$poster->name().'" class="haibao" itemprop="photo" height="'.$poster->thumbHeight().'" id="poster-'.$poster->id().'" src="'.$poster->thumbUrl().'"onclick="loadComments('.$poster->id().')" />';
+                $img='<img alt="'.$poster->name().'" class="haibao" itemprop="photo"  id="poster-'.$poster->id().'" src="'.$poster->thumbUrl().'"onclick="loadComments('.$poster->id().')" />';
         if($clockStat==0) 
             $clock_img='';
 		else
@@ -408,24 +408,27 @@ public function node_insert() {
 		return '
 		<li class="hide animated fadeInUp">
 			<div class="celldiv " itemscope itemtype="http://schema.org/Event">
+                                        <div class="img-box" style="overflow:hidden">
 			'.$img.	
-                '
-				<div class="detail">
+                                        '<div itemprop="name" class="caption" >
+                                        <h3>'.$poster->name().'</h3>
+                                        </div>
+                                         </div>'
+                                         .'<div class="detail">
 					 <div class="hot" itemprop="aggregateRating" itemscope itemtype="http://schema.org/AggregateRating">'.
 						'<span class="ding" id="ding-'.$poster->id().'">
 							 <span class="iconding"></span>
 							 <span itemprop="ratingValue" class="rate">'.$poster->getRate().'</span>
 						 </span>
 					 </div>'.
-					'<span itemprop="name" style="display:none">'.$poster->name().'</span>'.
 					/*热度：<span class="rate">'.$poster->getRate().'</span>'.
 					 '<span class="ding" id="ding-'.$poster->id().'">顶</span></div>'.*/
-					 '<p>
+					 '<div class="poster_content">
 						 时间: <time itemprop="startDate" datetime="'.date('c',$poster->start_time).'">'.
 						 $poster->humanDate().'</time>'.
-						'<time itemprop="endDate" datetime="'.date('c',$poster->end_time).'"></time><br>'.
+						'<time itemprop="endDate" datetime="'.date('c',$poster->end_time).'"></time>'.
 						'<div itemprop="location">地点: '.$poster->place().'</div>
-					</p>
+					</div>
 				</div>
 				'.$clock_img.'
 				 <div class="school">'.$poster->schoolName().'</div>

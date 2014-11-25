@@ -13,6 +13,7 @@
 <script src="/static/setwaterfall.js" type="text/javascript"></script>
 <script src="/static/jsjq1.js" type="text/javascript"></script>
 <script src="/static/timer.js" type="text/javascript"></script>
+<script src="http://www.polymer-project.org/components/webcomponentsjs/webcomponents.js" type="text/javascript"></script>
 <!--下面是对滚动和加载的处理-->
 <script>
 <!--
@@ -141,11 +142,11 @@ function cycleload(){
 		mouseleave:function(){
 			$(this).removeClass("dinghover");
 		}
-		});		
+		});
 	});
--->
-	</script>
 
+	
+	</script>
 
 <style type="text/css">
   .searchcss_out, .searchcss_on{
@@ -225,7 +226,7 @@ window.onresize=function(){
         	<!--img style="width:240px; height:240px; border:1px solid #000;" src="/static/images/dxhbQR.png"/-->
         	<div id="mianposter">
         		
-        		<include file="Public:mainposter" />
+        		<!--<include file="Public:mainposter" />-->
         	</div>
         	
 
