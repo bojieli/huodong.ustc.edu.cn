@@ -59,6 +59,15 @@
 	   </div>
        <div class="fenxiangr" id="fenxiangr">
 	       <notempty name="singlePage">
+	       	<div class="jiathis_style_32x32">
+                                    <a class="jiathis_button_tsina"></a>
+                                    <a class="jiathis_button_qzone"></a>
+                                    <a class="jiathis_button_tqq"></a>
+                                    <a class="jiathis_button_renren"></a>
+                                    <a class="jiathis_button_weixin hide-for-small"></a>
+                                    <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank"></a>      
+                                </div>
+	       	<!--
 	 	  <div class="bshare-custom icon-medium-plus">
 	 	  	<span class="share1">分享到：</span>
 	 	  	<a title="分享到新浪微博" class="bshare-sinaminiblog" href="javascript:void(0);"></a>
@@ -70,6 +79,7 @@
 	 	  </div>
 	 	  <script type="text/javascript" src="/static/buttonLite.js"></script>
 	 	  <script type="text/javascript" src="/static/bshareC0.js"></script>
+	 	  -->
 	       </notempty>
 	       <empty name="singlePage">
 	         <div>
@@ -180,3 +190,17 @@
 <notempty name="singlePage">
   </div><!--mainding-->
 </notempty>
+
+<script type="text/javascript">
+            var jiathis_config = {
+            url: '{:C("SITE_ADDRESS")}/Poster/singlePage?iw={$iw}&aid={$poster.aid}',
+            lhost : '/static/',
+            codehost : '/static/',
+            title : "{$poster.name}",
+            summary : "{$poster.description}"+'\n' + "@大学活动平台_中国科大 huodong.ustc.edu.cn",
+            pic:"{:C('SITE_ADDRESS')}{$poster.largePoster}",
+            appkey:{"tsina":"853404019","tqq":"101136030"}
+           }
+        
+        </script>
+<script type="text/javascript" src="/static/jiathis/jia.js" charset="utf-8"></script>

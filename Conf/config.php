@@ -5,7 +5,7 @@ date_default_timezone_set('Asia/Chongqing');
 
 $config = require("./Conf/dbconfig.php");
 $newconfig = array(
-	'SITE_ADDRESS' => 'http://huodong.ustc.edu.cn',
+	'SITE_ADDRESS' => 'https://huodong.ustc.edu.cn',
 	'DEFAULT_MODULE' => 'Poster',
 	'SESSION_AUTO_START' => true,
 	'APP_AUTOLOAD_PATH' => '@.TagLib,@.ORG',
