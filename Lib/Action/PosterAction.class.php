@@ -382,7 +382,10 @@ public function node_insert() {
     }
     private function poster2html($poster,$iswebp) {
         $clockStat=D('Timer')->clockInput($poster->id());
-         D('Poster')->addClick($poster->id());
+    
+        if(cookie('think_language'))
+            D('Poster')->addClick($poster->id());
+
         $md5 = explode(".", $poster->poster)[0];
         $webp_url = "/upload/poster/thumb/webp/";
         if($poster->thumbUrl()=='')
