@@ -357,7 +357,7 @@ public function node_insert() {
                 break;
         default:
             case 'smart':
-                $order = '(`clicks`+5)/
+                $order = 'sqrt(`clicks`+5)/
                 POWER(
                     ABS('.$nowtime.'-`publish_time`+3600*2)/(3600*10), 
                     1.8 - 0.8*FLOOR('.$nowtime.'/`start_time`) + (2+(ABS(('.$nowtime.'-`end_time`))/(3600*24*30)))*FLOOR('.$nowtime.'/`end_time`)
