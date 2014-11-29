@@ -67,6 +67,20 @@
                                     <a class="jiathis_button_weixin hide-for-small"></a>
                                     <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank"></a>      
                                 </div>
+                                <script type="text/javascript">
+		            var jiathis_config = {
+		            url: '{:C("SITE_ADDRESS")}/Poster/singlePage?iw={$iw}&aid={$poster.aid}',
+		            lhost : '/static/',
+		            codehost : '/static/',
+		            title : "{$poster.name}",
+		            summary : "{$poster.description}"+'\n' + "@大学活动平台_中国科大 huodong.ustc.edu.cn",
+		            pic:"{:C('SITE_ADDRESS')}{$poster.largePoster}",
+		            appkey:{"tsina":"853404019","tqq":"101136030"}
+		           }
+		        
+		        </script>
+		<script type="text/javascript" src="/static/jiathis/jia.js" charset="utf-8"></script>
+
 	       	<!--
 	 	  <div class="bshare-custom icon-medium-plus">
 	 	  	<span class="share1">分享到：</span>
@@ -190,17 +204,3 @@
 <notempty name="singlePage">
   </div><!--mainding-->
 </notempty>
-
-<script type="text/javascript">
-            var jiathis_config = {
-            url: '{:C("SITE_ADDRESS")}/Poster/singlePage?iw={$iw}&aid={$poster.aid}',
-            lhost : '/static/',
-            codehost : '/static/',
-            title : "{$poster.name}",
-            summary : "{$poster.description}"+'\n' + "@大学活动平台_中国科大 huodong.ustc.edu.cn",
-            pic:"{:C('SITE_ADDRESS')}{$poster.largePoster}",
-            appkey:{"tsina":"853404019","tqq":"101136030"}
-           }
-        
-        </script>
-<script type="text/javascript" src="/static/jiathis/jia.js" charset="utf-8"></script>
