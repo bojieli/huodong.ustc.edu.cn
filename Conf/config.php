@@ -5,6 +5,7 @@ date_default_timezone_set('Asia/Chongqing');
 
 $config = require("./Conf/dbconfig.php");
 $newconfig = array(
+	'SITE_ADDRESS' => 'https://huodong.ustc.edu.cn',
 	'DEFAULT_MODULE' => 'Poster',
 	'SESSION_AUTO_START' => true,
 	'APP_AUTOLOAD_PATH' => '@.TagLib,@.ORG',
@@ -13,6 +14,7 @@ $newconfig = array(
 	'AVATAR_PATH' => 'upload/avatar/',
 	'COOKIE_PREFIX' => 'hd_',
 	'COOKIE_EXPIRE' => 36000,
+	'URL_HTML_SUFFIX' => 'html|xml'
 );
 $mailconfig = array(
 	'MAIL_ADDRESS' => 'huodong@ustc.edu.cn',
@@ -30,5 +32,11 @@ $timerconfig = array(
 	'timer_time' => 2*3600,//second
 	'timer_email'=> 10,
 );
-return array_merge($config, $newconfig, $mailconfig,$smsconfig,$timerconfig);
+$multiLang  = array(
+	'LANG_SWITCH_ON' => true,
+	'LANG_AUTO_DETECT' => true,
+	'DEFAULT_LANG' => 'en-us',
+	'LANG_LIST'        => 'en-us,zh-cn,zh-tw,es-es',
+);
+return array_merge($config, $newconfig, $mailconfig,$smsconfig,$timerconfig,$multiLang);
 ?>

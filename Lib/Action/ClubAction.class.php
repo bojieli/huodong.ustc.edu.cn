@@ -204,18 +204,20 @@ class ClubAction extends PublicAction {
 
 		$filePath = 'upload/xls/'.$filename;
 		$list=$this->readExcel($filePath);
-
+          //var_dump($list);die();
         if(!empty($firstline)){
             $list_tmp[1]=$val;
+            unset($list[1]);
             foreach ($list as $keys => $values) {
                 $list_tmp[]=$values;
             }
             $list = $list_tmp;
         }
-		else
+     else
         {
             $list[1]=$val;
         }
+      //  var_dump($list);die();
 		  foreach($val as $key => $value){
 		       if($value==''){
 			     foreach($list as $m =>$n){
@@ -634,39 +636,46 @@ class ClubAction extends PublicAction {
         $this->success("成功发送邮件给 ". count($emails) ." 人");
     }
 
+    public function checkMembership() {
+        $member = M('user')->where(array(
+            'student_no' => $_REQUEST['student_no'],
+            'realname' => $_REQUEST['name'],
+            'email' => $_REQUEST['email'],
+        ))->find();
+        if (empty($member)) {
+            die('NOTFOUND');
+        }
+        if (!is_numeric($_REQUEST['gid']))
+            die('ERROR');
+        $priv = $this->getPriv($_REQUEST['gid'], $member['uid']);
+        if (!$priv)
+            die('NOTJOIN');
+        if ($priv == 'inactive')
+            die('INACTIVE');
+        die('OK');
+    }
+
     public function manage() {
-        //import(“ORG.Util.Page”);// 导入分页类
+        import("ORG.Util.Page");// 导入分页类
 
         $gid = $this->getInputGid();
-        
-        $page = isset($_GET['page']) && is_numeric($_GET['page']) ? $_GET['page'] : 1;
-        //$start = isset($_GET['start']) && is_numeric($_GET['start']) ? $_GET['start'] : 0;
-        $num = isset($_GET['num']) && is_numeric($_GET['num']) ? $_GET['num'] : 20;
-        $start = ($page-1)*$num;
-        
-        $club = $this->getData($gid);
-        $this->assign('club', $club);
-        
-        if (!$this->isManager($gid)) {
-            $start = 0;
-            $num = 20;
+        $keyword = isset($_GET['keyword']) ? addslashes($_GET['keyword']) : '';
+
+           if(!empty($keyword) && $this->isManager($gid))
+        {
+            $search_condition = "and (realname like '%$keyword%' or email like '%$keyword%' or education like '%$keyword%'  or student_no like '%$keyword%'  or dept like '%$keyword%'  or telephone like '%$keyword%'  or title like '%$keyword%') ";    
         }
-        //$count = M()->query("SELECT count(*) FROM (ustc_user INNER JOIN ustc_user_group ON ustc_user.uid = ustc_user_group.uid) INNER JOIN ustc_priv ON ustc_user_group.priv = ustc_priv.priv_name WHERE ustc_user_group.gid='$gid'");
-        
-        //$Page = new Page($count,20);
-        $members = M()->query("SELECT * FROM (ustc_user INNER JOIN ustc_user_group ON ustc_user.uid = ustc_user_group.uid) INNER JOIN ustc_priv ON ustc_user_group.priv = ustc_priv.priv_name WHERE ustc_user_group.gid='$gid' ORDER BY ustc_priv.priv_value desc LIMIT $start,$num");
-       // $members = M()->query("SELECT * FROM (ustc_user INNER JOIN ustc_user_group ON ustc_user.uid = ustc_user_group.uid) INNER JOIN ustc_priv ON ustc_user_group.priv = ustc_priv.priv_name WHERE ustc_user_group.gid='$gid' ORDER BY ustc_priv.priv_value desc LIMIT $Page->firstRow,$Page-
-       // >listRows");
+        $count = M()->query("SELECT count(*) as count FROM (ustc_user INNER JOIN ustc_user_group ON ustc_user.uid = ustc_user_group.uid) INNER JOIN ustc_priv ON ustc_user_group.priv = ustc_priv.priv_name WHERE ustc_user_group.gid='$gid' $search_condition")  [0]["count"];
+       
+       if(!$this->isManager($gid)){
+            $count=10;
+        }
+        $Page = new Page($count,10);
+        $Page->setConfig('theme',"%upPage% %linkPage% %downPage%");
+        $show       = $Page->show();
+
+        $members = M()->query("SELECT * FROM (ustc_user INNER JOIN ustc_user_group ON ustc_user.uid = ustc_user_group.uid) INNER JOIN ustc_priv ON ustc_user_group.priv = ustc_priv.priv_name WHERE ustc_user_group.gid='$gid' $search_condition ORDER BY ustc_priv.priv_value desc LIMIT $Page->firstRow,$Page->listRows");
     
-       // if(count($member)>0)$count = count($member);
-
-       // $Page = new Page($count,20);
-
-        //$show = $Page->show();
-
-        //$this->assign('list',$list);// 赋值数据集
-        //$this->assign('members',$show);// 赋值分页输出
-        //$this->display(); // 输出模板
 
         foreach ($members as &$member) {
             $member['avatar'] = D('user')->getAvatar($member['uid'],'small');
@@ -692,16 +701,14 @@ class ClubAction extends PublicAction {
         $departments =M("Team")->where(array('type'=>'department','gid'=>$gid,'flag'=>1))->select();
 		
         $acts = D('Activity')->getActsByGid($gid);
-		
-
-        //dump($acts);
-		$this->assign('acts', $acts);
-		$this->assign('teams', $teams);
-		$this->assign('departments', $departments);
+        $club = $this->getData($gid);
+-        $this->assign('club', $club);
+        $this->assign('acts', $acts);
+        $this->assign('teams', $teams);
+        $this->assign('departments', $departments);
 
         $this->assign('inactive', $inactive_members);
-        $this->assign('pageStart', $start);
-        $this->assign('pageNow', $page);
+        $this->assign('page',$show);
         $this->headnav();
         $this->display();
     }
@@ -798,24 +805,7 @@ class ClubAction extends PublicAction {
         } else
             $this->error('修改title失败');
     } 
-    public function test()
-    {
-        $clubs = M('Club')->where("1")->select();
-        foreach($clubs as $value)
-        {
-			$num = M('User_group')->result_first("SELECT count(*) FROM ustc_user_group where gid = $value[gid] and sid = 1 and priv !='inactive'");
-			$record['member_count'] = $num;
-			M('Club')->where(['gid'=>$value[gid]])->save($record);
-			dump(M('Club')->getLastSql());
-        }
-		
-        /*M('Club')->query("update ustc_user_group set priv = 'vice-admin' where title = '副主席'");
-        M('Club')->query("update ustc_user_group set priv = 'vice-admin' where title = '副会长'");
-        M('Club')->query("update ustc_user_group set priv = 'vice-admin' where title = '副社长'");
-        M('Club')->query("update ustc_user_group set priv = 'vice-manager' where title = '副部长'");
-        M('Club')->query("update ustc_user_group set priv = 'team-leader' where title = '活动负责人'");
-        M('Club')->query("update ustc_user_group set priv = 'team-leader' where title = '项目组长'");*/
-    }
+    
 
     public function removeMember() {
         list($gid, $uid) = $this->getInputGidUid();
@@ -968,7 +958,7 @@ class ClubAction extends PublicAction {
     private function club2html($club) {
         return '<li class="hide">'.
             '<div class="celldiv">
-			<div itemscope itemtype="http://data-vocabulary.org/Organization">
+			<div itemscope itemtype="http://schema.org/Organization">
 			<a target="_blank" href="/Club/intro?gid='.$club->gid().'" itemprop="url">'.
             '<p class="title" itemprop="name">'.$club->name().'</p>
 			</a>'.
@@ -985,11 +975,11 @@ class ClubAction extends PublicAction {
     private function clubLogoThumbHtml($club) {
         if ($club->logoThumbUrl() != '')
             return '<a href="/Club/intro?gid='.$club->gid().'">'.
-                '<img id="club-'.$club->gid().'" '.
-                'class="clublogo" '.
-                'height="'.$club->logoThumbHeight().'" '.
+                '<div style="overflow:hidden"><img id="club-'.$club->gid().'" '.
+                'class="clublogo u-img" '.
+                'width=270px" '.
                 'src="'.$club->logoThumbUrl().' "'.
-                '/></a>';
+                '/></div></a>';
         else return '';
     }
 
@@ -1065,19 +1055,21 @@ class ClubAction extends PublicAction {
 		else{
 			$excel=D('Club')->showMember($gid,$vid);
         }
-		foreach($excel as $key3 => $val3){
+	 //dump($excel);die; 	
+        foreach($excel as $key3 => $val3){
 			foreach($val3['content'][1] as $key => $val){
 				if($val=='邮箱') $re[$key3]['email']=$key;
 				if($val=='手机') $re[$key3]['telephone']=$key;
 			}
+            //var_dump($val3['content']);die();
 			foreach($val3['content'] as $key2 => $val2)
-			if($key2!=1)
+			     if($key2!=1)
 				$kind[$key3][$key2] = D('Club')->UserKind($gid,$val2[$re[$key3]['email']],$val2[$re[$key3]['telephone']]);
 		}
 
 		$this->assign("kind", $kind);
 		$this->assign("excel", $excel);
-//	dump($excel);die;	
+      //  dump($excel);die;	
 		$this->assign("club", $club);
         $this->assign("members", $members);
         $this->display();
@@ -1174,7 +1166,8 @@ class ClubAction extends PublicAction {
         $re=$this->createAddressParse();//生成通讯录权限预处理
         $gid=$re['gid'];
         $members=$re['members'];
-        $filename="./upload/address_fetion".$gid.".csv";
+        $filename="/tmp/address_fetion".$gid.".csv";
+        ignore_user_abort(true);
         $file=fopen($filename,"w");
         if($file){
             fwrite($file,iconv( "UTF-8", "gbk" ,"MobileNo,Name"));
@@ -1191,15 +1184,20 @@ class ClubAction extends PublicAction {
         header("Content-Description:File Transfer");  
         header ("Content-type: application/octet-stream"); //定义数据类型
         header ("Content-Length: " . filesize ($filename));  
-        header("Content-Disposition: attachment; filename=".basename($filename)); 
+        header("Content-Disposition: attachment; filename=".basename($filename,".csv")."-".substr(md5_file($filename), 0,6).".csv"); 
         readfile($filename);
+        if (file_exists($filename)) {
+            unlink($filename);
+        }
+
     }
     public function createAddressEmailUSTC()
     {
         $re=$this->createAddressParse();//生成通讯录权限预处理
         $gid=$re['gid'];
         $members=$re['members'];
-        $filename="./upload/address_email_ustc".$gid.".csv";
+        $filename="/tmp/address_email_ustc".$gid.".csv";
+        ignore_user_abort(true);
         $file=fopen($filename,"w");
         if($file){
             fwrite($file,iconv( "UTF-8", "gbk" ,"联系组,姓名,Email,手机"));
@@ -1216,8 +1214,11 @@ class ClubAction extends PublicAction {
         header("Content-Description:File Transfer");  
         header ("Content-type: application/octet-stream"); //定义数据类型
         header ("Content-Length: " . filesize ($filename));  
-        header("Content-Disposition: attachment; filename=".basename($filename)); 
+        header("Content-Disposition: attachment; filename=".basename($filename,".csv")."-".substr(md5_file($filename), 0,6).".csv"); 
         readfile($filename);
+        if (file_exists($filename)) {
+            unlink($filename);
+        }
     }
     public function createAddress()
     {
@@ -1225,7 +1226,8 @@ class ClubAction extends PublicAction {
         $re=$this->createAddressParse();//生成通讯录权限预处理
         $gid=$re['gid'];
         $members=$re['members'];
-        $filename="./upload/address".$gid.".csv";
+        $filename="/tmp/address".$gid.".csv";
+        ignore_user_abort(true);
         $file=fopen($filename,"w");
         if($file){
             fwrite($file,iconv( "UTF-8", "gbk" ,"姓名,学号,性别,职务,学历,入学年级,email,手机,QQ,主页"));
@@ -1244,8 +1246,11 @@ class ClubAction extends PublicAction {
         header("Content-Description:File Transfer");  
         header ("Content-type: application/octet-stream"); //定义数据类型
         header ("Content-Length: " . filesize ($filename));  
-        header("Content-Disposition: attachment; filename=".basename($filename)); 
+        header("Content-Disposition: attachment; filename=".basename($filename,".csv")."-".substr(md5_file($filename), 0,6).".csv"); 
         readfile($filename);
+        if (file_exists($filename)) {
+            unlink($filename);
+        }
     }
 	public function createVcard()
     {
@@ -1285,10 +1290,10 @@ class ClubAction extends PublicAction {
 		}
 		$filename = D('Club')->getClubName($gid);
 		//dump($output);die;
-		Header("Content-Disposition: attachment; filename=$filename.vcf");
+		Header("Content-Disposition: attachment; filename=".$filename."-".substr(md5($output), 0,6).".vcf");
 		Header("Content-Length: ".strlen($output));
 		Header("Connection: close");
-		Header("Content-Type: text/x-vCard; name=$filename.vcf");
+		Header("Content-Type: text/x-vCard; name=".$filename."-".substr(md5($output), 0,6).".vcf");
 		echo $output;
     }
     public function downloadSource(){

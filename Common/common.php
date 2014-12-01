@@ -452,4 +452,91 @@ return $info;
 }
 */
 
+function count_order($order_tmp){
+      switch ($order_tmp) {
+            case 'new': 
+                $cond = '';
+                echo D("Crx")->countItem($cond);
+                break;
+             case 'good': 
+           $cond = '`likes`>`dislikes`';
+            echo M("Crx_addition")->where($cond)->count();
+            break;
+             case 'hot': 
+            $cond = '`download_count`>0';
+            echo M("Crx")->where($cond)->sum("download_count");
+            break;
+        }
+    
+}
+function modifier_filesize($size)
+{
+  $size = max(0, (int)$size);
+  $units = array( 'b', 'K', 'M', 'G', 'T', 'P', 'E', 'Z', 'Y');
+  $power = $size > 0 ? floor(log($size, 1024)) : 0;
+  return number_format($size / pow(1024, $power), 2, '.', ',') ." ".$units[$power];
+} 
+function http_head_name($filename){
+        $ua = $_SERVER["HTTP_USER_AGENT"];
+        $encoded_filename = urlencode($filename); 
+        $encoded_filename = str_replace("+", "%20", $encoded_filename); 
+        if (preg_match("/MSIE/", $ua)) { 
+        header('Content-Disposition: attachment; filename="' . $encoded_filename . '"'); 
+        } else if (preg_match("/Firefox/", $ua)) { 
+        header('Content-Disposition: attachment; filename*="utf8\'\'' . $filename . '"'); 
+        } else { 
+        header('Content-Disposition: attachment; filename="' . $filename . '"'); 
+        } 
+}
+function getPreferredLanguage() {  
+    $langs = array();  
+    if ( ! isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {  
+        return "zh-cn";
+    }
+        // break up string into pieces (languages and q factors)  
+        preg_match_all('/([a-z]{1,8}(-[a-z]{1,8})?)s*(;s*qs*=s*(1|0.[0-9]+))?/i',  
+                strtolower($_SERVER['HTTP_ACCEPT_LANGUAGE']), $lang_parse);  
+  
+    $langs = $lang_parse[1];
+    //dump($langs);
+    if($langs[0]=="zh"){
+        $lang = "zh";
+        unset($langs[0]);
+      foreach ($langs as $lang_tmp) { 
+            if(stristr($lang_tmp,"zh-")){
+                if($lang_tmp!="zh-cn"){
+                     $lang = "zh-tw";
+                }else{
+                    $lang = $lang_tmp;
+                }
+                break;
+            }
+        }  
+    }else{
+        $lang = $langs[0];
+        if(stristr($lang,"zh-")){
+                if($lang!="zh-cn"){
+                        $lang = "zh-tw";
+                }
+            }
+    }
+    return $lang;
+} 
+function langForDisqus($lang){
+    switch ($lang) {
+        case 'zh-tw':
+            $lang="zh_TW";
+            break;
+        case 'es':
+            $lang="es_ES";
+            break;
+         case 'es-es':
+            $lang="es_ES";
+            break;
+        default:
+            $lang = explode("-", $lang)[0];
+            break;
+    }
+    return $lang;
+}
 ?>

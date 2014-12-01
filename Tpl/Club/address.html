@@ -769,6 +769,7 @@ $(document).ready(function(){
             <td align="center">{$member.title}</td>
 		    <td align="center" class="<if condition="$member[gender] eq 1">boyname<else />girlname</if>">{$member.realname}</td>
             <td align="center"><if condition="$member[gender] eq 1">男<else />女</if></td>
+
 		    <td align="right">{$member.student_no}</td>
 		    <td align="center">{$member.grade}</td>
 		    <td align="center">{$member.education}</td>
@@ -784,7 +785,7 @@ $(document).ready(function(){
             <td  align="center">{$member.title}</td>
 		    <td  align="center" class="<if condition="$member[gender] eq 1">boyname<else />girlname</if>">{$member.realname}</td>
             <td  align="center"><if condition="$member[gender] eq 1">男<else />女</if></td>
-		    <td  align="right">{$member.student_no}</td>
+             <td align="right">{$member.student_no}</td>
 		    <td  align="center">{$member.grade}</td>
 		    <td  align="center">{$member.education}</td>
 		    <td  align="right">{$member.telephone}</td>
@@ -814,9 +815,12 @@ $(document).ready(function(){
 		<volist name="list.content" id="member" offset="1" key="kid1">
 		<tr>
 			<td align="center">{$kid1}</td>
-			<volist name="member" id="vo" key="kid2">
-			<td align="center">{$vo}</td>
-			</volist>
+
+                     <volist name="list.content.1" key="im_key" id="theader">
+                    <td align="center"> {$member[$im_key-1]}</td>
+                    </volist>
+        
+
 			<td align="center">
 			<switch name="kind[$all-1][$kid1+1]">
 				<case value="0">未注册</case>

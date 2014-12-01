@@ -97,17 +97,6 @@ var loadmore = (function() {
 	    var_tmp = creatVar(0,pic_num);
 		loadmore(1);
 		cycleload();
-		$(window).scroll(function () {
-		  if( loadflag==0	){
-			var clienth = document.documentElement.clientHeight;
-			var scrollh = document.documentElement.scrollHeight;
-			var scrollt = document.documentElement.scrollTop + document.body.scrollTop;
-			if((clienth + scrollt + 20 > lowestcollheight) || (clienth + scrollt + 250 > scrollh)) {
-				 loadmore(4);
-			};
-		  }
-		});
-		
 		
 		$(".ding").live({
 		mouseenter:function(){
@@ -142,7 +131,9 @@ var loadmore = (function() {
 			var clienth = document.documentElement.clientHeight;
 			var scrollh = document.documentElement.scrollHeight;
 			var scrollt = document.documentElement.scrollTop + document.body.scrollTop;
-			if ((clienth + scrollt + 10 > lowestcollheight) || (clienth + scrollt + 250 > scrollh) > scrollh) {
+			var canload = (clienth + scrollt + 10 > lowestcollheight) || (clienth + scrollt + 250 > scrollh) > scrollh;
+			
+			if (canload) {
 				 loadmore(2);
 			};
 		};

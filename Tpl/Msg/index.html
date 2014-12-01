@@ -77,12 +77,7 @@ $(window).bind('focus',function(){
 			},100);
 					  });
 	$(window).bind('blur',function(){localStorage.state='blur';});
-}; 
-function init() {  
-            if (window.webkitNotifications) {  
-                window.webkitNotifications.requestPermission();  
-            }  
-        };	
+};
 function notify(msg,name,img_url){  
             var icon = img_url;  
             var title = name+"[" + new Date().toLocaleTimeString() + "]--" + 5 + "秒后关闭";  

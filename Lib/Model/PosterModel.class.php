@@ -40,7 +40,13 @@ class PosterModel extends Model {
     public function place() {
         return $this->place;
     }
-
+    public function description(){
+        if(strpos($this->description,'@http://infopublish.ustc.edu.cn') !== false){
+            return null;
+        }else{
+            return $this->description;
+        }
+    }
     public function humanDate() {
         $str = date("n月j日H:i", $this->start_time);
         $str .= ' - ';
@@ -163,10 +169,17 @@ class PosterModel extends Model {
     public function canModify() {
         return A('Club')->isManager($this->gid);
     }
-	public function getAuthorByCid($cid){	
-		return M('Poster_comment')->field('author')->where(['cid'=>$cid])->find()['author'];
-	}
-	public function isPosterOwner($aid,$gid){//海报拥有集体
-		return $gid==$this->getPosterOwnerByAid($aid);
-	} 
+    public function getAuthorByCid($cid){	
+    	return M('Poster_comment')->field('author')->where(['cid'=>$cid])->find()['author'];
+    }
+    public function isPosterOwner($aid,$gid){//海报拥有集体
+    	return $gid==$this->getPosterOwnerByAid($aid);
+    } 
+
+    public function needUploadAuto($id){
+            $con["description"]=$id."@http://infopublish.ustc.edu.cn";
+            return M("Poster")->field("aid")->where($con)->find();
+    }
+
+
 }

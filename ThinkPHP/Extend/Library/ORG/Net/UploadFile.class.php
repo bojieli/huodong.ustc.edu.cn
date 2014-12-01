@@ -217,8 +217,10 @@ class UploadFile {//类定义开始
         // 获取上传的文件信息
         // 对$_FILES数组信息处理
         $files	 =	 $this->dealFiles($_FILES);
+        //
         foreach($files as $key => $file) {
             //过滤无效的上传
+            //var_dump($file['name']);
             if(!empty($file['name'])) {
                 //登记上传文件的扩展信息
                 $file['key']          =  $key;
@@ -244,6 +246,7 @@ class UploadFile {//类定义开始
                 $isUpload   = true;
             }
         }
+        //echo $isUpload;die();
         if($isUpload) {
             $this->uploadFileInfo = $fileInfo;
             return true;

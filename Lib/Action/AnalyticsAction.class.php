@@ -95,7 +95,7 @@ class AnalyticsAction extends PublicAction {
        echo json_encode($json_arry);
        
    }
-   public function creatBad(){
+   public function creatBad(){ //短信敏感词
           //dump($_POST);die;
           //echo $this->_post('status');die;
               //return false;

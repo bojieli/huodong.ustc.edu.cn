@@ -133,6 +133,46 @@ class PosterAction extends PublicAction {
         $this->assign('jumpUrl', "/");
         $this->success("海报发布成功！");
     }
+public function node_check(){
+    $id = $this->_get("id");
+    if(empty($id)){
+        echo 1;
+        exit();
+    }
+    if(D("Poster")->needUploadAuto($id)){
+        echo 1;
+    }else{
+        echo 0;
+    }
+    exit();
+}
+public function node_insert() {
+        $ltx="TjGYV3sDuT78Ey5v";
+        if($_POST["ltx"]!=$ltx){
+            return null;
+        }
+        $gid = 76;
+        $poster['author'] = 5;//ltx@mail.ustc.edu.cn
+        $poster['sid'] = 1;
+        
+        $poster['gid'] = $gid;
+        $poster['publish_time'] = time();
+        $poster['start_time'] = time() + 6*3600;
+        $poster['end_time'] = $poster['start_time'] + 3*24*3600;
+        $poster["name"]=$_POST["name"];
+        $poster['description'] = $_POST["id"]."@http://infopublish.ustc.edu.cn";
+        $poster['place']="中国科学技术大学";
+        //shell_exec('echo '.json_encode($_FILES).' >> /tmp/test.txt');
+        //die();
+        $image = $this->uploadPoster();
+        $poster['poster'] = $image;
+        
+        $obj = M('Poster');
+        $obj->create($poster);
+        $aid = $obj->add();
+        D('Club')->incPosterCount($gid);
+        
+    }
 
     public function modify() {
         $aid = $this->getInputAid();
@@ -317,7 +357,7 @@ class PosterAction extends PublicAction {
                 break;
         default:
             case 'smart':
-                $order = '(`clicks`+5)/
+                $order = 'sqrt(`clicks`+5)/
                 POWER(
                     ABS('.$nowtime.'-`publish_time`+3600*2)/(3600*10), 
                     1.8 - 0.8*FLOOR('.$nowtime.'/`start_time`) + (2+(ABS(('.$nowtime.'-`end_time`))/(3600*24*30)))*FLOOR('.$nowtime.'/`end_time`)
@@ -342,50 +382,59 @@ class PosterAction extends PublicAction {
     }
     private function poster2html($poster,$iswebp) {
         $clockStat=D('Timer')->clockInput($poster->id());
+    
+        if(cookie('think_language'))
+            D('Poster')->addClick($poster->id());
+
         $md5 = explode(".", $poster->poster)[0];
         $webp_url = "/upload/poster/thumb/webp/";
         if($poster->thumbUrl()=='')
             $img='';
         elseif($this->isWebpExist($md5,$prefix='thumb_'))
                 {    if ($iswebp==1) 
-                        $img='<img alt="'.$poster->name().'" class="haibao" itemprop="photo" height="'.$poster->thumbHeight().'" id="poster-'.$poster->id().'" src="'.$webp_url.$prefix.$md5.'.webp'.'"onclick="loadComments('.$poster->id().')" />';
+                        $img='<img alt="'.$poster->name().'" class="haibao u-img" itemprop="photo"  id="poster-'.$poster->id().'" src="'.$webp_url.$prefix.$md5.'.webp'.'"onclick="loadComments('.$poster->id().')" />';
                      elseif ($iswebp==-1) 
-                            $img='<img alt="'.$poster->name().'" class="haibao" itemprop="photo" height="'.$poster->thumbHeight().'" id="poster-'.$poster->id().'" data-img="'.$poster->thumbUrl().'"onclick="loadComments('.$poster->id().')" />';
+                            $img='<img alt="'.$poster->name().'" class="haibao u-img" itemprop="photo" id="poster-'.$poster->id().'" data-img="'.$poster->thumbUrl().'"onclick="loadComments('.$poster->id().')" />';
                          else 
-                            $img='<img alt="'.$poster->name().'" class="haibao" itemprop="photo" height="'.$poster->thumbHeight().'" id="poster-'.$poster->id().'" src="'.$poster->thumbUrl().'"onclick="loadComments('.$poster->id().')" />';
+                            $img='<img alt="'.$poster->name().'" class="haibao u-img" itemprop="photo"  id="poster-'.$poster->id().'" src="'.$poster->thumbUrl().'"onclick="loadComments('.$poster->id().')" />';
                  }
              else
-                $img='<img alt="'.$poster->name().'" class="haibao" itemprop="photo" height="'.$poster->thumbHeight().'" id="poster-'.$poster->id().'" src="'.$poster->thumbUrl().'"onclick="loadComments('.$poster->id().')" />';
+                $img='<img alt="'.$poster->name().'" class="haibao" itemprop="photo"  id="poster-'.$poster->id().'" src="'.$poster->thumbUrl().'"onclick="loadComments('.$poster->id().')" />';
         if($clockStat==0) 
             $clock_img='';
 		else
         {
-			if($clockStat==1) $clock_img='<img class="clock" id="'.$clockStat.'clock-'.$poster->id().'" style="width:20px;height:20px;cursor:pointer;float:left" src="/static/images/clock1.png" alt="提醒我" title="提醒我参加活动"/>';				
-			else $clock_img='<img class="clock" id="'.$clockStat.'clock-'.$poster->id().'" style="width:20px;height:20px;cursor:pointer;float:left" src="/static/images/clock2.png" alt="已提醒" title="已提醒"/>';
+			if($clockStat==1) $clock_img='<img class="clock" id="'.$clockStat.'clock-'.$poster->id().'" src="/static/images/clock1.png" alt="提醒我" title="提醒我参加活动"/>';				
+			else $clock_img='<img class="clock" id="'.$clockStat.'clock-'.$poster->id().'" src="/static/images/clock2.png" alt="已提醒" title="已提醒"/>';
 			$hot_img='<img src="/static/images/hot.png" title="新功能" alt="新功能" />';
 			$clock_img.=$hot_img;
 		}
 		return '
-		<li class="hide">
-			<div class="celldiv" itemscope itemtype="http://data-vocabulary.org/Event">
+		<li class="hide animated fadeInUp">
+			<div class="celldiv " itemscope itemtype="http://schema.org/Event">
+                                        <div class="img-box" style="overflow:hidden">
 			'.$img.	
-                '
-				<div class="detail">
-					 <div class="hot">'.
+                                        '<div itemprop="name" class="caption" >
+                                        <h3>'.$poster->name().'</h3>
+                                        </div>
+                                         </div>'
+                                         .'<div class="detail">
+					 <div class="hot" itemprop="aggregateRating" itemscope itemtype="http://schema.org/AggregateRating">'.
 						'<span class="ding" id="ding-'.$poster->id().'">
-							 <span class="iconding"></span>
-							 <span class="rate">'.$poster->getRate().'</span>
+							 <span class="heart pulse2">
+                                                                                            ♥
+                                                                                            </span>
+							 <span itemprop="ratingValue" class="rate">'.$poster->getRate().'</span>
 						 </span>
 					 </div>'.
-					'<span itemprop="summary" style="display:none">'.$poster->name().'</span>'.
 					/*热度：<span class="rate">'.$poster->getRate().'</span>'.
 					 '<span class="ding" id="ding-'.$poster->id().'">顶</span></div>'.*/
-					 '<p>
+					 '<div class="poster_content">
 						 时间: <time itemprop="startDate" datetime="'.date('c',$poster->start_time).'">'.
 						 $poster->humanDate().'</time>'.
-						'<time itemprop="endDate" datetime="'.date('c',$poster->end_time).'"></time><br>'.
+						'<time itemprop="endDate" datetime="'.date('c',$poster->end_time).'"></time>'.
 						'<div itemprop="location">地点: '.$poster->place().'</div>
-					</p>
+					</div>
 				</div>
 				'.$clock_img.'
 				 <div class="school">'.$poster->schoolName().'</div>
@@ -442,7 +491,7 @@ class PosterAction extends PublicAction {
         $aid = $this->getInputAid();
         D('Poster')->addClick($aid);
         $poster = D('Poster')->getPosterById($aid);
-
+        //dump($poster);
         $iswebp = is_numeric($_GET['iw']) ? $_GET['iw'] : -1;
         
         if (empty($poster))
@@ -455,6 +504,7 @@ class PosterAction extends PublicAction {
         $poster->end_time1 = date('c',$poster->end_time);
         $poster->thumbPoster = $poster->thumbUrl();
         $poster->largePoster = $poster->thumbUrl(true);
+        $poster->description = $poster->description();
 
         if($iswebp==1){
             $md5 = explode(".", $poster->poster)[0];

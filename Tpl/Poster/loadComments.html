@@ -18,8 +18,9 @@
 	</div>
     <div class="hb_footer">
 	   <div class="fenxiangl">
+	   <!--
 			<script>
-			<!--
+			
 			$(".like").live('click', function(event){
 				// div.hot > span.ding, div.hot > span.rate [class:ding id:ding-id]
 				dom = $("#"+event.target.id).parent().children('.rate');
@@ -32,10 +33,11 @@
 					data: {aid: event.target.id.substr(5)}
 				});
 			});
-			-->
+			
 			</script>
+	 -->
 		    热度：<span class="rate">{$poster.rate}</span>
-		    <!--<span class="like" id="ding-{$poster.aid}">顶</span>-->
+		    <!--span class="like" id="ding-{$poster.aid}" style="cursor:pointer">顶</span-->
 		    <span class="dymian">
 		    	<a itemprop="url" target="_blank" href="/Club/intro?gid={$poster.gid}">查看 {$poster.clubName} 的简介
 		    	</a>
@@ -57,6 +59,29 @@
 	   </div>
        <div class="fenxiangr" id="fenxiangr">
 	       <notempty name="singlePage">
+	       	<div class="jiathis_style_32x32">
+                                    <a class="jiathis_button_tsina"></a>
+                                    <a class="jiathis_button_qzone"></a>
+                                    <a class="jiathis_button_tqq"></a>
+                                    <a class="jiathis_button_renren"></a>
+                                    <a class="jiathis_button_weixin hide-for-small"></a>
+                                    <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank"></a>      
+                                </div>
+                                <script type="text/javascript">
+		            var jiathis_config = {
+		            url: '{:C("SITE_ADDRESS")}/Poster/singlePage?iw={$iw}&aid={$poster.aid}',
+		            lhost : '/static/',
+		            codehost : '/static/',
+		            title : "{$poster.name}",
+		            summary : "{$poster.description}"+'\n' + "@大学活动平台_中国科大 huodong.ustc.edu.cn",
+		            pic:"{:C('SITE_ADDRESS')}{$poster.largePoster}",
+		            appkey:{"tsina":"853404019","tqq":"101136030"}
+		           }
+		        
+		        </script>
+		<script type="text/javascript" src="/static/jiathis/jia.js" charset="utf-8"></script>
+
+	       	<!--
 	 	  <div class="bshare-custom icon-medium-plus">
 	 	  	<span class="share1">分享到：</span>
 	 	  	<a title="分享到新浪微博" class="bshare-sinaminiblog" href="javascript:void(0);"></a>
@@ -68,6 +93,7 @@
 	 	  </div>
 	 	  <script type="text/javascript" src="/static/buttonLite.js"></script>
 	 	  <script type="text/javascript" src="/static/bshareC0.js"></script>
+	 	  -->
 	       </notempty>
 	       <empty name="singlePage">
 	         <div>

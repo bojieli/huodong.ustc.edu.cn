@@ -3,11 +3,11 @@
 <script src="/static/header.js" type="text/javascript"></script>
  <div id="header">
   <div class="head-1160">
-      <div class="logo"><a href="/"><span>大学活动<span style="font-size:10px; color:#FFF; line-height:22px; vertical-align:text-bottom;">Beta</span></span></a></div>
-      <div class="nav"><a href="/"><span <if condition="$here == 'PosterAction'">class="here1"</if>>海报墙</span></a></div>
-      <div class="nav"><a href="/Club/"><span <if condition="$here == 'ClubAction'">class="here1"</if>>学生团体</span></a></div>
-      <div class="nav"><a href="/Web" target="_blank"><span class="here1" style="color:#8e8e90">开放平台</span></a></div>
-      <div class="nav"><a href="/mlxh/"><span style="color:red" <if condition="$here == 'mlxhAction'" >class="here1"</if>>美丽邂逅</span></a></div>
+      <div class="logo"><a href="/"><span>{$Think.lang.daxuehuodong}</span></a></div>
+      <div class="nav"><a href="/"><span <if condition="$here == 'PosterAction'">class="here1"</if>>{$Think.lang.haibaoqiang}</span></a></div>
+      <div class="nav"><a href="/Club/"><span <if condition="$here == 'ClubAction'">class="here1"</if>>{$Think.lang.xueshengtuanti}</span></a></div>
+      <div class="nav"><a href="/Web" target="_blank"><span class="here1" style="color:#8e8e90">{$Think.lang.kaifangpingtai}</span></a></div>
+      <div class="nav"><a href="/mlxh/"><span style="color:red" <if condition="$here == 'mlxhAction'" >class="here1"</if>>{$Think.lang.meilixiehou}</span></a></div>
       <if condition="!empty($_G[uid])">
       <!--
       <div class="nav"><a href="/User/home"><span <if condition="$here == UserAction">class="here1"</if>>个人信息管理</span></a></div>
@@ -20,7 +20,7 @@
       <a href="/User/home" target="_blank">欢迎您，{$_G.realname}</a>
       <a href="#" id="logout">退出</a></span>
       <else />
-      <span><a href="/User/login">登录</a> | <a href="/User/register">注册</a></span>
+      <span><a href="/User/login">{$Think.lang.denglu}</a> | <a href="/User/register">{$Think.lang.zhuce}</a></span>
       </if>
       </div>
 	 </div><!--head-1160-->

@@ -1,0 +1,236 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>apk2crx</title>
+<link rel="stylesheet" type="text/css" href="/static/animate.css">
+<link href="/static/css1.css" rel="stylesheet" type="text/css" />
+
+<link rel="alternate" type='application/rss+xml' href="/Map/rss"/>
+<script src="//upcdn.b0.upaiyun.com/libs/jquery/jquery-1.8.1.min.js" type="text/javascript"></script>
+<script type="text/javascript" src="/static/jquery.autocomplete.min.js"></script>
+<script src="/static/setwaterfall.js" type="text/javascript"></script>
+<script src="/static/jsjq1.js" type="text/javascript"></script>
+<style type="text/css">
+	#content ul li {
+	position: absolute;
+	width: 10em;
+	min-height: 100px;
+	}
+	#content ul li:hover {
+	margin: 10px;
+	padding: 0px;
+	}
+	#content ul li .celldiv{
+		margin: 0.5em;
+	}
+	.vname{
+		color:#B5A7C0;
+	}
+	.download_count{
+		font-family: Georgia, "Times New Roman", Times, serif;
+		font-size: 1.5em;
+	}
+	.rate{
+		color: #ddd; 
+	}
+</style>
+
+<script>
+var  loadflag = 2;
+var  nomoreflag = 0;
+var pic_num =  {$count};
+var var_tmp;
+ k=0;
+type="{$Think.get.sort}"?"{$Think.get.sort}":"normal";
+var loadmore = (function() {
+		var posterCounter = 20;
+		var ajaxLock = false;
+		var noMore = false;
+		var type_sb = "{$Think.get.type}";
+		var keyword = "{$Think.get.keyword}";
+		var order = "{$Think.get.order}";
+		var fp = "{$Think.get.fp}";
+		if(posterCounter >=pic_num){
+			noMore = true;
+			nomoreflag = 1;
+		}
+		return function(loadnum) {
+
+			 loadflag = 1;
+			if (!ajaxLock && !noMore) {
+				ajaxLock = true;
+
+				 if(type == 'normal'){
+				    $.getJSON(
+					    "/Crx/ajaxGet",
+					    {start: posterCounter, num: loadnum, type: type_sb ,keyword : keyword,order:order,fp:fp}
+				    ).done(function( obj ){
+					    loadflag = 0;				
+					    if (obj.length == 0){
+						    noMore = true;
+						    nomoreflag = 1;
+					    };
+						posterCounter += obj.length;
+					    var html = obj.join("");
+					    $("#content ul").append(html);
+					    $(".hide").animate({opacity:1},1000); 
+					    $("#content ul li").setwaterfall();
+					    ajaxLock = false;
+				    });
+				}
+			}else{
+				 $(".hide").animate({opacity:1},1000); 
+				 $("#content ul li").setwaterfall();
+			}
+		}
+	})();
+	
+	$(window).load(function(){
+			console.log("ok");
+			$("#content ul li").setwaterfall();
+	});
+	$(document).ready(function(){
+		loadmore(1);
+		cycleload();
+		$(".ding2").live({
+		mouseenter:function(){
+			$(this).addClass("dinghover");
+		},
+		mouseleave:function(){
+			$(this).removeClass("dinghover");
+		}
+		});	
+		$(".cai").live({
+		mouseenter:function(){
+			$(this).addClass("caihover");
+		},
+		mouseleave:function(){
+			$(this).removeClass("caihover");
+		}
+		});	
+	});
+
+	function cycleload(){
+		
+		if( loadflag==0	){
+			var clienth = document.documentElement.clientHeight;
+			var scrollh = document.documentElement.scrollHeight;
+			var scrollt = document.documentElement.scrollTop + document.body.scrollTop;
+			var canload = (clienth + scrollt + 10 > lowestcollheight) || (clienth + scrollt + 250 > scrollh) > scrollh;
+			
+			if (canload) {
+				 loadmore(6);
+			};
+		};
+		if( loadflag == 1 ){
+			$("#haibao-onloading").css('display','block');
+			$("#haibao-onloading").animate({opacity:1},200);
+		};
+		if( loadflag == 0 || nomoreflag == 1){ $("#haibao-onloading").css('display','none');}
+		if( nomoreflag == 1 ) $("#haibao-onmoreloading").css('display','block');
+		setTimeout("cycleload()",100);	
+			 
+		};
+</script>
+<script>
+function like(id)
+{
+	var dom = $("#like_"+id);
+	var rate = dom.html();
+	if (dom.attr("clicked"))
+	{
+		return;
+	}
+	dom.attr("clicked", true);
+	dom.attr('title','已点过');
+	cleanDS(id);	
+	$.get('/Crx/vote?vote=like&id='+id, {}, function (res) {
+		$("#like_"+id).html(parseInt(rate)+1);
+	},'json');
+}
+function dislike(id)
+{
+	var dom = $("#dislike_"+id);
+	var rate = dom.html();
+	if (dom.attr("clicked"))
+	{
+		return;
+	}
+	dom.attr("clicked", true);
+	dom.attr('title','已点过');
+	cleanDS(id)
+	$.get('/Crx/vote?vote=dislike&id='+id, {}, function (res) {
+			$("#dislike_"+id).html(parseInt(rate)+1);
+	},'json');
+}
+function download_click(id){
+	if(id>0){
+		storeDS(id);
+		window.location.href = '/Crx/downloadCrx?id='+id;
+	}
+}
+function storeDS(id){
+	if(window.localStorage){
+		file = "app"+id;
+		 localStorage[file]=1;
+	}
+}
+function checkDS(id){
+	if(window.localStorage){
+		file = "app"+id;
+		if(localStorage[file]==1){
+			$("#pj-"+id).parent().find(".download_click").fadeOut();
+			$("#pj-"+id).fadeIn();
+		}
+	}
+}
+function cleanDS(id){
+	file = "app"+id;
+	if(window.localStorage){
+		 localStorage[file]=0;
+	 }
+	$("#pj-"+id).html("感谢您的投票^_^").delay(1000).hide(600,function(){
+			$("#pj-"+id).parent().find(".download_click").fadeIn();
+	}); 
+	
+}
+</script>
+
+</head>
+<body>	
+<include file="Public:headnav" />
+<!--
+<volist name="infos" id="vo">
+<img src="/upload/apk/bak/{$vo['iconHash']}.png">
+<a href="{$vo['url']}" target="_blank"><div>{$vo['realname']}</div></a>
+<div>{$vo['versionName']}</div>
+</volist>
+-->
+<div id="main">
+	<div id="topcon">
+		<include file="crxHeadNav" />
+	</div>
+	<div id="content">
+		  <ul style="min-height: 600px; ">
+		  <li>
+		<div class="celldiv shetuan" style="text-align:center;">
+		     	 <p class="title">{$Think.lang.information-bar}</p>
+		     	 <a href="/Crx/translate">
+		     	 <img src="/static/images/translation.png" style="margin-top:0.5em;">
+			<div class="zb_list" style="position: relative;">
+			<p style="margin-top:1em;font-size:130%">{$Think.lang.translation-jobs}     	</p>
+			</div>
+			</a>
+		  </div>
+	 
+		</li>
+		{$php_crx}
+		</ul>
+	</div>
+</div>
+<div id="haibao-onmoreloading">已经到底了 ^_^ </div>
+<div id="haibao-onloading"></div>
+<include file="Public:totop" />
+ </body>
+</html>

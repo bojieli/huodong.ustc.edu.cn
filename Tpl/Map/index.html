@@ -17,5 +17,11 @@
 	 <a href="__ROOT__/Club/intro?gid={$vi.gid}">{$vi.name}--大学活动</a>
 	 </div>
 	</volist>
+	<p>APP</p>
+	<volist name="apps" id="app">
+	 <div class="poster">
+	 <a href="__ROOT__/Crx/info?id={$app.id}">{$app.name}--{$app.realname}--{$app.versionName}--apk2crx</a>
+	 </div>
+	</volist>
 </body>
 </html>

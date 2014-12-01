@@ -1,0 +1,345 @@
+<!DOCTYPE">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>{$info["realname"]} - {$info["versionName"]} -apk2crx</title>
+<link href="/static/css1.css" rel="stylesheet" type="text/css" />
+<link href="/static/zhuce.css" rel="stylesheet" type="text/css" />
+<link rel="stylesheet" type="text/css" href="/static/tooltipster.css" />
+<link rel="stylesheet" type="text/css" href="/static/tooltipster-shadow.css" />
+
+<script src="//upcdn.b0.upaiyun.com/libs/jquery/jquery-1.8.1.min.js" type="text/javascript"></script>
+<script type="text/javascript">
+function download_click(id){
+	if(id>0){
+		storeDS(id);
+		window.location.href = '/Crx/downloadCrx?id='+id;
+	}
+}
+function storeDS(id){
+	if(window.localStorage){
+		file = "app"+id;
+		 localStorage[file]=1;
+	}
+}
+var disqus_config = function () { 
+  this.language = "<?php echo langForDisqus(cookie('think_language'));?>";
+};
+</script>
+<style type="text/css">
+body{
+	background-color: #e3e3e3;
+}
+.file-box{
+ width:970px;
+ margin:1em auto;
+}
+.page-header {
+background-color: #fafafa;
+border-bottom: 0px solid #e3e3e3;
+box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+    border-radius: 2px;
+}
+.container {
+width: 970px;
+max-width: none !important;
+margin-right: auto;
+margin-left: auto;
+
+}
+.box-contain{
+	margin: 1em;
+	background-color: #fafafa;
+	box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+    	border-radius: 2px;
+}
+.page-topbar {
+padding-top: 18px;
+padding-bottom: 18px;
+overflow: visible;
+}
+.apk-view-logo {
+margin-right: 15px;
+text-align: center;
+float: left
+}
+.page-topbar .apk-view-logo img {
+margin: 0;
+width: 90px;
+height: 90px;
+border: none;
+}
+.page-topbar .media-body {
+padding-left: 105px;
+overflow: visible;
+}
+.page-topbar h1.apk-view-title {
+color: #333333;
+font-size: 21px;
+line-height: 1.1;
+font-family: inherit;
+font-weight: normal;
+}
+.page-topbar h1>small {
+font-size: 75%;
+font-weight: 400;
+line-height: 1;
+color: #777;
+}
+.apk-view-intro {
+margin: 5px 0 0;
+font-size: 12px;
+color: #8d8d8d;
+}
+.media-btns{
+	margin-top: 0.3em;
+}
+.btn-success {
+color: #fff;
+background-color: #5BE1AC;
+border-color: #4cae4c;
+}
+.btn {
+display: inline-block;
+padding: 6px 12px;
+margin-bottom: 0;
+font-size: 14px;
+font-weight: 400;
+line-height: 1.42857143;
+text-align: center;
+white-space: nowrap;
+vertical-align: middle;
+cursor: pointer;
+-webkit-user-select: none;
+-moz-user-select: none;
+-ms-user-select: none;
+user-select: none;
+background-image: none;
+border: 1px solid transparent;
+border-radius: 4px;
+}
+.box-left{
+	float: left;
+	width: 42%;
+	
+
+}
+.box-right{
+	float:left;
+	width: 58%;
+}
+.box-title{
+	margin: 0 1em;
+	padding: 0.5em;
+	color: #111111;
+	border-bottom: 2px solid;
+	border-color: #eaedee;
+	border-color: rgba(0,39,59,.08);
+}
+.box-content{
+	padding: 1em;
+	color: #333;
+	min-height: 3em;
+}
+.happy img,.unhappy img{
+	width:3em;
+}
+.happy{
+	float: right;
+}
+.font-large-number{
+	font-size: 3.5em;
+}
+.readmore-button{
+	color: #92928A;
+	padding: 0.5em;
+}
+.fp{
+	font-size: 70%;
+	color: blue;
+}
+</style>
+
+
+</head>
+<body>	
+<include file="Public:headnav" />
+
+<div class="page-header">
+	<div class="container">
+		<div class="page-topbar">
+		<a class="apk-view-logo">
+		<notempty name="info['iconHash']">
+			<img src="/upload/apk/bak/{$info[iconHash]}.png" alt="{$info['realname']}">
+		<else />
+			<img src="/static/images/icon.png" alt="{$info['realname']}">
+		</notempty>
+		</a>
+
+		<div class="media-body">
+
+			<h1 class="media-heading apk-view-title">{$info["realname"]} &nbsp;<small>{$info["versionName"]}</small>
+			</h1>
+			<div class="media-intro apk-view-intro">
+				<span class="pull-left hidden-sm hidden-xs">
+				{$info["download_count"]}&nbsp;{$Think.lang.cixiazai} ,{$Think.lang.ctime}&nbsp;{$info["htime"]}
+				</span>
+			</div>
+			<div class="media-btns">
+				
+
+				<span class="btn btn-success" class="download_icon" style="cursor: pointer;" onclick="download_click({$info['id']});return false;">
+				<img src="/static/images/download2.png">
+				</span>
+				<a href="https://play.google.com/store/apps/details?id={$info['name']}">
+				<span class="google-play" style="float:right">
+					<img style="width:8em" src="/static/images/play_logo.png">
+				</span>
+				</a>
+				<a href="/Crx"><span style="float:right;margin-right:1em;color:#716A6A">{$Think.lang.returnToMainPage}</span></a>
+				
+				
+			</div>
+		</div>	
+		</div>
+	</div>
+</div>
+
+
+
+
+
+
+<div class="file-box" style="min-height:900px">
+
+<div class="file-area" >
+	<div class="box-left">
+		<div class="box-contain" style="margin-left:0">
+			<div class="box-info">
+				<div class="box-title">{$Think.lang.application-details}</div>
+				<div class="box-content">
+					<p>{$Think.lang.product-name}<b> : </b>{$info["realname"]}</p>
+					<p>{$Think.lang.apk-name}<b> : </b><a style="color:blue" href="/Crx?keyword={$info['name']}">{$info["name"]}</a></p>
+					<p>{$Think.lang.version-name}<b> : </b>{$info["versionName"]}</p>
+					<p>{$Think.lang.file-size}<b> : </b>{$info["hsize"]}</p>
+					<notempty name="info['fp']">
+						<p class="tooltip" title="{$info['issuer']}">{$Think.lang.app-signature}<b> : </b><a href="/Crx?fp={$info['fp']}"><span class="fp">{$info["fp"]}</span></a>
+						
+						</p>
+					</notempty>
+					<p>{$Think.lang.ctime}<b> : </b>{$info["htime"]}</p>
+				</div>
+			</div>
+		</div>
+		<div class="box-contain" style="margin-left:0">
+			<div class="box-info">
+				<div class="box-title">{$Think.lang.vote-title}</div>
+				<div class="box-content">
+					 
+					  <span class="unhappy">
+					  	<img src="/static/images/unhappy.png">
+					  	<span class="font-large-number">
+					  	<notempty name="info['dislikes']">
+					  	{$info["dislikes"]}
+					  	<else />
+					  	0
+					  	</notempty>
+					  	</span>
+					  </span>
+					  <span class="happy">
+					  	<img src="/static/images/happy.png">
+					  	<span class="font-large-number">
+					  	<notempty name="info['likes']">
+					  	{$info["likes"]}
+					  	<else />
+					  	0
+					  	</notempty>
+					  	</span>
+					  </span>
+					
+				</div>
+			</div>
+		</div>
+		<notempty name="info['desc']">
+		<div class="box-contain" style="margin-left:0;padding:1em">
+	            <pre class="readmore">
+	            {$info["desc"]}
+	            </pre>
+		</div>
+		</notempty>
+		<div class="box-contain" style="margin-left:0">
+			<div class="box-info">
+				<div class="box-title">{$Think.lang.all-versions}</div>
+				<div class="box-content readmore">
+					<volist name="other" id="vo">
+					<div class="other-app" style="min-height:4em">
+						<a class="apk-view-logo" href="/Crx/info?id={$vo['id']}">
+							<notempty name="vo['iconHash']">
+								<img src="/upload/apk/bak/{$vo['iconHash']}.png" alt="{$vo['realname']}" style="width:50px">
+							<else />
+								<img src="/static/images/icon.png" alt="{$vo['realname']}" style="width:50px">
+							</notempty>
+						</a>
+
+						<span><a href="/Crx/info?id={$vo['id']}">{$vo.realname}</a><eq name="vo['type']" value="pad">&nbsp;For Pad</eq> &nbsp; {$vo.versionName}
+
+						<br />
+							<span class="apk-view-intro">{$vo["download_count"]}&nbsp;{$Think.lang.cixiazai} ,{$Think.lang.ctime}&nbsp;{$vo["htime"]}
+							</span>
+						</span>
+					</div>
+					 </volist>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="box-right">
+		<div class="box-contain" style="margin-right:0">
+			<div class="file-area" style="padding:2em">
+				<div class="comment-switch">
+				<eq name="pl" value="duoshuo">
+				<a href="/Crx/info?id={$Think.get.id}&c=disqus">
+					{$Think.lang.go-to-disqus}
+				</a>
+				<else/>
+				<a href="/Crx/info?id={$Think.get.id}&c=duoshuo">
+					{$Think.lang.go-to-duoshuo}
+				</a>
+				</eq>
+				
+				
+
+				</div>
+				<div class="comments-box" style="margin-top:1em;d">
+					<eq name="pl" value="duoshuo">
+					<include file="Public:duoshuo" />
+					<else/>
+					<include file="Public:disqus" />
+					</eq>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+</div>
+<script src="/static/readmore.min.js"></script>
+<script type="text/javascript" src="/static/jquery.tooltipster.min.js"></script>
+<script>
+$('.readmore').readmore({
+      moreLink: '<a href="#" class="readmore-button">展开</a>',
+      lessLink: '<a href="#" class="readmore-button">收起</a>',
+      maxHeight: 300,
+      afterToggle: function(trigger, element, expanded) {
+        if(! expanded) { // The "Close" link was clicked
+          $('html, body').animate( { scrollTop: element.offset().top }, {duration: 100 } );
+        }
+      }
+    });
+$(document).ready(function() {
+            $('.tooltip').tooltipster({
+            	 theme: 'tooltipster-shadow'
+            });
+        });
+</script>
+ </body>
+</html>
