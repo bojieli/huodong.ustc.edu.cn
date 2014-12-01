@@ -558,15 +558,16 @@ public function node_insert() {
             $this->error("您所查找的海报不存在");
         return $poster;
     }
-    public function sentWeibo($aid){
+    public function sentWeibo(){
         
         $aid = $this->_get("aid");
-        $pic_path = "./upload/poster/thumb/";
+        $pic_path = $_SERVER['DOCUMENT_ROOT']."/upload/poster/thumb/";
         $poster = M('Poster')->field("name,poster,gid")->find($aid);
+
         $text = $poster["name"];
         $pic = $pic_path.$poster["poster"];
-        $cmd = "nohup huodong_weibo ".$text." ".$pic+" >> /home/ltx/python/weibo.log  &";
-        echo $cmd;
+        $cmd = "nohup huodong_weibo $text $pic >> /home/ltx/python/weibo.log  &";
+        shell_exec($cmd);
 
     }
 }
