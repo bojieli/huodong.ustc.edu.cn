@@ -125,12 +125,12 @@ class PosterAction extends PublicAction {
 		if($qrid!=0){
 			M('Qr')->where(array('id'=>$qrid))->data(array('aid'=>$aid,'status'=>2,'status_time'=>time()))->save();
         }
-		D('Club')->incPosterCount($gid);
-		
-		list($title,$msg)=D('Msg')->posterMsg($aid);
-		D('Msg')->sentMsgForSys(time(),$title,$msg,$tids='ALL',$gid);
-		A('Timer')->addAfterPoster($aid);
-		$this->assign('jumpUrl', "/");
+        D('Club')->incPosterCount($gid);
+        list($title,$msg)=D('Msg')->posterMsg($aid);
+        D('Msg')->sentMsgForSys(time(),$title,$msg,$tids='ALL',$gid);
+
+        A('Timer')->addAfterPoster($aid);
+        $this->assign('jumpUrl', "/");
         $this->success("海报发布成功！");
     }
 
@@ -507,6 +507,15 @@ class PosterAction extends PublicAction {
         if (empty($poster))
             $this->error("您所查找的海报不存在");
         return $poster;
+    }
+    public function sentWeibo($aid){
+        $aid = $this->_get("aid");
+        $pic_path = "./upload/poster/thumb/";
+        $poster = M('Poster')->field("name,poster,gid")->find($aid);
+        $text = $poster["name"];
+        $pic = $pic_path.$poster["poster"];
+        $cmd = "nohup huodong_weibo ".$text." ".$pic+" >> /home/ltx/python/weibo.log  &"
+        `$cmd`
     }
 }
 ?>
