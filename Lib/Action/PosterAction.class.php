@@ -561,12 +561,12 @@ public function node_insert() {
     public function sentWeibo(){
         
         $aid = $this->_get("aid");
-        $pic_path = $_SERVER['DOCUMENT_ROOT']."/upload/poster/thumb/";
+        $pic_path = $_SERVER['DOCUMENT_ROOT']."/upload/poster/thumb/thumb_";
         $poster = M('Poster')->field("name,poster,gid")->find($aid);
 
         $text = $poster["name"];
         $pic = $pic_path.$poster["poster"];
-        $cmd = "nohup huodong_weibo $text $pic >> /home/ltx/python/weibo.log  &";
+        $cmd = 'nohup huodong_weibo "$text" "$pic" >> /home/ltx/python/weibo.log  &';
         shell_exec($cmd);
 
     }
