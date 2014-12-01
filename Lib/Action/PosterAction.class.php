@@ -562,10 +562,31 @@ public function node_insert() {
         $aid = $this->_get("aid");
         $pic_path = $_SERVER['DOCUMENT_ROOT']."/upload/poster/thumb/thumb_";
         $poster = M('Poster')->field("name,poster,gid")->find($aid);
-        $text = $poster["name"];
+        $gid = $poster["gid"];
+        if($gid!=76){
+            $club_info = D('Club')->getInfo($gid);
+            $poster["weibo"]="@".$club_info["weibo"]." ";
+            $poster["clubName"]=$club_info["name"];
+        }
+
+        $text = $this->weiboTpl($poster);
+        echo $text;
+        die();
         $pic = $pic_path.$poster["poster"];
         $cmd = "huodong_weibo '$text' '$pic' > /dev/null &";
         shell_exec($cmd);
+    }
+    private function weiboTpl($poster){
+        //$Tpl = "hi @%weibo% haha %name% lala %clubName%";
+        $Tpl = D("Poster")->getWeiboByRand();
+        //dump($poster);
+        foreach ($poster as $key => $value) {
+            $before = "%$key%";
+            $after = $value;
+            $Tpl = str_replace($before,$after,$Tpl);
+        }
+        return $Tpl;
+        //dump($poster);
     }
 }
 ?>

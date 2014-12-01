@@ -180,6 +180,10 @@ class PosterModel extends Model {
             $con["description"]=$id."@http://infopublish.ustc.edu.cn";
             return M("Poster")->field("aid")->where($con)->find();
     }
+    public function getWeiboByRand(){
+        //$con['id']=2;
+        return M("Weibo_tpl")->where($con)->order("rand()")->find()["tpl"];
+    }
 
 
 }
