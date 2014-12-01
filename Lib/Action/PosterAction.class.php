@@ -559,16 +559,13 @@ public function node_insert() {
         return $poster;
     }
     public function sentWeibo(){
-        
         $aid = $this->_get("aid");
         $pic_path = $_SERVER['DOCUMENT_ROOT']."/upload/poster/thumb/thumb_";
         $poster = M('Poster')->field("name,poster,gid")->find($aid);
-
         $text = $poster["name"];
         $pic = $pic_path.$poster["poster"];
-        $cmd = "nohup huodong_weibo '$text' '$pic' > /dev/null &";
+        $cmd = "huodong_weibo '$text' '$pic' > /dev/null &";
         shell_exec($cmd);
-
     }
 }
 ?>
