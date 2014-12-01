@@ -27,7 +27,7 @@ class TimelineAction extends PublicAction{
 		foreach($posters as $key => $poster){
 			$tmp[$key]['startDate']=date("Y,n,j",$poster['start_time']);
 			$tmp[$key]['endDate']=date("Y,n,j",$poster['end_time']);
-			$tmp[$key]['headline']=$poster['name'];
+			$tmp[$key]['headline']='<a href="/Poster/singlePage?aid='.$poster["aid"].'">'.$poster['name'].'</a>';
 			$tmp[$key]['text']='<p>'.$poster['description'].'</p>';
 			$thumb_url=$url.'thumb_'.$poster['poster'];
 			$large_url=$url.'large_'.$poster['poster'];
