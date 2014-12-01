@@ -566,7 +566,8 @@ public function node_insert() {
         $text = $poster["name"];
         $pic = $pic_path.$poster["poster"];
         $cmd = "nohup huodong_weibo ".$text." ".$pic+" >> /home/ltx/python/weibo.log  &"
-        `$cmd`
+        shell_exec($cmd);
+
     }
 }
 ?>
