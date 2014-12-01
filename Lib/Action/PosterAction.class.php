@@ -566,7 +566,7 @@ public function node_insert() {
 
         $text = $poster["name"];
         $pic = $pic_path.$poster["poster"];
-        $cmd = 'nohup huodong_weibo "$text" "$pic" > /dev/null &';
+        $cmd = "nohup huodong_weibo '$text' '$pic' > /dev/null &";
         shell_exec($cmd);
 
     }
