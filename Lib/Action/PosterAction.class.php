@@ -119,17 +119,21 @@ class PosterAction extends PublicAction {
 		$poster['sid'] = M('Club')->result_first("SELECT sid FROM ustc_club where gid = $gid");
         $obj = M('Poster');
         $re=$obj->create($poster);
-		$qrid=$this->_post('qrid');
-		$obj->add();
-        $aid=$obj->where($re)->find()['aid'];
-		if($qrid!=0){
-			M('Qr')->where(array('id'=>$qrid))->data(array('aid'=>$aid,'status'=>2,'status_time'=>time()))->save();
+        $qrid=$this->_post('qrid');
+        $aid = $obj->add();
+        //$aid=$obj->where($re)->find()['aid'];
+
+        if($qrid!=0){
+        	M('Qr')->where(array('id'=>$qrid))->data(array('aid'=>$aid,'status'=>2,'status_time'=>time()))->save();
         }
         D('Club')->incPosterCount($gid);
         list($title,$msg)=D('Msg')->posterMsg($aid);
         D('Msg')->sentMsgForSys(time(),$title,$msg,$tids='ALL',$gid);
 
         A('Timer')->addAfterPoster($aid);
+//新浪微博
+        $this->sentWeibo($aid);
+
         $this->assign('jumpUrl', "/");
         $this->success("海报发布成功！");
     }
@@ -558,8 +562,8 @@ public function node_insert() {
             $this->error("您所查找的海报不存在");
         return $poster;
     }
-    public function sentWeibo(){
-        $aid = $this->_get("aid");
+    public function sentWeibo($aid){
+        //$aid = $this->_get("aid");
         $pic_path = $_SERVER['DOCUMENT_ROOT']."/upload/poster/thumb/thumb_";
         $poster = M('Poster')->field("name,poster,gid")->find($aid);
         $gid = $poster["gid"];
@@ -568,10 +572,7 @@ public function node_insert() {
             $poster["weibo"]="@".$club_info["weibo"]." ";
             $poster["clubName"]=$club_info["name"];
         }
-
         $text = $this->weiboTpl($poster);
-        echo $text;
-        die();
         $pic = $pic_path.$poster["poster"];
         $cmd = "huodong_weibo '$text' '$pic' > /dev/null &";
         shell_exec($cmd);
@@ -579,14 +580,12 @@ public function node_insert() {
     private function weiboTpl($poster){
         //$Tpl = "hi @%weibo% haha %name% lala %clubName%";
         $Tpl = D("Poster")->getWeiboByRand();
-        //dump($poster);
         foreach ($poster as $key => $value) {
             $before = "%$key%";
             $after = $value;
             $Tpl = str_replace($before,$after,$Tpl);
         }
         return $Tpl;
-        //dump($poster);
     }
 }
 ?>
