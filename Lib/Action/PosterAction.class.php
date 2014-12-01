@@ -509,6 +509,7 @@ class PosterAction extends PublicAction {
         return $poster;
     }
     public function sentWeibo($aid){
+        
         $aid = $this->_get("aid");
         $pic_path = "./upload/poster/thumb/";
         $poster = M('Poster')->field("name,poster,gid")->find($aid);
