@@ -1,35 +1,83 @@
+	
+	<div class="head-left" style="display:box;">
 	<div itemscope itemtype="http://data-vocabulary.org/Organization">
-		<div class="sttitle2">{$club.school.name}</div>
-		<div class="sttitle" itemprop="name"><a href="/Club/intro?gid={$club.gid}" itemprop="url">{$club.name}</a></div>
-		<div class="sttitle3">
-		<notempty name="club.name_en">
-		<p>{$club.name_en}</p>
-		</notempty>
-		<notempty name="club.slogan">
-		<p>{$club.slogan}</p>
-		</notempty>
-		<notempty name="club.weibo">
-		<p>新浪微博：{$club.weibo}</p>
-		</notempty>
-		<notempty name="club.qq_group">
-		<p>QQ群：{$club.qq_group}</p>
-		</notempty>
-		<notempty name="club.contact">
-		<p><div itemprop="tel">社团联系方式：{$club.contact}</div></p>
-		</notempty>
+		
+		<div class="head-img">
+			<img src="" alt="" >
+			<notempty name="club.logo">
+			    <img src="/upload/clublogo/thumb/thumb_{$club.logo}" alt="" style="height:10em">
+			    <else />
+			    <img src="/upload/avatar/noavatar_small.gif" alt="" style="height:10em">
+			    </notempty>
+		</div>
+		<div class="head-info">
+			<div class="sttitle2">{$club.school.name}</div>
+			<div class="sttitle" itemprop="name">
+				<a href="/Club/intro?gid={$club.gid}" itemprop="url">{$club.name}</a>
+			</div>
+			<div class="sttitle3">
+				<notempty name="club.name_en">
+					<p>{$club.name_en}</p>
+				</notempty>
+				<notempty name="club.slogan">
+					<p>{$club.slogan}</p>
+				</notempty>
+				<notempty name="club.weibo">
+					<p>新浪微博：{$club.weibo}</p>
+				</notempty>
+				<notempty name="club.qq_group">
+					<p>QQ群：{$club.qq_group}</p>
+				</notempty>
+				<notempty name="club.contact">
+					<p><div itemprop="tel">社团联系方式：{$club.contact}</div></p>
+				</notempty>
+			</div>
 		</div>
 	</div>
-    <div class="sttitle4"><span class="marginR1">网上会员：{$club.memberCount} 人</span><br/>
+	</div>
+	<div class="head-right">
+		
+	
+	   
+
+
+    <div class="sttitle4">
+	    
+    <!--span >网上会员：{$club.memberCount} 人</span-->
     <if condition="$club[admin][uid] != 0">
-    <span class="marginR1">会长：{$club.admin.realname} ({$club.admin.dept} {$club.admin.grade}级 {$club.admin.education}) </span>
+    	    <div class="admin-box">
+	    <div style="color:#444;text-align:center">会长:{$club.admin.realname}</div>
+	    <notempty name="club.admin.avatar">
+	    <img src="/upload/avatar/small_{$club.admin.avatar}" alt="" style="max-width:100%;border-radius: 4px;">
+	    <else />
+	    <img src="/upload/avatar/noavatar_small.gif" alt="" style="max-width:100%;border-radius: 4px;">
+	    </notempty>
+	    
+
+	    </div>
+	    <!--span title="{$club.admin.dept} {$club.admin.grade}级 {$club.admin.education}">会长：{$club.admin.realname} 
+	    </span-->
+	   
     <elseif condition="!$club['apply']" />
-    <div id="js-apply">尚未设置会长，<a style="text-decoration:underline; color:#F00;" href="/static/help/contactus.html">请会长联系我们!</a>或<a class="<if condition="$_G['uid'] == 0">js-not-login<else />js-login</if>" style="text-decoration:underline; color:#F00;" href="javascript:void(0)"> 点击申请成为会长</a></div>
-    
-	<else />
-    
+    <!--
+    <div id="js-apply">尚未设置会长，
+	    <a style="text-decoration:underline; color:#F00;" href="/static/help/contactus.html">请会长联系我们!</a>
+	    或
+	    <a class="<if condition="$_G['uid'] == 0">js-not-login<else />js-login</if>" style="text-decoration:underline; color:#F00;" href="javascript:void(0)"> 点击申请成为会长
+	    </a>
+    </div>
+    -->
+   <else />
 	<span style ="color:red">您申请成为该团体会长，审核中……</span>
-    </if>
+   </if>
+   
+ <div class="num-box">
+<span style="color:#FF9800;text-align:center;font-size:4em">60</span>人
+</div>
+
+
         <div class="sttitle5">
+        
 	    <switch name="club.mypriv">
 		<case value="inactive">
 		    <span style="color:#999">您的申请正审核中……</span>
@@ -44,21 +92,18 @@
 		  <if condition="$_G['uid'] == 0">
 	 	    <a href="/User/register" style="color:#F00;">注册</a> 或 <a href="/User/login" style="color:#F00;">登录</a> 后才能加入社团
 		  <else />
-	    	    <a href="/Club/join?gid={$club.gid}" style="color:#F00;">您还未加入，点击申请加入</a>
+	    	    <a href="/Club/join?gid={$club.gid}" style="color:#EA3556;">您还未加入，点击申请加入</a>
 		  </if>
 		</if>
 	    </switch>
-	    <a style="margin-left:50px;" href="/Club/manage?gid={$club.gid}">查看及管理</a>
-	    <notempty name="club.isadmins">
-	    <a style="margin-left:20px;" href="/Club/introModify?gid={$club.gid}">修改社团简介</a>
-	    </notempty>
-	    <notempty name="club.ismanager">
-	    <a style="margin-left:20px;" target="_blank" href="/Poster/add?gid={$club.gid}">发布海报</a>
+
+	    <br />
 	    
-	    
-	</div>
+	    <!--<a style="margin-left:50px;" href="/Club/manage?gid={$club.gid}">详情</a>-->
      </div>
-     <div style="clear:both; height:1px;"> </div>
+     </div>
+     </div>
+ 
 	<script>
 	$(".js-not-login").click(function(){
 		alert("您尚未登录，请先登录");
@@ -77,9 +122,14 @@
 		},'json');
 	});
 	</script>
-	
-	<div id="qrcodeId" style=" position:absolute; top:-7px; right:4px; "><img title="{$club.name}二维码"   style=" width:90px; border:1px solid #8a4419; border-style:inset;"  src="{$Qrcode}"  alt="{$club.name}二维码"/></div>    
-    <div class="qrcode"><img src="{$Qrcode}"  alt="{$club.name}二维码"/></div>
+	<!--
+	<div id="qrcodeId" style=" position:absolute; top:-7px; right:4px; ">
+	<img title="{$club.name}二维码"   style=" width:90px; border:1px solid #8a4419; border-style:inset;"  src="{$Qrcode}"  alt="{$club.name}二维码"/>
+	</div>    
+	-->
+    <div class="qrcode">
+    <img src="{$Qrcode}"  alt="{$club.name}二维码"/>
+    </div>
 <script type="text/javascript">
 		$("#qrcodeId").hover(
 				function(){ $(".qrcode").show(300);},
