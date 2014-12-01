@@ -562,10 +562,13 @@ public function node_insert() {
             $this->error("您所查找的海报不存在");
         return $poster;
     }
-    public function sentWeibo($aid){
+    private function sentWeibo($aid){
         //$aid = $this->_get("aid");
         $pic_path = $_SERVER['DOCUMENT_ROOT']."/upload/poster/thumb/thumb_";
         $poster = M('Poster')->field("name,poster,gid")->find($aid);
+        if(empty($poster)){
+            $this->error("empty");
+        }
         $gid = $poster["gid"];
         if($gid!=76){
             $club_info = D('Club')->getInfo($gid);
@@ -578,7 +581,6 @@ public function node_insert() {
         shell_exec($cmd);
     }
     private function weiboTpl($poster){
-        //$Tpl = "hi @%weibo% haha %name% lala %clubName%";
         $Tpl = D("Poster")->getWeiboByRand();
         foreach ($poster as $key => $value) {
             $before = "%$key%";
@@ -586,6 +588,12 @@ public function node_insert() {
             $Tpl = str_replace($before,$after,$Tpl);
         }
         return $Tpl;
+    }
+    public function myweibo(){
+        if(!D('User')->isDeveloper(CURRENT_USER)){
+            $this->error("无权限");
+        }
+        $this->sentWeibo($this->_get("id"));
     }
 }
 ?>
