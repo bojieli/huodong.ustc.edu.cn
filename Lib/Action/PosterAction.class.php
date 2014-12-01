@@ -565,8 +565,8 @@ public function node_insert() {
         $poster = M('Poster')->field("name,poster,gid")->find($aid);
         $text = $poster["name"];
         $pic = $pic_path.$poster["poster"];
-        $cmd = "nohup huodong_weibo ".$text." ".$pic+" >> /home/ltx/python/weibo.log  &"
-        shell_exec($cmd);
+        $cmd = "nohup huodong_weibo ".$text." ".$pic+" >> /home/ltx/python/weibo.log  &";
+        echo $cmd;
 
     }
 }
