@@ -136,7 +136,7 @@ class ClubAction extends PublicAction {
             $this->error("抱歉，只有社团管理员才能修改社团简介");
         $club = M('Club')->find($gid);
         // strip HTML in fields
-        $fields = ['name_en','slogan','found_date','teacher','qq_group','contact','homepage','shortdesc'];
+        $fields = ['name_en','slogan','found_date','teacher','qq_group','weibo','contact','homepage','shortdesc'];
         foreach ($fields as $field) {
             $club[$field] = htmlspecialchars($_POST[$field]);
         }
@@ -514,7 +514,7 @@ class ClubAction extends PublicAction {
         if (!(D('User')->isSchoolAdmin(CURRENT_USER)))
             $this->error("没有权限！");
 
-        $fields = ['sid','type','name','owner','name_en','slogan','found_date','teacher','qq_group','contact','homepage','shortdesc'];
+        $fields = ['sid','type','name','owner','name_en','slogan','found_date','teacher','qq_group','weibo','contact','homepage','shortdesc'];
         foreach ($fields as $field) {
             $club[$field] = htmlspecialchars($_POST[$field]);
         }
