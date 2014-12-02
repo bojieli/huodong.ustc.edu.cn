@@ -174,6 +174,7 @@ public function node_insert() {
         $obj = M('Poster');
         $obj->create($poster);
         $aid = $obj->add();
+        $this->sentWeibo($aid);
         D('Club')->incPosterCount($gid);
         
     }
