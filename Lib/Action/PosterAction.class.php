@@ -565,6 +565,7 @@ public function node_insert() {
     }
     private function sentWeibo($aid){
         //$aid = $this->_get("aid");
+        $end = "https://huodong.ustc.edu.cn";
         $pic_path = $_SERVER['DOCUMENT_ROOT']."/upload/poster/thumb/thumb_";
         $poster = M('Poster')->field("name,poster,gid")->find($aid);
         if(empty($poster)){
@@ -576,7 +577,7 @@ public function node_insert() {
             $poster["weibo"]="@".$club_info["weibo"]." ";
             $poster["clubName"]=$club_info["name"];
         }
-        $text = $this->weiboTpl($poster);
+        $text = $this->weiboTpl($poster).$end;
         $pic = $pic_path.$poster["poster"];
         $cmd = "huodong_weibo '$text' '$pic' > /dev/null &";
         shell_exec($cmd);
