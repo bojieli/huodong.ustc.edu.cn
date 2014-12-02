@@ -1,164 +1,166 @@
 <?php
 class SmsAction extends PublicAction {
-    public function index()
-    {
-        $gid=$this->_get('gid');
+    public function schoolAdmin(){
+    	$sid=$this->_get('sid');
+    	if(empty($sid)){
+    		$this->error("非法操作！");
+    	}
+    	$ajax = $this->_get("ajax");
+	 if(!D('User')->checkLogin()){$this->assign('jumpUrl', '/User/login');$this->error('您尚未登陆');}
+	$user = D("User");
+	$user_info = $user->getInfo(CURRENT_USER);
+	if(!$user_info['isschooladm'])
+	{	
+		$this->error('您没有权限访问该页面');
+	}
+	if($ajax==1){
+		$members = A('Admin')->getClubManager($sid);
+		//dump($members);
+		$this->ajaxReturn($members);
+	}	
+	$this->assign('sname_admin', M('school')->field('name')->where(['sid'=>$sid])->find()['name']);
+	$this->assign('admin',1);
+	//$this->history($gid);
+	//$this->assign('huodong_sms',$huodong_sms);
+	//$this->assign('members',$members);
+	$this->display("ajax-index");
+    }
+    public function clubAdmin(){
+    	$gid=$this->_get('gid');
+	$vid=$this->_get('vid');
+	$ajax = $this->_get("ajax");
+	if(!$gid){$this->error('非法操作！');}
+	if(!D('User')->checkLogin()){$this->error('未登陆');}
+	if(!D('Club')->isManager($gid)) {$this->error("只有会长和部长才有权限操作此通讯录");}
+	if(!empty($vid) && D('Club')->isVcardOwner($gid,$vid) == 0){
+		$this->error("无权限操作此手机通讯录");
+	}
+
+	$Model = D('Sms');
+/*start-->ajax get members*/
+	if($ajax==1){
+		if($vid){	
+			$excel=D('Club')->showMember($gid,$vid);
+			if(empty($excel))
+				$this->error("抱歉该通讯录不存在");
+			$re = A('Club')->excel2Sql($excel[0]);
+			$members = $re;
+		}else{	
+			$members=$Model->getMember($gid);
+		}
+		//dump($members);
+		$this->ajaxReturn($members);
+	}
+/*ajax get members--->end*/
+
+	$tip=$Model->getSmsTip($gid);
+	if($Model->getUpdateTime($gid)==$Model->updateTime($gid))
+	{
+		if(!$tip)$Model->reSmsNum($gid);
+	}
+	else
+	{
+		$Model->changeUpdateTime($gid);
+		$Model->reSmsNum($gid);
+	}
+	
+	$club=D('Club')->getInfo($gid);
+	$this->assign('club',$club);
+	$this->assign('sms_num',$Model->getSmsNum($gid));
+	$this->history($gid);
+	$this->assign('huodong_sms',$huodong_sms);
+	$this->assign('members',$members);
+	$this->display("ajax-index");
+    }
+
+public function teamAdmin(){
+		$ajax = $this->_get("ajax");
 		$tid=$this->_get('tid');
-		$sid=$this->_get('sid');
-		$vid=$this->_get('vid');
-		$act_id=$this->_get('act_id');
-		$huodong_sms = C('huodong_sms');
-		if($sid)
+		if(empty($tid)){
+    		$this->error("非法操作！");
+    		}
+		if(!D('User')->checkLogin()){$this->error('未登陆');}
+		$gid = D('Team')->getGidByTid($tid);
+		$Model = D('Sms');
+		$tip=$Model->getSmsTip($gid);
+		if($Model->getUpdateTime($gid)==$Model->updateTime($gid))
 		{
-			 if(!D('User')->checkLogin()){$this->assign('jumpUrl', '/User/login');$this->error('您尚未登陆');}
-			$user = D("User");
-			$user_info = $user->getInfo(CURRENT_USER);
-			if(!$user_info['isschooladm'])
-			{	
-				$this->error('您没有权限访问该页面');
-			}
-			if(!$sid){$this->error('非法操作！');}
-			$members = A('Admin')->getClubManager($sid);
-			//dump($members);die;
-			$this->assign('sname_admin', M('school')->field('name')->where(['sid'=>$sid])->find()['name']);
-			$this->assign('admin',1);
+			if(!$tip)$Model->reSmsNum($gid);
 		}
 		else
 		{
-			    if(empty($vid) && empty($act_id)){
-					$sms_type='';
-				}
-				else{
-
-				 if(!empty($vid)){
-						$sms_type="address";
-						$type_id=$vid;
-					}
-			        if (!empty($act_id)) {
-			        	$sms_type="activity";
-			        	$type_id =$act_id;
-			        }
-		        }
-				if($gid)
-				{   
-					if(!$gid){$this->error('非法操作！');}
-					if(!D('User')->checkLogin()){$this->error('未登陆');}
-					if(!D('Club')->isManager($gid)) {
-                    	$this->error("只有会长和部长才有权限操作此通讯录");}
-                    if(!empty($vid) && D('Club')->isVcardOwner($gid,$vid) == 0){
-            			$this->error("无权限操作此手机通讯录");
-                    }
-
-					$Model = D('Sms');
-					$tip=$Model->getSmsTip($gid);
-					//触发短信条数更新
-					if($Model->getUpdateTime($gid)==$Model->updateTime($gid))
-					{
-						if(!$tip)$Model->reSmsNum($gid);
-					}
-					else
-					{
-						$Model->changeUpdateTime($gid);
-						$Model->reSmsNum($gid);
-					}
-                     
-					if($vid){
-						$excel=D('Club')->showMember($gid,$vid);
-			            if(empty($excel))
-			                $this->error("抱歉该通讯录不存在");
-			            $re = A('Club')->excel2Sql($excel[0]);
-						$members = array();
-						foreach($re as $row => $value)
-						{
-							if($value['priv']!='member')
-								$value['info']=$value['realname'].'('.$value['title'].')'.'--'.$value['telephone'];
-							else
-								$value['info']=$value['realname'].'--'.$value['telephone'];
-							$members[] = $value;
-						}
-						$club=D('Club')->getInfo($gid);
-						//dump($gid);
-		        		$this->assign('club',$club);
-				}
-				else
-				{
-					$members=$Model->getMember($gid);
-					$club=D('Club')->getInfo($gid);
-					//dump($club);
-		        	$this->assign('club',$club);
-				}
-			}
-			if($tid)
-			{
-				if(!D('User')->checkLogin()){$this->error('未登陆');}
-				//if(!D('Team')->isManager($tid)){$this->error('无权限');}
-				$gid = D('Team')->getGidByTid($tid);
-
-				$Model = D('Sms');
-				$tip=$Model->getSmsTip($gid);
-				if($Model->getUpdateTime($gid)==$Model->updateTime($gid))
-				{
-					if(!$tip)$Model->reSmsNum($gid);
-				}
-				else
-				{
-					$Model->changeUpdateTime($gid);
-					$Model->reSmsNum($gid);
-				}
-				
-				$team = D('Team')->getInfo($tid);
-				$re=D('Team')->getMembers($tid);
-				$members = array();
-				foreach($re as $row => $value)
-				{
-					if($value['priv']!='member')
-						$value['info']=$value['realname'].'('.$value['title'].')'.'--'.$value['telephone'];
-					else
-						$value['info']=$value['realname'].'--'.$value['telephone'];
-					$members[] = $value;
-				}
-				$this->assign('team',$team);
-			}
-			if($act_id)
-			{
-				if(!D('User')->checkLogin()){$this->error('未登陆');}
-				//if(!D('Team')->isManager($tid)){$this->error('无权限');}
-				$gid = D('Activity')->getGidByID($act_id);
-				if(!D('Club')->isManager($gid)) {
-                    	$this->error("只有会长和部长才有权限操作");}
-
-				$Model = D('Sms');
-				$tip=$Model->getSmsTip($gid);
-				if($Model->getUpdateTime($gid)==$Model->updateTime($gid))
-				{
-					if(!$tip)$Model->reSmsNum($gid);
-				}
-				else
-				{
-					$Model->changeUpdateTime($gid);
-					$Model->reSmsNum($gid);
-				}
-
-				$Activity = D('Activity')->getActivityByID($act_id);
-				$re=D('Activity')->getAddress($act_id);
-				$members = array();
-				foreach($re as $row => $value)
-				{
-					if($value['priv']!='member')
-						$value['info']=$value['realname'].'('.$value['title'].')'.'--'.$value['telephone'];
-					else
-						$value['info']=$value['realname'].'--'.$value['telephone'];
-					$members[] = $value;
-				}
-				$this->assign('activity',$Activity);
-			}
-			$this->assign('sms_num',$Model->getSmsNum($gid));
+			$Model->changeUpdateTime($gid);
+			$Model->reSmsNum($gid);
 		}
+		
+		$team = D('Team')->getInfo($tid);
+		if($ajax==1){
+			$re=D('Team')->getMembers($tid);
+			$members = $re;
+			$this->ajaxReturn($members);
 
+		}
+		$this->assign('team',$team);
+		$this->assign('sms_num',$Model->getSmsNum($gid));
 		$this->history($gid);
 		$this->assign('huodong_sms',$huodong_sms);
-        $this->assign('members',$members);
-        $this->display();
+		$this->assign('members',$members);
+		$this->display("ajax-index");
+}
+
+    public function activityAdmin()
+    {
+        	$gid=$this->_get('gid');
+	$act_id=$this->_get('act_id');
+	if(empty($act_id)){
+    		$this->error("非法操作！");
+    		}
+	$ajax = $this->_get("ajax");
+	$huodong_sms = C('huodong_sms');
+		
+	if(empty($vid) && empty($act_id)){
+		$sms_type='';
+	}
+	else{
+		if(!empty($vid)){
+			$sms_type="address";
+			$type_id=$vid;
+		}
+		if (!empty($act_id)) {
+			$sms_type="activity";
+			$type_id =$act_id;
+		}
+	}
+			if(!D('User')->checkLogin()){$this->error('未登陆');}
+			//if(!D('Team')->isManager($tid)){$this->error('无权限');}
+			$gid = D('Activity')->getGidByID($act_id);
+			if(!D('Club')->isManager($gid)) {
+                	$this->error("只有会长和部长才有权限操作");}
+
+			$Model = D('Sms');
+			$tip=$Model->getSmsTip($gid);
+			if($Model->getUpdateTime($gid)==$Model->updateTime($gid))
+			{
+				if(!$tip)$Model->reSmsNum($gid);
+			}
+			else
+			{
+				$Model->changeUpdateTime($gid);
+				$Model->reSmsNum($gid);
+			}
+
+			$Activity = D('Activity')->getActivityByID($act_id);
+			if($ajax==1){
+				$re=D('Activity')->getAddress($act_id);
+				$members = $re;
+				$this->ajaxReturn($members);
+			}
+	$this->assign('activity',$Activity);
+	$this->assign('sms_num',$Model->getSmsNum($gid));
+	$this->history($gid);
+	$this->assign('huodong_sms',$huodong_sms);
+	$this->assign('members',$members);
+	$this->display("ajax-index");
     }
     public function selectMember()
     {

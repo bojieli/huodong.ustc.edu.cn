@@ -1,0 +1,456 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>学生团体 - 群发短信 - 大学活动平台</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="/static/css1.css" rel="stylesheet" type="text/css" />
+<script src="/static/jquery.js" type="text/javascript"></script>
+<script src="/static/jsjq1.js" type="text/javascript"></script>
+<script type="text/javascript">
+	var rname;
+	$(document).ready(function(){
+	/*弹出短信选择框*/
+	$("#msn_sel_mem").click(function(){
+		getData();
+		$("#msn_selmem_box").show(300);
+		$("#backbg1").css("display","block");	
+		});
+
+	$("#giveup_sel").click(function(){	 
+		$("#msn_selmem_box").hide(300);
+		$("#backbg1").css("display","none");
+		});
+	$("#backbg1").click(function(){	 
+		$("#msn_selmem_box").hide(300);
+		$("#backbg1").css("display","none");	
+		});
+	$("#msn_selmem_tjsx").live('click',function(){
+		$("#msn_selmem_box").hide(300);
+		$("#backbg1").css("display","none");
+		$(".mss-input-1text").html('');
+	    showlists();
+		});
+
+	//发送控制
+	$("#confirm-alert").click(function(){	
+		slideUp();								   
+	});
+	});//document.ready
+	function showlists(){
+	    var len = $("#members_select option").length;
+		var i =0;
+		var mobiles = '';
+		var rname = '';
+		$("#members_select option").each(function() {
+			//var values = $(this).val().split(";");//value=["uid","人名","手机号","mail"]
+			var n = $(this).val();
+			//console.log(obj[n].telephone);
+			if(obj[n].telephone.trim().length==0)
+			{
+				$(".mss-input-1text").append("<span class='NameWithBg' style='color:red' title='无手机号'>"+obj[n].realname+"</span>   ");
+				//alert(value[2]);
+			}
+			else
+			{
+				$(".mss-input-1text").append("<span class='NameWithBg'  title='"+obj[n].telephone+"'>"+obj[n].realname+"</span>   ");
+				if ($("#vid").val()=='')
+					mobiles += obj[n].uid+";";
+				else
+					mobiles += obj[n].telephone+";";
+				rname += obj[n].realname+' ';
+				i++;
+			}
+	     });
+		 ///alert(i);
+		 $("#tid_num").val(i);
+		 $("#tid").val(mobiles);
+		 $("#rname").val(rname);
+	 }
+	function slideUp(){
+		$("#backbg,#alertbox,#alert-cont-box").slideUp(300);
+	}
+	function backRun(){
+	    if($("#alert-cont-box").css('display')=='none'){
+		$("#alert-cont-box").slideDown(100);
+		$("#sendMssage-result").html("<span style='color:green; font-size:20px; '>已经在后台执行，请耐心等待，后台处理完成后即可看到此条短信发送状态 ^_^ </span>" );}
+	 }
+	function sendSms(){
+		$("#backbg").css("display","block");
+		var fixCenLeft = parseInt(www/2)-240+"px";
+		var fixCenTop = parseInt(hhh/2)-130+"px";
+		$("#alertbox,#alert-cont-box").css("top",fixCenTop);
+		$("#alertbox,#alert-cont-box").css("left",fixCenLeft);	
+		$("#alertbox").slideDown(300);
+		//isOnline
+		if($('#isOnline').val()==0){
+			$("#alert-cont-box").slideDown(100);
+			$("#sendMssage-result").html("<span style='color:green; font-size:20px; '>发送失败：<br/></span><span style='margin-left:40px; line-height:24px;'>你已离线</span>" );
+			return false;
+		}
+		if($('#edit').val()==""||$('#tid_num').val()=='')
+		{
+			   $("#alert-cont-box").slideDown(100);
+			   $("#sendMssage-result").html("<span style='color:green; font-size:20px; '>发送失败：<br/></span><span style='margin-left:40px; line-height:24px;'>未填写内容或未指明发送对象</span>" );
+			   return false;
+		} 
+		var form = $("#SmsSend");
+		setTimeout('backRun();',1000);
+		$.post($(form).attr('action'), $(form).serialize(), function (data) {
+			if (data.status == 1) {
+				if(data.info[1])
+					$("#sms_num").text(data.info[1]);			
+				$(".mss-input-1text").html('');
+				//$("#sendMssage-result").html("<span style='color:green; font-size:20px; '>发送成功：<br/></span><span style='margin-left:40px; line-height:24px;'>"+ data.info[0] +"</span>" );
+				var d = new Date();
+				var vYear = d.getFullYear();
+				var vMon = d.getMonth() + 1;
+				var vDay = d.getDate();
+				var h = d.getHours(); 
+				var m = d.getMinutes();
+				var vtime = vYear+'年'+vMon+'月'+vDay+'日  '+h+':'+m;
+				$("#history-finish").append('<div title="接收者:'+$("#rname").val()+'" class="history-area" style="padding:10px;background: #FFF5FA;margin:20px 10px;font-size:16px; font-family:Microsoft YaHei; color:#8E8E90; text-align:left; "><div class="history-list-title" style="color:#ddd;font-size:60%;border-bottom: 1px solid #ddd">成功发出'+$("#tid_num").val()+'条 <img src="/static/check_green.gif" /><span class="sender" style="float:right">发信人：我</span></div><div class="history-list-cont">'+$('#edit').val()+$('#huodong_sms').val()+'</div><p style="font-size:12px; color:#999;font-family:Microsoft YaHei; text-align:right;margin:5px 0px 0 0;">'+vtime+'</p></div>');
+				$("#tid").val('');
+				$("#edit").val('');
+			} 
+			else {
+				 if($.isArray(data.info))
+					error = data.info[0];
+				 else 
+					error = data.info;
+				 $("#alert-cont-box").slideDown(100);
+			     $("#sendMssage-result").html("<span style='color:green; font-size:20px; '>发送失败：<br/></span><span style='margin-left:40px; line-height:24px;'>"+ error +"</span>" ); 
+			     return false;
+			}
+		}, 'json');
+	    return false;
+	 };
+	//-->
+</script>
+<!--筛选列表的css样式表-->
+<style type="text/css">
+	.mss-tittle{
+		font-family:Microsoft Yahei, "Times New Roman", Times, serif;
+		font-size:25px;
+		color:#99F;
+		margin-bottom:5px;
+		font-weight:bold;
+		background:#DDDDDD;
+		line-height:40px;
+		vertical-align:middle;
+		border-bottom:2px solid #9bc;
+		}
+	.mss-button{
+		margin:auto 10px;
+		width:80px;
+		height:28px;
+		line-height:27px;
+		vertical-align:middle;
+		text-align:center;
+		padding:0 6px;
+		font-size:16px;	
+		font-family:Microsoft Yahei, "Times New Roman", Times, serif;
+		background:#FC0;
+		}
+	.mss-input-1text{
+		  font-family:Microsoft Yahei, "Times New Roman", Times, serif;		  	  
+		  font-size:14px;	  
+		  outline:none;		  
+		  background:#F9F8F6;
+		  line-height:20px;
+		  vertical-align:middle;
+		  padding:8px;
+		  margin:0;
+		  margin-bottom:6px;
+		  color:#999;
+		  max-height:400px;
+		  min-height:13px;
+
+		}
+	.mss-input-text{
+		font-family:Microsoft Yahei, "Times New Roman", Times, serif;
+		font-size:16px;
+		width:590px;
+		line-height:22px;
+		height:140px;
+		padding:10px;		
+		-webkit-border-radius: 5px;
+		-moz-border-radius: 5px;
+		border-radius:5px;
+		outline:none;
+		}
+	#giveup_sel{
+		color:#F33;
+		margin-left:30px;
+		}
+	#giveup_sel:hover{
+		cursor:pointer;
+		}
+	#msn_selmem_box{
+		position:absolute;
+		top:-0px;
+		left:160px;
+		margin:0 auto;
+		z-index:11000;
+		width:700px;
+		height:560px;
+		text-align:center;
+		padding:10px 40px;
+		-moz-border-radius: 4px;
+		-webkit-border-radius: 4px;
+		border-radius:4px;
+		background:#fafafa;
+		display:none;
+		}
+	.NameWithBg{
+		background:#E9E9E9;
+		border:solid #CCC;
+		border-width:0 1px 1px 0;
+		-moz-border-radius: 9px;
+		-webkit-border-radius: 9px;
+		border-radius:9px;
+		margin:2px 1px;
+		padding: 0px 10px;
+		white-space: nowrap;
+		display: inline-block;
+		}
+	.NameWithBg:hover{
+		cursor:default;
+		background:#CFC;
+	}
+</style>
+</head>
+
+
+<body>
+<script type="text/javascript">
+<!--
+getwindowWH();//调用函数获取数值
+window.onresize=function(){
+getwindowWH();//调用函数获取数值
+}
+//-->
+</script>
+<include file="Public:headnav" />
+<input type="hidden" id="huodong_sms" value="{$huodong_sms}"/>
+<div id="mainding" style="position:relative; overflow: scroll;">
+  <p class="mss-tittle">
+<empty name="admin">
+<notempty name="club"> {$club['school']['name']} - <a href="/Club/manage?gid={$club.gid}">{$club['name']}</a>
+</notempty>
+<notempty name="team">
+	<a href="/Club/manage?gid={$team.gid}">{$team['club']}</a> - <a href="/Team?tid={$team.tid}">{$team['name']}</a>
+</notempty> - 群发短信通知
+<else />
+{$sname_admin} - 群发短信通知
+</empty>
+
+<include file="Public:selectMember" />
+
+<form action="/Sms/sent" id="SmsSend" method="post">
+<div id="leftbox" style="float:left">
+<table border="0" cellpadding="0" cellspacing="0">
+<tr height="40px">
+	<td width="90" align="right" valign="top" style="padding-top:3px;">发短信给：</td>
+	<td width="120" align="left" valign="top">
+	<div id="msn_sel_mem" class="dxhb-button mss-button" style="margin:0;">选择会员</div>
+	
+	</td>
+	<td width="475"><p style="color:#ddd">建议每次群发人数不要超过30人，以免页面响应时间过长。</p></td>
+</tr>
+<tr>
+	<td width="90" align="right" valign="top" style="padding-top:3px; color:#CCC">已选会员：</td>
+	<td colspan="2"  align="left" valign="top">
+		<div class='mss-input-1text' style="width:595px;">
+		</div>
+		<input type="hidden" name="tid" id="tid" value=""/>
+		<input type="hidden" id="isOnline" value="1"/>
+		<input type="hidden" id="tid_num" value=""/>
+		<input type="hidden" id="rname" value=""/>
+		<empty name="admin">
+		<input type="hidden" name="gid"id="gid" value="<notempty name="club">{$club.gid}</notempty><notempty name="team">{$team.gid}</notempty>"/>
+		<input type="hidden" id="vid" name="vid" value="{$Think.get.vid}"/>
+		<input type="hidden" id="act_id" name="act_id" value="{$Think.get.act_id}"/>
+		<else />
+		<input type="hidden" name='sid' id="sid" value="{$Think.get.sid}"/>
+		</empty>
+		<input type="hidden" id='uid' value="{$_G['uid']}"/>
+	</td>
+</tr>
+<tr>
+	<td width="90" align="right" valign="top" style="padding-top:10px;">短信内容：
+	</td>
+	<td colspan="2"  align="left" valign="top">
+		<div class="inputarea" style="position:relative;">
+			<textarea id="edit" name="s" title="短信不宜过长，最好控制在一条内，以节省短信条数&#10;该短信会自动加上后缀:{$huodong_sms} &#10;↘启动敏感词过滤，防止短信被拦截。" class="mss-input-text" onfocus="this.className='dxhb-focus mss-input-text'" onblur="this.className='dxhb-blur mss-input-text'" style="float:left" ></textarea>
+			<span style="position:absolute;left:473px;top:135px;color:#8E8E90">
+			还可输入<span id="counter" style="color:#F00"></span>字节
+			</span>
+			<span id="smscfbox" style="position:absolute;left:275px;top:135px;color:#8E8E90;display:none">
+			拆分为<span id="smscf" style="color:#F00"></span>条
+			</span>
+			<empty name="admin">
+			<span style="position:absolute;left:20px;top:135px;color:#8E8E90">
+			还剩<span id="sms_num" style="color:#F00">{$sms_num}</span>条短信
+			</span>
+			</empty>
+		</div>
+	</td>
+</tr>
+<tr>
+   <td> </td>
+   <td colspan="2" align="left" valign="middle" style="height:70px;">
+		<div  onclick="sendSms();return false;" class="dxhb-button mss-button" style="margin-left:518px;">发 送</div>
+   </td>
+</tr>
+</table>
+</div>
+<empty name="admin">
+<div id="rightbox" style="float:left;">
+<p style="text-align:center;padding:9px">群短信发送记录
+<span style="color:#F00; font-weight:normal; font-family:Georgia, 'Times New Roman', Times, serif">( {$allSmsNum} )</span>
+</p>
+<div class="smsArae" style="background:#fff;height: 500px;width:360px;overflow: auto;">
+<div id="history-finish"></div>
+<volist name="history" id="vo">
+	<div title="接收者:{$vo['nameString']}" class="history-area" style="padding:10px;background: #FFF5FA;margin:20px 10px;font-size:16px; font-family:Microsoft YaHei; color:#8E8E90; text-align:left; ">
+	<div class="history-list-title" style="color:#ddd;font-size:60%;border-bottom: 1px solid #ddd">
+	{$vo['status']}{$vo['pid_num']}条
+	<span class="sender" style="float:right">
+	发信人：{$vo['realname']}
+	</span>
+	</div>
+	<div class="history-list-cont">
+	{$vo['msg']}
+	</div>
+	<p style="font-size:12px; color:#999;font-family:Microsoft YaHei; text-align:right;margin:5px 0px 0 0;">
+    {$vo.humanDate}
+    </p>
+	</div>
+</volist>
+</div>
+</div>
+</empty>
+<script type="text/javascript">
+var bad_str;
+//离线缓存
+function savetext(){
+    var uid = $('#uid').val();
+	var sid = $('#sid').val()?$('#sid').val():0;
+	var gid = $('#gid').val()?$('#gid').val():0;
+	var item = 'u'+ uid + 'g' + gid +'s'+ sid;
+	var edit = document.getElementById("edit");
+	if(window.localStorage){
+	edit.onblur = function(){
+		localStorage.setItem(item, this.value);
+		textarea=this.value;
+		}
+	if(localStorage.getItem(item))
+		edit.value = localStorage.getItem(item);
+	};
+}
+savetext();
+function filterText(sText) { //badword 
+               // var reBadWords = bad_str;
+                var reBadWords = new RegExp(bad_str,"gi");
+                //alert(reBadWords);
+                return sText.replace(reBadWords,function(w){
+                var tmp='';
+                //alert(w);
+                if(w.length > 1)
+                    while(w){
+                       tmp = tmp + w.substring(0,1)+'`';
+                       w = w.substring(1);   
+                    }
+                else
+                    tmp = '*';
+                    return tmp;
+                })
+            }
+function mbStringLength(s) {
+        var totalLength = 0;
+        var i;
+        var charCode;
+        for (i = 0; i < s.length; i++) {
+          charCode = s.charCodeAt(i);
+          if (charCode < 0x007f) {
+            totalLength = totalLength + 1;
+          } else if ((0x0080 <= charCode) && (charCode <= 0x07ff)) {
+            totalLength += 2;
+          } else if ((0x0800 <= charCode) && (charCode <= 0xffff)) {
+            totalLength += 3;
+          }
+        }
+        //alert(totalLength);
+        return totalLength;
+      } 
+function tmp(){    
+		var area=$("#edit");
+		var huodong_sms = $("#huodong_sms").val();
+		var max = 600;
+		
+		var input = mbStringLength(area.val()+huodong_sms);
+		//alert(area.val()+huodong_sms);
+		$('#counter').text(max-input);
+		var i=1;
+		while(input > 200){
+			i++;
+			input -= 200;
+		}
+		$('#smscf').text(i);
+		if(i>1){
+		$('#smscfbox').show();
+		}else{
+		$('#smscfbox').hide();
+		}
+		var limit=$('#counter').text();
+		if(max>0){ 
+            if(limit<0){ 
+				 area.val(area.val().substr(0,area.val().length-1));    //截断textarea的文本重新赋值             
+            } 
+        } 
+}
+//离线状态判断
+var lineStatus = document.getElementById('line-status');
+var updateLineStatus = function(event) { 
+    if (navigator.onLine) {
+        $('.mss-button').css('background','#FC0');
+        $('#isOnline').val(1);
+    } else {
+        $('.mss-button').css('background','#ddd');
+		$('#isOnline').val(0);
+    }
+}
+document.body.addEventListener('online', updateLineStatus, false);
+document.body.addEventListener('offline', updateLineStatus, false);
+$.post('/Analytics/creatBad','', function(data) {
+	bad_str = eval(data).substr(0,eval(data).length-1);
+});
+setInterval("tmp();updateLineStatus()",300);
+setInterval("$('#edit').val(filterText($('#edit').val()))",5000);
+/*function countChar(textareaName,spanName)
+{  
+  document.getElementById(spanName).innerHTML = 200 - mbStringLength(document.getElementById(textareaName).value);
+	onkeydown='countChar("edit","counter");' onkeyup='countChar("edit","counter");'
+}  660*/
+</script>
+<script type="text/javascript">
+//
+</script>
+	
+</form>
+
+</div><!--main ding-->
+
+<!--弹出框样式代码-->
+<div id="backbg"></div><!--不可点击自身消失-->
+<div id="backbg1"></div><!--可点击自身消失-->
+<div id="alertbox" style="text-align:center;"><img src="/static/images/loading1.gif" style="width:124px; margin:66px auto" />
+</div>
+<div id="alert-cont-box">
+	<div class="alert-title">群短信发送结果</div>
+    <div id="sendMssage-result" class="alert-cont"></div>
+    <div id="confirm-alert" class="dxhb-button alert-button" >确 认</div>
+</div>
+
+</body>
+</html>

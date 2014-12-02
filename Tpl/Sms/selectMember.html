@@ -189,10 +189,11 @@ function Mselchoose(tbox,flag,num,item_id1,item_id2){
  </tr>
   
  <tr>
-	<td><select multiple size="20" name="list1"  class="mem-select dxhb-blur" onfocus="this.className='mem-select dxhb-focus'" onblur="this.className='mem-select dxhb-blur'"> 
+	<td>
+              <select multiple size="20" name="list1"  class="mem-select dxhb-blur" onfocus="this.className='mem-select dxhb-focus'" onblur="this.className='mem-select dxhb-blur'"> 
 		  <volist name="member" id="vo">
 		  <option value="{$key}">{$vo}</option>
-			</volist>
+		</volist>
 		</select>
     </td> 
 	<td width="100" align="left" valign="top">

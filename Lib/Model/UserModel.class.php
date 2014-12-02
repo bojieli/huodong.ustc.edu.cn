@@ -282,6 +282,23 @@ class UserModel extends Model {
         $user_info['big_avatar'] = $this->getAvatar($uid, "big");
 		return $user_info;
     }
+        public function getInfoForSafe($uid){
+        $user_info = M("user")->field("sid,student_no,gender,uid,realname,email,education,telephone,qq")->find($uid);
+        if(empty($user_info))
+        {
+            return false;
+        }
+        if($user_info['sid'])
+        {
+            $user_info['school'] = M('School')->result_first("select name from ustc_school where sid = ".$user_info['sid']);
+        }
+        $user_info['sex']=$user_info['gender']==1?'男':'女';
+        $user_info['student_no'] = strtoupper($user_info[student_no]);
+        $user_info['avatar'] = $this->getAvatar($uid);
+        $user_info['small_avatar'] = $this->getAvatar($uid, "small");
+        $user_info['big_avatar'] = $this->getAvatar($uid, "big");
+        return $user_info;
+    }
 
     public function isDeveloper($uid) {
         $info = $this->field('isdeveloper')->find($uid);

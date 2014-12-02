@@ -76,7 +76,7 @@ class AdminAction extends PublicAction {
 			foreach($clubs as $key => $club){
 				if($club['owner']!=''){
 					$title = M('User_group')->field('title')->where(['uid'=>$club['owner'],'gid'=>$club['gid']])->find();
-					$ownerInfo = D('User')->getInfo($club['owner']);					
+					$ownerInfo = D('User')->getInfoForSafe($club['owner']);					
 					$info[] = array_merge($title,$ownerInfo,$club);
 				}
 			}
