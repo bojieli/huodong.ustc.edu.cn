@@ -301,7 +301,7 @@ public function teamAdmin(){
         $this->display('index');
     }
     public function history($gid){
-        $re=M('Sms_md5')->where(array('gid'=>$gid))->order('time desc')->select();
+        $re=M('Sms_md5')->where(array('gid'=>$gid))->order('time desc')->limit(10)->select();
         foreach($re as $row => $value)
         {
             $pid=$value['pid'];
