@@ -596,6 +596,7 @@ public function node_insert() {
             $this->error("无权限");
         }
         $this->sentWeibo($this->_get("id"));
+        echo "ok";
     }
 }
 ?>
