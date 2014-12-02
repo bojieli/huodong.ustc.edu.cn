@@ -307,7 +307,7 @@ public function teamAdmin(){
             $pid=$value['pid'];
 			$re[$row]['status'] = D('Sms')->sms_status($pid);
             $re[$row]['pid_num']=D('Sms')->getSmsNumByPid($pid);
-            $re[$row]['nameString']=D('Sms')->getTidsName($pid);
+            //$re[$row]['nameString']=D('Sms')->getTidsName($pid);
             $re[$row]['realname']=D('Sms')->getUserName($value['uid']);
             $re[$row]['humanDate']=date("Y年n月j日H:i", $value['time']);
         }
