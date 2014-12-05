@@ -579,7 +579,7 @@ public function node_insert() {
         $this->sentWeibo($aid);
         $Weibo-> finishWeiboTaskPer($aid);
         echo "aid=".$aid.":OK!";
-        reutrn;
+        return;
     }
     private function sentWeibo($aid){
         //$aid = $this->_get("aid");
