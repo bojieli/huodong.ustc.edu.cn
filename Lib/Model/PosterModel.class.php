@@ -199,7 +199,7 @@ class PosterModel extends Model {
     }
     public function finishWeiboTaskPer($aid){
          $con = array(
-            'status'=>$aid
+            'aid'=>$aid
             );
         $data = array(
             'status'=>1,
