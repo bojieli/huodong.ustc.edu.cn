@@ -182,7 +182,7 @@ class PosterModel extends Model {
     }
     public function getWeiboByRand(){
         //$con['id']=2;
-        return M("Weibo_tpl")->where($con)->order("rand()")->find()["tpl"];
+        return M("Weibo_tpl")->order("rand()")->find()["tpl"];
     }
     public function createWeiboQueue($aid){
         $data = array(
