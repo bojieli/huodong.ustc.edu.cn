@@ -595,7 +595,7 @@ public function node_insert() {
             $poster["weibo"]="@".$club_info["weibo"]." ";
             $poster["clubName"]=$club_info["name"];
         }
-        $text = $this->weiboTpl($poster).$end;
+        $text = $this->weiboTpl($poster).$end;/*fix*/
         $pic = $pic_path.$poster["poster"];
         $cmd = "huodong_weibo '$text' '$pic' > /dev/null &";
         shell_exec($cmd);
