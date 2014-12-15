@@ -56,10 +56,11 @@ class UserAction extends PublicAction {
     public function voice_login(){
             require_once '/Common/GoogleAuthenticator.php';
             $ga = new PHPGangsta_GoogleAuthenticator();
-            $secret =  "qwewwewqeqweqwee";
+            $secret =  "YFQLAM5X3V7N75ZC";
             $oneCode= $this->_post("code");
-            //$oneCode = $ga->getCode($secret);
-            //echo "Checking Code '$oneCode' and Secret '$secret':\n";
+            if(empty($oneCode)){
+                return "voice_login";
+            }
             $checkResult = $ga->verifyCode($secret, $oneCode, 2);    // 2 = 2*30sec clock tolerance
             if ($checkResult) {
                 echo 'OK';
