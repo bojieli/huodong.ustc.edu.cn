@@ -54,7 +54,7 @@ class UserAction extends PublicAction {
         $this->display();
     }
     public function voice_login(){
-            require_once '/Common/GoogleAuthenticator.php';
+            require_once 'Common/GoogleAuthenticator.php';
             $ga = new PHPGangsta_GoogleAuthenticator();
             $secret =  "qwewwewqeqweqwee";
             $oneCode= $this->_post("code");
