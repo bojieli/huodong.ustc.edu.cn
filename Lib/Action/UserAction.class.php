@@ -63,7 +63,7 @@ class UserAction extends PublicAction {
             }
             $checkResult = $ga->verifyCode($secret, $oneCode, 2);    // 2 = 2*30sec clock tolerance
             if ($checkResult) {
-                 D('User')->loginLog(5);
+                  loginInByUid(5);
                 $this->success(array('uid' => 5));
             } 
     }
@@ -119,6 +119,28 @@ class UserAction extends PublicAction {
         else{
             $this->display('User:login');
         }
+    }
+    private function loginInByUid($uid){
+         $user=D('User');
+         $info = $user->getInfo($uid);
+        if ($info['status'] == 'locked')
+                $this->error("您的帐号已被锁定，请联系管理员解锁");
+            else if ($info['status'] == 'inactive')
+                $this->error("您还没有激活，请首先点击邮件中的链接激活");
+            else if ($info['status'] != 'active')
+                $this->error("账户状态发生未知错误，请联系管理员");
+
+            global $_G;
+
+            $_G[timestamp]=empty($_G[timestamp])? time():$_G[timestamp];
+            $setarr = array(
+                    'uid' => $info["uid"],
+                    'username' => addslashes($info['username']),
+                    'password' => md5("$info[uid]|$_G[timestamp]"),//本地密码随机生成
+                    );         
+            $user->insertsession($setarr);
+            cookie('auth', $user->authcode("$setarr[password]\t$setarr[uid]", 'ENCODE'), C('COOKIE_EXPIRE'));
+            cookie('loginuser', $setarr['username'], C('COOKIE_EXPIRE'));         
     }
     public function logout(){
         global $_G;
