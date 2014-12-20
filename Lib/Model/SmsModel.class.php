@@ -18,8 +18,7 @@ class SmsModel extends Model {
 		    $client=new SoapClient($url,array('encoding'=>'UTF-8'));
 		    $client->wsClientSetCharset('UTF-8');
 		    $client->wsCsLogin('huodong','hzbjlsjr2012');
-		   	$messageIds[]=$client->wsCreateMessage($messageTitle='',$msg_top,$messageFromAddress="",$messageFromName="",$messageContentFormat="plaintext");
-		    }
+            $messageIds[]=$client->wsCreateMessage($messageTitle='',$msg_top,$messageFromAddress="",$messageFromName="",$messageContentFormat="plaintext");
         } catch (Exception $e) {
             return $retval_on_exception;
         }
