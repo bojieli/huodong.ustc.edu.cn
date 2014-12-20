@@ -132,7 +132,7 @@ class PosterAction extends PublicAction {
 
         A('Timer')->addAfterPoster($aid);
 //新浪微博
-        $this->sentWeibo($aid);
+        $this->addWeibo($aid);
 
         $this->assign('jumpUrl', "/");
         $this->success("海报发布成功！");
@@ -174,7 +174,7 @@ public function node_insert() {
         $obj = M('Poster');
         $obj->create($poster);
         $aid = $obj->add();
-        $this->sentWeibo($aid);
+        $this->addWeibo($aid);
         D('Club')->incPosterCount($gid);
         
     }
@@ -563,6 +563,24 @@ public function node_insert() {
             $this->error("您所查找的海报不存在");
         return $poster;
     }
+    private function addWeibo($aid){
+        if(!empty($aid)){
+            D("Poster")->createWeiboQueue($aid);
+        }
+    }
+    public function runWeiboTask(){
+        $Weibo = D("Poster");
+        $task = $Weibo->getWeiboQueuePer();
+        if(empty($task)){
+            echo "no task";
+            return;
+        }
+        $aid = $task["aid"];
+        $this->sentWeibo($aid);
+        $Weibo-> finishWeiboTaskPer($aid);
+        echo "aid=".$aid.":OK!";
+        return;
+    }
     private function sentWeibo($aid){
         //$aid = $this->_get("aid");
         $end = "https://huodong.ustc.edu.cn";
@@ -577,7 +595,7 @@ public function node_insert() {
             $poster["weibo"]="@".$club_info["weibo"]." ";
             $poster["clubName"]=$club_info["name"];
         }
-        $text = $this->weiboTpl($poster).$end;
+        $text = $this->weiboTpl($poster).$end;/*fix*/
         $pic = $pic_path.$poster["poster"];
         $cmd = "huodong_weibo '$text' '$pic' > /dev/null &";
         shell_exec($cmd);
@@ -595,7 +613,7 @@ public function node_insert() {
         if(!D('User')->isDeveloper(CURRENT_USER)){
             $this->error("无权限");
         }
-        $this->sentWeibo($this->_get("id"));
+        $this->addWeibo($this->_get("id"));
         echo "ok";
     }
 }

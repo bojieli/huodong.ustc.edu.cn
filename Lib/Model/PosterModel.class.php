@@ -182,8 +182,30 @@ class PosterModel extends Model {
     }
     public function getWeiboByRand(){
         //$con['id']=2;
-        return M("Weibo_tpl")->where($con)->order("rand()")->find()["tpl"];
+        return M("Weibo_tpl")->order("rand()")->find()["tpl"];
     }
-
+    public function createWeiboQueue($aid){
+        $data = array(
+            'aid'=>$aid,
+            'time'=>time()
+            );
+        return M("Weibo_queue")->add($data);
+    }
+    public function getWeiboQueuePer(){
+        $con = array(
+            'status'=>0
+            );
+        return M("Weibo_queue")->where($con)->order("id")->find();
+    }
+    public function finishWeiboTaskPer($aid){
+         $con = array(
+            'aid'=>$aid
+            );
+        $data = array(
+            'status'=>1,
+            'time'=>time()
+            );
+        return M("Weibo_queue")->where($con)->save($data);
+    }
 
 }
