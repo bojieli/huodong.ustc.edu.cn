@@ -2,15 +2,20 @@
 class SmsModel extends Model {
 	public function sentMsg($msg_top,$mobile)//单独发短信
 	{
+		$msgs=split_sms($msg_top,'utf8');
 		$url="http://umess.ustc.edu.cn/uMessApi.php?wsdl";//接口地址
 		$client=new SoapClient($url,array('encoding'=>'UTF-8'));
 		$client->wsCsLogin('huodong','hzbjlsjr2012');
-		$client->wsSendSms($msg_top,$mobile);
+		foreach($msgs as $msg)
+		{
+			$client->wsSendSms($msg,$mobile);
+		}
 	}
 	public function sentSms($msg_top,$mobiles,$gid,$isadmin,$sms_type,$type_id)
 	{
 		global $_G;
 		$uid= $_G['uid'];
+		$msgs=split_sms($msg_top,'utf8');
 		$url="http://umess.ustc.edu.cn/uMessApi.php?wsdl";//接口地址
 
         $retval_on_exception = array('done'=>0, 'failed'=>count($mobiles), 'info'=>'Internal Error');
@@ -18,7 +23,9 @@ class SmsModel extends Model {
 		    $client=new SoapClient($url,array('encoding'=>'UTF-8'));
 		    $client->wsClientSetCharset('UTF-8');
 		    $client->wsCsLogin('huodong','hzbjlsjr2012');
-            $messageIds[]=$client->wsCreateMessage($messageTitle='',$msg_top,$messageFromAddress="",$messageFromName="",$messageContentFormat="plaintext");
+		    foreach($msgs as $msg){
+		    	$messageIds[]=$client->wsCreateMessage($messageTitle='',$msg,$messageFromAddress="",$messageFromName="",$messageContentFormat="plaintext");
+		    }
         } catch (Exception $e) {
             return $retval_on_exception;
         }
