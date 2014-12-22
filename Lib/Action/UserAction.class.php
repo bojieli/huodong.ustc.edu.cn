@@ -320,18 +320,22 @@ class UserAction extends PublicAction {
         {
             $this->error("学院不能为空");
         }
+        $_POST['dept'] = trim($_POST['dept']);
         if(empty($_POST[student_no]))
         {
             $this->error("学号不能为空");
         }
+        $_POST['student_no'] = trim($_POST['student_no']);
         if(empty($_POST[realname]))
         {
             $this->error("真实姓名不能为空");
         }
+        $_POST['realname'] = trim($_POST['realname']);
         if (empty($_POST[education]))
         {
             $this->error("学历不能为空");
         }
+        $_POST['education'] = trim($_POST['education']);
         if($User->is_loginname_existed($_POST['email']))
         {
             $this->error("该邮件已注册");
@@ -350,7 +354,7 @@ class UserAction extends PublicAction {
         $is_md5=0;
 		if(preg_match('/^\w{32}$/', $this->_post('is_md5')))
 		$is_md5=1;
-		$_POST[student_no] = strtoupper($_POST[student_no]);
+		$_POST[student_no] = strtoupper(trim($_POST[student_no]));
         $_POST['sid'] = 1; // currently force USTC
         $_POST['register_time']=time();
         $_POST['status'] = 'inactive'; // need email activate
