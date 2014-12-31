@@ -416,7 +416,6 @@ private function apk2crx($filename,$type="phone",$enforce=false){
 	else{
 		$cmd = "cd ./upload/apk/;/usr/local/bin/apk2crx " .$filename. "  pad 2>&1";
 	}
-
 	//var_dump($filename);die();
 	return shell_exec($cmd);
 }
