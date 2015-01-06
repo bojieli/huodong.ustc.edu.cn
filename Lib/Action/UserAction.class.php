@@ -65,7 +65,9 @@ class UserAction extends PublicAction {
             if ($checkResult) {
                   $this->loginInByUid(5);
                 $this->success(array('uid' => 5));
-            } 
+            } else{
+                 $this->error(0);
+            }
     }
     public function do_login() {
         global $_G;
