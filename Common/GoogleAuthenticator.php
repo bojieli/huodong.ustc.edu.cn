@@ -91,7 +91,7 @@ class PHPGangsta_GoogleAuthenticator
         $currentTimeSlice = floor(time() / 30);
 
         for ($i = -$discrepancy; $i <= $discrepancy; $i++) {
-            $calculatedCode = uni($this->getCode($secret, $currentTimeSlice + $i));
+            $calculatedCode = $this->uni($this->getCode($secret, $currentTimeSlice + $i));
             if ($calculatedCode == $code ) {
                 return true;
             }
@@ -99,6 +99,16 @@ class PHPGangsta_GoogleAuthenticator
 
         return false;
     }
+private function uni($s){
+         $jihe="9473182065";
+         $str=str_split(intval($s));
+         for($i=0;$i<count($str);$i++){
+        for($j=$i;$str[$i+1]==$str[$i];$j++){
+                 $str[$i+1]=$jihe[$j%10];
+        }
+     }
+       return (int)implode('',$str);
+     }
 
     /**
      * Set the code length, should be >=6

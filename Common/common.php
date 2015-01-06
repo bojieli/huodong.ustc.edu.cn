@@ -539,18 +539,6 @@ function langForDisqus($lang){
     }
     return $lang;
 }
-/*
-此函数用于将相邻数字相同的数字转化为不同
-*/
-function uni($s){
- $jihe="9473182065";
- $str=str_split(intval($s));
- for($i=0;$i<count($str);$i++){
-   for($j=$i;$str[$i+1]==$str[$i];$j++){
-       $str[$i+1]=$jihe[$j%10];
- }
-}
-return implode('',$str);
-}
+
 
 ?>
