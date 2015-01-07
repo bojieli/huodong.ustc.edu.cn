@@ -231,6 +231,23 @@ function cleanDS(id){
 </div>
 <div id="haibao-onmoreloading">已经到底了 ^_^ </div>
 <div id="haibao-onloading"></div>
+<div id="selectm"></div>
+<div id="slcdetail">
+	<div class="sdcon" >筛选规则：<br/><hr/><br/>
+		<p class="selectedsx">软件分类</p>
+			
+			<volist name="cates" id="vo">
+			<a href="/Crx?cate={$vo.id}&keyword={$Think.get.keyword}&type={$Think.get.type}&order={$Think.get.order}">
+			<p class="pp">{$vo.name}</p>
+			</a>
+			
+			
+			 </volist>
+			
+
+		<br/><br />
+	</div>
+</div>
 <include file="Public:totop" />
  </body>
 </html>

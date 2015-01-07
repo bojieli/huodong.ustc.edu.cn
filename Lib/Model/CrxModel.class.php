@@ -58,7 +58,7 @@ class CrxModel extends Model {
 	 	if($have_addition==true){
 	 		return  M("Crx")->join(' ustc_crx_addition ON ustc_crx.id = ustc_crx_addition.id')->where($cond)->order($order)->limit("$start,$num")->select();
 	 	}
-        		return M('Crx')->where($cond)->order($order)->limit("$start,$num")->select();
+        		return M('Crx')->join('ustc_crx_category ON ustc_crx.name = ustc_crx_addition.name')->where($cond)->order($order)->limit("$start,$num")->select();
     	}
     	public function sort(){
     		$order = "LOG(ABS(`likes`-`dislikes`)+1) desc";

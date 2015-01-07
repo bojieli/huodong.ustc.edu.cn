@@ -4,17 +4,17 @@ class CrxAction extends PublicAction{
 
 	$school_all[] = array(
                 'type' => "all",
-                'url' => "/Crx?type=all&sort=".$this->_get("sort")."&keyword=".$this->_get("keyword"),
+                'url' => "/Crx?type=all&sort=".$this->_get("sort")."&keyword=".$this->_get("keyword")."&cate=".$this->_get("cate"),
                 'name' => L('quanbushebei')
                 );
 	$school_all[] = array(
                 'type' => "phone",
-                'url' => "/Crx?type=phone&sort=".$this->_get("sort")."&keyword=".$this->_get("keyword"),
+                'url' => "/Crx?type=phone&sort=".$this->_get("sort")."&keyword=".$this->_get("keyword")."&cate=".$this->_get("cate"),
                 'name' => L('shouji')
                 );
 	$school_all[] = array(
                 'type' => "pad",
-                'url' => "/Crx?type=pad&sort=".$this->_get("sort")."&keyword=".$this->_get("keyword"),
+                'url' => "/Crx?type=pad&sort=".$this->_get("sort")."&keyword=".$this->_get("keyword")."&cate=".$this->_get("cate"),
                 'name' => L('pingban')
                 );
         	
@@ -27,7 +27,7 @@ class CrxAction extends PublicAction{
 
 	$this->assign('count', $count);
 	$this->assign('schools', $schools);
-
+	$this->assign('cates',$this->getALLCate());
 	/*非ajax瀑布流*/
 	$infos = $Item->getCrx(0, 20, $cond, $order,$have_addition);
 	foreach ($infos as $key => $info){
@@ -439,8 +439,11 @@ private function apk2crx($filename,$type="phone",$enforce=false){
 	}
        
          $keyword = isset($_GET['keyword']) ? addslashes($_GET['keyword']) : '';
+         $cate = isset($_GET['cate']) ? addslashes($_GET['cate']) : '';
         if(!empty($keyword))
             $cond[] = "(name like '%$keyword%' or realname like '%$keyword%' )";
+        if(!empty($cate))
+            $cond[] = "(category = '$cate')";
 
          $type = $_GET['type'] ? $_GET['type'] : "all";
          if(!empty($type) && $type!="all")
@@ -779,6 +782,9 @@ public function scanCrx(){
 	}
 	return $del;
 
+}
+private function getALLCate(){
+	return M("Crx_category_list")->select();
 }
 public function clean(){
 	$this->isdeveloper();
