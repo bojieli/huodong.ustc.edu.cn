@@ -39,7 +39,7 @@
 <script>
 var  loadflag = 2;
 var  nomoreflag = 0;
-var pic_num =  {$count};
+var pic_num = {:intval($count)};
 var var_tmp;
  k=0;
 type="{$Think.get.sort}"?"{$Think.get.sort}":"normal";
@@ -49,6 +49,7 @@ var loadmore = (function() {
 		var noMore = false;
 		var type_sb = "{$Think.get.type}";
 		var keyword = "{$Think.get.keyword}";
+		var cate= "{$Think.get.cate}"
 		var order = "{$Think.get.order}";
 		var fp = "{$Think.get.fp}";
 		if(posterCounter >=pic_num){
@@ -64,7 +65,7 @@ var loadmore = (function() {
 				 if(type == 'normal'){
 				    $.getJSON(
 					    "/Crx/ajaxGet",
-					    {start: posterCounter, num: loadnum, type: type_sb ,keyword : keyword,order:order,fp:fp}
+					    {start: posterCounter, num: loadnum, type: type_sb ,keyword : keyword,order:order,fp:fp,cate:cate}
 				    ).done(function( obj ){
 					    loadflag = 0;				
 					    if (obj.length == 0){
