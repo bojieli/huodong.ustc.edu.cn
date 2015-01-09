@@ -49,9 +49,9 @@ class CrxModel extends Model {
 	public function countItem($cond,$have_addition=false){
 		
 		if($have_addition==true){
-	 		return M("Crx")->join(' ustc_crx_addition ON ustc_crx.id = ustc_crx_category.id')->where($cond)->count();
+	 		return M("Crx")->join(' ustc_crx_addition ON ustc_crx.id = ustc_crx_addition.id')->where($cond)->count();
 	 	}else{
-	 		return M("Crx")->where($cond)->count();
+	 		return M("Crx")->join('ustc_crx_category ON ustc_crx.name = ustc_crx_category.name')->where($cond)->count();
 	 	}
 	}
 	 public function getCrx($start, $num, $cond = [], $order = '',$have_addition=false) {
