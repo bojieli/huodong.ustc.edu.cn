@@ -4,17 +4,17 @@ class CrxAction extends PublicAction{
 
 	$school_all[] = array(
                 'type' => "all",
-                'url' => "/Crx?type=all&keyword=".$this->_get("keyword")."&cate=".$this->_get("cate"),
+                'url' => "/Crx?type=all&sort=".$this->_get("sort")."&keyword=".$this->_get("keyword")."&cate=".$this->_get("cate"),
                 'name' => L('quanbushebei')
                 );
 	$school_all[] = array(
                 'type' => "phone",
-                'url' => "/Crx?type=phone&keyword=".$this->_get("keyword")."&cate=".$this->_get("cate"),
+                'url' => "/Crx?type=phone&sort=".$this->_get("sort")."&keyword=".$this->_get("keyword")."&cate=".$this->_get("cate"),
                 'name' => L('shouji')
                 );
 	$school_all[] = array(
                 'type' => "pad",
-                'url' => "/Crx?type=pad&keyword=".$this->_get("keyword")."&cate=".$this->_get("cate"),
+                'url' => "/Crx?type=pad&sort=".$this->_get("sort")."&keyword=".$this->_get("keyword")."&cate=".$this->_get("cate"),
                 'name' => L('pingban')
                 );
         	
