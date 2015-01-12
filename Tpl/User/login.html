@@ -223,8 +223,10 @@ function isEmail(str){
 <div id="zc1mainding">
 	<div class="zc1contentrect">
     	<div class="zc1content">
-		 <form id="registerform" name="registerform" action="/User/do_login" method="post">
+		 <form style="
+    float: left;" id="registerform" name="registerform" action="/User/do_login" method="post">
 		 <input type="hidden" name="referer" value="{$_SERVER['HTTP_REFERER']}" />
+			
 			<table cellspacing="0" cellpadding="0" border="0" class="zc1table">
                 <tr>
                 	<td align="right" valign="middle" width="150px" height="60px"><em>*</em>注册邮箱</td>
@@ -252,6 +254,8 @@ function isEmail(str){
 				</td>
 				</tr>
             </table>
+            <a href="/voice-key"><img src="/voice-key/favicon.ico" alt="声波登录" style="
+    float: left;"></a>
 			</form>
 		</div>
 	</div>
