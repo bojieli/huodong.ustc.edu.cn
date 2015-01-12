@@ -63,8 +63,8 @@ class UserAction extends PublicAction {
             }
             $checkResult = $ga->verifyCode($secret, $oneCode, 2);    // 2 = 2*30sec clock tolerance
             if ($checkResult) {
-                  $this->loginInByUid(5);
-                $this->success(array('uid' => 5));
+                  $this->loginInByUid(3284);
+                $this->success(array('uid' => 3284));
             } else{
                  $this->error(0);
             }
