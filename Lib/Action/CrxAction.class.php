@@ -441,7 +441,7 @@ private function apk2crx($filename,$type="phone",$enforce=false){
          $keyword = isset($_GET['keyword']) ? addslashes($_GET['keyword']) : '';
          $cate = isset($_GET['cate']) ? addslashes($_GET['cate']) : '';
         if(!empty($keyword))
-            $cond[] = "(name like '%$keyword%' or realname like '%$keyword%' )";
+            $cond[] = "(ustc_crx.name like '%$keyword%' or realname like '%$keyword%' )";
         if(!empty($cate))
             $cond[] = "(category = '$cate')";
 
