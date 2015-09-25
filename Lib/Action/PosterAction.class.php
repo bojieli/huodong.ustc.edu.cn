@@ -583,7 +583,7 @@ public function node_insert() {
     }
     private function sentWeibo($aid){
         //$aid = $this->_get("aid");
-        $end = "https://huodong.ustc.edu.cn";
+        $end = "http://huodongweb.com";
         $pic_path = $_SERVER['DOCUMENT_ROOT']."/upload/poster/thumb/thumb_";
         $poster = M('Poster')->field("name,poster,gid")->find($aid);
         if(empty($poster)){
