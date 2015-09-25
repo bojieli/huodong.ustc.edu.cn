@@ -23,7 +23,7 @@ $mailconfig = array(
 	'MAIL_PASSWORD' => 'hzbjlsjr0906'
 );
 $smsconfig = array(
-	'huodong_sms' => "【大学活动平台】",
+	'huodong_sms' => "【huodongweb.com】",
 	'update_week' => 1,
 	'sms_minimum' => 20,//保底短信条数
 	'sms_weight' => 2 //每增加一个会员所拥有的短信条数
