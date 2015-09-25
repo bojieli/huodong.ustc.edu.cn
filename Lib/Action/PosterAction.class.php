@@ -587,7 +587,7 @@ public function node_insert() {
         $pic_path = $_SERVER['DOCUMENT_ROOT']."/upload/poster/thumb/thumb_";
         $poster = M('Poster')->field("name,poster,gid")->find($aid);
         if(empty($poster)){
-            $this->error("empty");
+            echo "empty";die();
         }
         $gid = $poster["gid"];
         if($gid!=76){
