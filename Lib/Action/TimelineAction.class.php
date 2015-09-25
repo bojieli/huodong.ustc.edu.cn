@@ -23,7 +23,7 @@ class TimelineAction extends PublicAction{
 	private function format($posters)
 	{
 		//$key=['startDate,endDate,headline,text,asset'];
-		$url="http://huodongweb.com/upload/poster/thumb/";
+		$url=C("SITE_ADDRESS")."/upload/poster/thumb/";
 		foreach($posters as $key => $poster){
 			$tmp[$key]['startDate']=date("Y,n,j",$poster['start_time']);
 			$tmp[$key]['endDate']=date("Y,n,j",$poster['end_time']);

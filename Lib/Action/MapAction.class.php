@@ -118,7 +118,7 @@ class MapAction extends PublicAction{
 		//echo "We have ".$n." websites";
 	}
 	public function rss(){
-	$webroot='http://huodong.ustc.edu.cn/';
+	$webroot=C("SITE_ADDRESS");
 		$posters=M('Poster')->field('name,aid,description,poster,publish_time')->order('publish_time desc')->limit(10)->select();
 	$focus = $posters[0];
 	$head ="<?xml version='1.0' encoding='utf-8'?>
