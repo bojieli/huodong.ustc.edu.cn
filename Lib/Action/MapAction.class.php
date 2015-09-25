@@ -9,7 +9,7 @@ class MapAction extends PublicAction{
 	public function sitemap(){
 		$n=0;
 		$fqu='daily';
-		$webroot='http://huodong.ustc.edu.cn/';
+		$webroot=C("SITE_ADDRESS");
 		//$file=fopen("sitemap.xml","w") or exit("Unable to open file!");
 		$posters=M('Poster')->field('name,aid')->order('publish_time desc')->select();
 		$clubs=M('Club')->field('name,gid')->order('gid desc')->select();
