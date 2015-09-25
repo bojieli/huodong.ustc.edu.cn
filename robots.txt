@@ -1,4 +1,4 @@
 User-agent: *
 Disallow: /Admin
 Disallow: /User/home
-Sitemap: http://huodong.ustc.edu.cn/Map/sitemap.xml
+Sitemap: http://huodongweb.com/Map/sitemap
