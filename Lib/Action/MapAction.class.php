@@ -10,7 +10,7 @@ class MapAction extends PublicAction{
 		$n=0;
 		$fqu='daily';
 		$webroot=C("SITE_ADDRESS")."/";
-		//$file=fopen("sitemap.xml","w") or exit("Unable to open file!");
+		$file=fopen("sitemap.xml","w") or exit("Unable to open file!");
 		$posters=M('Poster')->field('name,aid')->order('publish_time desc')->select();
 		$clubs=M('Club')->field('name,gid')->order('gid desc')->select();
 		$apps=M('Crx')->field('id')->order('id desc')->select();
@@ -113,8 +113,8 @@ class MapAction extends PublicAction{
 		$content=$head.$add.$poster_url.$club_url.$app_url.$end;
 		header("Content-type:text/xml");
 		echo $content;
-		//fputs($file,$content);
-		//fclose($file);
+		fputs($file,$content);
+		fclose($file);
 		//echo "We have ".$n." websites";
 	}
 	public function rss(){
