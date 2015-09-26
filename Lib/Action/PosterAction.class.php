@@ -3,7 +3,7 @@ class PosterAction extends PublicAction {
     public function index() {
         global $_G;
         $this->headnav();
-        $keyword = isset($_GET['keyword']) ? addslashes($_GET['keyword']) : '';
+        $keyword = isset($_GET['keyword']) ? addslashes(htmlspecialchars($_GET['keyword'])) : '';
         $sid = isset($_GET['sid']) ? addslashes($_GET['sid']) : $_G['sid'];
         $condition = '';
         $url = '';
