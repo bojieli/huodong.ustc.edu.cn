@@ -14,7 +14,8 @@ $newconfig = array(
 	'AVATAR_PATH' => 'upload/avatar/',
 	'COOKIE_PREFIX' => 'hd_',
 	'COOKIE_EXPIRE' => 36000,
-	'URL_HTML_SUFFIX' => 'html|xml'
+	'URL_HTML_SUFFIX' => 'html|xml',
+	'DEFAULT_FILTER'=>'strip_tags,htmlspecialchars'
 );
 $mailconfig = array(
 	'MAIL_ADDRESS' => 'huodong@ustc.edu.cn',
