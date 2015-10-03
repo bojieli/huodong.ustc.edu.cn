@@ -48,7 +48,7 @@ var loadmore = (function() {
 		var ajaxLock = false;
 		var noMore = false;
 		var type_sb = "{$Think.get.type}";
-		var keyword = "{$Think.get.keyword}";
+		var keyword = "{$keyword}";
 		var cate= "{$Think.get.cate}"
 		var order = "{$Think.get.order}";
 		var fp = "{$Think.get.fp}";
@@ -238,7 +238,7 @@ function cleanDS(id){
 		<p class="selectedsx">软件分类</p>
 			
 			<volist name="cates" id="vo">
-			<a href="/Crx?cate={$vo.id}&keyword={$Think.get.keyword}&type={$Think.get.type}">
+			<a href="/Crx?cate={$vo.id}&keyword={$keyword}&type={$Think.get.type}">
 			<p class="pp">{$vo.name}</p>
 			</a>
 			
