@@ -1,20 +1,20 @@
 <?php
 class CrxAction extends PublicAction{
 	public function index(){
-
+	$keyword = xss_clean($this->_get("keyword"));
 	$school_all[] = array(
                 'type' => "all",
-                'url' => "/Crx?type=all&sort=".$this->_get("sort")."&keyword=".$this->_get("keyword")."&cate=".$this->_get("cate"),
+                'url' => "/Crx?type=all&sort=".$this->_get("sort")."&keyword=".$keyword."&cate=".$this->_get("cate"),
                 'name' => L('quanbushebei')
                 );
 	$school_all[] = array(
                 'type' => "phone",
-                'url' => "/Crx?type=phone&sort=".$this->_get("sort")."&keyword=".$this->_get("keyword")."&cate=".$this->_get("cate"),
+                'url' => "/Crx?type=phone&sort=".$this->_get("sort")."&keyword=".$keyword."&cate=".$this->_get("cate"),
                 'name' => L('shouji')
                 );
 	$school_all[] = array(
                 'type' => "pad",
-                'url' => "/Crx?type=pad&sort=".$this->_get("sort")."&keyword=".$this->_get("keyword")."&cate=".$this->_get("cate"),
+                'url' => "/Crx?type=pad&sort=".$this->_get("sort")."&keyword=".$keyword."&cate=".$this->_get("cate"),
                 'name' => L('pingban')
                 );
         	
@@ -27,6 +27,7 @@ class CrxAction extends PublicAction{
 
 	$this->assign('count', $count);
 	$this->assign('schools', $schools);
+	$this->assign('keyword', $keyword);
 	$this->assign('cates',$this->getALLCate());
 	/*非ajax瀑布流*/
 	$infos = $Item->getCrx(0, 20, $cond, $order,$have_addition);

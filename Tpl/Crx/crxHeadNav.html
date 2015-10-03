@@ -1,21 +1,21 @@
 	
 	<div class="cont">
     	<div class="kuang">
-    		<a href="/Crx?order=new<if condition="$Think.get.keyword != ''">&keyword={$Think.get.keyword}</if><if condition="$Think.get.type != ''">&type={$Think.get.type}</if>">
+    		<a href="/Crx?order=new<if condition="$Think.get.keyword != ''">&keyword={$keyword}</if><if condition="$Think.get.type != ''">&type={$Think.get.type}</if>">
     			<div class="topbutton <if condition="$order == 'new'">here2</if>">{$Think.lang.zuixinfabu}
     			</div>
     		</a>
     		<div class="topnum"><?php count_order("new"); ?></div>
     	</div>
     	<div class="kuang">
-    		<a href="/Crx?order=good<if condition="$Think.get.keyword != ''">&keyword={$Think.get.keyword}</if><if condition="$Think.get.type != ''">&type={$Think.get.type}</if>">
+    		<a href="/Crx?order=good<if condition="$Think.get.keyword != ''">&keyword={$keyword}</if><if condition="$Think.get.type != ''">&type={$Think.get.type}</if>">
     			<div class="topbutton <if condition="$order == 'near'">here2</if>">{$Think.lang.pingjiazuijia}
     			</div>
     		</a>
     		<div class="topnum"><?php count_order("good"); ?></div>
     	</div>
     	<div class="kuang">
-    		<a href="/Crx?order=hot<if condition="$Think.get.keyword != ''">&keyword={$Think.get.keyword}</if><if condition="$Think.get.type != ''">&type={$Think.get.type}</if>">
+    		<a href="/Crx?order=hot<if condition="$Think.get.keyword != ''">&keyword={$keyword}</if><if condition="$Think.get.type != ''">&type={$Think.get.type}</if>">
     			<div class="topbutton <if condition="$order == 'hot'">here2</if>">{$Think.lang.xiazaizuiduo}
     			</div>
     		</a>
@@ -24,7 +24,7 @@
     	
 	<form method='get' action="/Crx">
         <div class="kuang" style="width:230px;">
-        	<input type="text" name="keyword" id="query" class="searchcss_out" onfocus="this.className='searchcss_on'" onblur="this.className='searchcss_out'" value="{$Think.get.keyword}" autocomplete="off">
+        	<input type="text" name="keyword" id="query" class="searchcss_out" onfocus="this.className='searchcss_on'" onblur="this.className='searchcss_out'" value="{$keyword}" autocomplete="off">
 	<input type="hidden" name="type" value="{$Think.get.type}">
 	<input type="hidden" name="order" value="{$Think.get.order}">
             <input type='submit' class="searchbutton" style="float:left;" value='{$Think.lang.sousuo}'/>
