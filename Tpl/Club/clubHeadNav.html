@@ -1,8 +1,3 @@
-<if condition="$keyword != ''">
-<div class="contsearch">
- <p class="searchtitle"><a href="/Club/index">学生团体</a> 中搜索“ <span style=" color: #63F;">{$keyword}</span> ”的结果：</p>
-</div>
-</if>
 <div class="cont">
     	<div class="kuang"><a href="/Club/index<if condition="$keyword != ''">?keyword={$keyword}<if condition="$sid != ''">&sid={$sid}</if><else /><if condition="$sid != ''">?sid={$sid}</if></if>"><div class="topbutton <if condition="$filter == 'all'">here2</if>">热度排序</div></a><div class="topnum">{$clubstat.total}</div></div>
     	<div class="kuang"><a href="/Club/index?filter=club<if condition="$keyword != ''">&keyword={$keyword}</if><if condition="$sid != ''">&sid={$sid}</if>"><div class="topbutton <if condition="$filter == 'club'">here2</if>">学生社团</div></a><div class="topnum">{$clubstat.club}</div></div>
