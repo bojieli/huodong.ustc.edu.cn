@@ -396,7 +396,7 @@ public function node_insert() {
         $md5 = explode(".", $poster->poster)[0];
         $webp_url = "/upload/poster/thumb/webp/";
         if($poster->thumbUrl()=='')
-            $img='<div class="content">'.$poster->description().'</div>';
+            $img='<div class="poster_content">'.$poster->description().'</div>';
         elseif($this->isWebpExist($md5,$prefix='thumb_'))
                 {    if ($iswebp==1) 
                         $img='<img alt="'.$poster->name().'" class="haibao u-img" itemprop="photo"  id="poster-'.$poster->id().'" src="'.$webp_url.$prefix.$md5.'.webp'.'"onclick="loadComments('.$poster->id().')" />';
