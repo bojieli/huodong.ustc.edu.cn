@@ -395,9 +395,20 @@ public function node_insert() {
 
         $md5 = explode(".", $poster->poster)[0];
         $webp_url = "/upload/poster/thumb/webp/";
-        if($poster->thumbUrl()=='')
-            $img='<div class="poster_content">'.$poster->description().'</div>';
-        elseif($this->isWebpExist($md5,$prefix='thumb_'))
+        $caption_box = '';
+        if($poster->thumbUrl()==''){
+            $img='
+            <div class="poster_article">
+            <h4 class="poster_title">'.$poster->name().'</h4>
+            <div class="poster_content">'.$poster->description().'</div>
+            </div>
+            ';
+        }
+        else{
+            $caption_box = '<div itemprop="name" class="caption" >
+                                        <h3>'.$poster->name().'</h3>
+                                        </div>';
+            if($this->isWebpExist($md5,$prefix='thumb_'))
                 {    if ($iswebp==1) 
                         $img='<img alt="'.$poster->name().'" class="haibao u-img" itemprop="photo"  id="poster-'.$poster->id().'" src="'.$webp_url.$prefix.$md5.'.webp'.'"onclick="loadComments('.$poster->id().')" />';
                      elseif ($iswebp==-1) 
@@ -407,6 +418,7 @@ public function node_insert() {
                  }
              else
                 $img='<img alt="'.$poster->name().'" class="haibao" itemprop="photo"  id="poster-'.$poster->id().'" src="'.$poster->thumbUrl().'"onclick="loadComments('.$poster->id().')" />';
+        }
         if($clockStat==0) 
             $clock_img='';
 		else
@@ -420,10 +432,7 @@ public function node_insert() {
 		<li class="hide animated fadeInUp">
 			<div class="celldiv " itemscope itemtype="http://schema.org/Event">
                                         <div class="img-box" style="overflow:hidden">
-			'.$img.	
-                                        '<div itemprop="name" class="caption" >
-                                        <h3>'.$poster->name().'</h3>
-                                        </div>
+			'.$img.$caption_box.'
                                          </div>'
                                          .'<div class="detail">
 					 <div class="hot" itemprop="aggregateRating" itemscope itemtype="http://schema.org/AggregateRating">'.
