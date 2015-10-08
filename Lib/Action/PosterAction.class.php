@@ -93,12 +93,14 @@ class PosterAction extends PublicAction {
             $this->assign('jumpUrl', "/");
             $this->error("抱歉，只有会长和部长级别的会员才能发布海报");
         }
-
-        $image = $this->uploadPoster();
-        if (!$image) {
-            $this->error("您必须上传海报图片。请注意图片格式和最大图片大小的限制。");
+        $is_text = $this->_post('is_text');
+        if(!$is_text){
+            $image = $this->uploadPoster();
+            if (!$image) {
+                $this->error("您必须上传海报图片。请注意图片格式和最大图片大小的限制。");
+            }
+            $poster['poster'] = $image;
         }
-        $poster['poster'] = $image;
 
         $poster['gid'] = $gid;
         $poster['author'] = CURRENT_USER;
