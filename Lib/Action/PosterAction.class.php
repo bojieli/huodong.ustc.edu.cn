@@ -400,7 +400,7 @@ public function node_insert() {
             $img='
             <div class="poster_article">
             <h4 class="poster_title">'.$poster->name().'</h4>
-            <div class="poster_content">'.$poster->description().'</div>
+            <div class="content">'.$poster->description().'</div>
             </div>
             ';
         }
