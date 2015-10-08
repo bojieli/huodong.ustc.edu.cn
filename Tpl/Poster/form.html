@@ -73,12 +73,11 @@
 	<div class="control-group">
       <label class="control-label" for="place">海报类型</label>
       <div class="controls">
-        <input type="text" class="input-large" id="place" name="place" value="{$poster.place}" onKeyUp="if(this.value=='') $(this).parent().parent().addClass('error'); else $(this).parent().parent().removeClass('error');">
         <input type="checkbox" name="is_text">文字海报
       </div>
     </div> 
 
-    <div class="control-group">
+    <div class="control-group hidden-poster">
       <label class="control-label" for="poster" >上传海报</label>
       
 		<style type="text/css">
