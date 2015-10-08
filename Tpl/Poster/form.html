@@ -73,11 +73,22 @@
 	<div class="control-group">
       <label class="control-label" for="place">海报类型</label>
       <div class="controls">
-        <input type="checkbox" name="is_text">文字海报
+        <input type="checkbox" name="is_text" id="is_text">文字海报
       </div>
     </div> 
-
-    <div class="control-group hidden-poster">
+    <script type="text/javascript">
+    $(function(){
+    	$("#is_text").change(function(){
+    		if($("#is_text").is(':checked')){
+    			$("#poster_body").hide();
+    		}else
+    		{
+    			$("#poster_body").show();
+    		}
+    	})
+    });
+    </script>
+    <div class="control-group" id="poster_body">
       <label class="control-label" for="poster" >上传海报</label>
       
 		<style type="text/css">
