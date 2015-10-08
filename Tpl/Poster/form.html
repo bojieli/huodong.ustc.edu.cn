@@ -69,6 +69,15 @@
 	<span class="qr_text"><a href="/Qr/QRapply?gid={$Think.get.gid}" target="_blank">生成新的二维码</a></span>
 	</div>
 	</div>
+
+	<div class="control-group">
+      <label class="control-label" for="place">海报类型</label>
+      <div class="controls">
+        <input type="text" class="input-large" id="place" name="place" value="{$poster.place}" onKeyUp="if(this.value=='') $(this).parent().parent().addClass('error'); else $(this).parent().parent().removeClass('error');">
+        <input type="checkbox" name="is_text">文字海报
+      </div>
+    </div>
+
     <div class="control-group">
       <label class="control-label" for="poster" >上传海报</label>
       
@@ -240,13 +249,24 @@ var output = document.getElementById('output_area');
 </script>
 		<!--        <input type="file" id="poster" name="poster" value="选择海报"/>    -->
 		<empty name="new">
-		<p class="help-block">如果需要重新上传海报，请在此重新上传，否则请留空</p>
+			<p class="help-block">如果需要重新上传海报，请在此重新上传，否则请留空</p>
 		</empty>
-		<p class="help-block">图片大小不大于<span style="color:red">8MB</span>，支持的文件格式：jpg、jpeg、png、gif</p>
-		<p class="help-block"><span style="color:red">为保证海报的清晰度，还请上传 <span style="color:#333"><strong>宽度大于1000px</strong></span> 的海报图，无需担心浏览速度，系统后台会自动处理和生成各种大小的压缩图片！<br/>完全相同的海报只能发一个，内容相似的海报最多只能发两个，不符合上述规定的海报，会被管理员删除重复的</span></p>
+		<p class="help-block">
+			图片大小不大于
+			<span style="color:red">8MB</span>，支持的文件格式：jpg、jpeg、png、gif
+		</p>
+		<p class="help-block">
+			<span style="color:red">为保证海报的清晰度，还请上传 
+				<span style="color:#333">
+					<strong>宽度大于1000px</strong>
+				</span> 的海报图，无需担心浏览速度，系统后台会自动处理和生成各种大小的压缩图片！<br/>完全相同的海报只能发一个，内容相似的海报最多只能发两个，不符合上述规定的海报，会被管理员删除重复的
+			</span>
+		</p>
       </div>
     </div>
 	
+	
+
 	<div class="control-group">
       <label class="control-label" for="description">活动介绍</label>
       <div class="controls">
