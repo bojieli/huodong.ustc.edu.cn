@@ -3,7 +3,7 @@ class ClubAction extends PublicAction {
     public function index() {
         global $_G;
         $this->headnav();
-        $keyword = isset($_GET['keyword']) ? htmlspecialchars($_GET['keyword']) : '';
+        $keyword = isset($_GET['keyword']) ? xss_clean($_GET['keyword']) : '';
         $sid = isset($_GET['sid']) ? $_GET['sid'] : $_G['sid'];
         $filter = isset($_GET['filter']) ? $_GET['filter'] : 'all';
         $condition = '';

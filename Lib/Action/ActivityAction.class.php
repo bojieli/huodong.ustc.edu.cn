@@ -3,7 +3,7 @@ class ActivityAction extends PublicAction{
 	public function index(){
 		global $_G;
         $this->headnav();
-        $keyword = isset($_GET['keyword']) ? addslashes(htmlspecialchars($_GET['keyword'])) : '';
+        $keyword = isset($_GET['keyword']) ? xss_clean($_GET['keyword']) : '';
         $sid = isset($_GET['sid']) ? addslashes($_GET['sid']) : $_G['sid'];
         $condition = '';
         $url = '';
