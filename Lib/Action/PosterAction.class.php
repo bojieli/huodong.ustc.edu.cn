@@ -183,7 +183,7 @@ public function node_insert() {
 public function publish_check(){
     $con['publish_time'] = ['gt',time() - 3600 * 24 * 7];
     $con['description'] = ['like',"%"."@http://infopublish.ustc.edu.cn"];
-    $data = M('poster')->field('id','description')->where($con)->select();
+    $data = M('poster')->where($con)->getField('id','description');
     dump($data);
 }
     public function modify() {
