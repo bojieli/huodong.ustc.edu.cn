@@ -191,7 +191,7 @@ public function publish_check(){
     }
     foreach ($file_ids as $k => $v) {
         if(in_array($v, $ids)){
-            echo $v."<br />"
+            echo $v."<br />";
         }
     }
 }
