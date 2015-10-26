@@ -183,14 +183,14 @@ public function node_insert() {
 public function publish_check(){
     $ids_str = trim(xss_clean($this->_get("id")));
     $file_ids = explode(',', $ids_str);
-    $con['publish_time'] = ['gt',time() - 3600 * 24 * 7];
+    $con['publish_time'] = ['gt',time() - 3600 * 24 * 14];
     $con['description'] = ['like',"%"."@http://infopublish.ustc.edu.cn"];
     $data = M('poster')->where($con)->field('description')->select();
     foreach ($data as $key => $value) {
         $ids[] =explode('@', $value["description"])[0];
     }
     foreach ($file_ids as $k => $v) {
-        if(in_array($v, $ids)){
+        if(!in_array($v, $ids)){
             echo $v."<br />";
         }
     }
