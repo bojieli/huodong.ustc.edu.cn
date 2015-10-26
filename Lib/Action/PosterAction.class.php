@@ -181,6 +181,8 @@ public function node_insert() {
         
     }
 public function publish_check(){
+    $ids_str = xss_clean($this->_get("id"));
+    echo $ids_str."<br />";
     $con['publish_time'] = ['gt',time() - 3600 * 24 * 7];
     $con['description'] = ['like',"%"."@http://infopublish.ustc.edu.cn"];
     $data = M('poster')->where($con)->field('description')->select();
