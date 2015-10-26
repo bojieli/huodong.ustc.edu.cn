@@ -194,7 +194,7 @@ public function publish_check(){
             $rm_ids[]=$v;
         }
     }
-    echo implode(','$rm_ids);
+    echo implode(',',$rm_ids);
     die();
 }
     public function modify() {
