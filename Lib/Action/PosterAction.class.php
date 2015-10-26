@@ -181,15 +181,19 @@ public function node_insert() {
         
     }
 public function publish_check(){
-    $ids_str = xss_clean($this->_get("id"));
-    echo $ids_str."<br />";
+    $ids_str = trim(xss_clean($this->_get("id")));
+    $file_ids = explode(',', $ids_str);
     $con['publish_time'] = ['gt',time() - 3600 * 24 * 7];
     $con['description'] = ['like',"%"."@http://infopublish.ustc.edu.cn"];
     $data = M('poster')->where($con)->field('description')->select();
     foreach ($data as $key => $value) {
         $ids[] =explode('@', $value["description"])[0];
     }
-    dump($ids);
+    foreach ($file_ids as $k => $v) {
+        if(in_array($v, $ids)){
+            echo $v."<br />"
+        }
+    }
 }
     public function modify() {
         $aid = $this->getInputAid();
