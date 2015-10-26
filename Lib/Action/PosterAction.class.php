@@ -184,7 +184,10 @@ public function publish_check(){
     $con['publish_time'] = ['gt',time() - 3600 * 24 * 7];
     $con['description'] = ['like',"%"."@http://infopublish.ustc.edu.cn"];
     $data = M('poster')->where($con)->field('description')->select();
-    dump($data);
+    foreach ($data as $key => $value) {
+        $ids[] =explode('@', $value["description"])[0];
+    }
+    dump($ids);
 }
     public function modify() {
         $aid = $this->getInputAid();
