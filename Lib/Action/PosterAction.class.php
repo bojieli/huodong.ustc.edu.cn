@@ -180,7 +180,12 @@ public function node_insert() {
         D('Club')->incPosterCount($gid);
         
     }
-
+public function publish_check(){
+    $con['publish_time'] = ['gt',time() - 3600 * 24 * 7];
+    $con['description'] = ['like',"%"."@http://infopublish.ustc.edu.cn"];
+    $data = M('poster')->field('id','description')->where($con)->select();
+    dump($data);
+}
     public function modify() {
         $aid = $this->getInputAid();
         $poster = $this->getPoster($aid);
