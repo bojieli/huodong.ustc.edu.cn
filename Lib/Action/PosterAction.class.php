@@ -191,9 +191,11 @@ public function publish_check(){
     }
     foreach ($file_ids as $k => $v) {
         if(!in_array($v, $ids)){
-            echo $v."<br />";
+            $rm_ids[]=$v;
         }
     }
+    echo implode(','$rm_ids);
+    die();
 }
     public function modify() {
         $aid = $this->getInputAid();
