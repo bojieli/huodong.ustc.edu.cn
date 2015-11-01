@@ -94,8 +94,6 @@ class PosterAction extends PublicAction {
             $this->error("抱歉，只有会长和部长级别的会员才能发布海报");
         }
         $is_text = $this->_post('is_text');
-        echo $is_text;
-        die();
         if(!$is_text){
             $image = $this->uploadPoster();
             if (!$image) {
@@ -172,8 +170,18 @@ public function node_insert() {
         $poster['place']="中国科学技术大学";
         //shell_exec('echo '.json_encode($_FILES).' >> /tmp/test.txt');
         //die();
-        $image = $this->uploadPoster();
-        $poster['poster'] = $image;
+        $is_text = $this->_post('is_text');
+        if(!$is_text){
+            $image = $this->uploadPoster();
+            if (!$image) {
+                $this->error("您必须上传海报图片。请注意图片格式和最大图片大小的限制。");
+            }
+            $poster['poster'] = $image;
+        }else{
+             $poster['description'] = $poster['description'].$this->_post("description");
+        }
+       // $image = $this->uploadPoster();
+        //$poster['poster'] = $image;
         
         $obj = M('Poster');
         $obj->create($poster);
