@@ -94,6 +94,8 @@ class PosterAction extends PublicAction {
             $this->error("抱歉，只有会长和部长级别的会员才能发布海报");
         }
         $is_text = $this->_post('is_text');
+        echo $is_text;
+        die();
         if(!$is_text){
             $image = $this->uploadPoster();
             if (!$image) {
