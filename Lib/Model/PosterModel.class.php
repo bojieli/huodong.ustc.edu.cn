@@ -44,7 +44,7 @@ class PosterModel extends Model {
         $str = "@http://infopublish.ustc.edu.cn";
         $start = strpos($this->description, $str);
         if( $start !== false){
-            return substr($this->description,$start+strlen($str) );
+            return str_replace(" ","&nbsp",substr($this->description,$start+strlen($str) ));
         }else{
             return $this->description;
         }
