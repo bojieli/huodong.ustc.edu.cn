@@ -423,11 +423,11 @@ public function publish_check(){
         $webp_url = "/upload/poster/thumb/webp/";
         $caption_box = '';
         if($poster->thumbUrl()==''){
-            $img='
-            <div class="poster_article haibao">
+            $img='<a href="/Poster/singlePage?aid='.$poster->id().
+            '"><div class="poster_article haibao">
             <h4 class="poster_title">'.$poster->name().'</h4>
             <div class="content">'.$poster->description().'</div>
-            </div>
+            </div></a>
             ';
         }
         else{
