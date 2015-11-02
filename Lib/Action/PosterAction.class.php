@@ -426,7 +426,7 @@ public function publish_check(){
             $img='
             <div class="poster_article haibao">
             <h4 class="poster_title">'.$poster->name().'</h4>
-            <div class="content"><pre>'.$poster->description().'</pre></div>
+            <div class="content">'.$poster->description().'</div>
             </div>
             ';
         }
