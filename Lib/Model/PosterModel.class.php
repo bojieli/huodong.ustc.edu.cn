@@ -45,7 +45,7 @@ class PosterModel extends Model {
         $start = strpos($this->description, $str);
         if( $start !== false){
             $new_str = substr($this->description,$start+strlen($str));
-            return  preg_replace('/\s{2,}/', '<br />', html_entity_decode($new_str));
+            return  str_replace(array("&nbsp;","　"), " ", html_entity_decode($new_str));
         }else{
             return $this->description;
         }
