@@ -45,7 +45,7 @@ class PosterModel extends Model {
         $start = strpos($this->description, $str);
         if( $start !== false){
             $new_str = substr($this->description,$start+strlen($str));
-            return str_replace(chr(0xC2) . chr(0xA0),' ',$new_str);
+            return strip_tags($new_str);
         }else{
             return $this->description;
         }
