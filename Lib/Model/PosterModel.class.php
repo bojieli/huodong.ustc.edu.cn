@@ -45,7 +45,7 @@ class PosterModel extends Model {
         $start = strpos($this->description, $str);
         if( $start !== false){
             $new_str = substr($this->description,$start+strlen($str));
-            return html_entity_decode($new_str);
+            return trim(html_entity_decode($new_str));
         }else{
             return $this->description;
         }
