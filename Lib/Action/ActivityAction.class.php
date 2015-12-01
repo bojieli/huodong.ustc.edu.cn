@@ -268,11 +268,17 @@ class ActivityAction extends PublicAction{
 		$this->success('恭喜你，报名成功！');
 	}
 	public function address(){
+		global $_G;
 		$act_id = $this->_get('act_id');
 		$act = D('Activity')->getActivityByID($act_id);
 		$club = D('Club')->getInfo($act['gid']);
 		if(empty($act_id)){
 			$this->error("非法操作");
+		}
+		$uid=$_G['uid'];
+		if($uid!=$act['uid'] && !D("Club")->isAdmins($act['gid']))
+		{
+            $this->error('您没有权限');
 		}
 		$members = D('Activity')->getAddress($act_id);
 		//dump($members);
