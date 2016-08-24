@@ -357,7 +357,13 @@ if ($team['member_count'] > 20) {
         <div class="stcyright">
 
 		<notempty name="team.isManager"> 
-        <div class="sttttt">组功能面板<span class="stxmz11"><span style="color:#CCC; font-size:14px">管理员可见 &nbsp;&nbsp;</span><a href="/static/help/quanxiansm.html" target='_blank'  style="color:#F00">权限说明</a></span></div>     
+		<div class="manger-box">
+        <div class="sttttt">组功能面板
+        <span class="stxmz11">
+        <span style="color:#CCC; font-size:14px">管理员可见 &nbsp;&nbsp;</span>
+        <a href="/static/help/quanxiansm.html" target='_blank'  style="color:#F00">权限说明</a>
+        </span>
+        </div>     
         	<table cellpadding="0" cellspacing="0" border="0" >
             	<tr >
                 	<td align="left" width="200px" ><a target="_blank" href="/Team/sendEmail?tid={$team.tid}"  style="color:#088;">发送邮件通知</a></td>
@@ -376,11 +382,12 @@ if ($team['member_count'] > 20) {
                 	<td align="left"><a href="/Team/emailAddress?tid={$team.tid}" target='_blank' style="color:#088;">群邮件地址</a></td>
                     <td align="left"><a href="/Team/createAddressEmailUSTC?tid={$team.tid}" style="color:#088;">导出为科大邮件联系人</a></td>
                 </tr>
-            </table>            
-         </notempty>
-
+            </table>   
 			<div style="height:40px;"> </div>
+ 		</div>         
+         </notempty>
 		<notempty name="team.isMember">
+		<div class="manger-box">
         	<div class="sttttt">共享文档<span class="stxmz11" style="float:right;margin-left:0;"><span style="color:#CCC; font-size:14px">需为成员才可见！&nbsp;&nbsp;&nbsp;&nbsp;</span>
             <!--a href="/Team/upload?tid={$team.tid}" target="_blank" style="color:#F00;" >上传新文件</a-->
             <span   style="color:#F00;" id="uploadDOC" onclick="alertUpload()">上传新文件</span>
@@ -391,7 +398,9 @@ if ($team['member_count'] > 20) {
 			</volist> 
             </ol>
             <div style="height:40px;"> </div>
+            </div>
 		</notempty>
+		  <div class="manger-box">
             <div class="sttttt">待审核加入成员</div>
             <ol class="stol">
 			 <volist name="inactive" id="member">
@@ -401,7 +410,7 @@ if ($team['member_count'] > 20) {
 	        </notempty></li>
 			 </volist>
             </ol>
-
+           	</div>
         </div><!--ctcy right-->
         
         
