@@ -412,13 +412,13 @@ public function publish_check(){
 
     public function ajaxAutocomplete()
     {
-        $keyword = $_GET['term'];
+        $keyword = $this->_get('term');
         if(!empty($keyword))
             $cond[] = "(name like '%$keyword%' or place like '%$keyword%' or description like '%$keyword%')";
         $sid = is_numeric($_GET['sid']) ? $_GET['sid'] : 1;
         if(!empty($sid))
             $cond[] = "(sid = $sid)";
-        $res = M('Poster')->field('name')->where($cond)->order("total_rate DESC")->limit(10)->select();
+        $res = M('Poster')->field('name')->where($cond)->order("rate_total DESC")->limit(10)->select();
         if($res){$count=count($res);}
         else $count = 0;
         echo '[';
