@@ -409,6 +409,25 @@ public function publish_check(){
             $elements[] = $this->poster2html($poster,$iswebp);
         echo json_encode($elements);
     }
+
+    public function ajaxAutocomplete()
+    {
+        $condition_info['name']  =array('like',"%".$_GET['term']."%");
+        $res = M('Poster')->field('name')->where($condition_info)->order("total_rate DESC")->limit(10)->select();
+        if($res){$count=count($res);}
+        else $count = 0;
+        echo '[';
+        foreach($res as $key => $val)
+        {
+            echo "\"$val[name]\"";
+            if($i++<$count-1)
+            {
+                echo ",";
+            }
+        }
+        echo ']';
+    }
+
     private function isWebpExist($md5,$prefix){
           //echo file_exists($url.$prefix.$md5.'.webp');die;
           return file_exists('./upload/poster/thumb/webp/'.$prefix.$md5.'.webp');
