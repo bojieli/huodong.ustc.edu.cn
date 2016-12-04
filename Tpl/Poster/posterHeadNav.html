@@ -45,13 +45,14 @@
 		    </script>
 		</div>
 		</if>
-		<form method='get' action="/Poster/index">
         <div class="kuang" style="width:230px;">
-        	<input type="text" name="keyword" class="searchcss_out" onfocus="this.className='searchcss_on'" onblur="this.className='searchcss_out'" value="{$keyword}">
+        <form method='get' action="/Poster/index">
+        	<input type="text" name="keyword" class="searchcss_out ui-autocomplete-input autocomplete"  autocomplete="off" ajaxurl="/Club/ajaxAutocomplete" onfocus="this.className='searchcss_on ui-autocomplete-input autocomplete'" onblur="this.className='searchcss_out ui-autocomplete-input autocomplete'" value="{$keyword}">
 			<input type="hidden" name="sid" value="{$sid}">
             <input type='submit' class="searchbutton" style="float:left;" value='搜索'/>
+        </form>
         </div>
-		</form>
+		
  <style type="text/css">
   #school_div select{
 	  font-family:Microsoft Yahei, "Times New Roman", Times, serif;	
