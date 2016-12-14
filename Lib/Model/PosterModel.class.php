@@ -73,12 +73,22 @@ class PosterModel extends Model {
     public function thumbUrl($large = false) {
         if (empty($this->poster))
             return '';
-        if ($large) {
-            $url = "/upload/poster/thumb/large_".$this->poster;
-            if (file_exists('.'.$url))
-                return $url;
+        $file = explode('.', $this->poster);
+        if(end($file) == "png"){
+            $this->poster = $file[0].".jpg";
         }
-        return "/upload/poster/thumb/thumb_".$this->poster;
+
+        if ($large) 
+        {
+            $url = "/upload/poster/thumb/large_".$this->poster;            
+        }
+        else
+        {
+            $url = "/upload/poster/thumb/thumb_".$this->poster;
+        }
+        if (file_exists('.'.$url))
+                return $url;
+        return '';
     }
 
     public function thumbHeight($large = false) {
