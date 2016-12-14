@@ -256,9 +256,11 @@ public function posterMsg($aid){
 	$poster['Start_time'] = date('n月j日 H:i:s',$poster['start_time']);
 	$poster['End_time'] = date('n月j日 H:i:s',$poster['end_time']);
 	$title=$poster['name'];
-	$file = explode($poster['poster'], ".");
+	$file = explode(".",$poster['poster']);
 	
-	$poster['poster'] = $file[0].".jpg";
+	if(end($file) == "png"){
+		$poster['poster'] = $file[0].".jpg";
+	}
 
 	$msg='
 	<table width="635" cellpadding="0" cellspacing="0" border="0" align="left" style="margin:0px 0px 0px 40px; color:#000;">
