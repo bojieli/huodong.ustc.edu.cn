@@ -258,9 +258,7 @@ public function posterMsg($aid){
 	$title=$poster['name'];
 	$file = explode($poster['poster'], ".");
 	
-	if(end($file) == "png"){
-		$poster['poster'] = $file[0].".jpg";
-	}
+	$poster['poster'] = $file[0].".jpg";
 
 	$msg='
 	<table width="635" cellpadding="0" cellspacing="0" border="0" align="left" style="margin:0px 0px 0px 40px; color:#000;">
