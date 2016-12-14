@@ -283,6 +283,7 @@ public function publish_check(){
             $info = $upload->getUploadFileInfo();
             $savename = $info[0]["savename"];
             $this->allToWebpForPoster($upload->thumbPath,$upload->thumbPrefix,$savename);
+            $this->allToJpgForPoster($upload->thumbPath,$upload->thumbPrefix,$savename);
             return $savename;
         }
         header('Content-Type: text/html; charset=UTF-8');
@@ -298,7 +299,19 @@ public function publish_check(){
              if(encode2Webp($sourceImg, $destImg)=='true')
                 $count++;
         }
-        return count;
+        return $count;
+    }
+    private function allToJpgForPoster($path,$prefix,$savename){
+        $md5 = explode(".",$savename)[0];
+        $count=0;
+        foreach (explode(",",$prefix) as $key => $value) {
+             $sourceImg=$path.$value.$savename;
+             $destImg=$path.$value.$md5.".jpg";
+             if(encode2Jpg($sourceImg, $destImg)== true){
+                $count++;
+            }
+        }
+        return $count;
     }
     private function parseTime($date, $hour = 0, $minute = 0, $second = 0) {
         $dates = explode('-', $date);

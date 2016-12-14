@@ -410,6 +410,21 @@ function encode2Webp($sourceImg, $destImg){
         shell_exec($cmd);
         return true;
     }
+function encode2Jpg($sourceImg, $destImg){
+        $file = explode('.', $sourceImg);
+        if(end($file) != "png"){
+            return -1;
+        }
+
+        if(!file_exists($sourceImg)){
+            echo $sourceImg . " does not exist <br />";
+            return -1;
+        }
+        
+        $cmd = "/usr/bin/convert " . $sourceImg. " " .$destImg." 2>&1";
+        shell_exec($cmd);
+        return true;
+    }
 function array_sort($arr, $keys, $type = 'desc') { //php按照指定键值对二维数组排序
     $keysvalue = $new_array = array();
     foreach ($arr as $k => $v) {
