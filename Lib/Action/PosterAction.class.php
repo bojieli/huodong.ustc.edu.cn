@@ -283,6 +283,7 @@ public function publish_check(){
             $info = $upload->getUploadFileInfo();
             $savename = $info[0]["savename"];
             $this->allToWebpForPoster($upload->thumbPath,$upload->thumbPrefix,$savename);
+            $this->allToJpgForPosterBase($upload->savePath,$savename);
             $this->allToJpgForPoster($upload->thumbPath,$upload->thumbPrefix,$savename);
             return $savename;
         }
@@ -301,14 +302,27 @@ public function publish_check(){
         }
         return $count;
     }
+    private function allToJpgForPosterBase($path,$savename){
+        $md5 = explode(".",$savename)[0];
+        $count=0;
+        $sourceImg=$path.$savename;
+        $destImg=$path.$md5.".jpg";
+         if(encode2Jpg($sourceImg, $destImg) == true){
+            $count++;
+            unlink($sourceImg);
+        }
+        return $count;
+    }
+
     private function allToJpgForPoster($path,$prefix,$savename){
         $md5 = explode(".",$savename)[0];
         $count=0;
         foreach (explode(",",$prefix) as $key => $value) {
              $sourceImg=$path.$value.$savename;
              $destImg=$path.$value.$md5.".jpg";
-             if(encode2Jpg($sourceImg, $destImg)== true){
+             if(encode2Jpg($sourceImg, $destImg) == true){
                 $count++;
+                unlink($sourceImg);
             }
         }
         return $count;
