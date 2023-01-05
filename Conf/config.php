@@ -20,9 +20,9 @@ $newconfig = array(
 );
 $mailconfig = array(
 	'MAIL_ADDRESS' => 'huodong@ustc.edu.cn',
-	'MAIL_SMTP' => '202.38.64.8',
+	'MAIL_SMTP' => 'SMTP_SERVER_ADDRESS',
 	'MAIL_LOGINNAME' => 'huodong@ustc.edu.cn',
-	'MAIL_PASSWORD' => 'hzbjlsjr0906'
+	'MAIL_PASSWORD' => 'EMAIL_PASSWORD'
 );
 $smsconfig = array(
 	'huodong_sms' => "【huodongweb.com】",
